@@ -254,37 +254,36 @@ public data class Location(
   /** Technical endpoints providing access to services operated for the location. */
   public val endpoint: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        operationalStatus = this@with.operationalStatus?.toBuilder()
-        name = this@with.name?.toBuilder()
-        alias = this@with.alias.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        mode = this@with.mode
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        address = this@with.address?.toBuilder()
-        form = this@with.form?.toBuilder()
-        position = this@with.position?.toBuilder()
-        managingOrganization = this@with.managingOrganization?.toBuilder()
-        partOf = this@with.partOf?.toBuilder()
-        characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-        hoursOfOperation = this@with.hoursOfOperation.map { it.toBuilder() }.toMutableList()
-        virtualService = this@with.virtualService.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.operationalStatus = operationalStatus?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.mode = mode
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.address = address?.toBuilder()
+    builder.form = form?.toBuilder()
+    builder.position = position?.toBuilder()
+    builder.managingOrganization = managingOrganization?.toBuilder()
+    builder.partOf = partOf?.toBuilder()
+    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.hoursOfOperation = hoursOfOperation.mapToMutableList { it.toBuilder() }
+    builder.virtualService = virtualService.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * The absolute geographic location of the Location, expressed using the WGS84 datum (This is the
@@ -345,15 +344,14 @@ public data class Location(
      */
     public val altitude: Decimal? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(longitude.toBuilder(), latitude.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          altitude = this@with.altitude?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(longitude.toBuilder(), latitude.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.altitude = altitude?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -416,8 +414,8 @@ public data class Location(
       public fun build(): Position =
         Position(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           longitude = longitude.build(),
           latitude = latitude.build(),
           altitude = altitude?.build(),
@@ -677,27 +675,27 @@ public data class Location(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         operationalStatus = operationalStatus?.build(),
         name = name?.build(),
-        alias = alias.map { it.build() },
+        alias = alias.mapToList { it.build() },
         description = description?.build(),
         mode = mode,
-        type = type.map { it.build() },
-        contact = contact.map { it.build() },
+        type = type.mapToList { it.build() },
+        contact = contact.mapToList { it.build() },
         address = address?.build(),
         form = form?.build(),
         position = position?.build(),
         managingOrganization = managingOrganization?.build(),
         partOf = partOf?.build(),
-        characteristic = characteristic.map { it.build() },
-        hoursOfOperation = hoursOfOperation.map { it.build() },
-        virtualService = virtualService.map { it.build() },
-        endpoint = endpoint.map { it.build() },
+        characteristic = characteristic.mapToList { it.build() },
+        hoursOfOperation = hoursOfOperation.mapToList { it.build() },
+        virtualService = virtualService.mapToList { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
       )
   }
 

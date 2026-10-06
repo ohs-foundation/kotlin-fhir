@@ -80,18 +80,17 @@ public data class Population(
   /** The existing physiological conditions of the specific population to which this applies. */
   public val physiologicalCondition: CodeableConcept? = null,
 ) : BackboneElement() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        age = this@with.age
-        gender = this@with.gender?.toBuilder()
-        race = this@with.race?.toBuilder()
-        physiologicalCondition = this@with.physiologicalCondition?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.age = age
+    builder.gender = gender?.toBuilder()
+    builder.race = race?.toBuilder()
+    builder.physiologicalCondition = physiologicalCondition?.toBuilder()
+    return builder
+  }
 
   public sealed interface Age : FhirChoice {
     public fun asRange(): Range? = this as? Range
@@ -172,8 +171,8 @@ public data class Population(
     public open fun build(): Population =
       Population(
         id = id,
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         age = age,
         gender = gender?.build(),
         race = race?.build(),

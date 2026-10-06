@@ -234,42 +234,40 @@ public data class NutritionIntake(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          subject.toBuilder(),
-          consumedItem.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          instantiatesCanonical =
-            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          statusReason = this@with.statusReason.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          occurrence = this@with.occurrence
-          recorded = this@with.recorded?.toBuilder()
-          reported = this@with.reported
-          ingredientLabel = this@with.ingredientLabel.map { it.toBuilder() }.toMutableList()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        subject.toBuilder(),
+        consumedItem.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.statusReason = statusReason.mapToMutableList { it.toBuilder() }
+    builder.code = code?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.occurrence = occurrence
+    builder.recorded = recorded?.toBuilder()
+    builder.reported = reported
+    builder.ingredientLabel = ingredientLabel.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** What food or fluid product or item was consumed. */
   @Serializable(with = NutritionIntakeConsumedItemSerializer::class)
@@ -338,19 +336,18 @@ public data class NutritionIntake(
     /** Document the reason the food or fluid was not consumed, such as refused, held, etc. */
     public val notConsumedReason: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder(), nutritionProduct.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          schedule = this@with.schedule?.toBuilder()
-          amount = this@with.amount?.toBuilder()
-          rate = this@with.rate?.toBuilder()
-          notConsumed = this@with.notConsumed?.toBuilder()
-          notConsumedReason = this@with.notConsumedReason?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder(), nutritionProduct.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.schedule = schedule?.toBuilder()
+      builder.amount = amount?.toBuilder()
+      builder.rate = rate?.toBuilder()
+      builder.notConsumed = notConsumed?.toBuilder()
+      builder.notConsumedReason = notConsumedReason?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Indicates what a category of item that was consumed: e.g., food, fluid, enteral, etc. */
@@ -428,8 +425,8 @@ public data class NutritionIntake(
       public fun build(): ConsumedItem =
         ConsumedItem(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           nutritionProduct = nutritionProduct.build(),
           schedule = schedule?.build(),
@@ -489,14 +486,13 @@ public data class NutritionIntake(
     /** Total amount of nutrient consumed. */
     public val amount: Quantity,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(nutrient.toBuilder(), amount.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(nutrient.toBuilder(), amount.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -550,8 +546,8 @@ public data class NutritionIntake(
       public fun build(): IngredientLabel =
         IngredientLabel(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           nutrient = nutrient.build(),
           amount = amount.build(),
         )
@@ -603,15 +599,14 @@ public data class NutritionIntake(
     /** Who performed the intake. */
     public val actor: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(actor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(actor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Who performed the intake. */
@@ -663,8 +658,8 @@ public data class NutritionIntake(
       public fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           function = function?.build(),
           actor = actor.build(),
         )
@@ -938,29 +933,29 @@ public data class NutritionIntake(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        instantiatesCanonical = instantiatesCanonical.map { it.build() },
-        instantiatesUri = instantiatesUri.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+        instantiatesUri = instantiatesUri.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
-        statusReason = statusReason.map { it.build() },
+        statusReason = statusReason.mapToList { it.build() },
         code = code?.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
         occurrence = occurrence,
         recorded = recorded?.build(),
         reported = reported,
-        consumedItem = consumedItem.map { it.build() },
-        ingredientLabel = ingredientLabel.map { it.build() },
-        performer = performer.map { it.build() },
+        consumedItem = consumedItem.mapToList { it.build() },
+        ingredientLabel = ingredientLabel.mapToList { it.build() },
+        performer = performer.mapToList { it.build() },
         location = location?.build(),
-        derivedFrom = derivedFrom.map { it.build() },
-        reason = reason.map { it.build() },
-        note = note.map { it.build() },
+        derivedFrom = derivedFrom.mapToList { it.build() },
+        reason = reason.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

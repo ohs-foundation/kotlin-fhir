@@ -176,34 +176,33 @@ public data class ImmunizationEvaluation(
    */
   public val seriesDoses: String? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          patient.toBuilder(),
-          targetDisease.toBuilder(),
-          immunizationEvent.toBuilder(),
-          doseStatus.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          date = this@with.date?.toBuilder()
-          authority = this@with.authority?.toBuilder()
-          doseStatusReason = this@with.doseStatusReason.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          series = this@with.series?.toBuilder()
-          doseNumber = this@with.doseNumber?.toBuilder()
-          seriesDoses = this@with.seriesDoses?.toBuilder()
-        }
-    }
+        status,
+        patient.toBuilder(),
+        targetDisease.toBuilder(),
+        immunizationEvent.toBuilder(),
+        doseStatus.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.date = date?.toBuilder()
+    builder.authority = authority?.toBuilder()
+    builder.doseStatusReason = doseStatusReason.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.series = series?.toBuilder()
+    builder.doseNumber = doseNumber?.toBuilder()
+    builder.seriesDoses = seriesDoses?.toBuilder()
+    return builder
+  }
 
   public class Builder(
     /** Indicates the current status of the evaluation of the vaccination administration event. */
@@ -373,10 +372,10 @@ public data class ImmunizationEvaluation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         patient = patient.build(),
         date = date?.build(),
@@ -384,7 +383,7 @@ public data class ImmunizationEvaluation(
         targetDisease = targetDisease.build(),
         immunizationEvent = immunizationEvent.build(),
         doseStatus = doseStatus.build(),
-        doseStatusReason = doseStatusReason.map { it.build() },
+        doseStatusReason = doseStatusReason.mapToList { it.build() },
         description = description?.build(),
         series = series?.build(),
         doseNumber = doseNumber?.build(),

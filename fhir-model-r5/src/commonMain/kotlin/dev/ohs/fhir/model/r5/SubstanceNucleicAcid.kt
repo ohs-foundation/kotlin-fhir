@@ -161,24 +161,23 @@ public data class SubstanceNucleicAcid(
    */
   public val subunit: List<Subunit> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        sequenceType = this@with.sequenceType?.toBuilder()
-        numberOfSubunits = this@with.numberOfSubunits?.toBuilder()
-        areaOfHybridisation = this@with.areaOfHybridisation?.toBuilder()
-        oligoNucleotideType = this@with.oligoNucleotideType?.toBuilder()
-        subunit = this@with.subunit.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.sequenceType = sequenceType?.toBuilder()
+    builder.numberOfSubunits = numberOfSubunits?.toBuilder()
+    builder.areaOfHybridisation = areaOfHybridisation?.toBuilder()
+    builder.oligoNucleotideType = oligoNucleotideType?.toBuilder()
+    builder.subunit = subunit.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Subunits are listed in order of decreasing length; sequences of the same length will be ordered
@@ -258,22 +257,21 @@ public data class SubstanceNucleicAcid(
     /** 5.3.6.8.1 Sugar ID (Mandatory). */
     public val sugar: List<Sugar> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          subunit = this@with.subunit?.toBuilder()
-          sequence = this@with.sequence?.toBuilder()
-          length = this@with.length?.toBuilder()
-          sequenceAttachment = this@with.sequenceAttachment?.toBuilder()
-          fivePrime = this@with.fivePrime?.toBuilder()
-          threePrime = this@with.threePrime?.toBuilder()
-          linkage = this@with.linkage.map { it.toBuilder() }.toMutableList()
-          sugar = this@with.sugar.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.subunit = subunit?.toBuilder()
+      builder.sequence = sequence?.toBuilder()
+      builder.length = length?.toBuilder()
+      builder.sequenceAttachment = sequenceAttachment?.toBuilder()
+      builder.fivePrime = fivePrime?.toBuilder()
+      builder.threePrime = threePrime?.toBuilder()
+      builder.linkage = linkage.mapToMutableList { it.toBuilder() }
+      builder.sugar = sugar.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** The linkages between sugar residues will also be captured. */
     @Serializable(with = SubstanceNucleicAcidSubunitLinkageSerializer::class)
@@ -332,18 +330,17 @@ public data class SubstanceNucleicAcid(
       /** Residues shall be captured as described in 5.3.6.8.3. */
       public val residueSite: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            connectivity = this@with.connectivity?.toBuilder()
-            identifier = this@with.identifier?.toBuilder()
-            name = this@with.name?.toBuilder()
-            residueSite = this@with.residueSite?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.connectivity = connectivity?.toBuilder()
+        builder.identifier = identifier?.toBuilder()
+        builder.name = name?.toBuilder()
+        builder.residueSite = residueSite?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -409,8 +406,8 @@ public data class SubstanceNucleicAcid(
         public fun build(): Linkage =
           Linkage(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             connectivity = connectivity?.build(),
             identifier = identifier?.build(),
             name = name?.build(),
@@ -469,17 +466,16 @@ public data class SubstanceNucleicAcid(
        */
       public val residueSite: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            identifier = this@with.identifier?.toBuilder()
-            name = this@with.name?.toBuilder()
-            residueSite = this@with.residueSite?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.identifier = identifier?.toBuilder()
+        builder.name = name?.toBuilder()
+        builder.residueSite = residueSite?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -537,8 +533,8 @@ public data class SubstanceNucleicAcid(
         public fun build(): Sugar =
           Sugar(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             identifier = identifier?.build(),
             name = name?.build(),
             residueSite = residueSite?.build(),
@@ -632,16 +628,16 @@ public data class SubstanceNucleicAcid(
       public fun build(): Subunit =
         Subunit(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           subunit = subunit?.build(),
           sequence = sequence?.build(),
           length = length?.build(),
           sequenceAttachment = sequenceAttachment?.build(),
           fivePrime = fivePrime?.build(),
           threePrime = threePrime?.build(),
-          linkage = linkage.map { it.build() },
-          sugar = sugar.map { it.build() },
+          linkage = linkage.mapToList { it.build() },
+          sugar = sugar.mapToList { it.build() },
         )
     }
   }
@@ -790,14 +786,14 @@ public data class SubstanceNucleicAcid(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         sequenceType = sequenceType?.build(),
         numberOfSubunits = numberOfSubunits?.build(),
         areaOfHybridisation = areaOfHybridisation?.build(),
         oligoNucleotideType = oligoNucleotideType?.build(),
-        subunit = subunit.map { it.build() },
+        subunit = subunit.mapToList { it.build() },
       )
   }
 }

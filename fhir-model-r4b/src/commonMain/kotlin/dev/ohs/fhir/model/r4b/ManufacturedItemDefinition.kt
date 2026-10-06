@@ -159,28 +159,27 @@ public data class ManufacturedItemDefinition(
   /** General characteristics of this item. */
   public val `property`: List<Property> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          manufacturedDoseForm.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
-          manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-          ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        manufacturedDoseForm.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.unitOfPresentation = unitOfPresentation?.toBuilder()
+    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** General characteristics of this item. */
   @Serializable(with = ManufacturedItemDefinitionPropertySerializer::class)
@@ -227,15 +226,14 @@ public data class ManufacturedItemDefinition(
     /** A value for the characteristic. */
     public val `value`: Value? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `value` = this@with.`value`
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`value` = `value`
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -328,8 +326,8 @@ public data class ManufacturedItemDefinition(
       public fun build(): Property =
         Property(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           `value` = `value`,
         )
@@ -479,16 +477,16 @@ public data class ManufacturedItemDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         manufacturedDoseForm = manufacturedDoseForm.build(),
         unitOfPresentation = unitOfPresentation?.build(),
-        manufacturer = manufacturer.map { it.build() },
-        ingredient = ingredient.map { it.build() },
-        `property` = `property`.map { it.build() },
+        manufacturer = manufacturer.mapToList { it.build() },
+        ingredient = ingredient.mapToList { it.build() },
+        `property` = `property`.mapToList { it.build() },
       )
   }
 }

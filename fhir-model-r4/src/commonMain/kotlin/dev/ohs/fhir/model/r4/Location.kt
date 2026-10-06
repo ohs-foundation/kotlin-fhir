@@ -220,36 +220,35 @@ public data class Location(
   /** Technical endpoints providing access to services operated for the location. */
   public val endpoint: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        operationalStatus = this@with.operationalStatus?.toBuilder()
-        name = this@with.name?.toBuilder()
-        alias = this@with.alias.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        mode = this@with.mode
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-        address = this@with.address?.toBuilder()
-        physicalType = this@with.physicalType?.toBuilder()
-        position = this@with.position?.toBuilder()
-        managingOrganization = this@with.managingOrganization?.toBuilder()
-        partOf = this@with.partOf?.toBuilder()
-        hoursOfOperation = this@with.hoursOfOperation.map { it.toBuilder() }.toMutableList()
-        availabilityExceptions = this@with.availabilityExceptions?.toBuilder()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.operationalStatus = operationalStatus?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.mode = mode
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.address = address?.toBuilder()
+    builder.physicalType = physicalType?.toBuilder()
+    builder.position = position?.toBuilder()
+    builder.managingOrganization = managingOrganization?.toBuilder()
+    builder.partOf = partOf?.toBuilder()
+    builder.hoursOfOperation = hoursOfOperation.mapToMutableList { it.toBuilder() }
+    builder.availabilityExceptions = availabilityExceptions?.toBuilder()
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * The absolute geographic location of the Location, expressed using the WGS84 datum (This is the
@@ -310,15 +309,14 @@ public data class Location(
      */
     public val altitude: Decimal? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(longitude.toBuilder(), latitude.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          altitude = this@with.altitude?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(longitude.toBuilder(), latitude.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.altitude = altitude?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -381,8 +379,8 @@ public data class Location(
       public fun build(): Position =
         Position(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           longitude = longitude.build(),
           latitude = latitude.build(),
           altitude = altitude?.build(),
@@ -439,18 +437,17 @@ public data class Location(
     /** Time that the Location closes. */
     public val closingTime: Time? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          daysOfWeek = this@with.daysOfWeek.toMutableList()
-          allDay = this@with.allDay?.toBuilder()
-          openingTime = this@with.openingTime?.toBuilder()
-          closingTime = this@with.closingTime?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.daysOfWeek = daysOfWeek.toMutableList()
+      builder.allDay = allDay?.toBuilder()
+      builder.openingTime = openingTime?.toBuilder()
+      builder.closingTime = closingTime?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -508,8 +505,8 @@ public data class Location(
       public fun build(): HoursOfOperation =
         HoursOfOperation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           daysOfWeek = daysOfWeek,
           allDay = allDay?.build(),
           openingTime = openingTime?.build(),
@@ -734,26 +731,26 @@ public data class Location(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         operationalStatus = operationalStatus?.build(),
         name = name?.build(),
-        alias = alias.map { it.build() },
+        alias = alias.mapToList { it.build() },
         description = description?.build(),
         mode = mode,
-        type = type.map { it.build() },
-        telecom = telecom.map { it.build() },
+        type = type.mapToList { it.build() },
+        telecom = telecom.mapToList { it.build() },
         address = address?.build(),
         physicalType = physicalType?.build(),
         position = position?.build(),
         managingOrganization = managingOrganization?.build(),
         partOf = partOf?.build(),
-        hoursOfOperation = hoursOfOperation.map { it.build() },
+        hoursOfOperation = hoursOfOperation.mapToList { it.build() },
         availabilityExceptions = availabilityExceptions?.build(),
-        endpoint = endpoint.map { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
       )
   }
 

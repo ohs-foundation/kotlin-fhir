@@ -110,23 +110,22 @@ public data class Address(
   /** Time period when address was/is in use. */
   public val period: Period? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        use = this@with.use
-        type = this@with.type
-        text = this@with.text?.toBuilder()
-        line = this@with.line.map { it.toBuilder() }.toMutableList()
-        city = this@with.city?.toBuilder()
-        district = this@with.district?.toBuilder()
-        state = this@with.state?.toBuilder()
-        postalCode = this@with.postalCode?.toBuilder()
-        country = this@with.country?.toBuilder()
-        period = this@with.period?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.use = use
+    builder.type = type
+    builder.text = text?.toBuilder()
+    builder.line = line.mapToMutableList { it.toBuilder() }
+    builder.city = city?.toBuilder()
+    builder.district = district?.toBuilder()
+    builder.state = state?.toBuilder()
+    builder.postalCode = postalCode?.toBuilder()
+    builder.country = country?.toBuilder()
+    builder.period = period?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -218,11 +217,11 @@ public data class Address(
     public open fun build(): Address =
       Address(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         use = use,
         type = type,
         text = text?.build(),
-        line = line.map { it.build() },
+        line = line.mapToList { it.build() },
         city = city?.build(),
         district = district?.build(),
         state = state?.build(),

@@ -213,29 +213,28 @@ public data class Organization(
    */
   public val qualification: List<Qualification> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        alias = this@with.alias.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf?.toBuilder()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-        qualification = this@with.qualification.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf?.toBuilder()
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.qualification = qualification.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * The official certifications, accreditations, training, designations and licenses that authorize
@@ -292,17 +291,16 @@ public data class Organization(
     /** Organization that regulates and issues the qualification. */
     public val issuer: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          issuer = this@with.issuer?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.period = period?.toBuilder()
+      builder.issuer = issuer?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Coded representation of the qualification. */
@@ -360,9 +358,9 @@ public data class Organization(
       public fun build(): Qualification =
         Qualification(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
           code = code.build(),
           period = period?.build(),
           issuer = issuer?.build(),
@@ -572,19 +570,19 @@ public data class Organization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
-        type = type.map { it.build() },
+        type = type.mapToList { it.build() },
         name = name?.build(),
-        alias = alias.map { it.build() },
+        alias = alias.mapToList { it.build() },
         description = description?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         partOf = partOf?.build(),
-        endpoint = endpoint.map { it.build() },
-        qualification = qualification.map { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
+        qualification = qualification.mapToList { it.build() },
       )
   }
 }

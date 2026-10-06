@@ -354,45 +354,44 @@ public data class Observation(
    */
   public val component: List<Component> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          code.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject?.toBuilder()
-          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          effective = this@with.effective
-          issued = this@with.issued?.toBuilder()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          `value` = this@with.`value`
-          dataAbsentReason = this@with.dataAbsentReason?.toBuilder()
-          interpretation = this@with.interpretation.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          bodySite = this@with.bodySite?.toBuilder()
-          method = this@with.method?.toBuilder()
-          specimen = this@with.specimen?.toBuilder()
-          device = this@with.device?.toBuilder()
-          referenceRange = this@with.referenceRange.map { it.toBuilder() }.toMutableList()
-          hasMember = this@with.hasMember.map { it.toBuilder() }.toMutableList()
-          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-          component = this@with.component.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        code.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.effective = effective
+    builder.issued = issued?.toBuilder()
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    builder.dataAbsentReason = dataAbsentReason?.toBuilder()
+    builder.interpretation = interpretation.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.bodySite = bodySite?.toBuilder()
+    builder.method = method?.toBuilder()
+    builder.specimen = specimen?.toBuilder()
+    builder.device = device?.toBuilder()
+    builder.referenceRange = referenceRange.mapToMutableList { it.toBuilder() }
+    builder.hasMember = hasMember.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.component = component.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Guidance on how to interpret the value by comparison to a normal or recommended range. Multiple
@@ -481,20 +480,19 @@ public data class Observation(
      */
     public val text: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          low = this@with.low?.toBuilder()
-          high = this@with.high?.toBuilder()
-          type = this@with.type?.toBuilder()
-          appliesTo = this@with.appliesTo.map { it.toBuilder() }.toMutableList()
-          age = this@with.age?.toBuilder()
-          text = this@with.text?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.low = low?.toBuilder()
+      builder.high = high?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.appliesTo = appliesTo.mapToMutableList { it.toBuilder() }
+      builder.age = age?.toBuilder()
+      builder.text = text?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -588,12 +586,12 @@ public data class Observation(
       public fun build(): ReferenceRange =
         ReferenceRange(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           low = low?.build(),
           high = high?.build(),
           type = type?.build(),
-          appliesTo = appliesTo.map { it.build() },
+          appliesTo = appliesTo.mapToList { it.build() },
           age = age?.build(),
           text = text?.build(),
         )
@@ -699,18 +697,17 @@ public data class Observation(
      */
     public val referenceRange: List<ReferenceRange> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `value` = this@with.`value`
-          dataAbsentReason = this@with.dataAbsentReason?.toBuilder()
-          interpretation = this@with.interpretation.map { it.toBuilder() }.toMutableList()
-          referenceRange = this@with.referenceRange.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`value` = `value`
+      builder.dataAbsentReason = dataAbsentReason?.toBuilder()
+      builder.interpretation = interpretation.mapToMutableList { it.toBuilder() }
+      builder.referenceRange = referenceRange.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asQuantity(): Quantity? = this as? Quantity
@@ -893,13 +890,13 @@ public data class Observation(
       public fun build(): Component =
         Component(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           `value` = `value`,
           dataAbsentReason = dataAbsentReason?.build(),
-          interpretation = interpretation.map { it.build() },
-          referenceRange = referenceRange.map { it.build() },
+          interpretation = interpretation.mapToList { it.build() },
+          referenceRange = referenceRange.mapToList { it.build() },
         )
     }
   }
@@ -1376,33 +1373,33 @@ public data class Observation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         code = code.build(),
         subject = subject?.build(),
-        focus = focus.map { it.build() },
+        focus = focus.mapToList { it.build() },
         encounter = encounter?.build(),
         effective = effective,
         issued = issued?.build(),
-        performer = performer.map { it.build() },
+        performer = performer.mapToList { it.build() },
         `value` = `value`,
         dataAbsentReason = dataAbsentReason?.build(),
-        interpretation = interpretation.map { it.build() },
-        note = note.map { it.build() },
+        interpretation = interpretation.mapToList { it.build() },
+        note = note.mapToList { it.build() },
         bodySite = bodySite?.build(),
         method = method?.build(),
         specimen = specimen?.build(),
         device = device?.build(),
-        referenceRange = referenceRange.map { it.build() },
-        hasMember = hasMember.map { it.build() },
-        derivedFrom = derivedFrom.map { it.build() },
-        component = component.map { it.build() },
+        referenceRange = referenceRange.mapToList { it.build() },
+        hasMember = hasMember.mapToList { it.build() },
+        derivedFrom = derivedFrom.mapToList { it.build() },
+        component = component.mapToList { it.build() },
       )
   }
 

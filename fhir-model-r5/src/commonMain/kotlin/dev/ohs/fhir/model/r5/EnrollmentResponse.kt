@@ -155,27 +155,26 @@ public data class EnrollmentResponse(
   /** The practitioner who is responsible for the services rendered to the patient. */
   public val requestProvider: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        request = this@with.request?.toBuilder()
-        outcome = this@with.outcome
-        disposition = this@with.disposition?.toBuilder()
-        created = this@with.created?.toBuilder()
-        organization = this@with.organization?.toBuilder()
-        requestProvider = this@with.requestProvider?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.request = request?.toBuilder()
+    builder.outcome = outcome
+    builder.disposition = disposition?.toBuilder()
+    builder.created = created?.toBuilder()
+    builder.organization = organization?.toBuilder()
+    builder.requestProvider = requestProvider?.toBuilder()
+    return builder
+  }
 
   public class Builder() : DomainResource.Builder() {
     /**
@@ -321,10 +320,10 @@ public data class EnrollmentResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         request = request?.build(),
         outcome = outcome,

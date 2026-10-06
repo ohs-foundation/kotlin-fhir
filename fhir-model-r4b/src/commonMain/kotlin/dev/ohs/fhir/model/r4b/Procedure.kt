@@ -327,50 +327,48 @@ public data class Procedure(
    */
   public val usedCode: List<CodeableConcept> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          instantiatesCanonical =
-            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          statusReason = this@with.statusReason?.toBuilder()
-          category = this@with.category?.toBuilder()
-          code = this@with.code?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          performed = this@with.performed
-          recorder = this@with.recorder?.toBuilder()
-          asserter = this@with.asserter?.toBuilder()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
-          outcome = this@with.outcome?.toBuilder()
-          report = this@with.report.map { it.toBuilder() }.toMutableList()
-          complication = this@with.complication.map { it.toBuilder() }.toMutableList()
-          complicationDetail = this@with.complicationDetail.map { it.toBuilder() }.toMutableList()
-          followUp = this@with.followUp.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          focalDevice = this@with.focalDevice.map { it.toBuilder() }.toMutableList()
-          usedReference = this@with.usedReference.map { it.toBuilder() }.toMutableList()
-          usedCode = this@with.usedCode.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.statusReason = statusReason?.toBuilder()
+    builder.category = category?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.performed = performed
+    builder.recorder = recorder?.toBuilder()
+    builder.asserter = asserter?.toBuilder()
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.bodySite = bodySite.mapToMutableList { it.toBuilder() }
+    builder.outcome = outcome?.toBuilder()
+    builder.report = report.mapToMutableList { it.toBuilder() }
+    builder.complication = complication.mapToMutableList { it.toBuilder() }
+    builder.complicationDetail = complicationDetail.mapToMutableList { it.toBuilder() }
+    builder.followUp = followUp.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.focalDevice = focalDevice.mapToMutableList { it.toBuilder() }
+    builder.usedReference = usedReference.mapToMutableList { it.toBuilder() }
+    builder.usedCode = usedCode.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Limited to "real" people rather than equipment. */
   @Serializable(with = ProcedurePerformerSerializer::class)
@@ -422,16 +420,15 @@ public data class Procedure(
     /** The organization the device or practitioner was acting on behalf of. */
     public val onBehalfOf: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(actor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function?.toBuilder()
-          onBehalfOf = this@with.onBehalfOf?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(actor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function?.toBuilder()
+      builder.onBehalfOf = onBehalfOf?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The practitioner who was involved in the procedure. */
@@ -489,8 +486,8 @@ public data class Procedure(
       public fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           function = function?.build(),
           actor = actor.build(),
           onBehalfOf = onBehalfOf?.build(),
@@ -546,15 +543,14 @@ public data class Procedure(
     /** The device that was manipulated (changed) during the procedure. */
     public val manipulated: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(manipulated.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          action = this@with.action?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(manipulated.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.action = action?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The device that was manipulated (changed) during the procedure. */
@@ -606,8 +602,8 @@ public data class Procedure(
       public fun build(): FocalDevice =
         FocalDevice(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           action = action?.build(),
           manipulated = manipulated.build(),
         )
@@ -986,14 +982,14 @@ public data class Procedure(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        instantiatesCanonical = instantiatesCanonical.map { it.build() },
-        instantiatesUri = instantiatesUri.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+        instantiatesUri = instantiatesUri.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
         statusReason = statusReason?.build(),
         category = category?.build(),
@@ -1003,20 +999,20 @@ public data class Procedure(
         performed = performed,
         recorder = recorder?.build(),
         asserter = asserter?.build(),
-        performer = performer.map { it.build() },
+        performer = performer.mapToList { it.build() },
         location = location?.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        bodySite = bodySite.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        bodySite = bodySite.mapToList { it.build() },
         outcome = outcome?.build(),
-        report = report.map { it.build() },
-        complication = complication.map { it.build() },
-        complicationDetail = complicationDetail.map { it.build() },
-        followUp = followUp.map { it.build() },
-        note = note.map { it.build() },
-        focalDevice = focalDevice.map { it.build() },
-        usedReference = usedReference.map { it.build() },
-        usedCode = usedCode.map { it.build() },
+        report = report.mapToList { it.build() },
+        complication = complication.mapToList { it.build() },
+        complicationDetail = complicationDetail.mapToList { it.build() },
+        followUp = followUp.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        focalDevice = focalDevice.mapToList { it.build() },
+        usedReference = usedReference.mapToList { it.build() },
+        usedCode = usedCode.mapToList { it.build() },
       )
   }
 

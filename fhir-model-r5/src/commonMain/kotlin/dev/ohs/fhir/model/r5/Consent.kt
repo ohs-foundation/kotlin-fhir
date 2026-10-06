@@ -224,36 +224,35 @@ public data class Consent(
    */
   public val provision: List<Provision> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        date = this@with.date?.toBuilder()
-        period = this@with.period?.toBuilder()
-        grantor = this@with.grantor.map { it.toBuilder() }.toMutableList()
-        grantee = this@with.grantee.map { it.toBuilder() }.toMutableList()
-        manager = this@with.manager.map { it.toBuilder() }.toMutableList()
-        controller = this@with.controller.map { it.toBuilder() }.toMutableList()
-        sourceAttachment = this@with.sourceAttachment.map { it.toBuilder() }.toMutableList()
-        sourceReference = this@with.sourceReference.map { it.toBuilder() }.toMutableList()
-        regulatoryBasis = this@with.regulatoryBasis.map { it.toBuilder() }.toMutableList()
-        policyBasis = this@with.policyBasis?.toBuilder()
-        policyText = this@with.policyText.map { it.toBuilder() }.toMutableList()
-        verification = this@with.verification.map { it.toBuilder() }.toMutableList()
-        decision = this@with.decision
-        provision = this@with.provision.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.grantor = grantor.mapToMutableList { it.toBuilder() }
+    builder.grantee = grantee.mapToMutableList { it.toBuilder() }
+    builder.manager = manager.mapToMutableList { it.toBuilder() }
+    builder.controller = controller.mapToMutableList { it.toBuilder() }
+    builder.sourceAttachment = sourceAttachment.mapToMutableList { it.toBuilder() }
+    builder.sourceReference = sourceReference.mapToMutableList { it.toBuilder() }
+    builder.regulatoryBasis = regulatoryBasis.mapToMutableList { it.toBuilder() }
+    builder.policyBasis = policyBasis?.toBuilder()
+    builder.policyText = policyText.mapToMutableList { it.toBuilder() }
+    builder.verification = verification.mapToMutableList { it.toBuilder() }
+    builder.decision = decision
+    builder.provision = provision.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * A Reference or URL used to uniquely identify the policy the organization will enforce for this
@@ -311,16 +310,15 @@ public data class Consent(
      */
     public val url: Url? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          reference = this@with.reference?.toBuilder()
-          url = this@with.url?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.reference = reference?.toBuilder()
+      builder.url = url?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -379,8 +377,8 @@ public data class Consent(
       public fun build(): PolicyBasis =
         PolicyBasis(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           reference = reference?.build(),
           url = url?.build(),
         )
@@ -450,18 +448,17 @@ public data class Consent(
      */
     public val verificationDate: List<DateTime> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(verified.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          verificationType = this@with.verificationType?.toBuilder()
-          verifiedBy = this@with.verifiedBy?.toBuilder()
-          verifiedWith = this@with.verifiedWith?.toBuilder()
-          verificationDate = this@with.verificationDate.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(verified.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.verificationType = verificationType?.toBuilder()
+      builder.verifiedBy = verifiedBy?.toBuilder()
+      builder.verifiedWith = verifiedWith?.toBuilder()
+      builder.verificationDate = verificationDate.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Has the instruction been verified. */
@@ -531,13 +528,13 @@ public data class Consent(
       public fun build(): Verification =
         Verification(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           verified = verified.build(),
           verificationType = verificationType?.build(),
           verifiedBy = verifiedBy?.build(),
           verifiedWith = verifiedWith?.build(),
-          verificationDate = verificationDate.map { it.build() },
+          verificationDate = verificationDate.mapToList { it.build() },
         )
     }
   }
@@ -660,26 +657,25 @@ public data class Consent(
     /** Provisions which provide exceptions to the base provision or subprovisions. */
     public val provision: List<Provision> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          actor = this@with.actor.map { it.toBuilder() }.toMutableList()
-          action = this@with.action.map { it.toBuilder() }.toMutableList()
-          securityLabel = this@with.securityLabel.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose.map { it.toBuilder() }.toMutableList()
-          documentType = this@with.documentType.map { it.toBuilder() }.toMutableList()
-          resourceType = this@with.resourceType.map { it.toBuilder() }.toMutableList()
-          code = this@with.code.map { it.toBuilder() }.toMutableList()
-          dataPeriod = this@with.dataPeriod?.toBuilder()
-          `data` = this@with.`data`.map { it.toBuilder() }.toMutableList()
-          expression = this@with.expression?.toBuilder()
-          provision = this@with.provision.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.period = period?.toBuilder()
+      builder.actor = actor.mapToMutableList { it.toBuilder() }
+      builder.action = action.mapToMutableList { it.toBuilder() }
+      builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
+      builder.purpose = purpose.mapToMutableList { it.toBuilder() }
+      builder.documentType = documentType.mapToMutableList { it.toBuilder() }
+      builder.resourceType = resourceType.mapToMutableList { it.toBuilder() }
+      builder.code = code.mapToMutableList { it.toBuilder() }
+      builder.dataPeriod = dataPeriod?.toBuilder()
+      builder.`data` = `data`.mapToMutableList { it.toBuilder() }
+      builder.expression = expression?.toBuilder()
+      builder.provision = provision.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Who or what is controlled by this provision. Use group to identify a set of actors by some
@@ -734,16 +730,15 @@ public data class Consent(
        */
       public val reference: Reference? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            role = this@with.role?.toBuilder()
-            reference = this@with.reference?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.role = role?.toBuilder()
+        builder.reference = reference?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -801,8 +796,8 @@ public data class Consent(
         public fun build(): Actor =
           Actor(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             role = role?.build(),
             reference = reference?.build(),
           )
@@ -857,18 +852,17 @@ public data class Consent(
        */
       public val reference: Reference,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              meaning,
-              reference.toBuilder(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            meaning,
+            reference.toBuilder(),
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /** How the resource reference is interpreted when testing consent restrictions. */
@@ -922,8 +916,8 @@ public data class Consent(
         public fun build(): Data =
           Data(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             meaning = meaning,
             reference = reference.build(),
           )
@@ -1061,20 +1055,20 @@ public data class Consent(
       public fun build(): Provision =
         Provision(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           period = period?.build(),
-          actor = actor.map { it.build() },
-          action = action.map { it.build() },
-          securityLabel = securityLabel.map { it.build() },
-          purpose = purpose.map { it.build() },
-          documentType = documentType.map { it.build() },
-          resourceType = resourceType.map { it.build() },
-          code = code.map { it.build() },
+          actor = actor.mapToList { it.build() },
+          action = action.mapToList { it.build() },
+          securityLabel = securityLabel.mapToList { it.build() },
+          purpose = purpose.mapToList { it.build() },
+          documentType = documentType.mapToList { it.build() },
+          resourceType = resourceType.mapToList { it.build() },
+          code = code.mapToList { it.build() },
           dataPeriod = dataPeriod?.build(),
-          `data` = `data`.map { it.build() },
+          `data` = `data`.mapToList { it.build() },
           expression = expression?.build(),
-          provision = provision.map { it.build() },
+          provision = provision.mapToList { it.build() },
         )
     }
   }
@@ -1295,27 +1289,27 @@ public data class Consent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         subject = subject?.build(),
         date = date?.build(),
         period = period?.build(),
-        grantor = grantor.map { it.build() },
-        grantee = grantee.map { it.build() },
-        manager = manager.map { it.build() },
-        controller = controller.map { it.build() },
-        sourceAttachment = sourceAttachment.map { it.build() },
-        sourceReference = sourceReference.map { it.build() },
-        regulatoryBasis = regulatoryBasis.map { it.build() },
+        grantor = grantor.mapToList { it.build() },
+        grantee = grantee.mapToList { it.build() },
+        manager = manager.mapToList { it.build() },
+        controller = controller.mapToList { it.build() },
+        sourceAttachment = sourceAttachment.mapToList { it.build() },
+        sourceReference = sourceReference.mapToList { it.build() },
+        regulatoryBasis = regulatoryBasis.mapToList { it.build() },
         policyBasis = policyBasis?.build(),
-        policyText = policyText.map { it.build() },
-        verification = verification.map { it.build() },
+        policyText = policyText.mapToList { it.build() },
+        verification = verification.mapToList { it.build() },
         decision = decision,
-        provision = provision.map { it.build() },
+        provision = provision.mapToList { it.build() },
       )
   }
 

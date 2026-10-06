@@ -354,47 +354,46 @@ public data class OperationDefinition(
    */
   public val overload: List<Overload> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          name.toBuilder(),
-          status,
-          kind,
-          code.toBuilder(),
-          system.toBuilder(),
-          type.toBuilder(),
-          instance.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          version = this@with.version?.toBuilder()
-          title = this@with.title?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          affectsState = this@with.affectsState?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-          base = this@with.base?.toBuilder()
-          resource = this@with.resource.toMutableList()
-          inputProfile = this@with.inputProfile?.toBuilder()
-          outputProfile = this@with.outputProfile?.toBuilder()
-          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-          overload = this@with.overload.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        name.toBuilder(),
+        status,
+        kind,
+        code.toBuilder(),
+        system.toBuilder(),
+        type.toBuilder(),
+        instance.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.version = version?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.affectsState = affectsState?.toBuilder()
+    builder.comment = comment?.toBuilder()
+    builder.base = base?.toBuilder()
+    builder.resource = resource.toMutableList()
+    builder.inputProfile = inputProfile?.toBuilder()
+    builder.outputProfile = outputProfile?.toBuilder()
+    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    builder.overload = overload.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The parameters for the operation/query. */
   @Serializable(with = OperationDefinitionParameterSerializer::class)
@@ -501,27 +500,26 @@ public data class OperationDefinition(
      */
     public val part: List<Parameter> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            name.toBuilder(),
-            use,
-            min.toBuilder(),
-            max.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            documentation = this@with.documentation?.toBuilder()
-            type = this@with.type
-            targetProfile = this@with.targetProfile.map { it.toBuilder() }.toMutableList()
-            searchType = this@with.searchType
-            binding = this@with.binding?.toBuilder()
-            referencedFrom = this@with.referencedFrom.map { it.toBuilder() }.toMutableList()
-            part = this@with.part.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          name.toBuilder(),
+          use,
+          min.toBuilder(),
+          max.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.documentation = documentation?.toBuilder()
+      builder.type = type
+      builder.targetProfile = targetProfile.mapToMutableList { it.toBuilder() }
+      builder.searchType = searchType
+      builder.binding = binding?.toBuilder()
+      builder.referencedFrom = referencedFrom.mapToMutableList { it.toBuilder() }
+      builder.part = part.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Binds to a value set if this parameter is coded (code, Coding, CodeableConcept). */
     @Serializable(with = OperationDefinitionParameterBindingSerializer::class)
@@ -579,18 +577,17 @@ public data class OperationDefinition(
        */
       public val valueSet: Canonical,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              strength,
-              valueSet.toBuilder(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            strength,
+            valueSet.toBuilder(),
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -652,8 +649,8 @@ public data class OperationDefinition(
         public fun build(): Binding =
           Binding(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             strength = strength,
             valueSet = valueSet.build(),
           )
@@ -714,15 +711,14 @@ public data class OperationDefinition(
        */
       public val sourceId: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(source.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            sourceId = this@with.sourceId?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(source.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.sourceId = sourceId?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -780,8 +776,8 @@ public data class OperationDefinition(
         public fun build(): ReferencedFrom =
           ReferencedFrom(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             source = source.build(),
             sourceId = sourceId?.build(),
           )
@@ -904,19 +900,19 @@ public data class OperationDefinition(
       public fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name.build(),
           use = use,
           min = min.build(),
           max = max.build(),
           documentation = documentation?.build(),
           type = type,
-          targetProfile = targetProfile.map { it.build() },
+          targetProfile = targetProfile.mapToList { it.build() },
           searchType = searchType,
           binding = binding?.build(),
-          referencedFrom = referencedFrom.map { it.build() },
-          part = part.map { it.build() },
+          referencedFrom = referencedFrom.mapToList { it.build() },
+          part = part.mapToList { it.build() },
         )
     }
   }
@@ -969,16 +965,15 @@ public data class OperationDefinition(
     /** Comments to go on overload. */
     public val comment: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          parameterName = this@with.parameterName.map { it.toBuilder() }.toMutableList()
-          comment = this@with.comment?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.parameterName = parameterName.mapToMutableList { it.toBuilder() }
+      builder.comment = comment?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1030,9 +1025,9 @@ public data class OperationDefinition(
       public fun build(): Overload =
         Overload(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          parameterName = parameterName.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          parameterName = parameterName.mapToList { it.build() },
           comment = comment?.build(),
         )
     }
@@ -1388,9 +1383,9 @@ public data class OperationDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
         version = version?.build(),
         name = name.build(),
@@ -1400,10 +1395,10 @@ public data class OperationDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         affectsState = affectsState?.build(),
         code = code.build(),
@@ -1415,8 +1410,8 @@ public data class OperationDefinition(
         instance = instance.build(),
         inputProfile = inputProfile?.build(),
         outputProfile = outputProfile?.build(),
-        parameter = parameter.map { it.build() },
-        overload = overload.map { it.build() },
+        parameter = parameter.mapToList { it.build() },
+        overload = overload.mapToList { it.build() },
       )
   }
 

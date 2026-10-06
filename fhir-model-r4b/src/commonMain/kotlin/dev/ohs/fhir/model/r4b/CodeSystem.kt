@@ -367,47 +367,46 @@ public data class CodeSystem(
    */
   public val concept: List<Concept> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          content,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          name = this@with.name?.toBuilder()
-          title = this@with.title?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          caseSensitive = this@with.caseSensitive?.toBuilder()
-          valueSet = this@with.valueSet?.toBuilder()
-          hierarchyMeaning = this@with.hierarchyMeaning
-          compositional = this@with.compositional?.toBuilder()
-          versionNeeded = this@with.versionNeeded?.toBuilder()
-          supplements = this@with.supplements?.toBuilder()
-          count = this@with.count?.toBuilder()
-          filter = this@with.filter.map { it.toBuilder() }.toMutableList()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-          concept = this@with.concept.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        content,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.caseSensitive = caseSensitive?.toBuilder()
+    builder.valueSet = valueSet?.toBuilder()
+    builder.hierarchyMeaning = hierarchyMeaning
+    builder.compositional = compositional?.toBuilder()
+    builder.versionNeeded = versionNeeded?.toBuilder()
+    builder.supplements = supplements?.toBuilder()
+    builder.count = count?.toBuilder()
+    builder.filter = filter.mapToMutableList { it.toBuilder() }
+    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    builder.concept = concept.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * A filter that can be used in a value set compose statement when selecting concepts using a
@@ -464,20 +463,19 @@ public data class CodeSystem(
     /** A description of what the value for the filter should be. */
     public val `value`: String,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            code.toBuilder(),
-            `operator`.toMutableList(),
-            `value`.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-          }
-      }
+          code.toBuilder(),
+          `operator`.toMutableList(),
+          `value`.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -536,8 +534,8 @@ public data class CodeSystem(
       public fun build(): Filter =
         Filter(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           description = description?.build(),
           `operator` = `operator`,
@@ -607,20 +605,19 @@ public data class CodeSystem(
      */
     public val type: Enumeration<PropertyType>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            code.toBuilder(),
-            type,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            uri = this@with.uri?.toBuilder()
-            description = this@with.description?.toBuilder()
-          }
-      }
+          code.toBuilder(),
+          type,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.uri = uri?.toBuilder()
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -686,8 +683,8 @@ public data class CodeSystem(
       public fun build(): Property =
         Property(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           uri = uri?.build(),
           description = description?.build(),
@@ -770,19 +767,18 @@ public data class CodeSystem(
      */
     public val concept: List<Concept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          display = this@with.display?.toBuilder()
-          definition = this@with.definition?.toBuilder()
-          designation = this@with.designation.map { it.toBuilder() }.toMutableList()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-          concept = this@with.concept.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.display = display?.toBuilder()
+      builder.definition = definition?.toBuilder()
+      builder.designation = designation.mapToMutableList { it.toBuilder() }
+      builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+      builder.concept = concept.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Additional representations for the concept - other languages, aliases, specialized purposes,
@@ -843,16 +839,15 @@ public data class CodeSystem(
       /** The text value for this designation. */
       public val `value`: String,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(`value`.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            language = this@with.language
-            use = this@with.use?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(`value`.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.language = language
+        builder.use = use?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** The text value for this designation. */
@@ -916,8 +911,8 @@ public data class CodeSystem(
         public fun build(): Designation =
           Designation(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             language = language,
             use = use?.build(),
             `value` = `value`.build(),
@@ -970,18 +965,17 @@ public data class CodeSystem(
       /** The value of this property. */
       public val `value`: Value,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              code.toBuilder(),
-              `value`,
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            code.toBuilder(),
+            `value`,
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public sealed interface Value : FhirChoice {
         public fun asCode(): Code? = this as? Code
@@ -1083,8 +1077,8 @@ public data class CodeSystem(
         public fun build(): Property =
           Property(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code.build(),
             `value` = `value`,
           )
@@ -1170,14 +1164,14 @@ public data class CodeSystem(
       public fun build(): Concept =
         Concept(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           display = display?.build(),
           definition = definition?.build(),
-          designation = designation.map { it.build() },
-          `property` = `property`.map { it.build() },
-          concept = concept.map { it.build() },
+          designation = designation.mapToList { it.build() },
+          `property` = `property`.mapToList { it.build() },
+          concept = concept.mapToList { it.build() },
         )
     }
   }
@@ -1551,11 +1545,11 @@ public data class CodeSystem(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -1563,10 +1557,10 @@ public data class CodeSystem(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         caseSensitive = caseSensitive?.build(),
@@ -1577,9 +1571,9 @@ public data class CodeSystem(
         content = content,
         supplements = supplements?.build(),
         count = count?.build(),
-        filter = filter.map { it.build() },
-        `property` = `property`.map { it.build() },
-        concept = concept.map { it.build() },
+        filter = filter.mapToList { it.build() },
+        `property` = `property`.mapToList { it.build() },
+        concept = concept.mapToList { it.build() },
       )
   }
 

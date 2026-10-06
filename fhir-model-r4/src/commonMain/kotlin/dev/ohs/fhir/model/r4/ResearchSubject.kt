@@ -148,29 +148,28 @@ public data class ResearchSubject(
   /** A record of the patient's informed agreement to participate in the study. */
   public val consent: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          study.toBuilder(),
-          individual.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          assignedArm = this@with.assignedArm?.toBuilder()
-          actualArm = this@with.actualArm?.toBuilder()
-          consent = this@with.consent?.toBuilder()
-        }
-    }
+        status,
+        study.toBuilder(),
+        individual.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    builder.assignedArm = assignedArm?.toBuilder()
+    builder.actualArm = actualArm?.toBuilder()
+    builder.consent = consent?.toBuilder()
+    return builder
+  }
 
   public class Builder(
     /** The current state of the subject. */
@@ -307,10 +306,10 @@ public data class ResearchSubject(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         period = period?.build(),
         study = study.build(),

@@ -263,44 +263,42 @@ public data class Appointment(
    */
   public val requestedPeriod: List<Period> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          participant.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          cancelationReason = this@with.cancelationReason?.toBuilder()
-          serviceCategory = this@with.serviceCategory.map { it.toBuilder() }.toMutableList()
-          serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
-          specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-          appointmentType = this@with.appointmentType?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          priority = this@with.priority?.toBuilder()
-          description = this@with.description?.toBuilder()
-          supportingInformation =
-            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-          start = this@with.start?.toBuilder()
-          end = this@with.end?.toBuilder()
-          minutesDuration = this@with.minutesDuration?.toBuilder()
-          slot = this@with.slot.map { it.toBuilder() }.toMutableList()
-          created = this@with.created?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-          patientInstruction = this@with.patientInstruction?.toBuilder()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          requestedPeriod = this@with.requestedPeriod.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        participant.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.cancelationReason = cancelationReason?.toBuilder()
+    builder.serviceCategory = serviceCategory.mapToMutableList { it.toBuilder() }
+    builder.serviceType = serviceType.mapToMutableList { it.toBuilder() }
+    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.appointmentType = appointmentType?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.priority = priority?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
+    builder.start = start?.toBuilder()
+    builder.end = end?.toBuilder()
+    builder.minutesDuration = minutesDuration?.toBuilder()
+    builder.slot = slot.mapToMutableList { it.toBuilder() }
+    builder.created = created?.toBuilder()
+    builder.comment = comment?.toBuilder()
+    builder.patientInstruction = patientInstruction?.toBuilder()
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.requestedPeriod = requestedPeriod.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** List of participants involved in the appointment. */
   @Serializable(with = AppointmentParticipantSerializer::class)
@@ -368,18 +366,17 @@ public data class Appointment(
     /** Participation period of the actor. */
     public val period: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(status).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          actor = this@with.actor?.toBuilder()
-          required = this@with.required
-          period = this@with.period?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(status)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.actor = actor?.toBuilder()
+      builder.required = required
+      builder.period = period?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Participation status of the actor. */
@@ -457,9 +454,9 @@ public data class Appointment(
       public fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          type = type.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          type = type.mapToList { it.build() },
           actor = actor?.build(),
           required = required,
           status = status,
@@ -732,31 +729,31 @@ public data class Appointment(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         cancelationReason = cancelationReason?.build(),
-        serviceCategory = serviceCategory.map { it.build() },
-        serviceType = serviceType.map { it.build() },
-        specialty = specialty.map { it.build() },
+        serviceCategory = serviceCategory.mapToList { it.build() },
+        serviceType = serviceType.mapToList { it.build() },
+        specialty = specialty.mapToList { it.build() },
         appointmentType = appointmentType?.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
         priority = priority?.build(),
         description = description?.build(),
-        supportingInformation = supportingInformation.map { it.build() },
+        supportingInformation = supportingInformation.mapToList { it.build() },
         start = start?.build(),
         end = end?.build(),
         minutesDuration = minutesDuration?.build(),
-        slot = slot.map { it.build() },
+        slot = slot.mapToList { it.build() },
         created = created?.build(),
         comment = comment?.build(),
         patientInstruction = patientInstruction?.build(),
-        basedOn = basedOn.map { it.build() },
-        participant = participant.map { it.build() },
-        requestedPeriod = requestedPeriod.map { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        participant = participant.mapToList { it.build() },
+        requestedPeriod = requestedPeriod.mapToList { it.build() },
       )
   }
 

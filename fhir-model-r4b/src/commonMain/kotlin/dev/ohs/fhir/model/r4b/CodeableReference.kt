@@ -62,15 +62,14 @@ public data class CodeableReference(
    */
   public val reference: Reference? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        concept = this@with.concept?.toBuilder()
-        reference = this@with.reference?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.concept = concept?.toBuilder()
+    builder.reference = reference?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -107,7 +106,7 @@ public data class CodeableReference(
     public open fun build(): CodeableReference =
       CodeableReference(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         concept = concept?.build(),
         reference = reference?.build(),
       )

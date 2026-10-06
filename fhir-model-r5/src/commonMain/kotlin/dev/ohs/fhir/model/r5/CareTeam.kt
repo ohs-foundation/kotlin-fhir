@@ -194,30 +194,29 @@ public data class CareTeam(
   /** Comments made about the CareTeam. */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        subject = this@with.subject?.toBuilder()
-        period = this@with.period?.toBuilder()
-        participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-        reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-        managingOrganization = this@with.managingOrganization.map { it.toBuilder() }.toMutableList()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.subject = subject?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.participant = participant.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.managingOrganization = managingOrganization.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Identifies all people and organizations who are expected to be involved in the care team. */
   @Serializable(with = CareTeamParticipantSerializer::class)
@@ -289,18 +288,17 @@ public data class CareTeam(
      */
     public val coverage: Coverage? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          role = this@with.role?.toBuilder()
-          member = this@with.member?.toBuilder()
-          onBehalfOf = this@with.onBehalfOf?.toBuilder()
-          coverage = this@with.coverage
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.role = role?.toBuilder()
+      builder.member = member?.toBuilder()
+      builder.onBehalfOf = onBehalfOf?.toBuilder()
+      builder.coverage = coverage
+      return builder
+    }
 
     public sealed interface Coverage : FhirChoice {
       public fun asPeriod(): Period? = this as? Period
@@ -400,8 +398,8 @@ public data class CareTeam(
       public fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           role = role?.build(),
           member = member?.build(),
           onBehalfOf = onBehalfOf?.build(),
@@ -596,20 +594,20 @@ public data class CareTeam(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         name = name?.build(),
         subject = subject?.build(),
         period = period?.build(),
-        participant = participant.map { it.build() },
-        reason = reason.map { it.build() },
-        managingOrganization = managingOrganization.map { it.build() },
-        telecom = telecom.map { it.build() },
-        note = note.map { it.build() },
+        participant = participant.mapToList { it.build() },
+        reason = reason.mapToList { it.build() },
+        managingOrganization = managingOrganization.mapToList { it.build() },
+        telecom = telecom.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

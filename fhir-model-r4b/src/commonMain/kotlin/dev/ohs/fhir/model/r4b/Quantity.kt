@@ -106,18 +106,17 @@ public open class Quantity(
     return result
   }
 
-  public open fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`?.toBuilder()
-        comparator = this@with.comparator
-        unit = this@with.unit?.toBuilder()
-        system = this@with.system?.toBuilder()
-        code = this@with.code?.toBuilder()
-      }
-    }
+  public open fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`?.toBuilder()
+    builder.comparator = comparator
+    builder.unit = unit?.toBuilder()
+    builder.system = system?.toBuilder()
+    builder.code = code?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -174,7 +173,7 @@ public open class Quantity(
     public open fun build(): Quantity =
       Quantity(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`?.build(),
         comparator = comparator,
         unit = unit?.build(),

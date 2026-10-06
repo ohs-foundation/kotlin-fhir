@@ -169,36 +169,35 @@ public data class GenomicStudy(
   /** The details about a specific analysis that was performed in this GenomicStudy. */
   public val analysis: List<Analysis> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          startDate = this@with.startDate?.toBuilder()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          referrer = this@with.referrer?.toBuilder()
-          interpreter = this@with.interpreter.map { it.toBuilder() }.toMutableList()
-          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-          instantiatesCanonical = this@with.instantiatesCanonical?.toBuilder()
-          instantiatesUri = this@with.instantiatesUri?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          analysis = this@with.analysis.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.startDate = startDate?.toBuilder()
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.referrer = referrer?.toBuilder()
+    builder.interpreter = interpreter.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical?.toBuilder()
+    builder.instantiatesUri = instantiatesUri?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.analysis = analysis.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The details about a specific analysis that was performed in this GenomicStudy. */
   @Serializable(with = GenomicStudyAnalysisSerializer::class)
@@ -292,32 +291,31 @@ public data class GenomicStudy(
      */
     public val device: List<Device> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          methodType = this@with.methodType.map { it.toBuilder() }.toMutableList()
-          changeType = this@with.changeType.map { it.toBuilder() }.toMutableList()
-          genomeBuild = this@with.genomeBuild?.toBuilder()
-          instantiatesCanonical = this@with.instantiatesCanonical?.toBuilder()
-          instantiatesUri = this@with.instantiatesUri?.toBuilder()
-          title = this@with.title?.toBuilder()
-          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-          specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
-          date = this@with.date?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          protocolPerformed = this@with.protocolPerformed?.toBuilder()
-          regionsStudied = this@with.regionsStudied.map { it.toBuilder() }.toMutableList()
-          regionsCalled = this@with.regionsCalled.map { it.toBuilder() }.toMutableList()
-          input = this@with.input.map { it.toBuilder() }.toMutableList()
-          output = this@with.output.map { it.toBuilder() }.toMutableList()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          device = this@with.device.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.methodType = methodType.mapToMutableList { it.toBuilder() }
+      builder.changeType = changeType.mapToMutableList { it.toBuilder() }
+      builder.genomeBuild = genomeBuild?.toBuilder()
+      builder.instantiatesCanonical = instantiatesCanonical?.toBuilder()
+      builder.instantiatesUri = instantiatesUri?.toBuilder()
+      builder.title = title?.toBuilder()
+      builder.focus = focus.mapToMutableList { it.toBuilder() }
+      builder.specimen = specimen.mapToMutableList { it.toBuilder() }
+      builder.date = date?.toBuilder()
+      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.protocolPerformed = protocolPerformed?.toBuilder()
+      builder.regionsStudied = regionsStudied.mapToMutableList { it.toBuilder() }
+      builder.regionsCalled = regionsCalled.mapToMutableList { it.toBuilder() }
+      builder.input = input.mapToMutableList { it.toBuilder() }
+      builder.output = output.mapToMutableList { it.toBuilder() }
+      builder.performer = performer.mapToMutableList { it.toBuilder() }
+      builder.device = device.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Inputs for the analysis event. */
     @Serializable(with = GenomicStudyAnalysisInputSerializer::class)
@@ -366,17 +364,16 @@ public data class GenomicStudy(
       /** The analysis event or other GenomicStudy that generated this input file. */
       public val generatedBy: GeneratedBy? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            `file` = this@with.`file`?.toBuilder()
-            type = this@with.type?.toBuilder()
-            generatedBy = this@with.generatedBy
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.`file` = `file`?.toBuilder()
+        builder.type = type?.toBuilder()
+        builder.generatedBy = generatedBy
+        return builder
+      }
 
       public sealed interface GeneratedBy : FhirChoice {
         public fun asIdentifier(): Identifier? = this as? Identifier
@@ -454,8 +451,8 @@ public data class GenomicStudy(
         public fun build(): Input =
           Input(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             `file` = `file`?.build(),
             type = type?.build(),
             generatedBy = generatedBy,
@@ -508,16 +505,15 @@ public data class GenomicStudy(
       /** Type of output data, e.g., VCF, MAF, or BAM. */
       public val type: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            `file` = this@with.`file`?.toBuilder()
-            type = this@with.type?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.`file` = `file`?.toBuilder()
+        builder.type = type?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -569,8 +565,8 @@ public data class GenomicStudy(
         public fun build(): Output =
           Output(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             `file` = `file`?.build(),
             type = type?.build(),
           )
@@ -625,16 +621,15 @@ public data class GenomicStudy(
       /** Role of the actor for this analysis. */
       public val role: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            actor = this@with.actor?.toBuilder()
-            role = this@with.role?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.actor = actor?.toBuilder()
+        builder.role = role?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -689,8 +684,8 @@ public data class GenomicStudy(
         public fun build(): Performer =
           Performer(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             actor = actor?.build(),
             role = role?.build(),
           )
@@ -744,16 +739,15 @@ public data class GenomicStudy(
       /** Specific function for the device used for the analysis. */
       public val function: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            device = this@with.device?.toBuilder()
-            function = this@with.function?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.device = device?.toBuilder()
+        builder.function = function?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -805,8 +799,8 @@ public data class GenomicStudy(
         public fun build(): Device =
           Device(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             device = device?.build(),
             function = function?.build(),
           )
@@ -926,26 +920,26 @@ public data class GenomicStudy(
       public fun build(): Analysis =
         Analysis(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
-          methodType = methodType.map { it.build() },
-          changeType = changeType.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
+          methodType = methodType.mapToList { it.build() },
+          changeType = changeType.mapToList { it.build() },
           genomeBuild = genomeBuild?.build(),
           instantiatesCanonical = instantiatesCanonical?.build(),
           instantiatesUri = instantiatesUri?.build(),
           title = title?.build(),
-          focus = focus.map { it.build() },
-          specimen = specimen.map { it.build() },
+          focus = focus.mapToList { it.build() },
+          specimen = specimen.mapToList { it.build() },
           date = date?.build(),
-          note = note.map { it.build() },
+          note = note.mapToList { it.build() },
           protocolPerformed = protocolPerformed?.build(),
-          regionsStudied = regionsStudied.map { it.build() },
-          regionsCalled = regionsCalled.map { it.build() },
-          input = input.map { it.build() },
-          output = output.map { it.build() },
-          performer = performer.map { it.build() },
-          device = device.map { it.build() },
+          regionsStudied = regionsStudied.mapToList { it.build() },
+          regionsCalled = regionsCalled.mapToList { it.build() },
+          input = input.mapToList { it.build() },
+          output = output.mapToList { it.build() },
+          performer = performer.mapToList { it.build() },
+          device = device.mapToList { it.build() },
         )
     }
   }
@@ -1112,24 +1106,24 @@ public data class GenomicStudy(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        type = type.map { it.build() },
+        type = type.mapToList { it.build() },
         subject = subject.build(),
         encounter = encounter?.build(),
         startDate = startDate?.build(),
-        basedOn = basedOn.map { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
         referrer = referrer?.build(),
-        interpreter = interpreter.map { it.build() },
-        reason = reason.map { it.build() },
+        interpreter = interpreter.mapToList { it.build() },
+        reason = reason.mapToList { it.build() },
         instantiatesCanonical = instantiatesCanonical?.build(),
         instantiatesUri = instantiatesUri?.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
         description = description?.build(),
-        analysis = analysis.map { it.build() },
+        analysis = analysis.mapToList { it.build() },
       )
   }
 

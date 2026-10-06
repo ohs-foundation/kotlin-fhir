@@ -178,22 +178,21 @@ public data class Bundle(
    */
   public val issues: Resource? = null,
 ) : Resource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(type).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        identifier = this@with.identifier?.toBuilder()
-        timestamp = this@with.timestamp?.toBuilder()
-        total = this@with.total?.toBuilder()
-        link = this@with.link.map { it.toBuilder() }.toMutableList()
-        entry = this@with.entry.map { it.toBuilder() }.toMutableList()
-        signature = this@with.signature?.toBuilder()
-        issues = this@with.issues?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(type)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.identifier = identifier?.toBuilder()
+    builder.timestamp = timestamp?.toBuilder()
+    builder.total = total?.toBuilder()
+    builder.link = link.mapToMutableList { it.toBuilder() }
+    builder.entry = entry.mapToMutableList { it.toBuilder() }
+    builder.signature = signature?.toBuilder()
+    builder.issues = issues?.toBuilder()
+    return builder
+  }
 
   /** A series of links that provide context to this bundle. */
   @Serializable(with = BundleLinkSerializer::class)
@@ -243,18 +242,17 @@ public data class Bundle(
     /** The reference details for the link. */
     public val url: Uri,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            relation,
-            url.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          relation,
+          url.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -308,8 +306,8 @@ public data class Bundle(
       public fun build(): Link =
         Link(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           relation = relation,
           url = url.build(),
         )
@@ -406,20 +404,19 @@ public data class Bundle(
      */
     public val response: Response? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          link = this@with.link.map { it.toBuilder() }.toMutableList()
-          fullUrl = this@with.fullUrl?.toBuilder()
-          resource = this@with.resource?.toBuilder()
-          search = this@with.search?.toBuilder()
-          request = this@with.request?.toBuilder()
-          response = this@with.response?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.link = link.mapToMutableList { it.toBuilder() }
+      builder.fullUrl = fullUrl?.toBuilder()
+      builder.resource = resource?.toBuilder()
+      builder.search = search?.toBuilder()
+      builder.request = request?.toBuilder()
+      builder.response = response?.toBuilder()
+      return builder
+    }
 
     /** Information about the search process that lead to the creation of this entry. */
     @Serializable(with = BundleEntrySearchSerializer::class)
@@ -482,16 +479,15 @@ public data class Bundle(
        */
       public val score: Decimal? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            mode = this@with.mode
-            score = this@with.score?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.mode = mode
+        builder.score = score?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -559,8 +555,8 @@ public data class Bundle(
         public fun build(): Search =
           Search(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             mode = mode,
             score = score?.build(),
           )
@@ -646,22 +642,21 @@ public data class Bundle(
        */
       public val ifNoneExist: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              method,
-              url.toBuilder(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              ifNoneMatch = this@with.ifNoneMatch?.toBuilder()
-              ifModifiedSince = this@with.ifModifiedSince?.toBuilder()
-              ifMatch = this@with.ifMatch?.toBuilder()
-              ifNoneExist = this@with.ifNoneExist?.toBuilder()
-            }
-        }
+            method,
+            url.toBuilder(),
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.ifNoneMatch = ifNoneMatch?.toBuilder()
+        builder.ifModifiedSince = ifModifiedSince?.toBuilder()
+        builder.ifMatch = ifMatch?.toBuilder()
+        builder.ifNoneExist = ifNoneExist?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -747,8 +742,8 @@ public data class Bundle(
         public fun build(): Request =
           Request(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             method = method,
             url = url.build(),
             ifNoneMatch = ifNoneMatch?.build(),
@@ -845,18 +840,17 @@ public data class Bundle(
        */
       public val outcome: Resource? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(status.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            location = this@with.location?.toBuilder()
-            etag = this@with.etag?.toBuilder()
-            lastModified = this@with.lastModified?.toBuilder()
-            outcome = this@with.outcome?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(status.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.location = location?.toBuilder()
+        builder.etag = etag?.toBuilder()
+        builder.lastModified = lastModified?.toBuilder()
+        builder.outcome = outcome?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -948,8 +942,8 @@ public data class Bundle(
         public fun build(): Response =
           Response(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             status = status.build(),
             location = location?.build(),
             etag = etag?.build(),
@@ -1055,9 +1049,9 @@ public data class Bundle(
       public fun build(): Entry =
         Entry(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          link = link.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          link = link.mapToList { it.build() },
           fullUrl = fullUrl?.build(),
           resource = resource?.build(),
           search = search?.build(),
@@ -1231,8 +1225,8 @@ public data class Bundle(
         type = type,
         timestamp = timestamp?.build(),
         total = total?.build(),
-        link = link.map { it.build() },
-        entry = entry.map { it.build() },
+        link = link.mapToList { it.build() },
+        entry = entry.mapToList { it.build() },
         signature = signature?.build(),
         issues = issues?.build(),
       )

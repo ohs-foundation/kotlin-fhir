@@ -258,40 +258,37 @@ public data class NutritionOrder(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          intent,
-          patient.toBuilder(),
-          dateTime.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          instantiatesCanonical =
-            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-          instantiates = this@with.instantiates.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          orderer = this@with.orderer?.toBuilder()
-          allergyIntolerance = this@with.allergyIntolerance.map { it.toBuilder() }.toMutableList()
-          foodPreferenceModifier =
-            this@with.foodPreferenceModifier.map { it.toBuilder() }.toMutableList()
-          excludeFoodModifier = this@with.excludeFoodModifier.map { it.toBuilder() }.toMutableList()
-          oralDiet = this@with.oralDiet?.toBuilder()
-          supplement = this@with.supplement.map { it.toBuilder() }.toMutableList()
-          enteralFormula = this@with.enteralFormula?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        intent,
+        patient.toBuilder(),
+        dateTime.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.instantiates = instantiates.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.orderer = orderer?.toBuilder()
+    builder.allergyIntolerance = allergyIntolerance.mapToMutableList { it.toBuilder() }
+    builder.foodPreferenceModifier = foodPreferenceModifier.mapToMutableList { it.toBuilder() }
+    builder.excludeFoodModifier = excludeFoodModifier.mapToMutableList { it.toBuilder() }
+    builder.oralDiet = oralDiet?.toBuilder()
+    builder.supplement = supplement.mapToMutableList { it.toBuilder() }
+    builder.enteralFormula = enteralFormula?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Diet given orally in contrast to enteral (tube) feeding. */
   @Serializable(with = NutritionOrderOralDietSerializer::class)
@@ -363,21 +360,19 @@ public data class NutritionOrder(
      */
     public val instruction: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          schedule = this@with.schedule.map { it.toBuilder() }.toMutableList()
-          nutrient = this@with.nutrient.map { it.toBuilder() }.toMutableList()
-          texture = this@with.texture.map { it.toBuilder() }.toMutableList()
-          fluidConsistencyType =
-            this@with.fluidConsistencyType.map { it.toBuilder() }.toMutableList()
-          instruction = this@with.instruction?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.schedule = schedule.mapToMutableList { it.toBuilder() }
+      builder.nutrient = nutrient.mapToMutableList { it.toBuilder() }
+      builder.texture = texture.mapToMutableList { it.toBuilder() }
+      builder.fluidConsistencyType = fluidConsistencyType.mapToMutableList { it.toBuilder() }
+      builder.instruction = instruction?.toBuilder()
+      return builder
+    }
 
     /**
      * Class that defines the quantity and type of nutrient modifications (for example carbohydrate,
@@ -427,16 +422,15 @@ public data class NutritionOrder(
       /** The quantity of the specified nutrient to include in diet. */
       public val amount: Quantity? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            modifier = this@with.modifier?.toBuilder()
-            amount = this@with.amount?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.modifier = modifier?.toBuilder()
+        builder.amount = amount?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -488,8 +482,8 @@ public data class NutritionOrder(
         public fun build(): Nutrient =
           Nutrient(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             modifier = modifier?.build(),
             amount = amount?.build(),
           )
@@ -554,16 +548,15 @@ public data class NutritionOrder(
        */
       public val foodType: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            modifier = this@with.modifier?.toBuilder()
-            foodType = this@with.foodType?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.modifier = modifier?.toBuilder()
+        builder.foodType = foodType?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -625,8 +618,8 @@ public data class NutritionOrder(
         public fun build(): Texture =
           Texture(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             modifier = modifier?.build(),
             foodType = foodType?.build(),
           )
@@ -712,13 +705,13 @@ public data class NutritionOrder(
       public fun build(): OralDiet =
         OralDiet(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          type = type.map { it.build() },
-          schedule = schedule.map { it.build() },
-          nutrient = nutrient.map { it.build() },
-          texture = texture.map { it.build() },
-          fluidConsistencyType = fluidConsistencyType.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          type = type.mapToList { it.build() },
+          schedule = schedule.mapToList { it.build() },
+          nutrient = nutrient.mapToList { it.build() },
+          texture = texture.mapToList { it.build() },
+          fluidConsistencyType = fluidConsistencyType.mapToList { it.build() },
           instruction = instruction?.build(),
         )
     }
@@ -789,19 +782,18 @@ public data class NutritionOrder(
      */
     public val instruction: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          productName = this@with.productName?.toBuilder()
-          schedule = this@with.schedule.map { it.toBuilder() }.toMutableList()
-          quantity = this@with.quantity?.toBuilder()
-          instruction = this@with.instruction?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.productName = productName?.toBuilder()
+      builder.schedule = schedule.mapToMutableList { it.toBuilder() }
+      builder.quantity = quantity?.toBuilder()
+      builder.instruction = instruction?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -873,11 +865,11 @@ public data class NutritionOrder(
       public fun build(): Supplement =
         Supplement(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           productName = productName?.build(),
-          schedule = schedule.map { it.build() },
+          schedule = schedule.mapToList { it.build() },
           quantity = quantity?.build(),
           instruction = instruction?.build(),
         )
@@ -980,23 +972,22 @@ public data class NutritionOrder(
      */
     public val administrationInstruction: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          baseFormulaType = this@with.baseFormulaType?.toBuilder()
-          baseFormulaProductName = this@with.baseFormulaProductName?.toBuilder()
-          additiveType = this@with.additiveType?.toBuilder()
-          additiveProductName = this@with.additiveProductName?.toBuilder()
-          caloricDensity = this@with.caloricDensity?.toBuilder()
-          routeofAdministration = this@with.routeofAdministration?.toBuilder()
-          administration = this@with.administration.map { it.toBuilder() }.toMutableList()
-          maxVolumeToDeliver = this@with.maxVolumeToDeliver?.toBuilder()
-          administrationInstruction = this@with.administrationInstruction?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.baseFormulaType = baseFormulaType?.toBuilder()
+      builder.baseFormulaProductName = baseFormulaProductName?.toBuilder()
+      builder.additiveType = additiveType?.toBuilder()
+      builder.additiveProductName = additiveProductName?.toBuilder()
+      builder.caloricDensity = caloricDensity?.toBuilder()
+      builder.routeofAdministration = routeofAdministration?.toBuilder()
+      builder.administration = administration.mapToMutableList { it.toBuilder() }
+      builder.maxVolumeToDeliver = maxVolumeToDeliver?.toBuilder()
+      builder.administrationInstruction = administrationInstruction?.toBuilder()
+      return builder
+    }
 
     /**
      * Formula administration instructions as structured data. This repeating structure allows for
@@ -1062,17 +1053,16 @@ public data class NutritionOrder(
        */
       public val rate: Rate? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            schedule = this@with.schedule?.toBuilder()
-            quantity = this@with.quantity?.toBuilder()
-            rate = this@with.rate
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.schedule = schedule?.toBuilder()
+        builder.quantity = quantity?.toBuilder()
+        builder.rate = rate
+        return builder
+      }
 
       public sealed interface Rate : FhirChoice {
         public fun asQuantity(): Quantity? = this as? Quantity
@@ -1161,8 +1151,8 @@ public data class NutritionOrder(
         public fun build(): Administration =
           Administration(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             schedule = schedule?.build(),
             quantity = quantity?.build(),
             rate = rate,
@@ -1275,15 +1265,15 @@ public data class NutritionOrder(
       public fun build(): EnteralFormula =
         EnteralFormula(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           baseFormulaType = baseFormulaType?.build(),
           baseFormulaProductName = baseFormulaProductName?.build(),
           additiveType = additiveType?.build(),
           additiveProductName = additiveProductName?.build(),
           caloricDensity = caloricDensity?.build(),
           routeofAdministration = routeofAdministration?.build(),
-          administration = administration.map { it.build() },
+          administration = administration.mapToList { it.build() },
           maxVolumeToDeliver = maxVolumeToDeliver?.build(),
           administrationInstruction = administrationInstruction?.build(),
         )
@@ -1537,26 +1527,26 @@ public data class NutritionOrder(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        instantiatesCanonical = instantiatesCanonical.map { it.build() },
-        instantiatesUri = instantiatesUri.map { it.build() },
-        instantiates = instantiates.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+        instantiatesUri = instantiatesUri.mapToList { it.build() },
+        instantiates = instantiates.mapToList { it.build() },
         status = status,
         intent = intent,
         patient = patient.build(),
         encounter = encounter?.build(),
         dateTime = dateTime.build(),
         orderer = orderer?.build(),
-        allergyIntolerance = allergyIntolerance.map { it.build() },
-        foodPreferenceModifier = foodPreferenceModifier.map { it.build() },
-        excludeFoodModifier = excludeFoodModifier.map { it.build() },
+        allergyIntolerance = allergyIntolerance.mapToList { it.build() },
+        foodPreferenceModifier = foodPreferenceModifier.mapToList { it.build() },
+        excludeFoodModifier = excludeFoodModifier.mapToList { it.build() },
         oralDiet = oralDiet?.build(),
-        supplement = supplement.map { it.build() },
+        supplement = supplement.mapToList { it.build() },
         enteralFormula = enteralFormula?.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

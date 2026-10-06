@@ -302,40 +302,39 @@ public data class Composition(
   /** The root of the sections that make up the composition. */
   public val section: List<Section> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          type.toBuilder(),
-          date.toBuilder(),
-          author.map { it.toBuilder() }.toMutableList(),
-          title.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          attester = this@with.attester.map { it.toBuilder() }.toMutableList()
-          custodian = this@with.custodian?.toBuilder()
-          relatesTo = this@with.relatesTo.map { it.toBuilder() }.toMutableList()
-          event = this@with.event.map { it.toBuilder() }.toMutableList()
-          section = this@with.section.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        type.toBuilder(),
+        date.toBuilder(),
+        author.mapToMutableList { it.toBuilder() },
+        title.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.attester = attester.mapToMutableList { it.toBuilder() }
+    builder.custodian = custodian?.toBuilder()
+    builder.relatesTo = relatesTo.mapToMutableList { it.toBuilder() }
+    builder.event = event.mapToMutableList { it.toBuilder() }
+    builder.section = section.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** A participant who has attested to the accuracy of the composition/document. */
   @Serializable(with = CompositionAttesterSerializer::class)
@@ -384,16 +383,15 @@ public data class Composition(
     /** Who attested the composition in the specified way. */
     public val party: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(mode.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          time = this@with.time?.toBuilder()
-          party = this@with.party?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(mode.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.time = time?.toBuilder()
+      builder.party = party?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The type of attestation the authenticator offers. */
@@ -448,8 +446,8 @@ public data class Composition(
       public fun build(): Attester =
         Attester(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           mode = mode.build(),
           time = time?.build(),
           party = party?.build(),
@@ -516,16 +514,15 @@ public data class Composition(
      */
     public val detail: List<CodeableReference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.period = period?.toBuilder()
+      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -592,10 +589,10 @@ public data class Composition(
       public fun build(): Event =
         Event(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           period = period?.build(),
-          detail = detail.map { it.build() },
+          detail = detail.mapToList { it.build() },
         )
     }
   }
@@ -727,23 +724,22 @@ public data class Composition(
      */
     public val section: List<Section> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          title = this@with.title?.toBuilder()
-          code = this@with.code?.toBuilder()
-          author = this@with.author.map { it.toBuilder() }.toMutableList()
-          focus = this@with.focus?.toBuilder()
-          text = this@with.text?.toBuilder()
-          orderedBy = this@with.orderedBy?.toBuilder()
-          entry = this@with.entry.map { it.toBuilder() }.toMutableList()
-          emptyReason = this@with.emptyReason?.toBuilder()
-          section = this@with.section.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.title = title?.toBuilder()
+      builder.code = code?.toBuilder()
+      builder.author = author.mapToMutableList { it.toBuilder() }
+      builder.focus = focus?.toBuilder()
+      builder.text = text?.toBuilder()
+      builder.orderedBy = orderedBy?.toBuilder()
+      builder.entry = entry.mapToMutableList { it.toBuilder() }
+      builder.emptyReason = emptyReason?.toBuilder()
+      builder.section = section.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -884,17 +880,17 @@ public data class Composition(
       public fun build(): Section =
         Section(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           title = title?.build(),
           code = code?.build(),
-          author = author.map { it.build() },
+          author = author.mapToList { it.build() },
           focus = focus?.build(),
           text = text?.build(),
           orderedBy = orderedBy?.build(),
-          entry = entry.map { it.build() },
+          entry = entry.mapToList { it.build() },
           emptyReason = emptyReason?.build(),
-          section = section.map { it.build() },
+          section = section.mapToList { it.build() },
         )
     }
   }
@@ -1190,28 +1186,28 @@ public data class Composition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         status = status,
         type = type.build(),
-        category = category.map { it.build() },
-        subject = subject.map { it.build() },
+        category = category.mapToList { it.build() },
+        subject = subject.mapToList { it.build() },
         encounter = encounter?.build(),
         date = date.build(),
-        useContext = useContext.map { it.build() },
-        author = author.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        author = author.mapToList { it.build() },
         name = name?.build(),
         title = title.build(),
-        note = note.map { it.build() },
-        attester = attester.map { it.build() },
+        note = note.mapToList { it.build() },
+        attester = attester.mapToList { it.build() },
         custodian = custodian?.build(),
-        relatesTo = relatesTo.map { it.build() },
-        event = event.map { it.build() },
-        section = section.map { it.build() },
+        relatesTo = relatesTo.mapToList { it.build() },
+        event = event.mapToList { it.build() },
+        section = section.mapToList { it.build() },
       )
   }
 

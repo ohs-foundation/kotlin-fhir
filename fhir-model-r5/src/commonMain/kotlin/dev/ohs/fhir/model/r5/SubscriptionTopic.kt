@@ -362,46 +362,45 @@ public data class SubscriptionTopic(
    */
   public val notificationShape: List<NotificationShape> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          url.toBuilder(),
-          status,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          versionAlgorithm = this@with.versionAlgorithm
-          name = this@with.name?.toBuilder()
-          title = this@with.title?.toBuilder()
-          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          copyrightLabel = this@with.copyrightLabel?.toBuilder()
-          approvalDate = this@with.approvalDate?.toBuilder()
-          lastReviewDate = this@with.lastReviewDate?.toBuilder()
-          effectivePeriod = this@with.effectivePeriod?.toBuilder()
-          resourceTrigger = this@with.resourceTrigger.map { it.toBuilder() }.toMutableList()
-          eventTrigger = this@with.eventTrigger.map { it.toBuilder() }.toMutableList()
-          canFilterBy = this@with.canFilterBy.map { it.toBuilder() }.toMutableList()
-          notificationShape = this@with.notificationShape.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        url.toBuilder(),
+        status,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.effectivePeriod = effectivePeriod?.toBuilder()
+    builder.resourceTrigger = resourceTrigger.mapToMutableList { it.toBuilder() }
+    builder.eventTrigger = eventTrigger.mapToMutableList { it.toBuilder() }
+    builder.canFilterBy = canFilterBy.mapToMutableList { it.toBuilder() }
+    builder.notificationShape = notificationShape.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * A definition of a resource-based event that triggers a notification based on the
@@ -483,18 +482,17 @@ public data class SubscriptionTopic(
      */
     public val fhirPathCriteria: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(resource.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          supportedInteraction = this@with.supportedInteraction.toMutableList()
-          queryCriteria = this@with.queryCriteria?.toBuilder()
-          fhirPathCriteria = this@with.fhirPathCriteria?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(resource.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.supportedInteraction = supportedInteraction.toMutableList()
+      builder.queryCriteria = queryCriteria?.toBuilder()
+      builder.fhirPathCriteria = fhirPathCriteria?.toBuilder()
+      return builder
+    }
 
     /**
      * The FHIR query based rules that the server should use to determine when to trigger a
@@ -584,19 +582,18 @@ public data class SubscriptionTopic(
        */
       public val requireBoth: Boolean? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            previous = this@with.previous?.toBuilder()
-            resultForCreate = this@with.resultForCreate
-            current = this@with.current?.toBuilder()
-            resultForDelete = this@with.resultForDelete
-            requireBoth = this@with.requireBoth?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.previous = previous?.toBuilder()
+        builder.resultForCreate = resultForCreate
+        builder.current = current?.toBuilder()
+        builder.resultForDelete = resultForDelete
+        builder.requireBoth = requireBoth?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -691,8 +688,8 @@ public data class SubscriptionTopic(
         public fun build(): QueryCriteria =
           QueryCriteria(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             previous = previous?.build(),
             resultForCreate = resultForCreate,
             current = current?.build(),
@@ -786,8 +783,8 @@ public data class SubscriptionTopic(
       public fun build(): ResourceTrigger =
         ResourceTrigger(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           resource = resource.build(),
           supportedInteraction = supportedInteraction,
@@ -859,15 +856,14 @@ public data class SubscriptionTopic(
      */
     public val resource: Uri,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(event.toBuilder(), resource.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(event.toBuilder(), resource.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -937,8 +933,8 @@ public data class SubscriptionTopic(
       public fun build(): EventTrigger =
         EventTrigger(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           event = event.build(),
           resource = resource.build(),
@@ -1034,19 +1030,18 @@ public data class SubscriptionTopic(
      */
     public val modifier: List<Enumeration<SearchModifierCode>> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(filterParameter.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          resource = this@with.resource?.toBuilder()
-          filterDefinition = this@with.filterDefinition?.toBuilder()
-          comparator = this@with.comparator.toMutableList()
-          modifier = this@with.modifier.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(filterParameter.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.resource = resource?.toBuilder()
+      builder.filterDefinition = filterDefinition?.toBuilder()
+      builder.comparator = comparator.toMutableList()
+      builder.modifier = modifier.toMutableList()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1143,8 +1138,8 @@ public data class SubscriptionTopic(
       public fun build(): CanFilterBy =
         CanFilterBy(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           resource = resource?.build(),
           filterParameter = filterParameter.build(),
@@ -1227,16 +1222,15 @@ public data class SubscriptionTopic(
      */
     public val revInclude: List<String> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(resource.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          include = this@with.include.map { it.toBuilder() }.toMutableList()
-          revInclude = this@with.revInclude.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(resource.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.include = include.mapToMutableList { it.toBuilder() }
+      builder.revInclude = revInclude.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1313,11 +1307,11 @@ public data class SubscriptionTopic(
       public fun build(): NotificationShape =
         NotificationShape(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           resource = resource.build(),
-          include = include.map { it.build() },
-          revInclude = revInclude.map { it.build() },
+          include = include.mapToList { it.build() },
+          revInclude = revInclude.mapToList { it.build() },
         )
     }
   }
@@ -1707,34 +1701,34 @@ public data class SubscriptionTopic(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
         title = title?.build(),
-        derivedFrom = derivedFrom.map { it.build() },
+        derivedFrom = derivedFrom.mapToList { it.build() },
         status = status,
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        resourceTrigger = resourceTrigger.map { it.build() },
-        eventTrigger = eventTrigger.map { it.build() },
-        canFilterBy = canFilterBy.map { it.build() },
-        notificationShape = notificationShape.map { it.build() },
+        resourceTrigger = resourceTrigger.mapToList { it.build() },
+        eventTrigger = eventTrigger.mapToList { it.build() },
+        canFilterBy = canFilterBy.mapToList { it.build() },
+        notificationShape = notificationShape.mapToList { it.build() },
       )
   }
 

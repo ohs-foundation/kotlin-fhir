@@ -147,26 +147,24 @@ public data class SubstancePolymer(
   /** Todo. */
   public val repeat: List<Repeat> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        `class` = this@with.`class`?.toBuilder()
-        geometry = this@with.geometry?.toBuilder()
-        copolymerConnectivity =
-          this@with.copolymerConnectivity.map { it.toBuilder() }.toMutableList()
-        modification = this@with.modification.map { it.toBuilder() }.toMutableList()
-        monomerSet = this@with.monomerSet.map { it.toBuilder() }.toMutableList()
-        repeat = this@with.repeat.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.`class` = `class`?.toBuilder()
+    builder.geometry = geometry?.toBuilder()
+    builder.copolymerConnectivity = copolymerConnectivity.mapToMutableList { it.toBuilder() }
+    builder.modification = modification.mapToMutableList { it.toBuilder() }
+    builder.monomerSet = monomerSet.mapToMutableList { it.toBuilder() }
+    builder.repeat = repeat.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Todo. */
   @Serializable(with = SubstancePolymerMonomerSetSerializer::class)
@@ -213,16 +211,15 @@ public data class SubstancePolymer(
     /** Todo. */
     public val startingMaterial: List<StartingMaterial> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          ratioType = this@with.ratioType?.toBuilder()
-          startingMaterial = this@with.startingMaterial.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.ratioType = ratioType?.toBuilder()
+      builder.startingMaterial = startingMaterial.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Todo. */
     @Serializable(with = SubstancePolymerMonomerSetStartingMaterialSerializer::class)
@@ -273,18 +270,17 @@ public data class SubstancePolymer(
       /** Todo. */
       public val amount: SubstanceAmount? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            material = this@with.material?.toBuilder()
-            type = this@with.type?.toBuilder()
-            isDefining = this@with.isDefining?.toBuilder()
-            amount = this@with.amount?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.material = material?.toBuilder()
+        builder.type = type?.toBuilder()
+        builder.isDefining = isDefining?.toBuilder()
+        builder.amount = amount?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -342,8 +338,8 @@ public data class SubstancePolymer(
         public fun build(): StartingMaterial =
           StartingMaterial(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             material = material?.build(),
             type = type?.build(),
             isDefining = isDefining?.build(),
@@ -402,10 +398,10 @@ public data class SubstancePolymer(
       public fun build(): MonomerSet =
         MonomerSet(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           ratioType = ratioType?.build(),
-          startingMaterial = startingMaterial.map { it.build() },
+          startingMaterial = startingMaterial.mapToList { it.build() },
         )
     }
   }
@@ -459,18 +455,17 @@ public data class SubstancePolymer(
     /** Todo. */
     public val repeatUnit: List<RepeatUnit> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          numberOfUnits = this@with.numberOfUnits?.toBuilder()
-          averageMolecularFormula = this@with.averageMolecularFormula?.toBuilder()
-          repeatUnitAmountType = this@with.repeatUnitAmountType?.toBuilder()
-          repeatUnit = this@with.repeatUnit.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.numberOfUnits = numberOfUnits?.toBuilder()
+      builder.averageMolecularFormula = averageMolecularFormula?.toBuilder()
+      builder.repeatUnitAmountType = repeatUnitAmountType?.toBuilder()
+      builder.repeatUnit = repeatUnit.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Todo. */
     @Serializable(with = SubstancePolymerRepeatRepeatUnitSerializer::class)
@@ -523,21 +518,20 @@ public data class SubstancePolymer(
       /** Todo. */
       public val structuralRepresentation: List<StructuralRepresentation> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            orientationOfPolymerisation = this@with.orientationOfPolymerisation?.toBuilder()
-            repeatUnit = this@with.repeatUnit?.toBuilder()
-            amount = this@with.amount?.toBuilder()
-            degreeOfPolymerisation =
-              this@with.degreeOfPolymerisation.map { it.toBuilder() }.toMutableList()
-            structuralRepresentation =
-              this@with.structuralRepresentation.map { it.toBuilder() }.toMutableList()
-          }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.orientationOfPolymerisation = orientationOfPolymerisation?.toBuilder()
+        builder.repeatUnit = repeatUnit?.toBuilder()
+        builder.amount = amount?.toBuilder()
+        builder.degreeOfPolymerisation = degreeOfPolymerisation.mapToMutableList { it.toBuilder() }
+        builder.structuralRepresentation = structuralRepresentation.mapToMutableList {
+          it.toBuilder()
         }
+        return builder
+      }
 
       /** Todo. */
       @Serializable(with = SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer::class)
@@ -584,16 +578,15 @@ public data class SubstancePolymer(
         /** Todo. */
         public val amount: SubstanceAmount? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              degree = this@with.degree?.toBuilder()
-              amount = this@with.amount?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.degree = degree?.toBuilder()
+          builder.amount = amount?.toBuilder()
+          return builder
+        }
 
         public class Builder() {
           /**
@@ -645,8 +638,8 @@ public data class SubstancePolymer(
           public fun build(): DegreeOfPolymerisation =
             DegreeOfPolymerisation(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               degree = degree?.build(),
               amount = amount?.build(),
             )
@@ -702,17 +695,16 @@ public data class SubstancePolymer(
         /** Todo. */
         public val attachment: Attachment? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              type = this@with.type?.toBuilder()
-              representation = this@with.representation?.toBuilder()
-              attachment = this@with.attachment?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.type = type?.toBuilder()
+          builder.representation = representation?.toBuilder()
+          builder.attachment = attachment?.toBuilder()
+          return builder
+        }
 
         public class Builder() {
           /**
@@ -767,8 +759,8 @@ public data class SubstancePolymer(
           public fun build(): StructuralRepresentation =
             StructuralRepresentation(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               type = type?.build(),
               representation = representation?.build(),
               attachment = attachment?.build(),
@@ -837,13 +829,13 @@ public data class SubstancePolymer(
         public fun build(): RepeatUnit =
           RepeatUnit(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             orientationOfPolymerisation = orientationOfPolymerisation?.build(),
             repeatUnit = repeatUnit?.build(),
             amount = amount?.build(),
-            degreeOfPolymerisation = degreeOfPolymerisation.map { it.build() },
-            structuralRepresentation = structuralRepresentation.map { it.build() },
+            degreeOfPolymerisation = degreeOfPolymerisation.mapToList { it.build() },
+            structuralRepresentation = structuralRepresentation.mapToList { it.build() },
           )
       }
     }
@@ -904,12 +896,12 @@ public data class SubstancePolymer(
       public fun build(): Repeat =
         Repeat(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           numberOfUnits = numberOfUnits?.build(),
           averageMolecularFormula = averageMolecularFormula?.build(),
           repeatUnitAmountType = repeatUnitAmountType?.build(),
-          repeatUnit = repeatUnit.map { it.build() },
+          repeatUnit = repeatUnit.mapToList { it.build() },
         )
     }
   }
@@ -1045,15 +1037,15 @@ public data class SubstancePolymer(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         `class` = `class`?.build(),
         geometry = geometry?.build(),
-        copolymerConnectivity = copolymerConnectivity.map { it.build() },
-        modification = modification.map { it.build() },
-        monomerSet = monomerSet.map { it.build() },
-        repeat = repeat.map { it.build() },
+        copolymerConnectivity = copolymerConnectivity.mapToList { it.build() },
+        modification = modification.mapToList { it.build() },
+        monomerSet = monomerSet.mapToList { it.build() },
+        repeat = repeat.mapToList { it.build() },
       )
   }
 }

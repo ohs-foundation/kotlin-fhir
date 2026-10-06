@@ -273,50 +273,49 @@ public data class ResearchStudy(
    */
   public val result: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        label = this@with.label.map { it.toBuilder() }.toMutableList()
-        protocol = this@with.protocol.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        date = this@with.date?.toBuilder()
-        primaryPurposeType = this@with.primaryPurposeType?.toBuilder()
-        phase = this@with.phase?.toBuilder()
-        studyDesign = this@with.studyDesign.map { it.toBuilder() }.toMutableList()
-        focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-        condition = this@with.condition.map { it.toBuilder() }.toMutableList()
-        keyword = this@with.keyword.map { it.toBuilder() }.toMutableList()
-        region = this@with.region.map { it.toBuilder() }.toMutableList()
-        descriptionSummary = this@with.descriptionSummary?.toBuilder()
-        description = this@with.description?.toBuilder()
-        period = this@with.period?.toBuilder()
-        site = this@with.site.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        classifier = this@with.classifier.map { it.toBuilder() }.toMutableList()
-        associatedParty = this@with.associatedParty.map { it.toBuilder() }.toMutableList()
-        progressStatus = this@with.progressStatus.map { it.toBuilder() }.toMutableList()
-        whyStopped = this@with.whyStopped?.toBuilder()
-        recruitment = this@with.recruitment?.toBuilder()
-        comparisonGroup = this@with.comparisonGroup.map { it.toBuilder() }.toMutableList()
-        objective = this@with.objective.map { it.toBuilder() }.toMutableList()
-        outcomeMeasure = this@with.outcomeMeasure.map { it.toBuilder() }.toMutableList()
-        result = this@with.result.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.label = label.mapToMutableList { it.toBuilder() }
+    builder.protocol = protocol.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.date = date?.toBuilder()
+    builder.primaryPurposeType = primaryPurposeType?.toBuilder()
+    builder.phase = phase?.toBuilder()
+    builder.studyDesign = studyDesign.mapToMutableList { it.toBuilder() }
+    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.condition = condition.mapToMutableList { it.toBuilder() }
+    builder.keyword = keyword.mapToMutableList { it.toBuilder() }
+    builder.region = region.mapToMutableList { it.toBuilder() }
+    builder.descriptionSummary = descriptionSummary?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.site = site.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+    builder.associatedParty = associatedParty.mapToMutableList { it.toBuilder() }
+    builder.progressStatus = progressStatus.mapToMutableList { it.toBuilder() }
+    builder.whyStopped = whyStopped?.toBuilder()
+    builder.recruitment = recruitment?.toBuilder()
+    builder.comparisonGroup = comparisonGroup.mapToMutableList { it.toBuilder() }
+    builder.objective = objective.mapToMutableList { it.toBuilder() }
+    builder.outcomeMeasure = outcomeMeasure.mapToMutableList { it.toBuilder() }
+    builder.result = result.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Additional names for the study. */
   @Serializable(with = ResearchStudyLabelSerializer::class)
@@ -363,16 +362,15 @@ public data class ResearchStudy(
     /** The name. */
     public val `value`: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          `value` = this@with.`value`?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.`value` = `value`?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -424,8 +422,8 @@ public data class ResearchStudy(
       public fun build(): Label =
         Label(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           `value` = `value`?.build(),
         )
@@ -493,18 +491,17 @@ public data class ResearchStudy(
      */
     public val party: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(role.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          period = this@with.period.map { it.toBuilder() }.toMutableList()
-          classifier = this@with.classifier.map { it.toBuilder() }.toMutableList()
-          party = this@with.party?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(role.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.period = period.mapToMutableList { it.toBuilder() }
+      builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+      builder.party = party?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Type of association. */
@@ -575,12 +572,12 @@ public data class ResearchStudy(
       public fun build(): AssociatedParty =
         AssociatedParty(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name?.build(),
           role = role.build(),
-          period = period.map { it.build() },
-          classifier = classifier.map { it.build() },
+          period = period.mapToList { it.build() },
+          classifier = classifier.mapToList { it.build() },
           party = party?.build(),
         )
     }
@@ -636,16 +633,15 @@ public data class ResearchStudy(
     /** Date range. */
     public val period: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(state.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `actual` = this@with.`actual`?.toBuilder()
-          period = this@with.period?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(state.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`actual` = `actual`?.toBuilder()
+      builder.period = period?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Label for status or state (e.g. recruitment status). */
@@ -704,8 +700,8 @@ public data class ResearchStudy(
       public fun build(): ProgressStatus =
         ProgressStatus(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           state = state.build(),
           `actual` = `actual`?.build(),
           period = period?.build(),
@@ -762,18 +758,17 @@ public data class ResearchStudy(
     /** Group of participants who were enrolled in study. */
     public val actualGroup: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          targetNumber = this@with.targetNumber?.toBuilder()
-          actualNumber = this@with.actualNumber?.toBuilder()
-          eligibility = this@with.eligibility?.toBuilder()
-          actualGroup = this@with.actualGroup?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.targetNumber = targetNumber?.toBuilder()
+      builder.actualNumber = actualNumber?.toBuilder()
+      builder.eligibility = eligibility?.toBuilder()
+      builder.actualGroup = actualGroup?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -831,8 +826,8 @@ public data class ResearchStudy(
       public fun build(): Recruitment =
         Recruitment(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           targetNumber = targetNumber?.build(),
           actualNumber = actualNumber?.build(),
           eligibility = eligibility?.build(),
@@ -908,19 +903,18 @@ public data class ResearchStudy(
     /** Group of participants who were enrolled in study comparisonGroup. */
     public val observedGroup: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(name.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          linkId = this@with.linkId?.toBuilder()
-          type = this@with.type?.toBuilder()
-          description = this@with.description?.toBuilder()
-          intendedExposure = this@with.intendedExposure.map { it.toBuilder() }.toMutableList()
-          observedGroup = this@with.observedGroup?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(name.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.linkId = linkId?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.description = description?.toBuilder()
+      builder.intendedExposure = intendedExposure.mapToMutableList { it.toBuilder() }
+      builder.observedGroup = observedGroup?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Unique, human-readable label for this comparisonGroup of the study. */
@@ -993,13 +987,13 @@ public data class ResearchStudy(
       public fun build(): ComparisonGroup =
         ComparisonGroup(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           linkId = linkId?.build(),
           name = name.build(),
           type = type?.build(),
           description = description?.build(),
-          intendedExposure = intendedExposure.map { it.build() },
+          intendedExposure = intendedExposure.mapToList { it.build() },
           observedGroup = observedGroup?.build(),
         )
     }
@@ -1058,17 +1052,16 @@ public data class ResearchStudy(
      */
     public val description: Markdown? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          type = this@with.type?.toBuilder()
-          description = this@with.description?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1126,8 +1119,8 @@ public data class ResearchStudy(
       public fun build(): Objective =
         Objective(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name?.build(),
           type = type?.build(),
           description = description?.build(),
@@ -1192,18 +1185,17 @@ public data class ResearchStudy(
     /** Structured outcome definition. */
     public val reference: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          reference = this@with.reference?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.reference = reference?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1264,10 +1256,10 @@ public data class ResearchStudy(
       public fun build(): OutcomeMeasure =
         OutcomeMeasure(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name?.build(),
-          type = type.map { it.build() },
+          type = type.mapToList { it.build() },
           description = description?.build(),
           reference = reference?.build(),
         )
@@ -1550,41 +1542,41 @@ public data class ResearchStudy(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
-        label = label.map { it.build() },
-        protocol = protocol.map { it.build() },
-        partOf = partOf.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
+        label = label.mapToList { it.build() },
+        protocol = protocol.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
         date = date?.build(),
         status = status,
         primaryPurposeType = primaryPurposeType?.build(),
         phase = phase?.build(),
-        studyDesign = studyDesign.map { it.build() },
-        focus = focus.map { it.build() },
-        condition = condition.map { it.build() },
-        keyword = keyword.map { it.build() },
-        region = region.map { it.build() },
+        studyDesign = studyDesign.mapToList { it.build() },
+        focus = focus.mapToList { it.build() },
+        condition = condition.mapToList { it.build() },
+        keyword = keyword.mapToList { it.build() },
+        region = region.mapToList { it.build() },
         descriptionSummary = descriptionSummary?.build(),
         description = description?.build(),
         period = period?.build(),
-        site = site.map { it.build() },
-        note = note.map { it.build() },
-        classifier = classifier.map { it.build() },
-        associatedParty = associatedParty.map { it.build() },
-        progressStatus = progressStatus.map { it.build() },
+        site = site.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        classifier = classifier.mapToList { it.build() },
+        associatedParty = associatedParty.mapToList { it.build() },
+        progressStatus = progressStatus.mapToList { it.build() },
         whyStopped = whyStopped?.build(),
         recruitment = recruitment?.build(),
-        comparisonGroup = comparisonGroup.map { it.build() },
-        objective = objective.map { it.build() },
-        outcomeMeasure = outcomeMeasure.map { it.build() },
-        result = result.map { it.build() },
+        comparisonGroup = comparisonGroup.mapToList { it.build() },
+        objective = objective.mapToList { it.build() },
+        outcomeMeasure = outcomeMeasure.mapToList { it.build() },
+        result = result.mapToList { it.build() },
       )
   }
 }

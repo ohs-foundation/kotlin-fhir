@@ -64,16 +64,15 @@ public data class RatioRange(
   /** The value of the denominator. */
   public val denominator: Quantity? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        lowNumerator = this@with.lowNumerator?.toBuilder()
-        highNumerator = this@with.highNumerator?.toBuilder()
-        denominator = this@with.denominator?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.lowNumerator = lowNumerator?.toBuilder()
+    builder.highNumerator = highNumerator?.toBuilder()
+    builder.denominator = denominator?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -116,7 +115,7 @@ public data class RatioRange(
     public open fun build(): RatioRange =
       RatioRange(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         lowNumerator = lowNumerator?.build(),
         highNumerator = highNumerator?.build(),
         denominator = denominator?.build(),

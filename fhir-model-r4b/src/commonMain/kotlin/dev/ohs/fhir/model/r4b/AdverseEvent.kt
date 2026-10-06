@@ -224,42 +224,40 @@ public data class AdverseEvent(
   /** AdverseEvent.study. */
   public val study: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          actuality,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier?.toBuilder()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          event = this@with.event?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          date = this@with.date?.toBuilder()
-          detected = this@with.detected?.toBuilder()
-          recordedDate = this@with.recordedDate?.toBuilder()
-          resultingCondition = this@with.resultingCondition.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          seriousness = this@with.seriousness?.toBuilder()
-          severity = this@with.severity?.toBuilder()
-          outcome = this@with.outcome?.toBuilder()
-          recorder = this@with.recorder?.toBuilder()
-          contributor = this@with.contributor.map { it.toBuilder() }.toMutableList()
-          suspectEntity = this@with.suspectEntity.map { it.toBuilder() }.toMutableList()
-          subjectMedicalHistory =
-            this@with.subjectMedicalHistory.map { it.toBuilder() }.toMutableList()
-          referenceDocument = this@with.referenceDocument.map { it.toBuilder() }.toMutableList()
-          study = this@with.study.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        actuality,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.event = event?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.detected = detected?.toBuilder()
+    builder.recordedDate = recordedDate?.toBuilder()
+    builder.resultingCondition = resultingCondition.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.seriousness = seriousness?.toBuilder()
+    builder.severity = severity?.toBuilder()
+    builder.outcome = outcome?.toBuilder()
+    builder.recorder = recorder?.toBuilder()
+    builder.contributor = contributor.mapToMutableList { it.toBuilder() }
+    builder.suspectEntity = suspectEntity.mapToMutableList { it.toBuilder() }
+    builder.subjectMedicalHistory = subjectMedicalHistory.mapToMutableList { it.toBuilder() }
+    builder.referenceDocument = referenceDocument.mapToMutableList { it.toBuilder() }
+    builder.study = study.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Describes the entity that is suspected to have caused the adverse event. */
   @Serializable(with = AdverseEventSuspectEntitySerializer::class)
@@ -309,15 +307,14 @@ public data class AdverseEvent(
     /** Information on the possible cause of the event. */
     public val causality: List<Causality> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(instance.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          causality = this@with.causality.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(instance.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.causality = causality.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Information on the possible cause of the event. */
     @Serializable(with = AdverseEventSuspectEntityCausalitySerializer::class)
@@ -368,18 +365,17 @@ public data class AdverseEvent(
       /** ProbabilityScale | Bayesian | Checklist. */
       public val method: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            assessment = this@with.assessment?.toBuilder()
-            productRelatedness = this@with.productRelatedness?.toBuilder()
-            author = this@with.author?.toBuilder()
-            method = this@with.method?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.assessment = assessment?.toBuilder()
+        builder.productRelatedness = productRelatedness?.toBuilder()
+        builder.author = author?.toBuilder()
+        builder.method = method?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -437,8 +433,8 @@ public data class AdverseEvent(
         public fun build(): Causality =
           Causality(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             assessment = assessment?.build(),
             productRelatedness = productRelatedness?.build(),
             author = author?.build(),
@@ -500,10 +496,10 @@ public data class AdverseEvent(
       public fun build(): SuspectEntity =
         SuspectEntity(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           instance = instance.build(),
-          causality = causality.map { it.build() },
+          causality = causality.mapToList { it.build() },
         )
     }
   }
@@ -729,29 +725,29 @@ public data class AdverseEvent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         identifier = identifier?.build(),
         actuality = actuality,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         event = event?.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
         date = date?.build(),
         detected = detected?.build(),
         recordedDate = recordedDate?.build(),
-        resultingCondition = resultingCondition.map { it.build() },
+        resultingCondition = resultingCondition.mapToList { it.build() },
         location = location?.build(),
         seriousness = seriousness?.build(),
         severity = severity?.build(),
         outcome = outcome?.build(),
         recorder = recorder?.build(),
-        contributor = contributor.map { it.build() },
-        suspectEntity = suspectEntity.map { it.build() },
-        subjectMedicalHistory = subjectMedicalHistory.map { it.build() },
-        referenceDocument = referenceDocument.map { it.build() },
-        study = study.map { it.build() },
+        contributor = contributor.mapToList { it.build() },
+        suspectEntity = suspectEntity.mapToList { it.build() },
+        subjectMedicalHistory = subjectMedicalHistory.mapToList { it.build() },
+        referenceDocument = referenceDocument.mapToList { it.build() },
+        study = study.mapToList { it.build() },
       )
   }
 

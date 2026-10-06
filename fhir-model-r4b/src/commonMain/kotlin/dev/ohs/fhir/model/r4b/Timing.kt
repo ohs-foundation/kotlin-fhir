@@ -94,17 +94,16 @@ public data class Timing(
    */
   public val code: CodeableConcept? = null,
 ) : BackboneElement() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        event = this@with.event.map { it.toBuilder() }.toMutableList()
-        repeat = this@with.repeat?.toBuilder()
-        code = this@with.code?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.event = event.mapToMutableList { it.toBuilder() }
+    builder.repeat = repeat?.toBuilder()
+    builder.code = code?.toBuilder()
+    return builder
+  }
 
   /** A set of rules that describe when the event is scheduled. */
   @Serializable(with = TimingRepeatSerializer::class)
@@ -218,28 +217,27 @@ public data class Timing(
      */
     public val offset: UnsignedInt? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          bounds = this@with.bounds
-          count = this@with.count?.toBuilder()
-          countMax = this@with.countMax?.toBuilder()
-          duration = this@with.duration?.toBuilder()
-          durationMax = this@with.durationMax?.toBuilder()
-          durationUnit = this@with.durationUnit
-          frequency = this@with.frequency?.toBuilder()
-          frequencyMax = this@with.frequencyMax?.toBuilder()
-          period = this@with.period?.toBuilder()
-          periodMax = this@with.periodMax?.toBuilder()
-          periodUnit = this@with.periodUnit
-          dayOfWeek = this@with.dayOfWeek.toMutableList()
-          timeOfDay = this@with.timeOfDay.map { it.toBuilder() }.toMutableList()
-          `when` = this@with.`when`.toMutableList()
-          offset = this@with.offset?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.bounds = bounds
+      builder.count = count?.toBuilder()
+      builder.countMax = countMax?.toBuilder()
+      builder.duration = duration?.toBuilder()
+      builder.durationMax = durationMax?.toBuilder()
+      builder.durationUnit = durationUnit
+      builder.frequency = frequency?.toBuilder()
+      builder.frequencyMax = frequencyMax?.toBuilder()
+      builder.period = period?.toBuilder()
+      builder.periodMax = periodMax?.toBuilder()
+      builder.periodUnit = periodUnit
+      builder.dayOfWeek = dayOfWeek.toMutableList()
+      builder.timeOfDay = timeOfDay.mapToMutableList { it.toBuilder() }
+      builder.`when` = `when`.toMutableList()
+      builder.offset = offset?.toBuilder()
+      return builder
+    }
 
     public sealed interface Bounds : FhirChoice {
       public fun asDuration(): Duration? = this as? Duration
@@ -397,7 +395,7 @@ public data class Timing(
       public fun build(): Repeat =
         Repeat(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           bounds = bounds,
           count = count?.build(),
           countMax = countMax?.build(),
@@ -410,7 +408,7 @@ public data class Timing(
           periodMax = periodMax?.build(),
           periodUnit = periodUnit,
           dayOfWeek = dayOfWeek,
-          timeOfDay = timeOfDay.map { it.build() },
+          timeOfDay = timeOfDay.mapToList { it.build() },
           `when` = `when`,
           offset = offset?.build(),
         )
@@ -482,9 +480,9 @@ public data class Timing(
     public open fun build(): Timing =
       Timing(
         id = id,
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        event = event.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        event = event.mapToList { it.build() },
         repeat = repeat?.build(),
         code = code?.build(),
       )

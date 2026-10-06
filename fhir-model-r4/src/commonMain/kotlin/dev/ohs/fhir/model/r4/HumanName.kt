@@ -96,20 +96,19 @@ public data class HumanName(
   /** Indicates the period of time when this name was valid for the named person. */
   public val period: Period? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        use = this@with.use
-        text = this@with.text?.toBuilder()
-        family = this@with.family?.toBuilder()
-        given = this@with.given.map { it.toBuilder() }.toMutableList()
-        prefix = this@with.prefix.map { it.toBuilder() }.toMutableList()
-        suffix = this@with.suffix.map { it.toBuilder() }.toMutableList()
-        period = this@with.period?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.use = use
+    builder.text = text?.toBuilder()
+    builder.family = family?.toBuilder()
+    builder.given = given.mapToMutableList { it.toBuilder() }
+    builder.prefix = prefix.mapToMutableList { it.toBuilder() }
+    builder.suffix = suffix.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -186,13 +185,13 @@ public data class HumanName(
     public open fun build(): HumanName =
       HumanName(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         use = use,
         text = text?.build(),
         family = family?.build(),
-        given = given.map { it.build() },
-        prefix = prefix.map { it.build() },
-        suffix = suffix.map { it.build() },
+        given = given.mapToList { it.build() },
+        prefix = prefix.mapToList { it.build() },
+        suffix = suffix.mapToList { it.build() },
         period = period?.build(),
       )
   }

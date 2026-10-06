@@ -205,28 +205,27 @@ public data class Medication(
   /** A reference to a knowledge resource that provides more information about this medication. */
   public val definition: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        code = this@with.code?.toBuilder()
-        status = this@with.status
-        marketingAuthorizationHolder = this@with.marketingAuthorizationHolder?.toBuilder()
-        doseForm = this@with.doseForm?.toBuilder()
-        totalVolume = this@with.totalVolume?.toBuilder()
-        ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-        batch = this@with.batch?.toBuilder()
-        definition = this@with.definition?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.code = code?.toBuilder()
+    builder.status = status
+    builder.marketingAuthorizationHolder = marketingAuthorizationHolder?.toBuilder()
+    builder.doseForm = doseForm?.toBuilder()
+    builder.totalVolume = totalVolume?.toBuilder()
+    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.batch = batch?.toBuilder()
+    builder.definition = definition?.toBuilder()
+    return builder
+  }
 
   /** Identifies a particular constituent of interest in the product. */
   @Serializable(with = MedicationIngredientSerializer::class)
@@ -284,16 +283,15 @@ public data class Medication(
      */
     public val strength: Strength? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          isActive = this@with.isActive?.toBuilder()
-          strength = this@with.strength
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.isActive = isActive?.toBuilder()
+      builder.strength = strength
+      return builder
+    }
 
     public sealed interface Strength : FhirChoice {
       public fun asRatio(): Ratio? = this as? Ratio
@@ -386,8 +384,8 @@ public data class Medication(
       public fun build(): Ingredient =
         Ingredient(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item.build(),
           isActive = isActive?.build(),
           strength = strength,
@@ -440,16 +438,15 @@ public data class Medication(
     /** When this specific batch of product will expire. */
     public val expirationDate: DateTime? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          lotNumber = this@with.lotNumber?.toBuilder()
-          expirationDate = this@with.expirationDate?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.lotNumber = lotNumber?.toBuilder()
+      builder.expirationDate = expirationDate?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -501,8 +498,8 @@ public data class Medication(
       public fun build(): Batch =
         Batch(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           lotNumber = lotNumber?.build(),
           expirationDate = expirationDate?.build(),
         )
@@ -702,16 +699,16 @@ public data class Medication(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         code = code?.build(),
         status = status,
         marketingAuthorizationHolder = marketingAuthorizationHolder?.build(),
         doseForm = doseForm?.build(),
         totalVolume = totalVolume?.build(),
-        ingredient = ingredient.map { it.build() },
+        ingredient = ingredient.mapToList { it.build() },
         batch = batch?.build(),
         definition = definition?.build(),
       )

@@ -50,14 +50,13 @@ public data class Instant(
   /** The actual value */
   @Serializable(with = FhirDateTimeSerializer::class) public val `value`: FhirDateTime? = null,
 ) : PrimitiveType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    return builder
+  }
 
   public fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -90,7 +89,7 @@ public data class Instant(
     public open fun build(): Instant =
       Instant(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`,
       )
   }

@@ -178,6 +178,7 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     // Generates a common interface for choice types
     FhirChoiceFileSpecGenerator.generate(packageName).writeTo(outputDir)
+    BuilderHelpersFileSpecGenerator.writeTo(outputDir, packageName)
 
     // Generate custom serializers
     val serializersPackageName = "$packageName.serializers"

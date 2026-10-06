@@ -60,15 +60,14 @@ public data class Money(
   /** ISO 4217 Currency Code. */
   public val currency: Enumeration<Currencies>? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`?.toBuilder()
-        currency = this@with.currency
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`?.toBuilder()
+    builder.currency = currency
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -105,7 +104,7 @@ public data class Money(
     public open fun build(): Money =
       Money(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`?.build(),
         currency = currency,
       )

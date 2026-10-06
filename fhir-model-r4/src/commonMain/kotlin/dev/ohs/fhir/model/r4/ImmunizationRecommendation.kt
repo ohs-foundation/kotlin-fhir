@@ -144,26 +144,25 @@ public data class ImmunizationRecommendation(
   /** Vaccine administration recommendations. */
   public val recommendation: List<Recommendation>,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          patient.toBuilder(),
-          date.toBuilder(),
-          recommendation.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          authority = this@with.authority?.toBuilder()
-        }
-    }
+        patient.toBuilder(),
+        date.toBuilder(),
+        recommendation.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.authority = authority?.toBuilder()
+    return builder
+  }
 
   /** Vaccine administration recommendations. */
   @Serializable(with = ImmunizationRecommendationRecommendationSerializer::class)
@@ -250,28 +249,28 @@ public data class ImmunizationRecommendation(
      */
     public val supportingPatientInformation: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(forecastStatus.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          vaccineCode = this@with.vaccineCode.map { it.toBuilder() }.toMutableList()
-          targetDisease = this@with.targetDisease?.toBuilder()
-          contraindicatedVaccineCode =
-            this@with.contraindicatedVaccineCode.map { it.toBuilder() }.toMutableList()
-          forecastReason = this@with.forecastReason.map { it.toBuilder() }.toMutableList()
-          dateCriterion = this@with.dateCriterion.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          series = this@with.series?.toBuilder()
-          doseNumber = this@with.doseNumber
-          seriesDoses = this@with.seriesDoses
-          supportingImmunization =
-            this@with.supportingImmunization.map { it.toBuilder() }.toMutableList()
-          supportingPatientInformation =
-            this@with.supportingPatientInformation.map { it.toBuilder() }.toMutableList()
-        }
+    public fun toBuilder(): Builder {
+      val builder = Builder(forecastStatus.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.vaccineCode = vaccineCode.mapToMutableList { it.toBuilder() }
+      builder.targetDisease = targetDisease?.toBuilder()
+      builder.contraindicatedVaccineCode = contraindicatedVaccineCode.mapToMutableList {
+        it.toBuilder()
       }
+      builder.forecastReason = forecastReason.mapToMutableList { it.toBuilder() }
+      builder.dateCriterion = dateCriterion.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.series = series?.toBuilder()
+      builder.doseNumber = doseNumber
+      builder.seriesDoses = seriesDoses
+      builder.supportingImmunization = supportingImmunization.mapToMutableList { it.toBuilder() }
+      builder.supportingPatientInformation = supportingPatientInformation.mapToMutableList {
+        it.toBuilder()
+      }
+      return builder
+    }
 
     /**
      * Vaccine date recommendations. For example, earliest date to administer, latest date to
@@ -324,14 +323,13 @@ public data class ImmunizationRecommendation(
       /** The date whose meaning is specified by dateCriterion.code. */
       public val `value`: DateTime,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(code.toBuilder(), `value`.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(code.toBuilder(), `value`.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -385,8 +383,8 @@ public data class ImmunizationRecommendation(
         public fun build(): DateCriterion =
           DateCriterion(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code.build(),
             `value` = `value`.build(),
           )
@@ -541,20 +539,20 @@ public data class ImmunizationRecommendation(
       public fun build(): Recommendation =
         Recommendation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          vaccineCode = vaccineCode.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          vaccineCode = vaccineCode.mapToList { it.build() },
           targetDisease = targetDisease?.build(),
-          contraindicatedVaccineCode = contraindicatedVaccineCode.map { it.build() },
+          contraindicatedVaccineCode = contraindicatedVaccineCode.mapToList { it.build() },
           forecastStatus = forecastStatus.build(),
-          forecastReason = forecastReason.map { it.build() },
-          dateCriterion = dateCriterion.map { it.build() },
+          forecastReason = forecastReason.mapToList { it.build() },
+          dateCriterion = dateCriterion.mapToList { it.build() },
           description = description?.build(),
           series = series?.build(),
           doseNumber = doseNumber,
           seriesDoses = seriesDoses,
-          supportingImmunization = supportingImmunization.map { it.build() },
-          supportingPatientInformation = supportingPatientInformation.map { it.build() },
+          supportingImmunization = supportingImmunization.mapToList { it.build() },
+          supportingPatientInformation = supportingPatientInformation.mapToList { it.build() },
         )
     }
   }
@@ -685,14 +683,14 @@ public data class ImmunizationRecommendation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         patient = patient.build(),
         date = date.build(),
         authority = authority?.build(),
-        recommendation = recommendation.map { it.build() },
+        recommendation = recommendation.mapToList { it.build() },
       )
   }
 }

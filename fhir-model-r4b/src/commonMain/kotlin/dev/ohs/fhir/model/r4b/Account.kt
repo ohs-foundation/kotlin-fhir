@@ -189,29 +189,28 @@ public data class Account(
   /** Reference to a parent Account. */
   public val partOf: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        type = this@with.type?.toBuilder()
-        name = this@with.name?.toBuilder()
-        subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-        servicePeriod = this@with.servicePeriod?.toBuilder()
-        coverage = this@with.coverage.map { it.toBuilder() }.toMutableList()
-        owner = this@with.owner?.toBuilder()
-        description = this@with.description?.toBuilder()
-        guarantor = this@with.guarantor.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.servicePeriod = servicePeriod?.toBuilder()
+    builder.coverage = coverage.mapToMutableList { it.toBuilder() }
+    builder.owner = owner?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.guarantor = guarantor.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf?.toBuilder()
+    return builder
+  }
 
   /**
    * The party(s) that are responsible for covering the payment of this account, and what order
@@ -273,15 +272,14 @@ public data class Account(
      */
     public val priority: PositiveInt? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(coverage.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          priority = this@with.priority?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(coverage.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.priority = priority?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -345,8 +343,8 @@ public data class Account(
       public fun build(): Coverage =
         Coverage(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           coverage = coverage.build(),
           priority = priority?.build(),
         )
@@ -402,16 +400,15 @@ public data class Account(
     /** The timeframe during which the guarantor accepts responsibility for the account. */
     public val period: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(party.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          onHold = this@with.onHold?.toBuilder()
-          period = this@with.period?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(party.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.onHold = onHold?.toBuilder()
+      builder.period = period?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The entity who is responsible. */
@@ -469,8 +466,8 @@ public data class Account(
       public fun build(): Guarantor =
         Guarantor(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           party = party.build(),
           onHold = onHold?.build(),
           period = period?.build(),
@@ -657,19 +654,19 @@ public data class Account(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         type = type?.build(),
         name = name?.build(),
-        subject = subject.map { it.build() },
+        subject = subject.mapToList { it.build() },
         servicePeriod = servicePeriod?.build(),
-        coverage = coverage.map { it.build() },
+        coverage = coverage.mapToList { it.build() },
         owner = owner?.build(),
         description = description?.build(),
-        guarantor = guarantor.map { it.build() },
+        guarantor = guarantor.mapToList { it.build() },
         partOf = partOf?.build(),
       )
   }

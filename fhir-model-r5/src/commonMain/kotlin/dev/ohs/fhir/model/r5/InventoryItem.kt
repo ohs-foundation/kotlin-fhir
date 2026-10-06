@@ -168,33 +168,31 @@ public data class InventoryItem(
   /** Link to a product resource used in clinical workflows. */
   public val productReference: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        code = this@with.code.map { it.toBuilder() }.toMutableList()
-        name = this@with.name.map { it.toBuilder() }.toMutableList()
-        responsibleOrganization =
-          this@with.responsibleOrganization.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        inventoryStatus = this@with.inventoryStatus.map { it.toBuilder() }.toMutableList()
-        baseUnit = this@with.baseUnit?.toBuilder()
-        netContent = this@with.netContent?.toBuilder()
-        association = this@with.association.map { it.toBuilder() }.toMutableList()
-        characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-        instance = this@with.instance?.toBuilder()
-        productReference = this@with.productReference?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.code = code.mapToMutableList { it.toBuilder() }
+    builder.name = name.mapToMutableList { it.toBuilder() }
+    builder.responsibleOrganization = responsibleOrganization.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.inventoryStatus = inventoryStatus.mapToMutableList { it.toBuilder() }
+    builder.baseUnit = baseUnit?.toBuilder()
+    builder.netContent = netContent?.toBuilder()
+    builder.association = association.mapToMutableList { it.toBuilder() }
+    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.instance = instance?.toBuilder()
+    builder.productReference = productReference?.toBuilder()
+    return builder
+  }
 
   /** The item name(s) - the brand name, or common name, functional name, generic name. */
   @Serializable(with = InventoryItemNameSerializer::class)
@@ -243,19 +241,18 @@ public data class InventoryItem(
     /** The name or designation that the item is given. */
     public val name: String,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            nameType.toBuilder(),
-            language,
-            name.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          nameType.toBuilder(),
+          language,
+          name.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The type of name e.g. 'brand-name', 'functional-name', 'common-name'. */
@@ -308,8 +305,8 @@ public data class InventoryItem(
       public fun build(): Name =
         Name(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           nameType = nameType.build(),
           language = language,
           name = name.build(),
@@ -365,14 +362,13 @@ public data class InventoryItem(
      */
     public val organization: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(role.toBuilder(), organization.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(role.toBuilder(), organization.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The role of the organization e.g. manufacturer, distributor, etc. */
@@ -426,8 +422,8 @@ public data class InventoryItem(
       public fun build(): ResponsibleOrganization =
         ResponsibleOrganization(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           role = role.build(),
           organization = organization.build(),
         )
@@ -482,16 +478,15 @@ public data class InventoryItem(
     /** Textual description of the item. */
     public val description: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          language = this@with.language
-          description = this@with.description?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.language = language
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -547,8 +542,8 @@ public data class InventoryItem(
       public fun build(): Description =
         Description(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           language = language,
           description = description?.build(),
         )
@@ -610,14 +605,14 @@ public data class InventoryItem(
      */
     public val quantity: Ratio,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(associationType.toBuilder(), relatedItem.toBuilder(), quantity.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder =
+        Builder(associationType.toBuilder(), relatedItem.toBuilder(), quantity.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -678,8 +673,8 @@ public data class InventoryItem(
       public fun build(): Association =
         Association(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           associationType = associationType.build(),
           relatedItem = relatedItem.build(),
           quantity = quantity.build(),
@@ -738,18 +733,17 @@ public data class InventoryItem(
      */
     public val `value`: Value,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            characteristicType.toBuilder(),
-            `value`,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          characteristicType.toBuilder(),
+          `value`,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asString(): String? = this as? String
@@ -895,8 +889,8 @@ public data class InventoryItem(
       public fun build(): Characteristic =
         Characteristic(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           characteristicType = characteristicType.build(),
           `value` = `value`,
         )
@@ -954,19 +948,18 @@ public data class InventoryItem(
     /** The location that the item is associated with. */
     public val location: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          lotNumber = this@with.lotNumber?.toBuilder()
-          expiry = this@with.expiry?.toBuilder()
-          subject = this@with.subject?.toBuilder()
-          location = this@with.location?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.lotNumber = lotNumber?.toBuilder()
+      builder.expiry = expiry?.toBuilder()
+      builder.subject = subject?.toBuilder()
+      builder.location = location?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1027,9 +1020,9 @@ public data class InventoryItem(
       public fun build(): Instance =
         Instance(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
           lotNumber = lotNumber?.build(),
           expiry = expiry?.build(),
           subject = subject?.build(),
@@ -1199,21 +1192,21 @@ public data class InventoryItem(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        category = category.map { it.build() },
-        code = code.map { it.build() },
-        name = name.map { it.build() },
-        responsibleOrganization = responsibleOrganization.map { it.build() },
+        category = category.mapToList { it.build() },
+        code = code.mapToList { it.build() },
+        name = name.mapToList { it.build() },
+        responsibleOrganization = responsibleOrganization.mapToList { it.build() },
         description = description?.build(),
-        inventoryStatus = inventoryStatus.map { it.build() },
+        inventoryStatus = inventoryStatus.mapToList { it.build() },
         baseUnit = baseUnit?.build(),
         netContent = netContent?.build(),
-        association = association.map { it.build() },
-        characteristic = characteristic.map { it.build() },
+        association = association.mapToList { it.build() },
+        characteristic = characteristic.mapToList { it.build() },
         instance = instance?.build(),
         productReference = productReference?.build(),
       )

@@ -213,35 +213,34 @@ public data class Specimen(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        accessionIdentifier = this@with.accessionIdentifier?.toBuilder()
-        status = this@with.status
-        type = this@with.type?.toBuilder()
-        subject = this@with.subject?.toBuilder()
-        receivedTime = this@with.receivedTime?.toBuilder()
-        parent = this@with.parent.map { it.toBuilder() }.toMutableList()
-        request = this@with.request.map { it.toBuilder() }.toMutableList()
-        combined = this@with.combined
-        role = this@with.role.map { it.toBuilder() }.toMutableList()
-        feature = this@with.feature.map { it.toBuilder() }.toMutableList()
-        collection = this@with.collection?.toBuilder()
-        processing = this@with.processing.map { it.toBuilder() }.toMutableList()
-        container = this@with.container.map { it.toBuilder() }.toMutableList()
-        condition = this@with.condition.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.accessionIdentifier = accessionIdentifier?.toBuilder()
+    builder.status = status
+    builder.type = type?.toBuilder()
+    builder.subject = subject?.toBuilder()
+    builder.receivedTime = receivedTime?.toBuilder()
+    builder.parent = parent.mapToMutableList { it.toBuilder() }
+    builder.request = request.mapToMutableList { it.toBuilder() }
+    builder.combined = combined
+    builder.role = role.mapToMutableList { it.toBuilder() }
+    builder.feature = feature.mapToMutableList { it.toBuilder() }
+    builder.collection = collection?.toBuilder()
+    builder.processing = processing.mapToMutableList { it.toBuilder() }
+    builder.container = container.mapToMutableList { it.toBuilder() }
+    builder.condition = condition.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * A physical feature or landmark on a specimen, highlighted for context by the collector of the
@@ -293,14 +292,13 @@ public data class Specimen(
     /** Description of the feature of the specimen. */
     public val description: String,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder(), description.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder(), description.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The landmark or feature being highlighted. */
@@ -351,8 +349,8 @@ public data class Specimen(
       public fun build(): Feature =
         Feature(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           description = description.build(),
         )
@@ -440,23 +438,22 @@ public data class Specimen(
      */
     public val fastingStatus: FastingStatus? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          collector = this@with.collector?.toBuilder()
-          collected = this@with.collected
-          duration = this@with.duration?.toBuilder()
-          quantity = this@with.quantity?.toBuilder()
-          method = this@with.method?.toBuilder()
-          device = this@with.device?.toBuilder()
-          procedure = this@with.procedure?.toBuilder()
-          bodySite = this@with.bodySite?.toBuilder()
-          fastingStatus = this@with.fastingStatus
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.collector = collector?.toBuilder()
+      builder.collected = collected
+      builder.duration = duration?.toBuilder()
+      builder.quantity = quantity?.toBuilder()
+      builder.method = method?.toBuilder()
+      builder.device = device?.toBuilder()
+      builder.procedure = procedure?.toBuilder()
+      builder.bodySite = bodySite?.toBuilder()
+      builder.fastingStatus = fastingStatus
+      return builder
+    }
 
     public sealed interface Collected : FhirChoice {
       public fun asDateTime(): DateTime? = this as? DateTime
@@ -596,8 +593,8 @@ public data class Specimen(
       public fun build(): Collection =
         Collection(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           collector = collector?.build(),
           collected = collected,
           duration = duration?.build(),
@@ -663,18 +660,17 @@ public data class Specimen(
      */
     public val time: Time? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          method = this@with.method?.toBuilder()
-          additive = this@with.additive.map { it.toBuilder() }.toMutableList()
-          time = this@with.time
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.method = method?.toBuilder()
+      builder.additive = additive.mapToMutableList { it.toBuilder() }
+      builder.time = time
+      return builder
+    }
 
     public sealed interface Time : FhirChoice {
       public fun asDateTime(): DateTime? = this as? DateTime
@@ -756,11 +752,11 @@ public data class Specimen(
       public fun build(): Processing =
         Processing(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           method = method?.build(),
-          additive = additive.map { it.build() },
+          additive = additive.mapToList { it.build() },
           time = time,
         )
     }
@@ -822,16 +818,15 @@ public data class Specimen(
      */
     public val specimenQuantity: Quantity? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(device.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          specimenQuantity = this@with.specimenQuantity?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(device.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.location = location?.toBuilder()
+      builder.specimenQuantity = specimenQuantity?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -892,8 +887,8 @@ public data class Specimen(
       public fun build(): Container =
         Container(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           device = device.build(),
           location = location?.build(),
           specimenQuantity = specimenQuantity?.build(),
@@ -1109,25 +1104,25 @@ public data class Specimen(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         accessionIdentifier = accessionIdentifier?.build(),
         status = status,
         type = type?.build(),
         subject = subject?.build(),
         receivedTime = receivedTime?.build(),
-        parent = parent.map { it.build() },
-        request = request.map { it.build() },
+        parent = parent.mapToList { it.build() },
+        request = request.mapToList { it.build() },
         combined = combined,
-        role = role.map { it.build() },
-        feature = feature.map { it.build() },
+        role = role.mapToList { it.build() },
+        feature = feature.mapToList { it.build() },
         collection = collection?.build(),
-        processing = processing.map { it.build() },
-        container = container.map { it.build() },
-        condition = condition.map { it.build() },
-        note = note.map { it.build() },
+        processing = processing.mapToList { it.build() },
+        container = container.mapToList { it.build() },
+        condition = condition.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

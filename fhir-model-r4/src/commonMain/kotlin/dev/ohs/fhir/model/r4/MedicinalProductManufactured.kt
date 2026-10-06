@@ -147,24 +147,23 @@ public data class MedicinalProductManufactured(
   /** Other codeable characteristics. */
   public val otherCharacteristics: List<CodeableConcept> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(manufacturedDoseForm.toBuilder(), quantity.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
-        manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-        ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-        physicalCharacteristics = this@with.physicalCharacteristics?.toBuilder()
-        otherCharacteristics = this@with.otherCharacteristics.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(manufacturedDoseForm.toBuilder(), quantity.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.unitOfPresentation = unitOfPresentation?.toBuilder()
+    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.physicalCharacteristics = physicalCharacteristics?.toBuilder()
+    builder.otherCharacteristics = otherCharacteristics.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public class Builder(
     /** Dose form as manufactured and before any transformation into the pharmaceutical product. */
@@ -302,16 +301,16 @@ public data class MedicinalProductManufactured(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         manufacturedDoseForm = manufacturedDoseForm.build(),
         unitOfPresentation = unitOfPresentation?.build(),
         quantity = quantity.build(),
-        manufacturer = manufacturer.map { it.build() },
-        ingredient = ingredient.map { it.build() },
+        manufacturer = manufacturer.mapToList { it.build() },
+        ingredient = ingredient.mapToList { it.build() },
         physicalCharacteristics = physicalCharacteristics?.build(),
-        otherCharacteristics = otherCharacteristics.map { it.build() },
+        otherCharacteristics = otherCharacteristics.mapToList { it.build() },
       )
   }
 }

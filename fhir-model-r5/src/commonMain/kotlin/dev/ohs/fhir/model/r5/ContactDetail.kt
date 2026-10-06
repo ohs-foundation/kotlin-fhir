@@ -57,15 +57,14 @@ public data class ContactDetail(
   /** The contact details for the individual (if a name was provided) or the organization. */
   public val telecom: List<ContactPoint> = listOf(),
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -101,9 +100,9 @@ public data class ContactDetail(
     public open fun build(): ContactDetail =
       ContactDetail(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         name = name?.build(),
-        telecom = telecom.map { it.build() },
+        telecom = telecom.mapToList { it.build() },
       )
   }
 }

@@ -285,42 +285,41 @@ public data class HealthcareService(
    */
   public val endpoint: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        providedBy = this@with.providedBy?.toBuilder()
-        offeredIn = this@with.offeredIn.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-        location = this@with.location.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        comment = this@with.comment?.toBuilder()
-        extraDetails = this@with.extraDetails?.toBuilder()
-        photo = this@with.photo?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        coverageArea = this@with.coverageArea.map { it.toBuilder() }.toMutableList()
-        serviceProvisionCode = this@with.serviceProvisionCode.map { it.toBuilder() }.toMutableList()
-        eligibility = this@with.eligibility.map { it.toBuilder() }.toMutableList()
-        program = this@with.program.map { it.toBuilder() }.toMutableList()
-        characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-        communication = this@with.communication.map { it.toBuilder() }.toMutableList()
-        referralMethod = this@with.referralMethod.map { it.toBuilder() }.toMutableList()
-        appointmentRequired = this@with.appointmentRequired?.toBuilder()
-        availability = this@with.availability.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.providedBy = providedBy?.toBuilder()
+    builder.offeredIn = offeredIn.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.location = location.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.comment = comment?.toBuilder()
+    builder.extraDetails = extraDetails?.toBuilder()
+    builder.photo = photo?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.coverageArea = coverageArea.mapToMutableList { it.toBuilder() }
+    builder.serviceProvisionCode = serviceProvisionCode.mapToMutableList { it.toBuilder() }
+    builder.eligibility = eligibility.mapToMutableList { it.toBuilder() }
+    builder.program = program.mapToMutableList { it.toBuilder() }
+    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.communication = communication.mapToMutableList { it.toBuilder() }
+    builder.referralMethod = referralMethod.mapToMutableList { it.toBuilder() }
+    builder.appointmentRequired = appointmentRequired?.toBuilder()
+    builder.availability = availability.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Does this service have specific eligibility requirements that need to be met in order to use
@@ -379,16 +378,15 @@ public data class HealthcareService(
      */
     public val comment: Markdown? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code?.toBuilder()
+      builder.comment = comment?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -450,8 +448,8 @@ public data class HealthcareService(
       public fun build(): Eligibility =
         Eligibility(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code?.build(),
           comment = comment?.build(),
         )
@@ -748,32 +746,32 @@ public data class HealthcareService(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
         providedBy = providedBy?.build(),
-        offeredIn = offeredIn.map { it.build() },
-        category = category.map { it.build() },
-        type = type.map { it.build() },
-        specialty = specialty.map { it.build() },
-        location = location.map { it.build() },
+        offeredIn = offeredIn.mapToList { it.build() },
+        category = category.mapToList { it.build() },
+        type = type.mapToList { it.build() },
+        specialty = specialty.mapToList { it.build() },
+        location = location.mapToList { it.build() },
         name = name?.build(),
         comment = comment?.build(),
         extraDetails = extraDetails?.build(),
         photo = photo?.build(),
-        contact = contact.map { it.build() },
-        coverageArea = coverageArea.map { it.build() },
-        serviceProvisionCode = serviceProvisionCode.map { it.build() },
-        eligibility = eligibility.map { it.build() },
-        program = program.map { it.build() },
-        characteristic = characteristic.map { it.build() },
-        communication = communication.map { it.build() },
-        referralMethod = referralMethod.map { it.build() },
+        contact = contact.mapToList { it.build() },
+        coverageArea = coverageArea.mapToList { it.build() },
+        serviceProvisionCode = serviceProvisionCode.mapToList { it.build() },
+        eligibility = eligibility.mapToList { it.build() },
+        program = program.mapToList { it.build() },
+        characteristic = characteristic.mapToList { it.build() },
+        communication = communication.mapToList { it.build() },
+        referralMethod = referralMethod.mapToList { it.build() },
         appointmentRequired = appointmentRequired?.build(),
-        availability = availability.map { it.build() },
-        endpoint = endpoint.map { it.build() },
+        availability = availability.mapToList { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
       )
   }
 }

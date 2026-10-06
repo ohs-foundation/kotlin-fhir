@@ -194,31 +194,30 @@ public data class ObservationDefinition(
    */
   public val criticalCodedValueSet: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(code.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        permittedDataType = this@with.permittedDataType.toMutableList()
-        multipleResultsAllowed = this@with.multipleResultsAllowed?.toBuilder()
-        method = this@with.method?.toBuilder()
-        preferredReportName = this@with.preferredReportName?.toBuilder()
-        quantitativeDetails = this@with.quantitativeDetails?.toBuilder()
-        qualifiedInterval = this@with.qualifiedInterval.map { it.toBuilder() }.toMutableList()
-        validCodedValueSet = this@with.validCodedValueSet?.toBuilder()
-        normalCodedValueSet = this@with.normalCodedValueSet?.toBuilder()
-        abnormalCodedValueSet = this@with.abnormalCodedValueSet?.toBuilder()
-        criticalCodedValueSet = this@with.criticalCodedValueSet?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(code.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.permittedDataType = permittedDataType.toMutableList()
+    builder.multipleResultsAllowed = multipleResultsAllowed?.toBuilder()
+    builder.method = method?.toBuilder()
+    builder.preferredReportName = preferredReportName?.toBuilder()
+    builder.quantitativeDetails = quantitativeDetails?.toBuilder()
+    builder.qualifiedInterval = qualifiedInterval.mapToMutableList { it.toBuilder() }
+    builder.validCodedValueSet = validCodedValueSet?.toBuilder()
+    builder.normalCodedValueSet = normalCodedValueSet?.toBuilder()
+    builder.abnormalCodedValueSet = abnormalCodedValueSet?.toBuilder()
+    builder.criticalCodedValueSet = criticalCodedValueSet?.toBuilder()
+    return builder
+  }
 
   /** Characteristics for quantitative results of this observation. */
   @Serializable(with = ObservationDefinitionQuantitativeDetailsSerializer::class)
@@ -280,18 +279,17 @@ public data class ObservationDefinition(
      */
     public val decimalPrecision: Integer? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          customaryUnit = this@with.customaryUnit?.toBuilder()
-          unit = this@with.unit?.toBuilder()
-          conversionFactor = this@with.conversionFactor?.toBuilder()
-          decimalPrecision = this@with.decimalPrecision?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.customaryUnit = customaryUnit?.toBuilder()
+      builder.unit = unit?.toBuilder()
+      builder.conversionFactor = conversionFactor?.toBuilder()
+      builder.decimalPrecision = decimalPrecision?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -360,8 +358,8 @@ public data class ObservationDefinition(
       public fun build(): QuantitativeDetails =
         QuantitativeDetails(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           customaryUnit = customaryUnit?.build(),
           unit = unit?.build(),
           conversionFactor = conversionFactor?.build(),
@@ -447,22 +445,21 @@ public data class ObservationDefinition(
     /** Text based condition for which the reference range is valid. */
     public val condition: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          category = this@with.category
-          range = this@with.range?.toBuilder()
-          context = this@with.context?.toBuilder()
-          appliesTo = this@with.appliesTo.map { it.toBuilder() }.toMutableList()
-          gender = this@with.gender
-          age = this@with.age?.toBuilder()
-          gestationalAge = this@with.gestationalAge?.toBuilder()
-          condition = this@with.condition?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.category = category
+      builder.range = range?.toBuilder()
+      builder.context = context?.toBuilder()
+      builder.appliesTo = appliesTo.mapToMutableList { it.toBuilder() }
+      builder.gender = gender
+      builder.age = age?.toBuilder()
+      builder.gestationalAge = gestationalAge?.toBuilder()
+      builder.condition = condition?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -550,12 +547,12 @@ public data class ObservationDefinition(
       public fun build(): QualifiedInterval =
         QualifiedInterval(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           category = category,
           range = range?.build(),
           context = context?.build(),
-          appliesTo = appliesTo.map { it.build() },
+          appliesTo = appliesTo.mapToList { it.build() },
           gender = gender,
           age = age?.build(),
           gestationalAge = gestationalAge?.build(),
@@ -752,18 +749,18 @@ public data class ObservationDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        category = category.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        category = category.mapToList { it.build() },
         code = code.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         permittedDataType = permittedDataType,
         multipleResultsAllowed = multipleResultsAllowed?.build(),
         method = method?.build(),
         preferredReportName = preferredReportName?.build(),
         quantitativeDetails = quantitativeDetails?.build(),
-        qualifiedInterval = qualifiedInterval.map { it.build() },
+        qualifiedInterval = qualifiedInterval.mapToList { it.build() },
         validCodedValueSet = validCodedValueSet?.build(),
         normalCodedValueSet = normalCodedValueSet?.build(),
         abnormalCodedValueSet = abnormalCodedValueSet?.build(),

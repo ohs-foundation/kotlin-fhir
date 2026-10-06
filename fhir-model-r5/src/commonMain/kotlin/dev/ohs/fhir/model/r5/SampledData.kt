@@ -114,20 +114,19 @@ public data class SampledData(
    */
   public val `data`: String? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(origin.toBuilder(), intervalUnit.toBuilder(), dimensions.toBuilder()).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        interval = this@with.interval?.toBuilder()
-        factor = this@with.factor?.toBuilder()
-        lowerLimit = this@with.lowerLimit?.toBuilder()
-        upperLimit = this@with.upperLimit?.toBuilder()
-        codeMap = this@with.codeMap?.toBuilder()
-        offsets = this@with.offsets?.toBuilder()
-        `data` = this@with.`data`?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(origin.toBuilder(), intervalUnit.toBuilder(), dimensions.toBuilder())
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.interval = interval?.toBuilder()
+    builder.factor = factor?.toBuilder()
+    builder.lowerLimit = lowerLimit?.toBuilder()
+    builder.upperLimit = upperLimit?.toBuilder()
+    builder.codeMap = codeMap?.toBuilder()
+    builder.offsets = offsets?.toBuilder()
+    builder.`data` = `data`?.toBuilder()
+    return builder
+  }
 
   public open class Builder(
     /**
@@ -223,7 +222,7 @@ public data class SampledData(
     public open fun build(): SampledData =
       SampledData(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         origin = origin.build(),
         interval = interval?.build(),
         intervalUnit = intervalUnit.build(),

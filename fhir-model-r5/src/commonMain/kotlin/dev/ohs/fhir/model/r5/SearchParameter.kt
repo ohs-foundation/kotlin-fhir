@@ -416,52 +416,51 @@ public data class SearchParameter(
   /** Used to define the parts of a composite search parameter. */
   public val component: List<Component> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          url.toBuilder(),
-          name.toBuilder(),
-          status,
-          description.toBuilder(),
-          code.toBuilder(),
-          base.toMutableList(),
-          type,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          versionAlgorithm = this@with.versionAlgorithm
-          title = this@with.title?.toBuilder()
-          derivedFrom = this@with.derivedFrom?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          copyrightLabel = this@with.copyrightLabel?.toBuilder()
-          expression = this@with.expression?.toBuilder()
-          processingMode = this@with.processingMode
-          constraint = this@with.constraint?.toBuilder()
-          target = this@with.target.toMutableList()
-          multipleOr = this@with.multipleOr?.toBuilder()
-          multipleAnd = this@with.multipleAnd?.toBuilder()
-          comparator = this@with.comparator.toMutableList()
-          modifier = this@with.modifier.toMutableList()
-          chain = this@with.chain.map { it.toBuilder() }.toMutableList()
-          component = this@with.component.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        url.toBuilder(),
+        name.toBuilder(),
+        status,
+        description.toBuilder(),
+        code.toBuilder(),
+        base.toMutableList(),
+        type,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.title = title?.toBuilder()
+    builder.derivedFrom = derivedFrom?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.expression = expression?.toBuilder()
+    builder.processingMode = processingMode
+    builder.constraint = constraint?.toBuilder()
+    builder.target = target.toMutableList()
+    builder.multipleOr = multipleOr?.toBuilder()
+    builder.multipleAnd = multipleAnd?.toBuilder()
+    builder.comparator = comparator.toMutableList()
+    builder.modifier = modifier.toMutableList()
+    builder.chain = chain.mapToMutableList { it.toBuilder() }
+    builder.component = component.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Used to define the parts of a composite search parameter. */
   @Serializable(with = SearchParameterComponentSerializer::class)
@@ -514,14 +513,13 @@ public data class SearchParameter(
      */
     public val expression: String,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(definition.toBuilder(), expression.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(definition.toBuilder(), expression.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The definition of the search parameter that describes this part. */
@@ -578,8 +576,8 @@ public data class SearchParameter(
       public fun build(): Component =
         Component(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           definition = definition.build(),
           expression = expression.build(),
         )
@@ -1030,11 +1028,11 @@ public data class SearchParameter(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name.build(),
@@ -1044,10 +1042,10 @@ public data class SearchParameter(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
@@ -1062,8 +1060,8 @@ public data class SearchParameter(
         multipleAnd = multipleAnd?.build(),
         comparator = comparator,
         modifier = modifier,
-        chain = chain.map { it.build() },
-        component = component.map { it.build() },
+        chain = chain.mapToList { it.build() },
+        component = component.mapToList { it.build() },
       )
   }
 

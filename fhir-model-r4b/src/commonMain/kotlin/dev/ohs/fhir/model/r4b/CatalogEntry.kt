@@ -169,32 +169,29 @@ public data class CatalogEntry(
   /** Used for example, to point to a substance, or to a device used to administer a medication. */
   public val relatedEntry: List<RelatedEntry> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(orderable.toBuilder(), referencedItem.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        type = this@with.type?.toBuilder()
-        additionalIdentifier = this@with.additionalIdentifier.map { it.toBuilder() }.toMutableList()
-        classification = this@with.classification.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        validityPeriod = this@with.validityPeriod?.toBuilder()
-        validTo = this@with.validTo?.toBuilder()
-        lastUpdated = this@with.lastUpdated?.toBuilder()
-        additionalCharacteristic =
-          this@with.additionalCharacteristic.map { it.toBuilder() }.toMutableList()
-        additionalClassification =
-          this@with.additionalClassification.map { it.toBuilder() }.toMutableList()
-        relatedEntry = this@with.relatedEntry.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(orderable.toBuilder(), referencedItem.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.additionalIdentifier = additionalIdentifier.mapToMutableList { it.toBuilder() }
+    builder.classification = classification.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.validityPeriod = validityPeriod?.toBuilder()
+    builder.validTo = validTo?.toBuilder()
+    builder.lastUpdated = lastUpdated?.toBuilder()
+    builder.additionalCharacteristic = additionalCharacteristic.mapToMutableList { it.toBuilder() }
+    builder.additionalClassification = additionalClassification.mapToMutableList { it.toBuilder() }
+    builder.relatedEntry = relatedEntry.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Used for example, to point to a substance, or to a device used to administer a medication. */
   @Serializable(with = CatalogEntryRelatedEntrySerializer::class)
@@ -244,18 +241,17 @@ public data class CatalogEntry(
     /** The reference to the related item. */
     public val item: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            relationtype,
-            item.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          relationtype,
+          item.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -309,8 +305,8 @@ public data class CatalogEntry(
       public fun build(): RelatedEntry =
         RelatedEntry(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           relationtype = relationtype,
           item = item.build(),
         )
@@ -481,22 +477,22 @@ public data class CatalogEntry(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         type = type?.build(),
         orderable = orderable.build(),
         referencedItem = referencedItem.build(),
-        additionalIdentifier = additionalIdentifier.map { it.build() },
-        classification = classification.map { it.build() },
+        additionalIdentifier = additionalIdentifier.mapToList { it.build() },
+        classification = classification.mapToList { it.build() },
         status = status,
         validityPeriod = validityPeriod?.build(),
         validTo = validTo?.build(),
         lastUpdated = lastUpdated?.build(),
-        additionalCharacteristic = additionalCharacteristic.map { it.build() },
-        additionalClassification = additionalClassification.map { it.build() },
-        relatedEntry = relatedEntry.map { it.build() },
+        additionalCharacteristic = additionalCharacteristic.mapToList { it.build() },
+        additionalClassification = additionalClassification.mapToList { it.build() },
+        relatedEntry = relatedEntry.mapToList { it.build() },
       )
   }
 

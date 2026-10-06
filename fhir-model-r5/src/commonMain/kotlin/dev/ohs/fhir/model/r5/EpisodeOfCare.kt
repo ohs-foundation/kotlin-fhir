@@ -219,34 +219,33 @@ public data class EpisodeOfCare(
    */
   public val account: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          patient.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          statusHistory = this@with.statusHistory.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-          diagnosis = this@with.diagnosis.map { it.toBuilder() }.toMutableList()
-          managingOrganization = this@with.managingOrganization?.toBuilder()
-          period = this@with.period?.toBuilder()
-          referralRequest = this@with.referralRequest.map { it.toBuilder() }.toMutableList()
-          careManager = this@with.careManager?.toBuilder()
-          careTeam = this@with.careTeam.map { it.toBuilder() }.toMutableList()
-          account = this@with.account.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        patient.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.statusHistory = statusHistory.mapToMutableList { it.toBuilder() }
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.diagnosis = diagnosis.mapToMutableList { it.toBuilder() }
+    builder.managingOrganization = managingOrganization?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.referralRequest = referralRequest.mapToMutableList { it.toBuilder() }
+    builder.careManager = careManager?.toBuilder()
+    builder.careTeam = careTeam.mapToMutableList { it.toBuilder() }
+    builder.account = account.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * The history of statuses that the EpisodeOfCare has been through (without requiring processing
@@ -296,18 +295,17 @@ public data class EpisodeOfCare(
     /** The period during this EpisodeOfCare that the specific status applied. */
     public val period: Period,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            status,
-            period.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          status,
+          period.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** planned | waitlist | active | onhold | finished | cancelled. */
@@ -358,8 +356,8 @@ public data class EpisodeOfCare(
       public fun build(): StatusHistory =
         StatusHistory(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           status = status,
           period = period.build(),
         )
@@ -417,16 +415,15 @@ public data class EpisodeOfCare(
      */
     public val `value`: List<CodeableReference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          use = this@with.use?.toBuilder()
-          `value` = this@with.`value`.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.use = use?.toBuilder()
+      builder.`value` = `value`.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -484,10 +481,10 @@ public data class EpisodeOfCare(
       public fun build(): Reason =
         Reason(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           use = use?.build(),
-          `value` = `value`.map { it.build() },
+          `value` = `value`.mapToList { it.build() },
         )
     }
   }
@@ -543,16 +540,15 @@ public data class EpisodeOfCare(
      */
     public val use: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          condition = this@with.condition.map { it.toBuilder() }.toMutableList()
-          use = this@with.use?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.condition = condition.mapToMutableList { it.toBuilder() }
+      builder.use = use?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -610,9 +606,9 @@ public data class EpisodeOfCare(
       public fun build(): Diagnosis =
         Diagnosis(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          condition = condition.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          condition = condition.mapToList { it.build() },
           use = use?.build(),
         )
     }
@@ -827,22 +823,22 @@ public data class EpisodeOfCare(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        statusHistory = statusHistory.map { it.build() },
-        type = type.map { it.build() },
-        reason = reason.map { it.build() },
-        diagnosis = diagnosis.map { it.build() },
+        statusHistory = statusHistory.mapToList { it.build() },
+        type = type.mapToList { it.build() },
+        reason = reason.mapToList { it.build() },
+        diagnosis = diagnosis.mapToList { it.build() },
         patient = patient.build(),
         managingOrganization = managingOrganization?.build(),
         period = period?.build(),
-        referralRequest = referralRequest.map { it.build() },
+        referralRequest = referralRequest.mapToList { it.build() },
         careManager = careManager?.build(),
-        careTeam = careTeam.map { it.build() },
-        account = account.map { it.build() },
+        careTeam = careTeam.mapToList { it.build() },
+        account = account.mapToList { it.build() },
       )
   }
 

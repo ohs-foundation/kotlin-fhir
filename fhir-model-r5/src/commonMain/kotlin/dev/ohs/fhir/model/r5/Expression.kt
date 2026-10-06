@@ -79,18 +79,17 @@ public data class Expression(
    */
   public val reference: Uri? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        name = this@with.name?.toBuilder()
-        language = this@with.language
-        expression = this@with.expression?.toBuilder()
-        reference = this@with.reference?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.language = language
+    builder.expression = expression?.toBuilder()
+    builder.reference = reference?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -147,7 +146,7 @@ public data class Expression(
     public open fun build(): Expression =
       Expression(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         description = description?.build(),
         name = name?.build(),
         language = language,

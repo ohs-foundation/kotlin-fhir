@@ -229,41 +229,40 @@ public data class ImagingStudy(
   /** Each study has one or more series of images or other content. */
   public val series: List<Series> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          modality = this@with.modality.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          started = this@with.started?.toBuilder()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          referrer = this@with.referrer?.toBuilder()
-          interpreter = this@with.interpreter.map { it.toBuilder() }.toMutableList()
-          endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-          numberOfSeries = this@with.numberOfSeries?.toBuilder()
-          numberOfInstances = this@with.numberOfInstances?.toBuilder()
-          procedureReference = this@with.procedureReference?.toBuilder()
-          procedureCode = this@with.procedureCode.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          series = this@with.series.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.modality = modality.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.started = started?.toBuilder()
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.referrer = referrer?.toBuilder()
+    builder.interpreter = interpreter.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.numberOfSeries = numberOfSeries?.toBuilder()
+    builder.numberOfInstances = numberOfInstances?.toBuilder()
+    builder.procedureReference = procedureReference?.toBuilder()
+    builder.procedureCode = procedureCode.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.series = series.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Each study has one or more series of images or other content. */
   @Serializable(with = ImagingStudySeriesSerializer::class)
@@ -363,24 +362,23 @@ public data class ImagingStudy(
     /** A single SOP instance within the series, e.g. an image, or presentation state. */
     public val instance: List<Instance> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(uid.toBuilder(), modality.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          number = this@with.number?.toBuilder()
-          description = this@with.description?.toBuilder()
-          numberOfInstances = this@with.numberOfInstances?.toBuilder()
-          endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-          bodySite = this@with.bodySite?.toBuilder()
-          laterality = this@with.laterality?.toBuilder()
-          specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
-          started = this@with.started?.toBuilder()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          instance = this@with.instance.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(uid.toBuilder(), modality.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.number = number?.toBuilder()
+      builder.description = description?.toBuilder()
+      builder.numberOfInstances = numberOfInstances?.toBuilder()
+      builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+      builder.bodySite = bodySite?.toBuilder()
+      builder.laterality = laterality?.toBuilder()
+      builder.specimen = specimen.mapToMutableList { it.toBuilder() }
+      builder.started = started?.toBuilder()
+      builder.performer = performer.mapToMutableList { it.toBuilder() }
+      builder.instance = instance.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Indicates who or what performed the series and how they were involved. */
     @Serializable(with = ImagingStudySeriesPerformerSerializer::class)
@@ -427,15 +425,14 @@ public data class ImagingStudy(
       /** Indicates who or what performed the series. */
       public val actor: Reference,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(actor.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            function = this@with.function?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(actor.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.function = function?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** Indicates who or what performed the series. */
@@ -487,8 +484,8 @@ public data class ImagingStudy(
         public fun build(): Performer =
           Performer(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             function = function?.build(),
             actor = actor.build(),
           )
@@ -554,16 +551,15 @@ public data class ImagingStudy(
        */
       public val title: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(uid.toBuilder(), sopClass.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            number = this@with.number?.toBuilder()
-            title = this@with.title?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(uid.toBuilder(), sopClass.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.number = number?.toBuilder()
+        builder.title = title?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -630,8 +626,8 @@ public data class ImagingStudy(
         public fun build(): Instance =
           Instance(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             uid = uid.build(),
             sopClass = sopClass.build(),
             number = number?.build(),
@@ -753,20 +749,20 @@ public data class ImagingStudy(
       public fun build(): Series =
         Series(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           uid = uid.build(),
           number = number?.build(),
           modality = modality.build(),
           description = description?.build(),
           numberOfInstances = numberOfInstances?.build(),
-          endpoint = endpoint.map { it.build() },
+          endpoint = endpoint.mapToList { it.build() },
           bodySite = bodySite?.build(),
           laterality = laterality?.build(),
-          specimen = specimen.map { it.build() },
+          specimen = specimen.mapToList { it.build() },
           started = started?.build(),
-          performer = performer.map { it.build() },
-          instance = instance.map { it.build() },
+          performer = performer.mapToList { it.build() },
+          instance = instance.mapToList { it.build() },
         )
     }
   }
@@ -995,29 +991,29 @@ public data class ImagingStudy(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        modality = modality.map { it.build() },
+        modality = modality.mapToList { it.build() },
         subject = subject.build(),
         encounter = encounter?.build(),
         started = started?.build(),
-        basedOn = basedOn.map { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
         referrer = referrer?.build(),
-        interpreter = interpreter.map { it.build() },
-        endpoint = endpoint.map { it.build() },
+        interpreter = interpreter.mapToList { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
         numberOfSeries = numberOfSeries?.build(),
         numberOfInstances = numberOfInstances?.build(),
         procedureReference = procedureReference?.build(),
-        procedureCode = procedureCode.map { it.build() },
+        procedureCode = procedureCode.mapToList { it.build() },
         location = location?.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        note = note.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        note = note.mapToList { it.build() },
         description = description?.build(),
-        series = series.map { it.build() },
+        series = series.mapToList { it.build() },
       )
   }
 

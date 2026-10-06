@@ -99,19 +99,18 @@ public data class Identifier(
    */
   public val assigner: Reference? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        use = this@with.use
-        type = this@with.type?.toBuilder()
-        system = this@with.system?.toBuilder()
-        `value` = this@with.`value`?.toBuilder()
-        period = this@with.period?.toBuilder()
-        assigner = this@with.assigner?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.use = use
+    builder.type = type?.toBuilder()
+    builder.system = system?.toBuilder()
+    builder.`value` = `value`?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.assigner = assigner?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -190,7 +189,7 @@ public data class Identifier(
     public open fun build(): Identifier =
       Identifier(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         use = use,
         type = type?.build(),
         system = system?.build(),

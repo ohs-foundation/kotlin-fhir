@@ -107,20 +107,19 @@ public data class Signature(
    */
   public val `data`: Base64Binary? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        `when` = this@with.`when`?.toBuilder()
-        who = this@with.who?.toBuilder()
-        onBehalfOf = this@with.onBehalfOf?.toBuilder()
-        targetFormat = this@with.targetFormat?.toBuilder()
-        sigFormat = this@with.sigFormat?.toBuilder()
-        `data` = this@with.`data`?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.`when` = `when`?.toBuilder()
+    builder.who = who?.toBuilder()
+    builder.onBehalfOf = onBehalfOf?.toBuilder()
+    builder.targetFormat = targetFormat?.toBuilder()
+    builder.sigFormat = sigFormat?.toBuilder()
+    builder.`data` = `data`?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -205,8 +204,8 @@ public data class Signature(
     public open fun build(): Signature =
       Signature(
         id = id,
-        extension = extension.map { it.build() },
-        type = type.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        type = type.mapToList { it.build() },
         `when` = `when`?.build(),
         who = who?.build(),
         onBehalfOf = onBehalfOf?.build(),

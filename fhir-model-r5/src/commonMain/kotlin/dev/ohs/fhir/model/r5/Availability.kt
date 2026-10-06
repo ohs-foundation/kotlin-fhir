@@ -55,15 +55,14 @@ public data class Availability(
   /** Not available during this time due to provided reason. */
   public val notAvailableTime: List<NotAvailableTime> = listOf(),
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        availableTime = this@with.availableTime.map { it.toBuilder() }.toMutableList()
-        notAvailableTime = this@with.notAvailableTime.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.availableTime = availableTime.mapToMutableList { it.toBuilder() }
+    builder.notAvailableTime = notAvailableTime.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Times the {item} is available. */
   @Serializable(with = AvailabilityAvailableTimeSerializer::class)
@@ -103,17 +102,16 @@ public data class Availability(
      */
     public val availableEndTime: Time? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          daysOfWeek = this@with.daysOfWeek.toMutableList()
-          allDay = this@with.allDay?.toBuilder()
-          availableStartTime = this@with.availableStartTime?.toBuilder()
-          availableEndTime = this@with.availableEndTime?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.daysOfWeek = daysOfWeek.toMutableList()
+      builder.allDay = allDay?.toBuilder()
+      builder.availableStartTime = availableStartTime?.toBuilder()
+      builder.availableEndTime = availableEndTime?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -159,7 +157,7 @@ public data class Availability(
       public fun build(): AvailableTime =
         AvailableTime(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           daysOfWeek = daysOfWeek,
           allDay = allDay?.build(),
           availableStartTime = availableStartTime?.build(),
@@ -205,15 +203,14 @@ public data class Availability(
     /** Service not available during this period. */
     public val during: Period? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          during = this@with.during?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.during = during?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -256,7 +253,7 @@ public data class Availability(
       public fun build(): NotAvailableTime =
         NotAvailableTime(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           description = description?.build(),
           during = during?.build(),
         )
@@ -293,9 +290,9 @@ public data class Availability(
     public open fun build(): Availability =
       Availability(
         id = id,
-        extension = extension.map { it.build() },
-        availableTime = availableTime.map { it.build() },
-        notAvailableTime = notAvailableTime.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        availableTime = availableTime.mapToList { it.build() },
+        notAvailableTime = notAvailableTime.mapToList { it.build() },
       )
   }
 

@@ -181,28 +181,27 @@ public data class NutritionProduct(
   /** Comments made about the product. */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        code = this@with.code?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-        nutrient = this@with.nutrient.map { it.toBuilder() }.toMutableList()
-        ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-        knownAllergen = this@with.knownAllergen.map { it.toBuilder() }.toMutableList()
-        characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-        instance = this@with.instance.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.code = code?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+    builder.nutrient = nutrient.mapToMutableList { it.toBuilder() }
+    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.knownAllergen = knownAllergen.mapToMutableList { it.toBuilder() }
+    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.instance = instance.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The product's nutritional information expressed by the nutrients. */
   @Serializable(with = NutritionProductNutrientSerializer::class)
@@ -251,16 +250,15 @@ public data class NutritionProduct(
      */
     public val amount: List<Ratio> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          item = this@with.item?.toBuilder()
-          amount = this@with.amount.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.item = item?.toBuilder()
+      builder.amount = amount.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -314,10 +312,10 @@ public data class NutritionProduct(
       public fun build(): Nutrient =
         Nutrient(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item?.build(),
-          amount = amount.map { it.build() },
+          amount = amount.mapToList { it.build() },
         )
     }
   }
@@ -367,15 +365,14 @@ public data class NutritionProduct(
     /** The amount of ingredient that is in the product. */
     public val amount: List<Ratio> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          amount = this@with.amount.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.amount = amount.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The ingredient contained in the product. */
@@ -427,10 +424,10 @@ public data class NutritionProduct(
       public fun build(): Ingredient =
         Ingredient(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item.build(),
-          amount = amount.map { it.build() },
+          amount = amount.mapToList { it.build() },
         )
     }
   }
@@ -488,18 +485,17 @@ public data class NutritionProduct(
      */
     public val `value`: Value,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            type.toBuilder(),
-            `value`,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          type.toBuilder(),
+          `value`,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -606,8 +602,8 @@ public data class NutritionProduct(
       public fun build(): Characteristic =
         Characteristic(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           `value` = `value`,
         )
@@ -698,21 +694,20 @@ public data class NutritionProduct(
      */
     public val biologicalSourceEvent: Identifier? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          quantity = this@with.quantity?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          lotNumber = this@with.lotNumber?.toBuilder()
-          expiry = this@with.expiry?.toBuilder()
-          useBy = this@with.useBy?.toBuilder()
-          biologicalSourceEvent = this@with.biologicalSourceEvent?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.quantity = quantity?.toBuilder()
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.lotNumber = lotNumber?.toBuilder()
+      builder.expiry = expiry?.toBuilder()
+      builder.useBy = useBy?.toBuilder()
+      builder.biologicalSourceEvent = biologicalSourceEvent?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -806,10 +801,10 @@ public data class NutritionProduct(
       public fun build(): Instance =
         Instance(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           quantity = quantity?.build(),
-          identifier = identifier.map { it.build() },
+          identifier = identifier.mapToList { it.build() },
           name = name?.build(),
           lotNumber = lotNumber?.build(),
           expiry = expiry?.build(),
@@ -990,19 +985,19 @@ public data class NutritionProduct(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         code = code?.build(),
         status = status,
-        category = category.map { it.build() },
-        manufacturer = manufacturer.map { it.build() },
-        nutrient = nutrient.map { it.build() },
-        ingredient = ingredient.map { it.build() },
-        knownAllergen = knownAllergen.map { it.build() },
-        characteristic = characteristic.map { it.build() },
-        instance = instance.map { it.build() },
-        note = note.map { it.build() },
+        category = category.mapToList { it.build() },
+        manufacturer = manufacturer.mapToList { it.build() },
+        nutrient = nutrient.mapToList { it.build() },
+        ingredient = ingredient.mapToList { it.build() },
+        knownAllergen = knownAllergen.mapToList { it.build() },
+        characteristic = characteristic.mapToList { it.build() },
+        instance = instance.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

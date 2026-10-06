@@ -437,50 +437,49 @@ public data class StructureDefinition(
    */
   public val differential: Differential? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          url.toBuilder(),
-          name.toBuilder(),
-          status,
-          kind,
-          `abstract`.toBuilder(),
-          type.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          versionAlgorithm = this@with.versionAlgorithm
-          title = this@with.title?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          copyrightLabel = this@with.copyrightLabel?.toBuilder()
-          keyword = this@with.keyword.map { it.toBuilder() }.toMutableList()
-          fhirVersion = this@with.fhirVersion
-          mapping = this@with.mapping.map { it.toBuilder() }.toMutableList()
-          context = this@with.context.map { it.toBuilder() }.toMutableList()
-          contextInvariant = this@with.contextInvariant.map { it.toBuilder() }.toMutableList()
-          baseDefinition = this@with.baseDefinition?.toBuilder()
-          derivation = this@with.derivation
-          snapshot = this@with.snapshot?.toBuilder()
-          differential = this@with.differential?.toBuilder()
-        }
-    }
+        url.toBuilder(),
+        name.toBuilder(),
+        status,
+        kind,
+        `abstract`.toBuilder(),
+        type.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.keyword = keyword.mapToMutableList { it.toBuilder() }
+    builder.fhirVersion = fhirVersion
+    builder.mapping = mapping.mapToMutableList { it.toBuilder() }
+    builder.context = context.mapToMutableList { it.toBuilder() }
+    builder.contextInvariant = contextInvariant.mapToMutableList { it.toBuilder() }
+    builder.baseDefinition = baseDefinition?.toBuilder()
+    builder.derivation = derivation
+    builder.snapshot = snapshot?.toBuilder()
+    builder.differential = differential?.toBuilder()
+    return builder
+  }
 
   /** An external specification that the content is mapped to. */
   @Serializable(with = StructureDefinitionMappingSerializer::class)
@@ -544,17 +543,16 @@ public data class StructureDefinition(
      */
     public val comment: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(identity.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          uri = this@with.uri?.toBuilder()
-          name = this@with.name?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(identity.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.uri = uri?.toBuilder()
+      builder.name = name?.toBuilder()
+      builder.comment = comment?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -625,8 +623,8 @@ public data class StructureDefinition(
       public fun build(): Mapping =
         Mapping(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identity = identity.build(),
           uri = uri?.build(),
           name = name?.build(),
@@ -686,18 +684,17 @@ public data class StructureDefinition(
     /** An expression that defines where an extension can be used in resources. */
     public val expression: String,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            type,
-            expression.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          type,
+          expression.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -750,8 +747,8 @@ public data class StructureDefinition(
       public fun build(): Context =
         Context(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type,
           expression = expression.build(),
         )
@@ -804,14 +801,13 @@ public data class StructureDefinition(
     /** Captures constraints on each element within the resource. */
     public val element: List<ElementDefinition>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(element.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(element.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Captures constraints on each element within the resource. */
@@ -860,9 +856,9 @@ public data class StructureDefinition(
       public fun build(): Snapshot =
         Snapshot(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          element = element.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          element = element.mapToList { it.build() },
         )
     }
   }
@@ -913,14 +909,13 @@ public data class StructureDefinition(
     /** Captures constraints on each element within the resource. */
     public val element: List<ElementDefinition>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(element.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(element.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Captures constraints on each element within the resource. */
@@ -969,9 +964,9 @@ public data class StructureDefinition(
       public fun build(): Differential =
         Differential(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          element = element.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          element = element.mapToList { it.build() },
         )
     }
   }
@@ -1435,11 +1430,11 @@ public data class StructureDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name.build(),
@@ -1448,20 +1443,20 @@ public data class StructureDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
-        keyword = keyword.map { it.build() },
+        keyword = keyword.mapToList { it.build() },
         fhirVersion = fhirVersion,
-        mapping = mapping.map { it.build() },
+        mapping = mapping.mapToList { it.build() },
         kind = kind,
         `abstract` = `abstract`.build(),
-        context = context.map { it.build() },
-        contextInvariant = contextInvariant.map { it.build() },
+        context = context.mapToList { it.build() },
+        contextInvariant = contextInvariant.mapToList { it.build() },
         type = type.build(),
         baseDefinition = baseDefinition?.build(),
         derivation = derivation,

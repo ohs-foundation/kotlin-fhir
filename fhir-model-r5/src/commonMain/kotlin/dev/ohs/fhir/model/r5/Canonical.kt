@@ -49,14 +49,13 @@ public data class Canonical(
   /** Primitive value for canonical */
   override val `value`: String? = null,
 ) : Uri(id, extension, `value`) {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    return builder
+  }
 
   override fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -89,7 +88,7 @@ public data class Canonical(
     open override fun build(): Canonical =
       Canonical(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`,
       )
   }

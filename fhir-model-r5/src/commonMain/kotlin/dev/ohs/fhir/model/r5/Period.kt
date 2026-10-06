@@ -65,15 +65,14 @@ public data class Period(
    */
   public val end: DateTime? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        start = this@with.start?.toBuilder()
-        end = this@with.end?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.start = start?.toBuilder()
+    builder.end = end?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -116,7 +115,7 @@ public data class Period(
     public open fun build(): Period =
       Period(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         start = start?.build(),
         end = end?.build(),
       )

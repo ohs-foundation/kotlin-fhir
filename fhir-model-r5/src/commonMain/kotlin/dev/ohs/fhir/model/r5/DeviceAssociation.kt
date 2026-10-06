@@ -151,26 +151,25 @@ public data class DeviceAssociation(
   /** The details about the device when it is in use to describe its operation. */
   public val operation: List<Operation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(device.toBuilder(), status.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        bodyStructure = this@with.bodyStructure?.toBuilder()
-        period = this@with.period?.toBuilder()
-        operation = this@with.operation.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(device.toBuilder(), status.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.statusReason = statusReason.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.bodyStructure = bodyStructure?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.operation = operation.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The details about the device when it is in use to describe its operation. */
   @Serializable(with = DeviceAssociationOperationSerializer::class)
@@ -219,16 +218,15 @@ public data class DeviceAssociation(
     /** Begin and end dates and times for the device's operation. */
     public val period: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(status.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `operator` = this@with.`operator`.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(status.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`operator` = `operator`.mapToMutableList { it.toBuilder() }
+      builder.period = period?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Device operational condition corresponding to the association. */
@@ -283,10 +281,10 @@ public data class DeviceAssociation(
       public fun build(): Operation =
         Operation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           status = status.build(),
-          `operator` = `operator`.map { it.build() },
+          `operator` = `operator`.mapToList { it.build() },
           period = period?.build(),
         )
     }
@@ -433,18 +431,18 @@ public data class DeviceAssociation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         device = device.build(),
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         status = status.build(),
-        statusReason = statusReason.map { it.build() },
+        statusReason = statusReason.mapToList { it.build() },
         subject = subject?.build(),
         bodyStructure = bodyStructure?.build(),
         period = period?.build(),
-        operation = operation.map { it.build() },
+        operation = operation.mapToList { it.build() },
       )
   }
 }

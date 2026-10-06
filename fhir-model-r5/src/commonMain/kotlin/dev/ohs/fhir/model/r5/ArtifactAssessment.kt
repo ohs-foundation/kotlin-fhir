@@ -194,29 +194,28 @@ public data class ArtifactAssessment(
   /** Indicates the disposition of the responsible party to the comment or change request. */
   public val disposition: Enumeration<ArtifactAssessmentDisposition>? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(artifact).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        title = this@with.title?.toBuilder()
-        citeAs = this@with.citeAs
-        date = this@with.date?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        content = this@with.content.map { it.toBuilder() }.toMutableList()
-        workflowStatus = this@with.workflowStatus
-        disposition = this@with.disposition
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(artifact)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.title = title?.toBuilder()
+    builder.citeAs = citeAs
+    builder.date = date?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.content = content.mapToMutableList { it.toBuilder() }
+    builder.workflowStatus = workflowStatus
+    builder.disposition = disposition
+    return builder
+  }
 
   /** A component comment, classifier, or rating of the artifact. */
   @Serializable(with = ArtifactAssessmentContentSerializer::class)
@@ -288,24 +287,23 @@ public data class ArtifactAssessment(
     /** If the informationType is container, the components of the content. */
     public val component: List<Content> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          informationType = this@with.informationType
-          summary = this@with.summary?.toBuilder()
-          type = this@with.type?.toBuilder()
-          classifier = this@with.classifier.map { it.toBuilder() }.toMutableList()
-          quantity = this@with.quantity?.toBuilder()
-          author = this@with.author?.toBuilder()
-          path = this@with.path.map { it.toBuilder() }.toMutableList()
-          relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-          freeToShare = this@with.freeToShare?.toBuilder()
-          component = this@with.component.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.informationType = informationType
+      builder.summary = summary?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+      builder.quantity = quantity?.toBuilder()
+      builder.author = author?.toBuilder()
+      builder.path = path.mapToMutableList { it.toBuilder() }
+      builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+      builder.freeToShare = freeToShare?.toBuilder()
+      builder.component = component.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -390,18 +388,18 @@ public data class ArtifactAssessment(
       public fun build(): Content =
         Content(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           informationType = informationType,
           summary = summary?.build(),
           type = type?.build(),
-          classifier = classifier.map { it.build() },
+          classifier = classifier.mapToList { it.build() },
           quantity = quantity?.build(),
           author = author?.build(),
-          path = path.map { it.build() },
-          relatedArtifact = relatedArtifact.map { it.build() },
+          path = path.mapToList { it.build() },
+          relatedArtifact = relatedArtifact.mapToList { it.build() },
           freeToShare = freeToShare?.build(),
-          component = component.map { it.build() },
+          component = component.mapToList { it.build() },
         )
     }
   }
@@ -640,10 +638,10 @@ public data class ArtifactAssessment(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         title = title?.build(),
         citeAs = citeAs,
         date = date?.build(),
@@ -651,7 +649,7 @@ public data class ArtifactAssessment(
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         artifact = artifact,
-        content = content.map { it.build() },
+        content = content.mapToList { it.build() },
         workflowStatus = workflowStatus,
         disposition = disposition,
       )

@@ -171,28 +171,27 @@ public data class Subscription(
   /** Details where to send notifications when resources are received that meet the criteria. */
   public val channel: Channel,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          reason.toBuilder(),
-          criteria.toBuilder(),
-          channel.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          end = this@with.end?.toBuilder()
-          error = this@with.error?.toBuilder()
-        }
-    }
+        status,
+        reason.toBuilder(),
+        criteria.toBuilder(),
+        channel.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.end = end?.toBuilder()
+    builder.error = error?.toBuilder()
+    return builder
+  }
 
   /** Details where to send notifications when resources are received that meet the criteria. */
   @Serializable(with = SubscriptionChannelSerializer::class)
@@ -264,17 +263,16 @@ public data class Subscription(
      */
     public val `header`: List<String> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          endpoint = this@with.endpoint?.toBuilder()
-          payload = this@with.payload?.toBuilder()
-          `header` = this@with.`header`.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.endpoint = endpoint?.toBuilder()
+      builder.payload = payload?.toBuilder()
+      builder.`header` = `header`.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The type of channel to send notifications on. */
@@ -354,12 +352,12 @@ public data class Subscription(
       public fun build(): Channel =
         Channel(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type,
           endpoint = endpoint?.build(),
           payload = payload?.build(),
-          `header` = `header`.map { it.build() },
+          `header` = `header`.mapToList { it.build() },
         )
     }
   }
@@ -517,11 +515,11 @@ public data class Subscription(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         status = status,
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         end = end?.build(),
         reason = reason.build(),
         criteria = criteria.build(),

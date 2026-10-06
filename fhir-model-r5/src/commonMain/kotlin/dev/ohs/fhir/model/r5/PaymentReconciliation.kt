@@ -236,50 +236,49 @@ public data class PaymentReconciliation(
   /** A note that describes or explains the processing in a human readable form. */
   public val processNote: List<ProcessNote> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          type.toBuilder(),
-          status,
-          created.toBuilder(),
-          date.toBuilder(),
-          amount.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          kind = this@with.kind?.toBuilder()
-          period = this@with.period?.toBuilder()
-          enterer = this@with.enterer?.toBuilder()
-          issuerType = this@with.issuerType?.toBuilder()
-          paymentIssuer = this@with.paymentIssuer?.toBuilder()
-          request = this@with.request?.toBuilder()
-          requestor = this@with.requestor?.toBuilder()
-          outcome = this@with.outcome
-          disposition = this@with.disposition?.toBuilder()
-          location = this@with.location?.toBuilder()
-          method = this@with.method?.toBuilder()
-          cardBrand = this@with.cardBrand?.toBuilder()
-          accountNumber = this@with.accountNumber?.toBuilder()
-          expirationDate = this@with.expirationDate?.toBuilder()
-          processor = this@with.processor?.toBuilder()
-          referenceNumber = this@with.referenceNumber?.toBuilder()
-          authorization = this@with.authorization?.toBuilder()
-          tenderedAmount = this@with.tenderedAmount?.toBuilder()
-          returnedAmount = this@with.returnedAmount?.toBuilder()
-          paymentIdentifier = this@with.paymentIdentifier?.toBuilder()
-          allocation = this@with.allocation.map { it.toBuilder() }.toMutableList()
-          formCode = this@with.formCode?.toBuilder()
-          processNote = this@with.processNote.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        type.toBuilder(),
+        status,
+        created.toBuilder(),
+        date.toBuilder(),
+        amount.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.kind = kind?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.enterer = enterer?.toBuilder()
+    builder.issuerType = issuerType?.toBuilder()
+    builder.paymentIssuer = paymentIssuer?.toBuilder()
+    builder.request = request?.toBuilder()
+    builder.requestor = requestor?.toBuilder()
+    builder.outcome = outcome
+    builder.disposition = disposition?.toBuilder()
+    builder.location = location?.toBuilder()
+    builder.method = method?.toBuilder()
+    builder.cardBrand = cardBrand?.toBuilder()
+    builder.accountNumber = accountNumber?.toBuilder()
+    builder.expirationDate = expirationDate?.toBuilder()
+    builder.processor = processor?.toBuilder()
+    builder.referenceNumber = referenceNumber?.toBuilder()
+    builder.authorization = authorization?.toBuilder()
+    builder.tenderedAmount = tenderedAmount?.toBuilder()
+    builder.returnedAmount = returnedAmount?.toBuilder()
+    builder.paymentIdentifier = paymentIdentifier?.toBuilder()
+    builder.allocation = allocation.mapToMutableList { it.toBuilder() }
+    builder.formCode = formCode?.toBuilder()
+    builder.processNote = processNote.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Distribution of the payment amount for a previously acknowledged payable. */
   @Serializable(with = PaymentReconciliationAllocationSerializer::class)
@@ -363,27 +362,26 @@ public data class PaymentReconciliation(
     /** The monetary amount allocated from the total payment to the payable. */
     public val amount: Money? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier?.toBuilder()
-          predecessor = this@with.predecessor?.toBuilder()
-          target = this@with.target?.toBuilder()
-          targetItem = this@with.targetItem
-          encounter = this@with.encounter?.toBuilder()
-          account = this@with.account?.toBuilder()
-          type = this@with.type?.toBuilder()
-          submitter = this@with.submitter?.toBuilder()
-          response = this@with.response?.toBuilder()
-          date = this@with.date?.toBuilder()
-          responsible = this@with.responsible?.toBuilder()
-          payee = this@with.payee?.toBuilder()
-          amount = this@with.amount?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier?.toBuilder()
+      builder.predecessor = predecessor?.toBuilder()
+      builder.target = target?.toBuilder()
+      builder.targetItem = targetItem
+      builder.encounter = encounter?.toBuilder()
+      builder.account = account?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.submitter = submitter?.toBuilder()
+      builder.response = response?.toBuilder()
+      builder.date = date?.toBuilder()
+      builder.responsible = responsible?.toBuilder()
+      builder.payee = payee?.toBuilder()
+      builder.amount = amount?.toBuilder()
+      return builder
+    }
 
     public sealed interface TargetItem : FhirChoice {
       public fun asString(): String? = this as? String
@@ -513,8 +511,8 @@ public data class PaymentReconciliation(
       public fun build(): Allocation =
         Allocation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identifier = identifier?.build(),
           predecessor = predecessor?.build(),
           target = target?.build(),
@@ -577,16 +575,15 @@ public data class PaymentReconciliation(
     /** The explanation or description associated with the processing. */
     public val text: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type
-          text = this@with.text?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type
+      builder.text = text?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -638,8 +635,8 @@ public data class PaymentReconciliation(
       public fun build(): ProcessNote =
         ProcessNote(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type,
           text = text?.build(),
         )
@@ -886,10 +883,10 @@ public data class PaymentReconciliation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         type = type.build(),
         status = status,
         kind = kind?.build(),
@@ -915,9 +912,9 @@ public data class PaymentReconciliation(
         returnedAmount = returnedAmount?.build(),
         amount = amount.build(),
         paymentIdentifier = paymentIdentifier?.build(),
-        allocation = allocation.map { it.build() },
+        allocation = allocation.mapToList { it.build() },
         formCode = formCode?.build(),
-        processNote = processNote.map { it.build() },
+        processNote = processNote.mapToList { it.build() },
       )
   }
 

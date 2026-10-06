@@ -329,41 +329,40 @@ public data class TestPlan(
   /** The individual test cases that are part of this plan, when they they are made explicit. */
   public val testCase: List<TestCase> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        scope = this@with.scope.map { it.toBuilder() }.toMutableList()
-        testTools = this@with.testTools?.toBuilder()
-        dependency = this@with.dependency.map { it.toBuilder() }.toMutableList()
-        exitCriteria = this@with.exitCriteria?.toBuilder()
-        testCase = this@with.testCase.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.scope = scope.mapToMutableList { it.toBuilder() }
+    builder.testTools = testTools?.toBuilder()
+    builder.dependency = dependency.mapToMutableList { it.toBuilder() }
+    builder.exitCriteria = exitCriteria?.toBuilder()
+    builder.testCase = testCase.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The required criteria to execute the test plan - e.g. preconditions, previous tests... */
   @Serializable(with = TestPlanDependencySerializer::class)
@@ -416,16 +415,15 @@ public data class TestPlan(
      */
     public val predecessor: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          predecessor = this@with.predecessor?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.predecessor = predecessor?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -483,8 +481,8 @@ public data class TestPlan(
       public fun build(): Dependency =
         Dependency(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           predecessor = predecessor?.build(),
         )
@@ -552,20 +550,19 @@ public data class TestPlan(
      */
     public val assertion: List<Assertion> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          sequence = this@with.sequence?.toBuilder()
-          scope = this@with.scope.map { it.toBuilder() }.toMutableList()
-          dependency = this@with.dependency.map { it.toBuilder() }.toMutableList()
-          testRun = this@with.testRun.map { it.toBuilder() }.toMutableList()
-          testData = this@with.testData.map { it.toBuilder() }.toMutableList()
-          assertion = this@with.assertion.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.sequence = sequence?.toBuilder()
+      builder.scope = scope.mapToMutableList { it.toBuilder() }
+      builder.dependency = dependency.mapToMutableList { it.toBuilder() }
+      builder.testRun = testRun.mapToMutableList { it.toBuilder() }
+      builder.testData = testData.mapToMutableList { it.toBuilder() }
+      builder.assertion = assertion.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** The required criteria to execute the test case - e.g. preconditions, previous tests. */
     @Serializable(with = TestPlanTestCaseDependencySerializer::class)
@@ -612,16 +609,15 @@ public data class TestPlan(
       /** Link to predecessor test plans. */
       public val predecessor: Reference? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-            predecessor = this@with.predecessor?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.description = description?.toBuilder()
+        builder.predecessor = predecessor?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -673,8 +669,8 @@ public data class TestPlan(
         public fun build(): Dependency =
           Dependency(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             description = description?.build(),
             predecessor = predecessor?.build(),
           )
@@ -726,16 +722,15 @@ public data class TestPlan(
       /** The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript. */
       public val script: Script? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            narrative = this@with.narrative?.toBuilder()
-            script = this@with.script?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.narrative = narrative?.toBuilder()
+        builder.script = script?.toBuilder()
+        return builder
+      }
 
       /** The test cases in a structured language e.g. gherkin, Postman, or FHIR TestScript. */
       @Serializable(with = TestPlanTestCaseTestRunScriptSerializer::class)
@@ -785,16 +780,15 @@ public data class TestPlan(
          */
         public val source: Source? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              language = this@with.language?.toBuilder()
-              source = this@with.source
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.language = language?.toBuilder()
+          builder.source = source
+          return builder
+        }
 
         public sealed interface Source : FhirChoice {
           public fun asString(): String? = this as? String
@@ -871,8 +865,8 @@ public data class TestPlan(
           public fun build(): Script =
             Script(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               language = language?.build(),
               source = source,
             )
@@ -929,8 +923,8 @@ public data class TestPlan(
         public fun build(): TestRun =
           TestRun(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             narrative = narrative?.build(),
             script = script?.build(),
           )
@@ -987,16 +981,15 @@ public data class TestPlan(
        */
       public val source: Source? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(type.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            content = this@with.content?.toBuilder()
-            source = this@with.source
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(type.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.content = content?.toBuilder()
+        builder.source = source
+        return builder
+      }
 
       public sealed interface Source : FhirChoice {
         public fun asString(): String? = this as? String
@@ -1075,8 +1068,8 @@ public data class TestPlan(
         public fun build(): TestData =
           TestData(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
             content = content?.build(),
             source = source,
@@ -1136,17 +1129,16 @@ public data class TestPlan(
       /** The test assertion - the expected outcome from the test case execution. */
       public val result: List<CodeableReference> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type.map { it.toBuilder() }.toMutableList()
-            `object` = this@with.`object`.map { it.toBuilder() }.toMutableList()
-            result = this@with.result.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type.mapToMutableList { it.toBuilder() }
+        builder.`object` = `object`.mapToMutableList { it.toBuilder() }
+        builder.result = result.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -1204,11 +1196,11 @@ public data class TestPlan(
         public fun build(): Assertion =
           Assertion(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
-            type = type.map { it.build() },
-            `object` = `object`.map { it.build() },
-            result = result.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
+            type = type.mapToList { it.build() },
+            `object` = `object`.mapToList { it.build() },
+            result = result.mapToList { it.build() },
           )
       }
     }
@@ -1283,14 +1275,14 @@ public data class TestPlan(
       public fun build(): TestCase =
         TestCase(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           sequence = sequence?.build(),
-          scope = scope.map { it.build() },
-          dependency = dependency.map { it.build() },
-          testRun = testRun.map { it.build() },
-          testData = testData.map { it.build() },
-          assertion = assertion.map { it.build() },
+          scope = scope.mapToList { it.build() },
+          dependency = dependency.mapToList { it.build() },
+          testRun = testRun.mapToList { it.build() },
+          testData = testData.mapToList { it.build() },
+          assertion = assertion.mapToList { it.build() },
         )
     }
   }
@@ -1646,11 +1638,11 @@ public data class TestPlan(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -1659,19 +1651,19 @@ public data class TestPlan(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
-        category = category.map { it.build() },
-        scope = scope.map { it.build() },
+        category = category.mapToList { it.build() },
+        scope = scope.mapToList { it.build() },
         testTools = testTools?.build(),
-        dependency = dependency.map { it.build() },
+        dependency = dependency.mapToList { it.build() },
         exitCriteria = exitCriteria?.build(),
-        testCase = testCase.map { it.build() },
+        testCase = testCase.mapToList { it.build() },
       )
   }
 }

@@ -184,29 +184,28 @@ public data class AppointmentResponse(
    */
   public val comment: String? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          appointment.toBuilder(),
-          participantStatus,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          start = this@with.start?.toBuilder()
-          end = this@with.end?.toBuilder()
-          participantType = this@with.participantType.map { it.toBuilder() }.toMutableList()
-          actor = this@with.actor?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-        }
-    }
+        appointment.toBuilder(),
+        participantStatus,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.start = start?.toBuilder()
+    builder.end = end?.toBuilder()
+    builder.participantType = participantType.mapToMutableList { it.toBuilder() }
+    builder.actor = actor?.toBuilder()
+    builder.comment = comment?.toBuilder()
+    return builder
+  }
 
   public class Builder(
     /** Appointment that this response is replying to. */
@@ -382,14 +381,14 @@ public data class AppointmentResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         appointment = appointment.build(),
         start = start?.build(),
         end = end?.build(),
-        participantType = participantType.map { it.build() },
+        participantType = participantType.mapToList { it.build() },
         actor = actor?.build(),
         participantStatus = participantStatus,
         comment = comment?.build(),

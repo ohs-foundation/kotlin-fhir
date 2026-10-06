@@ -203,36 +203,35 @@ public data class GuidanceResponse(
    */
   public val dataRequirement: List<DataRequirement> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          module,
-          status,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          requestIdentifier = this@with.requestIdentifier?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          occurrenceDateTime = this@with.occurrenceDateTime?.toBuilder()
-          performer = this@with.performer?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          evaluationMessage = this@with.evaluationMessage.map { it.toBuilder() }.toMutableList()
-          outputParameters = this@with.outputParameters?.toBuilder()
-          result = this@with.result?.toBuilder()
-          dataRequirement = this@with.dataRequirement.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        module,
+        status,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.requestIdentifier = requestIdentifier?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.occurrenceDateTime = occurrenceDateTime?.toBuilder()
+    builder.performer = performer?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.evaluationMessage = evaluationMessage.mapToMutableList { it.toBuilder() }
+    builder.outputParameters = outputParameters?.toBuilder()
+    builder.result = result?.toBuilder()
+    builder.dataRequirement = dataRequirement.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public sealed interface Module : FhirChoice {
     public fun asUri(): Uri? = this as? Uri
@@ -460,24 +459,24 @@ public data class GuidanceResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         requestIdentifier = requestIdentifier?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         module = module,
         status = status,
         subject = subject?.build(),
         encounter = encounter?.build(),
         occurrenceDateTime = occurrenceDateTime?.build(),
         performer = performer?.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        note = note.map { it.build() },
-        evaluationMessage = evaluationMessage.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        evaluationMessage = evaluationMessage.mapToList { it.build() },
         outputParameters = outputParameters?.build(),
         result = result?.build(),
-        dataRequirement = dataRequirement.map { it.build() },
+        dataRequirement = dataRequirement.mapToList { it.build() },
       )
   }
 

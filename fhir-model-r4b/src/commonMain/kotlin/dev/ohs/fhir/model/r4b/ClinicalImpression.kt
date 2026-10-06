@@ -247,42 +247,40 @@ public data class ClinicalImpression(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          statusReason = this@with.statusReason?.toBuilder()
-          code = this@with.code?.toBuilder()
-          description = this@with.description?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          effective = this@with.effective
-          date = this@with.date?.toBuilder()
-          assessor = this@with.assessor?.toBuilder()
-          previous = this@with.previous?.toBuilder()
-          problem = this@with.problem.map { it.toBuilder() }.toMutableList()
-          investigation = this@with.investigation.map { it.toBuilder() }.toMutableList()
-          protocol = this@with.protocol.map { it.toBuilder() }.toMutableList()
-          summary = this@with.summary?.toBuilder()
-          finding = this@with.finding.map { it.toBuilder() }.toMutableList()
-          prognosisCodeableConcept =
-            this@with.prognosisCodeableConcept.map { it.toBuilder() }.toMutableList()
-          prognosisReference = this@with.prognosisReference.map { it.toBuilder() }.toMutableList()
-          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.statusReason = statusReason?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.effective = effective
+    builder.date = date?.toBuilder()
+    builder.assessor = assessor?.toBuilder()
+    builder.previous = previous?.toBuilder()
+    builder.problem = problem.mapToMutableList { it.toBuilder() }
+    builder.investigation = investigation.mapToMutableList { it.toBuilder() }
+    builder.protocol = protocol.mapToMutableList { it.toBuilder() }
+    builder.summary = summary?.toBuilder()
+    builder.finding = finding.mapToMutableList { it.toBuilder() }
+    builder.prognosisCodeableConcept = prognosisCodeableConcept.mapToMutableList { it.toBuilder() }
+    builder.prognosisReference = prognosisReference.mapToMutableList { it.toBuilder() }
+    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * One or more sets of investigations (signs, symptoms, etc.). The actual grouping of
@@ -343,15 +341,14 @@ public data class ClinicalImpression(
      */
     public val item: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          item = this@with.item.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.item = item.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -412,10 +409,10 @@ public data class ClinicalImpression(
       public fun build(): Investigation =
         Investigation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
-          item = item.map { it.build() },
+          item = item.mapToList { it.build() },
         )
     }
   }
@@ -475,17 +472,16 @@ public data class ClinicalImpression(
     /** Which investigations support finding or diagnosis. */
     public val basis: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          itemCodeableConcept = this@with.itemCodeableConcept?.toBuilder()
-          itemReference = this@with.itemReference?.toBuilder()
-          basis = this@with.basis?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.itemCodeableConcept = itemCodeableConcept?.toBuilder()
+      builder.itemReference = itemReference?.toBuilder()
+      builder.basis = basis?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -546,8 +542,8 @@ public data class ClinicalImpression(
       public fun build(): Finding =
         Finding(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           itemCodeableConcept = itemCodeableConcept?.build(),
           itemReference = itemReference?.build(),
           basis = basis?.build(),
@@ -819,10 +815,10 @@ public data class ClinicalImpression(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         statusReason = statusReason?.build(),
         code = code?.build(),
@@ -833,15 +829,15 @@ public data class ClinicalImpression(
         date = date?.build(),
         assessor = assessor?.build(),
         previous = previous?.build(),
-        problem = problem.map { it.build() },
-        investigation = investigation.map { it.build() },
-        protocol = protocol.map { it.build() },
+        problem = problem.mapToList { it.build() },
+        investigation = investigation.mapToList { it.build() },
+        protocol = protocol.mapToList { it.build() },
         summary = summary?.build(),
-        finding = finding.map { it.build() },
-        prognosisCodeableConcept = prognosisCodeableConcept.map { it.build() },
-        prognosisReference = prognosisReference.map { it.build() },
-        supportingInfo = supportingInfo.map { it.build() },
-        note = note.map { it.build() },
+        finding = finding.mapToList { it.build() },
+        prognosisCodeableConcept = prognosisCodeableConcept.mapToList { it.build() },
+        prognosisReference = prognosisReference.mapToList { it.build() },
+        supportingInfo = supportingInfo.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

@@ -152,26 +152,25 @@ public data class MedicinalProductInteraction(
   /** Actions for managing the interaction. */
   public val management: CodeableConcept? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        interactant = this@with.interactant.map { it.toBuilder() }.toMutableList()
-        type = this@with.type?.toBuilder()
-        effect = this@with.effect?.toBuilder()
-        incidence = this@with.incidence?.toBuilder()
-        management = this@with.management?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.interactant = interactant.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.effect = effect?.toBuilder()
+    builder.incidence = incidence?.toBuilder()
+    builder.management = management?.toBuilder()
+    return builder
+  }
 
   /** The specific medication, food or laboratory test that interacts. */
   @Serializable(with = MedicinalProductInteractionInteractantSerializer::class)
@@ -216,14 +215,13 @@ public data class MedicinalProductInteraction(
     /** The specific medication, food or laboratory test that interacts. */
     public val item: Item,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Item : FhirChoice {
       public fun asReference(): Reference? = this as? Reference
@@ -295,8 +293,8 @@ public data class MedicinalProductInteraction(
       public fun build(): Interactant =
         Interactant(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item,
         )
     }
@@ -442,12 +440,12 @@ public data class MedicinalProductInteraction(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        subject = subject.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        subject = subject.mapToList { it.build() },
         description = description?.build(),
-        interactant = interactant.map { it.build() },
+        interactant = interactant.mapToList { it.build() },
         type = type?.build(),
         effect = effect?.build(),
         incidence = incidence?.build(),

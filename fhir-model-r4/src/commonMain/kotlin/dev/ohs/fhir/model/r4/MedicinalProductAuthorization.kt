@@ -174,36 +174,36 @@ public data class MedicinalProductAuthorization(
   /** The regulatory procedure for granting or amending a marketing authorization. */
   public val procedure: Procedure? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        country = this@with.country.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        status = this@with.status?.toBuilder()
-        statusDate = this@with.statusDate?.toBuilder()
-        restoreDate = this@with.restoreDate?.toBuilder()
-        validityPeriod = this@with.validityPeriod?.toBuilder()
-        dataExclusivityPeriod = this@with.dataExclusivityPeriod?.toBuilder()
-        dateOfFirstAuthorization = this@with.dateOfFirstAuthorization?.toBuilder()
-        internationalBirthDate = this@with.internationalBirthDate?.toBuilder()
-        legalBasis = this@with.legalBasis?.toBuilder()
-        jurisdictionalAuthorization =
-          this@with.jurisdictionalAuthorization.map { it.toBuilder() }.toMutableList()
-        holder = this@with.holder?.toBuilder()
-        regulator = this@with.regulator?.toBuilder()
-        procedure = this@with.procedure?.toBuilder()
-      }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.country = country.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.status = status?.toBuilder()
+    builder.statusDate = statusDate?.toBuilder()
+    builder.restoreDate = restoreDate?.toBuilder()
+    builder.validityPeriod = validityPeriod?.toBuilder()
+    builder.dataExclusivityPeriod = dataExclusivityPeriod?.toBuilder()
+    builder.dateOfFirstAuthorization = dateOfFirstAuthorization?.toBuilder()
+    builder.internationalBirthDate = internationalBirthDate?.toBuilder()
+    builder.legalBasis = legalBasis?.toBuilder()
+    builder.jurisdictionalAuthorization = jurisdictionalAuthorization.mapToMutableList {
+      it.toBuilder()
     }
+    builder.holder = holder?.toBuilder()
+    builder.regulator = regulator?.toBuilder()
+    builder.procedure = procedure?.toBuilder()
+    return builder
+  }
 
   /** Authorization in areas within a country. */
   @Serializable(with = MedicinalProductAuthorizationJurisdictionalAuthorizationSerializer::class)
@@ -256,19 +256,18 @@ public data class MedicinalProductAuthorization(
     /** The start and expected end date of the authorization. */
     public val validityPeriod: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          country = this@with.country?.toBuilder()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          legalStatusOfSupply = this@with.legalStatusOfSupply?.toBuilder()
-          validityPeriod = this@with.validityPeriod?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.country = country?.toBuilder()
+      builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+      builder.legalStatusOfSupply = legalStatusOfSupply?.toBuilder()
+      builder.validityPeriod = validityPeriod?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -329,11 +328,11 @@ public data class MedicinalProductAuthorization(
       public fun build(): JurisdictionalAuthorization =
         JurisdictionalAuthorization(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
           country = country?.build(),
-          jurisdiction = jurisdiction.map { it.build() },
+          jurisdiction = jurisdiction.mapToList { it.build() },
           legalStatusOfSupply = legalStatusOfSupply?.build(),
           validityPeriod = validityPeriod?.build(),
         )
@@ -389,17 +388,16 @@ public data class MedicinalProductAuthorization(
     /** Applcations submitted to obtain a marketing authorization. */
     public val application: List<Procedure> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier?.toBuilder()
-          date = this@with.date
-          application = this@with.application.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier?.toBuilder()
+      builder.date = date
+      builder.application = application.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Date : FhirChoice {
       public fun asPeriod(): Period? = this as? Period
@@ -478,12 +476,12 @@ public data class MedicinalProductAuthorization(
       public fun build(): Procedure =
         Procedure(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identifier = identifier?.build(),
           type = type.build(),
           date = date,
-          application = application.map { it.build() },
+          application = application.mapToList { it.build() },
         )
     }
   }
@@ -662,13 +660,13 @@ public data class MedicinalProductAuthorization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         subject = subject?.build(),
-        country = country.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        country = country.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         status = status?.build(),
         statusDate = statusDate?.build(),
         restoreDate = restoreDate?.build(),
@@ -677,7 +675,7 @@ public data class MedicinalProductAuthorization(
         dateOfFirstAuthorization = dateOfFirstAuthorization?.build(),
         internationalBirthDate = internationalBirthDate?.build(),
         legalBasis = legalBasis?.build(),
-        jurisdictionalAuthorization = jurisdictionalAuthorization.map { it.build() },
+        jurisdictionalAuthorization = jurisdictionalAuthorization.mapToList { it.build() },
         holder = holder?.build(),
         regulator = regulator?.build(),
         procedure = procedure?.build(),

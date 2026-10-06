@@ -90,19 +90,18 @@ public data class RelatedArtifact(
    */
   public val resource: Canonical? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(type).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        label = this@with.label?.toBuilder()
-        display = this@with.display?.toBuilder()
-        citation = this@with.citation?.toBuilder()
-        url = this@with.url?.toBuilder()
-        document = this@with.document?.toBuilder()
-        resource = this@with.resource?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(type)
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.label = label?.toBuilder()
+    builder.display = display?.toBuilder()
+    builder.citation = citation?.toBuilder()
+    builder.url = url?.toBuilder()
+    builder.document = document?.toBuilder()
+    builder.resource = resource?.toBuilder()
+    return builder
+  }
 
   public open class Builder(
     /** The type of relationship to the related artifact. */
@@ -173,7 +172,7 @@ public data class RelatedArtifact(
     public open fun build(): RelatedArtifact =
       RelatedArtifact(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         type = type,
         label = label?.build(),
         display = display?.build(),

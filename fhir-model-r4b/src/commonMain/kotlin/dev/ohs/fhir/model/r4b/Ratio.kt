@@ -57,15 +57,14 @@ public data class Ratio(
   /** The value of the denominator. */
   public val denominator: Quantity? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        numerator = this@with.numerator?.toBuilder()
-        denominator = this@with.denominator?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.numerator = numerator?.toBuilder()
+    builder.denominator = denominator?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -97,7 +96,7 @@ public data class Ratio(
     public open fun build(): Ratio =
       Ratio(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         numerator = numerator?.build(),
         denominator = denominator?.build(),
       )

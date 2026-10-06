@@ -378,44 +378,43 @@ public data class ChargeItemDefinition(
    */
   public val propertyGroup: List<PropertyGroup> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        derivedFromUri = this@with.derivedFromUri.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        code = this@with.code?.toBuilder()
-        instance = this@with.instance.map { it.toBuilder() }.toMutableList()
-        applicability = this@with.applicability.map { it.toBuilder() }.toMutableList()
-        propertyGroup = this@with.propertyGroup.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.derivedFromUri = derivedFromUri.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.instance = instance.mapToMutableList { it.toBuilder() }
+    builder.applicability = applicability.mapToMutableList { it.toBuilder() }
+    builder.propertyGroup = propertyGroup.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Expressions that describe applicability criteria for the billing code. */
   @Serializable(with = ChargeItemDefinitionApplicabilitySerializer::class)
@@ -481,17 +480,16 @@ public data class ChargeItemDefinition(
     /** Reference to / quotation of the external source of the group of properties. */
     public val relatedArtifact: RelatedArtifact? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          condition = this@with.condition?.toBuilder()
-          effectivePeriod = this@with.effectivePeriod?.toBuilder()
-          relatedArtifact = this@with.relatedArtifact?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.condition = condition?.toBuilder()
+      builder.effectivePeriod = effectivePeriod?.toBuilder()
+      builder.relatedArtifact = relatedArtifact?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -563,8 +561,8 @@ public data class ChargeItemDefinition(
       public fun build(): Applicability =
         Applicability(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           condition = condition?.build(),
           effectivePeriod = effectivePeriod?.build(),
           relatedArtifact = relatedArtifact?.build(),
@@ -632,16 +630,15 @@ public data class ChargeItemDefinition(
      */
     public val priceComponent: List<MonetaryComponent> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          applicability = this@with.applicability.map { it.toBuilder() }.toMutableList()
-          priceComponent = this@with.priceComponent.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.applicability = applicability.mapToMutableList { it.toBuilder() }
+      builder.priceComponent = priceComponent.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -705,10 +702,10 @@ public data class ChargeItemDefinition(
       public fun build(): PropertyGroup =
         PropertyGroup(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          applicability = applicability.map { it.build() },
-          priceComponent = priceComponent.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          applicability = applicability.mapToList { it.build() },
+          priceComponent = priceComponent.mapToList { it.build() },
         )
     }
   }
@@ -1115,35 +1112,35 @@ public data class ChargeItemDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
         title = title?.build(),
-        derivedFromUri = derivedFromUri.map { it.build() },
-        partOf = partOf.map { it.build() },
-        replaces = replaces.map { it.build() },
+        derivedFromUri = derivedFromUri.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
+        replaces = replaces.mapToList { it.build() },
         status = status,
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         code = code?.build(),
-        instance = instance.map { it.build() },
-        applicability = applicability.map { it.build() },
-        propertyGroup = propertyGroup.map { it.build() },
+        instance = instance.mapToList { it.build() },
+        applicability = applicability.mapToList { it.build() },
+        propertyGroup = propertyGroup.mapToList { it.build() },
       )
   }
 }

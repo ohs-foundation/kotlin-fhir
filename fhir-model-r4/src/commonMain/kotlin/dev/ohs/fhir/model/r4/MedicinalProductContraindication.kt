@@ -154,27 +154,25 @@ public data class MedicinalProductContraindication(
   /** The population group to which this applies. */
   public val population: List<Population> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-        disease = this@with.disease?.toBuilder()
-        diseaseStatus = this@with.diseaseStatus?.toBuilder()
-        comorbidity = this@with.comorbidity.map { it.toBuilder() }.toMutableList()
-        therapeuticIndication =
-          this@with.therapeuticIndication.map { it.toBuilder() }.toMutableList()
-        otherTherapy = this@with.otherTherapy.map { it.toBuilder() }.toMutableList()
-        population = this@with.population.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.disease = disease?.toBuilder()
+    builder.diseaseStatus = diseaseStatus?.toBuilder()
+    builder.comorbidity = comorbidity.mapToMutableList { it.toBuilder() }
+    builder.therapeuticIndication = therapeuticIndication.mapToMutableList { it.toBuilder() }
+    builder.otherTherapy = otherTherapy.mapToMutableList { it.toBuilder() }
+    builder.population = population.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Information about the use of the medicinal product in relation to other therapies described as
@@ -230,18 +228,17 @@ public data class MedicinalProductContraindication(
      */
     public val medication: Medication,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            therapyRelationshipType.toBuilder(),
-            medication,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          therapyRelationshipType.toBuilder(),
+          medication,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Medication : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -322,8 +319,8 @@ public data class MedicinalProductContraindication(
       public fun build(): OtherTherapy =
         OtherTherapy(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           therapyRelationshipType = therapyRelationshipType.build(),
           medication = medication,
         )
@@ -470,16 +467,16 @@ public data class MedicinalProductContraindication(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        subject = subject.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        subject = subject.mapToList { it.build() },
         disease = disease?.build(),
         diseaseStatus = diseaseStatus?.build(),
-        comorbidity = comorbidity.map { it.build() },
-        therapeuticIndication = therapeuticIndication.map { it.build() },
-        otherTherapy = otherTherapy.map { it.build() },
-        population = population.map { it.build() },
+        comorbidity = comorbidity.mapToList { it.build() },
+        therapeuticIndication = therapeuticIndication.mapToList { it.build() },
+        otherTherapy = otherTherapy.mapToList { it.build() },
+        population = population.mapToList { it.build() },
       )
   }
 }

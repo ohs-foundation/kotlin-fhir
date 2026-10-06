@@ -208,38 +208,37 @@ public data class DeviceUsage(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          patient.toBuilder(),
-          device.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-          context = this@with.context?.toBuilder()
-          timing = this@with.timing
-          dateAsserted = this@with.dateAsserted?.toBuilder()
-          usageStatus = this@with.usageStatus?.toBuilder()
-          usageReason = this@with.usageReason.map { it.toBuilder() }.toMutableList()
-          adherence = this@with.adherence?.toBuilder()
-          informationSource = this@with.informationSource?.toBuilder()
-          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-          bodySite = this@with.bodySite?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        patient.toBuilder(),
+        device.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.context = context?.toBuilder()
+    builder.timing = timing
+    builder.dateAsserted = dateAsserted?.toBuilder()
+    builder.usageStatus = usageStatus?.toBuilder()
+    builder.usageReason = usageReason.mapToMutableList { it.toBuilder() }
+    builder.adherence = adherence?.toBuilder()
+    builder.informationSource = informationSource?.toBuilder()
+    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.bodySite = bodySite?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** This indicates how or if the device is being used. */
   @Serializable(with = DeviceUsageAdherenceSerializer::class)
@@ -286,18 +285,17 @@ public data class DeviceUsage(
     /** Reason for adherence type. */
     public val reason: List<CodeableConcept>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            code.toBuilder(),
-            reason.map { it.toBuilder() }.toMutableList(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          code.toBuilder(),
+          reason.mapToMutableList { it.toBuilder() },
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Type of adherence. */
@@ -348,10 +346,10 @@ public data class DeviceUsage(
       public fun build(): Adherence =
         Adherence(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
-          reason = reason.map { it.build() },
+          reason = reason.mapToList { it.build() },
         )
     }
   }
@@ -588,26 +586,26 @@ public data class DeviceUsage(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
         status = status,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         patient = patient.build(),
-        derivedFrom = derivedFrom.map { it.build() },
+        derivedFrom = derivedFrom.mapToList { it.build() },
         context = context?.build(),
         timing = timing,
         dateAsserted = dateAsserted?.build(),
         usageStatus = usageStatus?.build(),
-        usageReason = usageReason.map { it.build() },
+        usageReason = usageReason.mapToList { it.build() },
         adherence = adherence?.build(),
         informationSource = informationSource?.build(),
         device = device.build(),
-        reason = reason.map { it.build() },
+        reason = reason.mapToList { it.build() },
         bodySite = bodySite?.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

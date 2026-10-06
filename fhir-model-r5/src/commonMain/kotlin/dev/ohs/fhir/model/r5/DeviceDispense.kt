@@ -221,43 +221,41 @@ public data class DeviceDispense(
    */
   public val eventHistory: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          device.toBuilder(),
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          statusReason = this@with.statusReason?.toBuilder()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          `receiver` = this@with.`receiver`?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          supportingInformation =
-            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          type = this@with.type?.toBuilder()
-          quantity = this@with.quantity?.toBuilder()
-          preparedDate = this@with.preparedDate?.toBuilder()
-          whenHandedOver = this@with.whenHandedOver?.toBuilder()
-          destination = this@with.destination?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          usageInstruction = this@with.usageInstruction?.toBuilder()
-          eventHistory = this@with.eventHistory.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        device.toBuilder(),
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.statusReason = statusReason?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.`receiver` = `receiver`?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.type = type?.toBuilder()
+    builder.quantity = quantity?.toBuilder()
+    builder.preparedDate = preparedDate?.toBuilder()
+    builder.whenHandedOver = whenHandedOver?.toBuilder()
+    builder.destination = destination?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.usageInstruction = usageInstruction?.toBuilder()
+    builder.eventHistory = eventHistory.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Indicates who or what performed the event. */
   @Serializable(with = DeviceDispensePerformerSerializer::class)
@@ -310,15 +308,14 @@ public data class DeviceDispense(
      */
     public val actor: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(actor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(actor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -376,8 +373,8 @@ public data class DeviceDispense(
       public fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           function = function?.build(),
           actor = actor.build(),
         )
@@ -605,30 +602,30 @@ public data class DeviceDispense(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
         statusReason = statusReason?.build(),
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         device = device.build(),
         subject = subject.build(),
         `receiver` = `receiver`?.build(),
         encounter = encounter?.build(),
-        supportingInformation = supportingInformation.map { it.build() },
-        performer = performer.map { it.build() },
+        supportingInformation = supportingInformation.mapToList { it.build() },
+        performer = performer.mapToList { it.build() },
         location = location?.build(),
         type = type?.build(),
         quantity = quantity?.build(),
         preparedDate = preparedDate?.build(),
         whenHandedOver = whenHandedOver?.build(),
         destination = destination?.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
         usageInstruction = usageInstruction?.build(),
-        eventHistory = eventHistory.map { it.build() },
+        eventHistory = eventHistory.mapToList { it.build() },
       )
   }
 

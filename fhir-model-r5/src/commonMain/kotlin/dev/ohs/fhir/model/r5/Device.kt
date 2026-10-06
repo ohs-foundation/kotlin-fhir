@@ -326,51 +326,50 @@ public data class Device(
    */
   public val parent: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        displayName = this@with.displayName?.toBuilder()
-        definition = this@with.definition?.toBuilder()
-        udiCarrier = this@with.udiCarrier.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        availabilityStatus = this@with.availabilityStatus?.toBuilder()
-        biologicalSourceEvent = this@with.biologicalSourceEvent?.toBuilder()
-        manufacturer = this@with.manufacturer?.toBuilder()
-        manufactureDate = this@with.manufactureDate?.toBuilder()
-        expirationDate = this@with.expirationDate?.toBuilder()
-        lotNumber = this@with.lotNumber?.toBuilder()
-        serialNumber = this@with.serialNumber?.toBuilder()
-        name = this@with.name.map { it.toBuilder() }.toMutableList()
-        modelNumber = this@with.modelNumber?.toBuilder()
-        partNumber = this@with.partNumber?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        version = this@with.version.map { it.toBuilder() }.toMutableList()
-        conformsTo = this@with.conformsTo.map { it.toBuilder() }.toMutableList()
-        `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-        mode = this@with.mode?.toBuilder()
-        cycle = this@with.cycle?.toBuilder()
-        duration = this@with.duration?.toBuilder()
-        owner = this@with.owner?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        location = this@with.location?.toBuilder()
-        url = this@with.url?.toBuilder()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-        gateway = this@with.gateway.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        safety = this@with.safety.map { it.toBuilder() }.toMutableList()
-        parent = this@with.parent?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.displayName = displayName?.toBuilder()
+    builder.definition = definition?.toBuilder()
+    builder.udiCarrier = udiCarrier.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.availabilityStatus = availabilityStatus?.toBuilder()
+    builder.biologicalSourceEvent = biologicalSourceEvent?.toBuilder()
+    builder.manufacturer = manufacturer?.toBuilder()
+    builder.manufactureDate = manufactureDate?.toBuilder()
+    builder.expirationDate = expirationDate?.toBuilder()
+    builder.lotNumber = lotNumber?.toBuilder()
+    builder.serialNumber = serialNumber?.toBuilder()
+    builder.name = name.mapToMutableList { it.toBuilder() }
+    builder.modelNumber = modelNumber?.toBuilder()
+    builder.partNumber = partNumber?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.version = version.mapToMutableList { it.toBuilder() }
+    builder.conformsTo = conformsTo.mapToMutableList { it.toBuilder() }
+    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    builder.mode = mode?.toBuilder()
+    builder.cycle = cycle?.toBuilder()
+    builder.duration = duration?.toBuilder()
+    builder.owner = owner?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.url = url?.toBuilder()
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.gateway = gateway.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.safety = safety.mapToMutableList { it.toBuilder() }
+    builder.parent = parent?.toBuilder()
+    return builder
+  }
 
   /**
    * Unique device identifier (UDI) assigned to device label or package. Note that the Device may
@@ -463,18 +462,17 @@ public data class Device(
     /** A coded entry to indicate how the data was entered. */
     public val entryType: Enumeration<UDIEntryType>? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(deviceIdentifier.toBuilder(), issuer.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction?.toBuilder()
-          carrierAIDC = this@with.carrierAIDC?.toBuilder()
-          carrierHRF = this@with.carrierHRF?.toBuilder()
-          entryType = this@with.entryType
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(deviceIdentifier.toBuilder(), issuer.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.jurisdiction = jurisdiction?.toBuilder()
+      builder.carrierAIDC = carrierAIDC?.toBuilder()
+      builder.carrierHRF = carrierHRF?.toBuilder()
+      builder.entryType = entryType
+      return builder
+    }
 
     public class Builder(
       /**
@@ -571,8 +569,8 @@ public data class Device(
       public fun build(): UdiCarrier =
         UdiCarrier(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           deviceIdentifier = deviceIdentifier.build(),
           issuer = issuer.build(),
           jurisdiction = jurisdiction?.build(),
@@ -635,19 +633,18 @@ public data class Device(
     /** Indicates the default or preferred name to be displayed. */
     public val display: Boolean? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            `value`.toBuilder(),
-            type,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            display = this@with.display?.toBuilder()
-          }
-      }
+          `value`.toBuilder(),
+          type,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.display = display?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The actual name that identifies the device. */
@@ -701,8 +698,8 @@ public data class Device(
       public fun build(): Name =
         Name(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           `value` = `value`.build(),
           type = type,
           display = display?.build(),
@@ -765,17 +762,16 @@ public data class Device(
     /** The version text. */
     public val `value`: String,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(`value`.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          component = this@with.component?.toBuilder()
-          installDate = this@with.installDate?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(`value`.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.component = component?.toBuilder()
+      builder.installDate = installDate?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The version text. */
@@ -839,8 +835,8 @@ public data class Device(
       public fun build(): Version =
         Version(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           component = component?.build(),
           installDate = installDate?.build(),
@@ -906,16 +902,15 @@ public data class Device(
      */
     public val version: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(specification.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          category = this@with.category?.toBuilder()
-          version = this@with.version?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(specification.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.category = category?.toBuilder()
+      builder.version = version?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -977,8 +972,8 @@ public data class Device(
       public fun build(): ConformsTo =
         ConformsTo(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           category = category?.build(),
           specification = specification.build(),
           version = version?.build(),
@@ -1043,18 +1038,17 @@ public data class Device(
      */
     public val `value`: Value,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            type.toBuilder(),
-            `value`,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          type.toBuilder(),
+          `value`,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asQuantity(): Quantity? = this as? Quantity
@@ -1166,8 +1160,8 @@ public data class Device(
       public fun build(): Property =
         Property(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           `value` = `value`,
         )
@@ -1505,13 +1499,13 @@ public data class Device(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         displayName = displayName?.build(),
         definition = definition?.build(),
-        udiCarrier = udiCarrier.map { it.build() },
+        udiCarrier = udiCarrier.mapToList { it.build() },
         status = status,
         availabilityStatus = availabilityStatus?.build(),
         biologicalSourceEvent = biologicalSourceEvent?.build(),
@@ -1520,25 +1514,25 @@ public data class Device(
         expirationDate = expirationDate?.build(),
         lotNumber = lotNumber?.build(),
         serialNumber = serialNumber?.build(),
-        name = name.map { it.build() },
+        name = name.mapToList { it.build() },
         modelNumber = modelNumber?.build(),
         partNumber = partNumber?.build(),
-        category = category.map { it.build() },
-        type = type.map { it.build() },
-        version = version.map { it.build() },
-        conformsTo = conformsTo.map { it.build() },
-        `property` = `property`.map { it.build() },
+        category = category.mapToList { it.build() },
+        type = type.mapToList { it.build() },
+        version = version.mapToList { it.build() },
+        conformsTo = conformsTo.mapToList { it.build() },
+        `property` = `property`.mapToList { it.build() },
         mode = mode?.build(),
         cycle = cycle?.build(),
         duration = duration?.build(),
         owner = owner?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         location = location?.build(),
         url = url?.build(),
-        endpoint = endpoint.map { it.build() },
-        gateway = gateway.map { it.build() },
-        note = note.map { it.build() },
-        safety = safety.map { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
+        gateway = gateway.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        safety = safety.mapToList { it.build() },
         parent = parent?.build(),
       )
   }

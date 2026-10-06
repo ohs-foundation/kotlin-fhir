@@ -86,19 +86,18 @@ public data class ExtendedContactDetail(
    */
   public val period: Period? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        name = this@with.name.map { it.toBuilder() }.toMutableList()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-        address = this@with.address?.toBuilder()
-        organization = this@with.organization?.toBuilder()
-        period = this@with.period?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.name = name.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.address = address?.toBuilder()
+    builder.organization = organization?.toBuilder()
+    builder.period = period?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -164,10 +163,10 @@ public data class ExtendedContactDetail(
     public open fun build(): ExtendedContactDetail =
       ExtendedContactDetail(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         purpose = purpose?.build(),
-        name = name.map { it.build() },
-        telecom = telecom.map { it.build() },
+        name = name.mapToList { it.build() },
+        telecom = telecom.mapToList { it.build() },
         address = address?.build(),
         organization = organization?.build(),
         period = period?.build(),

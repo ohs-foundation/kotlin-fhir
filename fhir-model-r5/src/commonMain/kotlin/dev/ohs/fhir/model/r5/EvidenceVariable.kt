@@ -395,48 +395,47 @@ public data class EvidenceVariable(
   /** A grouping for ordinal or polychotomous variables. */
   public val category: List<Category> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        shortTitle = this@with.shortTitle?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        effectivePeriod = this@with.effectivePeriod?.toBuilder()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-        reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-        endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        `actual` = this@with.`actual`?.toBuilder()
-        characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-        handling = this@with.handling
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.shortTitle = shortTitle?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.effectivePeriod = effectivePeriod?.toBuilder()
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.editor = editor.mapToMutableList { it.toBuilder() }
+    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
+    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.`actual` = `actual`?.toBuilder()
+    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.handling = handling
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * A defining factor of the EvidenceVariable. Multiple characteristics are applied with "and"
@@ -522,28 +521,27 @@ public data class EvidenceVariable(
     /** Timing in which the characteristic is determined. */
     public val timeFromEvent: List<TimeFromEvent> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          linkId = this@with.linkId?.toBuilder()
-          description = this@with.description?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          exclude = this@with.exclude?.toBuilder()
-          definitionReference = this@with.definitionReference?.toBuilder()
-          definitionCanonical = this@with.definitionCanonical?.toBuilder()
-          definitionCodeableConcept = this@with.definitionCodeableConcept?.toBuilder()
-          definitionExpression = this@with.definitionExpression?.toBuilder()
-          definitionId = this@with.definitionId?.toBuilder()
-          definitionByTypeAndValue = this@with.definitionByTypeAndValue?.toBuilder()
-          definitionByCombination = this@with.definitionByCombination?.toBuilder()
-          instances = this@with.instances
-          duration = this@with.duration
-          timeFromEvent = this@with.timeFromEvent.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.linkId = linkId?.toBuilder()
+      builder.description = description?.toBuilder()
+      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.exclude = exclude?.toBuilder()
+      builder.definitionReference = definitionReference?.toBuilder()
+      builder.definitionCanonical = definitionCanonical?.toBuilder()
+      builder.definitionCodeableConcept = definitionCodeableConcept?.toBuilder()
+      builder.definitionExpression = definitionExpression?.toBuilder()
+      builder.definitionId = definitionId?.toBuilder()
+      builder.definitionByTypeAndValue = definitionByTypeAndValue?.toBuilder()
+      builder.definitionByCombination = definitionByCombination?.toBuilder()
+      builder.instances = instances
+      builder.duration = duration
+      builder.timeFromEvent = timeFromEvent.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Defines the characteristic using both a type and value[x] elements. */
     @Serializable(with = EvidenceVariableCharacteristicDefinitionByTypeAndValueSerializer::class)
@@ -599,21 +597,20 @@ public data class EvidenceVariable(
        */
       public val offset: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              type.toBuilder(),
-              `value`,
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              method = this@with.method.map { it.toBuilder() }.toMutableList()
-              device = this@with.device?.toBuilder()
-              offset = this@with.offset?.toBuilder()
-            }
-        }
+            type.toBuilder(),
+            `value`,
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.method = method.mapToMutableList { it.toBuilder() }
+        builder.device = device?.toBuilder()
+        builder.offset = offset?.toBuilder()
+        return builder
+      }
 
       public sealed interface Value : FhirChoice {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -723,10 +720,10 @@ public data class EvidenceVariable(
         public fun build(): DefinitionByTypeAndValue =
           DefinitionByTypeAndValue(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
-            method = method.map { it.build() },
+            method = method.mapToList { it.build() },
             device = device?.build(),
             `value` = `value`,
             offset = offset?.build(),
@@ -781,19 +778,18 @@ public data class EvidenceVariable(
       /** A defining factor of the characteristic. */
       public val characteristic: List<Characteristic>,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              code,
-              characteristic.map { it.toBuilder() }.toMutableList(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              threshold = this@with.threshold?.toBuilder()
-            }
-        }
+            code,
+            characteristic.mapToMutableList { it.toBuilder() },
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.threshold = threshold?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** Used to specify if two or more characteristics are combined with OR or AND. */
@@ -847,11 +843,11 @@ public data class EvidenceVariable(
         public fun build(): DefinitionByCombination =
           DefinitionByCombination(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code,
             threshold = threshold?.build(),
-            characteristic = characteristic.map { it.build() },
+            characteristic = characteristic.mapToList { it.build() },
           )
       }
     }
@@ -907,19 +903,18 @@ public data class EvidenceVariable(
       /** Used to express the observation within a period before and/or after the event. */
       public val range: Range? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-            note = this@with.note.map { it.toBuilder() }.toMutableList()
-            event = this@with.event
-            quantity = this@with.quantity?.toBuilder()
-            range = this@with.range?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.description = description?.toBuilder()
+        builder.note = note.mapToMutableList { it.toBuilder() }
+        builder.event = event
+        builder.quantity = quantity?.toBuilder()
+        builder.range = range?.toBuilder()
+        return builder
+      }
 
       public sealed interface Event : FhirChoice {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -1017,10 +1012,10 @@ public data class EvidenceVariable(
         public fun build(): TimeFromEvent =
           TimeFromEvent(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             description = description?.build(),
-            note = note.map { it.build() },
+            note = note.mapToList { it.build() },
             event = event,
             quantity = quantity?.build(),
             range = range?.build(),
@@ -1168,11 +1163,11 @@ public data class EvidenceVariable(
       public fun build(): Characteristic =
         Characteristic(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           linkId = linkId?.build(),
           description = description?.build(),
-          note = note.map { it.build() },
+          note = note.mapToList { it.build() },
           exclude = exclude?.build(),
           definitionReference = definitionReference?.build(),
           definitionCanonical = definitionCanonical?.build(),
@@ -1183,7 +1178,7 @@ public data class EvidenceVariable(
           definitionByCombination = definitionByCombination?.build(),
           instances = instances,
           duration = duration,
-          timeFromEvent = timeFromEvent.map { it.build() },
+          timeFromEvent = timeFromEvent.mapToList { it.build() },
         )
     }
   }
@@ -1233,16 +1228,15 @@ public data class EvidenceVariable(
     /** Definition of the grouping. */
     public val `value`: Value? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          `value` = this@with.`value`
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.`value` = `value`
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -1323,8 +1317,8 @@ public data class EvidenceVariable(
       public fun build(): Category =
         Category(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name?.build(),
           `value` = `value`,
         )
@@ -1758,11 +1752,11 @@ public data class EvidenceVariable(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -1772,25 +1766,25 @@ public data class EvidenceVariable(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        note = note.map { it.build() },
-        useContext = useContext.map { it.build() },
+        note = note.mapToList { it.build() },
+        useContext = useContext.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        author = author.map { it.build() },
-        editor = editor.map { it.build() },
-        reviewer = reviewer.map { it.build() },
-        endorser = endorser.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
+        author = author.mapToList { it.build() },
+        editor = editor.mapToList { it.build() },
+        reviewer = reviewer.mapToList { it.build() },
+        endorser = endorser.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
         `actual` = `actual`?.build(),
-        characteristic = characteristic.map { it.build() },
+        characteristic = characteristic.mapToList { it.build() },
         handling = handling,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
       )
   }
 

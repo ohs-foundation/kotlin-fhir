@@ -180,42 +180,39 @@ public data class MedicinalProduct(
    */
   public val specialDesignation: List<SpecialDesignation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(name.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        type = this@with.type?.toBuilder()
-        domain = this@with.domain?.toBuilder()
-        combinedPharmaceuticalDoseForm = this@with.combinedPharmaceuticalDoseForm?.toBuilder()
-        legalStatusOfSupply = this@with.legalStatusOfSupply?.toBuilder()
-        additionalMonitoringIndicator = this@with.additionalMonitoringIndicator?.toBuilder()
-        specialMeasures = this@with.specialMeasures.map { it.toBuilder() }.toMutableList()
-        paediatricUseIndicator = this@with.paediatricUseIndicator?.toBuilder()
-        productClassification =
-          this@with.productClassification.map { it.toBuilder() }.toMutableList()
-        marketingStatus = this@with.marketingStatus.map { it.toBuilder() }.toMutableList()
-        pharmaceuticalProduct =
-          this@with.pharmaceuticalProduct.map { it.toBuilder() }.toMutableList()
-        packagedMedicinalProduct =
-          this@with.packagedMedicinalProduct.map { it.toBuilder() }.toMutableList()
-        attachedDocument = this@with.attachedDocument.map { it.toBuilder() }.toMutableList()
-        masterFile = this@with.masterFile.map { it.toBuilder() }.toMutableList()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        clinicalTrial = this@with.clinicalTrial.map { it.toBuilder() }.toMutableList()
-        crossReference = this@with.crossReference.map { it.toBuilder() }.toMutableList()
-        manufacturingBusinessOperation =
-          this@with.manufacturingBusinessOperation.map { it.toBuilder() }.toMutableList()
-        specialDesignation = this@with.specialDesignation.map { it.toBuilder() }.toMutableList()
-      }
+  override fun toBuilder(): Builder {
+    val builder = Builder(name.mapToMutableList { it.toBuilder() })
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.domain = domain?.toBuilder()
+    builder.combinedPharmaceuticalDoseForm = combinedPharmaceuticalDoseForm?.toBuilder()
+    builder.legalStatusOfSupply = legalStatusOfSupply?.toBuilder()
+    builder.additionalMonitoringIndicator = additionalMonitoringIndicator?.toBuilder()
+    builder.specialMeasures = specialMeasures.mapToMutableList { it.toBuilder() }
+    builder.paediatricUseIndicator = paediatricUseIndicator?.toBuilder()
+    builder.productClassification = productClassification.mapToMutableList { it.toBuilder() }
+    builder.marketingStatus = marketingStatus.mapToMutableList { it.toBuilder() }
+    builder.pharmaceuticalProduct = pharmaceuticalProduct.mapToMutableList { it.toBuilder() }
+    builder.packagedMedicinalProduct = packagedMedicinalProduct.mapToMutableList { it.toBuilder() }
+    builder.attachedDocument = attachedDocument.mapToMutableList { it.toBuilder() }
+    builder.masterFile = masterFile.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.clinicalTrial = clinicalTrial.mapToMutableList { it.toBuilder() }
+    builder.crossReference = crossReference.mapToMutableList { it.toBuilder() }
+    builder.manufacturingBusinessOperation = manufacturingBusinessOperation.mapToMutableList {
+      it.toBuilder()
     }
+    builder.specialDesignation = specialDesignation.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The product's name, including full name and possibly coded parts. */
   @Serializable(with = MedicinalProductNameSerializer::class)
@@ -264,16 +261,15 @@ public data class MedicinalProduct(
     /** Country where the name applies. */
     public val countryLanguage: List<CountryLanguage> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(productName.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          namePart = this@with.namePart.map { it.toBuilder() }.toMutableList()
-          countryLanguage = this@with.countryLanguage.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(productName.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.namePart = namePart.mapToMutableList { it.toBuilder() }
+      builder.countryLanguage = countryLanguage.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Coding words or phrases of the name. */
     @Serializable(with = MedicinalProductNameNamePartSerializer::class)
@@ -320,14 +316,13 @@ public data class MedicinalProduct(
       /** Idenifying type for this part of the name (e.g. strength part). */
       public val type: Coding,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(part.toBuilder(), type.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(part.toBuilder(), type.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /** A fragment of a product name. */
@@ -378,8 +373,8 @@ public data class MedicinalProduct(
         public fun build(): NamePart =
           NamePart(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             part = part.build(),
             type = type.build(),
           )
@@ -433,15 +428,14 @@ public data class MedicinalProduct(
       /** Language code for this name. */
       public val language: CodeableConcept,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(country.toBuilder(), language.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            jurisdiction = this@with.jurisdiction?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(country.toBuilder(), language.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.jurisdiction = jurisdiction?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** Country code for where this name applies. */
@@ -495,8 +489,8 @@ public data class MedicinalProduct(
         public fun build(): CountryLanguage =
           CountryLanguage(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             country = country.build(),
             jurisdiction = jurisdiction?.build(),
             language = language.build(),
@@ -557,11 +551,11 @@ public data class MedicinalProduct(
       public fun build(): Name =
         Name(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           productName = productName.build(),
-          namePart = namePart.map { it.build() },
-          countryLanguage = countryLanguage.map { it.build() },
+          namePart = namePart.mapToList { it.build() },
+          countryLanguage = countryLanguage.mapToList { it.build() },
         )
     }
   }
@@ -619,20 +613,19 @@ public data class MedicinalProduct(
     /** A regulator which oversees the operation. */
     public val regulator: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          operationType = this@with.operationType?.toBuilder()
-          authorisationReferenceNumber = this@with.authorisationReferenceNumber?.toBuilder()
-          effectiveDate = this@with.effectiveDate?.toBuilder()
-          confidentialityIndicator = this@with.confidentialityIndicator?.toBuilder()
-          manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-          regulator = this@with.regulator?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.operationType = operationType?.toBuilder()
+      builder.authorisationReferenceNumber = authorisationReferenceNumber?.toBuilder()
+      builder.effectiveDate = effectiveDate?.toBuilder()
+      builder.confidentialityIndicator = confidentialityIndicator?.toBuilder()
+      builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+      builder.regulator = regulator?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -696,13 +689,13 @@ public data class MedicinalProduct(
       public fun build(): ManufacturingBusinessOperation =
         ManufacturingBusinessOperation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           operationType = operationType?.build(),
           authorisationReferenceNumber = authorisationReferenceNumber?.build(),
           effectiveDate = effectiveDate?.build(),
           confidentialityIndicator = confidentialityIndicator?.build(),
-          manufacturer = manufacturer.map { it.build() },
+          manufacturer = manufacturer.mapToList { it.build() },
           regulator = regulator?.build(),
         )
     }
@@ -766,21 +759,20 @@ public data class MedicinalProduct(
     /** Animal species for which this applies. */
     public val species: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          intendedUse = this@with.intendedUse?.toBuilder()
-          indication = this@with.indication
-          status = this@with.status?.toBuilder()
-          date = this@with.date?.toBuilder()
-          species = this@with.species?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.intendedUse = intendedUse?.toBuilder()
+      builder.indication = indication
+      builder.status = status?.toBuilder()
+      builder.date = date?.toBuilder()
+      builder.species = species?.toBuilder()
+      return builder
+    }
 
     public sealed interface Indication : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -871,9 +863,9 @@ public data class MedicinalProduct(
       public fun build(): SpecialDesignation =
         SpecialDesignation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
           type = type?.build(),
           intendedUse = intendedUse?.build(),
           indication = indication,
@@ -1061,29 +1053,29 @@ public data class MedicinalProduct(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         type = type?.build(),
         domain = domain?.build(),
         combinedPharmaceuticalDoseForm = combinedPharmaceuticalDoseForm?.build(),
         legalStatusOfSupply = legalStatusOfSupply?.build(),
         additionalMonitoringIndicator = additionalMonitoringIndicator?.build(),
-        specialMeasures = specialMeasures.map { it.build() },
+        specialMeasures = specialMeasures.mapToList { it.build() },
         paediatricUseIndicator = paediatricUseIndicator?.build(),
-        productClassification = productClassification.map { it.build() },
-        marketingStatus = marketingStatus.map { it.build() },
-        pharmaceuticalProduct = pharmaceuticalProduct.map { it.build() },
-        packagedMedicinalProduct = packagedMedicinalProduct.map { it.build() },
-        attachedDocument = attachedDocument.map { it.build() },
-        masterFile = masterFile.map { it.build() },
-        contact = contact.map { it.build() },
-        clinicalTrial = clinicalTrial.map { it.build() },
-        name = name.map { it.build() },
-        crossReference = crossReference.map { it.build() },
-        manufacturingBusinessOperation = manufacturingBusinessOperation.map { it.build() },
-        specialDesignation = specialDesignation.map { it.build() },
+        productClassification = productClassification.mapToList { it.build() },
+        marketingStatus = marketingStatus.mapToList { it.build() },
+        pharmaceuticalProduct = pharmaceuticalProduct.mapToList { it.build() },
+        packagedMedicinalProduct = packagedMedicinalProduct.mapToList { it.build() },
+        attachedDocument = attachedDocument.mapToList { it.build() },
+        masterFile = masterFile.mapToList { it.build() },
+        contact = contact.mapToList { it.build() },
+        clinicalTrial = clinicalTrial.mapToList { it.build() },
+        name = name.mapToList { it.build() },
+        crossReference = crossReference.mapToList { it.build() },
+        manufacturingBusinessOperation = manufacturingBusinessOperation.mapToList { it.build() },
+        specialDesignation = specialDesignation.mapToList { it.build() },
       )
   }
 }

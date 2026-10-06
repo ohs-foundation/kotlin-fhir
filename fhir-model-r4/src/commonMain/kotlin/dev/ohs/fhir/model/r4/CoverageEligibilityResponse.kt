@@ -209,36 +209,35 @@ public data class CoverageEligibilityResponse(
   /** Errors encountered during the processing of the request. */
   public val error: List<Error> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          purpose.toMutableList(),
-          patient.toBuilder(),
-          created.toBuilder(),
-          request.toBuilder(),
-          outcome,
-          insurer.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          serviced = this@with.serviced
-          requestor = this@with.requestor?.toBuilder()
-          disposition = this@with.disposition?.toBuilder()
-          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-          preAuthRef = this@with.preAuthRef?.toBuilder()
-          form = this@with.form?.toBuilder()
-          error = this@with.error.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        purpose.toMutableList(),
+        patient.toBuilder(),
+        created.toBuilder(),
+        request.toBuilder(),
+        outcome,
+        insurer.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.serviced = serviced
+    builder.requestor = requestor?.toBuilder()
+    builder.disposition = disposition?.toBuilder()
+    builder.insurance = insurance.mapToMutableList { it.toBuilder() }
+    builder.preAuthRef = preAuthRef?.toBuilder()
+    builder.form = form?.toBuilder()
+    builder.error = error.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Financial instruments for reimbursement for the health care products and services. */
   @Serializable(with = CoverageEligibilityResponseInsuranceSerializer::class)
@@ -298,17 +297,16 @@ public data class CoverageEligibilityResponse(
      */
     public val item: List<Item> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(coverage.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          inforce = this@with.inforce?.toBuilder()
-          benefitPeriod = this@with.benefitPeriod?.toBuilder()
-          item = this@with.item.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(coverage.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.inforce = inforce?.toBuilder()
+      builder.benefitPeriod = benefitPeriod?.toBuilder()
+      builder.item = item.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Benefits and optionally current balances, and authorization details by category or service.
@@ -423,29 +421,29 @@ public data class CoverageEligibilityResponse(
        */
       public val authorizationUrl: Uri? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            category = this@with.category?.toBuilder()
-            productOrService = this@with.productOrService?.toBuilder()
-            modifier = this@with.modifier.map { it.toBuilder() }.toMutableList()
-            provider = this@with.provider?.toBuilder()
-            excluded = this@with.excluded?.toBuilder()
-            name = this@with.name?.toBuilder()
-            description = this@with.description?.toBuilder()
-            network = this@with.network?.toBuilder()
-            unit = this@with.unit?.toBuilder()
-            term = this@with.term?.toBuilder()
-            benefit = this@with.benefit.map { it.toBuilder() }.toMutableList()
-            authorizationRequired = this@with.authorizationRequired?.toBuilder()
-            authorizationSupporting =
-              this@with.authorizationSupporting.map { it.toBuilder() }.toMutableList()
-            authorizationUrl = this@with.authorizationUrl?.toBuilder()
-          }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.category = category?.toBuilder()
+        builder.productOrService = productOrService?.toBuilder()
+        builder.modifier = modifier.mapToMutableList { it.toBuilder() }
+        builder.provider = provider?.toBuilder()
+        builder.excluded = excluded?.toBuilder()
+        builder.name = name?.toBuilder()
+        builder.description = description?.toBuilder()
+        builder.network = network?.toBuilder()
+        builder.unit = unit?.toBuilder()
+        builder.term = term?.toBuilder()
+        builder.benefit = benefit.mapToMutableList { it.toBuilder() }
+        builder.authorizationRequired = authorizationRequired?.toBuilder()
+        builder.authorizationSupporting = authorizationSupporting.mapToMutableList {
+          it.toBuilder()
         }
+        builder.authorizationUrl = authorizationUrl?.toBuilder()
+        return builder
+      }
 
       /** Benefits used to date. */
       @Serializable(with = CoverageEligibilityResponseInsuranceItemBenefitSerializer::class)
@@ -498,16 +496,15 @@ public data class CoverageEligibilityResponse(
         /** The quantity of the benefit which have been consumed to date. */
         public val used: Used? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(type.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              allowed = this@with.allowed
-              used = this@with.used
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(type.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.allowed = allowed
+          builder.used = used
+          return builder
+        }
 
         public sealed interface Allowed : FhirChoice {
           public fun asUnsignedInt(): UnsignedInt? = this as? UnsignedInt
@@ -622,8 +619,8 @@ public data class CoverageEligibilityResponse(
           public fun build(): Benefit =
             Benefit(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               type = type.build(),
               allowed = allowed,
               used = used,
@@ -759,11 +756,11 @@ public data class CoverageEligibilityResponse(
         public fun build(): Item =
           Item(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             category = category?.build(),
             productOrService = productOrService?.build(),
-            modifier = modifier.map { it.build() },
+            modifier = modifier.mapToList { it.build() },
             provider = provider?.build(),
             excluded = excluded?.build(),
             name = name?.build(),
@@ -771,9 +768,9 @@ public data class CoverageEligibilityResponse(
             network = network?.build(),
             unit = unit?.build(),
             term = term?.build(),
-            benefit = benefit.map { it.build() },
+            benefit = benefit.mapToList { it.build() },
             authorizationRequired = authorizationRequired?.build(),
-            authorizationSupporting = authorizationSupporting.map { it.build() },
+            authorizationSupporting = authorizationSupporting.mapToList { it.build() },
             authorizationUrl = authorizationUrl?.build(),
           )
       }
@@ -844,12 +841,12 @@ public data class CoverageEligibilityResponse(
       public fun build(): Insurance =
         Insurance(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           coverage = coverage.build(),
           inforce = inforce?.build(),
           benefitPeriod = benefitPeriod?.build(),
-          item = item.map { it.build() },
+          item = item.mapToList { it.build() },
         )
     }
   }
@@ -900,14 +897,13 @@ public data class CoverageEligibilityResponse(
      */
     public val code: CodeableConcept,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -959,8 +955,8 @@ public data class CoverageEligibilityResponse(
       public fun build(): Error =
         Error(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
         )
     }
@@ -1181,10 +1177,10 @@ public data class CoverageEligibilityResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         purpose = purpose,
         patient = patient.build(),
@@ -1195,10 +1191,10 @@ public data class CoverageEligibilityResponse(
         outcome = outcome,
         disposition = disposition?.build(),
         insurer = insurer.build(),
-        insurance = insurance.map { it.build() },
+        insurance = insurance.mapToList { it.build() },
         preAuthRef = preAuthRef?.build(),
         form = form?.build(),
-        error = error.map { it.build() },
+        error = error.mapToList { it.build() },
       )
   }
 

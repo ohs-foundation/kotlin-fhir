@@ -522,63 +522,62 @@ public data class Measure(
    */
   public val supplementalData: List<SupplementalData> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        subtitle = this@with.subtitle?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        subject = this@with.subject
-        basis = this@with.basis
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        usage = this@with.usage?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        effectivePeriod = this@with.effectivePeriod?.toBuilder()
-        topic = this@with.topic.map { it.toBuilder() }.toMutableList()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-        reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-        endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        library = this@with.library.map { it.toBuilder() }.toMutableList()
-        disclaimer = this@with.disclaimer?.toBuilder()
-        scoring = this@with.scoring?.toBuilder()
-        scoringUnit = this@with.scoringUnit?.toBuilder()
-        compositeScoring = this@with.compositeScoring?.toBuilder()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        riskAdjustment = this@with.riskAdjustment?.toBuilder()
-        rateAggregation = this@with.rateAggregation?.toBuilder()
-        rationale = this@with.rationale?.toBuilder()
-        clinicalRecommendationStatement = this@with.clinicalRecommendationStatement?.toBuilder()
-        improvementNotation = this@with.improvementNotation?.toBuilder()
-        term = this@with.term.map { it.toBuilder() }.toMutableList()
-        guidance = this@with.guidance?.toBuilder()
-        group = this@with.group.map { it.toBuilder() }.toMutableList()
-        supplementalData = this@with.supplementalData.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.subtitle = subtitle?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.subject = subject
+    builder.basis = basis
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.usage = usage?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.effectivePeriod = effectivePeriod?.toBuilder()
+    builder.topic = topic.mapToMutableList { it.toBuilder() }
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.editor = editor.mapToMutableList { it.toBuilder() }
+    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
+    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.library = library.mapToMutableList { it.toBuilder() }
+    builder.disclaimer = disclaimer?.toBuilder()
+    builder.scoring = scoring?.toBuilder()
+    builder.scoringUnit = scoringUnit?.toBuilder()
+    builder.compositeScoring = compositeScoring?.toBuilder()
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.riskAdjustment = riskAdjustment?.toBuilder()
+    builder.rateAggregation = rateAggregation?.toBuilder()
+    builder.rationale = rationale?.toBuilder()
+    builder.clinicalRecommendationStatement = clinicalRecommendationStatement?.toBuilder()
+    builder.improvementNotation = improvementNotation?.toBuilder()
+    builder.term = term.mapToMutableList { it.toBuilder() }
+    builder.guidance = guidance?.toBuilder()
+    builder.group = group.mapToMutableList { it.toBuilder() }
+    builder.supplementalData = supplementalData.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Provides a description of an individual term used within the measure. */
   @Serializable(with = MeasureTermSerializer::class)
@@ -625,16 +624,15 @@ public data class Measure(
     /** Provides a definition for the term as used within the measure. */
     public val definition: Markdown? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          definition = this@with.definition?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code?.toBuilder()
+      builder.definition = definition?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -686,8 +684,8 @@ public data class Measure(
       public fun build(): Term =
         Term(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code?.build(),
           definition = definition?.build(),
         )
@@ -840,27 +838,26 @@ public data class Measure(
      */
     public val stratifier: List<Stratifier> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          linkId = this@with.linkId?.toBuilder()
-          code = this@with.code?.toBuilder()
-          description = this@with.description?.toBuilder()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject
-          basis = this@with.basis
-          scoring = this@with.scoring?.toBuilder()
-          scoringUnit = this@with.scoringUnit?.toBuilder()
-          rateAggregation = this@with.rateAggregation?.toBuilder()
-          improvementNotation = this@with.improvementNotation?.toBuilder()
-          library = this@with.library.map { it.toBuilder() }.toMutableList()
-          population = this@with.population.map { it.toBuilder() }.toMutableList()
-          stratifier = this@with.stratifier.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.linkId = linkId?.toBuilder()
+      builder.code = code?.toBuilder()
+      builder.description = description?.toBuilder()
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.subject = subject
+      builder.basis = basis
+      builder.scoring = scoring?.toBuilder()
+      builder.scoringUnit = scoringUnit?.toBuilder()
+      builder.rateAggregation = rateAggregation?.toBuilder()
+      builder.improvementNotation = improvementNotation?.toBuilder()
+      builder.library = library.mapToMutableList { it.toBuilder() }
+      builder.population = population.mapToMutableList { it.toBuilder() }
+      builder.stratifier = stratifier.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** A population criteria for the measure. */
     @Serializable(with = MeasureGroupPopulationSerializer::class)
@@ -954,21 +951,20 @@ public data class Measure(
        */
       public val aggregateMethod: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            linkId = this@with.linkId?.toBuilder()
-            code = this@with.code?.toBuilder()
-            description = this@with.description?.toBuilder()
-            criteria = this@with.criteria?.toBuilder()
-            groupDefinition = this@with.groupDefinition?.toBuilder()
-            inputPopulationId = this@with.inputPopulationId?.toBuilder()
-            aggregateMethod = this@with.aggregateMethod?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.linkId = linkId?.toBuilder()
+        builder.code = code?.toBuilder()
+        builder.description = description?.toBuilder()
+        builder.criteria = criteria?.toBuilder()
+        builder.groupDefinition = groupDefinition?.toBuilder()
+        builder.inputPopulationId = inputPopulationId?.toBuilder()
+        builder.aggregateMethod = aggregateMethod?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -1072,8 +1068,8 @@ public data class Measure(
         public fun build(): Population =
           Population(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             linkId = linkId?.build(),
             code = code?.build(),
             description = description?.build(),
@@ -1170,20 +1166,19 @@ public data class Measure(
        */
       public val component: List<Component> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            linkId = this@with.linkId?.toBuilder()
-            code = this@with.code?.toBuilder()
-            description = this@with.description?.toBuilder()
-            criteria = this@with.criteria?.toBuilder()
-            groupDefinition = this@with.groupDefinition?.toBuilder()
-            component = this@with.component.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.linkId = linkId?.toBuilder()
+        builder.code = code?.toBuilder()
+        builder.description = description?.toBuilder()
+        builder.criteria = criteria?.toBuilder()
+        builder.groupDefinition = groupDefinition?.toBuilder()
+        builder.component = component.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /**
        * A component of the stratifier criteria for the measure report, specified as either the name
@@ -1264,19 +1259,18 @@ public data class Measure(
          */
         public val groupDefinition: Reference? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              linkId = this@with.linkId?.toBuilder()
-              code = this@with.code?.toBuilder()
-              description = this@with.description?.toBuilder()
-              criteria = this@with.criteria?.toBuilder()
-              groupDefinition = this@with.groupDefinition?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.linkId = linkId?.toBuilder()
+          builder.code = code?.toBuilder()
+          builder.description = description?.toBuilder()
+          builder.criteria = criteria?.toBuilder()
+          builder.groupDefinition = groupDefinition?.toBuilder()
+          return builder
+        }
 
         public class Builder() {
           /**
@@ -1361,8 +1355,8 @@ public data class Measure(
           public fun build(): Component =
             Component(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               linkId = linkId?.build(),
               code = code?.build(),
               description = description?.build(),
@@ -1464,14 +1458,14 @@ public data class Measure(
         public fun build(): Stratifier =
           Stratifier(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             linkId = linkId?.build(),
             code = code?.build(),
             description = description?.build(),
             criteria = criteria?.build(),
             groupDefinition = groupDefinition?.build(),
-            component = component.map { it.build() },
+            component = component.mapToList { it.build() },
           )
       }
     }
@@ -1663,21 +1657,21 @@ public data class Measure(
       public fun build(): Group =
         Group(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           linkId = linkId?.build(),
           code = code?.build(),
           description = description?.build(),
-          type = type.map { it.build() },
+          type = type.mapToList { it.build() },
           subject = subject,
           basis = basis,
           scoring = scoring?.build(),
           scoringUnit = scoringUnit?.build(),
           rateAggregation = rateAggregation?.build(),
           improvementNotation = improvementNotation?.build(),
-          library = library.map { it.build() },
-          population = population.map { it.build() },
-          stratifier = stratifier.map { it.build() },
+          library = library.mapToList { it.build() },
+          population = population.mapToList { it.build() },
+          stratifier = stratifier.mapToList { it.build() },
         )
     }
   }
@@ -1758,18 +1752,17 @@ public data class Measure(
      */
     public val criteria: Expression,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(criteria.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          linkId = this@with.linkId?.toBuilder()
-          code = this@with.code?.toBuilder()
-          usage = this@with.usage.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(criteria.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.linkId = linkId?.toBuilder()
+      builder.code = code?.toBuilder()
+      builder.usage = usage.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1852,11 +1845,11 @@ public data class Measure(
       public fun build(): SupplementalData =
         SupplementalData(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           linkId = linkId?.build(),
           code = code?.build(),
-          usage = usage.map { it.build() },
+          usage = usage.mapToList { it.build() },
           description = description?.build(),
           criteria = criteria.build(),
         )
@@ -2454,11 +2447,11 @@ public data class Measure(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -2470,10 +2463,10 @@ public data class Measure(
         basis = basis,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         usage = usage?.build(),
         copyright = copyright?.build(),
@@ -2481,27 +2474,27 @@ public data class Measure(
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.map { it.build() },
-        author = author.map { it.build() },
-        editor = editor.map { it.build() },
-        reviewer = reviewer.map { it.build() },
-        endorser = endorser.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
-        library = library.map { it.build() },
+        topic = topic.mapToList { it.build() },
+        author = author.mapToList { it.build() },
+        editor = editor.mapToList { it.build() },
+        reviewer = reviewer.mapToList { it.build() },
+        endorser = endorser.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        library = library.mapToList { it.build() },
         disclaimer = disclaimer?.build(),
         scoring = scoring?.build(),
         scoringUnit = scoringUnit?.build(),
         compositeScoring = compositeScoring?.build(),
-        type = type.map { it.build() },
+        type = type.mapToList { it.build() },
         riskAdjustment = riskAdjustment?.build(),
         rateAggregation = rateAggregation?.build(),
         rationale = rationale?.build(),
         clinicalRecommendationStatement = clinicalRecommendationStatement?.build(),
         improvementNotation = improvementNotation?.build(),
-        term = term.map { it.build() },
+        term = term.mapToList { it.build() },
         guidance = guidance?.build(),
-        group = group.map { it.build() },
-        supplementalData = supplementalData.map { it.build() },
+        group = group.mapToList { it.build() },
+        supplementalData = supplementalData.mapToList { it.build() },
       )
   }
 }

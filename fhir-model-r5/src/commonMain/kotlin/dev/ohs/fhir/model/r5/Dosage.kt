@@ -148,29 +148,27 @@ public data class Dosage(
   /** Upper limit on medication per lifetime of the patient. */
   public val maxDosePerLifetime: Quantity? = null,
 ) : BackboneType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        sequence = this@with.sequence?.toBuilder()
-        text = this@with.text?.toBuilder()
-        additionalInstruction =
-          this@with.additionalInstruction.map { it.toBuilder() }.toMutableList()
-        patientInstruction = this@with.patientInstruction?.toBuilder()
-        timing = this@with.timing?.toBuilder()
-        asNeeded = this@with.asNeeded?.toBuilder()
-        asNeededFor = this@with.asNeededFor.map { it.toBuilder() }.toMutableList()
-        site = this@with.site?.toBuilder()
-        route = this@with.route?.toBuilder()
-        method = this@with.method?.toBuilder()
-        doseAndRate = this@with.doseAndRate.map { it.toBuilder() }.toMutableList()
-        maxDosePerPeriod = this@with.maxDosePerPeriod.map { it.toBuilder() }.toMutableList()
-        maxDosePerAdministration = this@with.maxDosePerAdministration?.toBuilder()
-        maxDosePerLifetime = this@with.maxDosePerLifetime?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.sequence = sequence?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.additionalInstruction = additionalInstruction.mapToMutableList { it.toBuilder() }
+    builder.patientInstruction = patientInstruction?.toBuilder()
+    builder.timing = timing?.toBuilder()
+    builder.asNeeded = asNeeded?.toBuilder()
+    builder.asNeededFor = asNeededFor.mapToMutableList { it.toBuilder() }
+    builder.site = site?.toBuilder()
+    builder.route = route?.toBuilder()
+    builder.method = method?.toBuilder()
+    builder.doseAndRate = doseAndRate.mapToMutableList { it.toBuilder() }
+    builder.maxDosePerPeriod = maxDosePerPeriod.mapToMutableList { it.toBuilder() }
+    builder.maxDosePerAdministration = maxDosePerAdministration?.toBuilder()
+    builder.maxDosePerLifetime = maxDosePerLifetime?.toBuilder()
+    return builder
+  }
 
   /**
    * Depending on the resource,this is the amount of medication administered, to be administered or
@@ -233,16 +231,15 @@ public data class Dosage(
      */
     public val rate: Rate? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          dose = this@with.dose
-          rate = this@with.rate
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.dose = dose
+      builder.rate = rate
+      return builder
+    }
 
     public sealed interface Dose : FhirChoice {
       public fun asRange(): Range? = this as? Range
@@ -355,7 +352,7 @@ public data class Dosage(
       public fun build(): DoseAndRate =
         DoseAndRate(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           type = type?.build(),
           dose = dose,
           rate = rate,
@@ -503,20 +500,20 @@ public data class Dosage(
     public open fun build(): Dosage =
       Dosage(
         id = id,
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         sequence = sequence?.build(),
         text = text?.build(),
-        additionalInstruction = additionalInstruction.map { it.build() },
+        additionalInstruction = additionalInstruction.mapToList { it.build() },
         patientInstruction = patientInstruction?.build(),
         timing = timing?.build(),
         asNeeded = asNeeded?.build(),
-        asNeededFor = asNeededFor.map { it.build() },
+        asNeededFor = asNeededFor.mapToList { it.build() },
         site = site?.build(),
         route = route?.build(),
         method = method?.build(),
-        doseAndRate = doseAndRate.map { it.build() },
-        maxDosePerPeriod = maxDosePerPeriod.map { it.build() },
+        doseAndRate = doseAndRate.mapToList { it.build() },
+        maxDosePerPeriod = maxDosePerPeriod.mapToList { it.build() },
         maxDosePerAdministration = maxDosePerAdministration?.build(),
         maxDosePerLifetime = maxDosePerLifetime?.build(),
       )

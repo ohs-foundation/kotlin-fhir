@@ -167,26 +167,25 @@ public data class BodyStructure(
   /** The person to which the body site belongs. */
   public val patient: Reference,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(patient.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        morphology = this@with.morphology?.toBuilder()
-        location = this@with.location?.toBuilder()
-        locationQualifier = this@with.locationQualifier.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        image = this@with.image.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(patient.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.morphology = morphology?.toBuilder()
+    builder.location = location?.toBuilder()
+    builder.locationQualifier = locationQualifier.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.image = image.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public class Builder(
     /** The person to which the body site belongs. */
@@ -344,16 +343,16 @@ public data class BodyStructure(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
         morphology = morphology?.build(),
         location = location?.build(),
-        locationQualifier = locationQualifier.map { it.build() },
+        locationQualifier = locationQualifier.mapToList { it.build() },
         description = description?.build(),
-        image = image.map { it.build() },
+        image = image.mapToList { it.build() },
         patient = patient.build(),
       )
   }

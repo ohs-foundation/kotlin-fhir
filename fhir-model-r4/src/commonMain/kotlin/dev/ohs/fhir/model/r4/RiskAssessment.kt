@@ -178,38 +178,37 @@ public data class RiskAssessment(
   /** Additional comments about the risk assessment. */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn?.toBuilder()
-          parent = this@with.parent?.toBuilder()
-          method = this@with.method?.toBuilder()
-          code = this@with.code?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          occurrence = this@with.occurrence
-          condition = this@with.condition?.toBuilder()
-          performer = this@with.performer?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          basis = this@with.basis.map { it.toBuilder() }.toMutableList()
-          prediction = this@with.prediction.map { it.toBuilder() }.toMutableList()
-          mitigation = this@with.mitigation?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn?.toBuilder()
+    builder.parent = parent?.toBuilder()
+    builder.method = method?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.occurrence = occurrence
+    builder.condition = condition?.toBuilder()
+    builder.performer = performer?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.basis = basis.mapToMutableList { it.toBuilder() }
+    builder.prediction = prediction.mapToMutableList { it.toBuilder() }
+    builder.mitigation = mitigation?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Describes the expected outcome for the subject. */
   @Serializable(with = RiskAssessmentPredictionSerializer::class)
@@ -284,20 +283,19 @@ public data class RiskAssessment(
     /** Additional information explaining the basis for the prediction. */
     public val rationale: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          outcome = this@with.outcome?.toBuilder()
-          probability = this@with.probability
-          qualitativeRisk = this@with.qualitativeRisk?.toBuilder()
-          relativeRisk = this@with.relativeRisk?.toBuilder()
-          `when` = this@with.`when`
-          rationale = this@with.rationale?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.outcome = outcome?.toBuilder()
+      builder.probability = probability
+      builder.qualitativeRisk = qualitativeRisk?.toBuilder()
+      builder.relativeRisk = relativeRisk?.toBuilder()
+      builder.`when` = `when`
+      builder.rationale = rationale?.toBuilder()
+      return builder
+    }
 
     public sealed interface Probability : FhirChoice {
       public fun asDecimal(): Decimal? = this as? Decimal
@@ -423,8 +421,8 @@ public data class RiskAssessment(
       public fun build(): Prediction =
         Prediction(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           outcome = outcome?.build(),
           probability = probability,
           qualitativeRisk = qualitativeRisk?.build(),
@@ -630,10 +628,10 @@ public data class RiskAssessment(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         basedOn = basedOn?.build(),
         parent = parent?.build(),
         status = status,
@@ -644,12 +642,12 @@ public data class RiskAssessment(
         occurrence = occurrence,
         condition = condition?.build(),
         performer = performer?.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        basis = basis.map { it.build() },
-        prediction = prediction.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        basis = basis.mapToList { it.build() },
+        prediction = prediction.mapToList { it.build() },
         mitigation = mitigation?.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

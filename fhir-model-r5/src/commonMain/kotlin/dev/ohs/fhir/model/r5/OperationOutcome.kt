@@ -134,19 +134,18 @@ public data class OperationOutcome(
   /** An error, warning, or information message that results from a system action. */
   public val issue: List<Issue>,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(issue.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(issue.mapToMutableList { it.toBuilder() })
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** An error, warning, or information message that results from a system action. */
   @Serializable(with = OperationOutcomeIssueSerializer::class)
@@ -240,22 +239,21 @@ public data class OperationOutcome(
      */
     public val expression: List<String> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            severity,
-            code,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            details = this@with.details?.toBuilder()
-            diagnostics = this@with.diagnostics?.toBuilder()
-            location = this@with.location.map { it.toBuilder() }.toMutableList()
-            expression = this@with.expression.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          severity,
+          code,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.details = details?.toBuilder()
+      builder.diagnostics = diagnostics?.toBuilder()
+      builder.location = location.mapToMutableList { it.toBuilder() }
+      builder.expression = expression.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Indicates whether the issue indicates a variation from successful processing. */
@@ -358,14 +356,14 @@ public data class OperationOutcome(
       public fun build(): Issue =
         Issue(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           severity = severity,
           code = code,
           details = details?.build(),
           diagnostics = diagnostics?.build(),
-          location = location.map { it.build() },
-          expression = expression.map { it.build() },
+          location = location.mapToList { it.build() },
+          expression = expression.mapToList { it.build() },
         )
     }
   }
@@ -488,10 +486,10 @@ public data class OperationOutcome(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        issue = issue.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        issue = issue.mapToList { it.build() },
       )
   }
 

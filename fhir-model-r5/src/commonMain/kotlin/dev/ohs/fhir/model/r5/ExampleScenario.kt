@@ -325,38 +325,37 @@ public data class ExampleScenario(
    */
   public val process: List<Process> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        actor = this@with.actor.map { it.toBuilder() }.toMutableList()
-        instance = this@with.instance.map { it.toBuilder() }.toMutableList()
-        process = this@with.process.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.actor = actor.mapToMutableList { it.toBuilder() }
+    builder.instance = instance.mapToMutableList { it.toBuilder() }
+    builder.process = process.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** A system or person who shares or receives an instance within the scenario. */
   @Serializable(with = ExampleScenarioActorSerializer::class)
@@ -407,20 +406,19 @@ public data class ExampleScenario(
     /** An explanation of who/what the actor is and its role in the scenario. */
     public val description: Markdown? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            key.toBuilder(),
-            type,
-            title.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-          }
-      }
+          key.toBuilder(),
+          type,
+          title.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** A unique string within the scenario that is used to reference the actor. */
@@ -476,8 +474,8 @@ public data class ExampleScenario(
       public fun build(): Actor =
         Actor(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           key = key.build(),
           type = type,
           title = title.build(),
@@ -564,20 +562,19 @@ public data class ExampleScenario(
      */
     public val containedInstance: List<ContainedInstance> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(key.toBuilder(), structureType.toBuilder(), title.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          structureVersion = this@with.structureVersion?.toBuilder()
-          structureProfile = this@with.structureProfile
-          description = this@with.description?.toBuilder()
-          content = this@with.content?.toBuilder()
-          version = this@with.version.map { it.toBuilder() }.toMutableList()
-          containedInstance = this@with.containedInstance.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(key.toBuilder(), structureType.toBuilder(), title.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.structureVersion = structureVersion?.toBuilder()
+      builder.structureProfile = structureProfile
+      builder.description = description?.toBuilder()
+      builder.content = content?.toBuilder()
+      builder.version = version.mapToMutableList { it.toBuilder() }
+      builder.containedInstance = containedInstance.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Represents the instance as it was at a specific time-point. */
     @Serializable(with = ExampleScenarioInstanceVersionSerializer::class)
@@ -636,16 +633,15 @@ public data class ExampleScenario(
        */
       public val content: Reference? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(key.toBuilder(), title.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-            content = this@with.content?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(key.toBuilder(), title.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.description = description?.toBuilder()
+        builder.content = content?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -711,8 +707,8 @@ public data class ExampleScenario(
         public fun build(): Version =
           Version(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             key = key.build(),
             title = title.build(),
             description = description?.build(),
@@ -773,15 +769,14 @@ public data class ExampleScenario(
        */
       public val versionReference: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(instanceReference.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            versionReference = this@with.versionReference?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(instanceReference.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.versionReference = versionReference?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** A reference to the key of an instance found within this one. */
@@ -837,8 +832,8 @@ public data class ExampleScenario(
         public fun build(): ContainedInstance =
           ContainedInstance(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             instanceReference = instanceReference.build(),
             versionReference = versionReference?.build(),
           )
@@ -955,8 +950,8 @@ public data class ExampleScenario(
       public fun build(): Instance =
         Instance(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           key = key.build(),
           structureType = structureType.build(),
           structureVersion = structureVersion?.build(),
@@ -964,8 +959,8 @@ public data class ExampleScenario(
           title = title.build(),
           description = description?.build(),
           content = content?.build(),
-          version = version.map { it.build() },
-          containedInstance = containedInstance.map { it.build() },
+          version = version.mapToList { it.build() },
+          containedInstance = containedInstance.mapToList { it.build() },
         )
     }
   }
@@ -1029,18 +1024,17 @@ public data class ExampleScenario(
     /** A significant action that occurs as part of the process. */
     public val step: List<Step> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(title.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          preConditions = this@with.preConditions?.toBuilder()
-          postConditions = this@with.postConditions?.toBuilder()
-          step = this@with.step.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(title.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.preConditions = preConditions?.toBuilder()
+      builder.postConditions = postConditions?.toBuilder()
+      builder.step = step.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** A significant action that occurs as part of the process. */
     @Serializable(with = ExampleScenarioProcessStepSerializer::class)
@@ -1106,20 +1100,19 @@ public data class ExampleScenario(
        */
       public val pause: Boolean? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            number = this@with.number?.toBuilder()
-            process = this@with.process?.toBuilder()
-            workflow = this@with.workflow?.toBuilder()
-            operation = this@with.operation?.toBuilder()
-            alternative = this@with.alternative.map { it.toBuilder() }.toMutableList()
-            pause = this@with.pause?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.number = number?.toBuilder()
+        builder.process = process?.toBuilder()
+        builder.workflow = workflow?.toBuilder()
+        builder.operation = operation?.toBuilder()
+        builder.alternative = alternative.mapToMutableList { it.toBuilder() }
+        builder.pause = pause?.toBuilder()
+        return builder
+      }
 
       /** The step represents a single operation invoked on receiver by sender. */
       @Serializable(with = ExampleScenarioProcessStepOperationSerializer::class)
@@ -1215,22 +1208,21 @@ public data class ExampleScenario(
          */
         public val response: Instance.ContainedInstance? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(title.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              type = this@with.type?.toBuilder()
-              initiator = this@with.initiator?.toBuilder()
-              `receiver` = this@with.`receiver`?.toBuilder()
-              description = this@with.description?.toBuilder()
-              initiatorActive = this@with.initiatorActive?.toBuilder()
-              receiverActive = this@with.receiverActive?.toBuilder()
-              request = this@with.request?.toBuilder()
-              response = this@with.response?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(title.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.type = type?.toBuilder()
+          builder.initiator = initiator?.toBuilder()
+          builder.`receiver` = `receiver`?.toBuilder()
+          builder.description = description?.toBuilder()
+          builder.initiatorActive = initiatorActive?.toBuilder()
+          builder.receiverActive = receiverActive?.toBuilder()
+          builder.request = request?.toBuilder()
+          builder.response = response?.toBuilder()
+          return builder
+        }
 
         public class Builder(
           /** A short descriptive label the step to be used in tables or diagrams. */
@@ -1338,8 +1330,8 @@ public data class ExampleScenario(
           public fun build(): Operation =
             Operation(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               type = type?.build(),
               title = title.build(),
               initiator = initiator?.build(),
@@ -1412,16 +1404,15 @@ public data class ExampleScenario(
          */
         public val step: List<Step> = listOf(),
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(title.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              description = this@with.description?.toBuilder()
-              step = this@with.step.map { it.toBuilder() }.toMutableList()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(title.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.description = description?.toBuilder()
+          builder.step = step.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         public class Builder(
           /**
@@ -1485,11 +1476,11 @@ public data class ExampleScenario(
           public fun build(): Alternative =
             Alternative(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               title = title.build(),
               description = description?.build(),
-              step = step.map { it.build() },
+              step = step.mapToList { it.build() },
             )
         }
       }
@@ -1567,13 +1558,13 @@ public data class ExampleScenario(
         public fun build(): Step =
           Step(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             number = number?.build(),
             process = process?.build(),
             workflow = workflow?.build(),
             operation = operation?.build(),
-            alternative = alternative.map { it.build() },
+            alternative = alternative.mapToList { it.build() },
             pause = pause?.build(),
           )
       }
@@ -1646,13 +1637,13 @@ public data class ExampleScenario(
       public fun build(): Process =
         Process(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           title = title.build(),
           description = description?.build(),
           preConditions = preConditions?.build(),
           postConditions = postConditions?.build(),
-          step = step.map { it.build() },
+          step = step.mapToList { it.build() },
         )
     }
   }
@@ -1997,11 +1988,11 @@ public data class ExampleScenario(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -2010,16 +2001,16 @@ public data class ExampleScenario(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
-        actor = actor.map { it.build() },
-        instance = instance.map { it.build() },
-        process = process.map { it.build() },
+        actor = actor.mapToList { it.build() },
+        instance = instance.mapToList { it.build() },
+        process = process.mapToList { it.build() },
       )
   }
 

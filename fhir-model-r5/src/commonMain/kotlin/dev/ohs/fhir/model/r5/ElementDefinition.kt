@@ -457,49 +457,48 @@ public data class ElementDefinition(
    */
   public val mapping: List<Mapping> = listOf(),
 ) : BackboneType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(path.toBuilder()).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        representation = this@with.representation.toMutableList()
-        sliceName = this@with.sliceName?.toBuilder()
-        sliceIsConstraining = this@with.sliceIsConstraining?.toBuilder()
-        label = this@with.label?.toBuilder()
-        code = this@with.code.map { it.toBuilder() }.toMutableList()
-        slicing = this@with.slicing?.toBuilder()
-        short = this@with.short?.toBuilder()
-        definition = this@with.definition?.toBuilder()
-        comment = this@with.comment?.toBuilder()
-        requirements = this@with.requirements?.toBuilder()
-        alias = this@with.alias.map { it.toBuilder() }.toMutableList()
-        min = this@with.min?.toBuilder()
-        max = this@with.max?.toBuilder()
-        base = this@with.base?.toBuilder()
-        contentReference = this@with.contentReference?.toBuilder()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        defaultValue = this@with.defaultValue
-        meaningWhenMissing = this@with.meaningWhenMissing?.toBuilder()
-        orderMeaning = this@with.orderMeaning?.toBuilder()
-        fixed = this@with.fixed
-        pattern = this@with.pattern
-        example = this@with.example.map { it.toBuilder() }.toMutableList()
-        minValue = this@with.minValue
-        maxValue = this@with.maxValue
-        maxLength = this@with.maxLength?.toBuilder()
-        condition = this@with.condition.map { it.toBuilder() }.toMutableList()
-        constraint = this@with.constraint.map { it.toBuilder() }.toMutableList()
-        mustHaveValue = this@with.mustHaveValue?.toBuilder()
-        valueAlternatives = this@with.valueAlternatives.map { it.toBuilder() }.toMutableList()
-        mustSupport = this@with.mustSupport?.toBuilder()
-        isModifier = this@with.isModifier?.toBuilder()
-        isModifierReason = this@with.isModifierReason?.toBuilder()
-        isSummary = this@with.isSummary?.toBuilder()
-        binding = this@with.binding?.toBuilder()
-        mapping = this@with.mapping.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(path.toBuilder())
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.representation = representation.toMutableList()
+    builder.sliceName = sliceName?.toBuilder()
+    builder.sliceIsConstraining = sliceIsConstraining?.toBuilder()
+    builder.label = label?.toBuilder()
+    builder.code = code.mapToMutableList { it.toBuilder() }
+    builder.slicing = slicing?.toBuilder()
+    builder.short = short?.toBuilder()
+    builder.definition = definition?.toBuilder()
+    builder.comment = comment?.toBuilder()
+    builder.requirements = requirements?.toBuilder()
+    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.min = min?.toBuilder()
+    builder.max = max?.toBuilder()
+    builder.base = base?.toBuilder()
+    builder.contentReference = contentReference?.toBuilder()
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.defaultValue = defaultValue
+    builder.meaningWhenMissing = meaningWhenMissing?.toBuilder()
+    builder.orderMeaning = orderMeaning?.toBuilder()
+    builder.fixed = fixed
+    builder.pattern = pattern
+    builder.example = example.mapToMutableList { it.toBuilder() }
+    builder.minValue = minValue
+    builder.maxValue = maxValue
+    builder.maxLength = maxLength?.toBuilder()
+    builder.condition = condition.mapToMutableList { it.toBuilder() }
+    builder.constraint = constraint.mapToMutableList { it.toBuilder() }
+    builder.mustHaveValue = mustHaveValue?.toBuilder()
+    builder.valueAlternatives = valueAlternatives.mapToMutableList { it.toBuilder() }
+    builder.mustSupport = mustSupport?.toBuilder()
+    builder.isModifier = isModifier?.toBuilder()
+    builder.isModifierReason = isModifierReason?.toBuilder()
+    builder.isSummary = isSummary?.toBuilder()
+    builder.binding = binding?.toBuilder()
+    builder.mapping = mapping.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Indicates that the element is sliced into a set of alternative definitions (i.e. in a structure
@@ -565,16 +564,15 @@ public data class ElementDefinition(
      */
     public val rules: Enumeration<SlicingRules>,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(rules).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          discriminator = this@with.discriminator.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          ordered = this@with.ordered?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(rules)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.discriminator = discriminator.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.ordered = ordered?.toBuilder()
+      return builder
+    }
 
     /**
      * Designates which child elements are used to discriminate between the slices when processing
@@ -614,17 +612,16 @@ public data class ElementDefinition(
        */
       public val path: String,
     ) : Element() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              type,
-              path.toBuilder(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            type,
+            path.toBuilder(),
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -662,7 +659,7 @@ public data class ElementDefinition(
         public fun build(): Discriminator =
           Discriminator(
             id = id,
-            extension = extension.map { it.build() },
+            extension = extension.mapToList { it.build() },
             type = type,
             path = path.build(),
           )
@@ -732,8 +729,8 @@ public data class ElementDefinition(
       public fun build(): Slicing =
         Slicing(
           id = id,
-          extension = extension.map { it.build() },
-          discriminator = discriminator.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          discriminator = discriminator.mapToList { it.build() },
           description = description?.build(),
           ordered = ordered?.build(),
           rules = rules,
@@ -793,13 +790,12 @@ public data class ElementDefinition(
      */
     public val max: String,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(path.toBuilder(), min.toBuilder(), max.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(path.toBuilder(), min.toBuilder(), max.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -849,7 +845,7 @@ public data class ElementDefinition(
       public fun build(): Base =
         Base(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           path = path.build(),
           min = min.build(),
           max = max.build(),
@@ -931,17 +927,16 @@ public data class ElementDefinition(
      */
     public val versioning: Enumeration<ReferenceVersionRules>? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          profile = this@with.profile.map { it.toBuilder() }.toMutableList()
-          targetProfile = this@with.targetProfile.map { it.toBuilder() }.toMutableList()
-          aggregation = this@with.aggregation.toMutableList()
-          versioning = this@with.versioning
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.profile = profile.mapToMutableList { it.toBuilder() }
+      builder.targetProfile = targetProfile.mapToMutableList { it.toBuilder() }
+      builder.aggregation = aggregation.toMutableList()
+      builder.versioning = versioning
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1024,10 +1019,10 @@ public data class ElementDefinition(
       public fun build(): Type =
         Type(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           code = code.build(),
-          profile = profile.map { it.build() },
-          targetProfile = targetProfile.map { it.build() },
+          profile = profile.mapToList { it.build() },
+          targetProfile = targetProfile.mapToList { it.build() },
           aggregation = aggregation,
           versioning = versioning,
         )
@@ -1065,17 +1060,16 @@ public data class ElementDefinition(
      */
     public val `value`: Value,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            label.toBuilder(),
-            `value`,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          label.toBuilder(),
+          `value`,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
@@ -1461,7 +1455,7 @@ public data class ElementDefinition(
       public fun build(): Example =
         Example(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           label = label.build(),
           `value` = `value`,
         )
@@ -1540,22 +1534,21 @@ public data class ElementDefinition(
      */
     public val source: Canonical? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            key.toBuilder(),
-            severity,
-            human.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            requirements = this@with.requirements?.toBuilder()
-            suppress = this@with.suppress?.toBuilder()
-            expression = this@with.expression?.toBuilder()
-            source = this@with.source?.toBuilder()
-          }
-      }
+          key.toBuilder(),
+          severity,
+          human.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.requirements = requirements?.toBuilder()
+      builder.suppress = suppress?.toBuilder()
+      builder.expression = expression?.toBuilder()
+      builder.source = source?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1633,7 +1626,7 @@ public data class ElementDefinition(
       public fun build(): Constraint =
         Constraint(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           key = key.build(),
           requirements = requirements?.build(),
           severity = severity,
@@ -1691,16 +1684,15 @@ public data class ElementDefinition(
      */
     public val additional: List<Additional> = listOf(),
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(strength).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          valueSet = this@with.valueSet?.toBuilder()
-          additional = this@with.additional.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(strength)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.valueSet = valueSet?.toBuilder()
+      builder.additional = additional.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Additional bindings that help applications implementing this element. Additional bindings do
@@ -1760,21 +1752,20 @@ public data class ElementDefinition(
        */
       public val any: Boolean? = null,
     ) : Element() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              purpose,
-              valueSet.toBuilder(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              documentation = this@with.documentation?.toBuilder()
-              shortDoco = this@with.shortDoco?.toBuilder()
-              usage = this@with.usage.map { it.toBuilder() }.toMutableList()
-              any = this@with.any?.toBuilder()
-            }
-        }
+            purpose,
+            valueSet.toBuilder(),
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.documentation = documentation?.toBuilder()
+        builder.shortDoco = shortDoco?.toBuilder()
+        builder.usage = usage.mapToMutableList { it.toBuilder() }
+        builder.any = any?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -1838,12 +1829,12 @@ public data class ElementDefinition(
         public fun build(): Additional =
           Additional(
             id = id,
-            extension = extension.map { it.build() },
+            extension = extension.mapToList { it.build() },
             purpose = purpose,
             valueSet = valueSet.build(),
             documentation = documentation?.build(),
             shortDoco = shortDoco?.build(),
-            usage = usage.map { it.build() },
+            usage = usage.mapToList { it.build() },
             any = any?.build(),
           )
       }
@@ -1898,11 +1889,11 @@ public data class ElementDefinition(
       public fun build(): Binding =
         Binding(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           strength = strength,
           description = description?.build(),
           valueSet = valueSet?.build(),
-          additional = additional.map { it.build() },
+          additional = additional.mapToList { it.build() },
         )
     }
   }
@@ -1949,15 +1940,14 @@ public data class ElementDefinition(
     /** Comments that provide information about the mapping or its use. */
     public val comment: Markdown? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(identity.toBuilder(), map.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          language = this@with.language?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(identity.toBuilder(), map.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.language = language?.toBuilder()
+      builder.comment = comment?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** An internal reference to the definition of a mapping. */
@@ -2005,7 +1995,7 @@ public data class ElementDefinition(
       public fun build(): Mapping =
         Mapping(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           identity = identity.build(),
           language = language?.build(),
           map = map.build(),
@@ -3674,44 +3664,44 @@ public data class ElementDefinition(
     public open fun build(): ElementDefinition =
       ElementDefinition(
         id = id,
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         path = path.build(),
         representation = representation,
         sliceName = sliceName?.build(),
         sliceIsConstraining = sliceIsConstraining?.build(),
         label = label?.build(),
-        code = code.map { it.build() },
+        code = code.mapToList { it.build() },
         slicing = slicing?.build(),
         short = short?.build(),
         definition = definition?.build(),
         comment = comment?.build(),
         requirements = requirements?.build(),
-        alias = alias.map { it.build() },
+        alias = alias.mapToList { it.build() },
         min = min?.build(),
         max = max?.build(),
         base = base?.build(),
         contentReference = contentReference?.build(),
-        type = type.map { it.build() },
+        type = type.mapToList { it.build() },
         defaultValue = defaultValue,
         meaningWhenMissing = meaningWhenMissing?.build(),
         orderMeaning = orderMeaning?.build(),
         fixed = fixed,
         pattern = pattern,
-        example = example.map { it.build() },
+        example = example.mapToList { it.build() },
         minValue = minValue,
         maxValue = maxValue,
         maxLength = maxLength?.build(),
-        condition = condition.map { it.build() },
-        constraint = constraint.map { it.build() },
+        condition = condition.mapToList { it.build() },
+        constraint = constraint.mapToList { it.build() },
         mustHaveValue = mustHaveValue?.build(),
-        valueAlternatives = valueAlternatives.map { it.build() },
+        valueAlternatives = valueAlternatives.mapToList { it.build() },
         mustSupport = mustSupport?.build(),
         isModifier = isModifier?.build(),
         isModifierReason = isModifierReason?.build(),
         isSummary = isSummary?.build(),
         binding = binding?.build(),
-        mapping = mapping.map { it.build() },
+        mapping = mapping.mapToList { it.build() },
       )
   }
 

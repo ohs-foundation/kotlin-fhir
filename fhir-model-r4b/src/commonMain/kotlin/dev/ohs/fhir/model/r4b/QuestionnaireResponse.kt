@@ -223,29 +223,28 @@ public data class QuestionnaireResponse(
    */
   public val item: List<Item> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier?.toBuilder()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        questionnaire = this@with.questionnaire?.toBuilder()
-        subject = this@with.subject?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        authored = this@with.authored?.toBuilder()
-        author = this@with.author?.toBuilder()
-        source = this@with.source?.toBuilder()
-        item = this@with.item.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier?.toBuilder()
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.questionnaire = questionnaire?.toBuilder()
+    builder.subject = subject?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.authored = authored?.toBuilder()
+    builder.author = author?.toBuilder()
+    builder.source = source?.toBuilder()
+    builder.item = item.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** A group or question item from the original questionnaire for which answers are provided. */
   @Serializable(with = QuestionnaireResponseItemSerializer::class)
@@ -318,18 +317,17 @@ public data class QuestionnaireResponse(
     /** Questions or sub-groups nested beneath a question or group. */
     public val item: List<Item> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(linkId.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          definition = this@with.definition?.toBuilder()
-          text = this@with.text?.toBuilder()
-          answer = this@with.answer.map { it.toBuilder() }.toMutableList()
-          item = this@with.item.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(linkId.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.definition = definition?.toBuilder()
+      builder.text = text?.toBuilder()
+      builder.answer = answer.mapToMutableList { it.toBuilder() }
+      builder.item = item.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** The respondent's answer(s) to the question. */
     @Serializable(with = QuestionnaireResponseItemAnswerSerializer::class)
@@ -384,16 +382,15 @@ public data class QuestionnaireResponse(
       /** Nested groups and/or questions found within this particular answer. */
       public val item: List<Item> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            `value` = this@with.`value`
-            item = this@with.item.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.`value` = `value`
+        builder.item = item.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public sealed interface Value : FhirChoice {
         public fun asBoolean(): Boolean? = this as? Boolean
@@ -535,10 +532,10 @@ public data class QuestionnaireResponse(
         public fun build(): Answer =
           Answer(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             `value` = `value`,
-            item = item.map { it.build() },
+            item = item.mapToList { it.build() },
           )
       }
     }
@@ -623,13 +620,13 @@ public data class QuestionnaireResponse(
       public fun build(): Item =
         Item(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           linkId = linkId.build(),
           definition = definition?.build(),
           text = text?.build(),
-          answer = answer.map { it.build() },
-          item = item.map { it.build() },
+          answer = answer.mapToList { it.build() },
+          item = item.mapToList { it.build() },
         )
     }
   }
@@ -846,12 +843,12 @@ public data class QuestionnaireResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         identifier = identifier?.build(),
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         questionnaire = questionnaire?.build(),
         status = status,
         subject = subject?.build(),
@@ -859,7 +856,7 @@ public data class QuestionnaireResponse(
         authored = authored?.build(),
         author = author?.build(),
         source = source?.build(),
-        item = item.map { it.build() },
+        item = item.mapToList { it.build() },
       )
   }
 

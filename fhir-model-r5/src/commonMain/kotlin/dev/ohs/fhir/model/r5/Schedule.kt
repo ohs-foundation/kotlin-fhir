@@ -179,27 +179,26 @@ public data class Schedule(
    */
   public val comment: Markdown? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(actor.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        serviceCategory = this@with.serviceCategory.map { it.toBuilder() }.toMutableList()
-        serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
-        specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        planningHorizon = this@with.planningHorizon?.toBuilder()
-        comment = this@with.comment?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(actor.mapToMutableList { it.toBuilder() })
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.serviceCategory = serviceCategory.mapToMutableList { it.toBuilder() }
+    builder.serviceType = serviceType.mapToMutableList { it.toBuilder() }
+    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.planningHorizon = planningHorizon?.toBuilder()
+    builder.comment = comment?.toBuilder()
+    return builder
+  }
 
   public class Builder(
     /**
@@ -373,16 +372,16 @@ public data class Schedule(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
-        serviceCategory = serviceCategory.map { it.build() },
-        serviceType = serviceType.map { it.build() },
-        specialty = specialty.map { it.build() },
+        serviceCategory = serviceCategory.mapToList { it.build() },
+        serviceType = serviceType.mapToList { it.build() },
+        specialty = specialty.mapToList { it.build() },
         name = name?.build(),
-        actor = actor.map { it.build() },
+        actor = actor.mapToList { it.build() },
         planningHorizon = planningHorizon?.build(),
         comment = comment?.build(),
       )

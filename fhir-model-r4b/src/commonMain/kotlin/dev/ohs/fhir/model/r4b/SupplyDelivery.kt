@@ -180,30 +180,29 @@ public data class SupplyDelivery(
   /** Identifies the person who picked up the Supply. */
   public val `receiver`: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        patient = this@with.patient?.toBuilder()
-        type = this@with.type?.toBuilder()
-        suppliedItem = this@with.suppliedItem?.toBuilder()
-        occurrence = this@with.occurrence
-        supplier = this@with.supplier?.toBuilder()
-        destination = this@with.destination?.toBuilder()
-        `receiver` = this@with.`receiver`.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.patient = patient?.toBuilder()
+    builder.type = type?.toBuilder()
+    builder.suppliedItem = suppliedItem?.toBuilder()
+    builder.occurrence = occurrence
+    builder.supplier = supplier?.toBuilder()
+    builder.destination = destination?.toBuilder()
+    builder.`receiver` = `receiver`.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The item that is being delivered or has been supplied. */
   @Serializable(with = SupplyDeliverySuppliedItemSerializer::class)
@@ -254,16 +253,15 @@ public data class SupplyDelivery(
      */
     public val item: Item? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          quantity = this@with.quantity?.toBuilder()
-          item = this@with.item
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.quantity = quantity?.toBuilder()
+      builder.item = item
+      return builder
+    }
 
     public sealed interface Item : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -342,8 +340,8 @@ public data class SupplyDelivery(
       public fun build(): SuppliedItem =
         SuppliedItem(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           quantity = quantity?.build(),
           item = item,
         )
@@ -550,12 +548,12 @@ public data class SupplyDelivery(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
         patient = patient?.build(),
         type = type?.build(),
@@ -563,7 +561,7 @@ public data class SupplyDelivery(
         occurrence = occurrence,
         supplier = supplier?.build(),
         destination = destination?.build(),
-        `receiver` = `receiver`.map { it.build() },
+        `receiver` = `receiver`.mapToList { it.build() },
       )
   }
 

@@ -457,53 +457,52 @@ public data class PlanDefinition(
    */
   public val asNeeded: AsNeeded? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        subtitle = this@with.subtitle?.toBuilder()
-        type = this@with.type?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        subject = this@with.subject
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        usage = this@with.usage?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        effectivePeriod = this@with.effectivePeriod?.toBuilder()
-        topic = this@with.topic.map { it.toBuilder() }.toMutableList()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-        reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-        endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        library = this@with.library.map { it.toBuilder() }.toMutableList()
-        goal = this@with.goal.map { it.toBuilder() }.toMutableList()
-        actor = this@with.actor.map { it.toBuilder() }.toMutableList()
-        action = this@with.action.map { it.toBuilder() }.toMutableList()
-        asNeeded = this@with.asNeeded
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.subtitle = subtitle?.toBuilder()
+    builder.type = type?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.subject = subject
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.usage = usage?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.effectivePeriod = effectivePeriod?.toBuilder()
+    builder.topic = topic.mapToMutableList { it.toBuilder() }
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.editor = editor.mapToMutableList { it.toBuilder() }
+    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
+    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.library = library.mapToMutableList { it.toBuilder() }
+    builder.goal = goal.mapToMutableList { it.toBuilder() }
+    builder.actor = actor.mapToMutableList { it.toBuilder() }
+    builder.action = action.mapToMutableList { it.toBuilder() }
+    builder.asNeeded = asNeeded
+    return builder
+  }
 
   /**
    * A goal describes an expected outcome that activities within the plan are intended to achieve.
@@ -577,20 +576,19 @@ public data class PlanDefinition(
     /** Indicates what should be done and within what timeframe. */
     public val target: List<Target> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(description.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          category = this@with.category?.toBuilder()
-          priority = this@with.priority?.toBuilder()
-          start = this@with.start?.toBuilder()
-          addresses = this@with.addresses.map { it.toBuilder() }.toMutableList()
-          documentation = this@with.documentation.map { it.toBuilder() }.toMutableList()
-          target = this@with.target.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(description.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.category = category?.toBuilder()
+      builder.priority = priority?.toBuilder()
+      builder.start = start?.toBuilder()
+      builder.addresses = addresses.mapToMutableList { it.toBuilder() }
+      builder.documentation = documentation.mapToMutableList { it.toBuilder() }
+      builder.target = target.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Indicates what should be done and within what timeframe. */
     @Serializable(with = PlanDefinitionGoalTargetSerializer::class)
@@ -653,17 +651,16 @@ public data class PlanDefinition(
       /** Indicates the timeframe after the start of the goal in which the goal should be met. */
       public val due: Duration? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            measure = this@with.measure?.toBuilder()
-            detail = this@with.detail
-            due = this@with.due?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.measure = measure?.toBuilder()
+        builder.detail = detail
+        builder.due = due?.toBuilder()
+        return builder
+      }
 
       public sealed interface Detail : FhirChoice {
         public fun asQuantity(): Quantity? = this as? Quantity
@@ -785,8 +782,8 @@ public data class PlanDefinition(
         public fun build(): Target =
           Target(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             measure = measure?.build(),
             detail = detail,
             due = due?.build(),
@@ -872,15 +869,15 @@ public data class PlanDefinition(
       public fun build(): Goal =
         Goal(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           category = category?.build(),
           description = description.build(),
           priority = priority?.build(),
           start = start?.build(),
-          addresses = addresses.map { it.build() },
-          documentation = documentation.map { it.build() },
-          target = target.map { it.build() },
+          addresses = addresses.mapToList { it.build() },
+          documentation = documentation.mapToList { it.build() },
+          target = target.mapToList { it.build() },
         )
     }
   }
@@ -935,16 +932,15 @@ public data class PlanDefinition(
     /** The characteristics of the candidates that could serve as the actor. */
     public val option: List<Option>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(option.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          title = this@with.title?.toBuilder()
-          description = this@with.description?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(option.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.title = title?.toBuilder()
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     /** The characteristics of the candidates that could serve as the actor. */
     @Serializable(with = PlanDefinitionActorOptionSerializer::class)
@@ -1000,18 +996,17 @@ public data class PlanDefinition(
       /** The role the participant should play in performing the described action. */
       public val role: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type
-            typeCanonical = this@with.typeCanonical?.toBuilder()
-            typeReference = this@with.typeReference?.toBuilder()
-            role = this@with.role?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type
+        builder.typeCanonical = typeCanonical?.toBuilder()
+        builder.typeReference = typeReference?.toBuilder()
+        builder.role = role?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -1074,8 +1069,8 @@ public data class PlanDefinition(
         public fun build(): Option =
           Option(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type,
             typeCanonical = typeCanonical?.build(),
             typeReference = typeReference?.build(),
@@ -1137,11 +1132,11 @@ public data class PlanDefinition(
       public fun build(): Actor =
         Actor(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           title = title?.build(),
           description = description?.build(),
-          option = option.map { it.build() },
+          option = option.mapToList { it.build() },
         )
     }
   }
@@ -1359,43 +1354,42 @@ public data class PlanDefinition(
      */
     public val action: List<Action> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          linkId = this@with.linkId?.toBuilder()
-          prefix = this@with.prefix?.toBuilder()
-          title = this@with.title?.toBuilder()
-          description = this@with.description?.toBuilder()
-          textEquivalent = this@with.textEquivalent?.toBuilder()
-          priority = this@with.priority
-          code = this@with.code?.toBuilder()
-          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-          documentation = this@with.documentation.map { it.toBuilder() }.toMutableList()
-          goalId = this@with.goalId.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject
-          trigger = this@with.trigger.map { it.toBuilder() }.toMutableList()
-          condition = this@with.condition.map { it.toBuilder() }.toMutableList()
-          input = this@with.input.map { it.toBuilder() }.toMutableList()
-          output = this@with.output.map { it.toBuilder() }.toMutableList()
-          relatedAction = this@with.relatedAction.map { it.toBuilder() }.toMutableList()
-          timing = this@with.timing
-          location = this@with.location?.toBuilder()
-          participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          groupingBehavior = this@with.groupingBehavior
-          selectionBehavior = this@with.selectionBehavior
-          requiredBehavior = this@with.requiredBehavior
-          precheckBehavior = this@with.precheckBehavior
-          cardinalityBehavior = this@with.cardinalityBehavior
-          definition = this@with.definition
-          transform = this@with.transform?.toBuilder()
-          dynamicValue = this@with.dynamicValue.map { it.toBuilder() }.toMutableList()
-          action = this@with.action.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.linkId = linkId?.toBuilder()
+      builder.prefix = prefix?.toBuilder()
+      builder.title = title?.toBuilder()
+      builder.description = description?.toBuilder()
+      builder.textEquivalent = textEquivalent?.toBuilder()
+      builder.priority = priority
+      builder.code = code?.toBuilder()
+      builder.reason = reason.mapToMutableList { it.toBuilder() }
+      builder.documentation = documentation.mapToMutableList { it.toBuilder() }
+      builder.goalId = goalId.mapToMutableList { it.toBuilder() }
+      builder.subject = subject
+      builder.trigger = trigger.mapToMutableList { it.toBuilder() }
+      builder.condition = condition.mapToMutableList { it.toBuilder() }
+      builder.input = input.mapToMutableList { it.toBuilder() }
+      builder.output = output.mapToMutableList { it.toBuilder() }
+      builder.relatedAction = relatedAction.mapToMutableList { it.toBuilder() }
+      builder.timing = timing
+      builder.location = location?.toBuilder()
+      builder.participant = participant.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.groupingBehavior = groupingBehavior
+      builder.selectionBehavior = selectionBehavior
+      builder.requiredBehavior = requiredBehavior
+      builder.precheckBehavior = precheckBehavior
+      builder.cardinalityBehavior = cardinalityBehavior
+      builder.definition = definition
+      builder.transform = transform?.toBuilder()
+      builder.dynamicValue = dynamicValue.mapToMutableList { it.toBuilder() }
+      builder.action = action.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * An expression that describes applicability criteria or start/stop conditions for the action.
@@ -1455,15 +1449,14 @@ public data class PlanDefinition(
        */
       public val expression: Expression? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(kind).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            expression = this@with.expression?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(kind)
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.expression = expression?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -1526,8 +1519,8 @@ public data class PlanDefinition(
         public fun build(): Condition =
           Condition(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             kind = kind,
             expression = expression?.build(),
           )
@@ -1591,17 +1584,16 @@ public data class PlanDefinition(
        */
       public val relatedData: Id? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            title = this@with.title?.toBuilder()
-            requirement = this@with.requirement?.toBuilder()
-            relatedData = this@with.relatedData?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.title = title?.toBuilder()
+        builder.requirement = requirement?.toBuilder()
+        builder.relatedData = relatedData?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -1666,8 +1658,8 @@ public data class PlanDefinition(
         public fun build(): Input =
           Input(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             title = title?.build(),
             requirement = requirement?.build(),
             relatedData = relatedData?.build(),
@@ -1732,17 +1724,16 @@ public data class PlanDefinition(
        */
       public val relatedData: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            title = this@with.title?.toBuilder()
-            requirement = this@with.requirement?.toBuilder()
-            relatedData = this@with.relatedData?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.title = title?.toBuilder()
+        builder.requirement = requirement?.toBuilder()
+        builder.relatedData = relatedData?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -1807,8 +1798,8 @@ public data class PlanDefinition(
         public fun build(): Output =
           Output(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             title = title?.build(),
             requirement = requirement?.build(),
             relatedData = relatedData?.build(),
@@ -1868,20 +1859,19 @@ public data class PlanDefinition(
        */
       public val offset: Offset? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              targetId.toBuilder(),
-              relationship,
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              endRelationship = this@with.endRelationship
-              offset = this@with.offset
-            }
-        }
+            targetId.toBuilder(),
+            relationship,
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.endRelationship = endRelationship
+        builder.offset = offset
+        return builder
+      }
 
       public sealed interface Offset : FhirChoice {
         public fun asDuration(): Duration? = this as? Duration
@@ -1962,8 +1952,8 @@ public data class PlanDefinition(
         public fun build(): RelatedAction =
           RelatedAction(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             targetId = targetId.build(),
             relationship = relationship,
             endRelationship = endRelationship,
@@ -2032,20 +2022,19 @@ public data class PlanDefinition(
        */
       public val function: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            actorId = this@with.actorId?.toBuilder()
-            type = this@with.type
-            typeCanonical = this@with.typeCanonical?.toBuilder()
-            typeReference = this@with.typeReference?.toBuilder()
-            role = this@with.role?.toBuilder()
-            function = this@with.function?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.actorId = actorId?.toBuilder()
+        builder.type = type
+        builder.typeCanonical = typeCanonical?.toBuilder()
+        builder.typeReference = typeReference?.toBuilder()
+        builder.role = role?.toBuilder()
+        builder.function = function?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -2116,8 +2105,8 @@ public data class PlanDefinition(
         public fun build(): Participant =
           Participant(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             actorId = actorId?.build(),
             type = type,
             typeCanonical = typeCanonical?.build(),
@@ -2197,16 +2186,15 @@ public data class PlanDefinition(
        */
       public val expression: Expression? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            path = this@with.path?.toBuilder()
-            expression = this@with.expression?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.path = path?.toBuilder()
+        builder.expression = expression?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -2277,8 +2265,8 @@ public data class PlanDefinition(
         public fun build(): DynamicValue =
           DynamicValue(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             path = path?.build(),
             expression = expression?.build(),
           )
@@ -2611,8 +2599,8 @@ public data class PlanDefinition(
       public fun build(): Action =
         Action(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           linkId = linkId?.build(),
           prefix = prefix?.build(),
           title = title?.build(),
@@ -2620,18 +2608,18 @@ public data class PlanDefinition(
           textEquivalent = textEquivalent?.build(),
           priority = priority,
           code = code?.build(),
-          reason = reason.map { it.build() },
-          documentation = documentation.map { it.build() },
-          goalId = goalId.map { it.build() },
+          reason = reason.mapToList { it.build() },
+          documentation = documentation.mapToList { it.build() },
+          goalId = goalId.mapToList { it.build() },
           subject = subject,
-          trigger = trigger.map { it.build() },
-          condition = condition.map { it.build() },
-          input = input.map { it.build() },
-          output = output.map { it.build() },
-          relatedAction = relatedAction.map { it.build() },
+          trigger = trigger.mapToList { it.build() },
+          condition = condition.mapToList { it.build() },
+          input = input.mapToList { it.build() },
+          output = output.mapToList { it.build() },
+          relatedAction = relatedAction.mapToList { it.build() },
           timing = timing,
           location = location?.build(),
-          participant = participant.map { it.build() },
+          participant = participant.mapToList { it.build() },
           type = type?.build(),
           groupingBehavior = groupingBehavior,
           selectionBehavior = selectionBehavior,
@@ -2640,8 +2628,8 @@ public data class PlanDefinition(
           cardinalityBehavior = cardinalityBehavior,
           definition = definition,
           transform = transform?.build(),
-          dynamicValue = dynamicValue.map { it.build() },
-          action = action.map { it.build() },
+          dynamicValue = dynamicValue.mapToList { it.build() },
+          action = action.mapToList { it.build() },
         )
     }
   }
@@ -3183,11 +3171,11 @@ public data class PlanDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -3199,10 +3187,10 @@ public data class PlanDefinition(
         subject = subject,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         usage = usage?.build(),
         copyright = copyright?.build(),
@@ -3210,16 +3198,16 @@ public data class PlanDefinition(
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.map { it.build() },
-        author = author.map { it.build() },
-        editor = editor.map { it.build() },
-        reviewer = reviewer.map { it.build() },
-        endorser = endorser.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
-        library = library.map { it.build() },
-        goal = goal.map { it.build() },
-        actor = actor.map { it.build() },
-        action = action.map { it.build() },
+        topic = topic.mapToList { it.build() },
+        author = author.mapToList { it.build() },
+        editor = editor.mapToList { it.build() },
+        reviewer = reviewer.mapToList { it.build() },
+        endorser = endorser.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        library = library.mapToList { it.build() },
+        goal = goal.mapToList { it.build() },
+        actor = actor.mapToList { it.build() },
+        action = action.mapToList { it.build() },
         asNeeded = asNeeded,
       )
   }

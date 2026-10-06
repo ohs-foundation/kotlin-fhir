@@ -160,31 +160,30 @@ public data class InventoryReport(
   /** A note associated with the InventoryReport. */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          countType,
-          reportedDateTime.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          operationType = this@with.operationType?.toBuilder()
-          operationTypeReason = this@with.operationTypeReason?.toBuilder()
-          reporter = this@with.reporter?.toBuilder()
-          reportingPeriod = this@with.reportingPeriod?.toBuilder()
-          inventoryListing = this@with.inventoryListing.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        countType,
+        reportedDateTime.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.operationType = operationType?.toBuilder()
+    builder.operationTypeReason = operationTypeReason?.toBuilder()
+    builder.reporter = reporter?.toBuilder()
+    builder.reportingPeriod = reportingPeriod?.toBuilder()
+    builder.inventoryListing = inventoryListing.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** An inventory listing section (grouped by any of the attributes). */
   @Serializable(with = InventoryReportInventoryListingSerializer::class)
@@ -235,18 +234,17 @@ public data class InventoryReport(
     /** The item or items in this listing. */
     public val item: List<Item> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          itemStatus = this@with.itemStatus?.toBuilder()
-          countingDateTime = this@with.countingDateTime?.toBuilder()
-          item = this@with.item.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.location = location?.toBuilder()
+      builder.itemStatus = itemStatus?.toBuilder()
+      builder.countingDateTime = countingDateTime?.toBuilder()
+      builder.item = item.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** The item or items in this listing. */
     @Serializable(with = InventoryReportInventoryListingItemSerializer::class)
@@ -298,15 +296,14 @@ public data class InventoryReport(
       /** The code or reference to the item type. */
       public val item: CodeableReference,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(quantity.toBuilder(), item.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            category = this@with.category?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(quantity.toBuilder(), item.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.category = category?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** The quantity of the item or items being reported. */
@@ -364,8 +361,8 @@ public data class InventoryReport(
         public fun build(): Item =
           Item(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             category = category?.build(),
             quantity = quantity.build(),
             item = item.build(),
@@ -429,12 +426,12 @@ public data class InventoryReport(
       public fun build(): InventoryListing =
         InventoryListing(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           location = location?.build(),
           itemStatus = itemStatus?.build(),
           countingDateTime = countingDateTime?.build(),
-          item = item.map { it.build() },
+          item = item.mapToList { it.build() },
         )
     }
   }
@@ -588,10 +585,10 @@ public data class InventoryReport(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         countType = countType,
         operationType = operationType?.build(),
@@ -599,8 +596,8 @@ public data class InventoryReport(
         reportedDateTime = reportedDateTime.build(),
         reporter = reporter?.build(),
         reportingPeriod = reportingPeriod?.build(),
-        inventoryListing = inventoryListing.map { it.build() },
-        note = note.map { it.build() },
+        inventoryListing = inventoryListing.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

@@ -110,22 +110,21 @@ public data class RelatedArtifact(
   /** The date of publication of the artifact being referred to. */
   public val publicationDate: Date? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(type).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        classifier = this@with.classifier.map { it.toBuilder() }.toMutableList()
-        label = this@with.label?.toBuilder()
-        display = this@with.display?.toBuilder()
-        citation = this@with.citation?.toBuilder()
-        document = this@with.document?.toBuilder()
-        resource = this@with.resource?.toBuilder()
-        resourceReference = this@with.resourceReference?.toBuilder()
-        publicationStatus = this@with.publicationStatus
-        publicationDate = this@with.publicationDate?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(type)
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+    builder.label = label?.toBuilder()
+    builder.display = display?.toBuilder()
+    builder.citation = citation?.toBuilder()
+    builder.document = document?.toBuilder()
+    builder.resource = resource?.toBuilder()
+    builder.resourceReference = resourceReference?.toBuilder()
+    builder.publicationStatus = publicationStatus
+    builder.publicationDate = publicationDate?.toBuilder()
+    return builder
+  }
 
   public open class Builder(
     /**
@@ -218,9 +217,9 @@ public data class RelatedArtifact(
     public open fun build(): RelatedArtifact =
       RelatedArtifact(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         type = type,
-        classifier = classifier.map { it.build() },
+        classifier = classifier.mapToList { it.build() },
         label = label?.build(),
         display = display?.build(),
         citation = citation?.build(),

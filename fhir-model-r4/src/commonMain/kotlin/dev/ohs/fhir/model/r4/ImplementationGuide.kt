@@ -319,41 +319,40 @@ public data class ImplementationGuide(
   /** Information about an assembled implementation guide, created by the publication tooling. */
   public val manifest: Manifest? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          url.toBuilder(),
-          name.toBuilder(),
-          status,
-          packageId.toBuilder(),
-          fhirVersion.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          title = this@with.title?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          copyright = this@with.copyright?.toBuilder()
-          license = this@with.license
-          dependsOn = this@with.dependsOn.map { it.toBuilder() }.toMutableList()
-          global = this@with.global.map { it.toBuilder() }.toMutableList()
-          definition = this@with.definition?.toBuilder()
-          manifest = this@with.manifest?.toBuilder()
-        }
-    }
+        url.toBuilder(),
+        name.toBuilder(),
+        status,
+        packageId.toBuilder(),
+        fhirVersion.toMutableList(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.copyright = copyright?.toBuilder()
+    builder.license = license
+    builder.dependsOn = dependsOn.mapToMutableList { it.toBuilder() }
+    builder.global = global.mapToMutableList { it.toBuilder() }
+    builder.definition = definition?.toBuilder()
+    builder.manifest = manifest?.toBuilder()
+    return builder
+  }
 
   /**
    * Another implementation guide that this implementation depends on. Typically, an implementation
@@ -415,16 +414,15 @@ public data class ImplementationGuide(
      */
     public val version: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(uri.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          packageId = this@with.packageId?.toBuilder()
-          version = this@with.version?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(uri.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.packageId = packageId?.toBuilder()
+      builder.version = version?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -489,8 +487,8 @@ public data class ImplementationGuide(
       public fun build(): DependsOn =
         DependsOn(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           uri = uri.build(),
           packageId = packageId?.build(),
           version = version?.build(),
@@ -549,18 +547,17 @@ public data class ImplementationGuide(
     /** A reference to the profile that all instances must conform to. */
     public val profile: Canonical,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            type,
-            profile.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          type,
+          profile.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -617,8 +614,8 @@ public data class ImplementationGuide(
       public fun build(): Global =
         Global(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type,
           profile = profile.build(),
         )
@@ -691,18 +688,17 @@ public data class ImplementationGuide(
     /** A template for building resources. */
     public val template: List<Template> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(resource.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          grouping = this@with.grouping.map { it.toBuilder() }.toMutableList()
-          page = this@with.page?.toBuilder()
-          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-          template = this@with.template.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(resource.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.grouping = grouping.mapToMutableList { it.toBuilder() }
+      builder.page = page?.toBuilder()
+      builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+      builder.template = template.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** A logical group of resources. Logical groups can be used when building pages. */
     @Serializable(with = ImplementationGuideDefinitionGroupingSerializer::class)
@@ -752,15 +748,14 @@ public data class ImplementationGuide(
       /** Human readable text describing the package. */
       public val description: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(name.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(name.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.description = description?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -815,8 +810,8 @@ public data class ImplementationGuide(
         public fun build(): Grouping =
           Grouping(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             name = name.build(),
             description = description?.build(),
           )
@@ -920,19 +915,18 @@ public data class ImplementationGuide(
        */
       public val groupingId: Id? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(reference.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            fhirVersion = this@with.fhirVersion.toMutableList()
-            name = this@with.name?.toBuilder()
-            description = this@with.description?.toBuilder()
-            example = this@with.example
-            groupingId = this@with.groupingId?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(reference.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.fhirVersion = fhirVersion.toMutableList()
+        builder.name = name?.toBuilder()
+        builder.description = description?.toBuilder()
+        builder.example = example
+        builder.groupingId = groupingId?.toBuilder()
+        return builder
+      }
 
       public sealed interface Example : FhirChoice {
         public fun asBoolean(): Boolean? = this as? Boolean
@@ -1058,8 +1052,8 @@ public data class ImplementationGuide(
         public fun build(): Resource =
           Resource(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             reference = reference.build(),
             fhirVersion = fhirVersion,
             name = name?.build(),
@@ -1134,20 +1128,19 @@ public data class ImplementationGuide(
        */
       public val page: List<Page> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              name,
-              title.toBuilder(),
-              generation,
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              page = this@with.page.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            name,
+            title.toBuilder(),
+            generation,
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.page = page.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public sealed interface Name : FhirChoice {
         public fun asUrl(): Url? = this as? Url
@@ -1236,12 +1229,12 @@ public data class ImplementationGuide(
         public fun build(): Page =
           Page(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             name = name,
             title = title.build(),
             generation = generation,
-            page = page.map { it.build() },
+            page = page.mapToList { it.build() },
           )
       }
     }
@@ -1294,18 +1287,17 @@ public data class ImplementationGuide(
       /** Value for named type. */
       public val `value`: String,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              code,
-              `value`.toBuilder(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            code,
+            `value`.toBuilder(),
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -1359,8 +1351,8 @@ public data class ImplementationGuide(
         public fun build(): Parameter =
           Parameter(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code,
             `value` = `value`.build(),
           )
@@ -1414,15 +1406,14 @@ public data class ImplementationGuide(
       /** The scope in which the template applies. */
       public val scope: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(code.toBuilder(), source.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            scope = this@with.scope?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(code.toBuilder(), source.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.scope = scope?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** Type of template specified. */
@@ -1476,8 +1467,8 @@ public data class ImplementationGuide(
         public fun build(): Template =
           Template(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code.build(),
             source = source.build(),
             scope = scope?.build(),
@@ -1559,13 +1550,13 @@ public data class ImplementationGuide(
       public fun build(): Definition =
         Definition(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          grouping = grouping.map { it.build() },
-          resource = resource.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          grouping = grouping.mapToList { it.build() },
+          resource = resource.mapToList { it.build() },
           page = page?.build(),
-          parameter = parameter.map { it.build() },
-          template = template.map { it.build() },
+          parameter = parameter.mapToList { it.build() },
+          template = template.mapToList { it.build() },
         )
     }
   }
@@ -1628,18 +1619,17 @@ public data class ImplementationGuide(
      */
     public val other: List<String> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(resource.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          rendering = this@with.rendering?.toBuilder()
-          page = this@with.page.map { it.toBuilder() }.toMutableList()
-          image = this@with.image.map { it.toBuilder() }.toMutableList()
-          other = this@with.other.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(resource.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.rendering = rendering?.toBuilder()
+      builder.page = page.mapToMutableList { it.toBuilder() }
+      builder.image = image.mapToMutableList { it.toBuilder() }
+      builder.other = other.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * A resource that is part of the implementation guide. Conformance resources (value set,
@@ -1710,16 +1700,15 @@ public data class ImplementationGuide(
        */
       public val relativePath: Url? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(reference.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            example = this@with.example
-            relativePath = this@with.relativePath?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(reference.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.example = example
+        builder.relativePath = relativePath?.toBuilder()
+        return builder
+      }
 
       public sealed interface Example : FhirChoice {
         public fun asBoolean(): Boolean? = this as? Boolean
@@ -1813,8 +1802,8 @@ public data class ImplementationGuide(
         public fun build(): Resource =
           Resource(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             reference = reference.build(),
             example = example,
             relativePath = relativePath?.build(),
@@ -1877,16 +1866,15 @@ public data class ImplementationGuide(
        */
       public val anchor: List<String> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(name.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            title = this@with.title?.toBuilder()
-            anchor = this@with.anchor.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(name.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.title = title?.toBuilder()
+        builder.anchor = anchor.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -1949,11 +1937,11 @@ public data class ImplementationGuide(
         public fun build(): Page =
           Page(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             name = name.build(),
             title = title?.build(),
-            anchor = anchor.map { it.build() },
+            anchor = anchor.mapToList { it.build() },
           )
       }
     }
@@ -2025,13 +2013,13 @@ public data class ImplementationGuide(
       public fun build(): Manifest =
         Manifest(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           rendering = rendering?.build(),
-          resource = resource.map { it.build() },
-          page = page.map { it.build() },
-          image = image.map { it.build() },
-          other = other.map { it.build() },
+          resource = resource.mapToList { it.build() },
+          page = page.mapToList { it.build() },
+          image = image.mapToList { it.build() },
+          other = other.mapToList { it.build() },
         )
     }
   }
@@ -2340,9 +2328,9 @@ public data class ImplementationGuide(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url.build(),
         version = version?.build(),
         name = name.build(),
@@ -2351,16 +2339,16 @@ public data class ImplementationGuide(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         copyright = copyright?.build(),
         packageId = packageId.build(),
         license = license,
         fhirVersion = fhirVersion,
-        dependsOn = dependsOn.map { it.build() },
-        global = global.map { it.build() },
+        dependsOn = dependsOn.mapToList { it.build() },
+        global = global.mapToList { it.build() },
         definition = definition?.build(),
         manifest = manifest?.build(),
       )

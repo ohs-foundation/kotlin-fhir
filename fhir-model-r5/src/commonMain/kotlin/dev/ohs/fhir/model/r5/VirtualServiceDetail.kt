@@ -90,18 +90,17 @@ public data class VirtualServiceDetail(
    */
   public val sessionKey: String? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        channelType = this@with.channelType?.toBuilder()
-        address = this@with.address
-        additionalInfo = this@with.additionalInfo.map { it.toBuilder() }.toMutableList()
-        maxParticipants = this@with.maxParticipants?.toBuilder()
-        sessionKey = this@with.sessionKey?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.channelType = channelType?.toBuilder()
+    builder.address = address
+    builder.additionalInfo = additionalInfo.mapToMutableList { it.toBuilder() }
+    builder.maxParticipants = maxParticipants?.toBuilder()
+    builder.sessionKey = sessionKey?.toBuilder()
+    return builder
+  }
 
   public sealed interface Address : FhirChoice {
     public fun asUrl(): Url? = this as? Url
@@ -212,10 +211,10 @@ public data class VirtualServiceDetail(
     public open fun build(): VirtualServiceDetail =
       VirtualServiceDetail(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         channelType = channelType?.build(),
         address = address,
-        additionalInfo = additionalInfo.map { it.build() },
+        additionalInfo = additionalInfo.mapToList { it.build() },
         maxParticipants = maxParticipants?.build(),
         sessionKey = sessionKey?.build(),
       )

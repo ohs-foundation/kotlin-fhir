@@ -191,33 +191,32 @@ public data class PractitionerRole(
    */
   public val endpoint: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        period = this@with.period?.toBuilder()
-        practitioner = this@with.practitioner?.toBuilder()
-        organization = this@with.organization?.toBuilder()
-        code = this@with.code.map { it.toBuilder() }.toMutableList()
-        specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-        location = this@with.location.map { it.toBuilder() }.toMutableList()
-        healthcareService = this@with.healthcareService.map { it.toBuilder() }.toMutableList()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-        availableTime = this@with.availableTime.map { it.toBuilder() }.toMutableList()
-        notAvailable = this@with.notAvailable.map { it.toBuilder() }.toMutableList()
-        availabilityExceptions = this@with.availabilityExceptions?.toBuilder()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.practitioner = practitioner?.toBuilder()
+    builder.organization = organization?.toBuilder()
+    builder.code = code.mapToMutableList { it.toBuilder() }
+    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.location = location.mapToMutableList { it.toBuilder() }
+    builder.healthcareService = healthcareService.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.availableTime = availableTime.mapToMutableList { it.toBuilder() }
+    builder.notAvailable = notAvailable.mapToMutableList { it.toBuilder() }
+    builder.availabilityExceptions = availabilityExceptions?.toBuilder()
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * A collection of times the practitioner is available or performing this role at the location
@@ -279,18 +278,17 @@ public data class PractitionerRole(
      */
     public val availableEndTime: Time? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          daysOfWeek = this@with.daysOfWeek.toMutableList()
-          allDay = this@with.allDay?.toBuilder()
-          availableStartTime = this@with.availableStartTime?.toBuilder()
-          availableEndTime = this@with.availableEndTime?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.daysOfWeek = daysOfWeek.toMutableList()
+      builder.allDay = allDay?.toBuilder()
+      builder.availableStartTime = availableStartTime?.toBuilder()
+      builder.availableEndTime = availableEndTime?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -356,8 +354,8 @@ public data class PractitionerRole(
       public fun build(): AvailableTime =
         AvailableTime(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           daysOfWeek = daysOfWeek,
           allDay = allDay?.build(),
           availableStartTime = availableStartTime?.build(),
@@ -414,15 +412,14 @@ public data class PractitionerRole(
     /** Service is not available (seasonally or for a public holiday) from this date. */
     public val during: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(description.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          during = this@with.during?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(description.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.during = during?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The reason that can be presented to the user as to why this time is not available. */
@@ -474,8 +471,8 @@ public data class PractitionerRole(
       public fun build(): NotAvailable =
         NotAvailable(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description.build(),
           during = during?.build(),
         )
@@ -667,23 +664,23 @@ public data class PractitionerRole(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
         period = period?.build(),
         practitioner = practitioner?.build(),
         organization = organization?.build(),
-        code = code.map { it.build() },
-        specialty = specialty.map { it.build() },
-        location = location.map { it.build() },
-        healthcareService = healthcareService.map { it.build() },
-        telecom = telecom.map { it.build() },
-        availableTime = availableTime.map { it.build() },
-        notAvailable = notAvailable.map { it.build() },
+        code = code.mapToList { it.build() },
+        specialty = specialty.mapToList { it.build() },
+        location = location.mapToList { it.build() },
+        healthcareService = healthcareService.mapToList { it.build() },
+        telecom = telecom.mapToList { it.build() },
+        availableTime = availableTime.mapToList { it.build() },
+        notAvailable = notAvailable.mapToList { it.build() },
         availabilityExceptions = availabilityExceptions?.build(),
-        endpoint = endpoint.map { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
       )
   }
 

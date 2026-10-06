@@ -228,35 +228,34 @@ public data class Account(
    */
   public val calculatedAt: Instant? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        billingStatus = this@with.billingStatus?.toBuilder()
-        type = this@with.type?.toBuilder()
-        name = this@with.name?.toBuilder()
-        subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-        servicePeriod = this@with.servicePeriod?.toBuilder()
-        coverage = this@with.coverage.map { it.toBuilder() }.toMutableList()
-        owner = this@with.owner?.toBuilder()
-        description = this@with.description?.toBuilder()
-        guarantor = this@with.guarantor.map { it.toBuilder() }.toMutableList()
-        diagnosis = this@with.diagnosis.map { it.toBuilder() }.toMutableList()
-        procedure = this@with.procedure.map { it.toBuilder() }.toMutableList()
-        relatedAccount = this@with.relatedAccount.map { it.toBuilder() }.toMutableList()
-        currency = this@with.currency?.toBuilder()
-        balance = this@with.balance.map { it.toBuilder() }.toMutableList()
-        calculatedAt = this@with.calculatedAt?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.billingStatus = billingStatus?.toBuilder()
+    builder.type = type?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.servicePeriod = servicePeriod?.toBuilder()
+    builder.coverage = coverage.mapToMutableList { it.toBuilder() }
+    builder.owner = owner?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.guarantor = guarantor.mapToMutableList { it.toBuilder() }
+    builder.diagnosis = diagnosis.mapToMutableList { it.toBuilder() }
+    builder.procedure = procedure.mapToMutableList { it.toBuilder() }
+    builder.relatedAccount = relatedAccount.mapToMutableList { it.toBuilder() }
+    builder.currency = currency?.toBuilder()
+    builder.balance = balance.mapToMutableList { it.toBuilder() }
+    builder.calculatedAt = calculatedAt?.toBuilder()
+    return builder
+  }
 
   /**
    * The party(s) that are responsible for covering the payment of this account, and what order
@@ -318,15 +317,14 @@ public data class Account(
      */
     public val priority: PositiveInt? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(coverage.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          priority = this@with.priority?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(coverage.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.priority = priority?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -390,8 +388,8 @@ public data class Account(
       public fun build(): Coverage =
         Coverage(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           coverage = coverage.build(),
           priority = priority?.build(),
         )
@@ -447,16 +445,15 @@ public data class Account(
     /** The timeframe during which the guarantor accepts responsibility for the account. */
     public val period: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(party.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          onHold = this@with.onHold?.toBuilder()
-          period = this@with.period?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(party.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.onHold = onHold?.toBuilder()
+      builder.period = period?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The entity who is responsible. */
@@ -514,8 +511,8 @@ public data class Account(
       public fun build(): Guarantor =
         Guarantor(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           party = party.build(),
           onHold = onHold?.build(),
           period = period?.build(),
@@ -585,19 +582,18 @@ public data class Account(
      */
     public val packageCode: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(condition.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          sequence = this@with.sequence?.toBuilder()
-          dateOfDiagnosis = this@with.dateOfDiagnosis?.toBuilder()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          onAdmission = this@with.onAdmission?.toBuilder()
-          packageCode = this@with.packageCode.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(condition.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.sequence = sequence?.toBuilder()
+      builder.dateOfDiagnosis = dateOfDiagnosis?.toBuilder()
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.onAdmission = onAdmission?.toBuilder()
+      builder.packageCode = packageCode.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The diagnosis relevant to the account. */
@@ -667,14 +663,14 @@ public data class Account(
       public fun build(): Diagnosis =
         Diagnosis(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           sequence = sequence?.build(),
           condition = condition.build(),
           dateOfDiagnosis = dateOfDiagnosis?.build(),
-          type = type.map { it.build() },
+          type = type.mapToList { it.build() },
           onAdmission = onAdmission?.build(),
-          packageCode = packageCode.map { it.build() },
+          packageCode = packageCode.mapToList { it.build() },
         )
     }
   }
@@ -742,19 +738,18 @@ public data class Account(
     /** Any devices that were associated with the procedure relevant to the account. */
     public val device: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          sequence = this@with.sequence?.toBuilder()
-          dateOfService = this@with.dateOfService?.toBuilder()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          packageCode = this@with.packageCode.map { it.toBuilder() }.toMutableList()
-          device = this@with.device.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.sequence = sequence?.toBuilder()
+      builder.dateOfService = dateOfService?.toBuilder()
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.packageCode = packageCode.mapToMutableList { it.toBuilder() }
+      builder.device = device.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The procedure relevant to the account. */
@@ -824,14 +819,14 @@ public data class Account(
       public fun build(): Procedure =
         Procedure(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           sequence = sequence?.build(),
           code = code.build(),
           dateOfService = dateOfService?.build(),
-          type = type.map { it.build() },
-          packageCode = packageCode.map { it.build() },
-          device = device.map { it.build() },
+          type = type.mapToList { it.build() },
+          packageCode = packageCode.mapToList { it.build() },
+          device = device.mapToList { it.build() },
         )
     }
   }
@@ -881,15 +876,14 @@ public data class Account(
     /** Reference to an associated Account. */
     public val account: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(account.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          relationship = this@with.relationship?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(account.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.relationship = relationship?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Reference to an associated Account. */
@@ -941,8 +935,8 @@ public data class Account(
       public fun build(): RelatedAccount =
         RelatedAccount(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           relationship = relationship?.build(),
           account = account.build(),
         )
@@ -1009,17 +1003,16 @@ public data class Account(
     /** The actual balance value calculated for the age defined in the term property. */
     public val amount: Money,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(amount.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          aggregate = this@with.aggregate?.toBuilder()
-          term = this@with.term?.toBuilder()
-          estimate = this@with.estimate?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(amount.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.aggregate = aggregate?.toBuilder()
+      builder.term = term?.toBuilder()
+      builder.estimate = estimate?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The actual balance value calculated for the age defined in the term property. */
@@ -1083,8 +1076,8 @@ public data class Account(
       public fun build(): Balance =
         Balance(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           aggregate = aggregate?.build(),
           term = term?.build(),
           estimate = estimate?.build(),
@@ -1313,25 +1306,25 @@ public data class Account(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         billingStatus = billingStatus?.build(),
         type = type?.build(),
         name = name?.build(),
-        subject = subject.map { it.build() },
+        subject = subject.mapToList { it.build() },
         servicePeriod = servicePeriod?.build(),
-        coverage = coverage.map { it.build() },
+        coverage = coverage.mapToList { it.build() },
         owner = owner?.build(),
         description = description?.build(),
-        guarantor = guarantor.map { it.build() },
-        diagnosis = diagnosis.map { it.build() },
-        procedure = procedure.map { it.build() },
-        relatedAccount = relatedAccount.map { it.build() },
+        guarantor = guarantor.mapToList { it.build() },
+        diagnosis = diagnosis.mapToList { it.build() },
+        procedure = procedure.mapToList { it.build() },
+        relatedAccount = relatedAccount.mapToList { it.build() },
         currency = currency?.build(),
-        balance = balance.map { it.build() },
+        balance = balance.mapToList { it.build() },
         calculatedAt = calculatedAt?.build(),
       )
   }

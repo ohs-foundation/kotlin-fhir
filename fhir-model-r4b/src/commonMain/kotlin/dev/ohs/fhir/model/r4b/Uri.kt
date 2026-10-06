@@ -71,14 +71,13 @@ public open class Uri(
     return result
   }
 
-  public open fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-      }
-    }
+  public open fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    return builder
+  }
 
   public open fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -111,7 +110,7 @@ public open class Uri(
     public open fun build(): Uri =
       Uri(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`,
       )
   }

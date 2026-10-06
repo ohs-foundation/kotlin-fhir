@@ -246,44 +246,42 @@ public data class MedicationKnowledge(
    */
   public val kinetics: List<Kinetics> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        code = this@with.code?.toBuilder()
-        status = this@with.status
-        manufacturer = this@with.manufacturer?.toBuilder()
-        doseForm = this@with.doseForm?.toBuilder()
-        amount = this@with.amount?.toBuilder()
-        synonym = this@with.synonym.map { it.toBuilder() }.toMutableList()
-        relatedMedicationKnowledge =
-          this@with.relatedMedicationKnowledge.map { it.toBuilder() }.toMutableList()
-        associatedMedication = this@with.associatedMedication.map { it.toBuilder() }.toMutableList()
-        productType = this@with.productType.map { it.toBuilder() }.toMutableList()
-        monograph = this@with.monograph.map { it.toBuilder() }.toMutableList()
-        ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-        preparationInstruction = this@with.preparationInstruction?.toBuilder()
-        intendedRoute = this@with.intendedRoute.map { it.toBuilder() }.toMutableList()
-        cost = this@with.cost.map { it.toBuilder() }.toMutableList()
-        monitoringProgram = this@with.monitoringProgram.map { it.toBuilder() }.toMutableList()
-        administrationGuidelines =
-          this@with.administrationGuidelines.map { it.toBuilder() }.toMutableList()
-        medicineClassification =
-          this@with.medicineClassification.map { it.toBuilder() }.toMutableList()
-        packaging = this@with.packaging?.toBuilder()
-        drugCharacteristic = this@with.drugCharacteristic.map { it.toBuilder() }.toMutableList()
-        contraindication = this@with.contraindication.map { it.toBuilder() }.toMutableList()
-        regulatory = this@with.regulatory.map { it.toBuilder() }.toMutableList()
-        kinetics = this@with.kinetics.map { it.toBuilder() }.toMutableList()
-      }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.code = code?.toBuilder()
+    builder.status = status
+    builder.manufacturer = manufacturer?.toBuilder()
+    builder.doseForm = doseForm?.toBuilder()
+    builder.amount = amount?.toBuilder()
+    builder.synonym = synonym.mapToMutableList { it.toBuilder() }
+    builder.relatedMedicationKnowledge = relatedMedicationKnowledge.mapToMutableList {
+      it.toBuilder()
     }
+    builder.associatedMedication = associatedMedication.mapToMutableList { it.toBuilder() }
+    builder.productType = productType.mapToMutableList { it.toBuilder() }
+    builder.monograph = monograph.mapToMutableList { it.toBuilder() }
+    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.preparationInstruction = preparationInstruction?.toBuilder()
+    builder.intendedRoute = intendedRoute.mapToMutableList { it.toBuilder() }
+    builder.cost = cost.mapToMutableList { it.toBuilder() }
+    builder.monitoringProgram = monitoringProgram.mapToMutableList { it.toBuilder() }
+    builder.administrationGuidelines = administrationGuidelines.mapToMutableList { it.toBuilder() }
+    builder.medicineClassification = medicineClassification.mapToMutableList { it.toBuilder() }
+    builder.packaging = packaging?.toBuilder()
+    builder.drugCharacteristic = drugCharacteristic.mapToMutableList { it.toBuilder() }
+    builder.contraindication = contraindication.mapToMutableList { it.toBuilder() }
+    builder.regulatory = regulatory.mapToMutableList { it.toBuilder() }
+    builder.kinetics = kinetics.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Associated or related knowledge about a medication. */
   @Serializable(with = MedicationKnowledgeRelatedMedicationKnowledgeSerializer::class)
@@ -330,18 +328,17 @@ public data class MedicationKnowledge(
     /** Associated documentation about the associated medication knowledge. */
     public val reference: List<Reference>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            type.toBuilder(),
-            reference.map { it.toBuilder() }.toMutableList(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          type.toBuilder(),
+          reference.mapToMutableList { it.toBuilder() },
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The category of the associated medication knowledge reference. */
@@ -392,10 +389,10 @@ public data class MedicationKnowledge(
       public fun build(): RelatedMedicationKnowledge =
         RelatedMedicationKnowledge(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
-          reference = reference.map { it.build() },
+          reference = reference.mapToList { it.build() },
         )
     }
   }
@@ -448,16 +445,15 @@ public data class MedicationKnowledge(
     /** Associated documentation about the medication. */
     public val source: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          source = this@with.source?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.source = source?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -512,8 +508,8 @@ public data class MedicationKnowledge(
       public fun build(): Monograph =
         Monograph(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           source = source?.build(),
         )
@@ -571,16 +567,15 @@ public data class MedicationKnowledge(
      */
     public val strength: Ratio? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          isActive = this@with.isActive?.toBuilder()
-          strength = this@with.strength?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.isActive = isActive?.toBuilder()
+      builder.strength = strength?.toBuilder()
+      return builder
+    }
 
     public sealed interface Item : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -662,8 +657,8 @@ public data class MedicationKnowledge(
       public fun build(): Ingredient =
         Ingredient(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item,
           isActive = isActive?.build(),
           strength = strength?.build(),
@@ -721,15 +716,14 @@ public data class MedicationKnowledge(
     /** The price of the medication. */
     public val cost: Money,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder(), cost.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          source = this@with.source?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder(), cost.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.source = source?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -786,8 +780,8 @@ public data class MedicationKnowledge(
       public fun build(): Cost =
         Cost(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           source = source?.build(),
           cost = cost.build(),
@@ -840,16 +834,15 @@ public data class MedicationKnowledge(
     /** Name of the reviewing program. */
     public val name: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          name = this@with.name?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.name = name?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -901,8 +894,8 @@ public data class MedicationKnowledge(
       public fun build(): MonitoringProgram =
         MonitoringProgram(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           name = name?.build(),
         )
@@ -959,18 +952,16 @@ public data class MedicationKnowledge(
      */
     public val patientCharacteristics: List<PatientCharacteristics> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          dosage = this@with.dosage.map { it.toBuilder() }.toMutableList()
-          indication = this@with.indication
-          patientCharacteristics =
-            this@with.patientCharacteristics.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.dosage = dosage.mapToMutableList { it.toBuilder() }
+      builder.indication = indication
+      builder.patientCharacteristics = patientCharacteristics.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Dosage for the medication for the specific guidelines. */
     @Serializable(with = MedicationKnowledgeAdministrationGuidelinesDosageSerializer::class)
@@ -1017,18 +1008,17 @@ public data class MedicationKnowledge(
       /** Dosage for the medication for the specific guidelines. */
       public val dosage: List<dev.ohs.fhir.model.r4.Dosage>,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              type.toBuilder(),
-              dosage.map { it.toBuilder() }.toMutableList(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            type.toBuilder(),
+            dosage.mapToMutableList { it.toBuilder() },
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /** The type of dosage (for example, prophylaxis, maintenance, therapeutic, etc.). */
@@ -1079,10 +1069,10 @@ public data class MedicationKnowledge(
         public fun build(): Dosage =
           Dosage(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
-            dosage = dosage.map { it.build() },
+            dosage = dosage.mapToList { it.build() },
           )
       }
     }
@@ -1140,15 +1130,14 @@ public data class MedicationKnowledge(
       /** The specific characteristic (e.g. height, weight, gender, etc.). */
       public val `value`: List<String> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(characteristic).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            `value` = this@with.`value`.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(characteristic)
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.`value` = `value`.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public sealed interface Characteristic : FhirChoice {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -1227,10 +1216,10 @@ public data class MedicationKnowledge(
         public fun build(): PatientCharacteristics =
           PatientCharacteristics(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             characteristic = characteristic,
-            `value` = `value`.map { it.build() },
+            `value` = `value`.mapToList { it.build() },
           )
       }
     }
@@ -1316,11 +1305,11 @@ public data class MedicationKnowledge(
       public fun build(): AdministrationGuidelines =
         AdministrationGuidelines(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          dosage = dosage.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          dosage = dosage.mapToList { it.build() },
           indication = indication,
-          patientCharacteristics = patientCharacteristics.map { it.build() },
+          patientCharacteristics = patientCharacteristics.mapToList { it.build() },
         )
     }
   }
@@ -1376,15 +1365,14 @@ public data class MedicationKnowledge(
      */
     public val classification: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          classification = this@with.classification.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.classification = classification.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1442,10 +1430,10 @@ public data class MedicationKnowledge(
       public fun build(): MedicineClassification =
         MedicineClassification(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
-          classification = classification.map { it.build() },
+          classification = classification.mapToList { it.build() },
         )
     }
   }
@@ -1498,16 +1486,15 @@ public data class MedicationKnowledge(
     /** The number of product units the package would contain if fully loaded. */
     public val quantity: Quantity? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          quantity = this@with.quantity?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.quantity = quantity?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1562,8 +1549,8 @@ public data class MedicationKnowledge(
       public fun build(): Packaging =
         Packaging(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           quantity = quantity?.build(),
         )
@@ -1623,16 +1610,15 @@ public data class MedicationKnowledge(
      */
     public val `value`: Value? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          `value` = this@with.`value`
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.`value` = `value`
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -1728,8 +1714,8 @@ public data class MedicationKnowledge(
       public fun build(): DrugCharacteristic =
         DrugCharacteristic(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           `value` = `value`,
         )
@@ -1787,17 +1773,16 @@ public data class MedicationKnowledge(
     /** The maximum number of units of the medication that can be dispensed in a period. */
     public val maxDispense: MaxDispense? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(regulatoryAuthority.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          substitution = this@with.substitution.map { it.toBuilder() }.toMutableList()
-          schedule = this@with.schedule.map { it.toBuilder() }.toMutableList()
-          maxDispense = this@with.maxDispense?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(regulatoryAuthority.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.substitution = substitution.mapToMutableList { it.toBuilder() }
+      builder.schedule = schedule.mapToMutableList { it.toBuilder() }
+      builder.maxDispense = maxDispense?.toBuilder()
+      return builder
+    }
 
     /**
      * Specifies if changes are allowed when dispensing a medication from a regulatory perspective.
@@ -1846,14 +1831,13 @@ public data class MedicationKnowledge(
       /** Specifies if regulation allows for changes in the medication when dispensing. */
       public val allowed: Boolean,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(type.toBuilder(), allowed.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(type.toBuilder(), allowed.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /** Specifies the type of substitution allowed. */
@@ -1904,8 +1888,8 @@ public data class MedicationKnowledge(
         public fun build(): Substitution =
           Substitution(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
             allowed = allowed.build(),
           )
@@ -1955,14 +1939,13 @@ public data class MedicationKnowledge(
       /** Specifies the specific drug schedule. */
       public val schedule: CodeableConcept,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(schedule.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(schedule.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /** Specifies the specific drug schedule. */
@@ -2011,8 +1994,8 @@ public data class MedicationKnowledge(
         public fun build(): Schedule =
           Schedule(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             schedule = schedule.build(),
           )
       }
@@ -2063,15 +2046,14 @@ public data class MedicationKnowledge(
       /** The period that applies to the maximum number of units. */
       public val period: Duration? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(quantity.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            period = this@with.period?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(quantity.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.period = period?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** The maximum number of units of the medication that can be dispensed. */
@@ -2123,8 +2105,8 @@ public data class MedicationKnowledge(
         public fun build(): MaxDispense =
           MaxDispense(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             quantity = quantity.build(),
             period = period?.build(),
           )
@@ -2190,11 +2172,11 @@ public data class MedicationKnowledge(
       public fun build(): Regulatory =
         Regulatory(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           regulatoryAuthority = regulatoryAuthority.build(),
-          substitution = substitution.map { it.build() },
-          schedule = schedule.map { it.build() },
+          substitution = substitution.mapToList { it.build() },
+          schedule = schedule.mapToList { it.build() },
           maxDispense = maxDispense?.build(),
         )
     }
@@ -2253,17 +2235,16 @@ public data class MedicationKnowledge(
      */
     public val halfLifePeriod: Duration? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          areaUnderCurve = this@with.areaUnderCurve.map { it.toBuilder() }.toMutableList()
-          lethalDose50 = this@with.lethalDose50.map { it.toBuilder() }.toMutableList()
-          halfLifePeriod = this@with.halfLifePeriod?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.areaUnderCurve = areaUnderCurve.mapToMutableList { it.toBuilder() }
+      builder.lethalDose50 = lethalDose50.mapToMutableList { it.toBuilder() }
+      builder.halfLifePeriod = halfLifePeriod?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -2321,10 +2302,10 @@ public data class MedicationKnowledge(
       public fun build(): Kinetics =
         Kinetics(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          areaUnderCurve = areaUnderCurve.map { it.build() },
-          lethalDose50 = lethalDose50.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          areaUnderCurve = areaUnderCurve.mapToList { it.build() },
+          lethalDose50 = lethalDose50.mapToList { it.build() },
           halfLifePeriod = halfLifePeriod?.build(),
         )
     }
@@ -2569,31 +2550,31 @@ public data class MedicationKnowledge(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         code = code?.build(),
         status = status,
         manufacturer = manufacturer?.build(),
         doseForm = doseForm?.build(),
         amount = amount?.build(),
-        synonym = synonym.map { it.build() },
-        relatedMedicationKnowledge = relatedMedicationKnowledge.map { it.build() },
-        associatedMedication = associatedMedication.map { it.build() },
-        productType = productType.map { it.build() },
-        monograph = monograph.map { it.build() },
-        ingredient = ingredient.map { it.build() },
+        synonym = synonym.mapToList { it.build() },
+        relatedMedicationKnowledge = relatedMedicationKnowledge.mapToList { it.build() },
+        associatedMedication = associatedMedication.mapToList { it.build() },
+        productType = productType.mapToList { it.build() },
+        monograph = monograph.mapToList { it.build() },
+        ingredient = ingredient.mapToList { it.build() },
         preparationInstruction = preparationInstruction?.build(),
-        intendedRoute = intendedRoute.map { it.build() },
-        cost = cost.map { it.build() },
-        monitoringProgram = monitoringProgram.map { it.build() },
-        administrationGuidelines = administrationGuidelines.map { it.build() },
-        medicineClassification = medicineClassification.map { it.build() },
+        intendedRoute = intendedRoute.mapToList { it.build() },
+        cost = cost.mapToList { it.build() },
+        monitoringProgram = monitoringProgram.mapToList { it.build() },
+        administrationGuidelines = administrationGuidelines.mapToList { it.build() },
+        medicineClassification = medicineClassification.mapToList { it.build() },
         packaging = packaging?.build(),
-        drugCharacteristic = drugCharacteristic.map { it.build() },
-        contraindication = contraindication.map { it.build() },
-        regulatory = regulatory.map { it.build() },
-        kinetics = kinetics.map { it.build() },
+        drugCharacteristic = drugCharacteristic.mapToList { it.build() },
+        contraindication = contraindication.mapToList { it.build() },
+        regulatory = regulatory.mapToList { it.build() },
+        kinetics = kinetics.mapToList { it.build() },
       )
   }
 

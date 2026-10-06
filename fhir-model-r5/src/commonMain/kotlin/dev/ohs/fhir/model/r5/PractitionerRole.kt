@@ -239,33 +239,32 @@ public data class PractitionerRole(
    */
   public val endpoint: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        period = this@with.period?.toBuilder()
-        practitioner = this@with.practitioner?.toBuilder()
-        organization = this@with.organization?.toBuilder()
-        code = this@with.code.map { it.toBuilder() }.toMutableList()
-        specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-        location = this@with.location.map { it.toBuilder() }.toMutableList()
-        healthcareService = this@with.healthcareService.map { it.toBuilder() }.toMutableList()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-        communication = this@with.communication.map { it.toBuilder() }.toMutableList()
-        availability = this@with.availability.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.practitioner = practitioner?.toBuilder()
+    builder.organization = organization?.toBuilder()
+    builder.code = code.mapToMutableList { it.toBuilder() }
+    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.location = location.mapToMutableList { it.toBuilder() }
+    builder.healthcareService = healthcareService.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.communication = communication.mapToMutableList { it.toBuilder() }
+    builder.availability = availability.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public class Builder() : DomainResource.Builder() {
     /**
@@ -500,23 +499,23 @@ public data class PractitionerRole(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
         period = period?.build(),
         practitioner = practitioner?.build(),
         organization = organization?.build(),
-        code = code.map { it.build() },
-        specialty = specialty.map { it.build() },
-        location = location.map { it.build() },
-        healthcareService = healthcareService.map { it.build() },
-        contact = contact.map { it.build() },
-        characteristic = characteristic.map { it.build() },
-        communication = communication.map { it.build() },
-        availability = availability.map { it.build() },
-        endpoint = endpoint.map { it.build() },
+        code = code.mapToList { it.build() },
+        specialty = specialty.mapToList { it.build() },
+        location = location.mapToList { it.build() },
+        healthcareService = healthcareService.mapToList { it.build() },
+        contact = contact.mapToList { it.build() },
+        characteristic = characteristic.mapToList { it.build() },
+        communication = communication.mapToList { it.build() },
+        availability = availability.mapToList { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
       )
   }
 }

@@ -317,45 +317,44 @@ public data class MessageDefinition(
    */
   public val graph: List<Canonical> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          date.toBuilder(),
-          event,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          name = this@with.name?.toBuilder()
-          title = this@with.title?.toBuilder()
-          replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-          experimental = this@with.experimental?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          base = this@with.base?.toBuilder()
-          parent = this@with.parent.map { it.toBuilder() }.toMutableList()
-          category = this@with.category
-          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-          responseRequired = this@with.responseRequired
-          allowedResponse = this@with.allowedResponse.map { it.toBuilder() }.toMutableList()
-          graph = this@with.graph.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        date.toBuilder(),
+        event,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.experimental = experimental?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.base = base?.toBuilder()
+    builder.parent = parent.mapToMutableList { it.toBuilder() }
+    builder.category = category
+    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.responseRequired = responseRequired
+    builder.allowedResponse = allowedResponse.mapToMutableList { it.toBuilder() }
+    builder.graph = graph.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Identifies the resource (or resources) that are being addressed by the event. For example, the
@@ -427,20 +426,19 @@ public data class MessageDefinition(
      */
     public val max: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            code,
-            min.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            profile = this@with.profile?.toBuilder()
-            max = this@with.max?.toBuilder()
-          }
-      }
+          code,
+          min.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.profile = profile?.toBuilder()
+      builder.max = max?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -515,8 +513,8 @@ public data class MessageDefinition(
       public fun build(): Focus =
         Focus(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code,
           profile = profile?.build(),
           min = min.build(),
@@ -575,15 +573,14 @@ public data class MessageDefinition(
      */
     public val situation: Markdown? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(message.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          situation = this@with.situation?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(message.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.situation = situation?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -640,8 +637,8 @@ public data class MessageDefinition(
       public fun build(): AllowedResponse =
         AllowedResponse(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           message = message.build(),
           situation = situation?.build(),
         )
@@ -989,33 +986,33 @@ public data class MessageDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
-        replaces = replaces.map { it.build() },
+        replaces = replaces.mapToList { it.build() },
         status = status,
         experimental = experimental?.build(),
         date = date.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         base = base?.build(),
-        parent = parent.map { it.build() },
+        parent = parent.mapToList { it.build() },
         event = event,
         category = category,
-        focus = focus.map { it.build() },
+        focus = focus.mapToList { it.build() },
         responseRequired = responseRequired,
-        allowedResponse = allowedResponse.map { it.build() },
-        graph = graph.map { it.build() },
+        allowedResponse = allowedResponse.mapToList { it.build() },
+        graph = graph.mapToList { it.build() },
       )
   }
 

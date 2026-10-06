@@ -284,45 +284,43 @@ public data class CarePlan(
   /** General notes about the care plan not covered elsewhere. */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          intent,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          instantiatesCanonical =
-            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          title = this@with.title?.toBuilder()
-          description = this@with.description?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          period = this@with.period?.toBuilder()
-          created = this@with.created?.toBuilder()
-          author = this@with.author?.toBuilder()
-          contributor = this@with.contributor.map { it.toBuilder() }.toMutableList()
-          careTeam = this@with.careTeam.map { it.toBuilder() }.toMutableList()
-          addresses = this@with.addresses.map { it.toBuilder() }.toMutableList()
-          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-          goal = this@with.goal.map { it.toBuilder() }.toMutableList()
-          activity = this@with.activity.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        intent,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.title = title?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.created = created?.toBuilder()
+    builder.author = author?.toBuilder()
+    builder.contributor = contributor.mapToMutableList { it.toBuilder() }
+    builder.careTeam = careTeam.mapToMutableList { it.toBuilder() }
+    builder.addresses = addresses.mapToMutableList { it.toBuilder() }
+    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
+    builder.goal = goal.mapToMutableList { it.toBuilder() }
+    builder.activity = activity.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Identifies a planned action to occur as part of the plan. For example, a medication to be used,
@@ -411,20 +409,18 @@ public data class CarePlan(
      */
     public val detail: Detail? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          outcomeCodeableConcept =
-            this@with.outcomeCodeableConcept.map { it.toBuilder() }.toMutableList()
-          outcomeReference = this@with.outcomeReference.map { it.toBuilder() }.toMutableList()
-          progress = this@with.progress.map { it.toBuilder() }.toMutableList()
-          reference = this@with.reference?.toBuilder()
-          detail = this@with.detail?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.outcomeCodeableConcept = outcomeCodeableConcept.mapToMutableList { it.toBuilder() }
+      builder.outcomeReference = outcomeReference.mapToMutableList { it.toBuilder() }
+      builder.progress = progress.mapToMutableList { it.toBuilder() }
+      builder.reference = reference?.toBuilder()
+      builder.detail = detail?.toBuilder()
+      return builder
+    }
 
     /**
      * A simple summary of a planned activity suitable for a general care plan system (e.g. form
@@ -573,31 +569,29 @@ public data class CarePlan(
        */
       public val description: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(status).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            kind = this@with.kind
-            instantiatesCanonical =
-              this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-            instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-            code = this@with.code?.toBuilder()
-            reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-            reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-            goal = this@with.goal.map { it.toBuilder() }.toMutableList()
-            statusReason = this@with.statusReason?.toBuilder()
-            doNotPerform = this@with.doNotPerform?.toBuilder()
-            scheduled = this@with.scheduled
-            location = this@with.location?.toBuilder()
-            performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-            product = this@with.product
-            dailyAmount = this@with.dailyAmount?.toBuilder()
-            quantity = this@with.quantity?.toBuilder()
-            description = this@with.description?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(status)
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.kind = kind
+        builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+        builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+        builder.code = code?.toBuilder()
+        builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+        builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+        builder.goal = goal.mapToMutableList { it.toBuilder() }
+        builder.statusReason = statusReason?.toBuilder()
+        builder.doNotPerform = doNotPerform?.toBuilder()
+        builder.scheduled = scheduled
+        builder.location = location?.toBuilder()
+        builder.performer = performer.mapToMutableList { it.toBuilder() }
+        builder.product = product
+        builder.dailyAmount = dailyAmount?.toBuilder()
+        builder.quantity = quantity?.toBuilder()
+        builder.description = description?.toBuilder()
+        return builder
+      }
 
       public sealed interface Scheduled : FhirChoice {
         public fun asTiming(): Timing? = this as? Timing
@@ -817,21 +811,21 @@ public data class CarePlan(
         public fun build(): Detail =
           Detail(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             kind = kind,
-            instantiatesCanonical = instantiatesCanonical.map { it.build() },
-            instantiatesUri = instantiatesUri.map { it.build() },
+            instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+            instantiatesUri = instantiatesUri.mapToList { it.build() },
             code = code?.build(),
-            reasonCode = reasonCode.map { it.build() },
-            reasonReference = reasonReference.map { it.build() },
-            goal = goal.map { it.build() },
+            reasonCode = reasonCode.mapToList { it.build() },
+            reasonReference = reasonReference.mapToList { it.build() },
+            goal = goal.mapToList { it.build() },
             status = status,
             statusReason = statusReason?.build(),
             doNotPerform = doNotPerform?.build(),
             scheduled = scheduled,
             location = location?.build(),
-            performer = performer.map { it.build() },
+            performer = performer.mapToList { it.build() },
             product = product,
             dailyAmount = dailyAmount?.build(),
             quantity = quantity?.build(),
@@ -933,11 +927,11 @@ public data class CarePlan(
       public fun build(): Activity =
         Activity(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          outcomeCodeableConcept = outcomeCodeableConcept.map { it.build() },
-          outcomeReference = outcomeReference.map { it.build() },
-          progress = progress.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          outcomeCodeableConcept = outcomeCodeableConcept.mapToList { it.build() },
+          outcomeReference = outcomeReference.mapToList { it.build() },
+          progress = progress.mapToList { it.build() },
           reference = reference?.build(),
           detail = detail?.build(),
         )
@@ -1229,18 +1223,18 @@ public data class CarePlan(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        instantiatesCanonical = instantiatesCanonical.map { it.build() },
-        instantiatesUri = instantiatesUri.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        replaces = replaces.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+        instantiatesUri = instantiatesUri.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        replaces = replaces.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
         intent = intent,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         title = title?.build(),
         description = description?.build(),
         subject = subject.build(),
@@ -1248,13 +1242,13 @@ public data class CarePlan(
         period = period?.build(),
         created = created?.build(),
         author = author?.build(),
-        contributor = contributor.map { it.build() },
-        careTeam = careTeam.map { it.build() },
-        addresses = addresses.map { it.build() },
-        supportingInfo = supportingInfo.map { it.build() },
-        goal = goal.map { it.build() },
-        activity = activity.map { it.build() },
-        note = note.map { it.build() },
+        contributor = contributor.mapToList { it.build() },
+        careTeam = careTeam.mapToList { it.build() },
+        addresses = addresses.mapToList { it.build() },
+        supportingInfo = supportingInfo.mapToList { it.build() },
+        goal = goal.mapToList { it.build() },
+        activity = activity.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

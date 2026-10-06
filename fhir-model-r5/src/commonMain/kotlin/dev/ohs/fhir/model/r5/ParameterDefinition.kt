@@ -74,22 +74,21 @@ public data class ParameterDefinition(
    */
   public val profile: Canonical? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
+  public fun toBuilder(): Builder {
+    val builder =
       Builder(
-          use,
-          type,
-        )
-        .apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          min = this@with.min?.toBuilder()
-          max = this@with.max?.toBuilder()
-          documentation = this@with.documentation?.toBuilder()
-          profile = this@with.profile?.toBuilder()
-        }
-    }
+        use,
+        type,
+      )
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.min = min?.toBuilder()
+    builder.max = max?.toBuilder()
+    builder.documentation = documentation?.toBuilder()
+    builder.profile = profile?.toBuilder()
+    return builder
+  }
 
   public open class Builder(
     /** Whether the parameter is input or output for the module. */
@@ -143,7 +142,7 @@ public data class ParameterDefinition(
     public open fun build(): ParameterDefinition =
       ParameterDefinition(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         name = name?.build(),
         use = use,
         min = min?.build(),

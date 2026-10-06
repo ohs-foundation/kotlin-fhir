@@ -65,15 +65,14 @@ public data class Range(
    */
   public val high: Quantity? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        low = this@with.low?.toBuilder()
-        high = this@with.high?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.low = low?.toBuilder()
+    builder.high = high?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -113,7 +112,7 @@ public data class Range(
     public open fun build(): Range =
       Range(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         low = low?.build(),
         high = high?.build(),
       )

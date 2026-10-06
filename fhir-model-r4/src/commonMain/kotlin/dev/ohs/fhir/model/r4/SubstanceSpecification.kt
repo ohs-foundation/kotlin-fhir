@@ -180,38 +180,37 @@ public data class SubstanceSpecification(
   /** Material or taxonomic/anatomical source for the substance. */
   public val sourceMaterial: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier?.toBuilder()
-        type = this@with.type?.toBuilder()
-        status = this@with.status?.toBuilder()
-        domain = this@with.domain?.toBuilder()
-        description = this@with.description?.toBuilder()
-        source = this@with.source.map { it.toBuilder() }.toMutableList()
-        comment = this@with.comment?.toBuilder()
-        moiety = this@with.moiety.map { it.toBuilder() }.toMutableList()
-        `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-        referenceInformation = this@with.referenceInformation?.toBuilder()
-        structure = this@with.structure?.toBuilder()
-        code = this@with.code.map { it.toBuilder() }.toMutableList()
-        name = this@with.name.map { it.toBuilder() }.toMutableList()
-        molecularWeight = this@with.molecularWeight.map { it.toBuilder() }.toMutableList()
-        relationship = this@with.relationship.map { it.toBuilder() }.toMutableList()
-        nucleicAcid = this@with.nucleicAcid?.toBuilder()
-        polymer = this@with.polymer?.toBuilder()
-        protein = this@with.protein?.toBuilder()
-        sourceMaterial = this@with.sourceMaterial?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier?.toBuilder()
+    builder.type = type?.toBuilder()
+    builder.status = status?.toBuilder()
+    builder.domain = domain?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.source = source.mapToMutableList { it.toBuilder() }
+    builder.comment = comment?.toBuilder()
+    builder.moiety = moiety.mapToMutableList { it.toBuilder() }
+    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    builder.referenceInformation = referenceInformation?.toBuilder()
+    builder.structure = structure?.toBuilder()
+    builder.code = code.mapToMutableList { it.toBuilder() }
+    builder.name = name.mapToMutableList { it.toBuilder() }
+    builder.molecularWeight = molecularWeight.mapToMutableList { it.toBuilder() }
+    builder.relationship = relationship.mapToMutableList { it.toBuilder() }
+    builder.nucleicAcid = nucleicAcid?.toBuilder()
+    builder.polymer = polymer?.toBuilder()
+    builder.protein = protein?.toBuilder()
+    builder.sourceMaterial = sourceMaterial?.toBuilder()
+    return builder
+  }
 
   /** Moiety, for structural modifications. */
   @Serializable(with = SubstanceSpecificationMoietySerializer::class)
@@ -268,21 +267,20 @@ public data class SubstanceSpecification(
     /** Quantitative value for this moiety. */
     public val amount: Amount? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          role = this@with.role?.toBuilder()
-          identifier = this@with.identifier?.toBuilder()
-          name = this@with.name?.toBuilder()
-          stereochemistry = this@with.stereochemistry?.toBuilder()
-          opticalActivity = this@with.opticalActivity?.toBuilder()
-          molecularFormula = this@with.molecularFormula?.toBuilder()
-          amount = this@with.amount
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.role = role?.toBuilder()
+      builder.identifier = identifier?.toBuilder()
+      builder.name = name?.toBuilder()
+      builder.stereochemistry = stereochemistry?.toBuilder()
+      builder.opticalActivity = opticalActivity?.toBuilder()
+      builder.molecularFormula = molecularFormula?.toBuilder()
+      builder.amount = amount
+      return builder
+    }
 
     public sealed interface Amount : FhirChoice {
       public fun asQuantity(): Quantity? = this as? Quantity
@@ -370,8 +368,8 @@ public data class SubstanceSpecification(
       public fun build(): Moiety =
         Moiety(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           role = role?.build(),
           identifier = identifier?.build(),
           name = name?.build(),
@@ -440,19 +438,18 @@ public data class SubstanceSpecification(
     /** Quantitative value for this property. */
     public val amount: Amount? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          category = this@with.category?.toBuilder()
-          code = this@with.code?.toBuilder()
-          parameters = this@with.parameters?.toBuilder()
-          definingSubstance = this@with.definingSubstance
-          amount = this@with.amount
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.category = category?.toBuilder()
+      builder.code = code?.toBuilder()
+      builder.parameters = parameters?.toBuilder()
+      builder.definingSubstance = definingSubstance
+      builder.amount = amount
+      return builder
+    }
 
     public sealed interface DefiningSubstance : FhirChoice {
       public fun asReference(): Reference? = this as? Reference
@@ -564,8 +561,8 @@ public data class SubstanceSpecification(
       public fun build(): Property =
         Property(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           category = category?.build(),
           code = code?.build(),
           parameters = parameters?.build(),
@@ -637,22 +634,21 @@ public data class SubstanceSpecification(
     /** Molecular structural representation. */
     public val representation: List<Representation> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          stereochemistry = this@with.stereochemistry?.toBuilder()
-          opticalActivity = this@with.opticalActivity?.toBuilder()
-          molecularFormula = this@with.molecularFormula?.toBuilder()
-          molecularFormulaByMoiety = this@with.molecularFormulaByMoiety?.toBuilder()
-          isotope = this@with.isotope.map { it.toBuilder() }.toMutableList()
-          molecularWeight = this@with.molecularWeight?.toBuilder()
-          source = this@with.source.map { it.toBuilder() }.toMutableList()
-          representation = this@with.representation.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.stereochemistry = stereochemistry?.toBuilder()
+      builder.opticalActivity = opticalActivity?.toBuilder()
+      builder.molecularFormula = molecularFormula?.toBuilder()
+      builder.molecularFormulaByMoiety = molecularFormulaByMoiety?.toBuilder()
+      builder.isotope = isotope.mapToMutableList { it.toBuilder() }
+      builder.molecularWeight = molecularWeight?.toBuilder()
+      builder.source = source.mapToMutableList { it.toBuilder() }
+      builder.representation = representation.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio.
@@ -707,19 +703,18 @@ public data class SubstanceSpecification(
       /** The molecular weight or weight range (for proteins, polymers or nucleic acids). */
       public val molecularWeight: MolecularWeight? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            identifier = this@with.identifier?.toBuilder()
-            name = this@with.name?.toBuilder()
-            substitution = this@with.substitution?.toBuilder()
-            halfLife = this@with.halfLife?.toBuilder()
-            molecularWeight = this@with.molecularWeight?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.identifier = identifier?.toBuilder()
+        builder.name = name?.toBuilder()
+        builder.substitution = substitution?.toBuilder()
+        builder.halfLife = halfLife?.toBuilder()
+        builder.molecularWeight = molecularWeight?.toBuilder()
+        return builder
+      }
 
       /** The molecular weight or weight range (for proteins, polymers or nucleic acids). */
       @Serializable(with = SubstanceSpecificationStructureIsotopeMolecularWeightSerializer::class)
@@ -775,17 +770,16 @@ public data class SubstanceSpecification(
          */
         public val amount: Quantity? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              method = this@with.method?.toBuilder()
-              type = this@with.type?.toBuilder()
-              amount = this@with.amount?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.method = method?.toBuilder()
+          builder.type = type?.toBuilder()
+          builder.amount = amount?.toBuilder()
+          return builder
+        }
 
         public class Builder() {
           /**
@@ -847,8 +841,8 @@ public data class SubstanceSpecification(
           public fun build(): MolecularWeight =
             MolecularWeight(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               method = method?.build(),
               type = type?.build(),
               amount = amount?.build(),
@@ -915,8 +909,8 @@ public data class SubstanceSpecification(
         public fun build(): Isotope =
           Isotope(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             identifier = identifier?.build(),
             name = name?.build(),
             substitution = substitution?.build(),
@@ -975,17 +969,16 @@ public data class SubstanceSpecification(
       /** An attached file with the structural representation. */
       public val attachment: Attachment? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type?.toBuilder()
-            representation = this@with.representation?.toBuilder()
-            attachment = this@with.attachment?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type?.toBuilder()
+        builder.representation = representation?.toBuilder()
+        builder.attachment = attachment?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -1043,8 +1036,8 @@ public data class SubstanceSpecification(
         public fun build(): Representation =
           Representation(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type?.build(),
             representation = representation?.build(),
             attachment = attachment?.build(),
@@ -1126,16 +1119,16 @@ public data class SubstanceSpecification(
       public fun build(): Structure =
         Structure(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           stereochemistry = stereochemistry?.build(),
           opticalActivity = opticalActivity?.build(),
           molecularFormula = molecularFormula?.build(),
           molecularFormulaByMoiety = molecularFormulaByMoiety?.build(),
-          isotope = isotope.map { it.build() },
+          isotope = isotope.mapToList { it.build() },
           molecularWeight = molecularWeight?.build(),
-          source = source.map { it.build() },
-          representation = representation.map { it.build() },
+          source = source.mapToList { it.build() },
+          representation = representation.mapToList { it.build() },
         )
     }
   }
@@ -1191,19 +1184,18 @@ public data class SubstanceSpecification(
     /** Supporting literature. */
     public val source: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          status = this@with.status?.toBuilder()
-          statusDate = this@with.statusDate?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-          source = this@with.source.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code?.toBuilder()
+      builder.status = status?.toBuilder()
+      builder.statusDate = statusDate?.toBuilder()
+      builder.comment = comment?.toBuilder()
+      builder.source = source.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1264,13 +1256,13 @@ public data class SubstanceSpecification(
       public fun build(): Code =
         Code(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code?.build(),
           status = status?.build(),
           statusDate = statusDate?.build(),
           comment = comment?.build(),
-          source = source.map { it.build() },
+          source = source.mapToList { it.build() },
         )
     }
   }
@@ -1341,24 +1333,23 @@ public data class SubstanceSpecification(
     /** Supporting literature. */
     public val source: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(name.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          status = this@with.status?.toBuilder()
-          preferred = this@with.preferred?.toBuilder()
-          language = this@with.language.map { it.toBuilder() }.toMutableList()
-          domain = this@with.domain.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          synonym = this@with.synonym.map { it.toBuilder() }.toMutableList()
-          translation = this@with.translation.map { it.toBuilder() }.toMutableList()
-          official = this@with.official.map { it.toBuilder() }.toMutableList()
-          source = this@with.source.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(name.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.status = status?.toBuilder()
+      builder.preferred = preferred?.toBuilder()
+      builder.language = language.mapToMutableList { it.toBuilder() }
+      builder.domain = domain.mapToMutableList { it.toBuilder() }
+      builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+      builder.synonym = synonym.mapToMutableList { it.toBuilder() }
+      builder.translation = translation.mapToMutableList { it.toBuilder() }
+      builder.official = official.mapToMutableList { it.toBuilder() }
+      builder.source = source.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Details of the official nature of this name. */
     @Serializable(with = SubstanceSpecificationNameOfficialSerializer::class)
@@ -1407,17 +1398,16 @@ public data class SubstanceSpecification(
       /** Date of official name change. */
       public val date: DateTime? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            authority = this@with.authority?.toBuilder()
-            status = this@with.status?.toBuilder()
-            date = this@with.date?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.authority = authority?.toBuilder()
+        builder.status = status?.toBuilder()
+        builder.date = date?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -1472,8 +1462,8 @@ public data class SubstanceSpecification(
         public fun build(): Official =
           Official(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             authority = authority?.build(),
             status = status?.build(),
             date = date?.build(),
@@ -1561,19 +1551,19 @@ public data class SubstanceSpecification(
       public fun build(): Name =
         Name(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name.build(),
           type = type?.build(),
           status = status?.build(),
           preferred = preferred?.build(),
-          language = language.map { it.build() },
-          domain = domain.map { it.build() },
-          jurisdiction = jurisdiction.map { it.build() },
-          synonym = synonym.map { it.build() },
-          translation = translation.map { it.build() },
-          official = official.map { it.build() },
-          source = source.map { it.build() },
+          language = language.mapToList { it.build() },
+          domain = domain.mapToList { it.build() },
+          jurisdiction = jurisdiction.mapToList { it.build() },
+          synonym = synonym.mapToList { it.build() },
+          translation = translation.mapToList { it.build() },
+          official = official.mapToList { it.build() },
+          source = source.mapToList { it.build() },
         )
     }
   }
@@ -1639,21 +1629,20 @@ public data class SubstanceSpecification(
     /** Supporting literature. */
     public val source: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          substance = this@with.substance
-          relationship = this@with.relationship?.toBuilder()
-          isDefining = this@with.isDefining?.toBuilder()
-          amount = this@with.amount
-          amountRatioLowLimit = this@with.amountRatioLowLimit?.toBuilder()
-          amountType = this@with.amountType?.toBuilder()
-          source = this@with.source.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.substance = substance
+      builder.relationship = relationship?.toBuilder()
+      builder.isDefining = isDefining?.toBuilder()
+      builder.amount = amount
+      builder.amountRatioLowLimit = amountRatioLowLimit?.toBuilder()
+      builder.amountType = amountType?.toBuilder()
+      builder.source = source.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Substance : FhirChoice {
       public fun asReference(): Reference? = this as? Reference
@@ -1782,15 +1771,15 @@ public data class SubstanceSpecification(
       public fun build(): Relationship =
         Relationship(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           substance = substance,
           relationship = relationship?.build(),
           isDefining = isDefining?.build(),
           amount = amount,
           amountRatioLowLimit = amountRatioLowLimit?.build(),
           amountType = amountType?.build(),
-          source = source.map { it.build() },
+          source = source.mapToList { it.build() },
         )
     }
   }
@@ -1968,24 +1957,24 @@ public data class SubstanceSpecification(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         identifier = identifier?.build(),
         type = type?.build(),
         status = status?.build(),
         domain = domain?.build(),
         description = description?.build(),
-        source = source.map { it.build() },
+        source = source.mapToList { it.build() },
         comment = comment?.build(),
-        moiety = moiety.map { it.build() },
-        `property` = `property`.map { it.build() },
+        moiety = moiety.mapToList { it.build() },
+        `property` = `property`.mapToList { it.build() },
         referenceInformation = referenceInformation?.build(),
         structure = structure?.build(),
-        code = code.map { it.build() },
-        name = name.map { it.build() },
-        molecularWeight = molecularWeight.map { it.build() },
-        relationship = relationship.map { it.build() },
+        code = code.mapToList { it.build() },
+        name = name.mapToList { it.build() },
+        molecularWeight = molecularWeight.mapToList { it.build() },
+        relationship = relationship.mapToList { it.build() },
         nucleicAcid = nucleicAcid?.build(),
         polymer = polymer?.build(),
         protein = protein?.build(),

@@ -171,31 +171,30 @@ public data class ManufacturedItemDefinition(
    */
   public val component: List<Component> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          manufacturedDoseForm.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
-          manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-          marketingStatus = this@with.marketingStatus.map { it.toBuilder() }.toMutableList()
-          ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-          component = this@with.component.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        manufacturedDoseForm.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.unitOfPresentation = unitOfPresentation?.toBuilder()
+    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+    builder.marketingStatus = marketingStatus.mapToMutableList { it.toBuilder() }
+    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    builder.component = component.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** General characteristics of this item. */
   @Serializable(with = ManufacturedItemDefinitionPropertySerializer::class)
@@ -242,15 +241,14 @@ public data class ManufacturedItemDefinition(
     /** A value for the characteristic. */
     public val `value`: Value? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `value` = this@with.`value`
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`value` = `value`
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -355,8 +353,8 @@ public data class ManufacturedItemDefinition(
       public fun build(): Property =
         Property(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           `value` = `value`,
         )
@@ -428,19 +426,18 @@ public data class ManufacturedItemDefinition(
     /** A component that this component contains or is made from. */
     public val component: List<Component> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function.map { it.toBuilder() }.toMutableList()
-          amount = this@with.amount.map { it.toBuilder() }.toMutableList()
-          constituent = this@with.constituent.map { it.toBuilder() }.toMutableList()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-          component = this@with.component.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function.mapToMutableList { it.toBuilder() }
+      builder.amount = amount.mapToMutableList { it.toBuilder() }
+      builder.constituent = constituent.mapToMutableList { it.toBuilder() }
+      builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+      builder.component = component.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * A reference to a constituent of the manufactured item as a whole, linked here so that its
@@ -502,18 +499,17 @@ public data class ManufacturedItemDefinition(
       /** The ingredient that is the constituent of the given component. */
       public val hasIngredient: List<CodeableReference> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            amount = this@with.amount.map { it.toBuilder() }.toMutableList()
-            location = this@with.location.map { it.toBuilder() }.toMutableList()
-            function = this@with.function.map { it.toBuilder() }.toMutableList()
-            hasIngredient = this@with.hasIngredient.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.amount = amount.mapToMutableList { it.toBuilder() }
+        builder.location = location.mapToMutableList { it.toBuilder() }
+        builder.function = function.mapToMutableList { it.toBuilder() }
+        builder.hasIngredient = hasIngredient.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -578,12 +574,12 @@ public data class ManufacturedItemDefinition(
         public fun build(): Constituent =
           Constituent(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
-            amount = amount.map { it.build() },
-            location = location.map { it.build() },
-            function = function.map { it.build() },
-            hasIngredient = hasIngredient.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
+            amount = amount.mapToList { it.build() },
+            location = location.mapToList { it.build() },
+            function = function.mapToList { it.build() },
+            hasIngredient = hasIngredient.mapToList { it.build() },
           )
       }
     }
@@ -661,14 +657,14 @@ public data class ManufacturedItemDefinition(
       public fun build(): Component =
         Component(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
-          function = function.map { it.build() },
-          amount = amount.map { it.build() },
-          constituent = constituent.map { it.build() },
-          `property` = `property`.map { it.build() },
-          component = component.map { it.build() },
+          function = function.mapToList { it.build() },
+          amount = amount.mapToList { it.build() },
+          constituent = constituent.mapToList { it.build() },
+          `property` = `property`.mapToList { it.build() },
+          component = component.mapToList { it.build() },
         )
     }
   }
@@ -830,19 +826,19 @@ public data class ManufacturedItemDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         name = name?.build(),
         manufacturedDoseForm = manufacturedDoseForm.build(),
         unitOfPresentation = unitOfPresentation?.build(),
-        manufacturer = manufacturer.map { it.build() },
-        marketingStatus = marketingStatus.map { it.build() },
-        ingredient = ingredient.map { it.build() },
-        `property` = `property`.map { it.build() },
-        component = component.map { it.build() },
+        manufacturer = manufacturer.mapToList { it.build() },
+        marketingStatus = marketingStatus.mapToList { it.build() },
+        ingredient = ingredient.mapToList { it.build() },
+        `property` = `property`.mapToList { it.build() },
+        component = component.mapToList { it.build() },
       )
   }
 }

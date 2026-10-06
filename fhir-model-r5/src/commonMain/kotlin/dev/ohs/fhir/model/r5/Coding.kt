@@ -88,18 +88,17 @@ public data class Coding(
    */
   public val userSelected: Boolean? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        system = this@with.system?.toBuilder()
-        version = this@with.version?.toBuilder()
-        code = this@with.code?.toBuilder()
-        display = this@with.display?.toBuilder()
-        userSelected = this@with.userSelected?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.system = system?.toBuilder()
+    builder.version = version?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.display = display?.toBuilder()
+    builder.userSelected = userSelected?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -169,7 +168,7 @@ public data class Coding(
     public open fun build(): Coding =
       Coding(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         system = system?.build(),
         version = version?.build(),
         code = code?.build(),

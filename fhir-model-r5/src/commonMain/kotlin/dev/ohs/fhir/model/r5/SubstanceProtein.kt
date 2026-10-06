@@ -168,23 +168,22 @@ public data class SubstanceProtein(
    */
   public val subunit: List<Subunit> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        sequenceType = this@with.sequenceType?.toBuilder()
-        numberOfSubunits = this@with.numberOfSubunits?.toBuilder()
-        disulfideLinkage = this@with.disulfideLinkage.map { it.toBuilder() }.toMutableList()
-        subunit = this@with.subunit.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.sequenceType = sequenceType?.toBuilder()
+    builder.numberOfSubunits = numberOfSubunits?.toBuilder()
+    builder.disulfideLinkage = disulfideLinkage.mapToMutableList { it.toBuilder() }
+    builder.subunit = subunit.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * This subclause refers to the description of each subunit constituting the SubstanceProtein. A
@@ -276,22 +275,21 @@ public data class SubstanceProtein(
     /** The modification at the C-terminal shall be specified. */
     public val cTerminalModification: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          subunit = this@with.subunit?.toBuilder()
-          sequence = this@with.sequence?.toBuilder()
-          length = this@with.length?.toBuilder()
-          sequenceAttachment = this@with.sequenceAttachment?.toBuilder()
-          nTerminalModificationId = this@with.nTerminalModificationId?.toBuilder()
-          nTerminalModification = this@with.nTerminalModification?.toBuilder()
-          cTerminalModificationId = this@with.cTerminalModificationId?.toBuilder()
-          cTerminalModification = this@with.cTerminalModification?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.subunit = subunit?.toBuilder()
+      builder.sequence = sequence?.toBuilder()
+      builder.length = length?.toBuilder()
+      builder.sequenceAttachment = sequenceAttachment?.toBuilder()
+      builder.nTerminalModificationId = nTerminalModificationId?.toBuilder()
+      builder.nTerminalModification = nTerminalModification?.toBuilder()
+      builder.cTerminalModificationId = cTerminalModificationId?.toBuilder()
+      builder.cTerminalModification = cTerminalModification?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -386,8 +384,8 @@ public data class SubstanceProtein(
       public fun build(): Subunit =
         Subunit(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           subunit = subunit?.build(),
           sequence = sequence?.build(),
           length = length?.build(),
@@ -548,13 +546,13 @@ public data class SubstanceProtein(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         sequenceType = sequenceType?.build(),
         numberOfSubunits = numberOfSubunits?.build(),
-        disulfideLinkage = disulfideLinkage.map { it.build() },
-        subunit = subunit.map { it.build() },
+        disulfideLinkage = disulfideLinkage.mapToList { it.build() },
+        subunit = subunit.mapToList { it.build() },
       )
   }
 }

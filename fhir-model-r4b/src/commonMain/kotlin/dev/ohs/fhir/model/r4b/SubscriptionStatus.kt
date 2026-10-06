@@ -157,28 +157,27 @@ public data class SubscriptionStatus(
    */
   public val error: List<CodeableConcept> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          type,
-          subscription.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          status = this@with.status
-          eventsSinceSubscriptionStart = this@with.eventsSinceSubscriptionStart?.toBuilder()
-          notificationEvent = this@with.notificationEvent.map { it.toBuilder() }.toMutableList()
-          topic = this@with.topic?.toBuilder()
-          error = this@with.error.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        type,
+        subscription.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.eventsSinceSubscriptionStart = eventsSinceSubscriptionStart?.toBuilder()
+    builder.notificationEvent = notificationEvent.mapToMutableList { it.toBuilder() }
+    builder.topic = topic?.toBuilder()
+    builder.error = error.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Detailed information about events relevant to this subscription notification. */
   @Serializable(with = SubscriptionStatusNotificationEventSerializer::class)
@@ -239,17 +238,16 @@ public data class SubscriptionStatus(
      */
     public val additionalContext: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(eventNumber.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          timestamp = this@with.timestamp?.toBuilder()
-          focus = this@with.focus?.toBuilder()
-          additionalContext = this@with.additionalContext.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(eventNumber.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.timestamp = timestamp?.toBuilder()
+      builder.focus = focus?.toBuilder()
+      builder.additionalContext = additionalContext.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -317,12 +315,12 @@ public data class SubscriptionStatus(
       public fun build(): NotificationEvent =
         NotificationEvent(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           eventNumber = eventNumber.build(),
           timestamp = timestamp?.build(),
           focus = focus?.build(),
-          additionalContext = additionalContext.map { it.build() },
+          additionalContext = additionalContext.mapToList { it.build() },
         )
     }
   }
@@ -476,16 +474,16 @@ public data class SubscriptionStatus(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         status = status,
         type = type,
         eventsSinceSubscriptionStart = eventsSinceSubscriptionStart?.build(),
-        notificationEvent = notificationEvent.map { it.build() },
+        notificationEvent = notificationEvent.mapToList { it.build() },
         subscription = subscription.build(),
         topic = topic?.build(),
-        error = error.map { it.build() },
+        error = error.mapToList { it.build() },
       )
   }
 

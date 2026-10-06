@@ -332,45 +332,44 @@ public data class TerminologyCapabilities(
   /** Whether the $closure operation is supported. */
   public val closure: Closure? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          date.toBuilder(),
-          kind,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          version = this@with.version?.toBuilder()
-          name = this@with.name?.toBuilder()
-          title = this@with.title?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          software = this@with.software?.toBuilder()
-          implementation = this@with.implementation?.toBuilder()
-          lockedDate = this@with.lockedDate?.toBuilder()
-          codeSystem = this@with.codeSystem.map { it.toBuilder() }.toMutableList()
-          expansion = this@with.expansion?.toBuilder()
-          codeSearch = this@with.codeSearch
-          validateCode = this@with.validateCode?.toBuilder()
-          translation = this@with.translation?.toBuilder()
-          closure = this@with.closure?.toBuilder()
-        }
-    }
+        status,
+        date.toBuilder(),
+        kind,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.version = version?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.software = software?.toBuilder()
+    builder.implementation = implementation?.toBuilder()
+    builder.lockedDate = lockedDate?.toBuilder()
+    builder.codeSystem = codeSystem.mapToMutableList { it.toBuilder() }
+    builder.expansion = expansion?.toBuilder()
+    builder.codeSearch = codeSearch
+    builder.validateCode = validateCode?.toBuilder()
+    builder.translation = translation?.toBuilder()
+    builder.closure = closure?.toBuilder()
+    return builder
+  }
 
   /**
    * Software that is covered by this terminology capability statement. It is used when the
@@ -426,15 +425,14 @@ public data class TerminologyCapabilities(
      */
     public val version: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(name.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(name.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.version = version?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Name the software is known by. */
@@ -491,8 +489,8 @@ public data class TerminologyCapabilities(
       public fun build(): Software =
         Software(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name.build(),
           version = version?.build(),
         )
@@ -550,15 +548,14 @@ public data class TerminologyCapabilities(
     /** An absolute base URL for the implementation. */
     public val url: Url? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(description.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(description.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.url = url?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -613,8 +610,8 @@ public data class TerminologyCapabilities(
       public fun build(): Implementation =
         Implementation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description.build(),
           url = url?.build(),
         )
@@ -676,17 +673,16 @@ public data class TerminologyCapabilities(
     /** True if subsumption is supported for this version of the code system. */
     public val subsumption: Boolean? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          uri = this@with.uri?.toBuilder()
-          version = this@with.version.map { it.toBuilder() }.toMutableList()
-          subsumption = this@with.subsumption?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.uri = uri?.toBuilder()
+      builder.version = version.mapToMutableList { it.toBuilder() }
+      builder.subsumption = subsumption?.toBuilder()
+      return builder
+    }
 
     /** For the code system, a list of versions that are supported by the server. */
     @Serializable(with = TerminologyCapabilitiesCodeSystemVersionSerializer::class)
@@ -741,20 +737,19 @@ public data class TerminologyCapabilities(
       /** Properties supported for $lookup. */
       public val `property`: List<Code> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            code = this@with.code?.toBuilder()
-            isDefault = this@with.isDefault?.toBuilder()
-            compositional = this@with.compositional?.toBuilder()
-            language = this@with.language.map { it.toBuilder() }.toMutableList()
-            filter = this@with.filter.map { it.toBuilder() }.toMutableList()
-            `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.code = code?.toBuilder()
+        builder.isDefault = isDefault?.toBuilder()
+        builder.compositional = compositional?.toBuilder()
+        builder.language = language.mapToMutableList { it.toBuilder() }
+        builder.filter = filter.mapToMutableList { it.toBuilder() }
+        builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** Filter Properties supported. */
       @Serializable(with = TerminologyCapabilitiesCodeSystemVersionFilterSerializer::class)
@@ -801,19 +796,17 @@ public data class TerminologyCapabilities(
         /** Operations supported for the property. */
         public val op: List<Code>,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
+        public fun toBuilder(): Builder {
+          val builder =
             Builder(
-                code.toBuilder(),
-                op.map { it.toBuilder() }.toMutableList(),
-              )
-              .apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              }
-          }
+              code.toBuilder(),
+              op.mapToMutableList { it.toBuilder() },
+            )
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         public class Builder(
           /** Code of the property supported. */
@@ -864,10 +857,10 @@ public data class TerminologyCapabilities(
           public fun build(): Filter =
             Filter(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               code = code.build(),
-              op = op.map { it.build() },
+              op = op.mapToList { it.build() },
             )
         }
       }
@@ -934,14 +927,14 @@ public data class TerminologyCapabilities(
         public fun build(): Version =
           Version(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code?.build(),
             isDefault = isDefault?.build(),
             compositional = compositional?.build(),
-            language = language.map { it.build() },
-            filter = filter.map { it.build() },
-            `property` = `property`.map { it.build() },
+            language = language.mapToList { it.build() },
+            filter = filter.mapToList { it.build() },
+            `property` = `property`.mapToList { it.build() },
           )
       }
     }
@@ -1003,10 +996,10 @@ public data class TerminologyCapabilities(
       public fun build(): CodeSystem =
         CodeSystem(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           uri = uri?.build(),
-          version = version.map { it.build() },
+          version = version.mapToList { it.build() },
           subsumption = subsumption?.build(),
         )
     }
@@ -1069,19 +1062,18 @@ public data class TerminologyCapabilities(
      */
     public val textFilter: Markdown? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          hierarchical = this@with.hierarchical?.toBuilder()
-          paging = this@with.paging?.toBuilder()
-          incomplete = this@with.incomplete?.toBuilder()
-          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-          textFilter = this@with.textFilter?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.hierarchical = hierarchical?.toBuilder()
+      builder.paging = paging?.toBuilder()
+      builder.incomplete = incomplete?.toBuilder()
+      builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+      builder.textFilter = textFilter?.toBuilder()
+      return builder
+    }
 
     /** Supported expansion parameter. */
     @Serializable(with = TerminologyCapabilitiesExpansionParameterSerializer::class)
@@ -1128,15 +1120,14 @@ public data class TerminologyCapabilities(
       /** Description of support for parameter. */
       public val documentation: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(name.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            documentation = this@with.documentation?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(name.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.documentation = documentation?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** Expansion Parameter name. */
@@ -1188,8 +1179,8 @@ public data class TerminologyCapabilities(
         public fun build(): Parameter =
           Parameter(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             name = name.build(),
             documentation = documentation?.build(),
           )
@@ -1261,12 +1252,12 @@ public data class TerminologyCapabilities(
       public fun build(): Expansion =
         Expansion(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           hierarchical = hierarchical?.build(),
           paging = paging?.build(),
           incomplete = incomplete?.build(),
-          parameter = parameter.map { it.build() },
+          parameter = parameter.mapToList { it.build() },
           textFilter = textFilter?.build(),
         )
     }
@@ -1318,14 +1309,13 @@ public data class TerminologyCapabilities(
     /** Whether translations are validated. */
     public val translations: Boolean,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(translations.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(translations.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Whether translations are validated. */
@@ -1374,8 +1364,8 @@ public data class TerminologyCapabilities(
       public fun build(): ValidateCode =
         ValidateCode(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           translations = translations.build(),
         )
     }
@@ -1426,14 +1416,13 @@ public data class TerminologyCapabilities(
     /** Whether the client must identify the map. */
     public val needsMap: Boolean,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(needsMap.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(needsMap.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Whether the client must identify the map. */
@@ -1482,8 +1471,8 @@ public data class TerminologyCapabilities(
       public fun build(): Translation =
         Translation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           needsMap = needsMap.build(),
         )
     }
@@ -1532,15 +1521,14 @@ public data class TerminologyCapabilities(
     /** If cross-system closure is supported. */
     public val translation: Boolean? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          translation = this@with.translation?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.translation = translation?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1589,8 +1577,8 @@ public data class TerminologyCapabilities(
       public fun build(): Closure =
         Closure(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           translation = translation?.build(),
         )
     }
@@ -1922,9 +1910,9 @@ public data class TerminologyCapabilities(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
         version = version?.build(),
         name = name?.build(),
@@ -1933,17 +1921,17 @@ public data class TerminologyCapabilities(
         experimental = experimental?.build(),
         date = date.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         kind = kind,
         software = software?.build(),
         implementation = implementation?.build(),
         lockedDate = lockedDate?.build(),
-        codeSystem = codeSystem.map { it.build() },
+        codeSystem = codeSystem.mapToList { it.build() },
         expansion = expansion?.build(),
         codeSearch = codeSearch,
         validateCode = validateCode?.build(),

@@ -68,15 +68,14 @@ public data class CodeableConcept(
    */
   public val text: String? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        coding = this@with.coding.map { it.toBuilder() }.toMutableList()
-        text = this@with.text?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.coding = coding.mapToMutableList { it.toBuilder() }
+    builder.text = text?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -120,8 +119,8 @@ public data class CodeableConcept(
     public open fun build(): CodeableConcept =
       CodeableConcept(
         id = id,
-        extension = extension.map { it.build() },
-        coding = coding.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        coding = coding.mapToList { it.build() },
         text = text?.build(),
       )
   }

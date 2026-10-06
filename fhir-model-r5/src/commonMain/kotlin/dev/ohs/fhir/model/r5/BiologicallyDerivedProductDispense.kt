@@ -176,37 +176,36 @@ public data class BiologicallyDerivedProductDispense(
   /** Specific instructions for use. */
   public val usageInstruction: String? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          product.toBuilder(),
-          patient.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          originRelationshipType = this@with.originRelationshipType?.toBuilder()
-          matchStatus = this@with.matchStatus?.toBuilder()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          quantity = this@with.quantity?.toBuilder()
-          preparedDate = this@with.preparedDate?.toBuilder()
-          whenHandedOver = this@with.whenHandedOver?.toBuilder()
-          destination = this@with.destination?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          usageInstruction = this@with.usageInstruction?.toBuilder()
-        }
-    }
+        status,
+        product.toBuilder(),
+        patient.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.originRelationshipType = originRelationshipType?.toBuilder()
+    builder.matchStatus = matchStatus?.toBuilder()
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.quantity = quantity?.toBuilder()
+    builder.preparedDate = preparedDate?.toBuilder()
+    builder.whenHandedOver = whenHandedOver?.toBuilder()
+    builder.destination = destination?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.usageInstruction = usageInstruction?.toBuilder()
+    return builder
+  }
 
   /** Indicates who or what performed an action. */
   @Serializable(with = BiologicallyDerivedProductDispensePerformerSerializer::class)
@@ -253,15 +252,14 @@ public data class BiologicallyDerivedProductDispense(
     /** Identifies the person responsible for the action. */
     public val actor: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(actor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(actor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Identifies the person responsible for the action. */
@@ -313,8 +311,8 @@ public data class BiologicallyDerivedProductDispense(
       public fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           function = function?.build(),
           actor = actor.build(),
         )
@@ -496,24 +494,24 @@ public data class BiologicallyDerivedProductDispense(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
         originRelationshipType = originRelationshipType?.build(),
         product = product.build(),
         patient = patient.build(),
         matchStatus = matchStatus?.build(),
-        performer = performer.map { it.build() },
+        performer = performer.mapToList { it.build() },
         location = location?.build(),
         quantity = quantity?.build(),
         preparedDate = preparedDate?.build(),
         whenHandedOver = whenHandedOver?.build(),
         destination = destination?.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
         usageInstruction = usageInstruction?.build(),
       )
   }

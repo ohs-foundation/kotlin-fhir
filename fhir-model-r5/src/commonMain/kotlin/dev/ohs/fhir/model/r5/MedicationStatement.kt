@@ -269,39 +269,39 @@ public data class MedicationStatement(
    */
   public val adherence: Adherence? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          medication.toBuilder(),
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          effective = this@with.effective
-          dateAsserted = this@with.dateAsserted?.toBuilder()
-          informationSource = this@with.informationSource.map { it.toBuilder() }.toMutableList()
-          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          relatedClinicalInformation =
-            this@with.relatedClinicalInformation.map { it.toBuilder() }.toMutableList()
-          renderedDosageInstruction = this@with.renderedDosageInstruction?.toBuilder()
-          dosage = this@with.dosage.map { it.toBuilder() }.toMutableList()
-          adherence = this@with.adherence?.toBuilder()
-        }
+        status,
+        medication.toBuilder(),
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.effective = effective
+    builder.dateAsserted = dateAsserted?.toBuilder()
+    builder.informationSource = informationSource.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.relatedClinicalInformation = relatedClinicalInformation.mapToMutableList {
+      it.toBuilder()
     }
+    builder.renderedDosageInstruction = renderedDosageInstruction?.toBuilder()
+    builder.dosage = dosage.mapToMutableList { it.toBuilder() }
+    builder.adherence = adherence?.toBuilder()
+    return builder
+  }
 
   /** Indicates whether the medication is or is not being consumed or administered. */
   @Serializable(with = MedicationStatementAdherenceSerializer::class)
@@ -353,15 +353,14 @@ public data class MedicationStatement(
      */
     public val reason: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          reason = this@with.reason?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.reason = reason?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Type of the adherence for the medication. */
@@ -418,8 +417,8 @@ public data class MedicationStatement(
       public fun build(): Adherence =
         Adherence(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           reason = reason?.build(),
         )
@@ -700,25 +699,25 @@ public data class MedicationStatement(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         medication = medication.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
         effective = effective,
         dateAsserted = dateAsserted?.build(),
-        informationSource = informationSource.map { it.build() },
-        derivedFrom = derivedFrom.map { it.build() },
-        reason = reason.map { it.build() },
-        note = note.map { it.build() },
-        relatedClinicalInformation = relatedClinicalInformation.map { it.build() },
+        informationSource = informationSource.mapToList { it.build() },
+        derivedFrom = derivedFrom.mapToList { it.build() },
+        reason = reason.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        relatedClinicalInformation = relatedClinicalInformation.mapToList { it.build() },
         renderedDosageInstruction = renderedDosageInstruction?.build(),
-        dosage = dosage.map { it.build() },
+        dosage = dosage.mapToList { it.build() },
         adherence = adherence?.build(),
       )
   }

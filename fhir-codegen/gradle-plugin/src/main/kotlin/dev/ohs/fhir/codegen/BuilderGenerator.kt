@@ -259,7 +259,7 @@ private class BuilderGenerator(
                       continue
                     }
                     if (element.max == "*" || element.getElementName() == "extension") {
-                      addStatement("%N = %N.map { it.build() },", name, name)
+                      addStatement("%N = %N.mapToList { it.build() },", name, name)
                     } else if (element.min == 0) {
                       addStatement("%N = %N?.build(),", name, name)
                     } else {
@@ -320,6 +320,7 @@ private class BuilderGenerator(
 
   private fun addToBuilderFunction(elements: List<Element>, kind: Kind) {
     val builderClassName = baseClassName.nestedClass("Builder")
+    val optionalElements = elements.filter { it.min == 0 }
     typeSpecBuilder.addFunction(
       FunSpec.builder("toBuilder")
         .apply {
@@ -332,75 +333,63 @@ private class BuilderGenerator(
         .returns(builderClassName)
         .addCode(
           CodeBlock.builder()
-            .add("return with(this) {")
-            .indent()
-            .add("%T(", builderClassName)
             .apply {
+              if (optionalElements.isEmpty()) {
+                add("return %T(", builderClassName)
+              } else {
+                add("val builder = %T(", builderClassName)
+              }
               elements
                 .filter { it.min != 0 }
                 .forEach {
+                  val name = it.getElementName()
                   if (it.type?.singleOrNull()?.code in FhirPathType.getUris()) {
-                    add("%N,", it.getElementName())
+                    add("%N,", name)
                   } else if (it.typeShouldBindToEnum(valueSetMap)) {
                     if (it.max == "*") {
-                      addStatement("%N.toMutableList(),", it.getElementName())
+                      addStatement("%N.toMutableList(),", name)
                     } else {
-                      addStatement("%N,", it.getElementName())
+                      addStatement("%N,", name)
                     }
                   } else if ((it.type?.size ?: 0) > 1) {
-                    addStatement("%N,", it.getElementName())
-                  } else if (it.max == "*" || it.getElementName() == "extension") {
-                    // Handle the extension field in XHTML
-                    addStatement("%N.map { it.toBuilder() }.toMutableList(),", it.getElementName())
-                  } else if (it.min == 0) {
-                    add("%N?.toBuilder(),", it.getElementName())
+                    addStatement("%N,", name)
+                  } else if (it.max == "*" || name == "extension") {
+                    addStatement("%N.mapToMutableList { it.toBuilder() },", name)
                   } else {
-                    add("%N.toBuilder(),", it.getElementName())
+                    add("%N.toBuilder(),", name)
                   }
                 }
-            }
-            .add(").apply{")
-            .indent()
-            .apply {
-              elements
-                .filter { it.min == 0 }
-                .forEach {
-                  val name = it.getElementName()
-                  if (it.typeShouldBindToEnum(valueSetMap)) {
-                    if (it.max == "*") {
-                      addStatement("%N = this@with.%N.toMutableList()", name, name)
-                    } else {
-                      addStatement("%N = this@with.%N", name, name)
-                    }
-                    return@forEach
-                  }
-                  if ((it.type?.size ?: 0) > 1) {
-                    // Sealed interface
-                    addStatement("%N = this@with.%N", name, name)
-                    return@forEach
-                  }
-                  if (it.type?.singleOrNull()?.code in FhirPathType.getUris()) {
-                    addStatement("%N = this@with.%N", name, name)
-                    return@forEach
-                  }
-                  if (it.max == "*" || name == "extension") {
-                    // Handle the extension field in XHTML
-                    addStatement(
-                      "%N = this@with.%N.map { it.toBuilder() }.toMutableList()",
-                      name,
-                      name,
-                    )
-                  } else if (it.min == 0) {
-                    addStatement("%N = this@with.%N?.toBuilder()", name, name)
+              addStatement(")")
+              optionalElements.forEach {
+                val name = it.getElementName()
+                if (it.typeShouldBindToEnum(valueSetMap)) {
+                  if (it.max == "*") {
+                    addStatement("builder.%N = %N.toMutableList()", name, name)
                   } else {
-                    addStatement("%N = this@with.%N.toBuilder()", name, name)
+                    addStatement("builder.%N = %N", name, name)
                   }
+                  return@forEach
                 }
+                if ((it.type?.size ?: 0) > 1) {
+                  // Sealed interface
+                  addStatement("builder.%N = %N", name, name)
+                  return@forEach
+                }
+                if (it.type?.singleOrNull()?.code in FhirPathType.getUris()) {
+                  addStatement("builder.%N = %N", name, name)
+                  return@forEach
+                }
+                if (it.max == "*" || name == "extension") {
+                  // Handle the extension field in XHTML
+                  addStatement("builder.%N = %N.mapToMutableList { it.toBuilder() }", name, name)
+                } else {
+                  addStatement("builder.%N = %N?.toBuilder()", name, name)
+                }
+              }
+              if (optionalElements.isNotEmpty()) {
+                addStatement("return builder")
+              }
             }
-            .unindent()
-            .add("}")
-            .unindent()
-            .add("}")
             .build()
         )
         .build()

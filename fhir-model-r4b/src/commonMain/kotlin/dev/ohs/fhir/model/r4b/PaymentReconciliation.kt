@@ -192,36 +192,35 @@ public data class PaymentReconciliation(
   /** A note that describes or explains the processing in a human readable form. */
   public val processNote: List<ProcessNote> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          created.toBuilder(),
-          paymentDate.toBuilder(),
-          paymentAmount.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          paymentIssuer = this@with.paymentIssuer?.toBuilder()
-          request = this@with.request?.toBuilder()
-          requestor = this@with.requestor?.toBuilder()
-          outcome = this@with.outcome
-          disposition = this@with.disposition?.toBuilder()
-          paymentIdentifier = this@with.paymentIdentifier?.toBuilder()
-          detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-          formCode = this@with.formCode?.toBuilder()
-          processNote = this@with.processNote.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        created.toBuilder(),
+        paymentDate.toBuilder(),
+        paymentAmount.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    builder.paymentIssuer = paymentIssuer?.toBuilder()
+    builder.request = request?.toBuilder()
+    builder.requestor = requestor?.toBuilder()
+    builder.outcome = outcome
+    builder.disposition = disposition?.toBuilder()
+    builder.paymentIdentifier = paymentIdentifier?.toBuilder()
+    builder.detail = detail.mapToMutableList { it.toBuilder() }
+    builder.formCode = formCode?.toBuilder()
+    builder.processNote = processNote.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Distribution of the payment amount for a previously acknowledged payable. */
   @Serializable(with = PaymentReconciliationDetailSerializer::class)
@@ -291,23 +290,22 @@ public data class PaymentReconciliation(
     /** The monetary amount allocated from the total payment to the payable. */
     public val amount: Money? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier?.toBuilder()
-          predecessor = this@with.predecessor?.toBuilder()
-          request = this@with.request?.toBuilder()
-          submitter = this@with.submitter?.toBuilder()
-          response = this@with.response?.toBuilder()
-          date = this@with.date?.toBuilder()
-          responsible = this@with.responsible?.toBuilder()
-          payee = this@with.payee?.toBuilder()
-          amount = this@with.amount?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier?.toBuilder()
+      builder.predecessor = predecessor?.toBuilder()
+      builder.request = request?.toBuilder()
+      builder.submitter = submitter?.toBuilder()
+      builder.response = response?.toBuilder()
+      builder.date = date?.toBuilder()
+      builder.responsible = responsible?.toBuilder()
+      builder.payee = payee?.toBuilder()
+      builder.amount = amount?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -390,8 +388,8 @@ public data class PaymentReconciliation(
       public fun build(): Detail =
         Detail(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identifier = identifier?.build(),
           predecessor = predecessor?.build(),
           type = type.build(),
@@ -451,16 +449,15 @@ public data class PaymentReconciliation(
     /** The explanation or description associated with the processing. */
     public val text: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type
-          text = this@with.text?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type
+      builder.text = text?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -512,8 +509,8 @@ public data class PaymentReconciliation(
       public fun build(): ProcessNote =
         ProcessNote(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type,
           text = text?.build(),
         )
@@ -702,10 +699,10 @@ public data class PaymentReconciliation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         period = period?.build(),
         created = created.build(),
@@ -717,9 +714,9 @@ public data class PaymentReconciliation(
         paymentDate = paymentDate.build(),
         paymentAmount = paymentAmount.build(),
         paymentIdentifier = paymentIdentifier?.build(),
-        detail = detail.map { it.build() },
+        detail = detail.mapToList { it.build() },
         formCode = formCode?.build(),
-        processNote = processNote.map { it.build() },
+        processNote = processNote.mapToList { it.build() },
       )
   }
 

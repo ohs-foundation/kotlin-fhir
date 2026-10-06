@@ -122,17 +122,16 @@ public data class Reference(
    */
   public val display: String? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        reference = this@with.reference?.toBuilder()
-        type = this@with.type?.toBuilder()
-        identifier = this@with.identifier?.toBuilder()
-        display = this@with.display?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.reference = reference?.toBuilder()
+    builder.type = type?.toBuilder()
+    builder.identifier = identifier?.toBuilder()
+    builder.display = display?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -237,7 +236,7 @@ public data class Reference(
     public open fun build(): Reference =
       Reference(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         reference = reference?.build(),
         type = type?.build(),
         identifier = identifier?.build(),

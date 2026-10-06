@@ -95,18 +95,17 @@ public data class SubstanceAmount(
   /** Reference range of possible or expected values. */
   public val referenceRange: ReferenceRange? = null,
 ) : BackboneElement() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        amount = this@with.amount
-        amountType = this@with.amountType?.toBuilder()
-        amountText = this@with.amountText?.toBuilder()
-        referenceRange = this@with.referenceRange?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.amount = amount
+    builder.amountType = amountType?.toBuilder()
+    builder.amountText = amountText?.toBuilder()
+    builder.referenceRange = referenceRange?.toBuilder()
+    return builder
+  }
 
   /** Reference range of possible or expected values. */
   @Serializable(with = SubstanceAmountReferenceRangeSerializer::class)
@@ -134,15 +133,14 @@ public data class SubstanceAmount(
     /** Upper limit possible or expected. */
     public val highLimit: Quantity? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          lowLimit = this@with.lowLimit?.toBuilder()
-          highLimit = this@with.highLimit?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.lowLimit = lowLimit?.toBuilder()
+      builder.highLimit = highLimit?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -174,7 +172,7 @@ public data class SubstanceAmount(
       public fun build(): ReferenceRange =
         ReferenceRange(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           lowLimit = lowLimit?.build(),
           highLimit = highLimit?.build(),
         )
@@ -275,8 +273,8 @@ public data class SubstanceAmount(
     public open fun build(): SubstanceAmount =
       SubstanceAmount(
         id = id,
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         amount = amount,
         amountType = amountType?.build(),
         amountText = amountText?.build(),

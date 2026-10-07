@@ -153,9 +153,7 @@ How an element is typed depends on its
 
 - **`required` binding**: instances may only carry codes from the value set, so the element is
   typed `Enumeration<T>` (e.g. `Patient.gender` is `Enumeration<AdministrativeGender>`). Deserialization
-  enforces that the code belongs to the bound value set. A few `required` bindings whose description
-  allows other codes (e.g. `ImplementationGuide.license`) are typed as `ExtensibleEnumeration<T>`
-  instead; see [Enum Generation](docs/enum-generation.md#required-bindings-generated-as-extensible).
+  enforces that the code belongs to the bound value set. (See [exceptions](docs/enum-generation.md#required-bindings-generated-as-extensible).)
 - **`extensible` and `preferred` bindings**: instances may carry codes outside the value set, so
   the element is typed as `ExtensibleEnumeration<T>` (e.g. `Expression.language`), a sealed interface
   representing either a `Predefined(value: T)` enum constant or a `Custom(code: String)` outside the

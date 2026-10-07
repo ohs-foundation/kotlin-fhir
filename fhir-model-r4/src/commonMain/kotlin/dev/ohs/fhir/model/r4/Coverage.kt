@@ -237,38 +237,37 @@ public data class Coverage(
   /** The policy(s) which constitute this insurance coverage. */
   public val contract: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          beneficiary.toBuilder(),
-          payor.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          policyHolder = this@with.policyHolder?.toBuilder()
-          subscriber = this@with.subscriber?.toBuilder()
-          subscriberId = this@with.subscriberId?.toBuilder()
-          dependent = this@with.dependent?.toBuilder()
-          relationship = this@with.relationship?.toBuilder()
-          period = this@with.period?.toBuilder()
-          `class` = this@with.`class`.map { it.toBuilder() }.toMutableList()
-          order = this@with.order?.toBuilder()
-          network = this@with.network?.toBuilder()
-          costToBeneficiary = this@with.costToBeneficiary.map { it.toBuilder() }.toMutableList()
-          subrogation = this@with.subrogation?.toBuilder()
-          contract = this@with.contract.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        beneficiary.toBuilder(),
+        payor.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.policyHolder = policyHolder?.toBuilder()
+    builder.subscriber = subscriber?.toBuilder()
+    builder.subscriberId = subscriberId?.toBuilder()
+    builder.dependent = dependent?.toBuilder()
+    builder.relationship = relationship?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.`class` = `class`.mapToMutableList { it.toBuilder() }
+    builder.order = order?.toBuilder()
+    builder.network = network?.toBuilder()
+    builder.costToBeneficiary = costToBeneficiary.mapToMutableList { it.toBuilder() }
+    builder.subrogation = subrogation?.toBuilder()
+    builder.contract = contract.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** A suite of underwriter specific classifiers. */
   @Serializable(with = CoverageClassSerializer::class)
@@ -325,15 +324,14 @@ public data class Coverage(
     /** A short description for the class. */
     public val name: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder(), `value`.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder(), `value`.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -395,8 +393,8 @@ public data class Coverage(
       public fun build(): Class =
         Class(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           `value` = `value`.build(),
           name = name?.build(),
@@ -466,16 +464,15 @@ public data class Coverage(
      */
     public val exception: List<Exception> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(`value`).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          exception = this@with.exception.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(`value`)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.exception = exception.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * A suite of codes indicating exceptions or reductions to patient costs and their effective
@@ -525,15 +522,14 @@ public data class Coverage(
       /** The timeframe during when the exception is in force. */
       public val period: Period? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(type.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            period = this@with.period?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(type.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.period = period?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** The code for the specific exception. */
@@ -585,8 +581,8 @@ public data class Coverage(
         public fun build(): Exception =
           Exception(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
             period = period?.build(),
           )
@@ -679,11 +675,11 @@ public data class Coverage(
       public fun build(): CostToBeneficiary =
         CostToBeneficiary(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           `value` = `value`,
-          exception = exception.map { it.build() },
+          exception = exception.mapToList { it.build() },
         )
     }
   }
@@ -918,10 +914,10 @@ public data class Coverage(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         type = type?.build(),
         policyHolder = policyHolder?.build(),
@@ -931,13 +927,13 @@ public data class Coverage(
         dependent = dependent?.build(),
         relationship = relationship?.build(),
         period = period?.build(),
-        payor = payor.map { it.build() },
-        `class` = `class`.map { it.build() },
+        payor = payor.mapToList { it.build() },
+        `class` = `class`.mapToList { it.build() },
         order = order?.build(),
         network = network?.build(),
-        costToBeneficiary = costToBeneficiary.map { it.build() },
+        costToBeneficiary = costToBeneficiary.mapToList { it.build() },
         subrogation = subrogation?.build(),
-        contract = contract.map { it.build() },
+        contract = contract.mapToList { it.build() },
       )
   }
 

@@ -206,32 +206,31 @@ public data class AuditEvent(
    */
   public val entity: List<Entity> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          type.toBuilder(),
-          recorded.toBuilder(),
-          agent.map { it.toBuilder() }.toMutableList(),
-          source.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          subtype = this@with.subtype.map { it.toBuilder() }.toMutableList()
-          action = this@with.action
-          period = this@with.period?.toBuilder()
-          outcome = this@with.outcome
-          outcomeDesc = this@with.outcomeDesc?.toBuilder()
-          purposeOfEvent = this@with.purposeOfEvent.map { it.toBuilder() }.toMutableList()
-          entity = this@with.entity.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        type.toBuilder(),
+        recorded.toBuilder(),
+        agent.mapToMutableList { it.toBuilder() },
+        source.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.subtype = subtype.mapToMutableList { it.toBuilder() }
+    builder.action = action
+    builder.period = period?.toBuilder()
+    builder.outcome = outcome
+    builder.outcomeDesc = outcomeDesc?.toBuilder()
+    builder.purposeOfEvent = purposeOfEvent.mapToMutableList { it.toBuilder() }
+    builder.entity = entity.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** An actor taking an active role in the event or activity that is logged. */
   @Serializable(with = AuditEventAgentSerializer::class)
@@ -332,24 +331,23 @@ public data class AuditEvent(
      */
     public val purposeOfUse: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(requestor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          role = this@with.role.map { it.toBuilder() }.toMutableList()
-          who = this@with.who?.toBuilder()
-          altId = this@with.altId?.toBuilder()
-          name = this@with.name?.toBuilder()
-          location = this@with.location?.toBuilder()
-          policy = this@with.policy.map { it.toBuilder() }.toMutableList()
-          media = this@with.media?.toBuilder()
-          network = this@with.network?.toBuilder()
-          purposeOfUse = this@with.purposeOfUse.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(requestor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.role = role.mapToMutableList { it.toBuilder() }
+      builder.who = who?.toBuilder()
+      builder.altId = altId?.toBuilder()
+      builder.name = name?.toBuilder()
+      builder.location = location?.toBuilder()
+      builder.policy = policy.mapToMutableList { it.toBuilder() }
+      builder.media = media?.toBuilder()
+      builder.network = network?.toBuilder()
+      builder.purposeOfUse = purposeOfUse.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Logical network location for application activity, if the activity has a network location.
@@ -402,16 +400,15 @@ public data class AuditEvent(
       /** An identifier for the type of network access point that originated the audit event. */
       public val type: Enumeration<AuditEventAgentNetworkType>? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            address = this@with.address?.toBuilder()
-            type = this@with.type
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.address = address?.toBuilder()
+        builder.type = type
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -467,8 +464,8 @@ public data class AuditEvent(
         public fun build(): Network =
           Network(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             address = address?.build(),
             type = type,
           )
@@ -588,19 +585,19 @@ public data class AuditEvent(
       public fun build(): Agent =
         Agent(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
-          role = role.map { it.build() },
+          role = role.mapToList { it.build() },
           who = who?.build(),
           altId = altId?.build(),
           name = name?.build(),
           requestor = requestor.build(),
           location = location?.build(),
-          policy = policy.map { it.build() },
+          policy = policy.mapToList { it.build() },
           media = media?.build(),
           network = network?.build(),
-          purposeOfUse = purposeOfUse.map { it.build() },
+          purposeOfUse = purposeOfUse.mapToList { it.build() },
         )
     }
   }
@@ -655,16 +652,15 @@ public data class AuditEvent(
     /** Code specifying the type of source where event originated. */
     public val type: List<Coding> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(observer.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          site = this@with.site?.toBuilder()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(observer.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.site = site?.toBuilder()
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Identifier of the source where the event was detected. */
@@ -722,11 +718,11 @@ public data class AuditEvent(
       public fun build(): Source =
         Source(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           site = site?.build(),
           observer = observer.build(),
-          type = type.map { it.build() },
+          type = type.mapToList { it.build() },
         )
     }
   }
@@ -819,23 +815,22 @@ public data class AuditEvent(
     /** Tagged value pairs for conveying additional information about the entity. */
     public val detail: List<Detail> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          what = this@with.what?.toBuilder()
-          type = this@with.type?.toBuilder()
-          role = this@with.role?.toBuilder()
-          lifecycle = this@with.lifecycle?.toBuilder()
-          securityLabel = this@with.securityLabel.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          description = this@with.description?.toBuilder()
-          query = this@with.query?.toBuilder()
-          detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.what = what?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.role = role?.toBuilder()
+      builder.lifecycle = lifecycle?.toBuilder()
+      builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.description = description?.toBuilder()
+      builder.query = query?.toBuilder()
+      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Tagged value pairs for conveying additional information about the entity. */
     @Serializable(with = AuditEventEntityDetailSerializer::class)
@@ -894,18 +889,17 @@ public data class AuditEvent(
        */
       public val `value`: Value,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              type.toBuilder(),
-              `value`,
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            type.toBuilder(),
+            `value`,
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public sealed interface Value : FhirChoice {
         public fun asString(): String? = this as? String
@@ -990,8 +984,8 @@ public data class AuditEvent(
         public fun build(): Detail =
           Detail(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
             `value` = `value`,
           )
@@ -1098,17 +1092,17 @@ public data class AuditEvent(
       public fun build(): Entity =
         Entity(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           what = what?.build(),
           type = type?.build(),
           role = role?.build(),
           lifecycle = lifecycle?.build(),
-          securityLabel = securityLabel.map { it.build() },
+          securityLabel = securityLabel.mapToList { it.build() },
           name = name?.build(),
           description = description?.build(),
           query = query?.build(),
-          detail = detail.map { it.build() },
+          detail = detail.mapToList { it.build() },
         )
     }
   }
@@ -1304,20 +1298,20 @@ public data class AuditEvent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         type = type.build(),
-        subtype = subtype.map { it.build() },
+        subtype = subtype.mapToList { it.build() },
         action = action,
         period = period?.build(),
         recorded = recorded.build(),
         outcome = outcome,
         outcomeDesc = outcomeDesc?.build(),
-        purposeOfEvent = purposeOfEvent.map { it.build() },
-        agent = agent.map { it.build() },
+        purposeOfEvent = purposeOfEvent.mapToList { it.build() },
+        agent = agent.mapToList { it.build() },
         source = source.build(),
-        entity = entity.map { it.build() },
+        entity = entity.mapToList { it.build() },
       )
   }
 

@@ -261,39 +261,38 @@ public data class EvidenceReport(
   /** The root of the sections that make up the composition. */
   public val section: List<Section> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          relatedIdentifier = this@with.relatedIdentifier.map { it.toBuilder() }.toMutableList()
-          citeAs = this@with.citeAs
-          type = this@with.type?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          author = this@with.author.map { it.toBuilder() }.toMutableList()
-          editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-          reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-          endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-          relatesTo = this@with.relatesTo.map { it.toBuilder() }.toMutableList()
-          section = this@with.section.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.relatedIdentifier = relatedIdentifier.mapToMutableList { it.toBuilder() }
+    builder.citeAs = citeAs
+    builder.type = type?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.editor = editor.mapToMutableList { it.toBuilder() }
+    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
+    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
+    builder.relatesTo = relatesTo.mapToMutableList { it.toBuilder() }
+    builder.section = section.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Specifies the subject or focus of the report. Answers "What is this report about?". */
   @Serializable(with = EvidenceReportSubjectSerializer::class)
@@ -340,16 +339,15 @@ public data class EvidenceReport(
     /** Used for general notes and annotations not coded elsewhere. */
     public val note: List<Annotation> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+      builder.note = note.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Characteristic. */
     @Serializable(with = EvidenceReportSubjectCharacteristicSerializer::class)
@@ -409,20 +407,19 @@ public data class EvidenceReport(
       /** Timeframe for the characteristic. */
       public val period: Period? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              code.toBuilder(),
-              `value`,
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              exclude = this@with.exclude?.toBuilder()
-              period = this@with.period?.toBuilder()
-            }
-        }
+            code.toBuilder(),
+            `value`,
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.exclude = exclude?.toBuilder()
+        builder.period = period?.toBuilder()
+        return builder
+      }
 
       public sealed interface Value : FhirChoice {
         public fun asReference(): Reference? = this as? Reference
@@ -529,8 +526,8 @@ public data class EvidenceReport(
         public fun build(): Characteristic =
           Characteristic(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code.build(),
             `value` = `value`,
             exclude = exclude?.build(),
@@ -589,10 +586,10 @@ public data class EvidenceReport(
       public fun build(): Subject =
         Subject(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          characteristic = characteristic.map { it.build() },
-          note = note.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          characteristic = characteristic.mapToList { it.build() },
+          note = note.mapToList { it.build() },
         )
     }
   }
@@ -650,18 +647,17 @@ public data class EvidenceReport(
     /** The target composition/document of this relationship. */
     public val target: Target,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            code,
-            target,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          code,
+          target,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Target : FhirChoice {
       public fun asIdentifier(): Identifier? = this as? Identifier
@@ -738,8 +734,8 @@ public data class EvidenceReport(
       public fun build(): RelatesTo =
         RelatesTo(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code,
           target = target,
         )
@@ -874,26 +870,25 @@ public data class EvidenceReport(
      */
     public val section: List<Section> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          title = this@with.title?.toBuilder()
-          focus = this@with.focus?.toBuilder()
-          focusReference = this@with.focusReference?.toBuilder()
-          author = this@with.author.map { it.toBuilder() }.toMutableList()
-          text = this@with.text?.toBuilder()
-          mode = this@with.mode
-          orderedBy = this@with.orderedBy?.toBuilder()
-          entryClassifier = this@with.entryClassifier.map { it.toBuilder() }.toMutableList()
-          entryReference = this@with.entryReference.map { it.toBuilder() }.toMutableList()
-          entryQuantity = this@with.entryQuantity.map { it.toBuilder() }.toMutableList()
-          emptyReason = this@with.emptyReason?.toBuilder()
-          section = this@with.section.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.title = title?.toBuilder()
+      builder.focus = focus?.toBuilder()
+      builder.focusReference = focusReference?.toBuilder()
+      builder.author = author.mapToMutableList { it.toBuilder() }
+      builder.text = text?.toBuilder()
+      builder.mode = mode
+      builder.orderedBy = orderedBy?.toBuilder()
+      builder.entryClassifier = entryClassifier.mapToMutableList { it.toBuilder() }
+      builder.entryReference = entryReference.mapToMutableList { it.toBuilder() }
+      builder.entryQuantity = entryQuantity.mapToMutableList { it.toBuilder() }
+      builder.emptyReason = emptyReason?.toBuilder()
+      builder.section = section.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1038,20 +1033,20 @@ public data class EvidenceReport(
       public fun build(): Section =
         Section(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           title = title?.build(),
           focus = focus?.build(),
           focusReference = focusReference?.build(),
-          author = author.map { it.build() },
+          author = author.mapToList { it.build() },
           text = text?.build(),
           mode = mode,
           orderedBy = orderedBy?.build(),
-          entryClassifier = entryClassifier.map { it.build() },
-          entryReference = entryReference.map { it.build() },
-          entryQuantity = entryQuantity.map { it.build() },
+          entryClassifier = entryClassifier.mapToList { it.build() },
+          entryReference = entryReference.mapToList { it.build() },
+          entryQuantity = entryQuantity.mapToList { it.build() },
           emptyReason = emptyReason?.build(),
-          section = section.map { it.build() },
+          section = section.mapToList { it.build() },
         )
     }
   }
@@ -1330,27 +1325,27 @@ public data class EvidenceReport(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
         status = status,
-        useContext = useContext.map { it.build() },
-        identifier = identifier.map { it.build() },
-        relatedIdentifier = relatedIdentifier.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        relatedIdentifier = relatedIdentifier.mapToList { it.build() },
         citeAs = citeAs,
         type = type?.build(),
-        note = note.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
+        note = note.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
         subject = subject.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
-        author = author.map { it.build() },
-        editor = editor.map { it.build() },
-        reviewer = reviewer.map { it.build() },
-        endorser = endorser.map { it.build() },
-        relatesTo = relatesTo.map { it.build() },
-        section = section.map { it.build() },
+        contact = contact.mapToList { it.build() },
+        author = author.mapToList { it.build() },
+        editor = editor.mapToList { it.build() },
+        reviewer = reviewer.mapToList { it.build() },
+        endorser = endorser.mapToList { it.build() },
+        relatesTo = relatesTo.mapToList { it.build() },
+        section = section.mapToList { it.build() },
       )
   }
 

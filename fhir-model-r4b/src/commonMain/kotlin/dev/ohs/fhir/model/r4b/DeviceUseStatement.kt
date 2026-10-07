@@ -184,34 +184,33 @@ public data class DeviceUseStatement(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          subject.toBuilder(),
-          device.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-          timing = this@with.timing
-          recordedOn = this@with.recordedOn?.toBuilder()
-          source = this@with.source?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          bodySite = this@with.bodySite?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        subject.toBuilder(),
+        device.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.timing = timing
+    builder.recordedOn = recordedOn?.toBuilder()
+    builder.source = source?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.bodySite = bodySite?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public sealed interface Timing : FhirChoice {
     public fun asTiming(): Timing? = this as? Timing
@@ -420,22 +419,22 @@ public data class DeviceUseStatement(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
         status = status,
         subject = subject.build(),
-        derivedFrom = derivedFrom.map { it.build() },
+        derivedFrom = derivedFrom.mapToList { it.build() },
         timing = timing,
         recordedOn = recordedOn?.build(),
         source = source?.build(),
         device = device.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
         bodySite = bodySite?.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

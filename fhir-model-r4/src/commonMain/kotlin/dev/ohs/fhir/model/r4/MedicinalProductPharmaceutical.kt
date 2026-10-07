@@ -147,28 +147,27 @@ public data class MedicinalProductPharmaceutical(
   /** The path by which the pharmaceutical product is taken into or makes contact with the body. */
   public val routeOfAdministration: List<RouteOfAdministration>,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          administrableDoseForm.toBuilder(),
-          routeOfAdministration.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
-          ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-          device = this@with.device.map { it.toBuilder() }.toMutableList()
-          characteristics = this@with.characteristics.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        administrableDoseForm.toBuilder(),
+        routeOfAdministration.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.unitOfPresentation = unitOfPresentation?.toBuilder()
+    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.device = device.mapToMutableList { it.toBuilder() }
+    builder.characteristics = characteristics.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Characteristics e.g. a products onset of action. */
   @Serializable(with = MedicinalProductPharmaceuticalCharacteristicsSerializer::class)
@@ -215,15 +214,14 @@ public data class MedicinalProductPharmaceutical(
     /** The status of characteristic e.g. assigned or pending. */
     public val status: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          status = this@with.status?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.status = status?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** A coded characteristic. */
@@ -275,8 +273,8 @@ public data class MedicinalProductPharmaceutical(
       public fun build(): Characteristics =
         Characteristics(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           status = status?.build(),
         )
@@ -353,20 +351,19 @@ public data class MedicinalProductPharmaceutical(
     /** A species for which this route applies. */
     public val targetSpecies: List<TargetSpecies> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          firstDose = this@with.firstDose?.toBuilder()
-          maxSingleDose = this@with.maxSingleDose?.toBuilder()
-          maxDosePerDay = this@with.maxDosePerDay?.toBuilder()
-          maxDosePerTreatmentPeriod = this@with.maxDosePerTreatmentPeriod?.toBuilder()
-          maxTreatmentPeriod = this@with.maxTreatmentPeriod?.toBuilder()
-          targetSpecies = this@with.targetSpecies.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.firstDose = firstDose?.toBuilder()
+      builder.maxSingleDose = maxSingleDose?.toBuilder()
+      builder.maxDosePerDay = maxDosePerDay?.toBuilder()
+      builder.maxDosePerTreatmentPeriod = maxDosePerTreatmentPeriod?.toBuilder()
+      builder.maxTreatmentPeriod = maxTreatmentPeriod?.toBuilder()
+      builder.targetSpecies = targetSpecies.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** A species for which this route applies. */
     @Serializable(
@@ -415,15 +412,14 @@ public data class MedicinalProductPharmaceutical(
       /** A species specific time during which consumption of animal product is not appropriate. */
       public val withdrawalPeriod: List<WithdrawalPeriod> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(code.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            withdrawalPeriod = this@with.withdrawalPeriod.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(code.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.withdrawalPeriod = withdrawalPeriod.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** A species specific time during which consumption of animal product is not appropriate. */
       @Serializable(
@@ -478,15 +474,14 @@ public data class MedicinalProductPharmaceutical(
         /** Extra information about the withdrawal period. */
         public val supportingInformation: String? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(tissue.toBuilder(), `value`.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              supportingInformation = this@with.supportingInformation?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(tissue.toBuilder(), `value`.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.supportingInformation = supportingInformation?.toBuilder()
+          return builder
+        }
 
         public class Builder(
           /**
@@ -543,8 +538,8 @@ public data class MedicinalProductPharmaceutical(
           public fun build(): WithdrawalPeriod =
             WithdrawalPeriod(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               tissue = tissue.build(),
               `value` = `value`.build(),
               supportingInformation = supportingInformation?.build(),
@@ -604,10 +599,10 @@ public data class MedicinalProductPharmaceutical(
         public fun build(): TargetSpecies =
           TargetSpecies(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code.build(),
-            withdrawalPeriod = withdrawalPeriod.map { it.build() },
+            withdrawalPeriod = withdrawalPeriod.mapToList { it.build() },
           )
       }
     }
@@ -693,15 +688,15 @@ public data class MedicinalProductPharmaceutical(
       public fun build(): RouteOfAdministration =
         RouteOfAdministration(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           firstDose = firstDose?.build(),
           maxSingleDose = maxSingleDose?.build(),
           maxDosePerDay = maxDosePerDay?.build(),
           maxDosePerTreatmentPeriod = maxDosePerTreatmentPeriod?.build(),
           maxTreatmentPeriod = maxTreatmentPeriod?.build(),
-          targetSpecies = targetSpecies.map { it.build() },
+          targetSpecies = targetSpecies.mapToList { it.build() },
         )
     }
   }
@@ -841,16 +836,16 @@ public data class MedicinalProductPharmaceutical(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         administrableDoseForm = administrableDoseForm.build(),
         unitOfPresentation = unitOfPresentation?.build(),
-        ingredient = ingredient.map { it.build() },
-        device = device.map { it.build() },
-        characteristics = characteristics.map { it.build() },
-        routeOfAdministration = routeOfAdministration.map { it.build() },
+        ingredient = ingredient.mapToList { it.build() },
+        device = device.mapToList { it.build() },
+        characteristics = characteristics.mapToList { it.build() },
+        routeOfAdministration = routeOfAdministration.mapToList { it.build() },
       )
   }
 }

@@ -58,16 +58,15 @@ public data class MonetaryComponent(
   /** Explicit value amount to be used. */
   public val amount: Money? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(type).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        code = this@with.code?.toBuilder()
-        factor = this@with.factor?.toBuilder()
-        amount = this@with.amount?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(type)
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.code = code?.toBuilder()
+    builder.factor = factor?.toBuilder()
+    builder.amount = amount?.toBuilder()
+    return builder
+  }
 
   public open class Builder(
     /** base | surcharge | deduction | discount | tax | informational. */
@@ -105,7 +104,7 @@ public data class MonetaryComponent(
     public open fun build(): MonetaryComponent =
       MonetaryComponent(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         type = type,
         code = code?.build(),
         factor = factor?.build(),

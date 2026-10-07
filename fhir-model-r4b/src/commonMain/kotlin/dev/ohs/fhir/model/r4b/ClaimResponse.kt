@@ -284,49 +284,47 @@ public data class ClaimResponse(
    */
   public val error: List<Error> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          type.toBuilder(),
-          use,
-          patient.toBuilder(),
-          created.toBuilder(),
-          insurer.toBuilder(),
-          outcome,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          subType = this@with.subType?.toBuilder()
-          requestor = this@with.requestor?.toBuilder()
-          request = this@with.request?.toBuilder()
-          disposition = this@with.disposition?.toBuilder()
-          preAuthRef = this@with.preAuthRef?.toBuilder()
-          preAuthPeriod = this@with.preAuthPeriod?.toBuilder()
-          payeeType = this@with.payeeType?.toBuilder()
-          item = this@with.item.map { it.toBuilder() }.toMutableList()
-          addItem = this@with.addItem.map { it.toBuilder() }.toMutableList()
-          adjudication = this@with.adjudication.map { it.toBuilder() }.toMutableList()
-          total = this@with.total.map { it.toBuilder() }.toMutableList()
-          payment = this@with.payment?.toBuilder()
-          fundsReserve = this@with.fundsReserve?.toBuilder()
-          formCode = this@with.formCode?.toBuilder()
-          form = this@with.form?.toBuilder()
-          processNote = this@with.processNote.map { it.toBuilder() }.toMutableList()
-          communicationRequest =
-            this@with.communicationRequest.map { it.toBuilder() }.toMutableList()
-          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-          error = this@with.error.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        type.toBuilder(),
+        use,
+        patient.toBuilder(),
+        created.toBuilder(),
+        insurer.toBuilder(),
+        outcome,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.subType = subType?.toBuilder()
+    builder.requestor = requestor?.toBuilder()
+    builder.request = request?.toBuilder()
+    builder.disposition = disposition?.toBuilder()
+    builder.preAuthRef = preAuthRef?.toBuilder()
+    builder.preAuthPeriod = preAuthPeriod?.toBuilder()
+    builder.payeeType = payeeType?.toBuilder()
+    builder.item = item.mapToMutableList { it.toBuilder() }
+    builder.addItem = addItem.mapToMutableList { it.toBuilder() }
+    builder.adjudication = adjudication.mapToMutableList { it.toBuilder() }
+    builder.total = total.mapToMutableList { it.toBuilder() }
+    builder.payment = payment?.toBuilder()
+    builder.fundsReserve = fundsReserve?.toBuilder()
+    builder.formCode = formCode?.toBuilder()
+    builder.form = form?.toBuilder()
+    builder.processNote = processNote.mapToMutableList { it.toBuilder() }
+    builder.communicationRequest = communicationRequest.mapToMutableList { it.toBuilder() }
+    builder.insurance = insurance.mapToMutableList { it.toBuilder() }
+    builder.error = error.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * A claim line. Either a simple (a product or service) or a 'group' of details which can also be
@@ -387,20 +385,19 @@ public data class ClaimResponse(
      */
     public val detail: List<Detail> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            itemSequence.toBuilder(),
-            adjudication.map { it.toBuilder() }.toMutableList(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            noteNumber = this@with.noteNumber.map { it.toBuilder() }.toMutableList()
-            detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          itemSequence.toBuilder(),
+          adjudication.mapToMutableList { it.toBuilder() },
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.noteNumber = noteNumber.mapToMutableList { it.toBuilder() }
+      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * If this item is a group then the values here are a summary of the adjudication of the detail
@@ -476,17 +473,16 @@ public data class ClaimResponse(
        */
       public val `value`: Decimal? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(category.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            reason = this@with.reason?.toBuilder()
-            amount = this@with.amount?.toBuilder()
-            `value` = this@with.`value`?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(category.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.reason = reason?.toBuilder()
+        builder.amount = amount?.toBuilder()
+        builder.`value` = `value`?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -565,8 +561,8 @@ public data class ClaimResponse(
         public fun build(): Adjudication =
           Adjudication(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             category = category.build(),
             reason = reason?.build(),
             amount = amount?.build(),
@@ -627,20 +623,19 @@ public data class ClaimResponse(
       /** A sub-detail adjudication of a simple product or service. */
       public val subDetail: List<SubDetail> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              detailSequence.toBuilder(),
-              adjudication.map { it.toBuilder() }.toMutableList(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              noteNumber = this@with.noteNumber.map { it.toBuilder() }.toMutableList()
-              subDetail = this@with.subDetail.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            detailSequence.toBuilder(),
+            adjudication.mapToMutableList { it.toBuilder() },
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.noteNumber = noteNumber.mapToMutableList { it.toBuilder() }
+        builder.subDetail = subDetail.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** A sub-detail adjudication of a simple product or service. */
       @Serializable(with = ClaimResponseItemDetailSubDetailSerializer::class)
@@ -689,16 +684,15 @@ public data class ClaimResponse(
         /** The adjudication results. */
         public val adjudication: List<Adjudication> = listOf(),
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(subDetailSequence.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              noteNumber = this@with.noteNumber.map { it.toBuilder() }.toMutableList()
-              adjudication = this@with.adjudication.map { it.toBuilder() }.toMutableList()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(subDetailSequence.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.noteNumber = noteNumber.mapToMutableList { it.toBuilder() }
+          builder.adjudication = adjudication.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         public class Builder(
           /** A number to uniquely reference the claim sub-detail entry. */
@@ -755,11 +749,11 @@ public data class ClaimResponse(
           public fun build(): SubDetail =
             SubDetail(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               subDetailSequence = subDetailSequence.build(),
-              noteNumber = noteNumber.map { it.build() },
-              adjudication = adjudication.map { it.build() },
+              noteNumber = noteNumber.mapToList { it.build() },
+              adjudication = adjudication.mapToList { it.build() },
             )
         }
       }
@@ -819,12 +813,12 @@ public data class ClaimResponse(
         public fun build(): Detail =
           Detail(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             detailSequence = detailSequence.build(),
-            noteNumber = noteNumber.map { it.build() },
-            adjudication = adjudication.map { it.build() },
-            subDetail = subDetail.map { it.build() },
+            noteNumber = noteNumber.mapToList { it.build() },
+            adjudication = adjudication.mapToList { it.build() },
+            subDetail = subDetail.mapToList { it.build() },
           )
       }
     }
@@ -891,12 +885,12 @@ public data class ClaimResponse(
       public fun build(): Item =
         Item(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           itemSequence = itemSequence.build(),
-          noteNumber = noteNumber.map { it.build() },
-          adjudication = adjudication.map { it.build() },
-          detail = detail.map { it.build() },
+          noteNumber = noteNumber.mapToList { it.build() },
+          adjudication = adjudication.mapToList { it.build() },
+          detail = detail.mapToList { it.build() },
         )
     }
   }
@@ -1020,34 +1014,33 @@ public data class ClaimResponse(
     /** The second-tier service adjudications for payor added services. */
     public val detail: List<Detail> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            productOrService.toBuilder(),
-            adjudication.map { it.toBuilder() }.toMutableList(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            itemSequence = this@with.itemSequence.map { it.toBuilder() }.toMutableList()
-            detailSequence = this@with.detailSequence.map { it.toBuilder() }.toMutableList()
-            subdetailSequence = this@with.subdetailSequence.map { it.toBuilder() }.toMutableList()
-            provider = this@with.provider.map { it.toBuilder() }.toMutableList()
-            modifier = this@with.modifier.map { it.toBuilder() }.toMutableList()
-            programCode = this@with.programCode.map { it.toBuilder() }.toMutableList()
-            serviced = this@with.serviced
-            location = this@with.location
-            quantity = this@with.quantity?.toBuilder()
-            unitPrice = this@with.unitPrice?.toBuilder()
-            factor = this@with.factor?.toBuilder()
-            net = this@with.net?.toBuilder()
-            bodySite = this@with.bodySite?.toBuilder()
-            subSite = this@with.subSite.map { it.toBuilder() }.toMutableList()
-            noteNumber = this@with.noteNumber.map { it.toBuilder() }.toMutableList()
-            detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          productOrService.toBuilder(),
+          adjudication.mapToMutableList { it.toBuilder() },
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.itemSequence = itemSequence.mapToMutableList { it.toBuilder() }
+      builder.detailSequence = detailSequence.mapToMutableList { it.toBuilder() }
+      builder.subdetailSequence = subdetailSequence.mapToMutableList { it.toBuilder() }
+      builder.provider = provider.mapToMutableList { it.toBuilder() }
+      builder.modifier = modifier.mapToMutableList { it.toBuilder() }
+      builder.programCode = programCode.mapToMutableList { it.toBuilder() }
+      builder.serviced = serviced
+      builder.location = location
+      builder.quantity = quantity?.toBuilder()
+      builder.unitPrice = unitPrice?.toBuilder()
+      builder.factor = factor?.toBuilder()
+      builder.net = net?.toBuilder()
+      builder.bodySite = bodySite?.toBuilder()
+      builder.subSite = subSite.mapToMutableList { it.toBuilder() }
+      builder.noteNumber = noteNumber.mapToMutableList { it.toBuilder() }
+      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** The second-tier service adjudications for payor added services. */
     @Serializable(with = ClaimResponseAddItemDetailSerializer::class)
@@ -1136,25 +1129,24 @@ public data class ClaimResponse(
       /** The third-tier service adjudications for payor added services. */
       public val subDetail: List<SubDetail> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              productOrService.toBuilder(),
-              adjudication.map { it.toBuilder() }.toMutableList(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              modifier = this@with.modifier.map { it.toBuilder() }.toMutableList()
-              quantity = this@with.quantity?.toBuilder()
-              unitPrice = this@with.unitPrice?.toBuilder()
-              factor = this@with.factor?.toBuilder()
-              net = this@with.net?.toBuilder()
-              noteNumber = this@with.noteNumber.map { it.toBuilder() }.toMutableList()
-              subDetail = this@with.subDetail.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            productOrService.toBuilder(),
+            adjudication.mapToMutableList { it.toBuilder() },
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.modifier = modifier.mapToMutableList { it.toBuilder() }
+        builder.quantity = quantity?.toBuilder()
+        builder.unitPrice = unitPrice?.toBuilder()
+        builder.factor = factor?.toBuilder()
+        builder.net = net?.toBuilder()
+        builder.noteNumber = noteNumber.mapToMutableList { it.toBuilder() }
+        builder.subDetail = subDetail.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** The third-tier service adjudications for payor added services. */
       @Serializable(with = ClaimResponseAddItemDetailSubDetailSerializer::class)
@@ -1241,25 +1233,23 @@ public data class ClaimResponse(
         /** The adjudication results. */
         public val adjudication: List<Item.Adjudication>,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
+        public fun toBuilder(): Builder {
+          val builder =
             Builder(
-                productOrService.toBuilder(),
-                adjudication.map { it.toBuilder() }.toMutableList(),
-              )
-              .apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                modifier = this@with.modifier.map { it.toBuilder() }.toMutableList()
-                quantity = this@with.quantity?.toBuilder()
-                unitPrice = this@with.unitPrice?.toBuilder()
-                factor = this@with.factor?.toBuilder()
-                net = this@with.net?.toBuilder()
-                noteNumber = this@with.noteNumber.map { it.toBuilder() }.toMutableList()
-              }
-          }
+              productOrService.toBuilder(),
+              adjudication.mapToMutableList { it.toBuilder() },
+            )
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.modifier = modifier.mapToMutableList { it.toBuilder() }
+          builder.quantity = quantity?.toBuilder()
+          builder.unitPrice = unitPrice?.toBuilder()
+          builder.factor = factor?.toBuilder()
+          builder.net = net?.toBuilder()
+          builder.noteNumber = noteNumber.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         public class Builder(
           /**
@@ -1358,16 +1348,16 @@ public data class ClaimResponse(
           public fun build(): SubDetail =
             SubDetail(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               productOrService = productOrService.build(),
-              modifier = modifier.map { it.build() },
+              modifier = modifier.mapToList { it.build() },
               quantity = quantity?.build(),
               unitPrice = unitPrice?.build(),
               factor = factor?.build(),
               net = net?.build(),
-              noteNumber = noteNumber.map { it.build() },
-              adjudication = adjudication.map { it.build() },
+              noteNumber = noteNumber.mapToList { it.build() },
+              adjudication = adjudication.mapToList { it.build() },
             )
         }
       }
@@ -1470,17 +1460,17 @@ public data class ClaimResponse(
         public fun build(): Detail =
           Detail(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             productOrService = productOrService.build(),
-            modifier = modifier.map { it.build() },
+            modifier = modifier.mapToList { it.build() },
             quantity = quantity?.build(),
             unitPrice = unitPrice?.build(),
             factor = factor?.build(),
             net = net?.build(),
-            noteNumber = noteNumber.map { it.build() },
-            adjudication = adjudication.map { it.build() },
-            subDetail = subDetail.map { it.build() },
+            noteNumber = noteNumber.mapToList { it.build() },
+            adjudication = adjudication.mapToList { it.build() },
+            subDetail = subDetail.mapToList { it.build() },
           )
       }
     }
@@ -1675,15 +1665,15 @@ public data class ClaimResponse(
       public fun build(): AddItem =
         AddItem(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          itemSequence = itemSequence.map { it.build() },
-          detailSequence = detailSequence.map { it.build() },
-          subdetailSequence = subdetailSequence.map { it.build() },
-          provider = provider.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          itemSequence = itemSequence.mapToList { it.build() },
+          detailSequence = detailSequence.mapToList { it.build() },
+          subdetailSequence = subdetailSequence.mapToList { it.build() },
+          provider = provider.mapToList { it.build() },
           productOrService = productOrService.build(),
-          modifier = modifier.map { it.build() },
-          programCode = programCode.map { it.build() },
+          modifier = modifier.mapToList { it.build() },
+          programCode = programCode.mapToList { it.build() },
           serviced = serviced,
           location = location,
           quantity = quantity?.build(),
@@ -1691,10 +1681,10 @@ public data class ClaimResponse(
           factor = factor?.build(),
           net = net?.build(),
           bodySite = bodySite?.build(),
-          subSite = subSite.map { it.build() },
-          noteNumber = noteNumber.map { it.build() },
-          adjudication = adjudication.map { it.build() },
-          detail = detail.map { it.build() },
+          subSite = subSite.mapToList { it.build() },
+          noteNumber = noteNumber.mapToList { it.build() },
+          adjudication = adjudication.mapToList { it.build() },
+          detail = detail.mapToList { it.build() },
         )
     }
   }
@@ -1751,14 +1741,13 @@ public data class ClaimResponse(
     /** Monetary total amount associated with the category. */
     public val amount: Money,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(category.toBuilder(), amount.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(category.toBuilder(), amount.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1816,8 +1805,8 @@ public data class ClaimResponse(
       public fun build(): Total =
         Total(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           category = category.build(),
           amount = amount.build(),
         )
@@ -1888,18 +1877,17 @@ public data class ClaimResponse(
      */
     public val identifier: Identifier? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder(), amount.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          adjustment = this@with.adjustment?.toBuilder()
-          adjustmentReason = this@with.adjustmentReason?.toBuilder()
-          date = this@with.date?.toBuilder()
-          identifier = this@with.identifier?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder(), amount.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.adjustment = adjustment?.toBuilder()
+      builder.adjustmentReason = adjustmentReason?.toBuilder()
+      builder.date = date?.toBuilder()
+      builder.identifier = identifier?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Whether this represents partial or complete payment of the benefits payable. */
@@ -1973,8 +1961,8 @@ public data class ClaimResponse(
       public fun build(): Payment =
         Payment(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           adjustment = adjustment?.build(),
           adjustmentReason = adjustmentReason?.build(),
@@ -2038,17 +2026,16 @@ public data class ClaimResponse(
      */
     public val language: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(text.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          number = this@with.number?.toBuilder()
-          type = this@with.type
-          language = this@with.language?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(text.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.number = number?.toBuilder()
+      builder.type = type
+      builder.language = language?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The explanation or description associated with the processing. */
@@ -2110,8 +2097,8 @@ public data class ClaimResponse(
       public fun build(): ProcessNote =
         ProcessNote(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           number = number?.build(),
           type = type,
           text = text.build(),
@@ -2199,16 +2186,15 @@ public data class ClaimResponse(
      */
     public val claimResponse: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(sequence.toBuilder(), focal.toBuilder(), coverage.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          businessArrangement = this@with.businessArrangement?.toBuilder()
-          claimResponse = this@with.claimResponse?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(sequence.toBuilder(), focal.toBuilder(), coverage.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.businessArrangement = businessArrangement?.toBuilder()
+      builder.claimResponse = claimResponse?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -2292,8 +2278,8 @@ public data class ClaimResponse(
       public fun build(): Insurance =
         Insurance(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           sequence = sequence.build(),
           focal = focal.build(),
           coverage = coverage.build(),
@@ -2365,17 +2351,16 @@ public data class ClaimResponse(
      */
     public val code: CodeableConcept,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          itemSequence = this@with.itemSequence?.toBuilder()
-          detailSequence = this@with.detailSequence?.toBuilder()
-          subDetailSequence = this@with.subDetailSequence?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.itemSequence = itemSequence?.toBuilder()
+      builder.detailSequence = detailSequence?.toBuilder()
+      builder.subDetailSequence = subDetailSequence?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -2446,8 +2431,8 @@ public data class ClaimResponse(
       public fun build(): Error =
         Error(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           itemSequence = itemSequence?.build(),
           detailSequence = detailSequence?.build(),
           subDetailSequence = subDetailSequence?.build(),
@@ -2732,10 +2717,10 @@ public data class ClaimResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         type = type.build(),
         subType = subType?.build(),
@@ -2750,18 +2735,18 @@ public data class ClaimResponse(
         preAuthRef = preAuthRef?.build(),
         preAuthPeriod = preAuthPeriod?.build(),
         payeeType = payeeType?.build(),
-        item = item.map { it.build() },
-        addItem = addItem.map { it.build() },
-        adjudication = adjudication.map { it.build() },
-        total = total.map { it.build() },
+        item = item.mapToList { it.build() },
+        addItem = addItem.mapToList { it.build() },
+        adjudication = adjudication.mapToList { it.build() },
+        total = total.mapToList { it.build() },
         payment = payment?.build(),
         fundsReserve = fundsReserve?.build(),
         formCode = formCode?.build(),
         form = form?.build(),
-        processNote = processNote.map { it.build() },
-        communicationRequest = communicationRequest.map { it.build() },
-        insurance = insurance.map { it.build() },
-        error = error.map { it.build() },
+        processNote = processNote.mapToList { it.build() },
+        communicationRequest = communicationRequest.mapToList { it.build() },
+        insurance = insurance.mapToList { it.build() },
+        error = error.mapToList { it.build() },
       )
   }
 

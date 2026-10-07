@@ -156,28 +156,27 @@ public data class Permission(
   /** A set of rules. */
   public val rule: List<Rule> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          combining,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          asserter = this@with.asserter?.toBuilder()
-          date = this@with.date.map { it.toBuilder() }.toMutableList()
-          validity = this@with.validity?.toBuilder()
-          justification = this@with.justification?.toBuilder()
-          rule = this@with.rule.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        combining,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.asserter = asserter?.toBuilder()
+    builder.date = date.mapToMutableList { it.toBuilder() }
+    builder.validity = validity?.toBuilder()
+    builder.justification = justification?.toBuilder()
+    builder.rule = rule.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The asserted justification for using the data. */
   @Serializable(with = PermissionJustificationSerializer::class)
@@ -232,16 +231,15 @@ public data class Permission(
      */
     public val evidence: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          basis = this@with.basis.map { it.toBuilder() }.toMutableList()
-          evidence = this@with.evidence.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.basis = basis.mapToMutableList { it.toBuilder() }
+      builder.evidence = evidence.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -301,10 +299,10 @@ public data class Permission(
       public fun build(): Justification =
         Justification(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          basis = basis.map { it.build() },
-          evidence = evidence.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          basis = basis.mapToList { it.build() },
+          evidence = evidence.mapToList { it.build() },
         )
     }
   }
@@ -358,18 +356,17 @@ public data class Permission(
     /** What limits apply to the use of the data. */
     public val limit: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type
-          `data` = this@with.`data`.map { it.toBuilder() }.toMutableList()
-          activity = this@with.activity.map { it.toBuilder() }.toMutableList()
-          limit = this@with.limit.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type
+      builder.`data` = `data`.mapToMutableList { it.toBuilder() }
+      builder.activity = activity.mapToMutableList { it.toBuilder() }
+      builder.limit = limit.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** A description or definition of which activities are allowed to be done on the data. */
     @Serializable(with = PermissionRuleDataSerializer::class)
@@ -434,18 +431,17 @@ public data class Permission(
       /** Used when other data selection elements are insufficient. */
       public val expression: Expression? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            resource = this@with.resource.map { it.toBuilder() }.toMutableList()
-            security = this@with.security.map { it.toBuilder() }.toMutableList()
-            period = this@with.period.map { it.toBuilder() }.toMutableList()
-            expression = this@with.expression?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.resource = resource.mapToMutableList { it.toBuilder() }
+        builder.security = security.mapToMutableList { it.toBuilder() }
+        builder.period = period.mapToMutableList { it.toBuilder() }
+        builder.expression = expression?.toBuilder()
+        return builder
+      }
 
       /** Explicit FHIR Resource references. */
       @Serializable(with = PermissionRuleDataResourceSerializer::class)
@@ -495,19 +491,17 @@ public data class Permission(
          */
         public val reference: Reference,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
+        public fun toBuilder(): Builder {
+          val builder =
             Builder(
-                meaning,
-                reference.toBuilder(),
-              )
-              .apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              }
-          }
+              meaning,
+              reference.toBuilder(),
+            )
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         public class Builder(
           /** How the resource reference is interpreted when testing consent restrictions. */
@@ -561,8 +555,8 @@ public data class Permission(
           public fun build(): Resource =
             Resource(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               meaning = meaning,
               reference = reference.build(),
             )
@@ -639,11 +633,11 @@ public data class Permission(
         public fun build(): Data =
           Data(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
-            resource = resource.map { it.build() },
-            security = security.map { it.build() },
-            period = period.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
+            resource = resource.mapToList { it.build() },
+            security = security.mapToList { it.build() },
+            period = period.mapToList { it.build() },
             expression = expression?.build(),
           )
       }
@@ -702,17 +696,16 @@ public data class Permission(
       /** The purpose for which the permission is given. */
       public val purpose: List<CodeableConcept> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            actor = this@with.actor.map { it.toBuilder() }.toMutableList()
-            action = this@with.action.map { it.toBuilder() }.toMutableList()
-            purpose = this@with.purpose.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.actor = actor.mapToMutableList { it.toBuilder() }
+        builder.action = action.mapToMutableList { it.toBuilder() }
+        builder.purpose = purpose.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -773,11 +766,11 @@ public data class Permission(
         public fun build(): Activity =
           Activity(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
-            actor = actor.map { it.build() },
-            action = action.map { it.build() },
-            purpose = purpose.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
+            actor = actor.mapToList { it.build() },
+            action = action.mapToList { it.build() },
+            purpose = purpose.mapToList { it.build() },
           )
       }
     }
@@ -838,12 +831,12 @@ public data class Permission(
       public fun build(): Rule =
         Rule(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type,
-          `data` = `data`.map { it.build() },
-          activity = activity.map { it.build() },
-          limit = limit.map { it.build() },
+          `data` = `data`.mapToList { it.build() },
+          activity = activity.mapToList { it.build() },
+          limit = limit.mapToList { it.build() },
         )
     }
   }
@@ -988,16 +981,16 @@ public data class Permission(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         status = status,
         asserter = asserter?.build(),
-        date = date.map { it.build() },
+        date = date.mapToList { it.build() },
         validity = validity?.build(),
         justification = justification?.build(),
         combining = combining,
-        rule = rule.map { it.build() },
+        rule = rule.mapToList { it.build() },
       )
   }
 

@@ -185,31 +185,30 @@ public data class Group(
   /** Identifies the resource instances that are members of the group. */
   public val member: List<Member> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          type,
-          `actual`.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          active = this@with.active?.toBuilder()
-          code = this@with.code?.toBuilder()
-          name = this@with.name?.toBuilder()
-          quantity = this@with.quantity?.toBuilder()
-          managingEntity = this@with.managingEntity?.toBuilder()
-          characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-          member = this@with.member.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        type,
+        `actual`.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.quantity = quantity?.toBuilder()
+    builder.managingEntity = managingEntity?.toBuilder()
+    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.member = member.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Identifies traits whose presence r absence is shared by members of the group. */
   @Serializable(with = GroupCharacteristicSerializer::class)
@@ -274,20 +273,19 @@ public data class Group(
      */
     public val period: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            code.toBuilder(),
-            `value`,
-            exclude.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            period = this@with.period?.toBuilder()
-          }
-      }
+          code.toBuilder(),
+          `value`,
+          exclude.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.period = period?.toBuilder()
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -398,8 +396,8 @@ public data class Group(
       public fun build(): Characteristic =
         Characteristic(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           `value` = `value`,
           exclude = exclude.build(),
@@ -461,16 +459,15 @@ public data class Group(
      */
     public val inactive: Boolean? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(entity.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          inactive = this@with.inactive?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(entity.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.period = period?.toBuilder()
+      builder.inactive = inactive?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -531,8 +528,8 @@ public data class Group(
       public fun build(): Member =
         Member(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           entity = entity.build(),
           period = period?.build(),
           inactive = inactive?.build(),
@@ -712,10 +709,10 @@ public data class Group(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
         type = type,
         `actual` = `actual`.build(),
@@ -723,8 +720,8 @@ public data class Group(
         name = name?.build(),
         quantity = quantity?.build(),
         managingEntity = managingEntity?.build(),
-        characteristic = characteristic.map { it.build() },
-        member = member.map { it.build() },
+        characteristic = characteristic.mapToList { it.build() },
+        member = member.mapToList { it.build() },
       )
   }
 

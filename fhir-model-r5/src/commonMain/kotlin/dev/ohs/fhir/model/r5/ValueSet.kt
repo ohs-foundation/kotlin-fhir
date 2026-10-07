@@ -435,48 +435,47 @@ public data class ValueSet(
    */
   public val scope: Scope? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        immutable = this@with.immutable?.toBuilder()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        effectivePeriod = this@with.effectivePeriod?.toBuilder()
-        topic = this@with.topic.map { it.toBuilder() }.toMutableList()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-        reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-        endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        compose = this@with.compose?.toBuilder()
-        expansion = this@with.expansion?.toBuilder()
-        scope = this@with.scope?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.immutable = immutable?.toBuilder()
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.effectivePeriod = effectivePeriod?.toBuilder()
+    builder.topic = topic.mapToMutableList { it.toBuilder() }
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.editor = editor.mapToMutableList { it.toBuilder() }
+    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
+    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.compose = compose?.toBuilder()
+    builder.expansion = expansion?.toBuilder()
+    builder.scope = scope?.toBuilder()
+    return builder
+  }
 
   /**
    * A set of criteria that define the contents of the value set by including or excluding codes
@@ -578,18 +577,17 @@ public data class ValueSet(
      */
     public val `property`: List<String> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(include.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          lockedDate = this@with.lockedDate?.toBuilder()
-          inactive = this@with.inactive?.toBuilder()
-          exclude = this@with.exclude.map { it.toBuilder() }.toMutableList()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(include.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.lockedDate = lockedDate?.toBuilder()
+      builder.inactive = inactive?.toBuilder()
+      builder.exclude = exclude.mapToMutableList { it.toBuilder() }
+      builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Include one or more codes from a code system or other value set(s). */
     @Serializable(with = ValueSetComposeIncludeSerializer::class)
@@ -689,20 +687,19 @@ public data class ValueSet(
        */
       public val copyright: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            system = this@with.system?.toBuilder()
-            version = this@with.version?.toBuilder()
-            concept = this@with.concept.map { it.toBuilder() }.toMutableList()
-            filter = this@with.filter.map { it.toBuilder() }.toMutableList()
-            valueSet = this@with.valueSet.map { it.toBuilder() }.toMutableList()
-            copyright = this@with.copyright?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.system = system?.toBuilder()
+        builder.version = version?.toBuilder()
+        builder.concept = concept.mapToMutableList { it.toBuilder() }
+        builder.filter = filter.mapToMutableList { it.toBuilder() }
+        builder.valueSet = valueSet.mapToMutableList { it.toBuilder() }
+        builder.copyright = copyright?.toBuilder()
+        return builder
+      }
 
       /** Specifies a concept to be included or excluded. */
       @Serializable(with = ValueSetComposeIncludeConceptSerializer::class)
@@ -770,16 +767,15 @@ public data class ValueSet(
          */
         public val designation: List<Designation> = listOf(),
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(code.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              display = this@with.display?.toBuilder()
-              designation = this@with.designation.map { it.toBuilder() }.toMutableList()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(code.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.display = display?.toBuilder()
+          builder.designation = designation.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         /**
          * Additional representations for this concept when used in this value set - other
@@ -848,18 +844,16 @@ public data class ValueSet(
           /** The text value for this designation. */
           public val `value`: String,
         ) : BackboneElement() {
-          public fun toBuilder(): Builder =
-            with(this) {
-              Builder(`value`.toBuilder()).apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                language = this@with.language?.toBuilder()
-                use = this@with.use?.toBuilder()
-                additionalUse = this@with.additionalUse.map { it.toBuilder() }.toMutableList()
-              }
-            }
+          public fun toBuilder(): Builder {
+            val builder = Builder(`value`.toBuilder())
+            builder.id = id
+            builder.extension = extension.mapToMutableList { it.toBuilder() }
+            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.language = language?.toBuilder()
+            builder.use = use?.toBuilder()
+            builder.additionalUse = additionalUse.mapToMutableList { it.toBuilder() }
+            return builder
+          }
 
           public class Builder(
             /** The text value for this designation. */
@@ -933,11 +927,11 @@ public data class ValueSet(
             public fun build(): Designation =
               Designation(
                 id = id,
-                extension = extension.map { it.build() },
-                modifierExtension = modifierExtension.map { it.build() },
+                extension = extension.mapToList { it.build() },
+                modifierExtension = modifierExtension.mapToList { it.build() },
                 language = language?.build(),
                 use = use?.build(),
-                additionalUse = additionalUse.map { it.build() },
+                additionalUse = additionalUse.mapToList { it.build() },
                 `value` = `value`.build(),
               )
           }
@@ -1015,11 +1009,11 @@ public data class ValueSet(
           public fun build(): Concept =
             Concept(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               code = code.build(),
               display = display?.build(),
-              designation = designation.map { it.build() },
+              designation = designation.mapToList { it.build() },
             )
         }
       }
@@ -1090,20 +1084,18 @@ public data class ValueSet(
          */
         public val `value`: String,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
+        public fun toBuilder(): Builder {
+          val builder =
             Builder(
-                `property`.toBuilder(),
-                op,
-                `value`.toBuilder(),
-              )
-              .apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              }
-          }
+              `property`.toBuilder(),
+              op,
+              `value`.toBuilder(),
+            )
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         public class Builder(
           /** A code that identifies a property or a filter defined in the code system. */
@@ -1171,8 +1163,8 @@ public data class ValueSet(
           public fun build(): Filter =
             Filter(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               `property` = `property`.build(),
               op = op,
               `value` = `value`.build(),
@@ -1287,13 +1279,13 @@ public data class ValueSet(
         public fun build(): Include =
           Include(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             system = system?.build(),
             version = version?.build(),
-            concept = concept.map { it.build() },
-            filter = filter.map { it.build() },
-            valueSet = valueSet.map { it.build() },
+            concept = concept.mapToList { it.build() },
+            filter = filter.mapToList { it.build() },
+            valueSet = valueSet.mapToList { it.build() },
             copyright = copyright?.build(),
           )
       }
@@ -1405,13 +1397,13 @@ public data class ValueSet(
       public fun build(): Compose =
         Compose(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           lockedDate = lockedDate?.build(),
           inactive = inactive?.build(),
-          include = include.map { it.build() },
-          exclude = exclude.map { it.build() },
-          `property` = `property`.map { it.build() },
+          include = include.mapToList { it.build() },
+          exclude = exclude.mapToList { it.build() },
+          `property` = `property`.mapToList { it.build() },
         )
     }
   }
@@ -1525,21 +1517,20 @@ public data class ValueSet(
     /** The codes that are contained in the value set expansion. */
     public val contains: List<Contains> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(timestamp.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier?.toBuilder()
-          next = this@with.next?.toBuilder()
-          total = this@with.total?.toBuilder()
-          offset = this@with.offset?.toBuilder()
-          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-          contains = this@with.contains.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(timestamp.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier?.toBuilder()
+      builder.next = next?.toBuilder()
+      builder.total = total?.toBuilder()
+      builder.offset = offset?.toBuilder()
+      builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+      builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+      builder.contains = contains.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * A parameter that controlled the expansion process. These parameters may be used by users of
@@ -1596,15 +1587,14 @@ public data class ValueSet(
       /** The value of the parameter. */
       public val `value`: Value? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(name.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            `value` = this@with.`value`
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(name.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.`value` = `value`
+        return builder
+      }
 
       public sealed interface Value : FhirChoice {
         public fun asString(): String? = this as? String
@@ -1713,8 +1703,8 @@ public data class ValueSet(
         public fun build(): Parameter =
           Parameter(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             name = name.build(),
             `value` = `value`,
           )
@@ -1775,15 +1765,14 @@ public data class ValueSet(
        */
       public val uri: Uri? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(code.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            uri = this@with.uri?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(code.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.uri = uri?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -1841,8 +1830,8 @@ public data class ValueSet(
         public fun build(): Property =
           Property(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code.build(),
             uri = uri?.build(),
           )
@@ -1950,23 +1939,22 @@ public data class ValueSet(
        */
       public val contains: List<Contains> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            system = this@with.system?.toBuilder()
-            `abstract` = this@with.`abstract`?.toBuilder()
-            inactive = this@with.inactive?.toBuilder()
-            version = this@with.version?.toBuilder()
-            code = this@with.code?.toBuilder()
-            display = this@with.display?.toBuilder()
-            designation = this@with.designation.map { it.toBuilder() }.toMutableList()
-            `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-            contains = this@with.contains.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.system = system?.toBuilder()
+        builder.`abstract` = `abstract`?.toBuilder()
+        builder.inactive = inactive?.toBuilder()
+        builder.version = version?.toBuilder()
+        builder.code = code?.toBuilder()
+        builder.display = display?.toBuilder()
+        builder.designation = designation.mapToMutableList { it.toBuilder() }
+        builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+        builder.contains = contains.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** A property value for this concept. */
       @Serializable(with = ValueSetExpansionContainsPropertySerializer::class)
@@ -2015,20 +2003,18 @@ public data class ValueSet(
         /** A subproperty value for this concept. */
         public val subProperty: List<SubProperty> = listOf(),
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
+        public fun toBuilder(): Builder {
+          val builder =
             Builder(
-                code.toBuilder(),
-                `value`,
-              )
-              .apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                subProperty = this@with.subProperty.map { it.toBuilder() }.toMutableList()
-              }
-          }
+              code.toBuilder(),
+              `value`,
+            )
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.subProperty = subProperty.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         /** A subproperty value for this concept. */
         @Serializable(with = ValueSetExpansionContainsPropertySubPropertySerializer::class)
@@ -2075,19 +2061,17 @@ public data class ValueSet(
           /** The value of this subproperty. */
           public val `value`: Value,
         ) : BackboneElement() {
-          public fun toBuilder(): Builder =
-            with(this) {
+          public fun toBuilder(): Builder {
+            val builder =
               Builder(
-                  code.toBuilder(),
-                  `value`,
-                )
-                .apply {
-                  id = this@with.id
-                  extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                  modifierExtension =
-                    this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                }
-            }
+                code.toBuilder(),
+                `value`,
+              )
+            builder.id = id
+            builder.extension = extension.mapToMutableList { it.toBuilder() }
+            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            return builder
+          }
 
           public sealed interface Value : FhirChoice {
             public fun asCode(): Code? = this as? Code
@@ -2190,8 +2174,8 @@ public data class ValueSet(
             public fun build(): SubProperty =
               SubProperty(
                 id = id,
-                extension = extension.map { it.build() },
-                modifierExtension = modifierExtension.map { it.build() },
+                extension = extension.mapToList { it.build() },
+                modifierExtension = modifierExtension.mapToList { it.build() },
                 code = code.build(),
                 `value` = `value`,
               )
@@ -2301,11 +2285,11 @@ public data class ValueSet(
           public fun build(): Property =
             Property(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               code = code.build(),
               `value` = `value`,
-              subProperty = subProperty.map { it.build() },
+              subProperty = subProperty.mapToList { it.build() },
             )
         }
       }
@@ -2424,17 +2408,17 @@ public data class ValueSet(
         public fun build(): Contains =
           Contains(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             system = system?.build(),
             `abstract` = `abstract`?.build(),
             inactive = inactive?.build(),
             version = version?.build(),
             code = code?.build(),
             display = display?.build(),
-            designation = designation.map { it.build() },
-            `property` = `property`.map { it.build() },
-            contains = contains.map { it.build() },
+            designation = designation.mapToList { it.build() },
+            `property` = `property`.mapToList { it.build() },
+            contains = contains.mapToList { it.build() },
           )
       }
     }
@@ -2557,16 +2541,16 @@ public data class ValueSet(
       public fun build(): Expansion =
         Expansion(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identifier = identifier?.build(),
           next = next?.build(),
           timestamp = timestamp.build(),
           total = total?.build(),
           offset = offset?.build(),
-          parameter = parameter.map { it.build() },
-          `property` = `property`.map { it.build() },
-          contains = contains.map { it.build() },
+          parameter = parameter.mapToList { it.build() },
+          `property` = `property`.mapToList { it.build() },
+          contains = contains.mapToList { it.build() },
         )
     }
   }
@@ -2619,16 +2603,15 @@ public data class ValueSet(
     /** Criteria describing which concepts or codes should be excluded and why. */
     public val exclusionCriteria: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          inclusionCriteria = this@with.inclusionCriteria?.toBuilder()
-          exclusionCriteria = this@with.exclusionCriteria?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.inclusionCriteria = inclusionCriteria?.toBuilder()
+      builder.exclusionCriteria = exclusionCriteria?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -2680,8 +2663,8 @@ public data class ValueSet(
       public fun build(): Scope =
         Scope(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           inclusionCriteria = inclusionCriteria?.build(),
           exclusionCriteria = exclusionCriteria?.build(),
         )
@@ -3144,11 +3127,11 @@ public data class ValueSet(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -3157,10 +3140,10 @@ public data class ValueSet(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         immutable = immutable?.build(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
@@ -3168,12 +3151,12 @@ public data class ValueSet(
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.map { it.build() },
-        author = author.map { it.build() },
-        editor = editor.map { it.build() },
-        reviewer = reviewer.map { it.build() },
-        endorser = endorser.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
+        topic = topic.mapToList { it.build() },
+        author = author.mapToList { it.build() },
+        editor = editor.mapToList { it.build() },
+        reviewer = reviewer.mapToList { it.build() },
+        endorser = endorser.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
         compose = compose?.build(),
         expansion = expansion?.build(),
         scope = scope?.build(),

@@ -63,15 +63,14 @@ public data class Annotation(
   /** The text of the annotation in markdown format. */
   public val text: Markdown,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(text.toBuilder()).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        author = this@with.author
-        time = this@with.time?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(text.toBuilder())
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.author = author
+    builder.time = time?.toBuilder()
+    return builder
+  }
 
   public sealed interface Author : FhirChoice {
     public fun asReference(): Reference? = this as? Reference
@@ -132,7 +131,7 @@ public data class Annotation(
     public open fun build(): Annotation =
       Annotation(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         author = author,
         time = time?.build(),
         text = text.build(),

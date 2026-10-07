@@ -182,29 +182,28 @@ public data class Person(
   /** Link to a resource that concerns the same actual person. */
   public val link: List<Link> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        name = this@with.name.map { it.toBuilder() }.toMutableList()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-        gender = this@with.gender
-        birthDate = this@with.birthDate?.toBuilder()
-        address = this@with.address.map { it.toBuilder() }.toMutableList()
-        photo = this@with.photo?.toBuilder()
-        managingOrganization = this@with.managingOrganization?.toBuilder()
-        active = this@with.active?.toBuilder()
-        link = this@with.link.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.name = name.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.gender = gender
+    builder.birthDate = birthDate?.toBuilder()
+    builder.address = address.mapToMutableList { it.toBuilder() }
+    builder.photo = photo?.toBuilder()
+    builder.managingOrganization = managingOrganization?.toBuilder()
+    builder.active = active?.toBuilder()
+    builder.link = link.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Link to a resource that concerns the same actual person. */
   @Serializable(with = PersonLinkSerializer::class)
@@ -251,15 +250,14 @@ public data class Person(
     /** Level of assurance that this link is associated with the target resource. */
     public val assurance: Enumeration<IdentityAssuranceLevel>? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(target.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          assurance = this@with.assurance
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(target.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.assurance = assurance
+      return builder
+    }
 
     public class Builder(
       /** The resource to which this actual person is associated. */
@@ -311,8 +309,8 @@ public data class Person(
       public fun build(): Link =
         Link(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           target = target.build(),
           assurance = assurance,
         )
@@ -489,19 +487,19 @@ public data class Person(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        name = name.map { it.build() },
-        telecom = telecom.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        name = name.mapToList { it.build() },
+        telecom = telecom.mapToList { it.build() },
         gender = gender,
         birthDate = birthDate?.build(),
-        address = address.map { it.build() },
+        address = address.mapToList { it.build() },
         photo = photo?.build(),
         managingOrganization = managingOrganization?.build(),
         active = active?.build(),
-        link = link.map { it.build() },
+        link = link.mapToList { it.build() },
       )
   }
 

@@ -99,21 +99,20 @@ public data class Attachment(
   /** The date that the attachment was first created. */
   public val creation: DateTime? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        contentType = this@with.contentType?.toBuilder()
-        language = this@with.language
-        `data` = this@with.`data`?.toBuilder()
-        url = this@with.url?.toBuilder()
-        size = this@with.size?.toBuilder()
-        hash = this@with.hash?.toBuilder()
-        title = this@with.title?.toBuilder()
-        creation = this@with.creation?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.contentType = contentType?.toBuilder()
+    builder.language = language
+    builder.`data` = `data`?.toBuilder()
+    builder.url = url?.toBuilder()
+    builder.size = size?.toBuilder()
+    builder.hash = hash?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.creation = creation?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -194,7 +193,7 @@ public data class Attachment(
     public open fun build(): Attachment =
       Attachment(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         contentType = contentType?.build(),
         language = language,
         `data` = `data`?.build(),

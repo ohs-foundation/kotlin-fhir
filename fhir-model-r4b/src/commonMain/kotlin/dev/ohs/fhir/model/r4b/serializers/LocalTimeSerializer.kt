@@ -16,8 +16,11 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
+import kotlin.collections.List
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -31,6 +34,8 @@ import kotlinx.serialization.encoding.Encoder
 internal object LocalTimeSerializer : KSerializer<LocalTime> {
   override val descriptor: SerialDescriptor =
     PrimitiveSerialDescriptor("FormattedLocalTime", PrimitiveKind.STRING)
+
+  internal val nullableListSerializer: KSerializer<List<LocalTime?>> = ListSerializer(this.nullable)
 
   override fun serialize(encoder: Encoder, `value`: LocalTime) {
     encoder.encodeString(LocalTime.Formats.ISO.format(value))

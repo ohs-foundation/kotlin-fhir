@@ -39,61 +39,61 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("CodeableReference") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element(
-        "concept",
-        lazyDescriptor { CodeableConcept.serializer().descriptor },
-        isOptional = true,
-      )
-      element("reference", lazyDescriptor { Reference.serializer().descriptor }, isOptional = true)
+      optionalElement("concept", lazyDescriptor { CodeableConceptSerializer.descriptor })
+      optionalElement("reference", lazyDescriptor { ReferenceSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): CodeableReference =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<CodeableReference>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: CodeableReference) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): CodeableReference {
+  override fun deserialize(decoder: Decoder): CodeableReference {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var concept: CodeableConcept? = null
     var reference: Reference? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           concept =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.conceptSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         3 ->
           reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding CodeableReference: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return CodeableReference(
       id = id,
       extension = extension ?: listOf(),
@@ -102,26 +102,28 @@ internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: CodeableReference) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: CodeableReference) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    (value.concept)?.let {
-      encoder.encodeSerializableElement(descriptor, 2, Hoisted.conceptSer, it)
-    }
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val conceptSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val referenceSer: KSerializer<Reference> = Reference.serializer()
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      2,
+      CodeableConceptSerializer,
+      value.concept,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      ReferenceSerializer,
+      value.reference,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }

@@ -260,38 +260,37 @@ public data class MedicationStatement(
    */
   public val dosage: List<Dosage> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          medication,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          statusReason = this@with.statusReason.map { it.toBuilder() }.toMutableList()
-          category = this@with.category?.toBuilder()
-          context = this@with.context?.toBuilder()
-          effective = this@with.effective
-          dateAsserted = this@with.dateAsserted?.toBuilder()
-          informationSource = this@with.informationSource?.toBuilder()
-          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          dosage = this@with.dosage.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        medication,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.statusReason = statusReason.mapToMutableList { it.toBuilder() }
+    builder.category = category?.toBuilder()
+    builder.context = context?.toBuilder()
+    builder.effective = effective
+    builder.dateAsserted = dateAsserted?.toBuilder()
+    builder.informationSource = informationSource?.toBuilder()
+    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.dosage = dosage.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public sealed interface Medication : FhirChoice {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -577,14 +576,14 @@ public data class MedicationStatement(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
-        statusReason = statusReason.map { it.build() },
+        statusReason = statusReason.mapToList { it.build() },
         category = category?.build(),
         medication = medication,
         subject = subject.build(),
@@ -592,11 +591,11 @@ public data class MedicationStatement(
         effective = effective,
         dateAsserted = dateAsserted?.build(),
         informationSource = informationSource?.build(),
-        derivedFrom = derivedFrom.map { it.build() },
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        note = note.map { it.build() },
-        dosage = dosage.map { it.build() },
+        derivedFrom = derivedFrom.mapToList { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        dosage = dosage.mapToList { it.build() },
       )
   }
 

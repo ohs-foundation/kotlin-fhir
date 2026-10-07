@@ -68,17 +68,16 @@ public data class Narrative(
    */
   public val div: Xhtml,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
+  public fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          div.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        div.toBuilder(),
+      )
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public open class Builder(
     /**
@@ -120,7 +119,7 @@ public data class Narrative(
     public open fun build(): Narrative =
       Narrative(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         status = status,
         div = div.build(),
       )

@@ -91,18 +91,18 @@ public data class ProductShelfLife(
    */
   public val specialPrecautionsForStorage: List<CodeableConcept> = listOf(),
 ) : BackboneType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        type = this@with.type?.toBuilder()
-        period = this@with.period
-        specialPrecautionsForStorage =
-          this@with.specialPrecautionsForStorage.map { it.toBuilder() }.toMutableList()
-      }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.period = period
+    builder.specialPrecautionsForStorage = specialPrecautionsForStorage.mapToMutableList {
+      it.toBuilder()
     }
+    return builder
+  }
 
   public sealed interface Period : FhirChoice {
     public fun asDuration(): Duration? = this as? Duration
@@ -193,11 +193,11 @@ public data class ProductShelfLife(
     public open fun build(): ProductShelfLife =
       ProductShelfLife(
         id = id,
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         type = type?.build(),
         period = period,
-        specialPrecautionsForStorage = specialPrecautionsForStorage.map { it.build() },
+        specialPrecautionsForStorage = specialPrecautionsForStorage.mapToList { it.build() },
       )
   }
 }

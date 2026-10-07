@@ -96,19 +96,18 @@ public data class TriggerDefinition(
    */
   public val condition: Expression? = null,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(type).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        code = this@with.code?.toBuilder()
-        subscriptionTopic = this@with.subscriptionTopic?.toBuilder()
-        timing = this@with.timing
-        `data` = this@with.`data`.map { it.toBuilder() }.toMutableList()
-        condition = this@with.condition?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(type)
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.subscriptionTopic = subscriptionTopic?.toBuilder()
+    builder.timing = timing
+    builder.`data` = `data`.mapToMutableList { it.toBuilder() }
+    builder.condition = condition?.toBuilder()
+    return builder
+  }
 
   public sealed interface Timing : FhirChoice {
     public fun asTiming(): Timing? = this as? Timing
@@ -222,13 +221,13 @@ public data class TriggerDefinition(
     public open fun build(): TriggerDefinition =
       TriggerDefinition(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         type = type,
         name = name?.build(),
         code = code?.build(),
         subscriptionTopic = subscriptionTopic?.build(),
         timing = timing,
-        `data` = `data`.map { it.build() },
+        `data` = `data`.mapToList { it.build() },
         condition = condition?.build(),
       )
   }

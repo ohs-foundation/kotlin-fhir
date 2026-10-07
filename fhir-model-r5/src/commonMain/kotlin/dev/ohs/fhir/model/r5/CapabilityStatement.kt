@@ -436,51 +436,50 @@ public data class CapabilityStatement(
   /** A document definition. */
   public val document: List<Document> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          date.toBuilder(),
-          kind,
-          fhirVersion,
-          format.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          versionAlgorithm = this@with.versionAlgorithm
-          name = this@with.name?.toBuilder()
-          title = this@with.title?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          copyrightLabel = this@with.copyrightLabel?.toBuilder()
-          instantiates = this@with.instantiates.map { it.toBuilder() }.toMutableList()
-          imports = this@with.imports.map { it.toBuilder() }.toMutableList()
-          software = this@with.software?.toBuilder()
-          implementation = this@with.implementation?.toBuilder()
-          patchFormat = this@with.patchFormat.map { it.toBuilder() }.toMutableList()
-          acceptLanguage = this@with.acceptLanguage.map { it.toBuilder() }.toMutableList()
-          implementationGuide = this@with.implementationGuide.map { it.toBuilder() }.toMutableList()
-          rest = this@with.rest.map { it.toBuilder() }.toMutableList()
-          messaging = this@with.messaging.map { it.toBuilder() }.toMutableList()
-          document = this@with.document.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        date.toBuilder(),
+        kind,
+        fhirVersion,
+        format.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.instantiates = instantiates.mapToMutableList { it.toBuilder() }
+    builder.imports = imports.mapToMutableList { it.toBuilder() }
+    builder.software = software?.toBuilder()
+    builder.implementation = implementation?.toBuilder()
+    builder.patchFormat = patchFormat.mapToMutableList { it.toBuilder() }
+    builder.acceptLanguage = acceptLanguage.mapToMutableList { it.toBuilder() }
+    builder.implementationGuide = implementationGuide.mapToMutableList { it.toBuilder() }
+    builder.rest = rest.mapToMutableList { it.toBuilder() }
+    builder.messaging = messaging.mapToMutableList { it.toBuilder() }
+    builder.document = document.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Software that is covered by this capability statement. It is used when the capability statement
@@ -537,16 +536,15 @@ public data class CapabilityStatement(
     /** Date this version of the software was released. */
     public val releaseDate: DateTime? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(name.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          releaseDate = this@with.releaseDate?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(name.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.version = version?.toBuilder()
+      builder.releaseDate = releaseDate?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Name the software is known by. */
@@ -606,8 +604,8 @@ public data class CapabilityStatement(
       public fun build(): Software =
         Software(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name.build(),
           version = version?.build(),
           releaseDate = releaseDate?.build(),
@@ -671,16 +669,15 @@ public data class CapabilityStatement(
      */
     public val custodian: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(description.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          custodian = this@with.custodian?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(description.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.url = url?.toBuilder()
+      builder.custodian = custodian?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Information about the specific installation that this capability statement relates to. */
@@ -741,8 +738,8 @@ public data class CapabilityStatement(
       public fun build(): Implementation =
         Implementation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description.build(),
           url = url?.build(),
           custodian = custodian?.build(),
@@ -848,21 +845,20 @@ public data class CapabilityStatement(
      */
     public val compartment: List<Canonical> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(mode).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          documentation = this@with.documentation?.toBuilder()
-          security = this@with.security?.toBuilder()
-          resource = this@with.resource.map { it.toBuilder() }.toMutableList()
-          interaction = this@with.interaction.map { it.toBuilder() }.toMutableList()
-          searchParam = this@with.searchParam.map { it.toBuilder() }.toMutableList()
-          operation = this@with.operation.map { it.toBuilder() }.toMutableList()
-          compartment = this@with.compartment.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(mode)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.documentation = documentation?.toBuilder()
+      builder.security = security?.toBuilder()
+      builder.resource = resource.mapToMutableList { it.toBuilder() }
+      builder.interaction = interaction.mapToMutableList { it.toBuilder() }
+      builder.searchParam = searchParam.mapToMutableList { it.toBuilder() }
+      builder.operation = operation.mapToMutableList { it.toBuilder() }
+      builder.compartment = compartment.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Information about security implementation from an interface perspective - what a client needs
@@ -920,17 +916,16 @@ public data class CapabilityStatement(
       /** General description of how security works. */
       public val description: Markdown? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            cors = this@with.cors?.toBuilder()
-            service = this@with.service.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.cors = cors?.toBuilder()
+        builder.service = service.mapToMutableList { it.toBuilder() }
+        builder.description = description?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -991,10 +986,10 @@ public data class CapabilityStatement(
         public fun build(): Security =
           Security(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             cors = cors?.build(),
-            service = service.map { it.build() },
+            service = service.mapToList { it.build() },
             description = description?.build(),
           )
       }
@@ -1200,31 +1195,30 @@ public data class CapabilityStatement(
        */
       public val operation: List<Operation> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(type).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            profile = this@with.profile?.toBuilder()
-            supportedProfile = this@with.supportedProfile.map { it.toBuilder() }.toMutableList()
-            documentation = this@with.documentation?.toBuilder()
-            interaction = this@with.interaction.map { it.toBuilder() }.toMutableList()
-            versioning = this@with.versioning
-            readHistory = this@with.readHistory?.toBuilder()
-            updateCreate = this@with.updateCreate?.toBuilder()
-            conditionalCreate = this@with.conditionalCreate?.toBuilder()
-            conditionalRead = this@with.conditionalRead
-            conditionalUpdate = this@with.conditionalUpdate?.toBuilder()
-            conditionalPatch = this@with.conditionalPatch?.toBuilder()
-            conditionalDelete = this@with.conditionalDelete
-            referencePolicy = this@with.referencePolicy.toMutableList()
-            searchInclude = this@with.searchInclude.map { it.toBuilder() }.toMutableList()
-            searchRevInclude = this@with.searchRevInclude.map { it.toBuilder() }.toMutableList()
-            searchParam = this@with.searchParam.map { it.toBuilder() }.toMutableList()
-            operation = this@with.operation.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(type)
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.profile = profile?.toBuilder()
+        builder.supportedProfile = supportedProfile.mapToMutableList { it.toBuilder() }
+        builder.documentation = documentation?.toBuilder()
+        builder.interaction = interaction.mapToMutableList { it.toBuilder() }
+        builder.versioning = versioning
+        builder.readHistory = readHistory?.toBuilder()
+        builder.updateCreate = updateCreate?.toBuilder()
+        builder.conditionalCreate = conditionalCreate?.toBuilder()
+        builder.conditionalRead = conditionalRead
+        builder.conditionalUpdate = conditionalUpdate?.toBuilder()
+        builder.conditionalPatch = conditionalPatch?.toBuilder()
+        builder.conditionalDelete = conditionalDelete
+        builder.referencePolicy = referencePolicy.toMutableList()
+        builder.searchInclude = searchInclude.mapToMutableList { it.toBuilder() }
+        builder.searchRevInclude = searchRevInclude.mapToMutableList { it.toBuilder() }
+        builder.searchParam = searchParam.mapToMutableList { it.toBuilder() }
+        builder.operation = operation.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** Identifies a restful operation supported by the solution. */
       @Serializable(with = CapabilityStatementRestResourceInteractionSerializer::class)
@@ -1275,15 +1269,14 @@ public data class CapabilityStatement(
          */
         public val documentation: Markdown? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(code).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              documentation = this@with.documentation?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(code)
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.documentation = documentation?.toBuilder()
+          return builder
+        }
 
         public class Builder(
           /** Coded identifier of the operation, supported by the system resource. */
@@ -1339,8 +1332,8 @@ public data class CapabilityStatement(
           public fun build(): Interaction =
             Interaction(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               code = code,
               documentation = documentation?.build(),
             )
@@ -1431,21 +1424,19 @@ public data class CapabilityStatement(
          */
         public val documentation: Markdown? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
+        public fun toBuilder(): Builder {
+          val builder =
             Builder(
-                name.toBuilder(),
-                type,
-              )
-              .apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                definition = this@with.definition?.toBuilder()
-                documentation = this@with.documentation?.toBuilder()
-              }
-          }
+              name.toBuilder(),
+              type,
+            )
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.definition = definition?.toBuilder()
+          builder.documentation = documentation?.toBuilder()
+          return builder
+        }
 
         public class Builder(
           /**
@@ -1534,8 +1525,8 @@ public data class CapabilityStatement(
           public fun build(): SearchParam =
             SearchParam(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               name = name.build(),
               definition = definition?.build(),
               type = type,
@@ -1623,15 +1614,14 @@ public data class CapabilityStatement(
          */
         public val documentation: Markdown? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(name.toBuilder(), definition.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              documentation = this@with.documentation?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(name.toBuilder(), definition.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.documentation = documentation?.toBuilder()
+          return builder
+        }
 
         public class Builder(
           /**
@@ -1715,8 +1705,8 @@ public data class CapabilityStatement(
           public fun build(): Operation =
             Operation(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               name = name.build(),
               definition = definition.build(),
               documentation = documentation?.build(),
@@ -1947,13 +1937,13 @@ public data class CapabilityStatement(
         public fun build(): Resource =
           Resource(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type,
             profile = profile?.build(),
-            supportedProfile = supportedProfile.map { it.build() },
+            supportedProfile = supportedProfile.mapToList { it.build() },
             documentation = documentation?.build(),
-            interaction = interaction.map { it.build() },
+            interaction = interaction.mapToList { it.build() },
             versioning = versioning,
             readHistory = readHistory?.build(),
             updateCreate = updateCreate?.build(),
@@ -1963,10 +1953,10 @@ public data class CapabilityStatement(
             conditionalPatch = conditionalPatch?.build(),
             conditionalDelete = conditionalDelete,
             referencePolicy = referencePolicy,
-            searchInclude = searchInclude.map { it.build() },
-            searchRevInclude = searchRevInclude.map { it.build() },
-            searchParam = searchParam.map { it.build() },
-            operation = operation.map { it.build() },
+            searchInclude = searchInclude.mapToList { it.build() },
+            searchRevInclude = searchRevInclude.mapToList { it.build() },
+            searchParam = searchParam.mapToList { it.build() },
+            operation = operation.mapToList { it.build() },
           )
       }
     }
@@ -2019,15 +2009,14 @@ public data class CapabilityStatement(
        */
       public val documentation: Markdown? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(code).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            documentation = this@with.documentation?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(code)
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.documentation = documentation?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** A coded identifier of the operation, supported by the system. */
@@ -2082,8 +2071,8 @@ public data class CapabilityStatement(
         public fun build(): Interaction =
           Interaction(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code,
             documentation = documentation?.build(),
           )
@@ -2199,16 +2188,16 @@ public data class CapabilityStatement(
       public fun build(): Rest =
         Rest(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           mode = mode,
           documentation = documentation?.build(),
           security = security?.build(),
-          resource = resource.map { it.build() },
-          interaction = interaction.map { it.build() },
-          searchParam = searchParam.map { it.build() },
-          operation = operation.map { it.build() },
-          compartment = compartment.map { it.build() },
+          resource = resource.mapToList { it.build() },
+          interaction = interaction.mapToList { it.build() },
+          searchParam = searchParam.mapToList { it.build() },
+          operation = operation.mapToList { it.build() },
+          compartment = compartment.mapToList { it.build() },
         )
     }
   }
@@ -2276,18 +2265,17 @@ public data class CapabilityStatement(
      */
     public val supportedMessage: List<SupportedMessage> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-          reliableCache = this@with.reliableCache?.toBuilder()
-          documentation = this@with.documentation?.toBuilder()
-          supportedMessage = this@with.supportedMessage.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+      builder.reliableCache = reliableCache?.toBuilder()
+      builder.documentation = documentation?.toBuilder()
+      builder.supportedMessage = supportedMessage.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** An endpoint (network accessible address) to which messages and/or replies are to be sent. */
     @Serializable(with = CapabilityStatementMessagingEndpointSerializer::class)
@@ -2337,14 +2325,13 @@ public data class CapabilityStatement(
        */
       public val address: Url,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(protocol.toBuilder(), address.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(protocol.toBuilder(), address.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -2400,8 +2387,8 @@ public data class CapabilityStatement(
         public fun build(): Endpoint =
           Endpoint(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             protocol = protocol.build(),
             address = address.build(),
           )
@@ -2456,18 +2443,17 @@ public data class CapabilityStatement(
        */
       public val definition: Canonical,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              mode,
-              definition.toBuilder(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            mode,
+            definition.toBuilder(),
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /** The mode of this event declaration - whether application is sender or receiver. */
@@ -2521,8 +2507,8 @@ public data class CapabilityStatement(
         public fun build(): SupportedMessage =
           SupportedMessage(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             mode = mode,
             definition = definition.build(),
           )
@@ -2601,12 +2587,12 @@ public data class CapabilityStatement(
       public fun build(): Messaging =
         Messaging(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          endpoint = endpoint.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          endpoint = endpoint.mapToList { it.build() },
           reliableCache = reliableCache?.build(),
           documentation = documentation?.build(),
-          supportedMessage = supportedMessage.map { it.build() },
+          supportedMessage = supportedMessage.mapToList { it.build() },
         )
     }
   }
@@ -2666,19 +2652,18 @@ public data class CapabilityStatement(
      */
     public val profile: Canonical,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            mode,
-            profile.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            documentation = this@with.documentation?.toBuilder()
-          }
-      }
+          mode,
+          profile.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.documentation = documentation?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Mode of this document declaration - whether an application is a producer or consumer. */
@@ -2740,8 +2725,8 @@ public data class CapabilityStatement(
       public fun build(): Document =
         Document(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           mode = mode,
           documentation = documentation?.build(),
           profile = profile.build(),
@@ -3199,11 +3184,11 @@ public data class CapabilityStatement(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -3212,26 +3197,26 @@ public data class CapabilityStatement(
         experimental = experimental?.build(),
         date = date.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         kind = kind,
-        instantiates = instantiates.map { it.build() },
-        imports = imports.map { it.build() },
+        instantiates = instantiates.mapToList { it.build() },
+        imports = imports.mapToList { it.build() },
         software = software?.build(),
         implementation = implementation?.build(),
         fhirVersion = fhirVersion,
-        format = format.map { it.build() },
-        patchFormat = patchFormat.map { it.build() },
-        acceptLanguage = acceptLanguage.map { it.build() },
-        implementationGuide = implementationGuide.map { it.build() },
-        rest = rest.map { it.build() },
-        messaging = messaging.map { it.build() },
-        document = document.map { it.build() },
+        format = format.mapToList { it.build() },
+        patchFormat = patchFormat.mapToList { it.build() },
+        acceptLanguage = acceptLanguage.mapToList { it.build() },
+        implementationGuide = implementationGuide.mapToList { it.build() },
+        rest = rest.mapToList { it.build() },
+        messaging = messaging.mapToList { it.build() },
+        document = document.mapToList { it.build() },
       )
   }
 

@@ -205,31 +205,30 @@ public data class MessageHeader(
   /** Permanent link to the MessageDefinition for this message. */
   public val definition: Canonical? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          event,
-          source.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          destination = this@with.destination.map { it.toBuilder() }.toMutableList()
-          sender = this@with.sender?.toBuilder()
-          author = this@with.author?.toBuilder()
-          responsible = this@with.responsible?.toBuilder()
-          reason = this@with.reason?.toBuilder()
-          response = this@with.response?.toBuilder()
-          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-          definition = this@with.definition?.toBuilder()
-        }
-    }
+        event,
+        source.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.destination = destination.mapToMutableList { it.toBuilder() }
+    builder.sender = sender?.toBuilder()
+    builder.author = author?.toBuilder()
+    builder.responsible = responsible?.toBuilder()
+    builder.reason = reason?.toBuilder()
+    builder.response = response?.toBuilder()
+    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.definition = definition?.toBuilder()
+    return builder
+  }
 
   /** The destination application which the message is intended for. */
   @Serializable(with = MessageHeaderDestinationSerializer::class)
@@ -291,18 +290,17 @@ public data class MessageHeader(
      */
     public val `receiver`: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          endpoint = this@with.endpoint
-          name = this@with.name?.toBuilder()
-          target = this@with.target?.toBuilder()
-          `receiver` = this@with.`receiver`?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.endpoint = endpoint
+      builder.name = name?.toBuilder()
+      builder.target = target?.toBuilder()
+      builder.`receiver` = `receiver`?.toBuilder()
+      return builder
+    }
 
     public sealed interface Endpoint : FhirChoice {
       public fun asUrl(): Url? = this as? Url
@@ -392,8 +390,8 @@ public data class MessageHeader(
       public fun build(): Destination =
         Destination(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           endpoint = endpoint,
           name = name?.build(),
           target = target?.build(),
@@ -464,19 +462,18 @@ public data class MessageHeader(
      */
     public val contact: ContactPoint? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          endpoint = this@with.endpoint
-          name = this@with.name?.toBuilder()
-          software = this@with.software?.toBuilder()
-          version = this@with.version?.toBuilder()
-          contact = this@with.contact?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.endpoint = endpoint
+      builder.name = name?.toBuilder()
+      builder.software = software?.toBuilder()
+      builder.version = version?.toBuilder()
+      builder.contact = contact?.toBuilder()
+      return builder
+    }
 
     public sealed interface Endpoint : FhirChoice {
       public fun asUrl(): Url? = this as? Url
@@ -569,8 +566,8 @@ public data class MessageHeader(
       public fun build(): Source =
         Source(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           endpoint = endpoint,
           name = name?.build(),
           software = software?.build(),
@@ -641,19 +638,18 @@ public data class MessageHeader(
      */
     public val details: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            identifier.toBuilder(),
-            code,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            details = this@with.details?.toBuilder()
-          }
-      }
+          identifier.toBuilder(),
+          code,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.details = details?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The Bundle.identifier of the message to which this message is a response. */
@@ -718,8 +714,8 @@ public data class MessageHeader(
       public fun build(): Response =
         Response(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identifier = identifier.build(),
           code = code,
           details = details?.build(),
@@ -939,18 +935,18 @@ public data class MessageHeader(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         event = event,
-        destination = destination.map { it.build() },
+        destination = destination.mapToList { it.build() },
         sender = sender?.build(),
         author = author?.build(),
         source = source.build(),
         responsible = responsible?.build(),
         reason = reason?.build(),
         response = response?.build(),
-        focus = focus.map { it.build() },
+        focus = focus.mapToList { it.build() },
         definition = definition?.build(),
       )
   }

@@ -58,18 +58,17 @@ public data class Contributor(
   /** Contact details to assist a user in finding and communicating with the contributor. */
   public val contact: List<ContactDetail> = listOf(),
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
+  public fun toBuilder(): Builder {
+    val builder =
       Builder(
-          type,
-          name.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        type,
+        name.toBuilder(),
+      )
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public open class Builder(
     /** The type of contributor. */
@@ -103,10 +102,10 @@ public data class Contributor(
     public open fun build(): Contributor =
       Contributor(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         type = type,
         name = name.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
       )
   }
 

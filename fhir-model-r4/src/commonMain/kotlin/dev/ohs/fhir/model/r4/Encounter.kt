@@ -279,44 +279,43 @@ public data class Encounter(
    */
   public val partOf: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          `class`.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          statusHistory = this@with.statusHistory.map { it.toBuilder() }.toMutableList()
-          classHistory = this@with.classHistory.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          serviceType = this@with.serviceType?.toBuilder()
-          priority = this@with.priority?.toBuilder()
-          subject = this@with.subject?.toBuilder()
-          episodeOfCare = this@with.episodeOfCare.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-          appointment = this@with.appointment.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          length = this@with.length?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          diagnosis = this@with.diagnosis.map { it.toBuilder() }.toMutableList()
-          account = this@with.account.map { it.toBuilder() }.toMutableList()
-          hospitalization = this@with.hospitalization?.toBuilder()
-          location = this@with.location.map { it.toBuilder() }.toMutableList()
-          serviceProvider = this@with.serviceProvider?.toBuilder()
-          partOf = this@with.partOf?.toBuilder()
-        }
-    }
+        status,
+        `class`.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.statusHistory = statusHistory.mapToMutableList { it.toBuilder() }
+    builder.classHistory = classHistory.mapToMutableList { it.toBuilder() }
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.serviceType = serviceType?.toBuilder()
+    builder.priority = priority?.toBuilder()
+    builder.subject = subject?.toBuilder()
+    builder.episodeOfCare = episodeOfCare.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.participant = participant.mapToMutableList { it.toBuilder() }
+    builder.appointment = appointment.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    builder.length = length?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.diagnosis = diagnosis.mapToMutableList { it.toBuilder() }
+    builder.account = account.mapToMutableList { it.toBuilder() }
+    builder.hospitalization = hospitalization?.toBuilder()
+    builder.location = location.mapToMutableList { it.toBuilder() }
+    builder.serviceProvider = serviceProvider?.toBuilder()
+    builder.partOf = partOf?.toBuilder()
+    return builder
+  }
 
   /**
    * The status history permits the encounter resource to contain the status history without needing
@@ -366,18 +365,17 @@ public data class Encounter(
     /** The time that the episode was in the specified status. */
     public val period: Period,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            status,
-            period.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          status,
+          period.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** planned | arrived | triaged | in-progress | onleave | finished | cancelled +. */
@@ -428,8 +426,8 @@ public data class Encounter(
       public fun build(): StatusHistory =
         StatusHistory(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           status = status,
           period = period.build(),
         )
@@ -488,14 +486,13 @@ public data class Encounter(
     /** The time that the episode was in the specified class. */
     public val period: Period,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(`class`.toBuilder(), period.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(`class`.toBuilder(), period.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** inpatient | outpatient | ambulatory | emergency +. */
@@ -546,8 +543,8 @@ public data class Encounter(
       public fun build(): ClassHistory =
         ClassHistory(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           `class` = `class`.build(),
           period = period.build(),
         )
@@ -612,17 +609,16 @@ public data class Encounter(
     /** Persons involved in the encounter other than the patient. */
     public val individual: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          individual = this@with.individual?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.period = period?.toBuilder()
+      builder.individual = individual?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -688,9 +684,9 @@ public data class Encounter(
       public fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          type = type.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          type = type.mapToList { it.build() },
           period = period?.build(),
           individual = individual?.build(),
         )
@@ -752,16 +748,15 @@ public data class Encounter(
     /** Ranking of the diagnosis (for each role type). */
     public val rank: PositiveInt? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(condition.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          use = this@with.use?.toBuilder()
-          rank = this@with.rank?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(condition.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.use = use?.toBuilder()
+      builder.rank = rank?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -826,8 +821,8 @@ public data class Encounter(
       public fun build(): Diagnosis =
         Diagnosis(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           condition = condition.build(),
           use = use?.build(),
           rank = rank?.build(),
@@ -902,23 +897,22 @@ public data class Encounter(
     /** Category or kind of location after discharge. */
     public val dischargeDisposition: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          preAdmissionIdentifier = this@with.preAdmissionIdentifier?.toBuilder()
-          origin = this@with.origin?.toBuilder()
-          admitSource = this@with.admitSource?.toBuilder()
-          reAdmission = this@with.reAdmission?.toBuilder()
-          dietPreference = this@with.dietPreference.map { it.toBuilder() }.toMutableList()
-          specialCourtesy = this@with.specialCourtesy.map { it.toBuilder() }.toMutableList()
-          specialArrangement = this@with.specialArrangement.map { it.toBuilder() }.toMutableList()
-          destination = this@with.destination?.toBuilder()
-          dischargeDisposition = this@with.dischargeDisposition?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.preAdmissionIdentifier = preAdmissionIdentifier?.toBuilder()
+      builder.origin = origin?.toBuilder()
+      builder.admitSource = admitSource?.toBuilder()
+      builder.reAdmission = reAdmission?.toBuilder()
+      builder.dietPreference = dietPreference.mapToMutableList { it.toBuilder() }
+      builder.specialCourtesy = specialCourtesy.mapToMutableList { it.toBuilder() }
+      builder.specialArrangement = specialArrangement.mapToMutableList { it.toBuilder() }
+      builder.destination = destination?.toBuilder()
+      builder.dischargeDisposition = dischargeDisposition?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -999,15 +993,15 @@ public data class Encounter(
       public fun build(): Hospitalization =
         Hospitalization(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           preAdmissionIdentifier = preAdmissionIdentifier?.build(),
           origin = origin?.build(),
           admitSource = admitSource?.build(),
           reAdmission = reAdmission?.build(),
-          dietPreference = dietPreference.map { it.build() },
-          specialCourtesy = specialCourtesy.map { it.build() },
-          specialArrangement = specialArrangement.map { it.build() },
+          dietPreference = dietPreference.mapToList { it.build() },
+          specialCourtesy = specialCourtesy.mapToList { it.build() },
+          specialArrangement = specialArrangement.mapToList { it.build() },
           destination = destination?.build(),
           dischargeDisposition = dischargeDisposition?.build(),
         )
@@ -1079,17 +1073,16 @@ public data class Encounter(
     /** Time period during which the patient was present at the location. */
     public val period: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(location.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          status = this@with.status
-          physicalType = this@with.physicalType?.toBuilder()
-          period = this@with.period?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(location.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.status = status
+      builder.physicalType = physicalType?.toBuilder()
+      builder.period = period?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The location where the encounter takes place. */
@@ -1163,8 +1156,8 @@ public data class Encounter(
       public fun build(): Location =
         Location(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           location = location.build(),
           status = status,
           physicalType = physicalType?.build(),
@@ -1449,30 +1442,30 @@ public data class Encounter(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        statusHistory = statusHistory.map { it.build() },
+        statusHistory = statusHistory.mapToList { it.build() },
         `class` = `class`.build(),
-        classHistory = classHistory.map { it.build() },
-        type = type.map { it.build() },
+        classHistory = classHistory.mapToList { it.build() },
+        type = type.mapToList { it.build() },
         serviceType = serviceType?.build(),
         priority = priority?.build(),
         subject = subject?.build(),
-        episodeOfCare = episodeOfCare.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        participant = participant.map { it.build() },
-        appointment = appointment.map { it.build() },
+        episodeOfCare = episodeOfCare.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        participant = participant.mapToList { it.build() },
+        appointment = appointment.mapToList { it.build() },
         period = period?.build(),
         length = length?.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        diagnosis = diagnosis.map { it.build() },
-        account = account.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        diagnosis = diagnosis.mapToList { it.build() },
+        account = account.mapToList { it.build() },
         hospitalization = hospitalization?.build(),
-        location = location.map { it.build() },
+        location = location.mapToList { it.build() },
         serviceProvider = serviceProvider?.build(),
         partOf = partOf?.build(),
       )

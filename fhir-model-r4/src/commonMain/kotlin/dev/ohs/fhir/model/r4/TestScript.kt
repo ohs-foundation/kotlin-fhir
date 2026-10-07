@@ -344,45 +344,44 @@ public data class TestScript(
    */
   public val teardown: Teardown? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          url.toBuilder(),
-          name.toBuilder(),
-          status,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier?.toBuilder()
-          version = this@with.version?.toBuilder()
-          title = this@with.title?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          origin = this@with.origin.map { it.toBuilder() }.toMutableList()
-          destination = this@with.destination.map { it.toBuilder() }.toMutableList()
-          metadata = this@with.metadata?.toBuilder()
-          fixture = this@with.fixture.map { it.toBuilder() }.toMutableList()
-          profile = this@with.profile.map { it.toBuilder() }.toMutableList()
-          variable = this@with.variable.map { it.toBuilder() }.toMutableList()
-          setup = this@with.setup?.toBuilder()
-          test = this@with.test.map { it.toBuilder() }.toMutableList()
-          teardown = this@with.teardown?.toBuilder()
-        }
-    }
+        url.toBuilder(),
+        name.toBuilder(),
+        status,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier?.toBuilder()
+    builder.version = version?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.origin = origin.mapToMutableList { it.toBuilder() }
+    builder.destination = destination.mapToMutableList { it.toBuilder() }
+    builder.metadata = metadata?.toBuilder()
+    builder.fixture = fixture.mapToMutableList { it.toBuilder() }
+    builder.profile = profile.mapToMutableList { it.toBuilder() }
+    builder.variable = variable.mapToMutableList { it.toBuilder() }
+    builder.setup = setup?.toBuilder()
+    builder.test = test.mapToMutableList { it.toBuilder() }
+    builder.teardown = teardown?.toBuilder()
+    return builder
+  }
 
   /** An abstract server used in operations within this test script in the origin element. */
   @Serializable(with = TestScriptOriginSerializer::class)
@@ -445,14 +444,13 @@ public data class TestScript(
      */
     public val profile: Coding,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(index.toBuilder(), profile.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(index.toBuilder(), profile.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -520,8 +518,8 @@ public data class TestScript(
       public fun build(): Origin =
         Origin(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           index = index.build(),
           profile = profile.build(),
         )
@@ -590,14 +588,13 @@ public data class TestScript(
      */
     public val profile: Coding,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(index.toBuilder(), profile.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(index.toBuilder(), profile.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -665,8 +662,8 @@ public data class TestScript(
       public fun build(): Destination =
         Destination(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           index = index.build(),
           profile = profile.build(),
         )
@@ -735,15 +732,14 @@ public data class TestScript(
      */
     public val capability: List<Capability>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(capability.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          link = this@with.link.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(capability.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.link = link.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** A link to the FHIR specification that this test is covering. */
     @Serializable(with = TestScriptMetadataLinkSerializer::class)
@@ -790,15 +786,14 @@ public data class TestScript(
       /** Short description of the link. */
       public val description: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(url.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(url.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.description = description?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** URL to a particular requirement or feature within the FHIR specification. */
@@ -850,8 +845,8 @@ public data class TestScript(
         public fun build(): Link =
           Link(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             url = url.build(),
             description = description?.build(),
           )
@@ -934,18 +929,17 @@ public data class TestScript(
        */
       public val capabilities: Canonical,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(required.toBuilder(), validated.toBuilder(), capabilities.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-            origin = this@with.origin.map { it.toBuilder() }.toMutableList()
-            destination = this@with.destination?.toBuilder()
-            link = this@with.link.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(required.toBuilder(), validated.toBuilder(), capabilities.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.description = description?.toBuilder()
+        builder.origin = origin.mapToMutableList { it.toBuilder() }
+        builder.destination = destination?.toBuilder()
+        builder.link = link.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -1028,14 +1022,14 @@ public data class TestScript(
         public fun build(): Capability =
           Capability(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             required = required.build(),
             validated = validated.build(),
             description = description?.build(),
-            origin = origin.map { it.build() },
+            origin = origin.mapToList { it.build() },
             destination = destination?.build(),
-            link = link.map { it.build() },
+            link = link.mapToList { it.build() },
             capabilities = capabilities.build(),
           )
       }
@@ -1105,10 +1099,10 @@ public data class TestScript(
       public fun build(): Metadata =
         Metadata(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          link = link.map { it.build() },
-          capability = capability.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          link = link.mapToList { it.build() },
+          capability = capability.mapToList { it.build() },
         )
     }
   }
@@ -1175,15 +1169,14 @@ public data class TestScript(
      */
     public val resource: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(autocreate.toBuilder(), autodelete.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          resource = this@with.resource?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(autocreate.toBuilder(), autodelete.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.resource = resource?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1249,8 +1242,8 @@ public data class TestScript(
       public fun build(): Fixture =
         Fixture(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           autocreate = autocreate.build(),
           autodelete = autodelete.build(),
           resource = resource?.build(),
@@ -1362,21 +1355,20 @@ public data class TestScript(
      */
     public val sourceId: Id? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(name.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          defaultValue = this@with.defaultValue?.toBuilder()
-          description = this@with.description?.toBuilder()
-          expression = this@with.expression?.toBuilder()
-          headerField = this@with.headerField?.toBuilder()
-          hint = this@with.hint?.toBuilder()
-          path = this@with.path?.toBuilder()
-          sourceId = this@with.sourceId?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(name.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.defaultValue = defaultValue?.toBuilder()
+      builder.description = description?.toBuilder()
+      builder.expression = expression?.toBuilder()
+      builder.headerField = headerField?.toBuilder()
+      builder.hint = hint?.toBuilder()
+      builder.path = path?.toBuilder()
+      builder.sourceId = sourceId?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -1491,8 +1483,8 @@ public data class TestScript(
       public fun build(): Variable =
         Variable(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name.build(),
           defaultValue = defaultValue?.build(),
           description = description?.build(),
@@ -1553,14 +1545,13 @@ public data class TestScript(
      */
     public val action: List<Action>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(action.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(action.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Action would contain either an operation or an assertion. */
     @Serializable(with = TestScriptSetupActionSerializer::class)
@@ -1613,16 +1604,15 @@ public data class TestScript(
        */
       public val assert: Assert? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            operation = this@with.operation?.toBuilder()
-            assert = this@with.assert?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.operation = operation?.toBuilder()
+        builder.assert = assert?.toBuilder()
+        return builder
+      }
 
       /** The operation to perform. */
       @Serializable(with = TestScriptSetupActionOperationSerializer::class)
@@ -1824,30 +1814,29 @@ public data class TestScript(
          */
         public val url: String? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(encodeRequestUrl.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              type = this@with.type?.toBuilder()
-              resource = this@with.resource
-              label = this@with.label?.toBuilder()
-              description = this@with.description?.toBuilder()
-              accept = this@with.accept?.toBuilder()
-              contentType = this@with.contentType?.toBuilder()
-              destination = this@with.destination?.toBuilder()
-              method = this@with.method
-              origin = this@with.origin?.toBuilder()
-              params = this@with.params?.toBuilder()
-              requestHeader = this@with.requestHeader.map { it.toBuilder() }.toMutableList()
-              requestId = this@with.requestId?.toBuilder()
-              responseId = this@with.responseId?.toBuilder()
-              sourceId = this@with.sourceId?.toBuilder()
-              targetId = this@with.targetId?.toBuilder()
-              url = this@with.url?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(encodeRequestUrl.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.type = type?.toBuilder()
+          builder.resource = resource
+          builder.label = label?.toBuilder()
+          builder.description = description?.toBuilder()
+          builder.accept = accept?.toBuilder()
+          builder.contentType = contentType?.toBuilder()
+          builder.destination = destination?.toBuilder()
+          builder.method = method
+          builder.origin = origin?.toBuilder()
+          builder.params = params?.toBuilder()
+          builder.requestHeader = requestHeader.mapToMutableList { it.toBuilder() }
+          builder.requestId = requestId?.toBuilder()
+          builder.responseId = responseId?.toBuilder()
+          builder.sourceId = sourceId?.toBuilder()
+          builder.targetId = targetId?.toBuilder()
+          builder.url = url?.toBuilder()
+          return builder
+        }
 
         /** Header elements would be used to set HTTP headers. */
         @Serializable(with = TestScriptSetupActionOperationRequestHeaderSerializer::class)
@@ -1905,15 +1894,13 @@ public data class TestScript(
            */
           public val `value`: String,
         ) : BackboneElement() {
-          public fun toBuilder(): Builder =
-            with(this) {
-              Builder(`field`.toBuilder(), `value`.toBuilder()).apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              }
-            }
+          public fun toBuilder(): Builder {
+            val builder = Builder(`field`.toBuilder(), `value`.toBuilder())
+            builder.id = id
+            builder.extension = extension.mapToMutableList { it.toBuilder() }
+            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            return builder
+          }
 
           public class Builder(
             /**
@@ -1977,8 +1964,8 @@ public data class TestScript(
             public fun build(): RequestHeader =
               RequestHeader(
                 id = id,
-                extension = extension.map { it.build() },
-                modifierExtension = modifierExtension.map { it.build() },
+                extension = extension.mapToList { it.build() },
+                modifierExtension = modifierExtension.mapToList { it.build() },
                 `field` = `field`.build(),
                 `value` = `value`.build(),
               )
@@ -2207,8 +2194,8 @@ public data class TestScript(
           public fun build(): Operation =
             Operation(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               type = type?.build(),
               resource = resource,
               label = label?.build(),
@@ -2220,7 +2207,7 @@ public data class TestScript(
               method = method,
               origin = origin?.build(),
               params = params?.build(),
-              requestHeader = requestHeader.map { it.build() },
+              requestHeader = requestHeader.mapToList { it.build() },
               requestId = requestId?.build(),
               responseId = responseId?.build(),
               sourceId = sourceId?.build(),
@@ -2462,35 +2449,34 @@ public data class TestScript(
          */
         public val warningOnly: Boolean,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(warningOnly.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              label = this@with.label?.toBuilder()
-              description = this@with.description?.toBuilder()
-              direction = this@with.direction
-              compareToSourceId = this@with.compareToSourceId?.toBuilder()
-              compareToSourceExpression = this@with.compareToSourceExpression?.toBuilder()
-              compareToSourcePath = this@with.compareToSourcePath?.toBuilder()
-              contentType = this@with.contentType?.toBuilder()
-              expression = this@with.expression?.toBuilder()
-              headerField = this@with.headerField?.toBuilder()
-              minimumId = this@with.minimumId?.toBuilder()
-              navigationLinks = this@with.navigationLinks?.toBuilder()
-              `operator` = this@with.`operator`
-              path = this@with.path?.toBuilder()
-              requestMethod = this@with.requestMethod
-              requestURL = this@with.requestURL?.toBuilder()
-              resource = this@with.resource
-              response = this@with.response
-              responseCode = this@with.responseCode?.toBuilder()
-              sourceId = this@with.sourceId?.toBuilder()
-              validateProfileId = this@with.validateProfileId?.toBuilder()
-              `value` = this@with.`value`?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(warningOnly.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.label = label?.toBuilder()
+          builder.description = description?.toBuilder()
+          builder.direction = direction
+          builder.compareToSourceId = compareToSourceId?.toBuilder()
+          builder.compareToSourceExpression = compareToSourceExpression?.toBuilder()
+          builder.compareToSourcePath = compareToSourcePath?.toBuilder()
+          builder.contentType = contentType?.toBuilder()
+          builder.expression = expression?.toBuilder()
+          builder.headerField = headerField?.toBuilder()
+          builder.minimumId = minimumId?.toBuilder()
+          builder.navigationLinks = navigationLinks?.toBuilder()
+          builder.`operator` = `operator`
+          builder.path = path?.toBuilder()
+          builder.requestMethod = requestMethod
+          builder.requestURL = requestURL?.toBuilder()
+          builder.resource = resource
+          builder.response = response
+          builder.responseCode = responseCode?.toBuilder()
+          builder.sourceId = sourceId?.toBuilder()
+          builder.validateProfileId = validateProfileId?.toBuilder()
+          builder.`value` = `value`?.toBuilder()
+          return builder
+        }
 
         public class Builder(
           /**
@@ -2746,8 +2732,8 @@ public data class TestScript(
           public fun build(): Assert =
             Assert(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               label = label?.build(),
               description = description?.build(),
               direction = direction,
@@ -2830,8 +2816,8 @@ public data class TestScript(
         public fun build(): Action =
           Action(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             operation = operation?.build(),
             assert = assert?.build(),
           )
@@ -2890,9 +2876,9 @@ public data class TestScript(
       public fun build(): Setup =
         Setup(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          action = action.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          action = action.mapToList { it.build() },
         )
     }
   }
@@ -2949,16 +2935,15 @@ public data class TestScript(
      */
     public val action: List<Action>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(action.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          description = this@with.description?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(action.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     /** Action would contain either an operation or an assertion. */
     @Serializable(with = TestScriptTestActionSerializer::class)
@@ -3011,16 +2996,15 @@ public data class TestScript(
        */
       public val assert: Setup.Action.Assert? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            operation = this@with.operation?.toBuilder()
-            assert = this@with.assert?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.operation = operation?.toBuilder()
+        builder.assert = assert?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -3078,8 +3062,8 @@ public data class TestScript(
         public fun build(): Action =
           Action(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             operation = operation?.build(),
             assert = assert?.build(),
           )
@@ -3146,11 +3130,11 @@ public data class TestScript(
       public fun build(): Test =
         Test(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name?.build(),
           description = description?.build(),
-          action = action.map { it.build() },
+          action = action.mapToList { it.build() },
         )
     }
   }
@@ -3206,14 +3190,13 @@ public data class TestScript(
      */
     public val action: List<Action>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(action.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(action.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** The teardown action will only contain an operation. */
     @Serializable(with = TestScriptTeardownActionSerializer::class)
@@ -3258,14 +3241,13 @@ public data class TestScript(
       /** An operation would involve a REST request to a server. */
       public val operation: Setup.Action.Operation,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(operation.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(operation.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /** An operation would involve a REST request to a server. */
@@ -3314,8 +3296,8 @@ public data class TestScript(
         public fun build(): Action =
           Action(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             operation = operation.build(),
           )
       }
@@ -3373,9 +3355,9 @@ public data class TestScript(
       public fun build(): Teardown =
         Teardown(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          action = action.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          action = action.mapToList { it.build() },
         )
     }
   }
@@ -3712,9 +3694,9 @@ public data class TestScript(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url.build(),
         identifier = identifier?.build(),
         version = version?.build(),
@@ -3724,20 +3706,20 @@ public data class TestScript(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
-        origin = origin.map { it.build() },
-        destination = destination.map { it.build() },
+        origin = origin.mapToList { it.build() },
+        destination = destination.mapToList { it.build() },
         metadata = metadata?.build(),
-        fixture = fixture.map { it.build() },
-        profile = profile.map { it.build() },
-        variable = variable.map { it.build() },
+        fixture = fixture.mapToList { it.build() },
+        profile = profile.mapToList { it.build() },
+        variable = variable.mapToList { it.build() },
         setup = setup?.build(),
-        test = test.map { it.build() },
+        test = test.mapToList { it.build() },
         teardown = teardown?.build(),
       )
   }

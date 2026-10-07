@@ -112,19 +112,18 @@ public data class Meta(
    */
   public val tag: List<Coding> = listOf(),
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        versionId = this@with.versionId?.toBuilder()
-        lastUpdated = this@with.lastUpdated?.toBuilder()
-        source = this@with.source?.toBuilder()
-        profile = this@with.profile.map { it.toBuilder() }.toMutableList()
-        security = this@with.security.map { it.toBuilder() }.toMutableList()
-        tag = this@with.tag.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.versionId = versionId?.toBuilder()
+    builder.lastUpdated = lastUpdated?.toBuilder()
+    builder.source = source?.toBuilder()
+    builder.profile = profile.mapToMutableList { it.toBuilder() }
+    builder.security = security.mapToMutableList { it.toBuilder() }
+    builder.tag = tag.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -215,13 +214,13 @@ public data class Meta(
     public open fun build(): Meta =
       Meta(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         versionId = versionId?.build(),
         lastUpdated = lastUpdated?.build(),
         source = source?.build(),
-        profile = profile.map { it.build() },
-        security = security.map { it.build() },
-        tag = tag.map { it.build() },
+        profile = profile.mapToList { it.build() },
+        security = security.mapToList { it.build() },
+        tag = tag.mapToList { it.build() },
       )
   }
 }

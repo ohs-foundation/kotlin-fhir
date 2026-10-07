@@ -272,45 +272,44 @@ public data class AdverseEvent(
   /** Comments made about the adverse event by the performer, subject or other participants. */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          actuality,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          occurrence = this@with.occurrence
-          detected = this@with.detected?.toBuilder()
-          recordedDate = this@with.recordedDate?.toBuilder()
-          resultingEffect = this@with.resultingEffect.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          seriousness = this@with.seriousness?.toBuilder()
-          outcome = this@with.outcome.map { it.toBuilder() }.toMutableList()
-          recorder = this@with.recorder?.toBuilder()
-          participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-          study = this@with.study.map { it.toBuilder() }.toMutableList()
-          expectedInResearchStudy = this@with.expectedInResearchStudy?.toBuilder()
-          suspectEntity = this@with.suspectEntity.map { it.toBuilder() }.toMutableList()
-          contributingFactor = this@with.contributingFactor.map { it.toBuilder() }.toMutableList()
-          preventiveAction = this@with.preventiveAction.map { it.toBuilder() }.toMutableList()
-          mitigatingAction = this@with.mitigatingAction.map { it.toBuilder() }.toMutableList()
-          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        actuality,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.code = code?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.occurrence = occurrence
+    builder.detected = detected?.toBuilder()
+    builder.recordedDate = recordedDate?.toBuilder()
+    builder.resultingEffect = resultingEffect.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.seriousness = seriousness?.toBuilder()
+    builder.outcome = outcome.mapToMutableList { it.toBuilder() }
+    builder.recorder = recorder?.toBuilder()
+    builder.participant = participant.mapToMutableList { it.toBuilder() }
+    builder.study = study.mapToMutableList { it.toBuilder() }
+    builder.expectedInResearchStudy = expectedInResearchStudy?.toBuilder()
+    builder.suspectEntity = suspectEntity.mapToMutableList { it.toBuilder() }
+    builder.contributingFactor = contributingFactor.mapToMutableList { it.toBuilder() }
+    builder.preventiveAction = preventiveAction.mapToMutableList { it.toBuilder() }
+    builder.mitigatingAction = mitigatingAction.mapToMutableList { it.toBuilder() }
+    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Indicates who or what participated in the adverse event and how they were involved. */
   @Serializable(with = AdverseEventParticipantSerializer::class)
@@ -365,15 +364,14 @@ public data class AdverseEvent(
      */
     public val actor: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(actor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(actor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -433,8 +431,8 @@ public data class AdverseEvent(
       public fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           function = function?.build(),
           actor = actor.build(),
         )
@@ -489,15 +487,14 @@ public data class AdverseEvent(
     /** Information on the possible cause of the event. */
     public val causality: Causality? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(instance).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          causality = this@with.causality?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(instance)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.causality = causality?.toBuilder()
+      return builder
+    }
 
     /** Information on the possible cause of the event. */
     @Serializable(with = AdverseEventSuspectEntityCausalitySerializer::class)
@@ -549,17 +546,16 @@ public data class AdverseEvent(
       /** The author of the information on the possible cause of the event. */
       public val author: Reference? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            assessmentMethod = this@with.assessmentMethod?.toBuilder()
-            entityRelatedness = this@with.entityRelatedness?.toBuilder()
-            author = this@with.author?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.assessmentMethod = assessmentMethod?.toBuilder()
+        builder.entityRelatedness = entityRelatedness?.toBuilder()
+        builder.author = author?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -617,8 +613,8 @@ public data class AdverseEvent(
         public fun build(): Causality =
           Causality(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             assessmentMethod = assessmentMethod?.build(),
             entityRelatedness = entityRelatedness?.build(),
             author = author?.build(),
@@ -702,8 +698,8 @@ public data class AdverseEvent(
       public fun build(): SuspectEntity =
         SuspectEntity(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           instance = instance,
           causality = causality?.build(),
         )
@@ -759,14 +755,13 @@ public data class AdverseEvent(
      */
     public val item: Item,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Item : FhirChoice {
       public fun asReference(): Reference? = this as? Reference
@@ -841,8 +836,8 @@ public data class AdverseEvent(
       public fun build(): ContributingFactor =
         ContributingFactor(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item,
         )
     }
@@ -891,14 +886,13 @@ public data class AdverseEvent(
     /** The action that contributed to avoiding the adverse event. */
     public val item: Item,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Item : FhirChoice {
       public fun asReference(): Reference? = this as? Reference
@@ -970,8 +964,8 @@ public data class AdverseEvent(
       public fun build(): PreventiveAction =
         PreventiveAction(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item,
         )
     }
@@ -1026,14 +1020,13 @@ public data class AdverseEvent(
      */
     public val item: Item,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Item : FhirChoice {
       public fun asReference(): Reference? = this as? Reference
@@ -1108,8 +1101,8 @@ public data class AdverseEvent(
       public fun build(): MitigatingAction =
         MitigatingAction(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item,
         )
     }
@@ -1166,14 +1159,13 @@ public data class AdverseEvent(
      */
     public val item: Item,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Item : FhirChoice {
       public fun asReference(): Reference? = this as? Reference
@@ -1254,8 +1246,8 @@ public data class AdverseEvent(
       public fun build(): SupportingInfo =
         SupportingInfo(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           item = item,
         )
     }
@@ -1547,33 +1539,33 @@ public data class AdverseEvent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         actuality = actuality,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         code = code?.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
         occurrence = occurrence,
         detected = detected?.build(),
         recordedDate = recordedDate?.build(),
-        resultingEffect = resultingEffect.map { it.build() },
+        resultingEffect = resultingEffect.mapToList { it.build() },
         location = location?.build(),
         seriousness = seriousness?.build(),
-        outcome = outcome.map { it.build() },
+        outcome = outcome.mapToList { it.build() },
         recorder = recorder?.build(),
-        participant = participant.map { it.build() },
-        study = study.map { it.build() },
+        participant = participant.mapToList { it.build() },
+        study = study.mapToList { it.build() },
         expectedInResearchStudy = expectedInResearchStudy?.build(),
-        suspectEntity = suspectEntity.map { it.build() },
-        contributingFactor = contributingFactor.map { it.build() },
-        preventiveAction = preventiveAction.map { it.build() },
-        mitigatingAction = mitigatingAction.map { it.build() },
-        supportingInfo = supportingInfo.map { it.build() },
-        note = note.map { it.build() },
+        suspectEntity = suspectEntity.mapToList { it.build() },
+        contributingFactor = contributingFactor.mapToList { it.build() },
+        preventiveAction = preventiveAction.mapToList { it.build() },
+        mitigatingAction = mitigatingAction.mapToList { it.build() },
+        supportingInfo = supportingInfo.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

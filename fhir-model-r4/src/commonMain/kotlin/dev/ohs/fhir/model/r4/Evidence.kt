@@ -327,49 +327,48 @@ public data class Evidence(
   /** A reference to a EvidenceVariable resomece that defines the outcome for the research. */
   public val outcome: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          exposureBackground.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          name = this@with.name?.toBuilder()
-          title = this@with.title?.toBuilder()
-          shortTitle = this@with.shortTitle?.toBuilder()
-          subtitle = this@with.subtitle?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          copyright = this@with.copyright?.toBuilder()
-          approvalDate = this@with.approvalDate?.toBuilder()
-          lastReviewDate = this@with.lastReviewDate?.toBuilder()
-          effectivePeriod = this@with.effectivePeriod?.toBuilder()
-          topic = this@with.topic.map { it.toBuilder() }.toMutableList()
-          author = this@with.author.map { it.toBuilder() }.toMutableList()
-          editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-          reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-          endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-          relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-          exposureVariant = this@with.exposureVariant.map { it.toBuilder() }.toMutableList()
-          outcome = this@with.outcome.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        exposureBackground.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.shortTitle = shortTitle?.toBuilder()
+    builder.subtitle = subtitle?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.copyright = copyright?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.effectivePeriod = effectivePeriod?.toBuilder()
+    builder.topic = topic.mapToMutableList { it.toBuilder() }
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.editor = editor.mapToMutableList { it.toBuilder() }
+    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
+    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.exposureVariant = exposureVariant.mapToMutableList { it.toBuilder() }
+    builder.outcome = outcome.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public class Builder(
     /**
@@ -709,11 +708,11 @@ public data class Evidence(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -722,24 +721,24 @@ public data class Evidence(
         status = status,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        note = note.map { it.build() },
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        note = note.mapToList { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.map { it.build() },
-        author = author.map { it.build() },
-        editor = editor.map { it.build() },
-        reviewer = reviewer.map { it.build() },
-        endorser = endorser.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
+        topic = topic.mapToList { it.build() },
+        author = author.mapToList { it.build() },
+        editor = editor.mapToList { it.build() },
+        reviewer = reviewer.mapToList { it.build() },
+        endorser = endorser.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
         exposureBackground = exposureBackground.build(),
-        exposureVariant = exposureVariant.map { it.build() },
-        outcome = outcome.map { it.build() },
+        exposureVariant = exposureVariant.mapToList { it.build() },
+        outcome = outcome.mapToList { it.build() },
       )
   }
 }

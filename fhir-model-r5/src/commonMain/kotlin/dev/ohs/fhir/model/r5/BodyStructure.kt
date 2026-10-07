@@ -173,29 +173,28 @@ public data class BodyStructure(
   /** The person to which the body site belongs. */
   public val patient: Reference,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          includedStructure.map { it.toBuilder() }.toMutableList(),
-          patient.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          active = this@with.active?.toBuilder()
-          morphology = this@with.morphology?.toBuilder()
-          excludedStructure = this@with.excludedStructure.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          image = this@with.image.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        includedStructure.mapToMutableList { it.toBuilder() },
+        patient.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.morphology = morphology?.toBuilder()
+    builder.excludedStructure = excludedStructure.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.image = image.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The anatomical location(s) or region(s) of the specimen, lesion, or body structure. */
   @Serializable(with = BodyStructureIncludedStructureSerializer::class)
@@ -250,19 +249,17 @@ public data class BodyStructure(
     /** Code that represents the included structure qualifier. */
     public val qualifier: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(structure.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          laterality = this@with.laterality?.toBuilder()
-          bodyLandmarkOrientation =
-            this@with.bodyLandmarkOrientation.map { it.toBuilder() }.toMutableList()
-          spatialReference = this@with.spatialReference.map { it.toBuilder() }.toMutableList()
-          qualifier = this@with.qualifier.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(structure.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.laterality = laterality?.toBuilder()
+      builder.bodyLandmarkOrientation = bodyLandmarkOrientation.mapToMutableList { it.toBuilder() }
+      builder.spatialReference = spatialReference.mapToMutableList { it.toBuilder() }
+      builder.qualifier = qualifier.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Body locations in relation to a specific body landmark (tatoo, scar, other body structure).
@@ -318,20 +315,17 @@ public data class BodyStructure(
       /** The surface area a body location is in relation to a landmark. */
       public val surfaceOrientation: List<CodeableConcept> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            landmarkDescription =
-              this@with.landmarkDescription.map { it.toBuilder() }.toMutableList()
-            clockFacePosition = this@with.clockFacePosition.map { it.toBuilder() }.toMutableList()
-            distanceFromLandmark =
-              this@with.distanceFromLandmark.map { it.toBuilder() }.toMutableList()
-            surfaceOrientation = this@with.surfaceOrientation.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.landmarkDescription = landmarkDescription.mapToMutableList { it.toBuilder() }
+        builder.clockFacePosition = clockFacePosition.mapToMutableList { it.toBuilder() }
+        builder.distanceFromLandmark = distanceFromLandmark.mapToMutableList { it.toBuilder() }
+        builder.surfaceOrientation = surfaceOrientation.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** The distance in centimeters a certain observation is made from a body landmark. */
       @Serializable(
@@ -381,16 +375,15 @@ public data class BodyStructure(
         /** The measured distance (e.g., in cm) from a body landmark. */
         public val `value`: List<Quantity> = listOf(),
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              device = this@with.device.map { it.toBuilder() }.toMutableList()
-              `value` = this@with.`value`.map { it.toBuilder() }.toMutableList()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.device = device.mapToMutableList { it.toBuilder() }
+          builder.`value` = `value`.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         public class Builder() {
           /**
@@ -442,10 +435,10 @@ public data class BodyStructure(
           public fun build(): DistanceFromLandmark =
             DistanceFromLandmark(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
-              device = device.map { it.build() },
-              `value` = `value`.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
+              device = device.mapToList { it.build() },
+              `value` = `value`.mapToList { it.build() },
             )
         }
       }
@@ -509,12 +502,12 @@ public data class BodyStructure(
         public fun build(): BodyLandmarkOrientation =
           BodyLandmarkOrientation(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
-            landmarkDescription = landmarkDescription.map { it.build() },
-            clockFacePosition = clockFacePosition.map { it.build() },
-            distanceFromLandmark = distanceFromLandmark.map { it.build() },
-            surfaceOrientation = surfaceOrientation.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
+            landmarkDescription = landmarkDescription.mapToList { it.build() },
+            clockFacePosition = clockFacePosition.mapToList { it.build() },
+            distanceFromLandmark = distanceFromLandmark.mapToList { it.build() },
+            surfaceOrientation = surfaceOrientation.mapToList { it.build() },
           )
       }
     }
@@ -581,13 +574,13 @@ public data class BodyStructure(
       public fun build(): IncludedStructure =
         IncludedStructure(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           structure = structure.build(),
           laterality = laterality?.build(),
-          bodyLandmarkOrientation = bodyLandmarkOrientation.map { it.build() },
-          spatialReference = spatialReference.map { it.build() },
-          qualifier = qualifier.map { it.build() },
+          bodyLandmarkOrientation = bodyLandmarkOrientation.mapToList { it.build() },
+          spatialReference = spatialReference.mapToList { it.build() },
+          qualifier = qualifier.mapToList { it.build() },
         )
     }
   }
@@ -749,16 +742,16 @@ public data class BodyStructure(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
         morphology = morphology?.build(),
-        includedStructure = includedStructure.map { it.build() },
-        excludedStructure = excludedStructure.map { it.build() },
+        includedStructure = includedStructure.mapToList { it.build() },
+        excludedStructure = excludedStructure.mapToList { it.build() },
         description = description?.build(),
-        image = image.map { it.build() },
+        image = image.mapToList { it.build() },
         patient = patient.build(),
       )
   }

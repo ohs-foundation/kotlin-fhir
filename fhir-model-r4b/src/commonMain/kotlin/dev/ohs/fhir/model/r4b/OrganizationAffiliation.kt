@@ -171,31 +171,30 @@ public data class OrganizationAffiliation(
   /** Technical endpoints providing access to services operated for this role. */
   public val endpoint: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        period = this@with.period?.toBuilder()
-        organization = this@with.organization?.toBuilder()
-        participatingOrganization = this@with.participatingOrganization?.toBuilder()
-        network = this@with.network.map { it.toBuilder() }.toMutableList()
-        code = this@with.code.map { it.toBuilder() }.toMutableList()
-        specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-        location = this@with.location.map { it.toBuilder() }.toMutableList()
-        healthcareService = this@with.healthcareService.map { it.toBuilder() }.toMutableList()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.period = period?.toBuilder()
+    builder.organization = organization?.toBuilder()
+    builder.participatingOrganization = participatingOrganization?.toBuilder()
+    builder.network = network.mapToMutableList { it.toBuilder() }
+    builder.code = code.mapToMutableList { it.toBuilder() }
+    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.location = location.mapToMutableList { it.toBuilder() }
+    builder.healthcareService = healthcareService.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public class Builder() : DomainResource.Builder() {
     /**
@@ -360,21 +359,21 @@ public data class OrganizationAffiliation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
         period = period?.build(),
         organization = organization?.build(),
         participatingOrganization = participatingOrganization?.build(),
-        network = network.map { it.build() },
-        code = code.map { it.build() },
-        specialty = specialty.map { it.build() },
-        location = location.map { it.build() },
-        healthcareService = healthcareService.map { it.build() },
-        telecom = telecom.map { it.build() },
-        endpoint = endpoint.map { it.build() },
+        network = network.mapToList { it.build() },
+        code = code.mapToList { it.build() },
+        specialty = specialty.mapToList { it.build() },
+        location = location.mapToList { it.build() },
+        healthcareService = healthcareService.mapToList { it.build() },
+        telecom = telecom.mapToList { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
       )
   }
 }

@@ -47,96 +47,68 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Repeat") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element(
-        "boundsDuration",
-        lazyDescriptor { Duration.serializer().descriptor },
-        isOptional = true,
-      )
-      element("boundsRange", lazyDescriptor { Range.serializer().descriptor }, isOptional = true)
-      element("boundsPeriod", lazyDescriptor { Period.serializer().descriptor }, isOptional = true)
-      element("count", Int.serializer().descriptor, isOptional = true)
-      element("_count", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("countMax", Int.serializer().descriptor, isOptional = true)
-      element("_countMax", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("duration", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_duration", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("durationMax", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_durationMax", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("durationUnit", String.serializer().descriptor, isOptional = true)
-      element(
-        "_durationUnit",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
-      element("frequency", Int.serializer().descriptor, isOptional = true)
-      element("_frequency", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("frequencyMax", Int.serializer().descriptor, isOptional = true)
-      element(
-        "_frequencyMax",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
-      element("period", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_period", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("periodMax", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_periodMax", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("periodUnit", String.serializer().descriptor, isOptional = true)
-      element("_periodUnit", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("dayOfWeek", listSerialDescriptor(String.serializer().descriptor), isOptional = true)
-      element(
+      optionalElement("boundsDuration", lazyDescriptor { DurationSerializer.descriptor })
+      optionalElement("boundsRange", lazyDescriptor { RangeSerializer.descriptor })
+      optionalElement("boundsPeriod", lazyDescriptor { PeriodSerializer.descriptor })
+      optionalElement("count", Int.serializer().descriptor)
+      optionalElement("_count", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("countMax", Int.serializer().descriptor)
+      optionalElement("_countMax", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("duration", FhirDecimalSerializer.descriptor)
+      optionalElement("_duration", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("durationMax", FhirDecimalSerializer.descriptor)
+      optionalElement("_durationMax", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("durationUnit", String.serializer().descriptor)
+      optionalElement("_durationUnit", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("frequency", Int.serializer().descriptor)
+      optionalElement("_frequency", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("frequencyMax", Int.serializer().descriptor)
+      optionalElement("_frequencyMax", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("period", FhirDecimalSerializer.descriptor)
+      optionalElement("_period", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("periodMax", FhirDecimalSerializer.descriptor)
+      optionalElement("_periodMax", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("periodUnit", String.serializer().descriptor)
+      optionalElement("_periodUnit", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("dayOfWeek", stringNullableListSerializer.descriptor)
+      optionalElement(
         "_dayOfWeek",
-        listSerialDescriptor(lazyDescriptor { Element.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
       )
-      element("timeOfDay", listSerialDescriptor(LocalTimeSerializer.descriptor), isOptional = true)
-      element(
+      optionalElement("timeOfDay", LocalTimeSerializer.nullableListSerializer.descriptor)
+      optionalElement(
         "_timeOfDay",
-        listSerialDescriptor(lazyDescriptor { Element.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
       )
-      element("when", listSerialDescriptor(String.serializer().descriptor), isOptional = true)
-      element(
+      optionalElement("when", stringNullableListSerializer.descriptor)
+      optionalElement(
         "_when",
-        listSerialDescriptor(lazyDescriptor { Element.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
       )
-      element("offset", Int.serializer().descriptor, isOptional = true)
-      element("_offset", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("offset", Int.serializer().descriptor)
+      optionalElement("_offset", lazyDescriptor { ElementSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): Timing.Repeat =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<Timing.Repeat>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: Timing.Repeat) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Timing.Repeat {
+  override fun deserialize(decoder: Decoder): Timing.Repeat {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var boundsDuration: Duration? = null
@@ -171,96 +143,215 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     var offset: Int? = null
     var _offset: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          boundsDuration =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.boundsDurationSer,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          boundsDuration =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              DurationSerializer,
               null,
             )
         3 ->
           boundsRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.boundsRangeSer, null)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         4 ->
           boundsPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.boundsPeriodSer, null)
-        5 -> count = decoder.decodeIntElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
+        5 -> count = compositeDecoder.decodeIntElement(descriptor, i)
         6 ->
-          _count = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
-        7 -> countMax = decoder.decodeIntElement(descriptor, i)
+          _count =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> countMax = compositeDecoder.decodeIntElement(descriptor, i)
         8 ->
           _countMax =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         9 ->
           duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         10 ->
           _duration =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         11 ->
           durationMax =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         12 ->
           _durationMax =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
-        13 -> durationUnit = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 -> durationUnit = compositeDecoder.decodeStringElement(descriptor, i)
         14 ->
           _durationUnit =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
-        15 -> frequency = decoder.decodeIntElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        15 -> frequency = compositeDecoder.decodeIntElement(descriptor, i)
         16 ->
           _frequency =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
-        17 -> frequencyMax = decoder.decodeIntElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        17 -> frequencyMax = compositeDecoder.decodeIntElement(descriptor, i)
         18 ->
           _frequencyMax =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         19 ->
           period =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         20 ->
-          _period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
+          _period =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         21 ->
           periodMax =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         22 ->
           _periodMax =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
-        23 -> periodUnit = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        23 -> periodUnit = compositeDecoder.decodeStringElement(descriptor, i)
         24 ->
           _periodUnit =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         25 ->
           dayOfWeek =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfWeekSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         26 ->
           _dayOfWeek =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfWeekSer2, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         27 ->
           timeOfDay =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timeOfDaySer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              LocalTimeSerializer.nullableListSerializer,
+              null,
+            )
         28 ->
           _timeOfDay =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfWeekSer2, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         29 ->
           `when` =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfWeekSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         30 ->
           _when =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfWeekSer2, null)
-        31 -> offset = decoder.decodeIntElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        31 -> offset = compositeDecoder.decodeIntElement(descriptor, i)
         32 ->
-          _offset = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
+          _offset =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Repeat: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return Timing.Repeat(
       id = id,
       extension = extension ?: listOf(),
@@ -270,12 +361,19 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       duration = Decimal.of(duration, _duration),
       durationMax = Decimal.of(durationMax, _durationMax),
       durationUnit =
-        Enumeration.of(durationUnit?.let { Timing.UnitsOfTime.fromCode(it) }, _durationUnit),
+        Enumeration.of(
+          if (durationUnit != null) Timing.UnitsOfTime.fromCode(durationUnit) else null,
+          _durationUnit,
+        ),
       frequency = PositiveInt.of(frequency, _frequency),
       frequencyMax = PositiveInt.of(frequencyMax, _frequencyMax),
       period = Decimal.of(period, _period),
       periodMax = Decimal.of(periodMax, _periodMax),
-      periodUnit = Enumeration.of(periodUnit?.let { Timing.UnitsOfTime.fromCode(it) }, _periodUnit),
+      periodUnit =
+        Enumeration.of(
+          if (periodUnit != null) Timing.UnitsOfTime.fromCode(periodUnit) else null,
+          _periodUnit,
+        ),
       dayOfWeek =
         (kotlin.collections.List(maxOf(dayOfWeek?.size ?: 0, _dayOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
@@ -288,7 +386,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
         }),
       timeOfDay =
         (kotlin.collections.List(maxOf(timeOfDay?.size ?: 0, _timeOfDay?.size ?: 0)) { index ->
-          Time.of(timeOfDay?.getOrNull(index)?.let { it }, _timeOfDay?.getOrNull(index))
+          Time.of(timeOfDay?.getOrNull(index), _timeOfDay?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'timeOfDay' on Timing.Repeat has neither a value nor an id/extension"
             )
@@ -307,157 +405,126 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Timing.Repeat) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: Timing.Repeat) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     when (val choice = value.bounds) {
       null -> {}
       is Timing.Repeat.Bounds.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 2, Hoisted.boundsDurationSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 2, DurationSerializer, choice.value)
       }
       is Timing.Repeat.Bounds.Range -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.boundsRangeSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 3, RangeSerializer, choice.value)
       }
       is Timing.Repeat.Bounds.Period -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.boundsPeriodSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 4, PeriodSerializer, choice.value)
       }
     }
-    ((value.count?.value))?.let { encoder.encodeIntElement(descriptor, 5, it) }
-    (value.count?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.countSer, it)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.count?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.count)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 7, value.countMax?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.countMax)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      9,
+      FhirDecimalSerializer,
+      value.duration?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.duration)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      11,
+      FhirDecimalSerializer,
+      value.durationMax?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.durationMax)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 13, value.durationUnit?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14, value.durationUnit)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 15, value.frequency?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 16, value.frequency)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 17, value.frequencyMax?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 18, value.frequencyMax)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      19,
+      FhirDecimalSerializer,
+      value.period?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 20, value.period)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      21,
+      FhirDecimalSerializer,
+      value.periodMax?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 22, value.periodMax)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 23, value.periodUnit?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 24, value.periodUnit)
+    if (value.dayOfWeek.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        25,
+        stringNullableListSerializer,
+        value.dayOfWeek.map { it.value?.code },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 26, value.dayOfWeek)
     }
-    ((value.countMax?.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
-    (value.countMax?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.countSer, it)
+    if (value.timeOfDay.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        27,
+        LocalTimeSerializer.nullableListSerializer,
+        value.timeOfDay.map { it.value },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 28, value.timeOfDay)
     }
-    ((value.duration?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 9, FhirDecimalSerializer, it)
+    if (value.`when`.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        29,
+        stringNullableListSerializer,
+        value.`when`.map { it.value?.code },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 30, value.`when`)
     }
-    (value.duration?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.countSer, it)
-    }
-    ((value.durationMax?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 11, FhirDecimalSerializer, it)
-    }
-    (value.durationMax?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.countSer, it)
-    }
-    ((value.durationUnit?.value?.code))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-    (value.durationUnit?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.countSer, it)
-    }
-    ((value.frequency?.value))?.let { encoder.encodeIntElement(descriptor, 15, it) }
-    (value.frequency?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.countSer, it)
-    }
-    ((value.frequencyMax?.value))?.let { encoder.encodeIntElement(descriptor, 17, it) }
-    (value.frequencyMax?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18, Hoisted.countSer, it)
-    }
-    ((value.period?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 19, FhirDecimalSerializer, it)
-    }
-    (value.period?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 20, Hoisted.countSer, it)
-    }
-    ((value.periodMax?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 21, FhirDecimalSerializer, it)
-    }
-    (value.periodMax?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 22, Hoisted.countSer, it)
-    }
-    ((value.periodUnit?.value?.code))?.let { encoder.encodeStringElement(descriptor, 23, it) }
-    (value.periodUnit?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 24, Hoisted.countSer, it)
-    }
-    (value.dayOfWeek.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 25, Hoisted.dayOfWeekSer, it)
-    }
-    (value.dayOfWeek.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 26, Hoisted.dayOfWeekSer2, it)
-    }
-    (value.timeOfDay.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 27, Hoisted.timeOfDaySer, it)
-    }
-    (value.timeOfDay.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 28, Hoisted.dayOfWeekSer2, it)
-    }
-    (value.`when`.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 29, Hoisted.dayOfWeekSer, it)
-    }
-    (value.`when`.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 30, Hoisted.dayOfWeekSer2, it)
-    }
-    ((value.offset?.value))?.let { encoder.encodeIntElement(descriptor, 31, it) }
-    (value.offset?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 32, Hoisted.countSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val boundsDurationSer: KSerializer<Duration> = Duration.serializer()
-
-    public val boundsRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val boundsPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val countSer: KSerializer<Element> = Element.serializer()
-
-    public val dayOfWeekSerInner: KSerializer<String> = String.serializer()
-
-    public val dayOfWeekSer: KSerializer<List<String?>> =
-      ListSerializer((Hoisted.dayOfWeekSerInner).nullable)
-
-    public val dayOfWeekSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.countSer).nullable)
-
-    public val timeOfDaySer: KSerializer<List<LocalTime?>> =
-      ListSerializer((LocalTimeSerializer).nullable)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 31, value.offset?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 32, value.offset)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object TimingSerializer : KSerializer<Timing> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Timing") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element(
+      optionalElement(
         "modifierExtension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("event", listSerialDescriptor(String.serializer().descriptor), isOptional = true)
-      element(
+      optionalElement("event", stringNullableListSerializer.descriptor)
+      optionalElement(
         "_event",
-        listSerialDescriptor(lazyDescriptor { Element.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
       )
-      element("repeat", lazyDescriptor { Timing.Repeat.serializer().descriptor }, isOptional = true)
-      element("code", lazyDescriptor { CodeableConcept.serializer().descriptor }, isOptional = true)
+      optionalElement("repeat", TimingRepeatSerializer.descriptor)
+      optionalElement("code", lazyDescriptor { CodeableConceptSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): Timing =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<Timing>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: Timing) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Timing {
+  override fun deserialize(decoder: Decoder): Timing {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -466,25 +533,61 @@ internal object TimingSerializer : KSerializer<Timing> {
     var repeat: Timing.Repeat? = null
     var code: CodeableConcept? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
-          event = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eventSer, null)
+          event =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         4 ->
-          _event = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eventSer2, null)
+          _event =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
         5 ->
-          repeat = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.repeatSer, null)
-        6 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+          repeat =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              TimingRepeatSerializer,
+              null,
+            )
+        6 ->
+          code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Timing: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return Timing(
       id = id,
       extension = extension ?: listOf(),
@@ -492,7 +595,7 @@ internal object TimingSerializer : KSerializer<Timing> {
       event =
         (kotlin.collections.List(maxOf(event?.size ?: 0, _event?.size ?: 0)) { index ->
           DateTime.of(
-            event?.getOrNull(index)?.let { it?.let { FhirDateTime.fromString(it) } },
+            event?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
             _event?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -504,45 +607,44 @@ internal object TimingSerializer : KSerializer<Timing> {
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Timing) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: Timing) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.event.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.eventSer, it)
+    if (value.event.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        3,
+        stringNullableListSerializer,
+        value.event.map { it.value?.toString() },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 4, value.event)
     }
-    (value.event.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.eventSer2, it)
-    }
-    (value.repeat)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.repeatSer, it) }
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it) }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val eventSerInner: KSerializer<String> = String.serializer()
-
-    public val eventSer: KSerializer<List<String?>> =
-      ListSerializer((Hoisted.eventSerInner).nullable)
-
-    public val eventSerInner2: KSerializer<Element> = Element.serializer()
-
-    public val eventSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.eventSerInner2).nullable)
-
-    public val repeatSer: KSerializer<Timing.Repeat> = Timing.Repeat.serializer()
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      5,
+      TimingRepeatSerializer,
+      value.repeat,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6,
+      CodeableConceptSerializer,
+      value.code,
+    )
+    compositeEncoder.endStructure(descriptor)
   }
 }

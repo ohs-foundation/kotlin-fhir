@@ -154,22 +154,21 @@ public data class FormularyItem(
    */
   public val status: Enumeration<FormularyItemStatusCodes>? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        code = this@with.code?.toBuilder()
-        status = this@with.status
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.code = code?.toBuilder()
+    builder.status = status
+    return builder
+  }
 
   public class Builder() : DomainResource.Builder() {
     /**
@@ -307,10 +306,10 @@ public data class FormularyItem(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         code = code?.build(),
         status = status,
       )

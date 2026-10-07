@@ -149,27 +149,26 @@ public data class MedicinalProductPackaged(
   /** A packaging item, as a contained for medicine, possibly with other packaging items within. */
   public val packageItem: List<PackageItem>,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(packageItem.map { it.toBuilder() }.toMutableList()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        legalStatusOfSupply = this@with.legalStatusOfSupply?.toBuilder()
-        marketingStatus = this@with.marketingStatus.map { it.toBuilder() }.toMutableList()
-        marketingAuthorization = this@with.marketingAuthorization?.toBuilder()
-        manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-        batchIdentifier = this@with.batchIdentifier.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(packageItem.mapToMutableList { it.toBuilder() })
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.legalStatusOfSupply = legalStatusOfSupply?.toBuilder()
+    builder.marketingStatus = marketingStatus.mapToMutableList { it.toBuilder() }
+    builder.marketingAuthorization = marketingAuthorization?.toBuilder()
+    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+    builder.batchIdentifier = batchIdentifier.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Batch numbering. */
   @Serializable(with = MedicinalProductPackagedBatchIdentifierSerializer::class)
@@ -216,15 +215,14 @@ public data class MedicinalProductPackaged(
     /** A number appearing on the immediate packaging (and not the outer packaging). */
     public val immediatePackaging: Identifier? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(outerPackaging.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          immediatePackaging = this@with.immediatePackaging?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(outerPackaging.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.immediatePackaging = immediatePackaging?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** A number appearing on the outer packaging of a specific batch. */
@@ -276,8 +274,8 @@ public data class MedicinalProductPackaged(
       public fun build(): BatchIdentifier =
         BatchIdentifier(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           outerPackaging = outerPackaging.build(),
           immediatePackaging = immediatePackaging?.build(),
         )
@@ -352,25 +350,23 @@ public data class MedicinalProductPackaged(
     /** Manufacturer of this Package Item. */
     public val manufacturer: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder(), quantity.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          material = this@with.material.map { it.toBuilder() }.toMutableList()
-          alternateMaterial = this@with.alternateMaterial.map { it.toBuilder() }.toMutableList()
-          device = this@with.device.map { it.toBuilder() }.toMutableList()
-          manufacturedItem = this@with.manufacturedItem.map { it.toBuilder() }.toMutableList()
-          packageItem = this@with.packageItem.map { it.toBuilder() }.toMutableList()
-          physicalCharacteristics = this@with.physicalCharacteristics?.toBuilder()
-          otherCharacteristics =
-            this@with.otherCharacteristics.map { it.toBuilder() }.toMutableList()
-          shelfLifeStorage = this@with.shelfLifeStorage.map { it.toBuilder() }.toMutableList()
-          manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder(), quantity.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.material = material.mapToMutableList { it.toBuilder() }
+      builder.alternateMaterial = alternateMaterial.mapToMutableList { it.toBuilder() }
+      builder.device = device.mapToMutableList { it.toBuilder() }
+      builder.manufacturedItem = manufacturedItem.mapToMutableList { it.toBuilder() }
+      builder.packageItem = packageItem.mapToMutableList { it.toBuilder() }
+      builder.physicalCharacteristics = physicalCharacteristics?.toBuilder()
+      builder.otherCharacteristics = otherCharacteristics.mapToMutableList { it.toBuilder() }
+      builder.shelfLifeStorage = shelfLifeStorage.mapToMutableList { it.toBuilder() }
+      builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** The physical type of the container of the medicine. */
@@ -454,20 +450,20 @@ public data class MedicinalProductPackaged(
       public fun build(): PackageItem =
         PackageItem(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
           type = type.build(),
           quantity = quantity.build(),
-          material = material.map { it.build() },
-          alternateMaterial = alternateMaterial.map { it.build() },
-          device = device.map { it.build() },
-          manufacturedItem = manufacturedItem.map { it.build() },
-          packageItem = packageItem.map { it.build() },
+          material = material.mapToList { it.build() },
+          alternateMaterial = alternateMaterial.mapToList { it.build() },
+          device = device.mapToList { it.build() },
+          manufacturedItem = manufacturedItem.mapToList { it.build() },
+          packageItem = packageItem.mapToList { it.build() },
           physicalCharacteristics = physicalCharacteristics?.build(),
-          otherCharacteristics = otherCharacteristics.map { it.build() },
-          shelfLifeStorage = shelfLifeStorage.map { it.build() },
-          manufacturer = manufacturer.map { it.build() },
+          otherCharacteristics = otherCharacteristics.mapToList { it.build() },
+          shelfLifeStorage = shelfLifeStorage.mapToList { it.build() },
+          manufacturer = manufacturer.mapToList { it.build() },
         )
     }
   }
@@ -614,18 +610,18 @@ public data class MedicinalProductPackaged(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        subject = subject.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        subject = subject.mapToList { it.build() },
         description = description?.build(),
         legalStatusOfSupply = legalStatusOfSupply?.build(),
-        marketingStatus = marketingStatus.map { it.build() },
+        marketingStatus = marketingStatus.mapToList { it.build() },
         marketingAuthorization = marketingAuthorization?.build(),
-        manufacturer = manufacturer.map { it.build() },
-        batchIdentifier = batchIdentifier.map { it.build() },
-        packageItem = packageItem.map { it.build() },
+        manufacturer = manufacturer.mapToList { it.build() },
+        batchIdentifier = batchIdentifier.mapToList { it.build() },
+        packageItem = packageItem.mapToList { it.build() },
       )
   }
 }

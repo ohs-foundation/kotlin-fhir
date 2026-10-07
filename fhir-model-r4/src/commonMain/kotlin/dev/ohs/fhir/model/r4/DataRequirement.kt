@@ -111,20 +111,19 @@ public data class DataRequirement(
    */
   public val sort: List<Sort> = listOf(),
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(type).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        profile = this@with.profile.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject
-        mustSupport = this@with.mustSupport.map { it.toBuilder() }.toMutableList()
-        codeFilter = this@with.codeFilter.map { it.toBuilder() }.toMutableList()
-        dateFilter = this@with.dateFilter.map { it.toBuilder() }.toMutableList()
-        limit = this@with.limit?.toBuilder()
-        sort = this@with.sort.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(type)
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.profile = profile.mapToMutableList { it.toBuilder() }
+    builder.subject = subject
+    builder.mustSupport = mustSupport.mapToMutableList { it.toBuilder() }
+    builder.codeFilter = codeFilter.mapToMutableList { it.toBuilder() }
+    builder.dateFilter = dateFilter.mapToMutableList { it.toBuilder() }
+    builder.limit = limit?.toBuilder()
+    builder.sort = sort.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Code filters specify additional constraints on the data, specifying the value set of interest
@@ -183,17 +182,16 @@ public data class DataRequirement(
      */
     public val code: List<Coding> = listOf(),
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          path = this@with.path?.toBuilder()
-          searchParam = this@with.searchParam?.toBuilder()
-          valueSet = this@with.valueSet?.toBuilder()
-          code = this@with.code.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.path = path?.toBuilder()
+      builder.searchParam = searchParam?.toBuilder()
+      builder.valueSet = valueSet?.toBuilder()
+      builder.code = code.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -254,11 +252,11 @@ public data class DataRequirement(
       public fun build(): CodeFilter =
         CodeFilter(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           path = path?.build(),
           searchParam = searchParam?.build(),
           valueSet = valueSet?.build(),
-          code = code.map { it.build() },
+          code = code.mapToList { it.build() },
         )
     }
   }
@@ -316,16 +314,15 @@ public data class DataRequirement(
      */
     public val `value`: Value? = null,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          path = this@with.path?.toBuilder()
-          searchParam = this@with.searchParam?.toBuilder()
-          `value` = this@with.`value`
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.path = path?.toBuilder()
+      builder.searchParam = searchParam?.toBuilder()
+      builder.`value` = `value`
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asDateTime(): DateTime? = this as? DateTime
@@ -408,7 +405,7 @@ public data class DataRequirement(
       public fun build(): DateFilter =
         DateFilter(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           path = path?.build(),
           searchParam = searchParam?.build(),
           `value` = `value`,
@@ -447,17 +444,16 @@ public data class DataRequirement(
     /** The direction of the sort, ascending or descending. */
     public val direction: Enumeration<SortDirection>,
   ) : Element() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            path.toBuilder(),
-            direction,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          path.toBuilder(),
+          direction,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -493,7 +489,7 @@ public data class DataRequirement(
       public fun build(): Sort =
         Sort(
           id = id,
-          extension = extension.map { it.build() },
+          extension = extension.mapToList { it.build() },
           path = path.build(),
           direction = direction,
         )
@@ -609,15 +605,15 @@ public data class DataRequirement(
     public open fun build(): DataRequirement =
       DataRequirement(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         type = type,
-        profile = profile.map { it.build() },
+        profile = profile.mapToList { it.build() },
         subject = subject,
-        mustSupport = mustSupport.map { it.build() },
-        codeFilter = codeFilter.map { it.build() },
-        dateFilter = dateFilter.map { it.build() },
+        mustSupport = mustSupport.mapToList { it.build() },
+        codeFilter = codeFilter.mapToList { it.build() },
+        dateFilter = dateFilter.mapToList { it.build() },
         limit = limit?.build(),
-        sort = sort.map { it.build() },
+        sort = sort.mapToList { it.build() },
       )
   }
 

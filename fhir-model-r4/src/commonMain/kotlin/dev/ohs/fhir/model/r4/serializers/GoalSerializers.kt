@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4.Element
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.FhirResourceSerializer
 import dev.ohs.fhir.model.r4.Goal
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Integer
@@ -42,6 +43,7 @@ import dev.ohs.fhir.model.r4.Range
 import dev.ohs.fhir.model.r4.Ratio
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
@@ -63,51 +65,33 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object GoalTargetSerializer : KSerializer<Goal.Target> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Target") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("measure", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("detailQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("detailRange", Range.serializer().descriptor, isOptional = true)
-      element("detailCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("detailString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_detailString", Element.serializer().descriptor, isOptional = true)
-      element("detailBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_detailBoolean", Element.serializer().descriptor, isOptional = true)
-      element("detailInteger", Int.serializer().descriptor, isOptional = true)
-      element("_detailInteger", Element.serializer().descriptor, isOptional = true)
-      element("detailRatio", Ratio.serializer().descriptor, isOptional = true)
-      element("dueDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_dueDate", Element.serializer().descriptor, isOptional = true)
-      element("dueDuration", Duration.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("measure", CodeableConceptSerializer.descriptor)
+      optionalElement("detailQuantity", QuantitySerializer.descriptor)
+      optionalElement("detailRange", RangeSerializer.descriptor)
+      optionalElement("detailCodeableConcept", CodeableConceptSerializer.descriptor)
+      optionalElement("detailString", KotlinString.serializer().descriptor)
+      optionalElement("_detailString", ElementSerializer.descriptor)
+      optionalElement("detailBoolean", KotlinBoolean.serializer().descriptor)
+      optionalElement("_detailBoolean", ElementSerializer.descriptor)
+      optionalElement("detailInteger", Int.serializer().descriptor)
+      optionalElement("_detailInteger", ElementSerializer.descriptor)
+      optionalElement("detailRatio", RatioSerializer.descriptor)
+      optionalElement("dueDate", KotlinString.serializer().descriptor)
+      optionalElement("_dueDate", ElementSerializer.descriptor)
+      optionalElement("dueDuration", DurationSerializer.descriptor)
     }
 
-  override fun deserialize(decoder: Decoder): Goal.Target =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<Goal.Target>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: Goal.Target) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Goal.Target {
+  override fun deserialize(decoder: Decoder): Goal.Target {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -126,57 +110,103 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
     var _dueDate: Element? = null
     var dueDuration: Duration? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 ->
-          measure =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.measureSer, null)
-        4 ->
-          detailQuantity =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.detailQuantitySer,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          measure =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          detailQuantity =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
               null,
             )
         5 ->
           detailRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.detailRangeSer, null)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         6 ->
           detailCodeableConcept =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.measureSer, null)
-        7 -> detailString = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        7 -> detailString = compositeDecoder.decodeStringElement(descriptor, i)
         8 ->
           _detailString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.detailStringSer, null)
-        9 -> detailBoolean = decoder.decodeBooleanElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> detailBoolean = compositeDecoder.decodeBooleanElement(descriptor, i)
         10 ->
           _detailBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.detailStringSer, null)
-        11 -> detailInteger = decoder.decodeIntElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 -> detailInteger = compositeDecoder.decodeIntElement(descriptor, i)
         12 ->
           _detailInteger =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.detailStringSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         13 ->
           detailRatio =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.detailRatioSer, null)
-        14 -> dueDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
+        14 -> dueDate = compositeDecoder.decodeStringElement(descriptor, i)
         15 ->
           _dueDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.detailStringSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         16 ->
           dueDuration =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dueDurationSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              DurationSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Target: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return Goal.Target(
       id = id,
       extension = extension ?: listOf(),
@@ -194,184 +224,123 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
         ),
       due =
         Goal.Target.Due.from(
-          Date.of(dueDate?.let { FhirDate.fromString(it) }, _dueDate),
+          Date.of(if (dueDate != null) FhirDate.fromString(dueDate) else null, _dueDate),
           dueDuration,
         ),
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Goal.Target) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: Goal.Target) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.measure)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.measureSer, it)
-    }
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.measure,
+    )
     when (val choice = value.detail) {
       null -> {}
       is Goal.Target.Detail.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.detailQuantitySer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
       }
       is Goal.Target.Detail.Range -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.detailRangeSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 5, RangeSerializer, choice.value)
       }
       is Goal.Target.Detail.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.measureSer, choice.value)
+        compositeEncoder.encodeSerializableElement(
+          descriptor,
+          6,
+          CodeableConceptSerializer,
+          choice.value,
+        )
       }
       is Goal.Target.Detail.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 8, Hoisted.detailStringSer, it)
-        }
+        compositeEncoder.encodeStringIfNotNull(descriptor, 7, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 8, choice.value)
       }
       is Goal.Target.Detail.Boolean -> {
-        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 10, Hoisted.detailStringSer, it)
-        }
+        compositeEncoder.encodeBooleanIfNotNull(descriptor, 9, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 10, choice.value)
       }
       is Goal.Target.Detail.Integer -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 12, Hoisted.detailStringSer, it)
-        }
+        compositeEncoder.encodeIntIfNotNull(descriptor, 11, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 12, choice.value)
       }
       is Goal.Target.Detail.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 13, Hoisted.detailRatioSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 13, RatioSerializer, choice.value)
       }
     }
     when (val choice = value.due) {
       null -> {}
       is Goal.Target.Due.Date -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 15, Hoisted.detailStringSer, it)
-        }
+        compositeEncoder.encodeStringIfNotNull(descriptor, 14, choice.value.value?.toString())
+        compositeEncoder.encodeElementIfNotNull(descriptor, 15, choice.value)
       }
       is Goal.Target.Due.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 16, Hoisted.dueDurationSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 16, DurationSerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val measureSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val detailQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val detailRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val detailStringSer: KSerializer<Element> = Element.serializer()
-
-    public val detailRatioSer: KSerializer<Ratio> = Ratio.serializer()
-
-    public val dueDurationSer: KSerializer<Duration> = Duration.serializer()
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object GoalSerializer : KSerializer<Goal> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Goal") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object GoalSerializer : FhirResourceSerializer<Goal> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("Goal")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("lifecycleStatus", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_lifecycleStatus", Element.serializer().descriptor, isOptional = true)
-    b.element("achievementStatus", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "category",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("description", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("subject", Reference.serializer().descriptor, isOptional = true)
-    b.element("startDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_startDate", Element.serializer().descriptor, isOptional = true)
-    b.element("startCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "target",
-      listSerialDescriptor(lazyDescriptor { Goal.Target.serializer().descriptor }),
-      isOptional = true,
-    )
-    b.element("statusDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_statusDate", Element.serializer().descriptor, isOptional = true)
-    b.element("statusReason", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_statusReason", Element.serializer().descriptor, isOptional = true)
-    b.element("expressedBy", Reference.serializer().descriptor, isOptional = true)
-    b.element(
-      "addresses",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-    b.element(
-      "outcomeCode",
-      listSerialDescriptor(CodeableConcept.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "outcomeReference",
-      listSerialDescriptor(Reference.serializer().descriptor),
-      isOptional = true,
-    )
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("lifecycleStatus", KotlinString.serializer().descriptor)
+    b.optionalElement("_lifecycleStatus", ElementSerializer.descriptor)
+    b.optionalElement("achievementStatus", CodeableConceptSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("priority", CodeableConceptSerializer.descriptor)
+    b.optionalElement("description", CodeableConceptSerializer.descriptor)
+    b.optionalElement("subject", ReferenceSerializer.descriptor)
+    b.optionalElement("startDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_startDate", ElementSerializer.descriptor)
+    b.optionalElement("startCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("target", GoalTargetSerializer.listSerializer.descriptor)
+    b.optionalElement("statusDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_statusDate", ElementSerializer.descriptor)
+    b.optionalElement("statusReason", KotlinString.serializer().descriptor)
+    b.optionalElement("_statusReason", ElementSerializer.descriptor)
+    b.optionalElement("expressedBy", ReferenceSerializer.descriptor)
+    b.optionalElement("addresses", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement("outcomeCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("outcomeReference", ReferenceSerializer.listSerializer.descriptor)
   }
 
-  override fun deserialize(decoder: Decoder): Goal =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Goal) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "Goal")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
-    decoder: CompositeDecoder,
+  override fun deserializeInternal(
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): Goal {
@@ -407,102 +376,204 @@ internal object GoalSerializer : KSerializer<Goal> {
     var outcomeCode: List<CodeableConcept>? = null
     var outcomeReference: List<Reference>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
-        7 ->
-          contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
-        8 ->
-          extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        9 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        10 ->
-          identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
-        11 -> lifecycleStatus = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _lifecycleStatus =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        13 ->
-          achievementStatus =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.achievementStatusSer,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _language =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 ->
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
+        7 ->
+          contained =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
+        8 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        9 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        10 ->
+          identifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
+        11 -> lifecycleStatus = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          _lifecycleStatus =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 ->
+          achievementStatus =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
               null,
             )
         14 ->
           category =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
-        15 ->
-          priority =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.achievementStatusSer,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        15 ->
+          priority =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
               null,
             )
         16 ->
           description =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.achievementStatusSer,
+              CodeableConceptSerializer,
               null,
             )
         17 ->
           subject =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
-        18 -> startDate = decoder.decodeStringElement(descriptor, i)
-        19 ->
-          _startDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        20 ->
-          startCodeableConcept =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.achievementStatusSer,
+              ReferenceSerializer,
+              null,
+            )
+        18 -> startDate = compositeDecoder.decodeStringElement(descriptor, i)
+        19 ->
+          _startDate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        20 ->
+          startCodeableConcept =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
               null,
             )
         21 ->
-          target = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.targetSer, null)
-        22 -> statusDate = decoder.decodeStringElement(descriptor, i)
+          target =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              GoalTargetSerializer.listSerializer,
+              null,
+            )
+        22 -> statusDate = compositeDecoder.decodeStringElement(descriptor, i)
         23 ->
           _statusDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        24 -> statusReason = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        24 -> statusReason = compositeDecoder.decodeStringElement(descriptor, i)
         25 ->
           _statusReason =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         26 ->
           expressedBy =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         27 ->
           addresses =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressesSer, null)
-        28 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
+        28 ->
+          note =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AnnotationSerializer.listSerializer,
+              null,
+            )
         29 ->
           outcomeCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         30 ->
           outcomeReference =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressesSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer.listSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding Goal: " + i)
       }
     }
@@ -518,7 +589,7 @@ internal object GoalSerializer : KSerializer<Goal> {
       identifier = identifier ?: listOf(),
       lifecycleStatus =
         Enumeration.of(
-          lifecycleStatus?.let { Goal.GoalLifecycleStatus.fromCode(it) },
+          if (lifecycleStatus != null) Goal.GoalLifecycleStatus.fromCode(lifecycleStatus) else null,
           _lifecycleStatus,
         ) ?: throw SerializationException("Missing required property 'lifecycleStatus' on Goal"),
       achievementStatus = achievementStatus,
@@ -531,11 +602,12 @@ internal object GoalSerializer : KSerializer<Goal> {
         subject ?: throw SerializationException("Missing required property 'subject' on Goal"),
       start =
         Goal.Start.from(
-          Date.of(startDate?.let { FhirDate.fromString(it) }, _startDate),
+          Date.of(if (startDate != null) FhirDate.fromString(startDate) else null, _startDate),
           startCodeableConcept,
         ),
       target = target ?: listOf(),
-      statusDate = Date.of(statusDate?.let { FhirDate.fromString(it) }, _statusDate),
+      statusDate =
+        Date.of(if (statusDate != null) FhirDate.fromString(statusDate) else null, _statusDate),
       statusReason = R4String.of(statusReason, _statusReason),
       expressedBy = expressedBy,
       addresses = addresses ?: listOf(),
@@ -545,253 +617,173 @@ internal object GoalSerializer : KSerializer<Goal> {
     )
   }
 
-  internal fun serializeInternal(
-    encoder: CompositeEncoder,
+  override fun serializeInternal(
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: Goal,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
-    }
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.lifecycleStatus.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.lifecycleStatus.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    (value.achievementStatus)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        Hoisted.achievementStatusSer,
-        it,
-      )
-    }
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      value.lifecycleStatus.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(
+      descriptor,
+      12 + descriptorOffset,
+      value.lifecycleStatus,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.achievementStatus,
+    )
     if (value.category.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         14 + descriptorOffset,
-        Hoisted.categorySer,
+        CodeableConceptSerializer.listSerializer,
         value.category,
       )
-    (value.priority)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        Hoisted.achievementStatusSer,
-        it,
-      )
-    }
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.priority,
+    )
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       16 + descriptorOffset,
-      Hoisted.achievementStatusSer,
+      CodeableConceptSerializer,
       value.description,
     )
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       17 + descriptorOffset,
-      Hoisted.subjectSer,
+      ReferenceSerializer,
       value.subject,
     )
     when (val choice = value.start) {
       null -> {}
       is Goal.Start.Date -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            19 + descriptorOffset,
-            Hoisted.implicitRulesSer,
-            it,
-          )
-        }
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          18 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, choice.value)
       }
       is Goal.Start.CodeableConcept -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           20 + descriptorOffset,
-          Hoisted.achievementStatusSer,
+          CodeableConceptSerializer,
           choice.value,
         )
       }
     }
     if (value.target.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         21 + descriptorOffset,
-        Hoisted.targetSer,
+        GoalTargetSerializer.listSerializer,
         value.target,
       )
-    ((value.statusDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
-    }
-    (value.statusDate?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    ((value.statusReason?.value))?.let {
-      encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
-    }
-    (value.statusReason?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    (value.expressedBy)?.let {
-      encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, Hoisted.subjectSer, it)
-    }
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      22 + descriptorOffset,
+      value.statusDate?.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.statusDate)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      24 + descriptorOffset,
+      value.statusReason?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.statusReason)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      26 + descriptorOffset,
+      ReferenceSerializer,
+      value.expressedBy,
+    )
     if (value.addresses.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         27 + descriptorOffset,
-        Hoisted.addressesSer,
+        ReferenceSerializer.listSerializer,
         value.addresses,
       )
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         28 + descriptorOffset,
-        Hoisted.noteSer,
+        AnnotationSerializer.listSerializer,
         value.note,
       )
     if (value.outcomeCode.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         29 + descriptorOffset,
-        Hoisted.categorySer,
+        CodeableConceptSerializer.listSerializer,
         value.outcomeCode,
       )
     if (value.outcomeReference.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         30 + descriptorOffset,
-        Hoisted.addressesSer,
+        ReferenceSerializer.listSerializer,
         value.outcomeReference,
       )
   }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val achievementStatusSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val categorySer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.achievementStatusSer)
-
-    public val subjectSer: KSerializer<Reference> = Reference.serializer()
-
-    public val targetSerInner: KSerializer<Goal.Target> = Goal.Target.serializer()
-
-    public val targetSer: KSerializer<List<Goal.Target>> = ListSerializer(Hoisted.targetSerInner)
-
-    public val addressesSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.subjectSer)
-
-    public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
-
-    public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
-  }
-}
-
-internal object GoalPolymorphicSerializer : KSerializer<Goal> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Goal") { GoalSerializer.buildDescriptor(this) }
-
-  override fun serialize(encoder: Encoder, `value`: Goal) {
-    encoder.encodeStructure(descriptor) {
-      GoalSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Goal =
-    decoder.decodeStructure(descriptor) {
-      GoalSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

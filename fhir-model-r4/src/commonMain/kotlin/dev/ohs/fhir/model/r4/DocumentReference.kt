@@ -260,37 +260,36 @@ public data class DocumentReference(
    */
   public val context: Context? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          content.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          masterIdentifier = this@with.masterIdentifier?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          docStatus = this@with.docStatus
-          type = this@with.type?.toBuilder()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject?.toBuilder()
-          date = this@with.date?.toBuilder()
-          author = this@with.author.map { it.toBuilder() }.toMutableList()
-          authenticator = this@with.authenticator?.toBuilder()
-          custodian = this@with.custodian?.toBuilder()
-          relatesTo = this@with.relatesTo.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          securityLabel = this@with.securityLabel.map { it.toBuilder() }.toMutableList()
-          context = this@with.context?.toBuilder()
-        }
-    }
+        status,
+        content.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.masterIdentifier = masterIdentifier?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.docStatus = docStatus
+    builder.type = type?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.authenticator = authenticator?.toBuilder()
+    builder.custodian = custodian?.toBuilder()
+    builder.relatesTo = relatesTo.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
+    builder.context = context?.toBuilder()
+    return builder
+  }
 
   /** Relationships that this document has with other document references that already exist. */
   @Serializable(with = DocumentReferenceRelatesToSerializer::class)
@@ -342,18 +341,17 @@ public data class DocumentReference(
     /** The target document of this relationship. */
     public val target: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            code,
-            target.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          code,
+          target.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -409,8 +407,8 @@ public data class DocumentReference(
       public fun build(): RelatesTo =
         RelatesTo(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code,
           target = target.build(),
         )
@@ -474,15 +472,14 @@ public data class DocumentReference(
      */
     public val format: Coding? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(attachment.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          format = this@with.format?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(attachment.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.format = format?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -543,8 +540,8 @@ public data class DocumentReference(
       public fun build(): Content =
         Content(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           attachment = attachment.build(),
           format = format?.build(),
         )
@@ -634,21 +631,20 @@ public data class DocumentReference(
      */
     public val related: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter.map { it.toBuilder() }.toMutableList()
-          event = this@with.event.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          facilityType = this@with.facilityType?.toBuilder()
-          practiceSetting = this@with.practiceSetting?.toBuilder()
-          sourcePatientInfo = this@with.sourcePatientInfo?.toBuilder()
-          related = this@with.related.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.encounter = encounter.mapToMutableList { it.toBuilder() }
+      builder.event = event.mapToMutableList { it.toBuilder() }
+      builder.period = period?.toBuilder()
+      builder.facilityType = facilityType?.toBuilder()
+      builder.practiceSetting = practiceSetting?.toBuilder()
+      builder.sourcePatientInfo = sourcePatientInfo?.toBuilder()
+      builder.related = related.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -743,15 +739,15 @@ public data class DocumentReference(
       public fun build(): Context =
         Context(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          encounter = encounter.map { it.build() },
-          event = event.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          encounter = encounter.mapToList { it.build() },
+          event = event.mapToList { it.build() },
           period = period?.build(),
           facilityType = facilityType?.build(),
           practiceSetting = practiceSetting?.build(),
           sourcePatientInfo = sourcePatientInfo?.build(),
-          related = related.map { it.build() },
+          related = related.mapToList { it.build() },
         )
     }
   }
@@ -1010,24 +1006,24 @@ public data class DocumentReference(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         masterIdentifier = masterIdentifier?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         docStatus = docStatus,
         type = type?.build(),
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         subject = subject?.build(),
         date = date?.build(),
-        author = author.map { it.build() },
+        author = author.mapToList { it.build() },
         authenticator = authenticator?.build(),
         custodian = custodian?.build(),
-        relatesTo = relatesTo.map { it.build() },
+        relatesTo = relatesTo.mapToList { it.build() },
         description = description?.build(),
-        securityLabel = securityLabel.map { it.build() },
-        content = content.map { it.build() },
+        securityLabel = securityLabel.mapToList { it.build() },
+        content = content.mapToList { it.build() },
         context = context?.build(),
       )
   }

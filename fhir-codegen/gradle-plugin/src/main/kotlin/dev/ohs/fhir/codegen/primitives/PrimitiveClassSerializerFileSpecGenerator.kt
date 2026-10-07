@@ -61,22 +61,18 @@ object PrimitiveClassSerializerFileSpecGenerator {
         "${primitiveClassName.simpleName}Serializer",
       )
     val extensionClassName = ClassName(primitiveClassName.packageName, "Extension")
+    val extensionSerializerClassName =
+      ClassName("${primitiveClassName.packageName}.serializers", "ExtensionSerializer")
     val kSerializer = ClassName("kotlinx.serialization", "KSerializer")
     val serialDescriptor = ClassName("kotlinx.serialization.descriptors", "SerialDescriptor")
     val encoder = ClassName("kotlinx.serialization.encoding", "Encoder")
     val decoder = ClassName("kotlinx.serialization.encoding", "Decoder")
     val compositeDecoder = ClassName("kotlinx.serialization.encoding", "CompositeDecoder")
-    val builtinsListSerializer = ClassName("kotlinx.serialization.builtins", "ListSerializer")
-    val buildClassSerialDescriptor =
-      ClassName("kotlinx.serialization.descriptors", "buildClassSerialDescriptor")
     val experimentalOptIn = ClassName("kotlinx.serialization", "ExperimentalSerializationApi")
     val internalOptIn = ClassName("kotlinx.serialization", "InternalSerializationApi")
 
     // Resolve the value-serializer expression + descriptor expression from the value TypeName.
     val valueEncoding = valueEncodingFor(valueType, primitiveClassName.packageName)
-
-    val listExtensionSerializerInit =
-      CodeBlock.of("%T(%T.serializer())", builtinsListSerializer, extensionClassName)
 
     val descriptorInit =
       CodeBlock.builder()
@@ -87,7 +83,11 @@ object PrimitiveClassSerializerFileSpecGenerator {
         )
         .indent()
         .add("element(%S, %T.serializer().descriptor)\n", "id", ClassName("kotlin", "String"))
-        .add("element(%S, extensionListSerializer.descriptor)\n", "extension")
+        .add(
+          "element(%S, %T.listSerializer.descriptor)\n",
+          "extension",
+          extensionSerializerClassName,
+        )
         .add("element(%S, %L)\n", "value", valueEncoding.descriptorExpr)
         .unindent()
         .add("}\n")
@@ -108,7 +108,8 @@ object PrimitiveClassSerializerFileSpecGenerator {
             )
             .add(
               "if (value.extension.isNotEmpty()) " +
-                "encodeSerializableElement(descriptor, 1, extensionListSerializer, value.extension)\n"
+                "encodeSerializableElement(descriptor, 1, %T.listSerializer, value.extension)\n",
+              extensionSerializerClassName,
             )
             .apply {
               if (valueNullable) {
@@ -161,7 +162,8 @@ object PrimitiveClassSerializerFileSpecGenerator {
               ClassName("kotlin", "String"),
             )
             .add(
-              "1 -> extension = decodeSerializableElement(descriptor, 1, extensionListSerializer)\n"
+              "1 -> extension = decodeSerializableElement(descriptor, 1, %T.listSerializer)\n",
+              extensionSerializerClassName,
             )
             .apply {
               if (valueNullable) {
@@ -203,17 +205,6 @@ object PrimitiveClassSerializerFileSpecGenerator {
             .build()
         )
         .addSuperinterface(kSerializer.parameterizedBy(primitiveClassName))
-        .addProperty(
-          PropertySpec.builder(
-              "extensionListSerializer",
-              kSerializer.parameterizedBy(
-                ClassName("kotlin.collections", "List").parameterizedBy(extensionClassName)
-              ),
-            )
-            .addModifiers(KModifier.PRIVATE)
-            .initializer(listExtensionSerializerInit)
-            .build()
-        )
         .addProperty(
           PropertySpec.builder("descriptor", serialDescriptor)
             .addModifiers(KModifier.OVERRIDE)

@@ -374,55 +374,53 @@ public data class ServiceRequest(
    */
   public val relevantHistory: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          intent,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          instantiatesCanonical =
-            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          replaces = this@with.replaces.map { it.toBuilder() }.toMutableList()
-          requisition = this@with.requisition?.toBuilder()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          priority = this@with.priority
-          doNotPerform = this@with.doNotPerform?.toBuilder()
-          code = this@with.code?.toBuilder()
-          orderDetail = this@with.orderDetail.map { it.toBuilder() }.toMutableList()
-          quantity = this@with.quantity
-          encounter = this@with.encounter?.toBuilder()
-          occurrence = this@with.occurrence
-          asNeeded = this@with.asNeeded
-          authoredOn = this@with.authoredOn?.toBuilder()
-          requester = this@with.requester?.toBuilder()
-          performerType = this@with.performerType?.toBuilder()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          locationCode = this@with.locationCode.map { it.toBuilder() }.toMutableList()
-          locationReference = this@with.locationReference.map { it.toBuilder() }.toMutableList()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-          specimen = this@with.specimen.map { it.toBuilder() }.toMutableList()
-          bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          patientInstruction = this@with.patientInstruction?.toBuilder()
-          relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        intent,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.requisition = requisition?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.priority = priority
+    builder.doNotPerform = doNotPerform?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.orderDetail = orderDetail.mapToMutableList { it.toBuilder() }
+    builder.quantity = quantity
+    builder.encounter = encounter?.toBuilder()
+    builder.occurrence = occurrence
+    builder.asNeeded = asNeeded
+    builder.authoredOn = authoredOn?.toBuilder()
+    builder.requester = requester?.toBuilder()
+    builder.performerType = performerType?.toBuilder()
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.locationCode = locationCode.mapToMutableList { it.toBuilder() }
+    builder.locationReference = locationReference.mapToMutableList { it.toBuilder() }
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.insurance = insurance.mapToMutableList { it.toBuilder() }
+    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
+    builder.specimen = specimen.mapToMutableList { it.toBuilder() }
+    builder.bodySite = bodySite.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.patientInstruction = patientInstruction?.toBuilder()
+    builder.relevantHistory = relevantHistory.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public sealed interface Quantity : FhirChoice {
     public fun asQuantity(): Quantity? = this as? Quantity
@@ -891,22 +889,22 @@ public data class ServiceRequest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        instantiatesCanonical = instantiatesCanonical.map { it.build() },
-        instantiatesUri = instantiatesUri.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        replaces = replaces.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+        instantiatesUri = instantiatesUri.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        replaces = replaces.mapToList { it.build() },
         requisition = requisition?.build(),
         status = status,
         intent = intent,
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         priority = priority,
         doNotPerform = doNotPerform?.build(),
         code = code?.build(),
-        orderDetail = orderDetail.map { it.build() },
+        orderDetail = orderDetail.mapToList { it.build() },
         quantity = quantity,
         subject = subject.build(),
         encounter = encounter?.build(),
@@ -915,18 +913,18 @@ public data class ServiceRequest(
         authoredOn = authoredOn?.build(),
         requester = requester?.build(),
         performerType = performerType?.build(),
-        performer = performer.map { it.build() },
-        locationCode = locationCode.map { it.build() },
-        locationReference = locationReference.map { it.build() },
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        insurance = insurance.map { it.build() },
-        supportingInfo = supportingInfo.map { it.build() },
-        specimen = specimen.map { it.build() },
-        bodySite = bodySite.map { it.build() },
-        note = note.map { it.build() },
+        performer = performer.mapToList { it.build() },
+        locationCode = locationCode.mapToList { it.build() },
+        locationReference = locationReference.mapToList { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        insurance = insurance.mapToList { it.build() },
+        supportingInfo = supportingInfo.mapToList { it.build() },
+        specimen = specimen.mapToList { it.build() },
+        bodySite = bodySite.mapToList { it.build() },
+        note = note.mapToList { it.build() },
         patientInstruction = patientInstruction?.build(),
-        relevantHistory = relevantHistory.map { it.build() },
+        relevantHistory = relevantHistory.mapToList { it.build() },
       )
   }
 

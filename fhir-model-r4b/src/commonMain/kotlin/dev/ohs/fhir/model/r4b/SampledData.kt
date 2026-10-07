@@ -96,17 +96,16 @@ public data class SampledData(
    */
   public val `data`: String? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(origin.toBuilder(), period.toBuilder(), dimensions.toBuilder()).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        factor = this@with.factor?.toBuilder()
-        lowerLimit = this@with.lowerLimit?.toBuilder()
-        upperLimit = this@with.upperLimit?.toBuilder()
-        `data` = this@with.`data`?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(origin.toBuilder(), period.toBuilder(), dimensions.toBuilder())
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.factor = factor?.toBuilder()
+    builder.lowerLimit = lowerLimit?.toBuilder()
+    builder.upperLimit = upperLimit?.toBuilder()
+    builder.`data` = `data`?.toBuilder()
+    return builder
+  }
 
   public open class Builder(
     /**
@@ -181,7 +180,7 @@ public data class SampledData(
     public open fun build(): SampledData =
       SampledData(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         origin = origin.build(),
         period = period.build(),
         factor = factor?.build(),

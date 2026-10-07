@@ -234,40 +234,38 @@ public data class FamilyMemberHistory(
    */
   public val condition: List<Condition> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          patient.toBuilder(),
-          relationship.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          instantiatesCanonical =
-            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-          dataAbsentReason = this@with.dataAbsentReason?.toBuilder()
-          date = this@with.date?.toBuilder()
-          name = this@with.name?.toBuilder()
-          sex = this@with.sex?.toBuilder()
-          born = this@with.born
-          age = this@with.age
-          estimatedAge = this@with.estimatedAge?.toBuilder()
-          deceased = this@with.deceased
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          condition = this@with.condition.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        patient.toBuilder(),
+        relationship.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.dataAbsentReason = dataAbsentReason?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.sex = sex?.toBuilder()
+    builder.born = born
+    builder.age = age
+    builder.estimatedAge = estimatedAge?.toBuilder()
+    builder.deceased = deceased
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.condition = condition.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * The significant Conditions (or condition) that the family member had. This is a repeating
@@ -337,18 +335,17 @@ public data class FamilyMemberHistory(
     /** An area where general notes can be placed about this specific condition. */
     public val note: List<Annotation> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          outcome = this@with.outcome?.toBuilder()
-          contributedToDeath = this@with.contributedToDeath?.toBuilder()
-          onset = this@with.onset
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.outcome = outcome?.toBuilder()
+      builder.contributedToDeath = contributedToDeath?.toBuilder()
+      builder.onset = onset
+      builder.note = note.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Onset : FhirChoice {
       public fun asAge(): Age? = this as? Age
@@ -455,13 +452,13 @@ public data class FamilyMemberHistory(
       public fun build(): Condition =
         Condition(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           outcome = outcome?.build(),
           contributedToDeath = contributedToDeath?.build(),
           onset = onset,
-          note = note.map { it.build() },
+          note = note.mapToList { it.build() },
         )
     }
   }
@@ -793,12 +790,12 @@ public data class FamilyMemberHistory(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        instantiatesCanonical = instantiatesCanonical.map { it.build() },
-        instantiatesUri = instantiatesUri.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+        instantiatesUri = instantiatesUri.mapToList { it.build() },
         status = status,
         dataAbsentReason = dataAbsentReason?.build(),
         patient = patient.build(),
@@ -810,10 +807,10 @@ public data class FamilyMemberHistory(
         age = age,
         estimatedAge = estimatedAge?.build(),
         deceased = deceased,
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        note = note.map { it.build() },
-        condition = condition.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        condition = condition.mapToList { it.build() },
       )
   }
 

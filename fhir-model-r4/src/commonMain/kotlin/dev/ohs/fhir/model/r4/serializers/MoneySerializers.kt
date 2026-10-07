@@ -42,39 +42,27 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object MoneySerializer : KSerializer<Money> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Money") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("value", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_value", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("currency", String.serializer().descriptor, isOptional = true)
-      element("_currency", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("value", FhirDecimalSerializer.descriptor)
+      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("currency", String.serializer().descriptor)
+      optionalElement("_currency", lazyDescriptor { ElementSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): Money =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<Money>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: Money) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Money {
+  override fun deserialize(decoder: Decoder): Money {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var `value`: FhirDecimal? = null
@@ -82,54 +70,74 @@ internal object MoneySerializer : KSerializer<Money> {
     var currency: String? = null
     var _currency: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           `value` =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         3 ->
-          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
-        4 -> currency = decoder.decodeStringElement(descriptor, i)
+          _value =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> currency = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _currency =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Money: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return Money(
       id = id,
       extension = extension ?: listOf(),
       `value` = Decimal.of(`value`, _value),
-      currency = Enumeration.of(currency?.let { Currencies.fromCode(it) }, _currency),
+      currency =
+        Enumeration.of(if (currency != null) Currencies.fromCode(currency) else null, _currency),
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Money) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: Money) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.`value`?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 2, FhirDecimalSerializer, it)
-    }
-    (value.`value`?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueSer, it)
-    }
-    ((value.currency?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.currency?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val valueSer: KSerializer<Element> = Element.serializer()
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      2,
+      FhirDecimalSerializer,
+      value.`value`?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.`value`)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.currency?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.currency)
+    compositeEncoder.endStructure(descriptor)
   }
 }

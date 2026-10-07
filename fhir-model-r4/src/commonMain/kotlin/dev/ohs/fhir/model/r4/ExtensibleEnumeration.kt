@@ -19,6 +19,7 @@ package dev.ohs.fhir.model.r4
 import kotlin.Enum
 import kotlin.Nothing
 import kotlin.String
+import kotlin.collections.Iterable
 import kotlin.collections.List
 import kotlin.enums.enumEntries
 
@@ -63,8 +64,14 @@ public sealed interface ExtensibleEnumeration<out T : FhirEnum> {
 
   public companion object {
     public inline fun <reified T> of(code: String?, element: Element?): ExtensibleEnumeration<T>?
-      where T : Enum<T>, T : FhirEnum {
-      val parsed = code?.let { c -> enumEntries<T>().firstOrNull { it.code == c } }
+      where T : Enum<T>, T : FhirEnum = of(code, element, enumEntries<T>())
+
+    public fun <T> of(
+      code: String?,
+      element: Element?,
+      entries: Iterable<T>,
+    ): ExtensibleEnumeration<T>? where T : Enum<T>, T : FhirEnum {
+      val parsed = if (code != null) entries.firstOrNull { it.code == code } else null
       return when {
         parsed != null -> Predefined(parsed, element?.id, element?.extension ?: listOf())
         code != null -> Custom(code, element?.id, element?.extension ?: listOf())

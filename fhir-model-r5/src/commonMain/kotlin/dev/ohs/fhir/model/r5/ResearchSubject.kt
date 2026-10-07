@@ -171,30 +171,29 @@ public data class ResearchSubject(
   /** A record of the patient's informed agreement to participate in the study. */
   public val consent: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          study.toBuilder(),
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          progress = this@with.progress.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          assignedComparisonGroup = this@with.assignedComparisonGroup?.toBuilder()
-          actualComparisonGroup = this@with.actualComparisonGroup?.toBuilder()
-          consent = this@with.consent.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        study.toBuilder(),
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.progress = progress.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    builder.assignedComparisonGroup = assignedComparisonGroup?.toBuilder()
+    builder.actualComparisonGroup = actualComparisonGroup?.toBuilder()
+    builder.consent = consent.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The current state (status) of the subject and resons for status change where appropriate. */
   @Serializable(with = ResearchSubjectProgressSerializer::class)
@@ -260,20 +259,19 @@ public data class ResearchSubject(
     /** The date when the state ended. */
     public val endDate: DateTime? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          subjectState = this@with.subjectState?.toBuilder()
-          milestone = this@with.milestone?.toBuilder()
-          reason = this@with.reason?.toBuilder()
-          startDate = this@with.startDate?.toBuilder()
-          endDate = this@with.endDate?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.subjectState = subjectState?.toBuilder()
+      builder.milestone = milestone?.toBuilder()
+      builder.reason = reason?.toBuilder()
+      builder.startDate = startDate?.toBuilder()
+      builder.endDate = endDate?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -348,8 +346,8 @@ public data class ResearchSubject(
       public fun build(): Progress =
         Progress(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           subjectState = subjectState?.build(),
           milestone = milestone?.build(),
@@ -516,18 +514,18 @@ public data class ResearchSubject(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        progress = progress.map { it.build() },
+        progress = progress.mapToList { it.build() },
         period = period?.build(),
         study = study.build(),
         subject = subject.build(),
         assignedComparisonGroup = assignedComparisonGroup?.build(),
         actualComparisonGroup = actualComparisonGroup?.build(),
-        consent = consent.map { it.build() },
+        consent = consent.mapToList { it.build() },
       )
   }
 }

@@ -177,30 +177,29 @@ public data class BiologicallyDerivedProduct(
   /** Product storage. */
   public val storage: List<Storage> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        productCategory = this@with.productCategory
-        productCode = this@with.productCode?.toBuilder()
-        status = this@with.status
-        request = this@with.request.map { it.toBuilder() }.toMutableList()
-        quantity = this@with.quantity?.toBuilder()
-        parent = this@with.parent.map { it.toBuilder() }.toMutableList()
-        collection = this@with.collection?.toBuilder()
-        processing = this@with.processing.map { it.toBuilder() }.toMutableList()
-        manipulation = this@with.manipulation?.toBuilder()
-        storage = this@with.storage.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.productCategory = productCategory
+    builder.productCode = productCode?.toBuilder()
+    builder.status = status
+    builder.request = request.mapToMutableList { it.toBuilder() }
+    builder.quantity = quantity?.toBuilder()
+    builder.parent = parent.mapToMutableList { it.toBuilder() }
+    builder.collection = collection?.toBuilder()
+    builder.processing = processing.mapToMutableList { it.toBuilder() }
+    builder.manipulation = manipulation?.toBuilder()
+    builder.storage = storage.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** How this product was collected. */
   @Serializable(with = BiologicallyDerivedProductCollectionSerializer::class)
@@ -252,17 +251,16 @@ public data class BiologicallyDerivedProduct(
     /** Time of product collection. */
     public val collected: Collected? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          collector = this@with.collector?.toBuilder()
-          source = this@with.source?.toBuilder()
-          collected = this@with.collected
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.collector = collector?.toBuilder()
+      builder.source = source?.toBuilder()
+      builder.collected = collected
+      return builder
+    }
 
     public sealed interface Collected : FhirChoice {
       public fun asDateTime(): DateTime? = this as? DateTime
@@ -341,8 +339,8 @@ public data class BiologicallyDerivedProduct(
       public fun build(): Collection =
         Collection(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           collector = collector?.build(),
           source = source?.build(),
           collected = collected,
@@ -403,18 +401,17 @@ public data class BiologicallyDerivedProduct(
     /** Time of processing. */
     public val time: Time? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          procedure = this@with.procedure?.toBuilder()
-          additive = this@with.additive?.toBuilder()
-          time = this@with.time
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.procedure = procedure?.toBuilder()
+      builder.additive = additive?.toBuilder()
+      builder.time = time
+      return builder
+    }
 
     public sealed interface Time : FhirChoice {
       public fun asDateTime(): DateTime? = this as? DateTime
@@ -493,8 +490,8 @@ public data class BiologicallyDerivedProduct(
       public fun build(): Processing =
         Processing(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           procedure = procedure?.build(),
           additive = additive?.build(),
@@ -552,16 +549,15 @@ public data class BiologicallyDerivedProduct(
     /** Time of manipulation. */
     public val time: Time? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          time = this@with.time
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.time = time
+      return builder
+    }
 
     public sealed interface Time : FhirChoice {
       public fun asDateTime(): DateTime? = this as? DateTime
@@ -634,8 +630,8 @@ public data class BiologicallyDerivedProduct(
       public fun build(): Manipulation =
         Manipulation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           time = time,
         )
@@ -691,18 +687,17 @@ public data class BiologicallyDerivedProduct(
     /** Storage timeperiod. */
     public val duration: Period? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          temperature = this@with.temperature?.toBuilder()
-          scale = this@with.scale
-          duration = this@with.duration?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.temperature = temperature?.toBuilder()
+      builder.scale = scale
+      builder.duration = duration?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -760,8 +755,8 @@ public data class BiologicallyDerivedProduct(
       public fun build(): Storage =
         Storage(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           temperature = temperature?.build(),
           scale = scale,
@@ -935,20 +930,20 @@ public data class BiologicallyDerivedProduct(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         productCategory = productCategory,
         productCode = productCode?.build(),
         status = status,
-        request = request.map { it.build() },
+        request = request.mapToList { it.build() },
         quantity = quantity?.build(),
-        parent = parent.map { it.build() },
+        parent = parent.mapToList { it.build() },
         collection = collection?.build(),
-        processing = processing.map { it.build() },
+        processing = processing.mapToList { it.build() },
         manipulation = manipulation?.build(),
-        storage = storage.map { it.build() },
+        storage = storage.mapToList { it.build() },
       )
   }
 

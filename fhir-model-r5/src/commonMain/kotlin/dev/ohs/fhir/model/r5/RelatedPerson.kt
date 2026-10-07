@@ -202,30 +202,29 @@ public data class RelatedPerson(
    */
   public val communication: List<Communication> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(patient.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        relationship = this@with.relationship.map { it.toBuilder() }.toMutableList()
-        name = this@with.name.map { it.toBuilder() }.toMutableList()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-        gender = this@with.gender
-        birthDate = this@with.birthDate?.toBuilder()
-        address = this@with.address.map { it.toBuilder() }.toMutableList()
-        photo = this@with.photo.map { it.toBuilder() }.toMutableList()
-        period = this@with.period?.toBuilder()
-        communication = this@with.communication.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(patient.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.relationship = relationship.mapToMutableList { it.toBuilder() }
+    builder.name = name.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.gender = gender
+    builder.birthDate = birthDate?.toBuilder()
+    builder.address = address.mapToMutableList { it.toBuilder() }
+    builder.photo = photo.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    builder.communication = communication.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * A language which may be used to communicate with the related person about the patient's health.
@@ -287,15 +286,14 @@ public data class RelatedPerson(
      */
     public val preferred: Boolean? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(language.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          preferred = this@with.preferred?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(language.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.preferred = preferred?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -360,8 +358,8 @@ public data class RelatedPerson(
       public fun build(): Communication =
         Communication(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           language = language.build(),
           preferred = preferred?.build(),
         )
@@ -562,21 +560,21 @@ public data class RelatedPerson(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
         patient = patient.build(),
-        relationship = relationship.map { it.build() },
-        name = name.map { it.build() },
-        telecom = telecom.map { it.build() },
+        relationship = relationship.mapToList { it.build() },
+        name = name.mapToList { it.build() },
+        telecom = telecom.mapToList { it.build() },
         gender = gender,
         birthDate = birthDate?.build(),
-        address = address.map { it.build() },
-        photo = photo.map { it.build() },
+        address = address.mapToList { it.build() },
+        photo = photo.mapToList { it.build() },
         period = period?.build(),
-        communication = communication.map { it.build() },
+        communication = communication.mapToList { it.build() },
       )
   }
 }

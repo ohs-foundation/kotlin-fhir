@@ -376,55 +376,54 @@ public data class ResearchDefinition(
    */
   public val outcome: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          population.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          name = this@with.name?.toBuilder()
-          title = this@with.title?.toBuilder()
-          shortTitle = this@with.shortTitle?.toBuilder()
-          subtitle = this@with.subtitle?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          subject = this@with.subject
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          comment = this@with.comment.map { it.toBuilder() }.toMutableList()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          usage = this@with.usage?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          approvalDate = this@with.approvalDate?.toBuilder()
-          lastReviewDate = this@with.lastReviewDate?.toBuilder()
-          effectivePeriod = this@with.effectivePeriod?.toBuilder()
-          topic = this@with.topic.map { it.toBuilder() }.toMutableList()
-          author = this@with.author.map { it.toBuilder() }.toMutableList()
-          editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-          reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-          endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-          relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-          library = this@with.library.map { it.toBuilder() }.toMutableList()
-          exposure = this@with.exposure?.toBuilder()
-          exposureAlternative = this@with.exposureAlternative?.toBuilder()
-          outcome = this@with.outcome?.toBuilder()
-        }
-    }
+        status,
+        population.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.shortTitle = shortTitle?.toBuilder()
+    builder.subtitle = subtitle?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.subject = subject
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.comment = comment.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.usage = usage?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.effectivePeriod = effectivePeriod?.toBuilder()
+    builder.topic = topic.mapToMutableList { it.toBuilder() }
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.editor = editor.mapToMutableList { it.toBuilder() }
+    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
+    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.library = library.mapToMutableList { it.toBuilder() }
+    builder.exposure = exposure?.toBuilder()
+    builder.exposureAlternative = exposureAlternative?.toBuilder()
+    builder.outcome = outcome?.toBuilder()
+    return builder
+  }
 
   public sealed interface Subject : FhirChoice {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -848,11 +847,11 @@ public data class ResearchDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -863,24 +862,24 @@ public data class ResearchDefinition(
         subject = subject,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        comment = comment.map { it.build() },
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        comment = comment.mapToList { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         usage = usage?.build(),
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.map { it.build() },
-        author = author.map { it.build() },
-        editor = editor.map { it.build() },
-        reviewer = reviewer.map { it.build() },
-        endorser = endorser.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
-        library = library.map { it.build() },
+        topic = topic.mapToList { it.build() },
+        author = author.mapToList { it.build() },
+        editor = editor.mapToList { it.build() },
+        reviewer = reviewer.mapToList { it.build() },
+        endorser = endorser.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        library = library.mapToList { it.build() },
         population = population.build(),
         exposure = exposure?.build(),
         exposureAlternative = exposureAlternative?.build(),

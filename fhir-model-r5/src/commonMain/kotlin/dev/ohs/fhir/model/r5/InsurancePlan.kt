@@ -201,33 +201,32 @@ public data class InsurancePlan(
   /** Details about an insurance plan. */
   public val plan: List<Plan> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        status = this@with.status
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        alias = this@with.alias.map { it.toBuilder() }.toMutableList()
-        period = this@with.period?.toBuilder()
-        ownedBy = this@with.ownedBy?.toBuilder()
-        administeredBy = this@with.administeredBy?.toBuilder()
-        coverageArea = this@with.coverageArea.map { it.toBuilder() }.toMutableList()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-        network = this@with.network.map { it.toBuilder() }.toMutableList()
-        coverage = this@with.coverage.map { it.toBuilder() }.toMutableList()
-        plan = this@with.plan.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    builder.ownedBy = ownedBy?.toBuilder()
+    builder.administeredBy = administeredBy?.toBuilder()
+    builder.coverageArea = coverageArea.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.network = network.mapToMutableList { it.toBuilder() }
+    builder.coverage = coverage.mapToMutableList { it.toBuilder() }
+    builder.plan = plan.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Details about the coverage offered by the insurance product. */
   @Serializable(with = InsurancePlanCoverageSerializer::class)
@@ -283,19 +282,18 @@ public data class InsurancePlan(
     /** Specific benefits under this type of coverage. */
     public val benefit: List<Benefit>,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            type.toBuilder(),
-            benefit.map { it.toBuilder() }.toMutableList(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            network = this@with.network.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          type.toBuilder(),
+          benefit.mapToMutableList { it.toBuilder() },
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.network = network.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Specific benefits under this type of coverage. */
     @Serializable(with = InsurancePlanCoverageBenefitSerializer::class)
@@ -344,16 +342,15 @@ public data class InsurancePlan(
       /** The specific limits on the benefit. */
       public val limit: List<Limit> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(type.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            requirement = this@with.requirement?.toBuilder()
-            limit = this@with.limit.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(type.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.requirement = requirement?.toBuilder()
+        builder.limit = limit.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** The specific limits on the benefit. */
       @Serializable(with = InsurancePlanCoverageBenefitLimitSerializer::class)
@@ -409,16 +406,15 @@ public data class InsurancePlan(
          */
         public val code: CodeableConcept? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              `value` = this@with.`value`?.toBuilder()
-              code = this@with.code?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.`value` = `value`?.toBuilder()
+          builder.code = code?.toBuilder()
+          return builder
+        }
 
         public class Builder() {
           /**
@@ -479,8 +475,8 @@ public data class InsurancePlan(
           public fun build(): Limit =
             Limit(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               `value` = `value`?.build(),
               code = code?.build(),
             )
@@ -540,11 +536,11 @@ public data class InsurancePlan(
         public fun build(): Benefit =
           Benefit(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
             requirement = requirement?.build(),
-            limit = limit.map { it.build() },
+            limit = limit.mapToList { it.build() },
           )
       }
     }
@@ -608,11 +604,11 @@ public data class InsurancePlan(
       public fun build(): Coverage =
         Coverage(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
-          network = network.map { it.build() },
-          benefit = benefit.map { it.build() },
+          network = network.mapToList { it.build() },
+          benefit = benefit.mapToList { it.build() },
         )
     }
   }
@@ -677,20 +673,19 @@ public data class InsurancePlan(
     /** Costs associated with the coverage provided by the product. */
     public val specificCost: List<SpecificCost> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          coverageArea = this@with.coverageArea.map { it.toBuilder() }.toMutableList()
-          network = this@with.network.map { it.toBuilder() }.toMutableList()
-          generalCost = this@with.generalCost.map { it.toBuilder() }.toMutableList()
-          specificCost = this@with.specificCost.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.coverageArea = coverageArea.mapToMutableList { it.toBuilder() }
+      builder.network = network.mapToMutableList { it.toBuilder() }
+      builder.generalCost = generalCost.mapToMutableList { it.toBuilder() }
+      builder.specificCost = specificCost.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Overall costs associated with the plan. */
     @Serializable(with = InsurancePlanPlanGeneralCostSerializer::class)
@@ -741,18 +736,17 @@ public data class InsurancePlan(
       /** Additional information about the general costs associated with this plan. */
       public val comment: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type?.toBuilder()
-            groupSize = this@with.groupSize?.toBuilder()
-            cost = this@with.cost?.toBuilder()
-            comment = this@with.comment?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type?.toBuilder()
+        builder.groupSize = groupSize?.toBuilder()
+        builder.cost = cost?.toBuilder()
+        builder.comment = comment?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -810,8 +804,8 @@ public data class InsurancePlan(
         public fun build(): GeneralCost =
           GeneralCost(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type?.build(),
             groupSize = groupSize?.build(),
             cost = cost?.build(),
@@ -868,15 +862,14 @@ public data class InsurancePlan(
       /** List of the specific benefits under this category of benefit. */
       public val benefit: List<Benefit> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(category.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            benefit = this@with.benefit.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(category.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.benefit = benefit.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** List of the specific benefits under this category of benefit. */
       @Serializable(with = InsurancePlanPlanSpecificCostBenefitSerializer::class)
@@ -926,15 +919,14 @@ public data class InsurancePlan(
         /** List of the costs associated with a specific benefit. */
         public val cost: List<Cost> = listOf(),
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(type.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              cost = this@with.cost.map { it.toBuilder() }.toMutableList()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(type.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.cost = cost.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         /** List of the costs associated with a specific benefit. */
         @Serializable(with = InsurancePlanPlanSpecificCostBenefitCostSerializer::class)
@@ -994,18 +986,16 @@ public data class InsurancePlan(
            */
           public val `value`: Quantity? = null,
         ) : BackboneElement() {
-          public fun toBuilder(): Builder =
-            with(this) {
-              Builder(type.toBuilder()).apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                applicability = this@with.applicability?.toBuilder()
-                qualifiers = this@with.qualifiers.map { it.toBuilder() }.toMutableList()
-                `value` = this@with.`value`?.toBuilder()
-              }
-            }
+          public fun toBuilder(): Builder {
+            val builder = Builder(type.toBuilder())
+            builder.id = id
+            builder.extension = extension.mapToMutableList { it.toBuilder() }
+            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.applicability = applicability?.toBuilder()
+            builder.qualifiers = qualifiers.mapToMutableList { it.toBuilder() }
+            builder.`value` = `value`?.toBuilder()
+            return builder
+          }
 
           public class Builder(
             /** Type of cost (copay; individual cap; family cap; coinsurance; deductible). */
@@ -1073,11 +1063,11 @@ public data class InsurancePlan(
             public fun build(): Cost =
               Cost(
                 id = id,
-                extension = extension.map { it.build() },
-                modifierExtension = modifierExtension.map { it.build() },
+                extension = extension.mapToList { it.build() },
+                modifierExtension = modifierExtension.mapToList { it.build() },
                 type = type.build(),
                 applicability = applicability?.build(),
-                qualifiers = qualifiers.map { it.build() },
+                qualifiers = qualifiers.mapToList { it.build() },
                 `value` = `value`?.build(),
               )
           }
@@ -1136,10 +1126,10 @@ public data class InsurancePlan(
           public fun build(): Benefit =
             Benefit(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               type = type.build(),
-              cost = cost.map { it.build() },
+              cost = cost.mapToList { it.build() },
             )
         }
       }
@@ -1197,10 +1187,10 @@ public data class InsurancePlan(
         public fun build(): SpecificCost =
           SpecificCost(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             category = category.build(),
-            benefit = benefit.map { it.build() },
+            benefit = benefit.mapToList { it.build() },
           )
       }
     }
@@ -1274,14 +1264,14 @@ public data class InsurancePlan(
       public fun build(): Plan =
         Plan(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
           type = type?.build(),
-          coverageArea = coverageArea.map { it.build() },
-          network = network.map { it.build() },
-          generalCost = generalCost.map { it.build() },
-          specificCost = specificCost.map { it.build() },
+          coverageArea = coverageArea.mapToList { it.build() },
+          network = network.mapToList { it.build() },
+          generalCost = generalCost.mapToList { it.build() },
+          specificCost = specificCost.mapToList { it.build() },
         )
     }
   }
@@ -1477,23 +1467,23 @@ public data class InsurancePlan(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        type = type.map { it.build() },
+        type = type.mapToList { it.build() },
         name = name?.build(),
-        alias = alias.map { it.build() },
+        alias = alias.mapToList { it.build() },
         period = period?.build(),
         ownedBy = ownedBy?.build(),
         administeredBy = administeredBy?.build(),
-        coverageArea = coverageArea.map { it.build() },
-        contact = contact.map { it.build() },
-        endpoint = endpoint.map { it.build() },
-        network = network.map { it.build() },
-        coverage = coverage.map { it.build() },
-        plan = plan.map { it.build() },
+        coverageArea = coverageArea.mapToList { it.build() },
+        contact = contact.mapToList { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
+        network = network.mapToList { it.build() },
+        coverage = coverage.mapToList { it.build() },
+        plan = plan.mapToList { it.build() },
       )
   }
 }

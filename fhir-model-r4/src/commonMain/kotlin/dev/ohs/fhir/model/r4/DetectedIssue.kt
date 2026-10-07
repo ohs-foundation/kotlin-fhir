@@ -192,30 +192,29 @@ public data class DetectedIssue(
    */
   public val mitigation: List<Mitigation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        code = this@with.code?.toBuilder()
-        severity = this@with.severity
-        patient = this@with.patient?.toBuilder()
-        identified = this@with.identified
-        author = this@with.author?.toBuilder()
-        implicated = this@with.implicated.map { it.toBuilder() }.toMutableList()
-        evidence = this@with.evidence.map { it.toBuilder() }.toMutableList()
-        detail = this@with.detail?.toBuilder()
-        reference = this@with.reference?.toBuilder()
-        mitigation = this@with.mitigation.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.code = code?.toBuilder()
+    builder.severity = severity
+    builder.patient = patient?.toBuilder()
+    builder.identified = identified
+    builder.author = author?.toBuilder()
+    builder.implicated = implicated.mapToMutableList { it.toBuilder() }
+    builder.evidence = evidence.mapToMutableList { it.toBuilder() }
+    builder.detail = detail?.toBuilder()
+    builder.reference = reference?.toBuilder()
+    builder.mitigation = mitigation.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Supporting evidence or manifestations that provide the basis for identifying the detected issue
@@ -268,16 +267,15 @@ public data class DetectedIssue(
      */
     public val detail: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code.map { it.toBuilder() }.toMutableList()
-          detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code.mapToMutableList { it.toBuilder() }
+      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -332,10 +330,10 @@ public data class DetectedIssue(
       public fun build(): Evidence =
         Evidence(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          code = code.map { it.build() },
-          detail = detail.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          code = code.mapToList { it.build() },
+          detail = detail.mapToList { it.build() },
         )
     }
   }
@@ -403,16 +401,15 @@ public data class DetectedIssue(
      */
     public val author: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(action.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          date = this@with.date?.toBuilder()
-          author = this@with.author?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(action.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.date = date?.toBuilder()
+      builder.author = author?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -479,8 +476,8 @@ public data class DetectedIssue(
       public fun build(): Mitigation =
         Mitigation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           action = action.build(),
           date = date?.build(),
           author = author?.build(),
@@ -691,21 +688,21 @@ public data class DetectedIssue(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         code = code?.build(),
         severity = severity,
         patient = patient?.build(),
         identified = identified,
         author = author?.build(),
-        implicated = implicated.map { it.build() },
-        evidence = evidence.map { it.build() },
+        implicated = implicated.mapToList { it.build() },
+        evidence = evidence.mapToList { it.build() },
         detail = detail?.build(),
         reference = reference?.build(),
-        mitigation = mitigation.map { it.build() },
+        mitigation = mitigation.mapToList { it.build() },
       )
   }
 

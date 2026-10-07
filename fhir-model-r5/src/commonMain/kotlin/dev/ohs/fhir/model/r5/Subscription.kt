@@ -237,38 +237,37 @@ public data class Subscription(
    */
   public val maxCount: PositiveInt? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          topic.toBuilder(),
-          channelType.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          end = this@with.end?.toBuilder()
-          managingEntity = this@with.managingEntity?.toBuilder()
-          reason = this@with.reason?.toBuilder()
-          filterBy = this@with.filterBy.map { it.toBuilder() }.toMutableList()
-          endpoint = this@with.endpoint?.toBuilder()
-          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-          heartbeatPeriod = this@with.heartbeatPeriod?.toBuilder()
-          timeout = this@with.timeout?.toBuilder()
-          contentType = this@with.contentType?.toBuilder()
-          content = this@with.content
-          maxCount = this@with.maxCount?.toBuilder()
-        }
-    }
+        status,
+        topic.toBuilder(),
+        channelType.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.end = end?.toBuilder()
+    builder.managingEntity = managingEntity?.toBuilder()
+    builder.reason = reason?.toBuilder()
+    builder.filterBy = filterBy.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint?.toBuilder()
+    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    builder.heartbeatPeriod = heartbeatPeriod?.toBuilder()
+    builder.timeout = timeout?.toBuilder()
+    builder.contentType = contentType?.toBuilder()
+    builder.content = content
+    builder.maxCount = maxCount?.toBuilder()
+    return builder
+  }
 
   /**
    * The filter properties to be applied to narrow the subscription topic stream. When multiple
@@ -340,17 +339,16 @@ public data class Subscription(
      */
     public val `value`: String,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(filterParameter.toBuilder(), `value`.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          resourceType = this@with.resourceType?.toBuilder()
-          comparator = this@with.comparator
-          modifier = this@with.modifier
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(filterParameter.toBuilder(), `value`.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.resourceType = resourceType?.toBuilder()
+      builder.comparator = comparator
+      builder.modifier = modifier
+      return builder
+    }
 
     public class Builder(
       /** The filter as defined in the `SubscriptionTopic.canFilterBy.filterParameter` element. */
@@ -425,8 +423,8 @@ public data class Subscription(
       public fun build(): FilterBy =
         FilterBy(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           resourceType = resourceType?.build(),
           filterParameter = filterParameter.build(),
           comparator = comparator,
@@ -489,14 +487,13 @@ public data class Subscription(
      */
     public val `value`: String,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(name.toBuilder(), `value`.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(name.toBuilder(), `value`.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -555,8 +552,8 @@ public data class Subscription(
       public fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name.build(),
           `value` = `value`.build(),
         )
@@ -794,21 +791,21 @@ public data class Subscription(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         name = name?.build(),
         status = status,
         topic = topic.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         end = end?.build(),
         managingEntity = managingEntity?.build(),
         reason = reason?.build(),
-        filterBy = filterBy.map { it.build() },
+        filterBy = filterBy.mapToList { it.build() },
         channelType = channelType.build(),
         endpoint = endpoint?.build(),
-        parameter = parameter.map { it.build() },
+        parameter = parameter.mapToList { it.build() },
         heartbeatPeriod = heartbeatPeriod?.build(),
         timeout = timeout?.build(),
         contentType = contentType?.build(),

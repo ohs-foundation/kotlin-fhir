@@ -223,34 +223,33 @@ public data class Invoice(
   /** Comments made about the invoice by the issuer, subject, or other participants. */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        cancelledReason = this@with.cancelledReason?.toBuilder()
-        type = this@with.type?.toBuilder()
-        subject = this@with.subject?.toBuilder()
-        recipient = this@with.recipient?.toBuilder()
-        date = this@with.date?.toBuilder()
-        participant = this@with.participant.map { it.toBuilder() }.toMutableList()
-        issuer = this@with.issuer?.toBuilder()
-        account = this@with.account?.toBuilder()
-        lineItem = this@with.lineItem.map { it.toBuilder() }.toMutableList()
-        totalPriceComponent = this@with.totalPriceComponent.map { it.toBuilder() }.toMutableList()
-        totalNet = this@with.totalNet?.toBuilder()
-        totalGross = this@with.totalGross?.toBuilder()
-        paymentTerms = this@with.paymentTerms?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.cancelledReason = cancelledReason?.toBuilder()
+    builder.type = type?.toBuilder()
+    builder.subject = subject?.toBuilder()
+    builder.recipient = recipient?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.participant = participant.mapToMutableList { it.toBuilder() }
+    builder.issuer = issuer?.toBuilder()
+    builder.account = account?.toBuilder()
+    builder.lineItem = lineItem.mapToMutableList { it.toBuilder() }
+    builder.totalPriceComponent = totalPriceComponent.mapToMutableList { it.toBuilder() }
+    builder.totalNet = totalNet?.toBuilder()
+    builder.totalGross = totalGross?.toBuilder()
+    builder.paymentTerms = paymentTerms?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Indicates who or what performed or participated in the charged service. */
   @Serializable(with = InvoiceParticipantSerializer::class)
@@ -301,15 +300,14 @@ public data class Invoice(
     /** The device, practitioner, etc. who performed or participated in the service. */
     public val actor: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(actor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          role = this@with.role?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(actor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.role = role?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The device, practitioner, etc. who performed or participated in the service. */
@@ -365,8 +363,8 @@ public data class Invoice(
       public fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           role = role?.build(),
           actor = actor.build(),
         )
@@ -433,16 +431,15 @@ public data class Invoice(
      */
     public val priceComponent: List<PriceComponent> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(chargeItem).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          sequence = this@with.sequence?.toBuilder()
-          priceComponent = this@with.priceComponent.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(chargeItem)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.sequence = sequence?.toBuilder()
+      builder.priceComponent = priceComponent.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * The price for a ChargeItem may be calculated as a base price with surcharges/deductions that
@@ -516,17 +513,16 @@ public data class Invoice(
        */
       public val amount: Money? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(type).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            code = this@with.code?.toBuilder()
-            factor = this@with.factor?.toBuilder()
-            amount = this@with.amount?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(type)
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.code = code?.toBuilder()
+        builder.factor = factor?.toBuilder()
+        builder.amount = amount?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** This code identifies the type of the component. */
@@ -603,8 +599,8 @@ public data class Invoice(
         public fun build(): PriceComponent =
           PriceComponent(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type,
             code = code?.build(),
             factor = factor?.build(),
@@ -700,11 +696,11 @@ public data class Invoice(
       public fun build(): LineItem =
         LineItem(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           sequence = sequence?.build(),
           chargeItem = chargeItem,
-          priceComponent = priceComponent.map { it.build() },
+          priceComponent = priceComponent.mapToList { it.build() },
         )
     }
   }
@@ -927,25 +923,25 @@ public data class Invoice(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         cancelledReason = cancelledReason?.build(),
         type = type?.build(),
         subject = subject?.build(),
         recipient = recipient?.build(),
         date = date?.build(),
-        participant = participant.map { it.build() },
+        participant = participant.mapToList { it.build() },
         issuer = issuer?.build(),
         account = account?.build(),
-        lineItem = lineItem.map { it.build() },
-        totalPriceComponent = totalPriceComponent.map { it.build() },
+        lineItem = lineItem.mapToList { it.build() },
+        totalPriceComponent = totalPriceComponent.mapToList { it.build() },
         totalNet = totalNet?.build(),
         totalGross = totalGross?.build(),
         paymentTerms = paymentTerms?.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

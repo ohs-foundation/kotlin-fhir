@@ -50,14 +50,13 @@ public data class Decimal(
   /** The actual value */
   @Serializable(with = FhirDecimalSerializer::class) public val `value`: FhirDecimal? = null,
 ) : PrimitiveType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    return builder
+  }
 
   public fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -90,7 +89,7 @@ public data class Decimal(
     public open fun build(): Decimal =
       Decimal(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`,
       )
   }

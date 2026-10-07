@@ -178,6 +178,7 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     // Generates a common interface for choice types
     FhirChoiceFileSpecGenerator.generate(packageName).writeTo(outputDir)
+    BuilderHelpersFileSpecGenerator.writeTo(outputDir, packageName)
 
     // Generate custom serializers
     val serializersPackageName = "$packageName.serializers"
@@ -187,6 +188,7 @@ abstract class FhirCodegenTask : DefaultTask() {
     FhirDateTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
 
     LazySerialDescriptorFileSpecGenerator.writeTo(outputDir, serializersPackageName)
+    SerializerHelpersFileSpecGenerator.writeTo(outputDir, serializersPackageName)
 
     // Search parameters: a shared `SearchParam` interface plus a per-resource container of typed
     // search parameters, generated from the `SearchParameter-*.json` definitions.

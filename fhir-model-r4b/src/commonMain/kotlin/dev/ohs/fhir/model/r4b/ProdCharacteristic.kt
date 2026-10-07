@@ -130,25 +130,24 @@ public data class ProdCharacteristic(
    */
   public val scoring: CodeableConcept? = null,
 ) : BackboneElement() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        height = this@with.height?.toBuilder()
-        width = this@with.width?.toBuilder()
-        depth = this@with.depth?.toBuilder()
-        weight = this@with.weight?.toBuilder()
-        nominalVolume = this@with.nominalVolume?.toBuilder()
-        externalDiameter = this@with.externalDiameter?.toBuilder()
-        shape = this@with.shape?.toBuilder()
-        color = this@with.color.map { it.toBuilder() }.toMutableList()
-        imprint = this@with.imprint.map { it.toBuilder() }.toMutableList()
-        image = this@with.image.map { it.toBuilder() }.toMutableList()
-        scoring = this@with.scoring?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.height = height?.toBuilder()
+    builder.width = width?.toBuilder()
+    builder.depth = depth?.toBuilder()
+    builder.weight = weight?.toBuilder()
+    builder.nominalVolume = nominalVolume?.toBuilder()
+    builder.externalDiameter = externalDiameter?.toBuilder()
+    builder.shape = shape?.toBuilder()
+    builder.color = color.mapToMutableList { it.toBuilder() }
+    builder.imprint = imprint.mapToMutableList { it.toBuilder() }
+    builder.image = image.mapToMutableList { it.toBuilder() }
+    builder.scoring = scoring?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -263,8 +262,8 @@ public data class ProdCharacteristic(
     public open fun build(): ProdCharacteristic =
       ProdCharacteristic(
         id = id,
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         height = height?.build(),
         width = width?.build(),
         depth = depth?.build(),
@@ -272,9 +271,9 @@ public data class ProdCharacteristic(
         nominalVolume = nominalVolume?.build(),
         externalDiameter = externalDiameter?.build(),
         shape = shape?.build(),
-        color = color.map { it.build() },
-        imprint = imprint.map { it.build() },
-        image = image.map { it.build() },
+        color = color.mapToList { it.build() },
+        imprint = imprint.mapToList { it.build() },
+        image = image.mapToList { it.build() },
         scoring = scoring?.build(),
       )
   }

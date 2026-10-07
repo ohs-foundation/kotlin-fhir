@@ -431,49 +431,48 @@ public data class Citation(
   /** The article or artifact being described. */
   public val citedArtifact: CitedArtifact? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        version = this@with.version?.toBuilder()
-        versionAlgorithm = this@with.versionAlgorithm
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        copyrightLabel = this@with.copyrightLabel?.toBuilder()
-        approvalDate = this@with.approvalDate?.toBuilder()
-        lastReviewDate = this@with.lastReviewDate?.toBuilder()
-        effectivePeriod = this@with.effectivePeriod?.toBuilder()
-        author = this@with.author.map { it.toBuilder() }.toMutableList()
-        editor = this@with.editor.map { it.toBuilder() }.toMutableList()
-        reviewer = this@with.reviewer.map { it.toBuilder() }.toMutableList()
-        endorser = this@with.endorser.map { it.toBuilder() }.toMutableList()
-        summary = this@with.summary.map { it.toBuilder() }.toMutableList()
-        classification = this@with.classification.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        currentState = this@with.currentState.map { it.toBuilder() }.toMutableList()
-        statusDate = this@with.statusDate.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        citedArtifact = this@with.citedArtifact?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.approvalDate = approvalDate?.toBuilder()
+    builder.lastReviewDate = lastReviewDate?.toBuilder()
+    builder.effectivePeriod = effectivePeriod?.toBuilder()
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.editor = editor.mapToMutableList { it.toBuilder() }
+    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
+    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
+    builder.summary = summary.mapToMutableList { it.toBuilder() }
+    builder.classification = classification.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.currentState = currentState.mapToMutableList { it.toBuilder() }
+    builder.statusDate = statusDate.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.citedArtifact = citedArtifact?.toBuilder()
+    return builder
+  }
 
   /** A human-readable display of key concepts to represent the citation. */
   @Serializable(with = CitationSummarySerializer::class)
@@ -520,15 +519,14 @@ public data class Citation(
     /** The human-readable display of the citation summary. */
     public val text: Markdown,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(text.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          style = this@with.style?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(text.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.style = style?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The human-readable display of the citation summary. */
@@ -580,8 +578,8 @@ public data class Citation(
       public fun build(): Summary =
         Summary(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           style = style?.build(),
           text = text.build(),
         )
@@ -633,16 +631,15 @@ public data class Citation(
     /** The specific classification value. */
     public val classifier: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          classifier = this@with.classifier.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -694,10 +691,10 @@ public data class Citation(
       public fun build(): Classification =
         Classification(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
-          classifier = classifier.map { it.build() },
+          classifier = classifier.mapToList { it.build() },
         )
     }
   }
@@ -756,15 +753,14 @@ public data class Citation(
      */
     public val period: Period,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(activity.toBuilder(), period.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `actual` = this@with.`actual`?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(activity.toBuilder(), period.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`actual` = `actual`?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The state or status of the citation record (that will be paired with the period). */
@@ -824,8 +820,8 @@ public data class Citation(
       public fun build(): StatusDate =
         StatusDate(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           activity = activity.build(),
           `actual` = `actual`?.build(),
           period = period.build(),
@@ -950,29 +946,28 @@ public data class Citation(
     /** Any additional information or content for the article or artifact. */
     public val note: List<Annotation> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          relatedIdentifier = this@with.relatedIdentifier.map { it.toBuilder() }.toMutableList()
-          dateAccessed = this@with.dateAccessed?.toBuilder()
-          version = this@with.version?.toBuilder()
-          currentState = this@with.currentState.map { it.toBuilder() }.toMutableList()
-          statusDate = this@with.statusDate.map { it.toBuilder() }.toMutableList()
-          title = this@with.title.map { it.toBuilder() }.toMutableList()
-          `abstract` = this@with.`abstract`.map { it.toBuilder() }.toMutableList()
-          part = this@with.part?.toBuilder()
-          relatesTo = this@with.relatesTo.map { it.toBuilder() }.toMutableList()
-          publicationForm = this@with.publicationForm.map { it.toBuilder() }.toMutableList()
-          webLocation = this@with.webLocation.map { it.toBuilder() }.toMutableList()
-          classification = this@with.classification.map { it.toBuilder() }.toMutableList()
-          contributorship = this@with.contributorship?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.relatedIdentifier = relatedIdentifier.mapToMutableList { it.toBuilder() }
+      builder.dateAccessed = dateAccessed?.toBuilder()
+      builder.version = version?.toBuilder()
+      builder.currentState = currentState.mapToMutableList { it.toBuilder() }
+      builder.statusDate = statusDate.mapToMutableList { it.toBuilder() }
+      builder.title = title.mapToMutableList { it.toBuilder() }
+      builder.`abstract` = `abstract`.mapToMutableList { it.toBuilder() }
+      builder.part = part?.toBuilder()
+      builder.relatesTo = relatesTo.mapToMutableList { it.toBuilder() }
+      builder.publicationForm = publicationForm.mapToMutableList { it.toBuilder() }
+      builder.webLocation = webLocation.mapToMutableList { it.toBuilder() }
+      builder.classification = classification.mapToMutableList { it.toBuilder() }
+      builder.contributorship = contributorship?.toBuilder()
+      builder.note = note.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** The defined version of the cited artifact. */
     @Serializable(with = CitationCitedArtifactVersionSerializer::class)
@@ -1025,15 +1020,14 @@ public data class Citation(
        */
       public val baseCitation: Reference? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(`value`.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            baseCitation = this@with.baseCitation?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(`value`.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.baseCitation = baseCitation?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** The version number or other version identifier. */
@@ -1091,8 +1085,8 @@ public data class Citation(
         public fun build(): Version =
           Version(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             `value` = `value`.build(),
             baseCitation = baseCitation?.build(),
           )
@@ -1153,15 +1147,14 @@ public data class Citation(
        */
       public val period: Period,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(activity.toBuilder(), period.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            `actual` = this@with.`actual`?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(activity.toBuilder(), period.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.`actual` = `actual`?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** A definition of the status associated with a date or period. */
@@ -1219,8 +1212,8 @@ public data class Citation(
         public fun build(): StatusDate =
           StatusDate(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             activity = activity.build(),
             `actual` = `actual`?.build(),
             period = period.build(),
@@ -1275,16 +1268,15 @@ public data class Citation(
       /** The title of the article or artifact. */
       public val text: Markdown,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(text.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type.map { it.toBuilder() }.toMutableList()
-            language = this@with.language?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(text.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type.mapToMutableList { it.toBuilder() }
+        builder.language = language?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** The title of the article or artifact. */
@@ -1339,9 +1331,9 @@ public data class Citation(
         public fun build(): Title =
           Title(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
-            type = type.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
+            type = type.mapToList { it.build() },
             language = language?.build(),
             text = text.build(),
           )
@@ -1405,17 +1397,16 @@ public data class Citation(
        */
       public val copyright: Markdown? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(text.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type?.toBuilder()
-            language = this@with.language?.toBuilder()
-            copyright = this@with.copyright?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(text.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type?.toBuilder()
+        builder.language = language?.toBuilder()
+        builder.copyright = copyright?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** Abstract content. */
@@ -1478,8 +1469,8 @@ public data class Citation(
         public fun build(): Abstract =
           Abstract(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type?.build(),
             language = language?.build(),
             text = text.build(),
@@ -1544,17 +1535,16 @@ public data class Citation(
        */
       public val baseCitation: Reference? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type?.toBuilder()
-            `value` = this@with.`value`?.toBuilder()
-            baseCitation = this@with.baseCitation?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type?.toBuilder()
+        builder.`value` = `value`?.toBuilder()
+        builder.baseCitation = baseCitation?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -1618,8 +1608,8 @@ public data class Citation(
         public fun build(): Part =
           Part(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type?.build(),
             `value` = `value`?.build(),
             baseCitation = baseCitation?.build(),
@@ -1717,21 +1707,20 @@ public data class Citation(
        */
       public val resourceReference: Reference? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(type).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            classifier = this@with.classifier.map { it.toBuilder() }.toMutableList()
-            label = this@with.label?.toBuilder()
-            display = this@with.display?.toBuilder()
-            citation = this@with.citation?.toBuilder()
-            document = this@with.document?.toBuilder()
-            resource = this@with.resource?.toBuilder()
-            resourceReference = this@with.resourceReference?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(type)
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+        builder.label = label?.toBuilder()
+        builder.display = display?.toBuilder()
+        builder.citation = citation?.toBuilder()
+        builder.document = document?.toBuilder()
+        builder.resource = resource?.toBuilder()
+        builder.resourceReference = resourceReference?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /** The type of relationship to the related artifact. */
@@ -1834,10 +1823,10 @@ public data class Citation(
         public fun build(): RelatesTo =
           RelatesTo(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type,
-            classifier = classifier.map { it.build() },
+            classifier = classifier.mapToList { it.build() },
             label = label?.build(),
             display = display?.build(),
             citation = citation?.build(),
@@ -1963,29 +1952,28 @@ public data class Citation(
        */
       public val copyright: Markdown? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            publishedIn = this@with.publishedIn?.toBuilder()
-            citedMedium = this@with.citedMedium?.toBuilder()
-            volume = this@with.volume?.toBuilder()
-            issue = this@with.issue?.toBuilder()
-            articleDate = this@with.articleDate?.toBuilder()
-            publicationDateText = this@with.publicationDateText?.toBuilder()
-            publicationDateSeason = this@with.publicationDateSeason?.toBuilder()
-            lastRevisionDate = this@with.lastRevisionDate?.toBuilder()
-            language = this@with.language.map { it.toBuilder() }.toMutableList()
-            accessionNumber = this@with.accessionNumber?.toBuilder()
-            pageString = this@with.pageString?.toBuilder()
-            firstPage = this@with.firstPage?.toBuilder()
-            lastPage = this@with.lastPage?.toBuilder()
-            pageCount = this@with.pageCount?.toBuilder()
-            copyright = this@with.copyright?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.publishedIn = publishedIn?.toBuilder()
+        builder.citedMedium = citedMedium?.toBuilder()
+        builder.volume = volume?.toBuilder()
+        builder.issue = issue?.toBuilder()
+        builder.articleDate = articleDate?.toBuilder()
+        builder.publicationDateText = publicationDateText?.toBuilder()
+        builder.publicationDateSeason = publicationDateSeason?.toBuilder()
+        builder.lastRevisionDate = lastRevisionDate?.toBuilder()
+        builder.language = language.mapToMutableList { it.toBuilder() }
+        builder.accessionNumber = accessionNumber?.toBuilder()
+        builder.pageString = pageString?.toBuilder()
+        builder.firstPage = firstPage?.toBuilder()
+        builder.lastPage = lastPage?.toBuilder()
+        builder.pageCount = pageCount?.toBuilder()
+        builder.copyright = copyright?.toBuilder()
+        return builder
+      }
 
       /** The collection the cited article or artifact is published in. */
       @Serializable(with = CitationCitedArtifactPublicationFormPublishedInSerializer::class)
@@ -2049,19 +2037,18 @@ public data class Citation(
         /** Geographic location of the publisher. */
         public val publisherLocation: String? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              type = this@with.type?.toBuilder()
-              identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-              title = this@with.title?.toBuilder()
-              publisher = this@with.publisher?.toBuilder()
-              publisherLocation = this@with.publisherLocation?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.type = type?.toBuilder()
+          builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+          builder.title = title?.toBuilder()
+          builder.publisher = publisher?.toBuilder()
+          builder.publisherLocation = publisherLocation?.toBuilder()
+          return builder
+        }
 
         public class Builder() {
           /**
@@ -2133,10 +2120,10 @@ public data class Citation(
           public fun build(): PublishedIn =
             PublishedIn(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               type = type?.build(),
-              identifier = identifier.map { it.build() },
+              identifier = identifier.mapToList { it.build() },
               title = title?.build(),
               publisher = publisher?.build(),
               publisherLocation = publisherLocation?.build(),
@@ -2276,8 +2263,8 @@ public data class Citation(
         public fun build(): PublicationForm =
           PublicationForm(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             publishedIn = publishedIn?.build(),
             citedMedium = citedMedium?.build(),
             volume = volume?.build(),
@@ -2286,7 +2273,7 @@ public data class Citation(
             publicationDateText = publicationDateText?.build(),
             publicationDateSeason = publicationDateSeason?.build(),
             lastRevisionDate = lastRevisionDate?.build(),
-            language = language.map { it.build() },
+            language = language.mapToList { it.build() },
             accessionNumber = accessionNumber?.build(),
             pageString = pageString?.build(),
             firstPage = firstPage?.build(),
@@ -2351,16 +2338,15 @@ public data class Citation(
        */
       public val url: Uri? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            classifier = this@with.classifier.map { it.toBuilder() }.toMutableList()
-            url = this@with.url?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+        builder.url = url?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -2421,9 +2407,9 @@ public data class Citation(
         public fun build(): WebLocation =
           WebLocation(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
-            classifier = classifier.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
+            classifier = classifier.mapToList { it.build() },
             url = url?.build(),
           )
       }
@@ -2482,17 +2468,16 @@ public data class Citation(
        */
       public val artifactAssessment: List<Reference> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type?.toBuilder()
-            classifier = this@with.classifier.map { it.toBuilder() }.toMutableList()
-            artifactAssessment = this@with.artifactAssessment.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type?.toBuilder()
+        builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+        builder.artifactAssessment = artifactAssessment.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -2553,11 +2538,11 @@ public data class Citation(
         public fun build(): Classification =
           Classification(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type?.build(),
-            classifier = classifier.map { it.build() },
-            artifactAssessment = artifactAssessment.map { it.build() },
+            classifier = classifier.mapToList { it.build() },
+            artifactAssessment = artifactAssessment.mapToList { it.build() },
           )
       }
     }
@@ -2625,17 +2610,16 @@ public data class Citation(
        */
       public val summary: List<Summary> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            complete = this@with.complete?.toBuilder()
-            entry = this@with.entry.map { it.toBuilder() }.toMutableList()
-            summary = this@with.summary.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.complete = complete?.toBuilder()
+        builder.entry = entry.mapToMutableList { it.toBuilder() }
+        builder.summary = summary.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /**
        * An individual entity named as a contributor, for example in the author list or contributor
@@ -2735,22 +2719,20 @@ public data class Citation(
          */
         public val rankingOrder: PositiveInt? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(contributor.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              forenameInitials = this@with.forenameInitials?.toBuilder()
-              affiliation = this@with.affiliation.map { it.toBuilder() }.toMutableList()
-              contributionType = this@with.contributionType.map { it.toBuilder() }.toMutableList()
-              role = this@with.role?.toBuilder()
-              contributionInstance =
-                this@with.contributionInstance.map { it.toBuilder() }.toMutableList()
-              correspondingContact = this@with.correspondingContact?.toBuilder()
-              rankingOrder = this@with.rankingOrder?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(contributor.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.forenameInitials = forenameInitials?.toBuilder()
+          builder.affiliation = affiliation.mapToMutableList { it.toBuilder() }
+          builder.contributionType = contributionType.mapToMutableList { it.toBuilder() }
+          builder.role = role?.toBuilder()
+          builder.contributionInstance = contributionInstance.mapToMutableList { it.toBuilder() }
+          builder.correspondingContact = correspondingContact?.toBuilder()
+          builder.rankingOrder = rankingOrder?.toBuilder()
+          return builder
+        }
 
         /** Contributions with accounting for time or number. */
         @Serializable(
@@ -2799,16 +2781,14 @@ public data class Citation(
           /** The time that the contribution was made. */
           public val time: DateTime? = null,
         ) : BackboneElement() {
-          public fun toBuilder(): Builder =
-            with(this) {
-              Builder(type.toBuilder()).apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                time = this@with.time?.toBuilder()
-              }
-            }
+          public fun toBuilder(): Builder {
+            val builder = Builder(type.toBuilder())
+            builder.id = id
+            builder.extension = extension.mapToMutableList { it.toBuilder() }
+            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.time = time?.toBuilder()
+            return builder
+          }
 
           public class Builder(
             /** The specific contribution. */
@@ -2861,8 +2841,8 @@ public data class Citation(
             public fun build(): ContributionInstance =
               ContributionInstance(
                 id = id,
-                extension = extension.map { it.build() },
-                modifierExtension = modifierExtension.map { it.build() },
+                extension = extension.mapToList { it.build() },
+                modifierExtension = modifierExtension.mapToList { it.build() },
                 type = type.build(),
                 time = time?.build(),
               )
@@ -2977,14 +2957,14 @@ public data class Citation(
           public fun build(): Entry =
             Entry(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               contributor = contributor.build(),
               forenameInitials = forenameInitials?.build(),
-              affiliation = affiliation.map { it.build() },
-              contributionType = contributionType.map { it.build() },
+              affiliation = affiliation.mapToList { it.build() },
+              contributionType = contributionType.mapToList { it.build() },
               role = role?.build(),
-              contributionInstance = contributionInstance.map { it.build() },
+              contributionInstance = contributionInstance.mapToList { it.build() },
               correspondingContact = correspondingContact?.build(),
               rankingOrder = rankingOrder?.build(),
             )
@@ -3048,17 +3028,16 @@ public data class Citation(
          */
         public val `value`: Markdown,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(`value`.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              type = this@with.type?.toBuilder()
-              style = this@with.style?.toBuilder()
-              source = this@with.source?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(`value`.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.type = type?.toBuilder()
+          builder.style = style?.toBuilder()
+          builder.source = source?.toBuilder()
+          return builder
+        }
 
         public class Builder(
           /**
@@ -3121,8 +3100,8 @@ public data class Citation(
           public fun build(): Summary =
             Summary(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               type = type?.build(),
               style = style?.build(),
               source = source?.build(),
@@ -3197,11 +3176,11 @@ public data class Citation(
         public fun build(): Contributorship =
           Contributorship(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             complete = complete?.build(),
-            entry = entry.map { it.build() },
-            summary = summary.map { it.build() },
+            entry = entry.mapToList { it.build() },
+            summary = summary.mapToList { it.build() },
           )
       }
     }
@@ -3342,23 +3321,23 @@ public data class Citation(
       public fun build(): CitedArtifact =
         CitedArtifact(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
-          relatedIdentifier = relatedIdentifier.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
+          relatedIdentifier = relatedIdentifier.mapToList { it.build() },
           dateAccessed = dateAccessed?.build(),
           version = version?.build(),
-          currentState = currentState.map { it.build() },
-          statusDate = statusDate.map { it.build() },
-          title = title.map { it.build() },
-          `abstract` = `abstract`.map { it.build() },
+          currentState = currentState.mapToList { it.build() },
+          statusDate = statusDate.mapToList { it.build() },
+          title = title.mapToList { it.build() },
+          `abstract` = `abstract`.mapToList { it.build() },
           part = part?.build(),
-          relatesTo = relatesTo.map { it.build() },
-          publicationForm = publicationForm.map { it.build() },
-          webLocation = webLocation.map { it.build() },
-          classification = classification.map { it.build() },
+          relatesTo = relatesTo.mapToList { it.build() },
+          publicationForm = publicationForm.mapToList { it.build() },
+          webLocation = webLocation.mapToList { it.build() },
+          classification = classification.mapToList { it.build() },
           contributorship = contributorship?.build(),
-          note = note.map { it.build() },
+          note = note.mapToList { it.build() },
         )
     }
   }
@@ -3807,11 +3786,11 @@ public data class Citation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -3820,26 +3799,26 @@ public data class Citation(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        author = author.map { it.build() },
-        editor = editor.map { it.build() },
-        reviewer = reviewer.map { it.build() },
-        endorser = endorser.map { it.build() },
-        summary = summary.map { it.build() },
-        classification = classification.map { it.build() },
-        note = note.map { it.build() },
-        currentState = currentState.map { it.build() },
-        statusDate = statusDate.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
+        author = author.mapToList { it.build() },
+        editor = editor.mapToList { it.build() },
+        reviewer = reviewer.mapToList { it.build() },
+        endorser = endorser.mapToList { it.build() },
+        summary = summary.mapToList { it.build() },
+        classification = classification.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        currentState = currentState.mapToList { it.build() },
+        statusDate = statusDate.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
         citedArtifact = citedArtifact?.build(),
       )
   }

@@ -245,35 +245,34 @@ public data class Condition(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(subject.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        clinicalStatus = this@with.clinicalStatus?.toBuilder()
-        verificationStatus = this@with.verificationStatus?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        severity = this@with.severity?.toBuilder()
-        code = this@with.code?.toBuilder()
-        bodySite = this@with.bodySite.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        onset = this@with.onset
-        abatement = this@with.abatement
-        recordedDate = this@with.recordedDate?.toBuilder()
-        recorder = this@with.recorder?.toBuilder()
-        asserter = this@with.asserter?.toBuilder()
-        stage = this@with.stage.map { it.toBuilder() }.toMutableList()
-        evidence = this@with.evidence.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(subject.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.clinicalStatus = clinicalStatus?.toBuilder()
+    builder.verificationStatus = verificationStatus?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.severity = severity?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.bodySite = bodySite.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.onset = onset
+    builder.abatement = abatement
+    builder.recordedDate = recordedDate?.toBuilder()
+    builder.recorder = recorder?.toBuilder()
+    builder.asserter = asserter?.toBuilder()
+    builder.stage = stage.mapToMutableList { it.toBuilder() }
+    builder.evidence = evidence.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Clinical stage or grade of a condition. May include formal severity assessments. */
   @Serializable(with = ConditionStageSerializer::class)
@@ -325,17 +324,16 @@ public data class Condition(
     /** The kind of staging, such as pathological or clinical staging. */
     public val type: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          summary = this@with.summary?.toBuilder()
-          assessment = this@with.assessment.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.summary = summary?.toBuilder()
+      builder.assessment = assessment.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -393,10 +391,10 @@ public data class Condition(
       public fun build(): Stage =
         Stage(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           summary = summary?.build(),
-          assessment = assessment.map { it.build() },
+          assessment = assessment.mapToList { it.build() },
           type = type?.build(),
         )
     }
@@ -450,16 +448,15 @@ public data class Condition(
     /** Links to other relevant information, including pathology reports. */
     public val detail: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code.map { it.toBuilder() }.toMutableList()
-          detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code.mapToMutableList { it.toBuilder() }
+      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -511,10 +508,10 @@ public data class Condition(
       public fun build(): Evidence =
         Evidence(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          code = code.map { it.build() },
-          detail = detail.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          code = code.mapToList { it.build() },
+          detail = detail.mapToList { it.build() },
         )
     }
   }
@@ -837,16 +834,16 @@ public data class Condition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         clinicalStatus = clinicalStatus?.build(),
         verificationStatus = verificationStatus?.build(),
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         severity = severity?.build(),
         code = code?.build(),
-        bodySite = bodySite.map { it.build() },
+        bodySite = bodySite.mapToList { it.build() },
         subject = subject.build(),
         encounter = encounter?.build(),
         onset = onset,
@@ -854,9 +851,9 @@ public data class Condition(
         recordedDate = recordedDate?.build(),
         recorder = recorder?.build(),
         asserter = asserter?.build(),
-        stage = stage.map { it.build() },
-        evidence = evidence.map { it.build() },
-        note = note.map { it.build() },
+        stage = stage.mapToList { it.build() },
+        evidence = evidence.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 }

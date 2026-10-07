@@ -36,64 +36,50 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object AddressSerializer : KSerializer<Address> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Address") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("use", KotlinString.serializer().descriptor, isOptional = true)
-      element("_use", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("text", KotlinString.serializer().descriptor, isOptional = true)
-      element("_text", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("line", listSerialDescriptor(KotlinString.serializer().descriptor), isOptional = true)
-      element(
+      optionalElement("use", KotlinString.serializer().descriptor)
+      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("type", KotlinString.serializer().descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("text", KotlinString.serializer().descriptor)
+      optionalElement("_text", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("line", stringNullableListSerializer.descriptor)
+      optionalElement(
         "_line",
-        listSerialDescriptor(lazyDescriptor { Element.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
       )
-      element("city", KotlinString.serializer().descriptor, isOptional = true)
-      element("_city", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("district", KotlinString.serializer().descriptor, isOptional = true)
-      element("_district", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("state", KotlinString.serializer().descriptor, isOptional = true)
-      element("_state", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("postalCode", KotlinString.serializer().descriptor, isOptional = true)
-      element("_postalCode", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("country", KotlinString.serializer().descriptor, isOptional = true)
-      element("_country", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("period", lazyDescriptor { Period.serializer().descriptor }, isOptional = true)
+      optionalElement("city", KotlinString.serializer().descriptor)
+      optionalElement("_city", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("district", KotlinString.serializer().descriptor)
+      optionalElement("_district", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("state", KotlinString.serializer().descriptor)
+      optionalElement("_state", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("postalCode", KotlinString.serializer().descriptor)
+      optionalElement("_postalCode", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("country", KotlinString.serializer().descriptor)
+      optionalElement("_country", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): Address =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<Address>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: Address) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Address {
+  override fun deserialize(decoder: Decoder): Address {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var use: KotlinString? = null
@@ -116,50 +102,126 @@ internal object AddressSerializer : KSerializer<Address> {
     var _country: Element? = null
     var period: Period? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> use = decoder.decodeStringElement(descriptor, i)
-        3 -> _use = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
-        4 -> type = decoder.decodeStringElement(descriptor, i)
-        5 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
-        6 -> text = decoder.decodeStringElement(descriptor, i)
-        7 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
-        8 -> line = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lineSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _use =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> text = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          _text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        8 ->
+          line =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
         9 ->
-          _line = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lineSer2, null)
-        10 -> city = decoder.decodeStringElement(descriptor, i)
-        11 -> _city = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
-        12 -> district = decoder.decodeStringElement(descriptor, i)
+          _line =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        10 -> city = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          _city =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        12 -> district = compositeDecoder.decodeStringElement(descriptor, i)
         13 ->
-          _district = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
-        14 -> state = decoder.decodeStringElement(descriptor, i)
+          _district =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        14 -> state = compositeDecoder.decodeStringElement(descriptor, i)
         15 ->
-          _state = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
-        16 -> postalCode = decoder.decodeStringElement(descriptor, i)
+          _state =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        16 -> postalCode = compositeDecoder.decodeStringElement(descriptor, i)
         17 ->
           _postalCode =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
-        18 -> country = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        18 -> country = compositeDecoder.decodeStringElement(descriptor, i)
         19 ->
-          _country = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+          _country =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         20 ->
-          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+          period =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Address: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return Address(
       id = id,
       extension = extension ?: listOf(),
-      use = Enumeration.of(use?.let { Address.AddressUse.fromCode(it) }, _use),
-      type = Enumeration.of(type?.let { Address.AddressType.fromCode(it) }, _type),
+      use = Enumeration.of(if (use != null) Address.AddressUse.fromCode(use) else null, _use),
+      type = Enumeration.of(if (type != null) Address.AddressType.fromCode(type) else null, _type),
       text = R5String.of(text, _text),
       line =
         (kotlin.collections.List(maxOf(line?.size ?: 0, _line?.size ?: 0)) { index ->
-          R5String.of(line?.getOrNull(index)?.let { it }, _line?.getOrNull(index))
+          R5String.of(line?.getOrNull(index), _line?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'line' on Address has neither a value nor an id/extension"
             )
@@ -173,66 +235,42 @@ internal object AddressSerializer : KSerializer<Address> {
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Address) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: Address) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.use?.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.use?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.use?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.use)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.type?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.type)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.text?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.text)
+    if (value.line.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
+        descriptor,
+        8,
+        stringNullableListSerializer,
+        value.line.map { it.value },
+      )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 9, value.line)
     }
-    ((value.type?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.useSer, it)
-    }
-    ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.useSer, it)
-    }
-    (value.line.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.lineSer, it)
-    }
-    (value.line.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.lineSer2, it)
-    }
-    ((value.city?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-    (value.city?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.useSer, it)
-    }
-    ((value.district?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-    (value.district?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13, Hoisted.useSer, it)
-    }
-    ((value.state?.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-    (value.state?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.useSer, it)
-    }
-    ((value.postalCode?.value))?.let { encoder.encodeStringElement(descriptor, 16, it) }
-    (value.postalCode?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 17, Hoisted.useSer, it)
-    }
-    ((value.country?.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
-    (value.country?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 19, Hoisted.useSer, it)
-    }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 20, Hoisted.periodSer, it) }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val useSer: KSerializer<Element> = Element.serializer()
-
-    public val lineSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val lineSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.lineSerInner).nullable)
-
-    public val lineSer2: KSerializer<List<Element?>> = ListSerializer((Hoisted.useSer).nullable)
-
-    public val periodSer: KSerializer<Period> = Period.serializer()
+    compositeEncoder.encodeStringIfNotNull(descriptor, 10, value.city?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11, value.city)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 12, value.district?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 13, value.district)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 14, value.state?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 15, value.state)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 16, value.postalCode?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 17, value.postalCode)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 18, value.country?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 19, value.country)
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 20, PeriodSerializer, value.period)
+    compositeEncoder.endStructure(descriptor)
   }
 }

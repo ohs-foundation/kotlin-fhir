@@ -143,24 +143,23 @@ public data class SubstanceReferenceInformation(
   /** Todo. */
   public val target: List<Target> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        comment = this@with.comment?.toBuilder()
-        gene = this@with.gene.map { it.toBuilder() }.toMutableList()
-        geneElement = this@with.geneElement.map { it.toBuilder() }.toMutableList()
-        classification = this@with.classification.map { it.toBuilder() }.toMutableList()
-        target = this@with.target.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.comment = comment?.toBuilder()
+    builder.gene = gene.mapToMutableList { it.toBuilder() }
+    builder.geneElement = geneElement.mapToMutableList { it.toBuilder() }
+    builder.classification = classification.mapToMutableList { it.toBuilder() }
+    builder.target = target.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Todo. */
   @Serializable(with = SubstanceReferenceInformationGeneSerializer::class)
@@ -209,17 +208,16 @@ public data class SubstanceReferenceInformation(
     /** Todo. */
     public val source: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          geneSequenceOrigin = this@with.geneSequenceOrigin?.toBuilder()
-          gene = this@with.gene?.toBuilder()
-          source = this@with.source.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.geneSequenceOrigin = geneSequenceOrigin?.toBuilder()
+      builder.gene = gene?.toBuilder()
+      builder.source = source.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -274,11 +272,11 @@ public data class SubstanceReferenceInformation(
       public fun build(): Gene =
         Gene(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           geneSequenceOrigin = geneSequenceOrigin?.build(),
           gene = gene?.build(),
-          source = source.map { it.build() },
+          source = source.mapToList { it.build() },
         )
     }
   }
@@ -330,17 +328,16 @@ public data class SubstanceReferenceInformation(
     /** Todo. */
     public val source: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          element = this@with.element?.toBuilder()
-          source = this@with.source.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.element = element?.toBuilder()
+      builder.source = source.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -395,11 +392,11 @@ public data class SubstanceReferenceInformation(
       public fun build(): GeneElement =
         GeneElement(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
           element = element?.build(),
-          source = source.map { it.build() },
+          source = source.mapToList { it.build() },
         )
     }
   }
@@ -453,18 +450,17 @@ public data class SubstanceReferenceInformation(
     /** Todo. */
     public val source: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          domain = this@with.domain?.toBuilder()
-          classification = this@with.classification?.toBuilder()
-          subtype = this@with.subtype.map { it.toBuilder() }.toMutableList()
-          source = this@with.source.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.domain = domain?.toBuilder()
+      builder.classification = classification?.toBuilder()
+      builder.subtype = subtype.mapToMutableList { it.toBuilder() }
+      builder.source = source.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -522,12 +518,12 @@ public data class SubstanceReferenceInformation(
       public fun build(): Classification =
         Classification(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           domain = domain?.build(),
           classification = classification?.build(),
-          subtype = subtype.map { it.build() },
-          source = source.map { it.build() },
+          subtype = subtype.mapToList { it.build() },
+          source = source.mapToList { it.build() },
         )
     }
   }
@@ -589,22 +585,21 @@ public data class SubstanceReferenceInformation(
     /** Todo. */
     public val source: List<Reference> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          target = this@with.target?.toBuilder()
-          type = this@with.type?.toBuilder()
-          interaction = this@with.interaction?.toBuilder()
-          organism = this@with.organism?.toBuilder()
-          organismType = this@with.organismType?.toBuilder()
-          amount = this@with.amount
-          amountType = this@with.amountType?.toBuilder()
-          source = this@with.source.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.target = target?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.interaction = interaction?.toBuilder()
+      builder.organism = organism?.toBuilder()
+      builder.organismType = organismType?.toBuilder()
+      builder.amount = amount
+      builder.amountType = amountType?.toBuilder()
+      builder.source = source.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Amount : FhirChoice {
       public fun asQuantity(): Quantity? = this as? Quantity
@@ -701,8 +696,8 @@ public data class SubstanceReferenceInformation(
       public fun build(): Target =
         Target(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           target = target?.build(),
           type = type?.build(),
           interaction = interaction?.build(),
@@ -710,7 +705,7 @@ public data class SubstanceReferenceInformation(
           organismType = organismType?.build(),
           amount = amount,
           amountType = amountType?.build(),
-          source = source.map { it.build() },
+          source = source.mapToList { it.build() },
         )
     }
   }
@@ -843,14 +838,14 @@ public data class SubstanceReferenceInformation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         comment = comment?.build(),
-        gene = gene.map { it.build() },
-        geneElement = geneElement.map { it.build() },
-        classification = classification.map { it.build() },
-        target = target.map { it.build() },
+        gene = gene.mapToList { it.build() },
+        geneElement = geneElement.mapToList { it.build() },
+        classification = classification.mapToList { it.build() },
+        target = target.mapToList { it.build() },
       )
   }
 }

@@ -257,43 +257,42 @@ public data class Media(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          content.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          modality = this@with.modality?.toBuilder()
-          view = this@with.view?.toBuilder()
-          subject = this@with.subject?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          created = this@with.created
-          issued = this@with.issued?.toBuilder()
-          `operator` = this@with.`operator`?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          bodySite = this@with.bodySite?.toBuilder()
-          deviceName = this@with.deviceName?.toBuilder()
-          device = this@with.device?.toBuilder()
-          height = this@with.height?.toBuilder()
-          width = this@with.width?.toBuilder()
-          frames = this@with.frames?.toBuilder()
-          duration = this@with.duration?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        content.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.modality = modality?.toBuilder()
+    builder.view = view?.toBuilder()
+    builder.subject = subject?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.created = created
+    builder.issued = issued?.toBuilder()
+    builder.`operator` = `operator`?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.bodySite = bodySite?.toBuilder()
+    builder.deviceName = deviceName?.toBuilder()
+    builder.device = device?.toBuilder()
+    builder.height = height?.toBuilder()
+    builder.width = width?.toBuilder()
+    builder.frames = frames?.toBuilder()
+    builder.duration = duration?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public sealed interface Created : FhirChoice {
     public fun asDateTime(): DateTime? = this as? DateTime
@@ -577,12 +576,12 @@ public data class Media(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
         type = type?.build(),
         modality = modality?.build(),
@@ -592,7 +591,7 @@ public data class Media(
         created = created,
         issued = issued?.build(),
         `operator` = `operator`?.build(),
-        reasonCode = reasonCode.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
         bodySite = bodySite?.build(),
         deviceName = deviceName?.build(),
         device = device?.build(),
@@ -601,7 +600,7 @@ public data class Media(
         frames = frames?.build(),
         duration = duration?.build(),
         content = content.build(),
-        note = note.map { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

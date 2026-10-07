@@ -190,33 +190,32 @@ public data class RegulatedAuthorization(
    */
   public val case: Case? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-        type = this@with.type?.toBuilder()
-        description = this@with.description?.toBuilder()
-        region = this@with.region.map { it.toBuilder() }.toMutableList()
-        status = this@with.status?.toBuilder()
-        statusDate = this@with.statusDate?.toBuilder()
-        validityPeriod = this@with.validityPeriod?.toBuilder()
-        indication = this@with.indication?.toBuilder()
-        intendedUse = this@with.intendedUse?.toBuilder()
-        basis = this@with.basis.map { it.toBuilder() }.toMutableList()
-        holder = this@with.holder?.toBuilder()
-        regulator = this@with.regulator?.toBuilder()
-        case = this@with.case?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.region = region.mapToMutableList { it.toBuilder() }
+    builder.status = status?.toBuilder()
+    builder.statusDate = statusDate?.toBuilder()
+    builder.validityPeriod = validityPeriod?.toBuilder()
+    builder.indication = indication?.toBuilder()
+    builder.intendedUse = intendedUse?.toBuilder()
+    builder.basis = basis.mapToMutableList { it.toBuilder() }
+    builder.holder = holder?.toBuilder()
+    builder.regulator = regulator?.toBuilder()
+    builder.case = case?.toBuilder()
+    return builder
+  }
 
   /**
    * The case or regulatory procedure for granting or amending a regulated authorization. An
@@ -280,19 +279,18 @@ public data class RegulatedAuthorization(
      */
     public val application: List<Case> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier?.toBuilder()
-          type = this@with.type?.toBuilder()
-          status = this@with.status?.toBuilder()
-          date = this@with.date
-          application = this@with.application.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.status = status?.toBuilder()
+      builder.date = date
+      builder.application = application.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Date : FhirChoice {
       public fun asPeriod(): Period? = this as? Period
@@ -379,13 +377,13 @@ public data class RegulatedAuthorization(
       public fun build(): Case =
         Case(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identifier = identifier?.build(),
           type = type?.build(),
           status = status?.build(),
           date = date,
-          application = application.map { it.build() },
+          application = application.mapToList { it.build() },
         )
     }
   }
@@ -572,20 +570,20 @@ public data class RegulatedAuthorization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        subject = subject.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        subject = subject.mapToList { it.build() },
         type = type?.build(),
         description = description?.build(),
-        region = region.map { it.build() },
+        region = region.mapToList { it.build() },
         status = status?.build(),
         statusDate = statusDate?.build(),
         validityPeriod = validityPeriod?.build(),
         indication = indication?.build(),
         intendedUse = intendedUse?.build(),
-        basis = basis.map { it.build() },
+        basis = basis.mapToList { it.build() },
         holder = holder?.build(),
         regulator = regulator?.build(),
         case = case?.build(),

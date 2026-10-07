@@ -197,34 +197,32 @@ public data class PackagedProductDefinition(
    */
   public val `package`: Package? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        type = this@with.type?.toBuilder()
-        packageFor = this@with.packageFor.map { it.toBuilder() }.toMutableList()
-        status = this@with.status?.toBuilder()
-        statusDate = this@with.statusDate?.toBuilder()
-        containedItemQuantity =
-          this@with.containedItemQuantity.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        legalStatusOfSupply = this@with.legalStatusOfSupply.map { it.toBuilder() }.toMutableList()
-        marketingStatus = this@with.marketingStatus.map { it.toBuilder() }.toMutableList()
-        characteristic = this@with.characteristic.map { it.toBuilder() }.toMutableList()
-        copackagedIndicator = this@with.copackagedIndicator?.toBuilder()
-        manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-        `package` = this@with.`package`?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.type = type?.toBuilder()
+    builder.packageFor = packageFor.mapToMutableList { it.toBuilder() }
+    builder.status = status?.toBuilder()
+    builder.statusDate = statusDate?.toBuilder()
+    builder.containedItemQuantity = containedItemQuantity.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.legalStatusOfSupply = legalStatusOfSupply.mapToMutableList { it.toBuilder() }
+    builder.marketingStatus = marketingStatus.mapToMutableList { it.toBuilder() }
+    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.copackagedIndicator = copackagedIndicator?.toBuilder()
+    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+    builder.`package` = `package`?.toBuilder()
+    return builder
+  }
 
   /** The legal status of supply of the packaged item as classified by the regulator. */
   @Serializable(with = PackagedProductDefinitionLegalStatusOfSupplySerializer::class)
@@ -277,16 +275,15 @@ public data class PackagedProductDefinition(
      */
     public val jurisdiction: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          jurisdiction = this@with.jurisdiction?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code?.toBuilder()
+      builder.jurisdiction = jurisdiction?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -344,8 +341,8 @@ public data class PackagedProductDefinition(
       public fun build(): LegalStatusOfSupply =
         LegalStatusOfSupply(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code?.build(),
           jurisdiction = jurisdiction?.build(),
         )
@@ -433,24 +430,23 @@ public data class PackagedProductDefinition(
      */
     public val `package`: List<Package> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          quantity = this@with.quantity?.toBuilder()
-          material = this@with.material.map { it.toBuilder() }.toMutableList()
-          alternateMaterial = this@with.alternateMaterial.map { it.toBuilder() }.toMutableList()
-          shelfLifeStorage = this@with.shelfLifeStorage.map { it.toBuilder() }.toMutableList()
-          manufacturer = this@with.manufacturer.map { it.toBuilder() }.toMutableList()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-          containedItem = this@with.containedItem.map { it.toBuilder() }.toMutableList()
-          `package` = this@with.`package`.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.quantity = quantity?.toBuilder()
+      builder.material = material.mapToMutableList { it.toBuilder() }
+      builder.alternateMaterial = alternateMaterial.mapToMutableList { it.toBuilder() }
+      builder.shelfLifeStorage = shelfLifeStorage.mapToMutableList { it.toBuilder() }
+      builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+      builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+      builder.containedItem = containedItem.mapToMutableList { it.toBuilder() }
+      builder.`package` = `package`.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Shelf Life and storage information. */
     @Serializable(with = PackagedProductDefinitionPackageShelfLifeStorageSerializer::class)
@@ -513,18 +509,18 @@ public data class PackagedProductDefinition(
        */
       public val specialPrecautionsForStorage: List<CodeableConcept> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            type = this@with.type?.toBuilder()
-            period = this@with.period
-            specialPrecautionsForStorage =
-              this@with.specialPrecautionsForStorage.map { it.toBuilder() }.toMutableList()
-          }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.type = type?.toBuilder()
+        builder.period = period
+        builder.specialPrecautionsForStorage = specialPrecautionsForStorage.mapToMutableList {
+          it.toBuilder()
         }
+        return builder
+      }
 
       public sealed interface Period : FhirChoice {
         public fun asDuration(): Duration? = this as? Duration
@@ -615,11 +611,11 @@ public data class PackagedProductDefinition(
         public fun build(): ShelfLifeStorage =
           ShelfLifeStorage(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type?.build(),
             period = period,
-            specialPrecautionsForStorage = specialPrecautionsForStorage.map { it.build() },
+            specialPrecautionsForStorage = specialPrecautionsForStorage.mapToList { it.build() },
           )
       }
     }
@@ -669,15 +665,14 @@ public data class PackagedProductDefinition(
       /** A value for the characteristic. */
       public val `value`: Value? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(type.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            `value` = this@with.`value`
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(type.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.`value` = `value`
+        return builder
+      }
 
       public sealed interface Value : FhirChoice {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -771,8 +766,8 @@ public data class PackagedProductDefinition(
         public fun build(): Property =
           Property(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
             `value` = `value`,
           )
@@ -831,15 +826,14 @@ public data class PackagedProductDefinition(
       /** The number of this type of item within this packaging. */
       public val amount: Quantity? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(item.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            amount = this@with.amount?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(item.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.amount = amount?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -899,8 +893,8 @@ public data class PackagedProductDefinition(
         public fun build(): ContainedItem =
           ContainedItem(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             item = item.build(),
             amount = amount?.build(),
           )
@@ -997,18 +991,18 @@ public data class PackagedProductDefinition(
       public fun build(): Package =
         Package(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          identifier = identifier.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          identifier = identifier.mapToList { it.build() },
           type = type?.build(),
           quantity = quantity?.build(),
-          material = material.map { it.build() },
-          alternateMaterial = alternateMaterial.map { it.build() },
-          shelfLifeStorage = shelfLifeStorage.map { it.build() },
-          manufacturer = manufacturer.map { it.build() },
-          `property` = `property`.map { it.build() },
-          containedItem = containedItem.map { it.build() },
-          `package` = `package`.map { it.build() },
+          material = material.mapToList { it.build() },
+          alternateMaterial = alternateMaterial.mapToList { it.build() },
+          shelfLifeStorage = shelfLifeStorage.mapToList { it.build() },
+          manufacturer = manufacturer.mapToList { it.build() },
+          `property` = `property`.mapToList { it.build() },
+          containedItem = containedItem.mapToList { it.build() },
+          `package` = `package`.mapToList { it.build() },
         )
     }
   }
@@ -1208,22 +1202,22 @@ public data class PackagedProductDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         name = name?.build(),
         type = type?.build(),
-        packageFor = packageFor.map { it.build() },
+        packageFor = packageFor.mapToList { it.build() },
         status = status?.build(),
         statusDate = statusDate?.build(),
-        containedItemQuantity = containedItemQuantity.map { it.build() },
+        containedItemQuantity = containedItemQuantity.mapToList { it.build() },
         description = description?.build(),
-        legalStatusOfSupply = legalStatusOfSupply.map { it.build() },
-        marketingStatus = marketingStatus.map { it.build() },
-        characteristic = characteristic.map { it.build() },
+        legalStatusOfSupply = legalStatusOfSupply.mapToList { it.build() },
+        marketingStatus = marketingStatus.mapToList { it.build() },
+        characteristic = characteristic.mapToList { it.build() },
         copackagedIndicator = copackagedIndicator?.build(),
-        manufacturer = manufacturer.map { it.build() },
+        manufacturer = manufacturer.mapToList { it.build() },
         `package` = `package`?.build(),
       )
   }

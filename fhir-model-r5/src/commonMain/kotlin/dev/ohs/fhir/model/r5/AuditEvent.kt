@@ -229,35 +229,34 @@ public data class AuditEvent(
    */
   public val entity: List<Entity> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          code.toBuilder(),
-          recorded.toBuilder(),
-          agent.map { it.toBuilder() }.toMutableList(),
-          source.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          action = this@with.action
-          severity = this@with.severity
-          occurred = this@with.occurred
-          outcome = this@with.outcome?.toBuilder()
-          authorization = this@with.authorization.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          patient = this@with.patient?.toBuilder()
-          encounter = this@with.encounter?.toBuilder()
-          entity = this@with.entity.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        code.toBuilder(),
+        recorded.toBuilder(),
+        agent.mapToMutableList { it.toBuilder() },
+        source.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.action = action
+    builder.severity = severity
+    builder.occurred = occurred
+    builder.outcome = outcome?.toBuilder()
+    builder.authorization = authorization.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.patient = patient?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.entity = entity.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Indicates whether the event succeeded or failed. A free text descripiton can be given in
@@ -318,15 +317,14 @@ public data class AuditEvent(
      */
     public val detail: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -389,10 +387,10 @@ public data class AuditEvent(
       public fun build(): Outcome =
         Outcome(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
-          detail = detail.map { it.build() },
+          detail = detail.mapToList { it.build() },
         )
     }
   }
@@ -497,21 +495,20 @@ public data class AuditEvent(
      */
     public val authorization: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(who.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          role = this@with.role.map { it.toBuilder() }.toMutableList()
-          requestor = this@with.requestor?.toBuilder()
-          location = this@with.location?.toBuilder()
-          policy = this@with.policy.map { it.toBuilder() }.toMutableList()
-          network = this@with.network
-          authorization = this@with.authorization.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(who.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.role = role.mapToMutableList { it.toBuilder() }
+      builder.requestor = requestor?.toBuilder()
+      builder.location = location?.toBuilder()
+      builder.policy = policy.mapToMutableList { it.toBuilder() }
+      builder.network = network
+      builder.authorization = authorization.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Network : FhirChoice {
       public fun asReference(): Reference? = this as? Reference
@@ -651,16 +648,16 @@ public data class AuditEvent(
       public fun build(): Agent =
         Agent(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type?.build(),
-          role = role.map { it.build() },
+          role = role.mapToList { it.build() },
           who = who.build(),
           requestor = requestor?.build(),
           location = location?.build(),
-          policy = policy.map { it.build() },
+          policy = policy.mapToList { it.build() },
           network = network,
-          authorization = authorization.map { it.build() },
+          authorization = authorization.mapToList { it.build() },
         )
     }
   }
@@ -715,16 +712,15 @@ public data class AuditEvent(
     /** Code specifying the type of source where event originated. */
     public val type: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(observer.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          site = this@with.site?.toBuilder()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(observer.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.site = site?.toBuilder()
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Identifier of the source where the event was detected. */
@@ -782,11 +778,11 @@ public data class AuditEvent(
       public fun build(): Source =
         Source(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           site = site?.build(),
           observer = observer.build(),
-          type = type.map { it.build() },
+          type = type.mapToList { it.build() },
         )
     }
   }
@@ -879,20 +875,19 @@ public data class AuditEvent(
      */
     public val agent: List<Agent> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          what = this@with.what?.toBuilder()
-          role = this@with.role?.toBuilder()
-          securityLabel = this@with.securityLabel.map { it.toBuilder() }.toMutableList()
-          query = this@with.query?.toBuilder()
-          detail = this@with.detail.map { it.toBuilder() }.toMutableList()
-          agent = this@with.agent.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.what = what?.toBuilder()
+      builder.role = role?.toBuilder()
+      builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
+      builder.query = query?.toBuilder()
+      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      builder.agent = agent.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Tagged value pairs for conveying additional information about the entity. */
     @Serializable(with = AuditEventEntityDetailSerializer::class)
@@ -939,18 +934,17 @@ public data class AuditEvent(
       /** The value of the extra detail. */
       public val `value`: Value,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              type.toBuilder(),
-              `value`,
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            type.toBuilder(),
+            `value`,
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public sealed interface Value : FhirChoice {
         public fun asQuantity(): Quantity? = this as? Quantity
@@ -1079,8 +1073,8 @@ public data class AuditEvent(
         public fun build(): Detail =
           Detail(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             type = type.build(),
             `value` = `value`,
           )
@@ -1185,14 +1179,14 @@ public data class AuditEvent(
       public fun build(): Entity =
         Entity(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           what = what?.build(),
           role = role?.build(),
-          securityLabel = securityLabel.map { it.build() },
+          securityLabel = securityLabel.mapToList { it.build() },
           query = query?.build(),
-          detail = detail.map { it.build() },
-          agent = agent.map { it.build() },
+          detail = detail.mapToList { it.build() },
+          agent = agent.mapToList { it.build() },
         )
     }
   }
@@ -1433,23 +1427,23 @@ public data class AuditEvent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        category = category.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        category = category.mapToList { it.build() },
         code = code.build(),
         action = action,
         severity = severity,
         occurred = occurred,
         recorded = recorded.build(),
         outcome = outcome?.build(),
-        authorization = authorization.map { it.build() },
-        basedOn = basedOn.map { it.build() },
+        authorization = authorization.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
         patient = patient?.build(),
         encounter = encounter?.build(),
-        agent = agent.map { it.build() },
+        agent = agent.mapToList { it.build() },
         source = source.build(),
-        entity = entity.map { it.build() },
+        entity = entity.mapToList { it.build() },
       )
   }
 

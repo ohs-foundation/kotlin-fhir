@@ -210,32 +210,31 @@ public data class SubstanceSourceMaterial(
   /** To do. */
   public val partDescription: List<PartDescription> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        sourceMaterialClass = this@with.sourceMaterialClass?.toBuilder()
-        sourceMaterialType = this@with.sourceMaterialType?.toBuilder()
-        sourceMaterialState = this@with.sourceMaterialState?.toBuilder()
-        organismId = this@with.organismId?.toBuilder()
-        organismName = this@with.organismName?.toBuilder()
-        parentSubstanceId = this@with.parentSubstanceId.map { it.toBuilder() }.toMutableList()
-        parentSubstanceName = this@with.parentSubstanceName.map { it.toBuilder() }.toMutableList()
-        countryOfOrigin = this@with.countryOfOrigin.map { it.toBuilder() }.toMutableList()
-        geographicalLocation = this@with.geographicalLocation.map { it.toBuilder() }.toMutableList()
-        developmentStage = this@with.developmentStage?.toBuilder()
-        fractionDescription = this@with.fractionDescription.map { it.toBuilder() }.toMutableList()
-        organism = this@with.organism?.toBuilder()
-        partDescription = this@with.partDescription.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.sourceMaterialClass = sourceMaterialClass?.toBuilder()
+    builder.sourceMaterialType = sourceMaterialType?.toBuilder()
+    builder.sourceMaterialState = sourceMaterialState?.toBuilder()
+    builder.organismId = organismId?.toBuilder()
+    builder.organismName = organismName?.toBuilder()
+    builder.parentSubstanceId = parentSubstanceId.mapToMutableList { it.toBuilder() }
+    builder.parentSubstanceName = parentSubstanceName.mapToMutableList { it.toBuilder() }
+    builder.countryOfOrigin = countryOfOrigin.mapToMutableList { it.toBuilder() }
+    builder.geographicalLocation = geographicalLocation.mapToMutableList { it.toBuilder() }
+    builder.developmentStage = developmentStage?.toBuilder()
+    builder.fractionDescription = fractionDescription.mapToMutableList { it.toBuilder() }
+    builder.organism = organism?.toBuilder()
+    builder.partDescription = partDescription.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Many complex materials are fractions of parts of plants, animals, or minerals. Fraction
@@ -296,16 +295,15 @@ public data class SubstanceSourceMaterial(
      */
     public val materialType: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          fraction = this@with.fraction?.toBuilder()
-          materialType = this@with.materialType?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.fraction = fraction?.toBuilder()
+      builder.materialType = materialType?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -363,8 +361,8 @@ public data class SubstanceSourceMaterial(
       public fun build(): FractionDescription =
         FractionDescription(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           fraction = fraction?.build(),
           materialType = materialType?.build(),
         )
@@ -443,22 +441,21 @@ public data class SubstanceSourceMaterial(
     /** 4.9.13.7.1 Kingdom (Conditional). */
     public val organismGeneral: OrganismGeneral? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          family = this@with.family?.toBuilder()
-          genus = this@with.genus?.toBuilder()
-          species = this@with.species?.toBuilder()
-          intraspecificType = this@with.intraspecificType?.toBuilder()
-          intraspecificDescription = this@with.intraspecificDescription?.toBuilder()
-          author = this@with.author.map { it.toBuilder() }.toMutableList()
-          hybrid = this@with.hybrid?.toBuilder()
-          organismGeneral = this@with.organismGeneral?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.family = family?.toBuilder()
+      builder.genus = genus?.toBuilder()
+      builder.species = species?.toBuilder()
+      builder.intraspecificType = intraspecificType?.toBuilder()
+      builder.intraspecificDescription = intraspecificDescription?.toBuilder()
+      builder.author = author.mapToMutableList { it.toBuilder() }
+      builder.hybrid = hybrid?.toBuilder()
+      builder.organismGeneral = organismGeneral?.toBuilder()
+      return builder
+    }
 
     /** 4.9.13.6.1 Author type (Conditional). */
     @Serializable(with = SubstanceSourceMaterialOrganismAuthorSerializer::class)
@@ -514,16 +511,15 @@ public data class SubstanceSourceMaterial(
        */
       public val authorDescription: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            authorType = this@with.authorType?.toBuilder()
-            authorDescription = this@with.authorDescription?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.authorType = authorType?.toBuilder()
+        builder.authorDescription = authorDescription?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -584,8 +580,8 @@ public data class SubstanceSourceMaterial(
         public fun build(): Author =
           Author(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             authorType = authorType?.build(),
             authorDescription = authorDescription?.build(),
           )
@@ -654,19 +650,18 @@ public data class SubstanceSourceMaterial(
       /** The hybrid type of an organism shall be specified. */
       public val hybridType: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            maternalOrganismId = this@with.maternalOrganismId?.toBuilder()
-            maternalOrganismName = this@with.maternalOrganismName?.toBuilder()
-            paternalOrganismId = this@with.paternalOrganismId?.toBuilder()
-            paternalOrganismName = this@with.paternalOrganismName?.toBuilder()
-            hybridType = this@with.hybridType?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.maternalOrganismId = maternalOrganismId?.toBuilder()
+        builder.maternalOrganismName = maternalOrganismName?.toBuilder()
+        builder.paternalOrganismId = paternalOrganismId?.toBuilder()
+        builder.paternalOrganismName = paternalOrganismName?.toBuilder()
+        builder.hybridType = hybridType?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -738,8 +733,8 @@ public data class SubstanceSourceMaterial(
         public fun build(): Hybrid =
           Hybrid(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             maternalOrganismId = maternalOrganismId?.build(),
             maternalOrganismName = maternalOrganismName?.build(),
             paternalOrganismId = paternalOrganismId?.build(),
@@ -798,18 +793,17 @@ public data class SubstanceSourceMaterial(
       /** The order of an organism shall be specified,. */
       public val order: CodeableConcept? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            kingdom = this@with.kingdom?.toBuilder()
-            phylum = this@with.phylum?.toBuilder()
-            `class` = this@with.`class`?.toBuilder()
-            order = this@with.order?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.kingdom = kingdom?.toBuilder()
+        builder.phylum = phylum?.toBuilder()
+        builder.`class` = `class`?.toBuilder()
+        builder.order = order?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -867,8 +861,8 @@ public data class SubstanceSourceMaterial(
         public fun build(): OrganismGeneral =
           OrganismGeneral(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             kingdom = kingdom?.build(),
             phylum = phylum?.build(),
             `class` = `class`?.build(),
@@ -956,14 +950,14 @@ public data class SubstanceSourceMaterial(
       public fun build(): Organism =
         Organism(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           family = family?.build(),
           genus = genus?.build(),
           species = species?.build(),
           intraspecificType = intraspecificType?.build(),
           intraspecificDescription = intraspecificDescription?.build(),
-          author = author.map { it.build() },
+          author = author.mapToList { it.build() },
           hybrid = hybrid?.build(),
           organismGeneral = organismGeneral?.build(),
         )
@@ -1018,16 +1012,15 @@ public data class SubstanceSourceMaterial(
      */
     public val partLocation: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          part = this@with.part?.toBuilder()
-          partLocation = this@with.partLocation?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.part = part?.toBuilder()
+      builder.partLocation = partLocation?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -1082,8 +1075,8 @@ public data class SubstanceSourceMaterial(
       public fun build(): PartDescription =
         PartDescription(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           part = part?.build(),
           partLocation = partLocation?.build(),
         )
@@ -1279,22 +1272,22 @@ public data class SubstanceSourceMaterial(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         sourceMaterialClass = sourceMaterialClass?.build(),
         sourceMaterialType = sourceMaterialType?.build(),
         sourceMaterialState = sourceMaterialState?.build(),
         organismId = organismId?.build(),
         organismName = organismName?.build(),
-        parentSubstanceId = parentSubstanceId.map { it.build() },
-        parentSubstanceName = parentSubstanceName.map { it.build() },
-        countryOfOrigin = countryOfOrigin.map { it.build() },
-        geographicalLocation = geographicalLocation.map { it.build() },
+        parentSubstanceId = parentSubstanceId.mapToList { it.build() },
+        parentSubstanceName = parentSubstanceName.mapToList { it.build() },
+        countryOfOrigin = countryOfOrigin.mapToList { it.build() },
+        geographicalLocation = geographicalLocation.mapToList { it.build() },
         developmentStage = developmentStage?.build(),
-        fractionDescription = fractionDescription.map { it.build() },
+        fractionDescription = fractionDescription.mapToList { it.build() },
         organism = organism?.build(),
-        partDescription = partDescription.map { it.build() },
+        partDescription = partDescription.mapToList { it.build() },
       )
   }
 }

@@ -235,37 +235,36 @@ public data class Goal(
    */
   public val outcomeReference: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          lifecycleStatus,
-          description.toBuilder(),
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          achievementStatus = this@with.achievementStatus?.toBuilder()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          priority = this@with.priority?.toBuilder()
-          start = this@with.start
-          target = this@with.target.map { it.toBuilder() }.toMutableList()
-          statusDate = this@with.statusDate?.toBuilder()
-          statusReason = this@with.statusReason?.toBuilder()
-          expressedBy = this@with.expressedBy?.toBuilder()
-          addresses = this@with.addresses.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          outcomeCode = this@with.outcomeCode.map { it.toBuilder() }.toMutableList()
-          outcomeReference = this@with.outcomeReference.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        lifecycleStatus,
+        description.toBuilder(),
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.achievementStatus = achievementStatus?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.priority = priority?.toBuilder()
+    builder.start = start
+    builder.target = target.mapToMutableList { it.toBuilder() }
+    builder.statusDate = statusDate?.toBuilder()
+    builder.statusReason = statusReason?.toBuilder()
+    builder.expressedBy = expressedBy?.toBuilder()
+    builder.addresses = addresses.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.outcomeCode = outcomeCode.mapToMutableList { it.toBuilder() }
+    builder.outcomeReference = outcomeReference.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Indicates what should be done by when. */
   @Serializable(with = GoalTargetSerializer::class)
@@ -326,17 +325,16 @@ public data class Goal(
     /** Indicates either the date or the duration after start by which the goal should be met. */
     public val due: Due? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          measure = this@with.measure?.toBuilder()
-          detail = this@with.detail
-          due = this@with.due
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.measure = measure?.toBuilder()
+      builder.detail = detail
+      builder.due = due
+      return builder
+    }
 
     public sealed interface Detail : FhirChoice {
       public fun asQuantity(): Quantity? = this as? Quantity
@@ -478,8 +476,8 @@ public data class Goal(
       public fun build(): Target =
         Target(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           measure = measure?.build(),
           detail = detail,
           due = due,
@@ -739,25 +737,25 @@ public data class Goal(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         lifecycleStatus = lifecycleStatus,
         achievementStatus = achievementStatus?.build(),
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         priority = priority?.build(),
         description = description.build(),
         subject = subject.build(),
         start = start,
-        target = target.map { it.build() },
+        target = target.mapToList { it.build() },
         statusDate = statusDate?.build(),
         statusReason = statusReason?.build(),
         expressedBy = expressedBy?.build(),
-        addresses = addresses.map { it.build() },
-        note = note.map { it.build() },
-        outcomeCode = outcomeCode.map { it.build() },
-        outcomeReference = outcomeReference.map { it.build() },
+        addresses = addresses.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        outcomeCode = outcomeCode.mapToList { it.build() },
+        outcomeReference = outcomeReference.mapToList { it.build() },
       )
   }
 

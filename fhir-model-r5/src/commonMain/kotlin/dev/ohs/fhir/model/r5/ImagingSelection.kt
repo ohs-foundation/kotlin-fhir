@@ -236,38 +236,37 @@ public data class ImagingSelection(
   /** Each imaging selection includes one or more selected DICOM SOP instances. */
   public val instance: List<Instance> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          code.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject?.toBuilder()
-          issued = this@with.issued?.toBuilder()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          studyUid = this@with.studyUid?.toBuilder()
-          derivedFrom = this@with.derivedFrom.map { it.toBuilder() }.toMutableList()
-          endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-          seriesUid = this@with.seriesUid?.toBuilder()
-          seriesNumber = this@with.seriesNumber?.toBuilder()
-          frameOfReferenceUid = this@with.frameOfReferenceUid?.toBuilder()
-          bodySite = this@with.bodySite?.toBuilder()
-          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-          instance = this@with.instance.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        code.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.issued = issued?.toBuilder()
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.studyUid = studyUid?.toBuilder()
+    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.seriesUid = seriesUid?.toBuilder()
+    builder.seriesNumber = seriesNumber?.toBuilder()
+    builder.frameOfReferenceUid = frameOfReferenceUid?.toBuilder()
+    builder.bodySite = bodySite?.toBuilder()
+    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.instance = instance.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Selector of the instances – human or machine. */
   @Serializable(with = ImagingSelectionPerformerSerializer::class)
@@ -314,16 +313,15 @@ public data class ImagingSelection(
     /** Author – human or machine. */
     public val actor: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function?.toBuilder()
-          actor = this@with.actor?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function?.toBuilder()
+      builder.actor = actor?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -375,8 +373,8 @@ public data class ImagingSelection(
       public fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           function = function?.build(),
           actor = actor?.build(),
         )
@@ -469,19 +467,18 @@ public data class ImagingSelection(
      */
     public val imageRegion3D: List<ImageRegion3D> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(uid.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          number = this@with.number?.toBuilder()
-          sopClass = this@with.sopClass?.toBuilder()
-          subset = this@with.subset.map { it.toBuilder() }.toMutableList()
-          imageRegion2D = this@with.imageRegion2D.map { it.toBuilder() }.toMutableList()
-          imageRegion3D = this@with.imageRegion3D.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(uid.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.number = number?.toBuilder()
+      builder.sopClass = sopClass?.toBuilder()
+      builder.subset = subset.mapToMutableList { it.toBuilder() }
+      builder.imageRegion2D = imageRegion2D.mapToMutableList { it.toBuilder() }
+      builder.imageRegion3D = imageRegion3D.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * Each imaging selection instance or frame list might includes an image region, specified by a
@@ -546,18 +543,17 @@ public data class ImagingSelection(
        */
       public val coordinate: List<Decimal>,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              regionType,
-              coordinate.map { it.toBuilder() }.toMutableList(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            regionType,
+            coordinate.mapToMutableList { it.toBuilder() },
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -622,10 +618,10 @@ public data class ImagingSelection(
         public fun build(): ImageRegion2D =
           ImageRegion2D(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             regionType = regionType,
-            coordinate = coordinate.map { it.build() },
+            coordinate = coordinate.mapToList { it.build() },
           )
       }
     }
@@ -690,18 +686,17 @@ public data class ImagingSelection(
        */
       public val coordinate: List<Decimal>,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              regionType,
-              coordinate.map { it.toBuilder() }.toMutableList(),
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-        }
+            regionType,
+            coordinate.mapToMutableList { it.toBuilder() },
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       public class Builder(
         /**
@@ -765,10 +760,10 @@ public data class ImagingSelection(
         public fun build(): ImageRegion3D =
           ImageRegion3D(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             regionType = regionType,
-            coordinate = coordinate.map { it.build() },
+            coordinate = coordinate.mapToList { it.build() },
           )
       }
     }
@@ -868,14 +863,14 @@ public data class ImagingSelection(
       public fun build(): Instance =
         Instance(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           uid = uid.build(),
           number = number?.build(),
           sopClass = sopClass?.build(),
-          subset = subset.map { it.build() },
-          imageRegion2D = imageRegion2D.map { it.build() },
-          imageRegion3D = imageRegion3D.map { it.build() },
+          subset = subset.mapToList { it.build() },
+          imageRegion2D = imageRegion2D.mapToList { it.build() },
+          imageRegion3D = imageRegion3D.mapToList { it.build() },
         )
     }
   }
@@ -1111,26 +1106,26 @@ public data class ImagingSelection(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         subject = subject?.build(),
         issued = issued?.build(),
-        performer = performer.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        category = category.map { it.build() },
+        performer = performer.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        category = category.mapToList { it.build() },
         code = code.build(),
         studyUid = studyUid?.build(),
-        derivedFrom = derivedFrom.map { it.build() },
-        endpoint = endpoint.map { it.build() },
+        derivedFrom = derivedFrom.mapToList { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
         seriesUid = seriesUid?.build(),
         seriesNumber = seriesNumber?.build(),
         frameOfReferenceUid = frameOfReferenceUid?.build(),
         bodySite = bodySite?.build(),
-        focus = focus.map { it.build() },
-        instance = instance.map { it.build() },
+        focus = focus.mapToList { it.build() },
+        instance = instance.mapToList { it.build() },
       )
   }
 

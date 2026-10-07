@@ -26,6 +26,7 @@ import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
+import dev.ohs.fhir.codegen.serializer.buildListSerializerProperty
 
 /** Generates `FhirDecimalSerializer` that serializes `FhirDecimal` to unquoted JSON literals. */
 object FhirDecimalSerializerFileSpecGenerator {
@@ -103,6 +104,7 @@ object FhirDecimalSerializerFileSpecGenerator {
               )
               .build()
           )
+          .addProperty(buildListSerializerProperty(fhirDecimal, nullableElement = true))
           .addFunction(serializeFn)
           .addFunction(deserializeFn)
           .build()

@@ -170,32 +170,31 @@ public data class Slot(
    */
   public val comment: String? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          schedule.toBuilder(),
-          status,
-          start.toBuilder(),
-          end.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          serviceCategory = this@with.serviceCategory.map { it.toBuilder() }.toMutableList()
-          serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
-          specialty = this@with.specialty.map { it.toBuilder() }.toMutableList()
-          appointmentType = this@with.appointmentType.map { it.toBuilder() }.toMutableList()
-          overbooked = this@with.overbooked?.toBuilder()
-          comment = this@with.comment?.toBuilder()
-        }
-    }
+        schedule.toBuilder(),
+        status,
+        start.toBuilder(),
+        end.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.serviceCategory = serviceCategory.mapToMutableList { it.toBuilder() }
+    builder.serviceType = serviceType.mapToMutableList { it.toBuilder() }
+    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.appointmentType = appointmentType.mapToMutableList { it.toBuilder() }
+    builder.overbooked = overbooked?.toBuilder()
+    builder.comment = comment?.toBuilder()
+    return builder
+  }
 
   public class Builder(
     /** The schedule resource that this slot defines an interval of status information. */
@@ -360,14 +359,14 @@ public data class Slot(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        serviceCategory = serviceCategory.map { it.build() },
-        serviceType = serviceType.map { it.build() },
-        specialty = specialty.map { it.build() },
-        appointmentType = appointmentType.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        serviceCategory = serviceCategory.mapToList { it.build() },
+        serviceType = serviceType.mapToList { it.build() },
+        specialty = specialty.mapToList { it.build() },
+        appointmentType = appointmentType.mapToList { it.build() },
         schedule = schedule.build(),
         status = status,
         start = start.build(),

@@ -25,6 +25,7 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
+import dev.ohs.fhir.codegen.serializer.buildListSerializerProperty
 import kotlinx.datetime.LocalTime
 
 /**
@@ -33,6 +34,8 @@ import kotlinx.datetime.LocalTime
  */
 object LocalTimeSerializerFileSpecGenerator {
   fun generate(packageName: String): FileSpec {
+    val kSerializer = ClassName("kotlinx.serialization", "KSerializer")
+    val localTimeClassName = LocalTime::class.asClassName()
     return FileSpec.builder(packageName, "LocalTimeSerializer")
       .addType(
         TypeSpec.objectBuilder("LocalTimeSerializer")
@@ -41,10 +44,7 @@ object LocalTimeSerializerFileSpecGenerator {
             "A Serializer for `LocalTime` that always include seconds, even if they are zero.\n"
           )
           .addKdoc("Fractional parts of the second are included if non-zero.")
-          .addSuperinterface(
-            ClassName("kotlinx.serialization", "KSerializer")
-              .parameterizedBy(LocalTime::class.asClassName())
-          )
+          .addSuperinterface(kSerializer.parameterizedBy(localTimeClassName))
           .addProperty(
             PropertySpec.builder(
                 "descriptor",
@@ -62,14 +62,15 @@ object LocalTimeSerializerFileSpecGenerator {
               )
               .build()
           )
+          .addProperty(buildListSerializerProperty(localTimeClassName, nullableElement = true))
           .addFunction(
             FunSpec.builder("serialize")
               .addModifiers(KModifier.OVERRIDE)
               .addParameter("encoder", ClassName("kotlinx.serialization.encoding", "Encoder"))
-              .addParameter("value", LocalTime::class.asClassName())
+              .addParameter("value", localTimeClassName)
               .addStatement(
                 "encoder.encodeString(%T.Formats.ISO.format(value))",
-                ClassName("kotlinx.datetime", "LocalTime"),
+                localTimeClassName,
               )
               .build()
           )
@@ -79,9 +80,9 @@ object LocalTimeSerializerFileSpecGenerator {
               .addParameter("decoder", ClassName("kotlinx.serialization.encoding", "Decoder"))
               .addStatement(
                 "return %T.parse(decoder.decodeString())",
-                ClassName("kotlinx.datetime", "LocalTime"),
+                localTimeClassName,
               )
-              .returns(LocalTime::class.asClassName())
+              .returns(localTimeClassName)
               .build()
           )
           .build()

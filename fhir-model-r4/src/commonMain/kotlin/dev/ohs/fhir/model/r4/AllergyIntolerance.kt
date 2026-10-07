@@ -287,34 +287,33 @@ public data class AllergyIntolerance(
   /** Details about each adverse reaction event linked to exposure to the identified substance. */
   public val reaction: List<Reaction> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(patient.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        clinicalStatus = this@with.clinicalStatus?.toBuilder()
-        verificationStatus = this@with.verificationStatus?.toBuilder()
-        type = this@with.type
-        category = this@with.category.toMutableList()
-        criticality = this@with.criticality
-        code = this@with.code?.toBuilder()
-        encounter = this@with.encounter?.toBuilder()
-        onset = this@with.onset
-        recordedDate = this@with.recordedDate?.toBuilder()
-        recorder = this@with.recorder?.toBuilder()
-        asserter = this@with.asserter?.toBuilder()
-        lastOccurrence = this@with.lastOccurrence?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        reaction = this@with.reaction.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(patient.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.clinicalStatus = clinicalStatus?.toBuilder()
+    builder.verificationStatus = verificationStatus?.toBuilder()
+    builder.type = type
+    builder.category = category.toMutableList()
+    builder.criticality = criticality
+    builder.code = code?.toBuilder()
+    builder.encounter = encounter?.toBuilder()
+    builder.onset = onset
+    builder.recordedDate = recordedDate?.toBuilder()
+    builder.recorder = recorder?.toBuilder()
+    builder.asserter = asserter?.toBuilder()
+    builder.lastOccurrence = lastOccurrence?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.reaction = reaction.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Details about each adverse reaction event linked to exposure to the identified substance. */
   @Serializable(with = AllergyIntoleranceReactionSerializer::class)
@@ -425,20 +424,19 @@ public data class AllergyIntolerance(
      */
     public val note: List<Annotation> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(manifestation.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          substance = this@with.substance?.toBuilder()
-          description = this@with.description?.toBuilder()
-          onset = this@with.onset?.toBuilder()
-          severity = this@with.severity
-          exposureRoute = this@with.exposureRoute?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(manifestation.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.substance = substance?.toBuilder()
+      builder.description = description?.toBuilder()
+      builder.onset = onset?.toBuilder()
+      builder.severity = severity
+      builder.exposureRoute = exposureRoute?.toBuilder()
+      builder.note = note.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /**
@@ -561,15 +559,15 @@ public data class AllergyIntolerance(
       public fun build(): Reaction =
         Reaction(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           substance = substance?.build(),
-          manifestation = manifestation.map { it.build() },
+          manifestation = manifestation.mapToList { it.build() },
           description = description?.build(),
           onset = onset?.build(),
           severity = severity,
           exposureRoute = exposureRoute?.build(),
-          note = note.map { it.build() },
+          note = note.mapToList { it.build() },
         )
     }
   }
@@ -897,10 +895,10 @@ public data class AllergyIntolerance(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         clinicalStatus = clinicalStatus?.build(),
         verificationStatus = verificationStatus?.build(),
         type = type,
@@ -914,8 +912,8 @@ public data class AllergyIntolerance(
         recorder = recorder?.build(),
         asserter = asserter?.build(),
         lastOccurrence = lastOccurrence?.build(),
-        note = note.map { it.build() },
-        reaction = reaction.map { it.build() },
+        note = note.mapToList { it.build() },
+        reaction = reaction.mapToList { it.build() },
       )
   }
 

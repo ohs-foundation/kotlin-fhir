@@ -65,14 +65,13 @@ public data class Extension(
    */
   public val `value`: Value? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(url).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(url)
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    return builder
+  }
 
   public sealed interface Value : FhirChoice {
     public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
@@ -430,7 +429,7 @@ public data class Extension(
     public open fun build(): Extension =
       Extension(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         url = url,
         `value` = `value`,
       )

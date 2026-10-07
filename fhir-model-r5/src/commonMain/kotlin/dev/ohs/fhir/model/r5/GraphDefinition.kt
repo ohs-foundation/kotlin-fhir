@@ -321,41 +321,40 @@ public data class GraphDefinition(
   /** Links this graph makes rules about. */
   public val link: List<Link> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          name.toBuilder(),
-          status,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          versionAlgorithm = this@with.versionAlgorithm
-          title = this@with.title?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          copyright = this@with.copyright?.toBuilder()
-          copyrightLabel = this@with.copyrightLabel?.toBuilder()
-          start = this@with.start?.toBuilder()
-          node = this@with.node.map { it.toBuilder() }.toMutableList()
-          link = this@with.link.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        name.toBuilder(),
+        status,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.copyrightLabel = copyrightLabel?.toBuilder()
+    builder.start = start?.toBuilder()
+    builder.node = node.mapToMutableList { it.toBuilder() }
+    builder.link = link.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Potential target for the link. */
   @Serializable(with = GraphDefinitionNodeSerializer::class)
@@ -406,20 +405,19 @@ public data class GraphDefinition(
     /** Profile for the target resource. */
     public val profile: Canonical? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            nodeId.toBuilder(),
-            type,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            description = this@with.description?.toBuilder()
-            profile = this@with.profile?.toBuilder()
-          }
-      }
+          nodeId.toBuilder(),
+          type,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.profile = profile?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Internal ID of node - target for link references. */
@@ -476,8 +474,8 @@ public data class GraphDefinition(
       public fun build(): Node =
         Node(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           nodeId = nodeId.build(),
           description = description?.build(),
           type = type,
@@ -555,21 +553,20 @@ public data class GraphDefinition(
     /** Compartment Consistency Rules. */
     public val compartment: List<Compartment> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(sourceId.toBuilder(), targetId.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          min = this@with.min?.toBuilder()
-          max = this@with.max?.toBuilder()
-          path = this@with.path?.toBuilder()
-          sliceName = this@with.sliceName?.toBuilder()
-          params = this@with.params?.toBuilder()
-          compartment = this@with.compartment.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(sourceId.toBuilder(), targetId.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.description = description?.toBuilder()
+      builder.min = min?.toBuilder()
+      builder.max = max?.toBuilder()
+      builder.path = path?.toBuilder()
+      builder.sliceName = sliceName?.toBuilder()
+      builder.params = params?.toBuilder()
+      builder.compartment = compartment.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** Compartment Consistency Rules. */
     @Serializable(with = GraphDefinitionLinkCompartmentSerializer::class)
@@ -627,21 +624,20 @@ public data class GraphDefinition(
       /** Documentation for FHIRPath expression. */
       public val description: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
+      public fun toBuilder(): Builder {
+        val builder =
           Builder(
-              use,
-              rule,
-              code,
-            )
-            .apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              expression = this@with.expression?.toBuilder()
-              description = this@with.description?.toBuilder()
-            }
-        }
+            use,
+            rule,
+            code,
+          )
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.expression = expression?.toBuilder()
+        builder.description = description?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -705,8 +701,8 @@ public data class GraphDefinition(
         public fun build(): Compartment =
           Compartment(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             use = use,
             rule = rule,
             code = code,
@@ -797,8 +793,8 @@ public data class GraphDefinition(
       public fun build(): Link =
         Link(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           description = description?.build(),
           min = min?.build(),
           max = max?.build(),
@@ -807,7 +803,7 @@ public data class GraphDefinition(
           sliceName = sliceName?.build(),
           targetId = targetId.build(),
           params = params?.build(),
-          compartment = compartment.map { it.build() },
+          compartment = compartment.mapToList { it.build() },
         )
     }
   }
@@ -1151,11 +1147,11 @@ public data class GraphDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name.build(),
@@ -1164,16 +1160,16 @@ public data class GraphDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         start = start?.build(),
-        node = node.map { it.build() },
-        link = link.map { it.build() },
+        node = node.mapToList { it.build() },
+        link = link.mapToList { it.build() },
       )
   }
 

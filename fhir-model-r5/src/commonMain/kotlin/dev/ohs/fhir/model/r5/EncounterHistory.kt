@@ -212,34 +212,33 @@ public data class EncounterHistory(
    */
   public val location: List<Location> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          `class`.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          serviceType = this@with.serviceType.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject?.toBuilder()
-          subjectStatus = this@with.subjectStatus?.toBuilder()
-          actualPeriod = this@with.actualPeriod?.toBuilder()
-          plannedStartDate = this@with.plannedStartDate?.toBuilder()
-          plannedEndDate = this@with.plannedEndDate?.toBuilder()
-          length = this@with.length?.toBuilder()
-          location = this@with.location.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        `class`.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.serviceType = serviceType.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.subjectStatus = subjectStatus?.toBuilder()
+    builder.actualPeriod = actualPeriod?.toBuilder()
+    builder.plannedStartDate = plannedStartDate?.toBuilder()
+    builder.plannedEndDate = plannedEndDate?.toBuilder()
+    builder.length = length?.toBuilder()
+    builder.location = location.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * The location of the patient at this point in the encounter, the multiple cardinality permits
@@ -298,15 +297,14 @@ public data class EncounterHistory(
      */
     public val form: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(location.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          form = this@with.form?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(location.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.form = form?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The location where the encounter takes place. */
@@ -367,8 +365,8 @@ public data class EncounterHistory(
       public fun build(): Location =
         Location(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           location = location.build(),
           form = form?.build(),
         )
@@ -582,22 +580,22 @@ public data class EncounterHistory(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         encounter = encounter?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         `class` = `class`.build(),
-        type = type.map { it.build() },
-        serviceType = serviceType.map { it.build() },
+        type = type.mapToList { it.build() },
+        serviceType = serviceType.mapToList { it.build() },
         subject = subject?.build(),
         subjectStatus = subjectStatus?.build(),
         actualPeriod = actualPeriod?.build(),
         plannedStartDate = plannedStartDate?.build(),
         plannedEndDate = plannedEndDate?.build(),
         length = length?.build(),
-        location = location.map { it.build() },
+        location = location.mapToList { it.build() },
       )
   }
 

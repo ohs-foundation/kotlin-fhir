@@ -28,9 +28,26 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
+      - name: Resolve PR number
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          HEAD_OWNER: ${{ github.event.workflow_run.head_repository.owner.login }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          if [[ -z "$PR_NUMBER" ]]; then
+            PR_NUMBER=$(gh api "/repos/${{ github.repository }}/pulls?head=${HEAD_OWNER}:${HEAD_BRANCH}&state=open" --jq '.[0].number // empty')
+          fi
+          if [[ -z "$PR_NUMBER" ]]; then
+            echo "Could not resolve PR number for ${HEAD_OWNER}:${HEAD_BRANCH}" >&2
+            exit 1
+          fi
+          echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
       - name: Post or update PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: binary-size
           path: binary-size-report.md
-          number: ${{ github.event.workflow_run.pull_requests[0].number }}
+          number: ${{ steps.pr.outputs.number }}

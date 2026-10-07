@@ -179,36 +179,35 @@ public data class SupplyRequest(
   /** Where the supply is destined to go. */
   public val deliverTo: Reference? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          item,
-          quantity.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          status = this@with.status
-          category = this@with.category?.toBuilder()
-          priority = this@with.priority
-          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-          occurrence = this@with.occurrence
-          authoredOn = this@with.authoredOn?.toBuilder()
-          requester = this@with.requester?.toBuilder()
-          supplier = this@with.supplier.map { it.toBuilder() }.toMutableList()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          deliverFrom = this@with.deliverFrom?.toBuilder()
-          deliverTo = this@with.deliverTo?.toBuilder()
-        }
-    }
+        item,
+        quantity.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.status = status
+    builder.category = category?.toBuilder()
+    builder.priority = priority
+    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    builder.occurrence = occurrence
+    builder.authoredOn = authoredOn?.toBuilder()
+    builder.requester = requester?.toBuilder()
+    builder.supplier = supplier.mapToMutableList { it.toBuilder() }
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.deliverFrom = deliverFrom?.toBuilder()
+    builder.deliverTo = deliverTo?.toBuilder()
+    return builder
+  }
 
   /** Specific parameters for the ordered item. For example, the size of the indicated item. */
   @Serializable(with = SupplyRequestParameterSerializer::class)
@@ -259,16 +258,15 @@ public data class SupplyRequest(
      */
     public val `value`: Value? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          `value` = this@with.`value`
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code?.toBuilder()
+      builder.`value` = `value`
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -359,8 +357,8 @@ public data class SupplyRequest(
       public fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code?.build(),
           `value` = `value`,
         )
@@ -592,22 +590,22 @@ public data class SupplyRequest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         category = category?.build(),
         priority = priority,
         item = item,
         quantity = quantity.build(),
-        parameter = parameter.map { it.build() },
+        parameter = parameter.mapToList { it.build() },
         occurrence = occurrence,
         authoredOn = authoredOn?.build(),
         requester = requester?.build(),
-        supplier = supplier.map { it.build() },
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
+        supplier = supplier.mapToList { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
         deliverFrom = deliverFrom?.build(),
         deliverTo = deliverTo?.build(),
       )

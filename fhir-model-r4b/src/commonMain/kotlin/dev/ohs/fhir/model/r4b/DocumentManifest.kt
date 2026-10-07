@@ -215,33 +215,32 @@ public data class DocumentManifest(
    */
   public val related: List<Related> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          content.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          masterIdentifier = this@with.masterIdentifier?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          subject = this@with.subject?.toBuilder()
-          created = this@with.created?.toBuilder()
-          author = this@with.author.map { it.toBuilder() }.toMutableList()
-          recipient = this@with.recipient.map { it.toBuilder() }.toMutableList()
-          source = this@with.source?.toBuilder()
-          description = this@with.description?.toBuilder()
-          related = this@with.related.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        content.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.masterIdentifier = masterIdentifier?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.subject = subject?.toBuilder()
+    builder.created = created?.toBuilder()
+    builder.author = author.mapToMutableList { it.toBuilder() }
+    builder.recipient = recipient.mapToMutableList { it.toBuilder() }
+    builder.source = source?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.related = related.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Related identifiers or resources associated with the DocumentManifest. */
   @Serializable(with = DocumentManifestRelatedSerializer::class)
@@ -298,16 +297,15 @@ public data class DocumentManifest(
      */
     public val ref: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier?.toBuilder()
-          ref = this@with.ref?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identifier = identifier?.toBuilder()
+      builder.ref = ref?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -369,8 +367,8 @@ public data class DocumentManifest(
       public fun build(): Related =
         Related(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identifier = identifier?.build(),
           ref = ref?.build(),
         )
@@ -585,21 +583,21 @@ public data class DocumentManifest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         masterIdentifier = masterIdentifier?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         type = type?.build(),
         subject = subject?.build(),
         created = created?.build(),
-        author = author.map { it.build() },
-        recipient = recipient.map { it.build() },
+        author = author.mapToList { it.build() },
+        recipient = recipient.mapToList { it.build() },
         source = source?.build(),
         description = description?.build(),
-        content = content.map { it.build() },
-        related = related.map { it.build() },
+        content = content.mapToList { it.build() },
+        related = related.mapToList { it.build() },
       )
   }
 }

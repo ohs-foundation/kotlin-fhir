@@ -166,32 +166,31 @@ public data class VerificationResult(
   /** Information about the entity validating information. */
   public val validator: List<Validator> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        target = this@with.target.map { it.toBuilder() }.toMutableList()
-        targetLocation = this@with.targetLocation.map { it.toBuilder() }.toMutableList()
-        need = this@with.need?.toBuilder()
-        statusDate = this@with.statusDate?.toBuilder()
-        validationType = this@with.validationType?.toBuilder()
-        validationProcess = this@with.validationProcess.map { it.toBuilder() }.toMutableList()
-        frequency = this@with.frequency?.toBuilder()
-        lastPerformed = this@with.lastPerformed?.toBuilder()
-        nextScheduled = this@with.nextScheduled?.toBuilder()
-        failureAction = this@with.failureAction?.toBuilder()
-        primarySource = this@with.primarySource.map { it.toBuilder() }.toMutableList()
-        attestation = this@with.attestation?.toBuilder()
-        validator = this@with.validator.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.target = target.mapToMutableList { it.toBuilder() }
+    builder.targetLocation = targetLocation.mapToMutableList { it.toBuilder() }
+    builder.need = need?.toBuilder()
+    builder.statusDate = statusDate?.toBuilder()
+    builder.validationType = validationType?.toBuilder()
+    builder.validationProcess = validationProcess.mapToMutableList { it.toBuilder() }
+    builder.frequency = frequency?.toBuilder()
+    builder.lastPerformed = lastPerformed?.toBuilder()
+    builder.nextScheduled = nextScheduled?.toBuilder()
+    builder.failureAction = failureAction?.toBuilder()
+    builder.primarySource = primarySource.mapToMutableList { it.toBuilder() }
+    builder.attestation = attestation?.toBuilder()
+    builder.validator = validator.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Information about the primary source(s) involved in validation. */
   @Serializable(with = VerificationResultPrimarySourceSerializer::class)
@@ -258,21 +257,20 @@ public data class VerificationResult(
      */
     public val pushTypeAvailable: List<CodeableConcept> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          who = this@with.who?.toBuilder()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          communicationMethod = this@with.communicationMethod.map { it.toBuilder() }.toMutableList()
-          validationStatus = this@with.validationStatus?.toBuilder()
-          validationDate = this@with.validationDate?.toBuilder()
-          canPushUpdates = this@with.canPushUpdates?.toBuilder()
-          pushTypeAvailable = this@with.pushTypeAvailable.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.who = who?.toBuilder()
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.communicationMethod = communicationMethod.mapToMutableList { it.toBuilder() }
+      builder.validationStatus = validationStatus?.toBuilder()
+      builder.validationDate = validationDate?.toBuilder()
+      builder.canPushUpdates = canPushUpdates?.toBuilder()
+      builder.pushTypeAvailable = pushTypeAvailable.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -349,15 +347,15 @@ public data class VerificationResult(
       public fun build(): PrimarySource =
         PrimarySource(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           who = who?.build(),
-          type = type.map { it.build() },
-          communicationMethod = communicationMethod.map { it.build() },
+          type = type.mapToList { it.build() },
+          communicationMethod = communicationMethod.mapToList { it.build() },
           validationStatus = validationStatus?.build(),
           validationDate = validationDate?.build(),
           canPushUpdates = canPushUpdates?.build(),
-          pushTypeAvailable = pushTypeAvailable.map { it.build() },
+          pushTypeAvailable = pushTypeAvailable.mapToList { it.build() },
         )
     }
   }
@@ -425,22 +423,21 @@ public data class VerificationResult(
     /** Signed assertion by the attestation source that they have attested to the information. */
     public val sourceSignature: Signature? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          who = this@with.who?.toBuilder()
-          onBehalfOf = this@with.onBehalfOf?.toBuilder()
-          communicationMethod = this@with.communicationMethod?.toBuilder()
-          date = this@with.date?.toBuilder()
-          sourceIdentityCertificate = this@with.sourceIdentityCertificate?.toBuilder()
-          proxyIdentityCertificate = this@with.proxyIdentityCertificate?.toBuilder()
-          proxySignature = this@with.proxySignature?.toBuilder()
-          sourceSignature = this@with.sourceSignature?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.who = who?.toBuilder()
+      builder.onBehalfOf = onBehalfOf?.toBuilder()
+      builder.communicationMethod = communicationMethod?.toBuilder()
+      builder.date = date?.toBuilder()
+      builder.sourceIdentityCertificate = sourceIdentityCertificate?.toBuilder()
+      builder.proxyIdentityCertificate = proxyIdentityCertificate?.toBuilder()
+      builder.proxySignature = proxySignature?.toBuilder()
+      builder.sourceSignature = sourceSignature?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -516,8 +513,8 @@ public data class VerificationResult(
       public fun build(): Attestation =
         Attestation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           who = who?.build(),
           onBehalfOf = onBehalfOf?.build(),
           communicationMethod = communicationMethod?.build(),
@@ -577,16 +574,15 @@ public data class VerificationResult(
     /** Signed assertion by the validator that they have validated the information. */
     public val attestationSignature: Signature? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(organization.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identityCertificate = this@with.identityCertificate?.toBuilder()
-          attestationSignature = this@with.attestationSignature?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(organization.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.identityCertificate = identityCertificate?.toBuilder()
+      builder.attestationSignature = attestationSignature?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Reference to the organization validating information. */
@@ -641,8 +637,8 @@ public data class VerificationResult(
       public fun build(): Validator =
         Validator(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           organization = organization.build(),
           identityCertificate = identityCertificate?.build(),
           attestationSignature = attestationSignature?.build(),
@@ -811,23 +807,23 @@ public data class VerificationResult(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        target = target.map { it.build() },
-        targetLocation = targetLocation.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        target = target.mapToList { it.build() },
+        targetLocation = targetLocation.mapToList { it.build() },
         need = need?.build(),
         status = status,
         statusDate = statusDate?.build(),
         validationType = validationType?.build(),
-        validationProcess = validationProcess.map { it.build() },
+        validationProcess = validationProcess.mapToList { it.build() },
         frequency = frequency?.build(),
         lastPerformed = lastPerformed?.build(),
         nextScheduled = nextScheduled?.build(),
         failureAction = failureAction?.build(),
-        primarySource = primarySource.map { it.build() },
+        primarySource = primarySource.mapToList { it.build() },
         attestation = attestation?.build(),
-        validator = validator.map { it.build() },
+        validator = validator.mapToList { it.build() },
       )
   }
 

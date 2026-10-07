@@ -41,46 +41,30 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ReferenceSerializer : KSerializer<Reference> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Reference") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("reference", KotlinString.serializer().descriptor, isOptional = true)
-      element("_reference", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element(
-        "identifier",
-        lazyDescriptor { Identifier.serializer().descriptor },
-        isOptional = true,
-      )
-      element("display", KotlinString.serializer().descriptor, isOptional = true)
-      element("_display", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("reference", KotlinString.serializer().descriptor)
+      optionalElement("_reference", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("type", KotlinString.serializer().descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("identifier", lazyDescriptor { IdentifierSerializer.descriptor })
+      optionalElement("display", KotlinString.serializer().descriptor)
+      optionalElement("_display", lazyDescriptor { ElementSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): Reference =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<Reference>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: Reference) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Reference {
+  override fun deserialize(decoder: Decoder): Reference {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var reference: KotlinString? = null
@@ -91,30 +75,56 @@ internal object ReferenceSerializer : KSerializer<Reference> {
     var display: KotlinString? = null
     var _display: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> reference = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> reference = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _reference =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
-        4 -> type = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> type = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _type =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
           identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
-        7 -> display = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer,
+              null,
+            )
+        7 -> display = compositeDecoder.decodeStringElement(descriptor, i)
         8 ->
           _display =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Reference: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return Reference(
       id = id,
       extension = extension ?: listOf(),
@@ -125,35 +135,28 @@ internal object ReferenceSerializer : KSerializer<Reference> {
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Reference) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: Reference) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.reference?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.reference?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
-    }
-    ((value.type?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, it)
-    }
-    (value.identifier)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.identifierSer, it)
-    }
-    ((value.display?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.display?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.referenceSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val referenceSer: KSerializer<Element> = Element.serializer()
-
-    public val identifierSer: KSerializer<Identifier> = Identifier.serializer()
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.reference?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.reference)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.type?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.type)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6,
+      IdentifierSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.display?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.display)
+    compositeEncoder.endStructure(descriptor)
   }
 }

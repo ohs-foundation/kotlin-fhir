@@ -82,18 +82,17 @@ public data class ContactPoint(
   /** Time period when the contact point was/is in use. */
   public val period: Period? = null,
 ) : Element() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        system = this@with.system
-        `value` = this@with.`value`?.toBuilder()
-        use = this@with.use
-        rank = this@with.rank?.toBuilder()
-        period = this@with.period?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.system = system
+    builder.`value` = `value`?.toBuilder()
+    builder.use = use
+    builder.rank = rank?.toBuilder()
+    builder.period = period?.toBuilder()
+    return builder
+  }
 
   public open class Builder() {
     /**
@@ -154,7 +153,7 @@ public data class ContactPoint(
     public open fun build(): ContactPoint =
       ContactPoint(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         system = system,
         `value` = `value`?.build(),
         use = use,

@@ -102,17 +102,16 @@ public data class Binary(
    */
   public val `data`: Base64Binary? = null,
 ) : Resource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(contentType.toBuilder()).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        securityContext = this@with.securityContext?.toBuilder()
-        `data` = this@with.`data`?.toBuilder()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(contentType.toBuilder())
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.securityContext = securityContext?.toBuilder()
+    builder.`data` = `data`?.toBuilder()
+    return builder
+  }
 
   public class Builder(
     /** MimeType of the binary content represented as a standard MimeType (BCP 13). */

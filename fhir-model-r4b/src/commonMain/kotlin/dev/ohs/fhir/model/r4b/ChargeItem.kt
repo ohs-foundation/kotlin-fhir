@@ -278,48 +278,46 @@ public data class ChargeItem(
   /** Further information supporting this charge. */
   public val supportingInformation: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          code.toBuilder(),
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          definitionUri = this@with.definitionUri.map { it.toBuilder() }.toMutableList()
-          definitionCanonical = this@with.definitionCanonical.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          context = this@with.context?.toBuilder()
-          occurrence = this@with.occurrence
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          performingOrganization = this@with.performingOrganization?.toBuilder()
-          requestingOrganization = this@with.requestingOrganization?.toBuilder()
-          costCenter = this@with.costCenter?.toBuilder()
-          quantity = this@with.quantity?.toBuilder()
-          bodysite = this@with.bodysite.map { it.toBuilder() }.toMutableList()
-          factorOverride = this@with.factorOverride?.toBuilder()
-          priceOverride = this@with.priceOverride?.toBuilder()
-          overrideReason = this@with.overrideReason?.toBuilder()
-          enterer = this@with.enterer?.toBuilder()
-          enteredDate = this@with.enteredDate?.toBuilder()
-          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-          service = this@with.service.map { it.toBuilder() }.toMutableList()
-          product = this@with.product
-          account = this@with.account.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          supportingInformation =
-            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        code.toBuilder(),
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.definitionUri = definitionUri.mapToMutableList { it.toBuilder() }
+    builder.definitionCanonical = definitionCanonical.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.context = context?.toBuilder()
+    builder.occurrence = occurrence
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.performingOrganization = performingOrganization?.toBuilder()
+    builder.requestingOrganization = requestingOrganization?.toBuilder()
+    builder.costCenter = costCenter?.toBuilder()
+    builder.quantity = quantity?.toBuilder()
+    builder.bodysite = bodysite.mapToMutableList { it.toBuilder() }
+    builder.factorOverride = factorOverride?.toBuilder()
+    builder.priceOverride = priceOverride?.toBuilder()
+    builder.overrideReason = overrideReason?.toBuilder()
+    builder.enterer = enterer?.toBuilder()
+    builder.enteredDate = enteredDate?.toBuilder()
+    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.service = service.mapToMutableList { it.toBuilder() }
+    builder.product = product
+    builder.account = account.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Indicates who or what performed or participated in the charged service. */
   @Serializable(with = ChargeItemPerformerSerializer::class)
@@ -369,15 +367,14 @@ public data class ChargeItem(
     /** The device, practitioner, etc. who performed or participated in the service. */
     public val actor: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(actor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(actor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The device, practitioner, etc. who performed or participated in the service. */
@@ -432,8 +429,8 @@ public data class ChargeItem(
       public fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           function = function?.build(),
           actor = actor.build(),
         )
@@ -772,35 +769,35 @@ public data class ChargeItem(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        definitionUri = definitionUri.map { it.build() },
-        definitionCanonical = definitionCanonical.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        definitionUri = definitionUri.mapToList { it.build() },
+        definitionCanonical = definitionCanonical.mapToList { it.build() },
         status = status,
-        partOf = partOf.map { it.build() },
+        partOf = partOf.mapToList { it.build() },
         code = code.build(),
         subject = subject.build(),
         context = context?.build(),
         occurrence = occurrence,
-        performer = performer.map { it.build() },
+        performer = performer.mapToList { it.build() },
         performingOrganization = performingOrganization?.build(),
         requestingOrganization = requestingOrganization?.build(),
         costCenter = costCenter?.build(),
         quantity = quantity?.build(),
-        bodysite = bodysite.map { it.build() },
+        bodysite = bodysite.mapToList { it.build() },
         factorOverride = factorOverride?.build(),
         priceOverride = priceOverride?.build(),
         overrideReason = overrideReason?.build(),
         enterer = enterer?.build(),
         enteredDate = enteredDate?.build(),
-        reason = reason.map { it.build() },
-        service = service.map { it.build() },
+        reason = reason.mapToList { it.build() },
+        service = service.mapToList { it.build() },
         product = product,
-        account = account.map { it.build() },
-        note = note.map { it.build() },
-        supportingInformation = supportingInformation.map { it.build() },
+        account = account.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        supportingInformation = supportingInformation.mapToList { it.build() },
       )
   }
 

@@ -208,32 +208,31 @@ public data class AdministrableProductDefinition(
    */
   public val routeOfAdministration: List<RouteOfAdministration>,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          routeOfAdministration.map { it.toBuilder() }.toMutableList(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          formOf = this@with.formOf.map { it.toBuilder() }.toMutableList()
-          administrableDoseForm = this@with.administrableDoseForm?.toBuilder()
-          unitOfPresentation = this@with.unitOfPresentation?.toBuilder()
-          producedFrom = this@with.producedFrom.map { it.toBuilder() }.toMutableList()
-          ingredient = this@with.ingredient.map { it.toBuilder() }.toMutableList()
-          device = this@with.device?.toBuilder()
-          description = this@with.description?.toBuilder()
-          `property` = this@with.`property`.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        routeOfAdministration.mapToMutableList { it.toBuilder() },
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.formOf = formOf.mapToMutableList { it.toBuilder() }
+    builder.administrableDoseForm = administrableDoseForm?.toBuilder()
+    builder.unitOfPresentation = unitOfPresentation?.toBuilder()
+    builder.producedFrom = producedFrom.mapToMutableList { it.toBuilder() }
+    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.device = device?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Characteristics e.g. a product's onset of action. */
   @Serializable(with = AdministrableProductDefinitionPropertySerializer::class)
@@ -282,16 +281,15 @@ public data class AdministrableProductDefinition(
     /** The status of characteristic e.g. assigned or pending. */
     public val status: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(type.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `value` = this@with.`value`
-          status = this@with.status?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(type.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`value` = `value`
+      builder.status = status?.toBuilder()
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -399,8 +397,8 @@ public data class AdministrableProductDefinition(
       public fun build(): Property =
         Property(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type.build(),
           `value` = `value`,
           status = status?.build(),
@@ -476,20 +474,19 @@ public data class AdministrableProductDefinition(
     /** A species for which this route applies. */
     public val targetSpecies: List<TargetSpecies> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          firstDose = this@with.firstDose?.toBuilder()
-          maxSingleDose = this@with.maxSingleDose?.toBuilder()
-          maxDosePerDay = this@with.maxDosePerDay?.toBuilder()
-          maxDosePerTreatmentPeriod = this@with.maxDosePerTreatmentPeriod?.toBuilder()
-          maxTreatmentPeriod = this@with.maxTreatmentPeriod?.toBuilder()
-          targetSpecies = this@with.targetSpecies.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.firstDose = firstDose?.toBuilder()
+      builder.maxSingleDose = maxSingleDose?.toBuilder()
+      builder.maxDosePerDay = maxDosePerDay?.toBuilder()
+      builder.maxDosePerTreatmentPeriod = maxDosePerTreatmentPeriod?.toBuilder()
+      builder.maxTreatmentPeriod = maxTreatmentPeriod?.toBuilder()
+      builder.targetSpecies = targetSpecies.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** A species for which this route applies. */
     @Serializable(
@@ -538,15 +535,14 @@ public data class AdministrableProductDefinition(
       /** A species specific time during which consumption of animal product is not appropriate. */
       public val withdrawalPeriod: List<WithdrawalPeriod> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(code.toBuilder()).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            withdrawalPeriod = this@with.withdrawalPeriod.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(code.toBuilder())
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.withdrawalPeriod = withdrawalPeriod.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** A species specific time during which consumption of animal product is not appropriate. */
       @Serializable(
@@ -601,15 +597,14 @@ public data class AdministrableProductDefinition(
         /** Extra information about the withdrawal period. */
         public val supportingInformation: String? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(tissue.toBuilder(), `value`.toBuilder()).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              supportingInformation = this@with.supportingInformation?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(tissue.toBuilder(), `value`.toBuilder())
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.supportingInformation = supportingInformation?.toBuilder()
+          return builder
+        }
 
         public class Builder(
           /**
@@ -666,8 +661,8 @@ public data class AdministrableProductDefinition(
           public fun build(): WithdrawalPeriod =
             WithdrawalPeriod(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               tissue = tissue.build(),
               `value` = `value`.build(),
               supportingInformation = supportingInformation?.build(),
@@ -727,10 +722,10 @@ public data class AdministrableProductDefinition(
         public fun build(): TargetSpecies =
           TargetSpecies(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code.build(),
-            withdrawalPeriod = withdrawalPeriod.map { it.build() },
+            withdrawalPeriod = withdrawalPeriod.mapToList { it.build() },
           )
       }
     }
@@ -809,15 +804,15 @@ public data class AdministrableProductDefinition(
       public fun build(): RouteOfAdministration =
         RouteOfAdministration(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code.build(),
           firstDose = firstDose?.build(),
           maxSingleDose = maxSingleDose?.build(),
           maxDosePerDay = maxDosePerDay?.build(),
           maxDosePerTreatmentPeriod = maxDosePerTreatmentPeriod?.build(),
           maxTreatmentPeriod = maxTreatmentPeriod?.build(),
-          targetSpecies = targetSpecies.map { it.build() },
+          targetSpecies = targetSpecies.mapToList { it.build() },
         )
     }
   }
@@ -1016,20 +1011,20 @@ public data class AdministrableProductDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        formOf = formOf.map { it.build() },
+        formOf = formOf.mapToList { it.build() },
         administrableDoseForm = administrableDoseForm?.build(),
         unitOfPresentation = unitOfPresentation?.build(),
-        producedFrom = producedFrom.map { it.build() },
-        ingredient = ingredient.map { it.build() },
+        producedFrom = producedFrom.mapToList { it.build() },
+        ingredient = ingredient.mapToList { it.build() },
         device = device?.build(),
         description = description?.build(),
-        `property` = `property`.map { it.build() },
-        routeOfAdministration = routeOfAdministration.map { it.build() },
+        `property` = `property`.mapToList { it.build() },
+        routeOfAdministration = routeOfAdministration.mapToList { it.build() },
       )
   }
 }

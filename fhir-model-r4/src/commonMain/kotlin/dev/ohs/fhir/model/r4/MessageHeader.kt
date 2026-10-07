@@ -208,32 +208,31 @@ public data class MessageHeader(
   /** Permanent link to the MessageDefinition for this message. */
   public val definition: Canonical? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          event,
-          source.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          destination = this@with.destination.map { it.toBuilder() }.toMutableList()
-          sender = this@with.sender?.toBuilder()
-          enterer = this@with.enterer?.toBuilder()
-          author = this@with.author?.toBuilder()
-          responsible = this@with.responsible?.toBuilder()
-          reason = this@with.reason?.toBuilder()
-          response = this@with.response?.toBuilder()
-          focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-          definition = this@with.definition?.toBuilder()
-        }
-    }
+        event,
+        source.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.destination = destination.mapToMutableList { it.toBuilder() }
+    builder.sender = sender?.toBuilder()
+    builder.enterer = enterer?.toBuilder()
+    builder.author = author?.toBuilder()
+    builder.responsible = responsible?.toBuilder()
+    builder.reason = reason?.toBuilder()
+    builder.response = response?.toBuilder()
+    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.definition = definition?.toBuilder()
+    return builder
+  }
 
   /** The destination application which the message is intended for. */
   @Serializable(with = MessageHeaderDestinationSerializer::class)
@@ -295,17 +294,16 @@ public data class MessageHeader(
      */
     public val `receiver`: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(endpoint.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          target = this@with.target?.toBuilder()
-          `receiver` = this@with.`receiver`?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(endpoint.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.target = target?.toBuilder()
+      builder.`receiver` = `receiver`?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -374,8 +372,8 @@ public data class MessageHeader(
       public fun build(): Destination =
         Destination(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name?.build(),
           target = target?.build(),
           endpoint = endpoint.build(),
@@ -446,18 +444,17 @@ public data class MessageHeader(
      */
     public val endpoint: Url,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(endpoint.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          software = this@with.software?.toBuilder()
-          version = this@with.version?.toBuilder()
-          contact = this@with.contact?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(endpoint.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.software = software?.toBuilder()
+      builder.version = version?.toBuilder()
+      builder.contact = contact?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -529,8 +526,8 @@ public data class MessageHeader(
       public fun build(): Source =
         Source(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name?.build(),
           software = software?.build(),
           version = version?.build(),
@@ -601,19 +598,18 @@ public data class MessageHeader(
      */
     public val details: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            identifier.toBuilder(),
-            code,
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            details = this@with.details?.toBuilder()
-          }
-      }
+          identifier.toBuilder(),
+          code,
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.details = details?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The MessageHeader.id of the message to which this message is a response. */
@@ -678,8 +674,8 @@ public data class MessageHeader(
       public fun build(): Response =
         Response(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           identifier = identifier.build(),
           code = code,
           details = details?.build(),
@@ -903,11 +899,11 @@ public data class MessageHeader(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         event = event,
-        destination = destination.map { it.build() },
+        destination = destination.mapToList { it.build() },
         sender = sender?.build(),
         enterer = enterer?.build(),
         author = author?.build(),
@@ -915,7 +911,7 @@ public data class MessageHeader(
         responsible = responsible?.build(),
         reason = reason?.build(),
         response = response?.build(),
-        focus = focus.map { it.build() },
+        focus = focus.mapToList { it.build() },
         definition = definition?.build(),
       )
   }

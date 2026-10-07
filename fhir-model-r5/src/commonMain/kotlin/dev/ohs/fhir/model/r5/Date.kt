@@ -53,14 +53,13 @@ public data class Date(
   /** The actual value */
   @Serializable(with = FhirDateSerializer::class) public val `value`: FhirDate? = null,
 ) : PrimitiveType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    return builder
+  }
 
   public fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -93,7 +92,7 @@ public data class Date(
     public open fun build(): Date =
       Date(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`,
       )
   }

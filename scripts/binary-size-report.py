@@ -2,22 +2,27 @@
 """Analyze fhir-model JVM JAR binary sizes and produce a JSON report.
 
 Usage:
-    python3 scripts/binary-size-report.py [--output binary-size.json]
+    python3 scripts/binary-size-report.py [--output binary-size.json] [--commit-sha SHA]
 
 Scans fhir-model-r4, fhir-model-r4b, fhir-model-r5 JVM JARs and emits a JSON
-file with total + per-category .class file counts and sizes (uncompressed and
-compressed).  The optional --compare flag takes a baseline JSON and prints a
-markdown diff table to stdout.
+file with build/toolchain metadata plus total and per-category .class file
+counts and sizes (uncompressed and compressed). The optional --compare flag
+takes a baseline JSON and prints a markdown diff table to stdout.
 """
 
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import os
+import re
+import subprocess
 import sys
 import zipfile
 from pathlib import Path
+
+METADATA_KEY = "metadata"
 
 
 # ---------------------------------------------------------------------------
@@ -30,8 +35,6 @@ def classify(filename: str) -> str:
 
     # Serializer-related
     if "Serializer" in base:
-        if "$Hoisted" in base:
-            return "Serializers ($Hoisted)"
         if "PolymorphicSerializer" in base:
             return "Serializers (Polymorphic)"
         if "$Companion" in base:
@@ -67,8 +70,76 @@ def classify(filename: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# JAR analysis
+# Metadata & JAR analysis
 # ---------------------------------------------------------------------------
+
+def _run_cmd(cmd: list[str], cwd: str) -> str | None:
+    try:
+        res = subprocess.run(
+            cmd,
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=5,
+        )
+        out = (res.stdout or res.stderr).strip()
+        return out if out else None
+    except Exception:
+        return None
+
+
+def collect_metadata(root: str, commit_sha: str | None = None) -> dict:
+    """Collect git and toolchain metadata for reproducibility."""
+    sha = (
+        commit_sha
+        or os.environ.get("COMMIT_SHA")
+        or os.environ.get("GITHUB_SHA")
+        or _run_cmd(["git", "rev-parse", "HEAD"], cwd=root)
+    )
+    repo = os.environ.get("GITHUB_REPOSITORY", "ohs-foundation/kotlin-fhir")
+    server_url = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+    run_id = os.environ.get("GITHUB_RUN_ID")
+
+    meta: dict = {
+        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    if sha:
+        meta["commit_sha"] = sha
+    if repo:
+        meta["repository"] = repo
+    if server_url:
+        meta["server_url"] = server_url
+    if run_id:
+        meta["workflow_run_id"] = run_id
+
+    # Parse Kotlin & kotlinx-serialization versions from gradle/libs.versions.toml
+    toml_path = os.path.join(root, "gradle", "libs.versions.toml")
+    if os.path.isfile(toml_path):
+        toml_text = Path(toml_path).read_text(encoding="utf-8")
+        for key, field in [
+            ("kotlin", "kotlin_version"),
+            ("kotlinx-serialization", "kotlinx_serialization_version"),
+        ]:
+            m = re.search(rf'^{re.escape(key)}\s*=\s*"([^"]+)"', toml_text, re.M)
+            if m:
+                meta[field] = m.group(1)
+
+    # Parse Gradle version from gradle-wrapper.properties
+    wrapper_path = os.path.join(root, "gradle", "wrapper", "gradle-wrapper.properties")
+    if os.path.isfile(wrapper_path):
+        wrapper_text = Path(wrapper_path).read_text(encoding="utf-8")
+        m = re.search(r"gradle-([0-9.]+)-bin\.zip", wrapper_text)
+        if m:
+            meta["gradle_version"] = m.group(1)
+
+    # Java version
+    java_ver = _run_cmd(["java", "-version"], cwd=root)
+    if java_ver:
+        meta["java_version"] = java_ver.splitlines()[0]
+
+    return meta
+
 
 def analyze_jar(jar_path: str) -> dict:
     """Return per-category and total size info for a single JAR."""
@@ -104,10 +175,12 @@ def analyze_jar(jar_path: str) -> dict:
     }
 
 
-def build_report(root: str) -> dict:
+def build_report(root: str, commit_sha: str | None = None) -> dict:
     """Build a full report for all fhir-model modules."""
     modules = ["fhir-model-r4", "fhir-model-r4b", "fhir-model-r5"]
-    report: dict = {}
+    report: dict = {
+        METADATA_KEY: collect_metadata(root, commit_sha=commit_sha),
+    }
     for mod in modules:
         jar = os.path.join(root, mod, "build", "libs", f"{mod}-jvm.jar")
         if os.path.isfile(jar):
@@ -146,6 +219,42 @@ def _short_name(mod: str) -> str:
     return mod.replace("fhir-model-", "").upper()
 
 
+def _module_keys(*reports: dict) -> list[str]:
+    """Return sorted module keys across one or more reports, excluding metadata."""
+    keys: set[str] = set()
+    for r in reports:
+        keys.update(k for k in r.keys() if k != METADATA_KEY)
+    return sorted(keys)
+
+
+def _fmt_commit_link(meta: dict | None) -> str | None:
+    """Format a commit SHA as a markdown link if available."""
+    if not isinstance(meta, dict):
+        return None
+    sha = meta.get("commit_sha")
+    if not sha:
+        return None
+    short = sha[:7]
+    server = meta.get("server_url", "https://github.com").rstrip("/")
+    repo = meta.get("repository", "ohs-foundation/kotlin-fhir")
+    return f"[`{short}`]({server}/{repo}/commit/{sha})"
+
+
+def _fmt_classes_cell(cur_cls: int, base_cls: int) -> str:
+    """Format a class count comparison cell as 'before -> after (delta, %)' when changed."""
+    if cur_cls == base_cls:
+        return f"{cur_cls:,}"
+    delta = cur_cls - base_cls
+    if base_cls != 0:
+        return f"{base_cls:,} → {cur_cls:,} ({delta:+,d}, {delta / base_cls * 100:+.1f}%)"
+    return f"{base_cls:,} → {cur_cls:,} ({delta:+,d})"
+
+
+def _fmt_bytes_cell(cur_bytes: int, base_bytes: int) -> str:
+    """Format a byte size comparison cell as 'before -> after (delta, %)' when changed."""
+    if cur_bytes == base_bytes:
+        return fmt_bytes(cur_bytes)
+    return f"{fmt_bytes(base_bytes)} → {fmt_bytes(cur_bytes)} ({fmt_delta(cur_bytes, base_bytes)})"
 
 
 def compare_markdown(current: dict, baseline: dict) -> str:
@@ -153,7 +262,14 @@ def compare_markdown(current: dict, baseline: dict) -> str:
     lines: list[str] = []
     lines.append("## 📦 JVM Binary Size Report\n")
 
-    all_mods = sorted(set(list(current.keys()) + list(baseline.keys())))
+    cur_link = _fmt_commit_link(current.get(METADATA_KEY))
+    base_link = _fmt_commit_link(baseline.get(METADATA_KEY))
+    if cur_link and base_link:
+        lines.append(f"Comparing {cur_link} against baseline {base_link} (`main`)\n")
+    elif cur_link:
+        lines.append(f"Comparing {cur_link} against cached `main` baseline\n")
+
+    all_mods = _module_keys(current, baseline)
 
     # --- First pass: compute totals ---
     sum_cur_cls = sum_base_cls = 0
@@ -186,7 +302,7 @@ def compare_markdown(current: dict, baseline: dict) -> str:
             continue
         if base is None:
             lines.append(
-                f"| {name} | {cur['total_classes']} *(new)* "
+                f"| {name} | {cur['total_classes']:,} *(new)* "
                 f"| {fmt_bytes(cur['total_compressed_bytes'])} *(new)* "
                 f"| {fmt_bytes(cur['total_uncompressed_bytes'])} *(new)* |"
             )
@@ -196,15 +312,11 @@ def compare_markdown(current: dict, baseline: dict) -> str:
         c_comp, b_comp = cur["total_compressed_bytes"], base["total_compressed_bytes"]
         c_unc, b_unc = cur["total_uncompressed_bytes"], base["total_uncompressed_bytes"]
 
-        cls_delta = f" ({cc - bc:+d}, {(cc - bc) / bc * 100:+.1f}%)" if cc != bc else ""
-        comp_delta = f" ({fmt_delta(c_comp, b_comp)})" if c_comp != b_comp else ""
-        unc_delta = f" ({fmt_delta(c_unc, b_unc)})" if c_unc != b_unc else ""
-
         lines.append(
             f"| {name} "
-            f"| {cc}{cls_delta} "
-            f"| {fmt_bytes(c_comp)}{comp_delta} "
-            f"| {fmt_bytes(c_unc)}{unc_delta} |"
+            f"| {_fmt_classes_cell(cc, bc)} "
+            f"| {_fmt_bytes_cell(c_comp, b_comp)} "
+            f"| {_fmt_bytes_cell(c_unc, b_unc)} |"
         )
 
     # Combined total row
@@ -216,16 +328,11 @@ def compare_markdown(current: dict, baseline: dict) -> str:
     else:
         indicator = "🔴"
 
-    total_cls_delta = sum_cur_cls - sum_base_cls
-    cls_d = f" ({total_cls_delta:+d}, {total_cls_delta / sum_base_cls * 100:+.1f}%)" if total_cls_delta != 0 and sum_base_cls != 0 else ""
-    comp_d = f" ({fmt_delta(sum_cur_comp, sum_base_comp)})" if delta_comp != 0 else ""
-    unc_d = f" ({fmt_delta(sum_cur_unc, sum_base_unc)})" if sum_cur_unc != sum_base_unc else ""
-
     lines.append(
         f"| **{indicator} Total** "
-        f"| **{sum_cur_cls}{cls_d}** "
-        f"| **{fmt_bytes(sum_cur_comp)}{comp_d}** "
-        f"| **{fmt_bytes(sum_cur_unc)}{unc_d}** |"
+        f"| **{_fmt_classes_cell(sum_cur_cls, sum_base_cls)}** "
+        f"| **{_fmt_bytes_cell(sum_cur_comp, sum_base_comp)}** "
+        f"| **{_fmt_bytes_cell(sum_cur_unc, sum_base_unc)}** |"
     )
     lines.append("")
 
@@ -269,15 +376,11 @@ def compare_markdown(current: dict, baseline: dict) -> str:
                 c_cb, b_cb = cc["compressed_bytes"], bc["compressed_bytes"]
                 c_ub, b_ub = cc["uncompressed_bytes"], bc["uncompressed_bytes"]
 
-                cls_d = f" ({c_cls - b_cls:+d}, {(c_cls - b_cls) / b_cls * 100:+.1f}%)" if c_cls != b_cls and b_cls != 0 else (f" ({c_cls - b_cls:+d})" if c_cls != b_cls else "")
-                comp_d = f" ({fmt_delta(c_cb, b_cb)})" if c_cb != b_cb else ""
-                unc_d = f" ({fmt_delta(c_ub, b_ub)})" if c_ub != b_ub else ""
-
                 lines.append(
                     f"| {cat} "
-                    f"| {c_cls}{cls_d} "
-                    f"| {fmt_bytes(c_cb)}{comp_d} "
-                    f"| {fmt_bytes(c_ub)}{unc_d} |"
+                    f"| {_fmt_classes_cell(c_cls, b_cls)} "
+                    f"| {_fmt_bytes_cell(c_cb, b_cb)} "
+                    f"| {_fmt_bytes_cell(c_ub, b_ub)} |"
                 )
             lines.append("")
 
@@ -290,11 +393,18 @@ def standalone_markdown(current: dict) -> str:
     """Generate a standalone markdown report (no baseline comparison)."""
     lines: list[str] = []
     lines.append("## 📦 JVM Binary Size Report\n")
-    lines.append("*No baseline from `main` yet — showing absolute sizes.*\n")
+    cur_link = _fmt_commit_link(current.get(METADATA_KEY))
+    if cur_link:
+        lines.append(f"Commit: {cur_link} (*no baseline from `main` yet — showing absolute sizes*)\n")
+    else:
+        lines.append("*No baseline from `main` yet — showing absolute sizes.*\n")
+
+    all_mods = _module_keys(current)
 
     # First pass: compute totals
     sum_cls = sum_comp = sum_unc = 0
-    for cur in current.values():
+    for mod in all_mods:
+        cur = current[mod]
         sum_cls += cur["total_classes"]
         sum_comp += cur["total_compressed_bytes"]
         sum_unc += cur["total_uncompressed_bytes"]
@@ -303,7 +413,7 @@ def standalone_markdown(current: dict) -> str:
     lines.append("| Module | Classes | Compressed | Uncompressed |")
     lines.append("| :--- | ---: | ---: | ---: |")
 
-    for mod in sorted(current.keys()):
+    for mod in all_mods:
         cur = current[mod]
         name = _short_name(mod)
         cls = cur["total_classes"]
@@ -323,7 +433,7 @@ def standalone_markdown(current: dict) -> str:
 
     # Category breakdown (collapsed)
     lines.append("<details><summary>Per-category breakdown</summary>\n")
-    for mod in sorted(current.keys()):
+    for mod in all_mods:
         cur = current[mod]
         name = _short_name(mod)
         cats = cur.get("categories", {})
@@ -373,9 +483,14 @@ def main():
         default=None,
         help="Path to write the markdown report (default: stdout)",
     )
+    parser.add_argument(
+        "--commit-sha",
+        default=None,
+        help="Commit SHA being analyzed (default: COMMIT_SHA, GITHUB_SHA, or git rev-parse HEAD)",
+    )
     args = parser.parse_args()
 
-    report = build_report(args.root)
+    report = build_report(args.root, commit_sha=args.commit_sha)
 
     # Write JSON
     output_path = Path(args.output)

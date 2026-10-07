@@ -208,29 +208,28 @@ public data class Organization(
   /** Technical endpoints providing access to services operated for the organization. */
   public val endpoint: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        active = this@with.active?.toBuilder()
-        type = this@with.type.map { it.toBuilder() }.toMutableList()
-        name = this@with.name?.toBuilder()
-        alias = this@with.alias.map { it.toBuilder() }.toMutableList()
-        telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-        address = this@with.address.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        endpoint = this@with.endpoint.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.active = active?.toBuilder()
+    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.address = address.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Contact for the organization for a certain purpose. */
   @Serializable(with = OrganizationContactSerializer::class)
@@ -284,18 +283,17 @@ public data class Organization(
     /** Visiting or postal addresses for the contact. */
     public val address: Address? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          name = this@with.name?.toBuilder()
-          telecom = this@with.telecom.map { it.toBuilder() }.toMutableList()
-          address = this@with.address?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.purpose = purpose?.toBuilder()
+      builder.name = name?.toBuilder()
+      builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+      builder.address = address?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -356,11 +354,11 @@ public data class Organization(
       public fun build(): Contact =
         Contact(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           purpose = purpose?.build(),
           name = name?.build(),
-          telecom = telecom.map { it.build() },
+          telecom = telecom.mapToList { it.build() },
           address = address?.build(),
         )
     }
@@ -563,19 +561,19 @@ public data class Organization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         active = active?.build(),
-        type = type.map { it.build() },
+        type = type.mapToList { it.build() },
         name = name?.build(),
-        alias = alias.map { it.build() },
-        telecom = telecom.map { it.build() },
-        address = address.map { it.build() },
+        alias = alias.mapToList { it.build() },
+        telecom = telecom.mapToList { it.build() },
+        address = address.mapToList { it.build() },
         partOf = partOf?.build(),
-        contact = contact.map { it.build() },
-        endpoint = endpoint.map { it.build() },
+        contact = contact.mapToList { it.build() },
+        endpoint = endpoint.mapToList { it.build() },
       )
   }
 }

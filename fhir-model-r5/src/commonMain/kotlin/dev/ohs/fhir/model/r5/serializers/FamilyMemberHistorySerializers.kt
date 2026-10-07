@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FamilyMemberHistory
 import dev.ohs.fhir.model.r5.FhirDate
 import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.FhirResourceSerializer
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.Narrative
@@ -44,6 +45,7 @@ import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Range
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
@@ -56,7 +58,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -66,63 +67,68 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object FamilyMemberHistoryParticipantSerializer :
   KSerializer<FamilyMemberHistory.Participant> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Participant") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("function", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("actor", Reference.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("function", CodeableConceptSerializer.descriptor)
+      optionalElement("actor", ReferenceSerializer.descriptor)
     }
 
-  override fun deserialize(decoder: Decoder): FamilyMemberHistory.Participant =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<FamilyMemberHistory.Participant>> =
+    ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory.Participant) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): FamilyMemberHistory.Participant {
+  override fun deserialize(decoder: Decoder): FamilyMemberHistory.Participant {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var function: CodeableConcept? = null
     var actor: Reference? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           function =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.functionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
-          actor = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.actorSer, null)
+          actor =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Participant: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return FamilyMemberHistory.Participant(
       id = id,
       extension = extension ?: listOf(),
@@ -136,35 +142,31 @@ internal object FamilyMemberHistoryParticipantSerializer :
     )
   }
 
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: FamilyMemberHistory.Participant,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory.Participant) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.function)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.functionSer, it)
-    }
-    encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, value.actor)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val functionSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val actorSer: KSerializer<Reference> = Reference.serializer()
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.function,
+    )
+    compositeEncoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.actor)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -172,41 +174,26 @@ internal object FamilyMemberHistoryConditionSerializer :
   KSerializer<FamilyMemberHistory.Condition> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Condition") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("outcome", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("contributedToDeath", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_contributedToDeath", Element.serializer().descriptor, isOptional = true)
-      element("onsetAge", Age.serializer().descriptor, isOptional = true)
-      element("onsetRange", Range.serializer().descriptor, isOptional = true)
-      element("onsetPeriod", Period.serializer().descriptor, isOptional = true)
-      element("onsetString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_onsetString", Element.serializer().descriptor, isOptional = true)
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.descriptor)
+      optionalElement("outcome", CodeableConceptSerializer.descriptor)
+      optionalElement("contributedToDeath", KotlinBoolean.serializer().descriptor)
+      optionalElement("_contributedToDeath", ElementSerializer.descriptor)
+      optionalElement("onsetAge", AgeSerializer.descriptor)
+      optionalElement("onsetRange", RangeSerializer.descriptor)
+      optionalElement("onsetPeriod", PeriodSerializer.descriptor)
+      optionalElement("onsetString", KotlinString.serializer().descriptor)
+      optionalElement("_onsetString", ElementSerializer.descriptor)
+      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
     }
 
-  override fun deserialize(decoder: Decoder): FamilyMemberHistory.Condition =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<FamilyMemberHistory.Condition>> =
+    ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory.Condition) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): FamilyMemberHistory.Condition {
+  override fun deserialize(decoder: Decoder): FamilyMemberHistory.Condition {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -221,49 +208,85 @@ internal object FamilyMemberHistoryConditionSerializer :
     var _onsetString: Element? = null
     var note: List<Annotation>? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        4 ->
-          outcome = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        5 -> contributedToDeath = decoder.decodeBooleanElement(descriptor, i)
-        6 ->
-          _contributedToDeath =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.contributedToDeathSer,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          outcome =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        5 -> contributedToDeath = compositeDecoder.decodeBooleanElement(descriptor, i)
+        6 ->
+          _contributedToDeath =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
               null,
             )
         7 ->
           onsetAge =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.onsetAgeSer, null)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
         8 ->
           onsetRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.onsetRangeSer, null)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         9 ->
           onsetPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.onsetPeriodSer, null)
-        10 -> onsetString = decoder.decodeStringElement(descriptor, i)
-        11 ->
-          _onsetString =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.contributedToDeathSer,
+              PeriodSerializer,
               null,
             )
-        12 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
+        10 -> onsetString = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          _onsetString =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        12 ->
+          note =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AnnotationSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Condition: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return FamilyMemberHistory.Condition(
       id = id,
       extension = extension ?: listOf(),
@@ -286,64 +309,56 @@ internal object FamilyMemberHistoryConditionSerializer :
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: FamilyMemberHistory.Condition) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory.Condition) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
-    (value.outcome)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
-    ((value.contributedToDeath?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
-    (value.contributedToDeath?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.contributedToDeathSer, it)
-    }
+    compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      4,
+      CodeableConceptSerializer,
+      value.outcome,
+    )
+    compositeEncoder.encodeBooleanIfNotNull(descriptor, 5, value.contributedToDeath?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.contributedToDeath)
     when (val choice = value.onset) {
       null -> {}
       is FamilyMemberHistory.Condition.Onset.Age -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.onsetAgeSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 7, AgeSerializer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.Range -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.onsetRangeSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 8, RangeSerializer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.onsetPeriodSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 9, PeriodSerializer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 11, Hoisted.contributedToDeathSer, it)
-        }
+        compositeEncoder.encodeStringIfNotNull(descriptor, 10, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 11, choice.value)
       }
     }
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.noteSer, value.note)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val contributedToDeathSer: KSerializer<Element> = Element.serializer()
-
-    public val onsetAgeSer: KSerializer<Age> = Age.serializer()
-
-    public val onsetRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val onsetPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
-
-    public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        12,
+        AnnotationSerializer.listSerializer,
+        value.note,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -351,43 +366,28 @@ internal object FamilyMemberHistoryProcedureSerializer :
   KSerializer<FamilyMemberHistory.Procedure> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Procedure") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("outcome", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("contributedToDeath", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_contributedToDeath", Element.serializer().descriptor, isOptional = true)
-      element("performedAge", Age.serializer().descriptor, isOptional = true)
-      element("performedRange", Range.serializer().descriptor, isOptional = true)
-      element("performedPeriod", Period.serializer().descriptor, isOptional = true)
-      element("performedString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_performedString", Element.serializer().descriptor, isOptional = true)
-      element("performedDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_performedDateTime", Element.serializer().descriptor, isOptional = true)
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.descriptor)
+      optionalElement("outcome", CodeableConceptSerializer.descriptor)
+      optionalElement("contributedToDeath", KotlinBoolean.serializer().descriptor)
+      optionalElement("_contributedToDeath", ElementSerializer.descriptor)
+      optionalElement("performedAge", AgeSerializer.descriptor)
+      optionalElement("performedRange", RangeSerializer.descriptor)
+      optionalElement("performedPeriod", PeriodSerializer.descriptor)
+      optionalElement("performedString", KotlinString.serializer().descriptor)
+      optionalElement("_performedString", ElementSerializer.descriptor)
+      optionalElement("performedDateTime", KotlinString.serializer().descriptor)
+      optionalElement("_performedDateTime", ElementSerializer.descriptor)
+      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
     }
 
-  override fun deserialize(decoder: Decoder): FamilyMemberHistory.Procedure =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<FamilyMemberHistory.Procedure>> =
+    ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory.Procedure) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): FamilyMemberHistory.Procedure {
+  override fun deserialize(decoder: Decoder): FamilyMemberHistory.Procedure {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -404,68 +404,94 @@ internal object FamilyMemberHistoryProcedureSerializer :
     var _performedDateTime: Element? = null
     var note: List<Annotation>? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        4 ->
-          outcome = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        5 -> contributedToDeath = decoder.decodeBooleanElement(descriptor, i)
-        6 ->
-          _contributedToDeath =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.contributedToDeathSer,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 ->
+          outcome =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        5 -> contributedToDeath = compositeDecoder.decodeBooleanElement(descriptor, i)
+        6 ->
+          _contributedToDeath =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
               null,
             )
         7 ->
           performedAge =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.performedAgeSer, null)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
         8 ->
           performedRange =
-            decoder.decodeNullableSerializableElement(
-              descriptor,
-              i,
-              Hoisted.performedRangeSer,
-              null,
-            )
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         9 ->
           performedPeriod =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.performedPeriodSer,
+              PeriodSerializer,
               null,
             )
-        10 -> performedString = decoder.decodeStringElement(descriptor, i)
+        10 -> performedString = compositeDecoder.decodeStringElement(descriptor, i)
         11 ->
           _performedString =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.contributedToDeathSer,
+              ElementSerializer,
               null,
             )
-        12 -> performedDateTime = decoder.decodeStringElement(descriptor, i)
+        12 -> performedDateTime = compositeDecoder.decodeStringElement(descriptor, i)
         13 ->
           _performedDateTime =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.contributedToDeathSer,
+              ElementSerializer,
               null,
             )
-        14 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
+        14 ->
+          note =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AnnotationSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Procedure: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return FamilyMemberHistory.Procedure(
       id = id,
       extension = extension ?: listOf(),
@@ -483,206 +509,135 @@ internal object FamilyMemberHistoryProcedureSerializer :
           performedRange,
           performedPeriod,
           R5String.of(performedString, _performedString),
-          DateTime.of(performedDateTime?.let { FhirDateTime.fromString(it) }, _performedDateTime),
+          DateTime.of(
+            if (performedDateTime != null) FhirDateTime.fromString(performedDateTime) else null,
+            _performedDateTime,
+          ),
         ),
       note = note ?: listOf(),
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: FamilyMemberHistory.Procedure) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory.Procedure) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
-    (value.outcome)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
-    ((value.contributedToDeath?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
-    (value.contributedToDeath?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.contributedToDeathSer, it)
-    }
+    compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      4,
+      CodeableConceptSerializer,
+      value.outcome,
+    )
+    compositeEncoder.encodeBooleanIfNotNull(descriptor, 5, value.contributedToDeath?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.contributedToDeath)
     when (val choice = value.performed) {
       null -> {}
       is FamilyMemberHistory.Procedure.Performed.Age -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.performedAgeSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 7, AgeSerializer, choice.value)
       }
       is FamilyMemberHistory.Procedure.Performed.Range -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.performedRangeSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 8, RangeSerializer, choice.value)
       }
       is FamilyMemberHistory.Procedure.Performed.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.performedPeriodSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 9, PeriodSerializer, choice.value)
       }
       is FamilyMemberHistory.Procedure.Performed.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 11, Hoisted.contributedToDeathSer, it)
-        }
+        compositeEncoder.encodeStringIfNotNull(descriptor, 10, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 11, choice.value)
       }
       is FamilyMemberHistory.Procedure.Performed.DateTime -> {
-        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 13, Hoisted.contributedToDeathSer, it)
-        }
+        compositeEncoder.encodeStringIfNotNull(descriptor, 12, choice.value.value?.toString())
+        compositeEncoder.encodeElementIfNotNull(descriptor, 13, choice.value)
       }
     }
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.noteSer, value.note)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val contributedToDeathSer: KSerializer<Element> = Element.serializer()
-
-    public val performedAgeSer: KSerializer<Age> = Age.serializer()
-
-    public val performedRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val performedPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
-
-    public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        14,
+        AnnotationSerializer.listSerializer,
+        value.note,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("FamilyMemberHistory") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMemberHistory> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("FamilyMemberHistory")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "instantiatesCanonical",
-      listSerialDescriptor(KotlinString.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_instantiatesCanonical",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "instantiatesUri",
-      listSerialDescriptor(KotlinString.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "_instantiatesUri",
-      listSerialDescriptor(Element.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element("dataAbsentReason", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("patient", Reference.serializer().descriptor, isOptional = true)
-    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_date", Element.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("instantiatesCanonical", stringNullableListSerializer.descriptor)
+    b.optionalElement("_instantiatesCanonical", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("instantiatesUri", stringNullableListSerializer.descriptor)
+    b.optionalElement("_instantiatesUri", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("dataAbsentReason", CodeableConceptSerializer.descriptor)
+    b.optionalElement("patient", ReferenceSerializer.descriptor)
+    b.optionalElement("date", KotlinString.serializer().descriptor)
+    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.optionalElement(
       "participant",
-      listSerialDescriptor(
-        lazyDescriptor { FamilyMemberHistory.Participant.serializer().descriptor }
-      ),
-      isOptional = true,
+      FamilyMemberHistoryParticipantSerializer.listSerializer.descriptor,
     )
-    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_name", Element.serializer().descriptor, isOptional = true)
-    b.element("relationship", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("sex", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element("bornPeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("bornDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_bornDate", Element.serializer().descriptor, isOptional = true)
-    b.element("bornString", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_bornString", Element.serializer().descriptor, isOptional = true)
-    b.element("ageAge", Age.serializer().descriptor, isOptional = true)
-    b.element("ageRange", Range.serializer().descriptor, isOptional = true)
-    b.element("ageString", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_ageString", Element.serializer().descriptor, isOptional = true)
-    b.element("estimatedAge", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_estimatedAge", Element.serializer().descriptor, isOptional = true)
-    b.element("deceasedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-    b.element("_deceasedBoolean", Element.serializer().descriptor, isOptional = true)
-    b.element("deceasedAge", Age.serializer().descriptor, isOptional = true)
-    b.element("deceasedRange", Range.serializer().descriptor, isOptional = true)
-    b.element("deceasedDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_deceasedDate", Element.serializer().descriptor, isOptional = true)
-    b.element("deceasedString", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_deceasedString", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "reason",
-      listSerialDescriptor(CodeableReference.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-    b.element(
-      "condition",
-      listSerialDescriptor(
-        lazyDescriptor { FamilyMemberHistory.Condition.serializer().descriptor }
-      ),
-      isOptional = true,
-    )
-    b.element(
-      "procedure",
-      listSerialDescriptor(
-        lazyDescriptor { FamilyMemberHistory.Procedure.serializer().descriptor }
-      ),
-      isOptional = true,
-    )
+    b.optionalElement("name", KotlinString.serializer().descriptor)
+    b.optionalElement("_name", ElementSerializer.descriptor)
+    b.optionalElement("relationship", CodeableConceptSerializer.descriptor)
+    b.optionalElement("sex", CodeableConceptSerializer.descriptor)
+    b.optionalElement("bornPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("bornDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_bornDate", ElementSerializer.descriptor)
+    b.optionalElement("bornString", KotlinString.serializer().descriptor)
+    b.optionalElement("_bornString", ElementSerializer.descriptor)
+    b.optionalElement("ageAge", AgeSerializer.descriptor)
+    b.optionalElement("ageRange", RangeSerializer.descriptor)
+    b.optionalElement("ageString", KotlinString.serializer().descriptor)
+    b.optionalElement("_ageString", ElementSerializer.descriptor)
+    b.optionalElement("estimatedAge", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_estimatedAge", ElementSerializer.descriptor)
+    b.optionalElement("deceasedBoolean", KotlinBoolean.serializer().descriptor)
+    b.optionalElement("_deceasedBoolean", ElementSerializer.descriptor)
+    b.optionalElement("deceasedAge", AgeSerializer.descriptor)
+    b.optionalElement("deceasedRange", RangeSerializer.descriptor)
+    b.optionalElement("deceasedDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_deceasedDate", ElementSerializer.descriptor)
+    b.optionalElement("deceasedString", KotlinString.serializer().descriptor)
+    b.optionalElement("_deceasedString", ElementSerializer.descriptor)
+    b.optionalElement("reason", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement("condition", FamilyMemberHistoryConditionSerializer.listSerializer.descriptor)
+    b.optionalElement("procedure", FamilyMemberHistoryProcedureSerializer.listSerializer.descriptor)
   }
 
-  override fun deserialize(decoder: Decoder): FamilyMemberHistory =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "FamilyMemberHistory")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
-    decoder: CompositeDecoder,
+  override fun deserializeInternal(
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): FamilyMemberHistory {
@@ -736,158 +691,286 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
     var condition: List<FamilyMemberHistory.Condition>? = null
     var procedure: List<FamilyMemberHistory.Procedure>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
-        7 ->
-          contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
-        8 ->
-          extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        9 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        10 ->
-          identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
-        11 ->
-          instantiatesCanonical =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.instantiatesCanonicalSer,
+              ElementSerializer,
+              null,
+            )
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _language =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 ->
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
+        7 ->
+          contained =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
+        8 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        9 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        10 ->
+          identifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
+        11 ->
+          instantiatesCanonical =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
               null,
             )
         12 ->
           _instantiatesCanonical =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.instantiatesCanonicalSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
         13 ->
           instantiatesUri =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.instantiatesCanonicalSer,
+              stringNullableListSerializer,
               null,
             )
         14 ->
           _instantiatesUri =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.instantiatesCanonicalSer2,
+              ElementSerializer.nullableListSerializer,
               null,
             )
-        15 -> status = decoder.decodeStringElement(descriptor, i)
+        15 -> status = compositeDecoder.decodeStringElement(descriptor, i)
         16 ->
           _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        17 ->
-          dataAbsentReason =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.dataAbsentReasonSer,
+              ElementSerializer,
+              null,
+            )
+        17 ->
+          dataAbsentReason =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
               null,
             )
         18 ->
           patient =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
-        19 -> date = decoder.decodeStringElement(descriptor, i)
-        20 ->
-          _date =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        21 ->
-          participant =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.participantSer, null)
-        22 -> name = decoder.decodeStringElement(descriptor, i)
-        23 ->
-          _name =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        24 ->
-          relationship =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.dataAbsentReasonSer,
+              ReferenceSerializer,
+              null,
+            )
+        19 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        20 ->
+          _date =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        21 ->
+          participant =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FamilyMemberHistoryParticipantSerializer.listSerializer,
+              null,
+            )
+        22 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        23 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        24 ->
+          relationship =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
               null,
             )
         25 ->
           sex =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.dataAbsentReasonSer,
+              CodeableConceptSerializer,
               null,
             )
         26 ->
           bornPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.bornPeriodSer, null)
-        27 -> bornDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
+        27 -> bornDate = compositeDecoder.decodeStringElement(descriptor, i)
         28 ->
           _bornDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        29 -> bornString = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        29 -> bornString = compositeDecoder.decodeStringElement(descriptor, i)
         30 ->
           _bornString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         31 ->
-          ageAge = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageAgeSer, null)
+          ageAge =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
         32 ->
           ageRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageRangeSer, null)
-        33 -> ageString = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        33 -> ageString = compositeDecoder.decodeStringElement(descriptor, i)
         34 ->
           _ageString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        35 -> estimatedAge = decoder.decodeBooleanElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        35 -> estimatedAge = compositeDecoder.decodeBooleanElement(descriptor, i)
         36 ->
           _estimatedAge =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        37 -> deceasedBoolean = decoder.decodeBooleanElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        37 -> deceasedBoolean = compositeDecoder.decodeBooleanElement(descriptor, i)
         38 ->
           _deceasedBoolean =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         39 ->
           deceasedAge =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageAgeSer, null)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, AgeSerializer, null)
         40 ->
           deceasedRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageRangeSer, null)
-        41 -> deceasedDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        41 -> deceasedDate = compositeDecoder.decodeStringElement(descriptor, i)
         42 ->
           _deceasedDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        43 -> deceasedString = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        43 -> deceasedString = compositeDecoder.decodeStringElement(descriptor, i)
         44 ->
           _deceasedString =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         45 ->
-          reason = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.reasonSer, null)
-        46 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
+          reason =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableReferenceSerializer.listSerializer,
+              null,
+            )
+        46 ->
+          note =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AnnotationSerializer.listSerializer,
+              null,
+            )
         47 ->
           condition =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.conditionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FamilyMemberHistoryConditionSerializer.listSerializer,
+              null,
+            )
         48 ->
           procedure =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.procedureSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FamilyMemberHistoryProcedureSerializer.listSerializer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding FamilyMemberHistory: " + i)
       }
     }
@@ -906,7 +989,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
         ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(index)?.let { it },
+            instantiatesCanonical?.getOrNull(index),
             _instantiatesCanonical?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -916,14 +999,14 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
           index ->
-          Uri.of(instantiatesUri?.getOrNull(index)?.let { it }, _instantiatesUri?.getOrNull(index))
+          Uri.of(instantiatesUri?.getOrNull(index), _instantiatesUri?.getOrNull(index))
             ?: throw SerializationException(
               "An entry of 'instantiatesUri' on FamilyMemberHistory has neither a value nor an id/extension"
             )
         }),
       status =
         Enumeration.of(
-          status?.let { FamilyMemberHistory.FamilyHistoryStatus.fromCode(it) },
+          if (status != null) FamilyMemberHistory.FamilyHistoryStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -935,7 +1018,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           ?: throw SerializationException(
             "Missing required property 'patient' on FamilyMemberHistory"
           ),
-      date = DateTime.of(date?.let { FhirDateTime.fromString(it) }, _date),
+      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
       participant = participant ?: listOf(),
       name = R5String.of(name, _name),
       relationship =
@@ -947,7 +1030,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       born =
         FamilyMemberHistory.Born.from(
           bornPeriod,
-          Date.of(bornDate?.let { FhirDate.fromString(it) }, _bornDate),
+          Date.of(if (bornDate != null) FhirDate.fromString(bornDate) else null, _bornDate),
           R5String.of(bornString, _bornString),
         ),
       age = FamilyMemberHistory.Age.from(ageAge, ageRange, R5String.of(ageString, _ageString)),
@@ -957,7 +1040,10 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           R5Boolean.of(deceasedBoolean, _deceasedBoolean),
           deceasedAge,
           deceasedRange,
-          Date.of(deceasedDate?.let { FhirDate.fromString(it) }, _deceasedDate),
+          Date.of(
+            if (deceasedDate != null) FhirDate.fromString(deceasedDate) else null,
+            _deceasedDate,
+          ),
           R5String.of(deceasedString, _deceasedString),
         ),
       reason = reason ?: listOf(),
@@ -967,419 +1053,262 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
     )
   }
 
-  internal fun serializeInternal(
-    encoder: CompositeEncoder,
+  override fun serializeInternal(
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: FamilyMemberHistory,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
-    }
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    (value.instantiatesCanonical.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.instantiatesCanonical.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
-        Hoisted.instantiatesCanonicalSer,
-        it,
+        stringNullableListSerializer,
+        value.instantiatesCanonical.map { it.value },
       )
-    }
-    (value.instantiatesCanonical.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodePrimitiveElementList(
         descriptor,
         12 + descriptorOffset,
-        Hoisted.instantiatesCanonicalSer2,
-        it,
+        value.instantiatesCanonical,
       )
     }
-    (value.instantiatesUri.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+    if (value.instantiatesUri.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
-        Hoisted.instantiatesCanonicalSer,
-        it,
+        stringNullableListSerializer,
+        value.instantiatesUri.map { it.value },
       )
-    }
-    (value.instantiatesUri.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodePrimitiveElementList(
         descriptor,
         14 + descriptorOffset,
-        Hoisted.instantiatesCanonicalSer2,
-        it,
+        value.instantiatesUri,
       )
     }
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    (value.dataAbsentReason)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        Hoisted.dataAbsentReasonSer,
-        it,
-      )
-    }
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      15 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.status)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      17 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.dataAbsentReason,
+    )
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       18 + descriptorOffset,
-      Hoisted.patientSer,
+      ReferenceSerializer,
       value.patient,
     )
-    ((value.date?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      value.date?.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.date)
     if (value.participant.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         21 + descriptorOffset,
-        Hoisted.participantSer,
+        FamilyMemberHistoryParticipantSerializer.listSerializer,
         value.participant,
       )
-    ((value.name?.value))?.let {
-      encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
-    }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeStringIfNotNull(descriptor, 22 + descriptorOffset, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.name)
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       24 + descriptorOffset,
-      Hoisted.dataAbsentReasonSer,
+      CodeableConceptSerializer,
       value.relationship,
     )
-    (value.sex)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        Hoisted.dataAbsentReasonSer,
-        it,
-      )
-    }
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      25 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.sex,
+    )
     when (val choice = value.born) {
       null -> {}
       is FamilyMemberHistory.Born.Period -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           26 + descriptorOffset,
-          Hoisted.bornPeriodSer,
+          PeriodSerializer,
           choice.value,
         )
       }
       is FamilyMemberHistory.Born.Date -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            28 + descriptorOffset,
-            Hoisted.implicitRulesSer,
-            it,
-          )
-        }
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          27 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, choice.value)
       }
       is FamilyMemberHistory.Born.String -> {
-        ((choice.value.value))?.let {
-          encoder.encodeStringElement(descriptor, 29 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            30 + descriptorOffset,
-            Hoisted.implicitRulesSer,
-            it,
-          )
-        }
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          29 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, choice.value)
       }
     }
     when (val choice = value.age) {
       null -> {}
       is FamilyMemberHistory.Age.Age -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           31 + descriptorOffset,
-          Hoisted.ageAgeSer,
+          AgeSerializer,
           choice.value,
         )
       }
       is FamilyMemberHistory.Age.Range -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           32 + descriptorOffset,
-          Hoisted.ageRangeSer,
+          RangeSerializer,
           choice.value,
         )
       }
       is FamilyMemberHistory.Age.String -> {
-        ((choice.value.value))?.let {
-          encoder.encodeStringElement(descriptor, 33 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            34 + descriptorOffset,
-            Hoisted.implicitRulesSer,
-            it,
-          )
-        }
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          33 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 34 + descriptorOffset, choice.value)
       }
     }
-    ((value.estimatedAge?.value))?.let {
-      encoder.encodeBooleanElement(descriptor, 35 + descriptorOffset, it)
-    }
-    (value.estimatedAge?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        36 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
+    compositeEncoder.encodeBooleanIfNotNull(
+      descriptor,
+      35 + descriptorOffset,
+      value.estimatedAge?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 36 + descriptorOffset, value.estimatedAge)
     when (val choice = value.deceased) {
       null -> {}
       is FamilyMemberHistory.Deceased.Boolean -> {
-        ((choice.value.value))?.let {
-          encoder.encodeBooleanElement(descriptor, 37 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            38 + descriptorOffset,
-            Hoisted.implicitRulesSer,
-            it,
-          )
-        }
+        compositeEncoder.encodeBooleanIfNotNull(
+          descriptor,
+          37 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 38 + descriptorOffset, choice.value)
       }
       is FamilyMemberHistory.Deceased.Age -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           39 + descriptorOffset,
-          Hoisted.ageAgeSer,
+          AgeSerializer,
           choice.value,
         )
       }
       is FamilyMemberHistory.Deceased.Range -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           40 + descriptorOffset,
-          Hoisted.ageRangeSer,
+          RangeSerializer,
           choice.value,
         )
       }
       is FamilyMemberHistory.Deceased.Date -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            42 + descriptorOffset,
-            Hoisted.implicitRulesSer,
-            it,
-          )
-        }
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          41 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 42 + descriptorOffset, choice.value)
       }
       is FamilyMemberHistory.Deceased.String -> {
-        ((choice.value.value))?.let {
-          encoder.encodeStringElement(descriptor, 43 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            44 + descriptorOffset,
-            Hoisted.implicitRulesSer,
-            it,
-          )
-        }
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          43 + descriptorOffset,
+          choice.value.value,
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 44 + descriptorOffset, choice.value)
       }
     }
     if (value.reason.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         45 + descriptorOffset,
-        Hoisted.reasonSer,
+        CodeableReferenceSerializer.listSerializer,
         value.reason,
       )
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         46 + descriptorOffset,
-        Hoisted.noteSer,
+        AnnotationSerializer.listSerializer,
         value.note,
       )
     if (value.condition.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         47 + descriptorOffset,
-        Hoisted.conditionSer,
+        FamilyMemberHistoryConditionSerializer.listSerializer,
         value.condition,
       )
     if (value.procedure.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         48 + descriptorOffset,
-        Hoisted.procedureSer,
+        FamilyMemberHistoryProcedureSerializer.listSerializer,
         value.procedure,
       )
   }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val instantiatesCanonicalSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val instantiatesCanonicalSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.instantiatesCanonicalSerInner).nullable)
-
-    public val instantiatesCanonicalSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.implicitRulesSer).nullable)
-
-    public val dataAbsentReasonSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val patientSer: KSerializer<Reference> = Reference.serializer()
-
-    public val participantSerInner: KSerializer<FamilyMemberHistory.Participant> =
-      FamilyMemberHistory.Participant.serializer()
-
-    public val participantSer: KSerializer<List<FamilyMemberHistory.Participant>> =
-      ListSerializer(Hoisted.participantSerInner)
-
-    public val bornPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val ageAgeSer: KSerializer<Age> = Age.serializer()
-
-    public val ageRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val reasonSerInner: KSerializer<CodeableReference> = CodeableReference.serializer()
-
-    public val reasonSer: KSerializer<List<CodeableReference>> =
-      ListSerializer(Hoisted.reasonSerInner)
-
-    public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
-
-    public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
-
-    public val conditionSerInner: KSerializer<FamilyMemberHistory.Condition> =
-      FamilyMemberHistory.Condition.serializer()
-
-    public val conditionSer: KSerializer<List<FamilyMemberHistory.Condition>> =
-      ListSerializer(Hoisted.conditionSerInner)
-
-    public val procedureSerInner: KSerializer<FamilyMemberHistory.Procedure> =
-      FamilyMemberHistory.Procedure.serializer()
-
-    public val procedureSer: KSerializer<List<FamilyMemberHistory.Procedure>> =
-      ListSerializer(Hoisted.procedureSerInner)
-  }
-}
-
-internal object FamilyMemberHistoryPolymorphicSerializer : KSerializer<FamilyMemberHistory> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("FamilyMemberHistory") {
-      FamilyMemberHistorySerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory) {
-    encoder.encodeStructure(descriptor) {
-      FamilyMemberHistorySerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): FamilyMemberHistory =
-    decoder.decodeStructure(descriptor) {
-      FamilyMemberHistorySerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

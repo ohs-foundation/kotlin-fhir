@@ -105,18 +105,17 @@ public data class MarketingStatus(
    */
   public val restoreDate: DateTime? = null,
 ) : BackboneType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(status.toBuilder()).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        country = this@with.country?.toBuilder()
-        jurisdiction = this@with.jurisdiction?.toBuilder()
-        dateRange = this@with.dateRange?.toBuilder()
-        restoreDate = this@with.restoreDate?.toBuilder()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(status.toBuilder())
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.country = country?.toBuilder()
+    builder.jurisdiction = jurisdiction?.toBuilder()
+    builder.dateRange = dateRange?.toBuilder()
+    builder.restoreDate = restoreDate?.toBuilder()
+    return builder
+  }
 
   public open class Builder(
     /**
@@ -200,8 +199,8 @@ public data class MarketingStatus(
     public open fun build(): MarketingStatus =
       MarketingStatus(
         id = id,
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         country = country?.build(),
         jurisdiction = jurisdiction?.build(),
         status = status.build(),

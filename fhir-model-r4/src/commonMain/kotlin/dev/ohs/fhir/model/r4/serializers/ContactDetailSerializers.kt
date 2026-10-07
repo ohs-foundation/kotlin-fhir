@@ -40,62 +40,67 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object ContactDetailSerializer : KSerializer<ContactDetail> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ContactDetail") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("name", KotlinString.serializer().descriptor, isOptional = true)
-      element("_name", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element(
+      optionalElement("name", KotlinString.serializer().descriptor)
+      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement(
         "telecom",
-        listSerialDescriptor(lazyDescriptor { ContactPoint.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ContactPointSerializer.descriptor }),
       )
     }
 
-  override fun deserialize(decoder: Decoder): ContactDetail =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<ContactDetail>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: ContactDetail) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): ContactDetail {
+  override fun deserialize(decoder: Decoder): ContactDetail {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var name: KotlinString? = null
     var _name: Element? = null
     var telecom: List<ContactPoint>? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> name = decoder.decodeStringElement(descriptor, i)
-        3 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> name = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _name =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         4 ->
           telecom =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.telecomSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ContactPointSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding ContactDetail: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return ContactDetail(
       id = id,
       extension = extension ?: listOf(),
@@ -104,28 +109,25 @@ internal object ContactDetailSerializer : KSerializer<ContactDetail> {
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: ContactDetail) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: ContactDetail) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameSer, it)
-    }
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.name)
     if (value.telecom.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.telecomSer, value.telecom)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val nameSer: KSerializer<Element> = Element.serializer()
-
-    public val telecomSerInner: KSerializer<ContactPoint> = ContactPoint.serializer()
-
-    public val telecomSer: KSerializer<List<ContactPoint>> = ListSerializer(Hoisted.telecomSerInner)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        ContactPointSerializer.listSerializer,
+        value.telecom,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }

@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDate
 import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.FhirResourceSerializer
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Money
@@ -40,6 +41,7 @@ import dev.ohs.fhir.model.r4b.Narrative
 import dev.ohs.fhir.model.r4b.Period
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Resource
+import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.UnsignedInt
 import dev.ohs.fhir.model.r4b.Uri
@@ -54,7 +56,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -64,51 +65,29 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object CoverageEligibilityResponseInsuranceSerializer :
   KSerializer<CoverageEligibilityResponse.Insurance> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Insurance") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("coverage", Reference.serializer().descriptor, isOptional = true)
-      element("inforce", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_inforce", Element.serializer().descriptor, isOptional = true)
-      element("benefitPeriod", Period.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("coverage", ReferenceSerializer.descriptor)
+      optionalElement("inforce", KotlinBoolean.serializer().descriptor)
+      optionalElement("_inforce", ElementSerializer.descriptor)
+      optionalElement("benefitPeriod", PeriodSerializer.descriptor)
+      optionalElement(
         "item",
-        listSerialDescriptor(
-          lazyDescriptor { CoverageEligibilityResponse.Insurance.Item.serializer().descriptor }
-        ),
-        isOptional = true,
+        CoverageEligibilityResponseInsuranceItemSerializer.listSerializer.descriptor,
       )
     }
 
-  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse.Insurance =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<CoverageEligibilityResponse.Insurance>> =
+    ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityResponse.Insurance) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): CoverageEligibilityResponse.Insurance {
+  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse.Insurance {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -118,29 +97,62 @@ internal object CoverageEligibilityResponseInsuranceSerializer :
     var benefitPeriod: Period? = null
     var item: List<CoverageEligibilityResponse.Insurance.Item>? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           coverage =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.coverageSer, null)
-        4 -> inforce = decoder.decodeBooleanElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        4 -> inforce = compositeDecoder.decodeBooleanElement(descriptor, i)
         5 ->
           _inforce =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.inforceSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         6 ->
           benefitPeriod =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.benefitPeriodSer, null)
-        7 -> item = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.itemSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
+        7 ->
+          item =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CoverageEligibilityResponseInsuranceItemSerializer.listSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Insurance: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return CoverageEligibilityResponse.Insurance(
       id = id,
       extension = extension ?: listOf(),
@@ -156,49 +168,40 @@ internal object CoverageEligibilityResponseInsuranceSerializer :
     )
   }
 
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: CoverageEligibilityResponse.Insurance,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityResponse.Insurance) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.coverageSer, value.coverage)
-    ((value.inforce?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
-    (value.inforce?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.inforceSer, it)
-    }
-    (value.benefitPeriod)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.benefitPeriodSer, it)
-    }
+    compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.coverage)
+    compositeEncoder.encodeBooleanIfNotNull(descriptor, 4, value.inforce?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.inforce)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6,
+      PeriodSerializer,
+      value.benefitPeriod,
+    )
     if (value.item.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.itemSer, value.item)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val coverageSer: KSerializer<Reference> = Reference.serializer()
-
-    public val inforceSer: KSerializer<Element> = Element.serializer()
-
-    public val benefitPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val itemSerInner: KSerializer<CoverageEligibilityResponse.Insurance.Item> =
-      CoverageEligibilityResponse.Insurance.Item.serializer()
-
-    public val itemSer: KSerializer<List<CoverageEligibilityResponse.Insurance.Item>> =
-      ListSerializer(Hoisted.itemSerInner)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        7,
+        CoverageEligibilityResponseInsuranceItemSerializer.listSerializer,
+        value.item,
+      )
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -206,68 +209,41 @@ internal object CoverageEligibilityResponseInsuranceItemSerializer :
   KSerializer<CoverageEligibilityResponse.Insurance.Item> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Item") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("category", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("productOrService", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "modifier",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("provider", Reference.serializer().descriptor, isOptional = true)
-      element("excluded", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_excluded", Element.serializer().descriptor, isOptional = true)
-      element("name", KotlinString.serializer().descriptor, isOptional = true)
-      element("_name", Element.serializer().descriptor, isOptional = true)
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("network", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("unit", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("term", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("category", CodeableConceptSerializer.descriptor)
+      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+      optionalElement("provider", ReferenceSerializer.descriptor)
+      optionalElement("excluded", KotlinBoolean.serializer().descriptor)
+      optionalElement("_excluded", ElementSerializer.descriptor)
+      optionalElement("name", KotlinString.serializer().descriptor)
+      optionalElement("_name", ElementSerializer.descriptor)
+      optionalElement("description", KotlinString.serializer().descriptor)
+      optionalElement("_description", ElementSerializer.descriptor)
+      optionalElement("network", CodeableConceptSerializer.descriptor)
+      optionalElement("unit", CodeableConceptSerializer.descriptor)
+      optionalElement("term", CodeableConceptSerializer.descriptor)
+      optionalElement(
         "benefit",
-        listSerialDescriptor(
-          lazyDescriptor {
-            CoverageEligibilityResponse.Insurance.Item.Benefit.serializer().descriptor
-          }
-        ),
-        isOptional = true,
+        CoverageEligibilityResponseInsuranceItemBenefitSerializer.listSerializer.descriptor,
       )
-      element("authorizationRequired", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_authorizationRequired", Element.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("authorizationRequired", KotlinBoolean.serializer().descriptor)
+      optionalElement("_authorizationRequired", ElementSerializer.descriptor)
+      optionalElement(
         "authorizationSupporting",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
+        CodeableConceptSerializer.listSerializer.descriptor,
       )
-      element("authorizationUrl", KotlinString.serializer().descriptor, isOptional = true)
-      element("_authorizationUrl", Element.serializer().descriptor, isOptional = true)
+      optionalElement("authorizationUrl", KotlinString.serializer().descriptor)
+      optionalElement("_authorizationUrl", ElementSerializer.descriptor)
     }
 
-  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse.Insurance.Item =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<CoverageEligibilityResponse.Insurance.Item>> =
+    ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityResponse.Insurance.Item) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): CoverageEligibilityResponse.Insurance.Item {
+  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse.Insurance.Item {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -291,63 +267,146 @@ internal object CoverageEligibilityResponseInsuranceItemSerializer :
     var authorizationUrl: KotlinString? = null
     var _authorizationUrl: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           category =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
           productOrService =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         5 ->
           modifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.modifierSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
         6 ->
           provider =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.providerSer, null)
-        7 -> excluded = decoder.decodeBooleanElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        7 -> excluded = compositeDecoder.decodeBooleanElement(descriptor, i)
         8 ->
           _excluded =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.excludedSer, null)
-        9 -> name = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> name = compositeDecoder.decodeStringElement(descriptor, i)
         10 ->
           _name =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.excludedSer, null)
-        11 -> description = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 -> description = compositeDecoder.decodeStringElement(descriptor, i)
         12 ->
           _description =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.excludedSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         13 ->
           network =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         14 ->
-          unit = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
+          unit =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         15 ->
-          term = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
+          term =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         16 ->
           benefit =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.benefitSer, null)
-        17 -> authorizationRequired = decoder.decodeBooleanElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CoverageEligibilityResponseInsuranceItemBenefitSerializer.listSerializer,
+              null,
+            )
+        17 -> authorizationRequired = compositeDecoder.decodeBooleanElement(descriptor, i)
         18 ->
           _authorizationRequired =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.excludedSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         19 ->
           authorizationSupporting =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.modifierSer, null)
-        20 -> authorizationUrl = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        20 -> authorizationUrl = compositeDecoder.decodeStringElement(descriptor, i)
         21 ->
           _authorizationUrl =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.excludedSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Item: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return CoverageEligibilityResponse.Insurance.Item(
       id = id,
       extension = extension ?: listOf(),
@@ -369,86 +428,86 @@ internal object CoverageEligibilityResponseInsuranceItemSerializer :
     )
   }
 
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: CoverageEligibilityResponse.Insurance.Item,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityResponse.Insurance.Item) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.category)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, it)
-    }
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, it)
-    }
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.category,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      4,
+      CodeableConceptSerializer,
+      value.productOrService,
+    )
     if (value.modifier.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.modifierSer, value.modifier)
-    (value.provider)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.providerSer, it)
-    }
-    ((value.excluded?.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-    (value.excluded?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.excludedSer, it)
-    }
-    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-    (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.excludedSer, it)
-    }
-    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-    (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.excludedSer, it)
-    }
-    (value.network)?.let {
-      encoder.encodeSerializableElement(descriptor, 13, Hoisted.categorySer, it)
-    }
-    (value.unit)?.let { encoder.encodeSerializableElement(descriptor, 14, Hoisted.categorySer, it) }
-    (value.term)?.let { encoder.encodeSerializableElement(descriptor, 15, Hoisted.categorySer, it) }
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        5,
+        CodeableConceptSerializer.listSerializer,
+        value.modifier,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 6, ReferenceSerializer, value.provider)
+    compositeEncoder.encodeBooleanIfNotNull(descriptor, 7, value.excluded?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.excluded)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.name?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.name)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 11, value.description?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.description)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      13,
+      CodeableConceptSerializer,
+      value.network,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      14,
+      CodeableConceptSerializer,
+      value.unit,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      15,
+      CodeableConceptSerializer,
+      value.term,
+    )
     if (value.benefit.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.benefitSer, value.benefit)
-    ((value.authorizationRequired?.value))?.let { encoder.encodeBooleanElement(descriptor, 17, it) }
-    (value.authorizationRequired?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18, Hoisted.excludedSer, it)
-    }
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        16,
+        CoverageEligibilityResponseInsuranceItemBenefitSerializer.listSerializer,
+        value.benefit,
+      )
+    compositeEncoder.encodeBooleanIfNotNull(descriptor, 17, value.authorizationRequired?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 18, value.authorizationRequired)
     if (value.authorizationSupporting.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         19,
-        Hoisted.modifierSer,
+        CodeableConceptSerializer.listSerializer,
         value.authorizationSupporting,
       )
-    ((value.authorizationUrl?.value))?.let { encoder.encodeStringElement(descriptor, 20, it) }
-    (value.authorizationUrl?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 21, Hoisted.excludedSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val categorySer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val modifierSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.categorySer)
-
-    public val providerSer: KSerializer<Reference> = Reference.serializer()
-
-    public val excludedSer: KSerializer<Element> = Element.serializer()
-
-    public val benefitSerInner: KSerializer<CoverageEligibilityResponse.Insurance.Item.Benefit> =
-      CoverageEligibilityResponse.Insurance.Item.Benefit.serializer()
-
-    public val benefitSer: KSerializer<List<CoverageEligibilityResponse.Insurance.Item.Benefit>> =
-      ListSerializer(Hoisted.benefitSerInner)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 20, value.authorizationUrl?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 21, value.authorizationUrl)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -456,47 +515,28 @@ internal object CoverageEligibilityResponseInsuranceItemBenefitSerializer :
   KSerializer<CoverageEligibilityResponse.Insurance.Item.Benefit> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Benefit") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("allowedUnsignedInt", Int.serializer().descriptor, isOptional = true)
-      element("_allowedUnsignedInt", Element.serializer().descriptor, isOptional = true)
-      element("allowedString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_allowedString", Element.serializer().descriptor, isOptional = true)
-      element("allowedMoney", Money.serializer().descriptor, isOptional = true)
-      element("usedUnsignedInt", Int.serializer().descriptor, isOptional = true)
-      element("_usedUnsignedInt", Element.serializer().descriptor, isOptional = true)
-      element("usedString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_usedString", Element.serializer().descriptor, isOptional = true)
-      element("usedMoney", Money.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("type", CodeableConceptSerializer.descriptor)
+      optionalElement("allowedUnsignedInt", Int.serializer().descriptor)
+      optionalElement("_allowedUnsignedInt", ElementSerializer.descriptor)
+      optionalElement("allowedString", KotlinString.serializer().descriptor)
+      optionalElement("_allowedString", ElementSerializer.descriptor)
+      optionalElement("allowedMoney", MoneySerializer.descriptor)
+      optionalElement("usedUnsignedInt", Int.serializer().descriptor)
+      optionalElement("_usedUnsignedInt", ElementSerializer.descriptor)
+      optionalElement("usedString", KotlinString.serializer().descriptor)
+      optionalElement("_usedString", ElementSerializer.descriptor)
+      optionalElement("usedMoney", MoneySerializer.descriptor)
     }
 
-  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse.Insurance.Item.Benefit =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer:
+    KSerializer<List<CoverageEligibilityResponse.Insurance.Item.Benefit>> =
+    ListSerializer(this)
 
-  override fun serialize(
-    encoder: Encoder,
-    `value`: CoverageEligibilityResponse.Insurance.Item.Benefit,
-  ) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(
-    decoder: CompositeDecoder
-  ): CoverageEligibilityResponse.Insurance.Item.Benefit {
+  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse.Insurance.Item.Benefit {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -512,61 +552,79 @@ internal object CoverageEligibilityResponseInsuranceItemBenefitSerializer :
     var _usedString: Element? = null
     var usedMoney: Money? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        4 -> allowedUnsignedInt = decoder.decodeIntElement(descriptor, i)
-        5 ->
-          _allowedUnsignedInt =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.allowedUnsignedIntSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
-        6 -> allowedString = decoder.decodeStringElement(descriptor, i)
-        7 ->
-          _allowedString =
-            decoder.decodeNullableSerializableElement(
+        2 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.allowedUnsignedIntSer,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
+        4 -> allowedUnsignedInt = compositeDecoder.decodeIntElement(descriptor, i)
+        5 ->
+          _allowedUnsignedInt =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> allowedString = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          _allowedString =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
               null,
             )
         8 ->
           allowedMoney =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.allowedMoneySer, null)
-        9 -> usedUnsignedInt = decoder.decodeIntElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
+        9 -> usedUnsignedInt = compositeDecoder.decodeIntElement(descriptor, i)
         10 ->
           _usedUnsignedInt =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.allowedUnsignedIntSer,
+              ElementSerializer,
               null,
             )
-        11 -> usedString = decoder.decodeStringElement(descriptor, i)
+        11 -> usedString = compositeDecoder.decodeStringElement(descriptor, i)
         12 ->
           _usedString =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.allowedUnsignedIntSer,
+              ElementSerializer,
               null,
             )
         13 ->
           usedMoney =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.allowedMoneySer, null)
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Benefit: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return CoverageEligibilityResponse.Insurance.Item.Benefit(
       id = id,
       extension = extension ?: listOf(),
@@ -591,70 +649,56 @@ internal object CoverageEligibilityResponseInsuranceItemBenefitSerializer :
     )
   }
 
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
+  override fun serialize(
+    encoder: Encoder,
     `value`: CoverageEligibilityResponse.Insurance.Item.Benefit,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
+    compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     when (val choice = value.allowed) {
       null -> {}
       is CoverageEligibilityResponse.Insurance.Item.Benefit.Allowed.UnsignedInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 5, Hoisted.allowedUnsignedIntSer, it)
-        }
+        compositeEncoder.encodeIntIfNotNull(descriptor, 4, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 5, choice.value)
       }
       is CoverageEligibilityResponse.Insurance.Item.Benefit.Allowed.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 7, Hoisted.allowedUnsignedIntSer, it)
-        }
+        compositeEncoder.encodeStringIfNotNull(descriptor, 6, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 7, choice.value)
       }
       is CoverageEligibilityResponse.Insurance.Item.Benefit.Allowed.Money -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.allowedMoneySer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 8, MoneySerializer, choice.value)
       }
     }
     when (val choice = value.used) {
       null -> {}
       is CoverageEligibilityResponse.Insurance.Item.Benefit.Used.UnsignedInt -> {
-        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 10, Hoisted.allowedUnsignedIntSer, it)
-        }
+        compositeEncoder.encodeIntIfNotNull(descriptor, 9, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 10, choice.value)
       }
       is CoverageEligibilityResponse.Insurance.Item.Benefit.Used.String -> {
-        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(descriptor, 12, Hoisted.allowedUnsignedIntSer, it)
-        }
+        compositeEncoder.encodeStringIfNotNull(descriptor, 11, choice.value.value)
+        compositeEncoder.encodeElementIfNotNull(descriptor, 12, choice.value)
       }
       is CoverageEligibilityResponse.Insurance.Item.Benefit.Used.Money -> {
-        encoder.encodeSerializableElement(descriptor, 13, Hoisted.allowedMoneySer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 13, MoneySerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val allowedUnsignedIntSer: KSerializer<Element> = Element.serializer()
-
-    public val allowedMoneySer: KSerializer<Money> = Money.serializer()
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
@@ -662,50 +706,53 @@ internal object CoverageEligibilityResponseErrorSerializer :
   KSerializer<CoverageEligibilityResponse.Error> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Error") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("code", CodeableConceptSerializer.descriptor)
     }
 
-  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse.Error =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<CoverageEligibilityResponse.Error>> =
+    ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityResponse.Error) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): CoverageEligibilityResponse.Error {
+  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse.Error {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var code: CodeableConcept? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        3 ->
+          code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Error: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return CoverageEligibilityResponse.Error(
       id = id,
       extension = extension ?: listOf(),
@@ -718,122 +765,76 @@ internal object CoverageEligibilityResponseErrorSerializer :
     )
   }
 
-  private fun serializeInternal(
-    encoder: CompositeEncoder,
-    `value`: CoverageEligibilityResponse.Error,
-  ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityResponse.Error) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+    compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
+    compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageEligibilityResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CoverageEligibilityResponse") {
-      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      buildDescriptor(this)
-    }
+internal object CoverageEligibilityResponseSerializer :
+  FhirResourceSerializer<CoverageEligibilityResponse> {
+  override val descriptor: SerialDescriptor = buildResourceDescriptor("CoverageEligibilityResponse")
 
-  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("meta", Meta.serializer().descriptor, isOptional = true)
-    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_language", Element.serializer().descriptor, isOptional = true)
-    b.element("text", Narrative.serializer().descriptor, isOptional = true)
-    b.element(
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.optionalElement("meta", MetaSerializer.descriptor)
+    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
+    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
+    b.optionalElement("language", KotlinString.serializer().descriptor)
+    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.optionalElement("text", NarrativeSerializer.descriptor)
+    b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
-      isOptional = true,
+      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
     )
-    b.element(
-      "extension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "modifierExtension",
-      listSerialDescriptor(Extension.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element(
-      "identifier",
-      listSerialDescriptor(Identifier.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_status", Element.serializer().descriptor, isOptional = true)
-    b.element(
-      "purpose",
-      listSerialDescriptor(KotlinString.serializer().descriptor),
-      isOptional = true,
-    )
-    b.element("_purpose", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-    b.element("patient", Reference.serializer().descriptor, isOptional = true)
-    b.element("servicedDate", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_servicedDate", Element.serializer().descriptor, isOptional = true)
-    b.element("servicedPeriod", Period.serializer().descriptor, isOptional = true)
-    b.element("created", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_created", Element.serializer().descriptor, isOptional = true)
-    b.element("requestor", Reference.serializer().descriptor, isOptional = true)
-    b.element("request", Reference.serializer().descriptor, isOptional = true)
-    b.element("outcome", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_outcome", Element.serializer().descriptor, isOptional = true)
-    b.element("disposition", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_disposition", Element.serializer().descriptor, isOptional = true)
-    b.element("insurer", Reference.serializer().descriptor, isOptional = true)
-    b.element(
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("status", KotlinString.serializer().descriptor)
+    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.optionalElement("purpose", stringNullableListSerializer.descriptor)
+    b.optionalElement("_purpose", ElementSerializer.nullableListSerializer.descriptor)
+    b.optionalElement("patient", ReferenceSerializer.descriptor)
+    b.optionalElement("servicedDate", KotlinString.serializer().descriptor)
+    b.optionalElement("_servicedDate", ElementSerializer.descriptor)
+    b.optionalElement("servicedPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("created", KotlinString.serializer().descriptor)
+    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.optionalElement("requestor", ReferenceSerializer.descriptor)
+    b.optionalElement("request", ReferenceSerializer.descriptor)
+    b.optionalElement("outcome", KotlinString.serializer().descriptor)
+    b.optionalElement("_outcome", ElementSerializer.descriptor)
+    b.optionalElement("disposition", KotlinString.serializer().descriptor)
+    b.optionalElement("_disposition", ElementSerializer.descriptor)
+    b.optionalElement("insurer", ReferenceSerializer.descriptor)
+    b.optionalElement(
       "insurance",
-      listSerialDescriptor(
-        lazyDescriptor { CoverageEligibilityResponse.Insurance.serializer().descriptor }
-      ),
-      isOptional = true,
+      CoverageEligibilityResponseInsuranceSerializer.listSerializer.descriptor,
     )
-    b.element("preAuthRef", KotlinString.serializer().descriptor, isOptional = true)
-    b.element("_preAuthRef", Element.serializer().descriptor, isOptional = true)
-    b.element("form", CodeableConcept.serializer().descriptor, isOptional = true)
-    b.element(
-      "error",
-      listSerialDescriptor(
-        lazyDescriptor { CoverageEligibilityResponse.Error.serializer().descriptor }
-      ),
-      isOptional = true,
-    )
+    b.optionalElement("preAuthRef", KotlinString.serializer().descriptor)
+    b.optionalElement("_preAuthRef", ElementSerializer.descriptor)
+    b.optionalElement("form", CodeableConceptSerializer.descriptor)
+    b.optionalElement("error", CoverageEligibilityResponseErrorSerializer.listSerializer.descriptor)
   }
 
-  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this, descriptor, 1)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityResponse) {
-    encoder.encodeStructure(descriptor) {
-      encodeStringElement(descriptor, 0, "CoverageEligibilityResponse")
-      serializeInternal(this, descriptor, 1, value)
-    }
-  }
-
-  internal fun deserializeInternal(
-    decoder: CompositeDecoder,
+  override fun deserializeInternal(
+    compositeDecoder: CompositeDecoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
   ): CoverageEligibilityResponse {
@@ -871,89 +872,206 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
     var form: CodeableConcept? = null
     var error: List<CoverageEligibilityResponse.Error>? = null
     while (true) {
-      val i = decoder.decodeElementIndex(descriptor)
+      val i = compositeDecoder.decodeElementIndex(descriptor)
       if (i == CompositeDecoder.DECODE_DONE) break
       when (i - descriptorOffset) {
-        -1 -> decoder.decodeStringElement(descriptor, i)
-        0 -> id = decoder.decodeStringElement(descriptor, i)
-        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        -1 -> compositeDecoder.decodeStringElement(descriptor, i)
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
+        1 ->
+          meta =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
+        2 -> implicitRules = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(descriptor, i)
-        5 ->
-          _language =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
-        7 ->
-          contained =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
-        8 ->
-          extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        9 ->
-          modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        10 ->
-          identifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
-        11 -> status = decoder.decodeStringElement(descriptor, i)
-        12 ->
-          _status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        13 ->
-          purpose =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.purposeSer, null)
-        14 ->
-          _purpose =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.purposeSer2, null)
-        15 ->
-          patient =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
-        16 -> servicedDate = decoder.decodeStringElement(descriptor, i)
-        17 ->
-          _servicedDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        18 ->
-          servicedPeriod =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.servicedPeriodSer,
+              ElementSerializer,
               null,
             )
-        19 -> created = decoder.decodeStringElement(descriptor, i)
+        4 -> language = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _language =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 ->
+          text =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              NarrativeSerializer,
+              null,
+            )
+        7 ->
+          contained =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ResourcePolymorphicSerializer.listSerializer,
+              null,
+            )
+        8 ->
+          extension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        9 ->
+          modifierExtension =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        10 ->
+          identifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              IdentifierSerializer.listSerializer,
+              null,
+            )
+        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          _status =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 ->
+          purpose =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              stringNullableListSerializer,
+              null,
+            )
+        14 ->
+          _purpose =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer.nullableListSerializer,
+              null,
+            )
+        15 ->
+          patient =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        16 -> servicedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        17 ->
+          _servicedDate =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        18 ->
+          servicedPeriod =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
+        19 -> created = compositeDecoder.decodeStringElement(descriptor, i)
         20 ->
           _created =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         21 ->
           requestor =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         22 ->
           request =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
-        23 -> outcome = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        23 -> outcome = compositeDecoder.decodeStringElement(descriptor, i)
         24 ->
           _outcome =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        25 -> disposition = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        25 -> disposition = compositeDecoder.decodeStringElement(descriptor, i)
         26 ->
           _disposition =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         27 ->
           insurer =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
         28 ->
           insurance =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.insuranceSer, null)
-        29 -> preAuthRef = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CoverageEligibilityResponseInsuranceSerializer.listSerializer,
+              null,
+            )
+        29 -> preAuthRef = compositeDecoder.decodeStringElement(descriptor, i)
         30 ->
           _preAuthRef =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
-        31 -> form = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.formSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        31 ->
+          form =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         32 ->
-          error = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.errorSer, null)
+          error =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CoverageEligibilityResponseErrorSerializer.listSerializer,
+              null,
+            )
         else ->
           throw SerializationException(
             "Unexpected index decoding CoverageEligibilityResponse: " + i
@@ -972,7 +1090,9 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          status?.let { CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(it) },
+          if (status != null)
+            CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(status)
+          else null,
           _status,
         )
           ?: throw SerializationException(
@@ -997,11 +1117,14 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
           ),
       serviced =
         CoverageEligibilityResponse.Serviced.from(
-          Date.of(servicedDate?.let { FhirDate.fromString(it) }, _servicedDate),
+          Date.of(
+            if (servicedDate != null) FhirDate.fromString(servicedDate) else null,
+            _servicedDate,
+          ),
           servicedPeriod,
         ),
       created =
-        DateTime.of(created?.let { FhirDateTime.fromString(it) }, _created)
+        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created)
           ?: throw SerializationException(
             "Missing required property 'created' on CoverageEligibilityResponse"
           ),
@@ -1012,7 +1135,7 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
             "Missing required property 'request' on CoverageEligibilityResponse"
           ),
       outcome =
-        Enumeration.of(outcome?.let { RemittanceOutcome.fromCode(it) }, _outcome)
+        Enumeration.of(if (outcome != null) RemittanceOutcome.fromCode(outcome) else null, _outcome)
           ?: throw SerializationException(
             "Missing required property 'outcome' on CoverageEligibilityResponse"
           ),
@@ -1029,258 +1152,162 @@ internal object CoverageEligibilityResponseSerializer : KSerializer<CoverageElig
     )
   }
 
-  internal fun serializeInternal(
-    encoder: CompositeEncoder,
+  override fun serializeInternal(
+    compositeEncoder: CompositeEncoder,
     descriptor: SerialDescriptor,
     descriptorOffset: Int,
     `value`: CoverageEligibilityResponse,
   ) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
-    (value.meta)?.let {
-      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
-    }
-    ((value.implicitRules?.value))?.let {
-      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
-    }
-    (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        3 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    ((value.language?.value))?.let {
-      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
-    }
-    (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        5 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    (value.text)?.let {
-      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
-    }
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0 + descriptorOffset, value.id)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      1 + descriptorOffset,
+      MetaSerializer,
+      value.meta,
+    )
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      2 + descriptorOffset,
+      value.implicitRules?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3 + descriptorOffset, value.implicitRules)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4 + descriptorOffset, value.language?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5 + descriptorOffset, value.language)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      6 + descriptorOffset,
+      NarrativeSerializer,
+      value.text,
+    )
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         7 + descriptorOffset,
-        Hoisted.containedSer,
+        ResourcePolymorphicSerializer.listSerializer,
         value.contained,
       )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         8 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.extension,
       )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         9 + descriptorOffset,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         10 + descriptorOffset,
-        Hoisted.identifierSer,
+        IdentifierSerializer.listSerializer,
         value.identifier,
       )
-    ((value.status.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
-    }
-    (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      11 + descriptorOffset,
+      value.status.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
+    if (value.purpose.isNotEmpty()) {
+      compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
-        12 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
+        13 + descriptorOffset,
+        stringNullableListSerializer,
+        value.purpose.map { it.value?.code },
       )
+      compositeEncoder.encodePrimitiveElementList(descriptor, 14 + descriptorOffset, value.purpose)
     }
-    (value.purpose.map { it.value?.code }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.purposeSer, it)
-    }
-    (value.purpose.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.purposeSer2, it)
-    }
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       15 + descriptorOffset,
-      Hoisted.patientSer,
+      ReferenceSerializer,
       value.patient,
     )
     when (val choice = value.serviced) {
       null -> {}
       is CoverageEligibilityResponse.Serviced.Date -> {
-        ((choice.value.value?.toString()))?.let {
-          encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
-        }
-        (choice.value.toElement())?.let {
-          encoder.encodeSerializableElement(
-            descriptor,
-            17 + descriptorOffset,
-            Hoisted.implicitRulesSer,
-            it,
-          )
-        }
+        compositeEncoder.encodeStringIfNotNull(
+          descriptor,
+          16 + descriptorOffset,
+          choice.value.value?.toString(),
+        )
+        compositeEncoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, choice.value)
       }
       is CoverageEligibilityResponse.Serviced.Period -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           18 + descriptorOffset,
-          Hoisted.servicedPeriodSer,
+          PeriodSerializer,
           choice.value,
         )
       }
     }
-    ((value.created.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
-    }
-    (value.created.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    (value.requestor)?.let {
-      encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, Hoisted.patientSer, it)
-    }
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      19 + descriptorOffset,
+      value.created.value?.toString(),
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.created)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      21 + descriptorOffset,
+      ReferenceSerializer,
+      value.requestor,
+    )
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       22 + descriptorOffset,
-      Hoisted.patientSer,
+      ReferenceSerializer,
       value.request,
     )
-    ((value.outcome.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
-    }
-    (value.outcome.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    ((value.disposition?.value))?.let {
-      encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
-    }
-    (value.disposition?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    encoder.encodeSerializableElement(
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      23 + descriptorOffset,
+      value.outcome.value?.code,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.outcome)
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      25 + descriptorOffset,
+      value.disposition?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.disposition)
+    compositeEncoder.encodeSerializableElement(
       descriptor,
       27 + descriptorOffset,
-      Hoisted.patientSer,
+      ReferenceSerializer,
       value.insurer,
     )
     if (value.insurance.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         28 + descriptorOffset,
-        Hoisted.insuranceSer,
+        CoverageEligibilityResponseInsuranceSerializer.listSerializer,
         value.insurance,
       )
-    ((value.preAuthRef?.value))?.let {
-      encoder.encodeStringElement(descriptor, 29 + descriptorOffset, it)
-    }
-    (value.preAuthRef?.toElement())?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        Hoisted.implicitRulesSer,
-        it,
-      )
-    }
-    (value.form)?.let {
-      encoder.encodeSerializableElement(descriptor, 31 + descriptorOffset, Hoisted.formSer, it)
-    }
+    compositeEncoder.encodeStringIfNotNull(
+      descriptor,
+      29 + descriptorOffset,
+      value.preAuthRef?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, value.preAuthRef)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      31 + descriptorOffset,
+      CodeableConceptSerializer,
+      value.form,
+    )
     if (value.error.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         32 + descriptorOffset,
-        Hoisted.errorSer,
+        CoverageEligibilityResponseErrorSerializer.listSerializer,
         value.error,
       )
   }
-
-  private object Hoisted {
-    public val metaSer: KSerializer<Meta> = Meta.serializer()
-
-    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
-
-    public val textSer: KSerializer<Narrative> = Narrative.serializer()
-
-    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
-
-    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
-
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
-
-    public val identifierSer: KSerializer<List<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
-
-    public val purposeSerInner: KSerializer<KotlinString> = KotlinString.serializer()
-
-    public val purposeSer: KSerializer<List<KotlinString?>> =
-      ListSerializer((Hoisted.purposeSerInner).nullable)
-
-    public val purposeSer2: KSerializer<List<Element?>> =
-      ListSerializer((Hoisted.implicitRulesSer).nullable)
-
-    public val patientSer: KSerializer<Reference> = Reference.serializer()
-
-    public val servicedPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val insuranceSerInner: KSerializer<CoverageEligibilityResponse.Insurance> =
-      CoverageEligibilityResponse.Insurance.serializer()
-
-    public val insuranceSer: KSerializer<List<CoverageEligibilityResponse.Insurance>> =
-      ListSerializer(Hoisted.insuranceSerInner)
-
-    public val formSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val errorSerInner: KSerializer<CoverageEligibilityResponse.Error> =
-      CoverageEligibilityResponse.Error.serializer()
-
-    public val errorSer: KSerializer<List<CoverageEligibilityResponse.Error>> =
-      ListSerializer(Hoisted.errorSerInner)
-  }
-}
-
-internal object CoverageEligibilityResponsePolymorphicSerializer :
-  KSerializer<CoverageEligibilityResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CoverageEligibilityResponse") {
-      CoverageEligibilityResponseSerializer.buildDescriptor(this)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityResponse) {
-    encoder.encodeStructure(descriptor) {
-      CoverageEligibilityResponseSerializer.serializeInternal(this, descriptor, 0, value)
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): CoverageEligibilityResponse =
-    decoder.decodeStructure(descriptor) {
-      CoverageEligibilityResponseSerializer.deserializeInternal(this, descriptor, 0)
-    }
 }

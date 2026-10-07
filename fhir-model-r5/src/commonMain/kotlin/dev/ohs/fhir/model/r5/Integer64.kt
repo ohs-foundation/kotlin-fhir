@@ -50,14 +50,13 @@ public data class Integer64(
   /** The actual value */
   public val `value`: Long? = null,
 ) : PrimitiveType() {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    return builder
+  }
 
   public fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -90,7 +89,7 @@ public data class Integer64(
     public open fun build(): Integer64 =
       Integer64(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`,
       )
   }

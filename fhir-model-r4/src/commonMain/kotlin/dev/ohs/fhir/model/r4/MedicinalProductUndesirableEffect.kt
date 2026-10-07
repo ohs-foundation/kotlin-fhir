@@ -140,24 +140,23 @@ public data class MedicinalProductUndesirableEffect(
   /** The population group to which this applies. */
   public val population: List<Population> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-        symptomConditionEffect = this@with.symptomConditionEffect?.toBuilder()
-        classification = this@with.classification?.toBuilder()
-        frequencyOfOccurrence = this@with.frequencyOfOccurrence?.toBuilder()
-        population = this@with.population.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.symptomConditionEffect = symptomConditionEffect?.toBuilder()
+    builder.classification = classification?.toBuilder()
+    builder.frequencyOfOccurrence = frequencyOfOccurrence?.toBuilder()
+    builder.population = population.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public class Builder() : DomainResource.Builder() {
     /**
@@ -287,14 +286,14 @@ public data class MedicinalProductUndesirableEffect(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        subject = subject.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        subject = subject.mapToList { it.build() },
         symptomConditionEffect = symptomConditionEffect?.build(),
         classification = classification?.build(),
         frequencyOfOccurrence = frequencyOfOccurrence?.build(),
-        population = population.map { it.build() },
+        population = population.mapToList { it.build() },
       )
   }
 }

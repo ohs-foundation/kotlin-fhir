@@ -190,32 +190,31 @@ public data class MeasureReport(
    */
   public val evaluatedResource: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          type,
-          measure.toBuilder(),
-          period.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          subject = this@with.subject?.toBuilder()
-          date = this@with.date?.toBuilder()
-          reporter = this@with.reporter?.toBuilder()
-          improvementNotation = this@with.improvementNotation?.toBuilder()
-          group = this@with.group.map { it.toBuilder() }.toMutableList()
-          evaluatedResource = this@with.evaluatedResource.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        type,
+        measure.toBuilder(),
+        period.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.reporter = reporter?.toBuilder()
+    builder.improvementNotation = improvementNotation?.toBuilder()
+    builder.group = group.mapToMutableList { it.toBuilder() }
+    builder.evaluatedResource = evaluatedResource.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The results of the calculation, one for each population group in the measure. */
   @Serializable(with = MeasureReportGroupSerializer::class)
@@ -275,18 +274,17 @@ public data class MeasureReport(
      */
     public val stratifier: List<Stratifier> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          population = this@with.population.map { it.toBuilder() }.toMutableList()
-          measureScore = this@with.measureScore?.toBuilder()
-          stratifier = this@with.stratifier.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code?.toBuilder()
+      builder.population = population.mapToMutableList { it.toBuilder() }
+      builder.measureScore = measureScore?.toBuilder()
+      builder.stratifier = stratifier.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * The populations that make up the population group, one for each type of population
@@ -341,17 +339,16 @@ public data class MeasureReport(
        */
       public val subjectResults: Reference? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            code = this@with.code?.toBuilder()
-            count = this@with.count?.toBuilder()
-            subjectResults = this@with.subjectResults?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.code = code?.toBuilder()
+        builder.count = count?.toBuilder()
+        builder.subjectResults = subjectResults?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -409,8 +406,8 @@ public data class MeasureReport(
         public fun build(): Population =
           Population(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code?.build(),
             count = count?.build(),
             subjectResults = subjectResults?.build(),
@@ -470,16 +467,15 @@ public data class MeasureReport(
        */
       public val stratum: List<Stratum> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            code = this@with.code.map { it.toBuilder() }.toMutableList()
-            stratum = this@with.stratum.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.code = code.mapToMutableList { it.toBuilder() }
+        builder.stratum = stratum.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /**
        * This element contains the results for a single stratum within the stratifier. For example,
@@ -544,18 +540,17 @@ public data class MeasureReport(
          */
         public val measureScore: Quantity? = null,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder().apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              `value` = this@with.`value`?.toBuilder()
-              component = this@with.component.map { it.toBuilder() }.toMutableList()
-              population = this@with.population.map { it.toBuilder() }.toMutableList()
-              measureScore = this@with.measureScore?.toBuilder()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder()
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.`value` = `value`?.toBuilder()
+          builder.component = component.mapToMutableList { it.toBuilder() }
+          builder.population = population.mapToMutableList { it.toBuilder() }
+          builder.measureScore = measureScore?.toBuilder()
+          return builder
+        }
 
         /** A stratifier component value. */
         @Serializable(with = MeasureReportGroupStratifierStratumComponentSerializer::class)
@@ -602,15 +597,13 @@ public data class MeasureReport(
           /** The stratum component value. */
           public val `value`: CodeableConcept,
         ) : BackboneElement() {
-          public fun toBuilder(): Builder =
-            with(this) {
-              Builder(code.toBuilder(), `value`.toBuilder()).apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              }
-            }
+          public fun toBuilder(): Builder {
+            val builder = Builder(code.toBuilder(), `value`.toBuilder())
+            builder.id = id
+            builder.extension = extension.mapToMutableList { it.toBuilder() }
+            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            return builder
+          }
 
           public class Builder(
             /** The code for the stratum component value. */
@@ -662,8 +655,8 @@ public data class MeasureReport(
             public fun build(): Component =
               Component(
                 id = id,
-                extension = extension.map { it.build() },
-                modifierExtension = modifierExtension.map { it.build() },
+                extension = extension.mapToList { it.build() },
+                modifierExtension = modifierExtension.mapToList { it.build() },
                 code = code.build(),
                 `value` = `value`.build(),
               )
@@ -723,18 +716,16 @@ public data class MeasureReport(
            */
           public val subjectResults: Reference? = null,
         ) : BackboneElement() {
-          public fun toBuilder(): Builder =
-            with(this) {
-              Builder().apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                code = this@with.code?.toBuilder()
-                count = this@with.count?.toBuilder()
-                subjectResults = this@with.subjectResults?.toBuilder()
-              }
-            }
+          public fun toBuilder(): Builder {
+            val builder = Builder()
+            builder.id = id
+            builder.extension = extension.mapToMutableList { it.toBuilder() }
+            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.code = code?.toBuilder()
+            builder.count = count?.toBuilder()
+            builder.subjectResults = subjectResults?.toBuilder()
+            return builder
+          }
 
           public class Builder() {
             /**
@@ -793,8 +784,8 @@ public data class MeasureReport(
             public fun build(): Population =
               Population(
                 id = id,
-                extension = extension.map { it.build() },
-                modifierExtension = modifierExtension.map { it.build() },
+                extension = extension.mapToList { it.build() },
+                modifierExtension = modifierExtension.mapToList { it.build() },
                 code = code?.build(),
                 count = count?.build(),
                 subjectResults = subjectResults?.build(),
@@ -868,11 +859,11 @@ public data class MeasureReport(
           public fun build(): Stratum =
             Stratum(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               `value` = `value`?.build(),
-              component = component.map { it.build() },
-              population = population.map { it.build() },
+              component = component.mapToList { it.build() },
+              population = population.mapToList { it.build() },
               measureScore = measureScore?.build(),
             )
         }
@@ -932,10 +923,10 @@ public data class MeasureReport(
         public fun build(): Stratifier =
           Stratifier(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
-            code = code.map { it.build() },
-            stratum = stratum.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
+            code = code.mapToList { it.build() },
+            stratum = stratum.mapToList { it.build() },
           )
       }
     }
@@ -1005,12 +996,12 @@ public data class MeasureReport(
       public fun build(): Group =
         Group(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code?.build(),
-          population = population.map { it.build() },
+          population = population.mapToList { it.build() },
           measureScore = measureScore?.build(),
-          stratifier = stratifier.map { it.build() },
+          stratifier = stratifier.mapToList { it.build() },
         )
     }
   }
@@ -1189,10 +1180,10 @@ public data class MeasureReport(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         type = type,
         measure = measure.build(),
@@ -1201,8 +1192,8 @@ public data class MeasureReport(
         reporter = reporter?.build(),
         period = period.build(),
         improvementNotation = improvementNotation?.build(),
-        group = group.map { it.build() },
-        evaluatedResource = evaluatedResource.map { it.build() },
+        group = group.mapToList { it.build() },
+        evaluatedResource = evaluatedResource.mapToList { it.build() },
       )
   }
 

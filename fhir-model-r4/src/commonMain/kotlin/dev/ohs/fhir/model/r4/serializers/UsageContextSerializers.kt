@@ -42,52 +42,31 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object UsageContextSerializer : KSerializer<UsageContext> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("UsageContext") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("code", lazyDescriptor { Coding.serializer().descriptor }, isOptional = true)
-      element(
+      optionalElement("code", lazyDescriptor { CodingSerializer.descriptor })
+      optionalElement(
         "valueCodeableConcept",
-        lazyDescriptor { CodeableConcept.serializer().descriptor },
-        isOptional = true,
+        lazyDescriptor { CodeableConceptSerializer.descriptor },
       )
-      element(
-        "valueQuantity",
-        lazyDescriptor { Quantity.serializer().descriptor },
-        isOptional = true,
-      )
-      element("valueRange", lazyDescriptor { Range.serializer().descriptor }, isOptional = true)
-      element(
-        "valueReference",
-        lazyDescriptor { Reference.serializer().descriptor },
-        isOptional = true,
-      )
+      optionalElement("valueQuantity", lazyDescriptor { QuantitySerializer.descriptor })
+      optionalElement("valueRange", lazyDescriptor { RangeSerializer.descriptor })
+      optionalElement("valueReference", lazyDescriptor { ReferenceSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): UsageContext =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<UsageContext>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: UsageContext) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): UsageContext {
+  override fun deserialize(decoder: Decoder): UsageContext {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var code: Coding? = null
@@ -96,38 +75,56 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
     var valueRange: Range? = null
     var valueReference: Reference? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
-        3 ->
-          valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.valueCodeableConceptSer,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 ->
+          code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodingSerializer,
+              null,
+            )
+        3 ->
+          valueCodeableConcept =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
               null,
             )
         4 ->
           valueQuantity =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
-        5 ->
-          valueRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
-        6 ->
-          valueReference =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.valueReferenceSer,
+              QuantitySerializer,
+              null,
+            )
+        5 ->
+          valueRange =
+            compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
+        6 ->
+          valueReference =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding UsageContext: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return UsageContext(
       id = id,
       extension = extension ?: listOf(),
@@ -139,46 +136,36 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: UsageContext) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: UsageContext) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    encoder.encodeSerializableElement(descriptor, 2, Hoisted.codeSer, value.code)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeSerializableElement(descriptor, 2, CodingSerializer, value.code)
     when (val choice = value.`value`) {
       is UsageContext.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(
+        compositeEncoder.encodeSerializableElement(
           descriptor,
           3,
-          Hoisted.valueCodeableConceptSer,
+          CodeableConceptSerializer,
           choice.value,
         )
       }
       is UsageContext.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 4, QuantitySerializer, choice.value)
       }
       is UsageContext.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRangeSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 5, RangeSerializer, choice.value)
       }
       is UsageContext.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueReferenceSer, choice.value)
+        compositeEncoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, choice.value)
       }
     }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val codeSer: KSerializer<Coding> = Coding.serializer()
-
-    public val valueCodeableConceptSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val valueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val valueRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val valueReferenceSer: KSerializer<Reference> = Reference.serializer()
+    compositeEncoder.endStructure(descriptor)
   }
 }

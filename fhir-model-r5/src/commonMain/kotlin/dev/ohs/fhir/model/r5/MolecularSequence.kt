@@ -162,29 +162,28 @@ public data class MolecularSequence(
   /** A sequence defined relative to another sequence. */
   public val relative: List<Relative> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        type = this@with.type
-        subject = this@with.subject?.toBuilder()
-        focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-        specimen = this@with.specimen?.toBuilder()
-        device = this@with.device?.toBuilder()
-        performer = this@with.performer?.toBuilder()
-        literal = this@with.literal?.toBuilder()
-        formatted = this@with.formatted.map { it.toBuilder() }.toMutableList()
-        relative = this@with.relative.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.type = type
+    builder.subject = subject?.toBuilder()
+    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.specimen = specimen?.toBuilder()
+    builder.device = device?.toBuilder()
+    builder.performer = performer?.toBuilder()
+    builder.literal = literal?.toBuilder()
+    builder.formatted = formatted.mapToMutableList { it.toBuilder() }
+    builder.relative = relative.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** A sequence defined relative to another sequence. */
   @Serializable(with = MolecularSequenceRelativeSerializer::class)
@@ -250,18 +249,17 @@ public data class MolecularSequence(
     /** Changes in sequence from the starting sequence. */
     public val edit: List<Edit> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(coordinateSystem.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          ordinalPosition = this@with.ordinalPosition?.toBuilder()
-          sequenceRange = this@with.sequenceRange?.toBuilder()
-          startingSequence = this@with.startingSequence?.toBuilder()
-          edit = this@with.edit.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(coordinateSystem.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.ordinalPosition = ordinalPosition?.toBuilder()
+      builder.sequenceRange = sequenceRange?.toBuilder()
+      builder.startingSequence = startingSequence?.toBuilder()
+      builder.edit = edit.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /**
      * A sequence that is used as a starting sequence to describe variants that are present in a
@@ -346,21 +344,20 @@ public data class MolecularSequence(
        */
       public val strand: Enumeration<StrandType>? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            genomeAssembly = this@with.genomeAssembly?.toBuilder()
-            chromosome = this@with.chromosome?.toBuilder()
-            sequence = this@with.sequence
-            windowStart = this@with.windowStart?.toBuilder()
-            windowEnd = this@with.windowEnd?.toBuilder()
-            orientation = this@with.orientation
-            strand = this@with.strand
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.genomeAssembly = genomeAssembly?.toBuilder()
+        builder.chromosome = chromosome?.toBuilder()
+        builder.sequence = sequence
+        builder.windowStart = windowStart?.toBuilder()
+        builder.windowEnd = windowEnd?.toBuilder()
+        builder.orientation = orientation
+        builder.strand = strand
+        return builder
+      }
 
       public sealed interface Sequence : FhirChoice {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -482,8 +479,8 @@ public data class MolecularSequence(
         public fun build(): StartingSequence =
           StartingSequence(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             genomeAssembly = genomeAssembly?.build(),
             chromosome = chromosome?.build(),
             sequence = sequence,
@@ -561,18 +558,17 @@ public data class MolecularSequence(
        */
       public val replacedSequence: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            start = this@with.start?.toBuilder()
-            end = this@with.end?.toBuilder()
-            replacementSequence = this@with.replacementSequence?.toBuilder()
-            replacedSequence = this@with.replacedSequence?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.start = start?.toBuilder()
+        builder.end = end?.toBuilder()
+        builder.replacementSequence = replacementSequence?.toBuilder()
+        builder.replacedSequence = replacedSequence?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -647,8 +643,8 @@ public data class MolecularSequence(
         public fun build(): Edit =
           Edit(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             start = start?.build(),
             end = end?.build(),
             replacementSequence = replacementSequence?.build(),
@@ -729,13 +725,13 @@ public data class MolecularSequence(
       public fun build(): Relative =
         Relative(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           coordinateSystem = coordinateSystem.build(),
           ordinalPosition = ordinalPosition?.build(),
           sequenceRange = sequenceRange?.build(),
           startingSequence = startingSequence?.build(),
-          edit = edit.map { it.build() },
+          edit = edit.mapToList { it.build() },
         )
     }
   }
@@ -893,19 +889,19 @@ public data class MolecularSequence(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         type = type,
         subject = subject?.build(),
-        focus = focus.map { it.build() },
+        focus = focus.mapToList { it.build() },
         specimen = specimen?.build(),
         device = device?.build(),
         performer = performer?.build(),
         literal = literal?.build(),
-        formatted = formatted.map { it.build() },
-        relative = relative.map { it.build() },
+        formatted = formatted.mapToList { it.build() },
+        relative = relative.mapToList { it.build() },
       )
   }
 

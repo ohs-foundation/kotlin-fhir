@@ -191,31 +191,30 @@ public data class DeviceMetric(
   /** Describes the calibrations that have been performed or that are required to be performed. */
   public val calibration: List<Calibration> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          type.toBuilder(),
-          category,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          unit = this@with.unit?.toBuilder()
-          source = this@with.source?.toBuilder()
-          parent = this@with.parent?.toBuilder()
-          operationalStatus = this@with.operationalStatus
-          color = this@with.color
-          measurementPeriod = this@with.measurementPeriod?.toBuilder()
-          calibration = this@with.calibration.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        type.toBuilder(),
+        category,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.unit = unit?.toBuilder()
+    builder.source = source?.toBuilder()
+    builder.parent = parent?.toBuilder()
+    builder.operationalStatus = operationalStatus
+    builder.color = color
+    builder.measurementPeriod = measurementPeriod?.toBuilder()
+    builder.calibration = calibration.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Describes the calibrations that have been performed or that are required to be performed. */
   @Serializable(with = DeviceMetricCalibrationSerializer::class)
@@ -264,17 +263,16 @@ public data class DeviceMetric(
     /** Describes the time last calibration has been performed. */
     public val time: Instant? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type
-          state = this@with.state
-          time = this@with.time?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type
+      builder.state = state
+      builder.time = time?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -329,8 +327,8 @@ public data class DeviceMetric(
       public fun build(): Calibration =
         Calibration(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type,
           state = state,
           time = time?.build(),
@@ -520,10 +518,10 @@ public data class DeviceMetric(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         type = type.build(),
         unit = unit?.build(),
         source = source?.build(),
@@ -532,7 +530,7 @@ public data class DeviceMetric(
         color = color,
         category = category,
         measurementPeriod = measurementPeriod?.build(),
-        calibration = calibration.map { it.build() },
+        calibration = calibration.mapToList { it.build() },
       )
   }
 

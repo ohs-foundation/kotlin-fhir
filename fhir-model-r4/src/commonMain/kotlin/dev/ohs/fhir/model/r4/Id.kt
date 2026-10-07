@@ -52,14 +52,13 @@ public data class Id(
   /** Primitive value for id */
   override val `value`: kotlin.String? = null,
 ) : String(id, extension, `value`) {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        `value` = this@with.`value`
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.`value` = `value`
+    return builder
+  }
 
   override fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -92,7 +91,7 @@ public data class Id(
     open override fun build(): Id =
       Id(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`,
       )
   }

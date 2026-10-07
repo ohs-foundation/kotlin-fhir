@@ -62,17 +62,16 @@ public data class UsageContext(
    */
   public val `value`: Value,
 ) : DataType() {
-  public fun toBuilder(): Builder =
-    with(this) {
+  public fun toBuilder(): Builder {
+    val builder =
       Builder(
-          code.toBuilder(),
-          `value`,
-        )
-        .apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        code.toBuilder(),
+        `value`,
+      )
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public sealed interface Value : FhirChoice {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -140,7 +139,7 @@ public data class UsageContext(
     public open fun build(): UsageContext =
       UsageContext(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         code = code.build(),
         `value` = `value`,
       )

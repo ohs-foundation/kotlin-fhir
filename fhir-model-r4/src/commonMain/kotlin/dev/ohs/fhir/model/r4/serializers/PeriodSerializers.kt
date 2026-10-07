@@ -40,39 +40,27 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object PeriodSerializer : KSerializer<Period> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Period") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("start", String.serializer().descriptor, isOptional = true)
-      element("_start", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("end", String.serializer().descriptor, isOptional = true)
-      element("_end", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("start", String.serializer().descriptor)
+      optionalElement("_start", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("end", String.serializer().descriptor)
+      optionalElement("_end", lazyDescriptor { ElementSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): Period =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<Period>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: Period) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Period {
+  override fun deserialize(decoder: Decoder): Period {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var start: String? = null
@@ -80,48 +68,61 @@ internal object PeriodSerializer : KSerializer<Period> {
     var end: String? = null
     var _end: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> start = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
+        2 -> start = compositeDecoder.decodeStringElement(descriptor, i)
         3 ->
-          _start = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.startSer, null)
-        4 -> end = decoder.decodeStringElement(descriptor, i)
-        5 -> _end = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.startSer, null)
+          _start =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> end = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          _end =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Period: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return Period(
       id = id,
       extension = extension ?: listOf(),
-      start = DateTime.of(start?.let { FhirDateTime.fromString(it) }, _start),
-      end = DateTime.of(end?.let { FhirDateTime.fromString(it) }, _end),
+      start = DateTime.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
+      end = DateTime.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Period) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: Period) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.start?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.startSer, it)
-    }
-    ((value.end?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.startSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val startSer: KSerializer<Element> = Element.serializer()
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.start?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.start)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.end?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.end)
+    compositeEncoder.endStructure(descriptor)
   }
 }

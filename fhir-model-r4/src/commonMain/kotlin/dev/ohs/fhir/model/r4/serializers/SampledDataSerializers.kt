@@ -44,48 +44,36 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object SampledDataSerializer : KSerializer<SampledData> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("SampledData") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("origin", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
-      element("period", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_period", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("factor", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_factor", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("lowerLimit", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_lowerLimit", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("upperLimit", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_upperLimit", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("dimensions", Int.serializer().descriptor, isOptional = true)
-      element("_dimensions", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("data", KotlinString.serializer().descriptor, isOptional = true)
-      element("_data", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("origin", lazyDescriptor { QuantitySerializer.descriptor })
+      optionalElement("period", FhirDecimalSerializer.descriptor)
+      optionalElement("_period", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("factor", FhirDecimalSerializer.descriptor)
+      optionalElement("_factor", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("lowerLimit", FhirDecimalSerializer.descriptor)
+      optionalElement("_lowerLimit", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("upperLimit", FhirDecimalSerializer.descriptor)
+      optionalElement("_upperLimit", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("dimensions", Int.serializer().descriptor)
+      optionalElement("_dimensions", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("data", KotlinString.serializer().descriptor)
+      optionalElement("_data", lazyDescriptor { ElementSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): SampledData =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<SampledData>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: SampledData) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): SampledData {
+  override fun deserialize(decoder: Decoder): SampledData {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var origin: Quantity? = null
@@ -102,48 +90,111 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     var `data`: KotlinString? = null
     var _data: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
-          origin = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.originSer, null)
+          origin =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              QuantitySerializer,
+              null,
+            )
         3 ->
           period =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         4 ->
           _period =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         5 ->
           factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         6 ->
           _factor =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         7 ->
           lowerLimit =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         8 ->
           _lowerLimit =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         9 ->
           upperLimit =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         10 ->
           _upperLimit =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
-        11 -> dimensions = decoder.decodeIntElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 -> dimensions = compositeDecoder.decodeIntElement(descriptor, i)
         12 ->
           _dimensions =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
-        13 -> `data` = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        13 -> `data` = compositeDecoder.decodeStringElement(descriptor, i)
         14 ->
-          _data = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+          _data =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding SampledData: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return SampledData(
       id = id,
       extension = extension ?: listOf(),
@@ -162,53 +213,49 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: SampledData) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: SampledData) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    encoder.encodeSerializableElement(descriptor, 2, Hoisted.originSer, value.origin)
-    ((value.period.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 3, FhirDecimalSerializer, it)
-    }
-    (value.period.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it)
-    }
-    ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 5, FhirDecimalSerializer, it)
-    }
-    (value.factor?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, it)
-    }
-    ((value.lowerLimit?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 7, FhirDecimalSerializer, it)
-    }
-    (value.lowerLimit?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.periodSer, it)
-    }
-    ((value.upperLimit?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 9, FhirDecimalSerializer, it)
-    }
-    (value.upperLimit?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.periodSer, it)
-    }
-    ((value.dimensions.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
-    (value.dimensions.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 12, Hoisted.periodSer, it)
-    }
-    ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-    (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.periodSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val originSer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val periodSer: KSerializer<Element> = Element.serializer()
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeSerializableElement(descriptor, 2, QuantitySerializer, value.origin)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      FhirDecimalSerializer,
+      value.period.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.period)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      5,
+      FhirDecimalSerializer,
+      value.factor?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.factor)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      7,
+      FhirDecimalSerializer,
+      value.lowerLimit?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.lowerLimit)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      9,
+      FhirDecimalSerializer,
+      value.upperLimit?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.upperLimit)
+    compositeEncoder.encodeIntIfNotNull(descriptor, 11, value.dimensions.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.dimensions)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 13, value.`data`?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 14, value.`data`)
+    compositeEncoder.endStructure(descriptor)
   }
 }

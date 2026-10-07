@@ -79,16 +79,15 @@ public data class Parameters(
   /** A parameter passed to or received from the operation. */
   public val parameter: List<Parameter> = listOf(),
 ) : Resource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** A parameter passed to or received from the operation. */
   @Serializable(with = ParametersParameterSerializer::class)
@@ -149,17 +148,16 @@ public data class Parameters(
      */
     public val part: List<Parameter> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(name.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `value` = this@with.`value`
-          resource = this@with.resource?.toBuilder()
-          part = this@with.part.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(name.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`value` = `value`
+      builder.resource = resource?.toBuilder()
+      builder.part = part.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
@@ -550,12 +548,12 @@ public data class Parameters(
       public fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name.build(),
           `value` = `value`,
           resource = resource?.build(),
-          part = part.map { it.build() },
+          part = part.mapToList { it.build() },
         )
     }
   }
@@ -614,7 +612,7 @@ public data class Parameters(
         meta = meta?.build(),
         implicitRules = implicitRules?.build(),
         language = language?.build(),
-        parameter = parameter.map { it.build() },
+        parameter = parameter.mapToList { it.build() },
       )
   }
 }

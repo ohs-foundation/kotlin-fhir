@@ -145,25 +145,24 @@ public data class SpecimenDefinition(
   /** Specimen conditioned in a container as expected by the testing laboratory. */
   public val typeTested: List<TypeTested> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder().apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier?.toBuilder()
-        typeCollected = this@with.typeCollected?.toBuilder()
-        patientPreparation = this@with.patientPreparation.map { it.toBuilder() }.toMutableList()
-        timeAspect = this@with.timeAspect?.toBuilder()
-        collection = this@with.collection.map { it.toBuilder() }.toMutableList()
-        typeTested = this@with.typeTested.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder()
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier?.toBuilder()
+    builder.typeCollected = typeCollected?.toBuilder()
+    builder.patientPreparation = patientPreparation.mapToMutableList { it.toBuilder() }
+    builder.timeAspect = timeAspect?.toBuilder()
+    builder.collection = collection.mapToMutableList { it.toBuilder() }
+    builder.typeTested = typeTested.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Specimen conditioned in a container as expected by the testing laboratory. */
   @Serializable(with = SpecimenDefinitionTypeTestedSerializer::class)
@@ -228,21 +227,20 @@ public data class SpecimenDefinition(
      */
     public val handling: List<Handling> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(preference).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          isDerived = this@with.isDerived?.toBuilder()
-          type = this@with.type?.toBuilder()
-          container = this@with.container?.toBuilder()
-          requirement = this@with.requirement?.toBuilder()
-          retentionTime = this@with.retentionTime?.toBuilder()
-          rejectionCriterion = this@with.rejectionCriterion.map { it.toBuilder() }.toMutableList()
-          handling = this@with.handling.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(preference)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.isDerived = isDerived?.toBuilder()
+      builder.type = type?.toBuilder()
+      builder.container = container?.toBuilder()
+      builder.requirement = requirement?.toBuilder()
+      builder.retentionTime = retentionTime?.toBuilder()
+      builder.rejectionCriterion = rejectionCriterion.mapToMutableList { it.toBuilder() }
+      builder.handling = handling.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     /** The specimen's container. */
     @Serializable(with = SpecimenDefinitionTypeTestedContainerSerializer::class)
@@ -304,22 +302,21 @@ public data class SpecimenDefinition(
       /** Special processing that should be applied to the container for this kind of specimen. */
       public val preparation: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            material = this@with.material?.toBuilder()
-            type = this@with.type?.toBuilder()
-            cap = this@with.cap?.toBuilder()
-            description = this@with.description?.toBuilder()
-            capacity = this@with.capacity?.toBuilder()
-            minimumVolume = this@with.minimumVolume
-            additive = this@with.additive.map { it.toBuilder() }.toMutableList()
-            preparation = this@with.preparation?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.material = material?.toBuilder()
+        builder.type = type?.toBuilder()
+        builder.cap = cap?.toBuilder()
+        builder.description = description?.toBuilder()
+        builder.capacity = capacity?.toBuilder()
+        builder.minimumVolume = minimumVolume
+        builder.additive = additive.mapToMutableList { it.toBuilder() }
+        builder.preparation = preparation?.toBuilder()
+        return builder
+      }
 
       /**
        * Substance introduced in the kind of container to preserve, maintain or enhance the
@@ -370,14 +367,13 @@ public data class SpecimenDefinition(
          */
         public val additive: Additive,
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(additive).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(additive)
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         public sealed interface Additive : FhirChoice {
           public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -453,8 +449,8 @@ public data class SpecimenDefinition(
           public fun build(): Container.Additive =
             Container.Additive(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               additive = additive,
             )
         }
@@ -553,15 +549,15 @@ public data class SpecimenDefinition(
         public fun build(): Container =
           Container(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             material = material?.build(),
             type = type?.build(),
             cap = cap?.build(),
             description = description?.build(),
             capacity = capacity?.build(),
             minimumVolume = minimumVolume,
-            additive = additive.map { it.build() },
+            additive = additive.mapToList { it.build() },
             preparation = preparation?.build(),
           )
       }
@@ -625,18 +621,17 @@ public data class SpecimenDefinition(
        */
       public val instruction: String? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            temperatureQualifier = this@with.temperatureQualifier?.toBuilder()
-            temperatureRange = this@with.temperatureRange?.toBuilder()
-            maxDuration = this@with.maxDuration?.toBuilder()
-            instruction = this@with.instruction?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.temperatureQualifier = temperatureQualifier?.toBuilder()
+        builder.temperatureRange = temperatureRange?.toBuilder()
+        builder.maxDuration = maxDuration?.toBuilder()
+        builder.instruction = instruction?.toBuilder()
+        return builder
+      }
 
       public class Builder() {
         /**
@@ -700,8 +695,8 @@ public data class SpecimenDefinition(
         public fun build(): Handling =
           Handling(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             temperatureQualifier = temperatureQualifier?.build(),
             temperatureRange = temperatureRange?.build(),
             maxDuration = maxDuration?.build(),
@@ -784,16 +779,16 @@ public data class SpecimenDefinition(
       public fun build(): TypeTested =
         TypeTested(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           isDerived = isDerived?.build(),
           type = type?.build(),
           preference = preference,
           container = container?.build(),
           requirement = requirement?.build(),
           retentionTime = retentionTime?.build(),
-          rejectionCriterion = rejectionCriterion.map { it.build() },
-          handling = handling.map { it.build() },
+          rejectionCriterion = rejectionCriterion.mapToList { it.build() },
+          handling = handling.mapToList { it.build() },
         )
     }
   }
@@ -929,15 +924,15 @@ public data class SpecimenDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         identifier = identifier?.build(),
         typeCollected = typeCollected?.build(),
-        patientPreparation = patientPreparation.map { it.build() },
+        patientPreparation = patientPreparation.mapToList { it.build() },
         timeAspect = timeAspect?.build(),
-        collection = collection.map { it.build() },
-        typeTested = typeTested.map { it.build() },
+        collection = collection.mapToList { it.build() },
+        typeTested = typeTested.mapToList { it.build() },
       )
   }
 

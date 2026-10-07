@@ -40,48 +40,28 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("MarketingStatus") {
-      element("id", String.serializer().descriptor, isOptional = true)
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("country", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("jurisdiction", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("status", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("dateRange", Period.serializer().descriptor, isOptional = true)
-      element("restoreDate", String.serializer().descriptor, isOptional = true)
-      element("_restoreDate", Element.serializer().descriptor, isOptional = true)
+      optionalElement("id", String.serializer().descriptor)
+      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+      optionalElement("country", CodeableConceptSerializer.descriptor)
+      optionalElement("jurisdiction", CodeableConceptSerializer.descriptor)
+      optionalElement("status", CodeableConceptSerializer.descriptor)
+      optionalElement("dateRange", PeriodSerializer.descriptor)
+      optionalElement("restoreDate", String.serializer().descriptor)
+      optionalElement("_restoreDate", ElementSerializer.descriptor)
     }
 
-  override fun deserialize(decoder: Decoder): MarketingStatus =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<MarketingStatus>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: MarketingStatus) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): MarketingStatus {
+  override fun deserialize(decoder: Decoder): MarketingStatus {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -92,34 +72,70 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
     var restoreDate: String? = null
     var _restoreDate: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         3 ->
           country =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         4 ->
           jurisdiction =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         5 ->
           status =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer,
+              null,
+            )
         6 ->
           dateRange =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dateRangeSer, null)
-        7 -> restoreDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              PeriodSerializer,
+              null,
+            )
+        7 -> restoreDate = compositeDecoder.decodeStringElement(descriptor, i)
         8 ->
           _restoreDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.restoreDateSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding MarketingStatus: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return MarketingStatus(
       id = id,
       extension = extension ?: listOf(),
@@ -130,47 +146,52 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
         status
           ?: throw SerializationException("Missing required property 'status' on MarketingStatus"),
       dateRange = dateRange,
-      restoreDate = DateTime.of(restoreDate?.let { FhirDateTime.fromString(it) }, _restoreDate),
+      restoreDate =
+        DateTime.of(
+          if (restoreDate != null) FhirDateTime.fromString(restoreDate) else null,
+          _restoreDate,
+        ),
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: MarketingStatus) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: MarketingStatus) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(
+      compositeEncoder.encodeSerializableElement(
         descriptor,
         2,
-        Hoisted.extensionSer,
+        ExtensionSerializer.listSerializer,
         value.modifierExtension,
       )
-    (value.country)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.countrySer, it)
-    }
-    (value.jurisdiction)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.countrySer, it)
-    }
-    encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, value.status)
-    (value.dateRange)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.dateRangeSer, it)
-    }
-    ((value.restoreDate?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.restoreDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.restoreDateSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val countrySer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val dateRangeSer: KSerializer<Period> = Period.serializer()
-
-    public val restoreDateSer: KSerializer<Element> = Element.serializer()
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      3,
+      CodeableConceptSerializer,
+      value.country,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      4,
+      CodeableConceptSerializer,
+      value.jurisdiction,
+    )
+    compositeEncoder.encodeSerializableElement(
+      descriptor,
+      5,
+      CodeableConceptSerializer,
+      value.status,
+    )
+    compositeEncoder.encodeSerializableIfNotNull(descriptor, 6, PeriodSerializer, value.dateRange)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.restoreDate?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.restoreDate)
+    compositeEncoder.endStructure(descriptor)
   }
 }

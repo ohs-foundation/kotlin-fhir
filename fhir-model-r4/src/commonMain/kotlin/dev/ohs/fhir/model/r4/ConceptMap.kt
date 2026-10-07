@@ -295,36 +295,35 @@ public data class ConceptMap(
   /** A group of mappings that all have the same source and target system. */
   public val group: List<Group> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        url = this@with.url?.toBuilder()
-        identifier = this@with.identifier?.toBuilder()
-        version = this@with.version?.toBuilder()
-        name = this@with.name?.toBuilder()
-        title = this@with.title?.toBuilder()
-        experimental = this@with.experimental?.toBuilder()
-        date = this@with.date?.toBuilder()
-        publisher = this@with.publisher?.toBuilder()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-        jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-        purpose = this@with.purpose?.toBuilder()
-        copyright = this@with.copyright?.toBuilder()
-        source = this@with.source
-        target = this@with.target
-        group = this@with.group.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier?.toBuilder()
+    builder.version = version?.toBuilder()
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.copyright = copyright?.toBuilder()
+    builder.source = source
+    builder.target = target
+    builder.group = group.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** A group of mappings that all have the same source and target system. */
   @Serializable(with = ConceptMapGroupSerializer::class)
@@ -414,19 +413,18 @@ public data class ConceptMap(
      */
     public val unmapped: Unmapped? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(element.map { it.toBuilder() }.toMutableList()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          source = this@with.source?.toBuilder()
-          sourceVersion = this@with.sourceVersion?.toBuilder()
-          target = this@with.target?.toBuilder()
-          targetVersion = this@with.targetVersion?.toBuilder()
-          unmapped = this@with.unmapped?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(element.mapToMutableList { it.toBuilder() })
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.source = source?.toBuilder()
+      builder.sourceVersion = sourceVersion?.toBuilder()
+      builder.target = target?.toBuilder()
+      builder.targetVersion = targetVersion?.toBuilder()
+      builder.unmapped = unmapped?.toBuilder()
+      return builder
+    }
 
     /** Mappings for an individual concept in the source to one or more concepts in the target. */
     @Serializable(with = ConceptMapGroupElementSerializer::class)
@@ -485,17 +483,16 @@ public data class ConceptMap(
        */
       public val target: List<Target> = listOf(),
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder().apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            code = this@with.code?.toBuilder()
-            display = this@with.display?.toBuilder()
-            target = this@with.target.map { it.toBuilder() }.toMutableList()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder()
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.code = code?.toBuilder()
+        builder.display = display?.toBuilder()
+        builder.target = target.mapToMutableList { it.toBuilder() }
+        return builder
+      }
 
       /** A concept from the target value set that this concept maps to. */
       @Serializable(with = ConceptMapGroupElementTargetSerializer::class)
@@ -573,19 +570,18 @@ public data class ConceptMap(
          */
         public val product: List<DependsOn> = listOf(),
       ) : BackboneElement() {
-        public fun toBuilder(): Builder =
-          with(this) {
-            Builder(equivalence).apply {
-              id = this@with.id
-              extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-              modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-              code = this@with.code?.toBuilder()
-              display = this@with.display?.toBuilder()
-              comment = this@with.comment?.toBuilder()
-              dependsOn = this@with.dependsOn.map { it.toBuilder() }.toMutableList()
-              product = this@with.product.map { it.toBuilder() }.toMutableList()
-            }
-          }
+        public fun toBuilder(): Builder {
+          val builder = Builder(equivalence)
+          builder.id = id
+          builder.extension = extension.mapToMutableList { it.toBuilder() }
+          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.code = code?.toBuilder()
+          builder.display = display?.toBuilder()
+          builder.comment = comment?.toBuilder()
+          builder.dependsOn = dependsOn.mapToMutableList { it.toBuilder() }
+          builder.product = product.mapToMutableList { it.toBuilder() }
+          return builder
+        }
 
         /**
          * A set of additional dependencies for this mapping to hold. This mapping is only
@@ -654,17 +650,15 @@ public data class ConceptMap(
            */
           public val display: String? = null,
         ) : BackboneElement() {
-          public fun toBuilder(): Builder =
-            with(this) {
-              Builder(`property`.toBuilder(), `value`.toBuilder()).apply {
-                id = this@with.id
-                extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-                modifierExtension =
-                  this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-                system = this@with.system?.toBuilder()
-                display = this@with.display?.toBuilder()
-              }
-            }
+          public fun toBuilder(): Builder {
+            val builder = Builder(`property`.toBuilder(), `value`.toBuilder())
+            builder.id = id
+            builder.extension = extension.mapToMutableList { it.toBuilder() }
+            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.system = system?.toBuilder()
+            builder.display = display?.toBuilder()
+            return builder
+          }
 
           public class Builder(
             /**
@@ -737,8 +731,8 @@ public data class ConceptMap(
             public fun build(): DependsOn =
               DependsOn(
                 id = id,
-                extension = extension.map { it.build() },
-                modifierExtension = modifierExtension.map { it.build() },
+                extension = extension.mapToList { it.build() },
+                modifierExtension = modifierExtension.mapToList { it.build() },
                 `property` = `property`.build(),
                 system = system?.build(),
                 `value` = `value`.build(),
@@ -832,14 +826,14 @@ public data class ConceptMap(
           public fun build(): Target =
             Target(
               id = id,
-              extension = extension.map { it.build() },
-              modifierExtension = modifierExtension.map { it.build() },
+              extension = extension.mapToList { it.build() },
+              modifierExtension = modifierExtension.mapToList { it.build() },
               code = code?.build(),
               display = display?.build(),
               equivalence = equivalence,
               comment = comment?.build(),
-              dependsOn = dependsOn.map { it.build() },
-              product = product.map { it.build() },
+              dependsOn = dependsOn.mapToList { it.build() },
+              product = product.mapToList { it.build() },
             )
         }
       }
@@ -907,11 +901,11 @@ public data class ConceptMap(
         public fun build(): Element =
           Element(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             code = code?.build(),
             display = display?.build(),
-            target = target.map { it.build() },
+            target = target.mapToList { it.build() },
           )
       }
     }
@@ -986,17 +980,16 @@ public data class ConceptMap(
        */
       public val url: Canonical? = null,
     ) : BackboneElement() {
-      public fun toBuilder(): Builder =
-        with(this) {
-          Builder(mode).apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            code = this@with.code?.toBuilder()
-            display = this@with.display?.toBuilder()
-            url = this@with.url?.toBuilder()
-          }
-        }
+      public fun toBuilder(): Builder {
+        val builder = Builder(mode)
+        builder.id = id
+        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.code = code?.toBuilder()
+        builder.display = display?.toBuilder()
+        builder.url = url?.toBuilder()
+        return builder
+      }
 
       public class Builder(
         /**
@@ -1071,8 +1064,8 @@ public data class ConceptMap(
         public fun build(): Unmapped =
           Unmapped(
             id = id,
-            extension = extension.map { it.build() },
-            modifierExtension = modifierExtension.map { it.build() },
+            extension = extension.mapToList { it.build() },
+            modifierExtension = modifierExtension.mapToList { it.build() },
             mode = mode,
             code = code?.build(),
             display = display?.build(),
@@ -1178,13 +1171,13 @@ public data class ConceptMap(
       public fun build(): Group =
         Group(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           source = source?.build(),
           sourceVersion = sourceVersion?.build(),
           target = target?.build(),
           targetVersion = targetVersion?.build(),
-          element = element.map { it.build() },
+          element = element.mapToList { it.build() },
           unmapped = unmapped?.build(),
         )
     }
@@ -1523,9 +1516,9 @@ public data class ConceptMap(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
         identifier = identifier?.build(),
         version = version?.build(),
@@ -1535,15 +1528,15 @@ public data class ConceptMap(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         source = source,
         target = target,
-        group = group.map { it.build() },
+        group = group.mapToList { it.build() },
       )
   }
 

@@ -279,50 +279,47 @@ public data class MedicationDispense(
    */
   public val eventHistory: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          medication.toBuilder(),
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-          notPerformedReason = this@with.notPerformedReason?.toBuilder()
-          statusChanged = this@with.statusChanged?.toBuilder()
-          category = this@with.category.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          supportingInformation =
-            this@with.supportingInformation.map { it.toBuilder() }.toMutableList()
-          performer = this@with.performer.map { it.toBuilder() }.toMutableList()
-          location = this@with.location?.toBuilder()
-          authorizingPrescription =
-            this@with.authorizingPrescription.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          quantity = this@with.quantity?.toBuilder()
-          daysSupply = this@with.daysSupply?.toBuilder()
-          recorded = this@with.recorded?.toBuilder()
-          whenPrepared = this@with.whenPrepared?.toBuilder()
-          whenHandedOver = this@with.whenHandedOver?.toBuilder()
-          destination = this@with.destination?.toBuilder()
-          `receiver` = this@with.`receiver`.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          renderedDosageInstruction = this@with.renderedDosageInstruction?.toBuilder()
-          dosageInstruction = this@with.dosageInstruction.map { it.toBuilder() }.toMutableList()
-          substitution = this@with.substitution?.toBuilder()
-          eventHistory = this@with.eventHistory.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        medication.toBuilder(),
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.notPerformedReason = notPerformedReason?.toBuilder()
+    builder.statusChanged = statusChanged?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.location = location?.toBuilder()
+    builder.authorizingPrescription = authorizingPrescription.mapToMutableList { it.toBuilder() }
+    builder.type = type?.toBuilder()
+    builder.quantity = quantity?.toBuilder()
+    builder.daysSupply = daysSupply?.toBuilder()
+    builder.recorded = recorded?.toBuilder()
+    builder.whenPrepared = whenPrepared?.toBuilder()
+    builder.whenHandedOver = whenHandedOver?.toBuilder()
+    builder.destination = destination?.toBuilder()
+    builder.`receiver` = `receiver`.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.renderedDosageInstruction = renderedDosageInstruction?.toBuilder()
+    builder.dosageInstruction = dosageInstruction.mapToMutableList { it.toBuilder() }
+    builder.substitution = substitution?.toBuilder()
+    builder.eventHistory = eventHistory.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Indicates who or what performed the event. */
   @Serializable(with = MedicationDispensePerformerSerializer::class)
@@ -375,15 +372,14 @@ public data class MedicationDispense(
      */
     public val actor: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(actor.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          function = this@with.function?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(actor.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.function = function?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /**
@@ -441,8 +437,8 @@ public data class MedicationDispense(
       public fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           function = function?.build(),
           actor = actor.build(),
         )
@@ -505,17 +501,16 @@ public data class MedicationDispense(
     /** The person or organization that has primary responsibility for the substitution. */
     public val responsibleParty: Reference? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(wasSubstituted.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          reason = this@with.reason.map { it.toBuilder() }.toMutableList()
-          responsibleParty = this@with.responsibleParty?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(wasSubstituted.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.reason = reason.mapToMutableList { it.toBuilder() }
+      builder.responsibleParty = responsibleParty?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** True if the dispenser dispensed a different drug or product from what was prescribed. */
@@ -576,11 +571,11 @@ public data class MedicationDispense(
       public fun build(): Substitution =
         Substitution(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           wasSubstituted = wasSubstituted.build(),
           type = type?.build(),
-          reason = reason.map { it.build() },
+          reason = reason.mapToList { it.build() },
           responsibleParty = responsibleParty?.build(),
         )
     }
@@ -870,23 +865,23 @@ public data class MedicationDispense(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
         notPerformedReason = notPerformedReason?.build(),
         statusChanged = statusChanged?.build(),
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         medication = medication.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
-        supportingInformation = supportingInformation.map { it.build() },
-        performer = performer.map { it.build() },
+        supportingInformation = supportingInformation.mapToList { it.build() },
+        performer = performer.mapToList { it.build() },
         location = location?.build(),
-        authorizingPrescription = authorizingPrescription.map { it.build() },
+        authorizingPrescription = authorizingPrescription.mapToList { it.build() },
         type = type?.build(),
         quantity = quantity?.build(),
         daysSupply = daysSupply?.build(),
@@ -894,12 +889,12 @@ public data class MedicationDispense(
         whenPrepared = whenPrepared?.build(),
         whenHandedOver = whenHandedOver?.build(),
         destination = destination?.build(),
-        `receiver` = `receiver`.map { it.build() },
-        note = note.map { it.build() },
+        `receiver` = `receiver`.mapToList { it.build() },
+        note = note.mapToList { it.build() },
         renderedDosageInstruction = renderedDosageInstruction?.build(),
-        dosageInstruction = dosageInstruction.map { it.build() },
+        dosageInstruction = dosageInstruction.mapToList { it.build() },
         substitution = substitution?.build(),
-        eventHistory = eventHistory.map { it.build() },
+        eventHistory = eventHistory.mapToList { it.build() },
       )
   }
 

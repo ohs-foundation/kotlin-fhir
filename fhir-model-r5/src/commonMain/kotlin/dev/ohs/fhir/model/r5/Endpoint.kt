@@ -223,33 +223,32 @@ public data class Endpoint(
    */
   public val `header`: List<String> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          connectionType.map { it.toBuilder() }.toMutableList(),
-          address.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          description = this@with.description?.toBuilder()
-          environmentType = this@with.environmentType.map { it.toBuilder() }.toMutableList()
-          managingOrganization = this@with.managingOrganization?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          period = this@with.period?.toBuilder()
-          payload = this@with.payload.map { it.toBuilder() }.toMutableList()
-          `header` = this@with.`header`.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        connectionType.mapToMutableList { it.toBuilder() },
+        address.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.name = name?.toBuilder()
+    builder.description = description?.toBuilder()
+    builder.environmentType = environmentType.mapToMutableList { it.toBuilder() }
+    builder.managingOrganization = managingOrganization?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    builder.payload = payload.mapToMutableList { it.toBuilder() }
+    builder.`header` = `header`.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** The set of payloads that are provided/available at this endpoint. */
   @Serializable(with = EndpointPayloadSerializer::class)
@@ -308,16 +307,15 @@ public data class Endpoint(
      */
     public val mimeType: List<Code> = listOf(),
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type.map { it.toBuilder() }.toMutableList()
-          mimeType = this@with.mimeType.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.mimeType = mimeType.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -382,10 +380,10 @@ public data class Endpoint(
       public fun build(): Payload =
         Payload(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
-          type = type.map { it.build() },
-          mimeType = mimeType.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
+          type = type.mapToList { it.build() },
+          mimeType = mimeType.mapToList { it.build() },
         )
     }
   }
@@ -602,21 +600,21 @@ public data class Endpoint(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
-        connectionType = connectionType.map { it.build() },
+        connectionType = connectionType.mapToList { it.build() },
         name = name?.build(),
         description = description?.build(),
-        environmentType = environmentType.map { it.build() },
+        environmentType = environmentType.mapToList { it.build() },
         managingOrganization = managingOrganization?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         period = period?.build(),
-        payload = payload.map { it.build() },
+        payload = payload.mapToList { it.build() },
         address = address.build(),
-        `header` = `header`.map { it.build() },
+        `header` = `header`.mapToList { it.build() },
       )
   }
 

@@ -214,34 +214,33 @@ public data class List(
    */
   public val emptyReason: CodeableConcept? = null,
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          mode,
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          title = this@with.title?.toBuilder()
-          code = this@with.code?.toBuilder()
-          subject = this@with.subject.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          date = this@with.date?.toBuilder()
-          source = this@with.source?.toBuilder()
-          orderedBy = this@with.orderedBy?.toBuilder()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          entry = this@with.entry.map { it.toBuilder() }.toMutableList()
-          emptyReason = this@with.emptyReason?.toBuilder()
-        }
-    }
+        status,
+        mode,
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.title = title?.toBuilder()
+    builder.code = code?.toBuilder()
+    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.source = source?.toBuilder()
+    builder.orderedBy = orderedBy?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.entry = entry.mapToMutableList { it.toBuilder() }
+    builder.emptyReason = emptyReason?.toBuilder()
+    return builder
+  }
 
   /** Entries in this list. */
   @Serializable(with = ListEntrySerializer::class)
@@ -304,17 +303,16 @@ public data class List(
     /** A reference to the actual resource from which data was derived. */
     public val item: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(item.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          flag = this@with.flag?.toBuilder()
-          deleted = this@with.deleted?.toBuilder()
-          date = this@with.date?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(item.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.flag = flag?.toBuilder()
+      builder.deleted = deleted?.toBuilder()
+      builder.date = date?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** A reference to the actual resource from which data was derived. */
@@ -385,8 +383,8 @@ public data class List(
       public fun build(): Entry =
         Entry(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           flag = flag?.build(),
           deleted = deleted?.build(),
           date = date?.build(),
@@ -603,21 +601,21 @@ public data class List(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         status = status,
         mode = mode,
         title = title?.build(),
         code = code?.build(),
-        subject = subject.map { it.build() },
+        subject = subject.mapToList { it.build() },
         encounter = encounter?.build(),
         date = date?.build(),
         source = source?.build(),
         orderedBy = orderedBy?.build(),
-        note = note.map { it.build() },
-        entry = entry.map { it.build() },
+        note = note.mapToList { it.build() },
+        entry = entry.mapToList { it.build() },
         emptyReason = emptyReason?.build(),
       )
   }

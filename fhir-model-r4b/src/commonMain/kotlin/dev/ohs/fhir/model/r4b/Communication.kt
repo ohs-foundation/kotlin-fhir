@@ -256,42 +256,40 @@ public data class Communication(
    */
   public val note: List<Annotation> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        instantiatesCanonical =
-          this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-        instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-        basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        inResponseTo = this@with.inResponseTo.map { it.toBuilder() }.toMutableList()
-        statusReason = this@with.statusReason?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        priority = this@with.priority
-        medium = this@with.medium.map { it.toBuilder() }.toMutableList()
-        subject = this@with.subject?.toBuilder()
-        topic = this@with.topic?.toBuilder()
-        about = this@with.about.map { it.toBuilder() }.toMutableList()
-        encounter = this@with.encounter?.toBuilder()
-        sent = this@with.sent?.toBuilder()
-        received = this@with.received?.toBuilder()
-        recipient = this@with.recipient.map { it.toBuilder() }.toMutableList()
-        sender = this@with.sender?.toBuilder()
-        reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-        reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-        payload = this@with.payload.map { it.toBuilder() }.toMutableList()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.inResponseTo = inResponseTo.mapToMutableList { it.toBuilder() }
+    builder.statusReason = statusReason?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.priority = priority
+    builder.medium = medium.mapToMutableList { it.toBuilder() }
+    builder.subject = subject?.toBuilder()
+    builder.topic = topic?.toBuilder()
+    builder.about = about.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.sent = sent?.toBuilder()
+    builder.received = received?.toBuilder()
+    builder.recipient = recipient.mapToMutableList { it.toBuilder() }
+    builder.sender = sender?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.payload = payload.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Text, attachment(s), or resource(s) that was communicated to the recipient. */
   @Serializable(with = CommunicationPayloadSerializer::class)
@@ -338,14 +336,13 @@ public data class Communication(
      */
     public val content: Content,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(content).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(content)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public sealed interface Content : FhirChoice {
       public fun asString(): String? = this as? String
@@ -425,8 +422,8 @@ public data class Communication(
       public fun build(): Payload =
         Payload(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           content = content,
         )
     }
@@ -691,32 +688,32 @@ public data class Communication(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        instantiatesCanonical = instantiatesCanonical.map { it.build() },
-        instantiatesUri = instantiatesUri.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        partOf = partOf.map { it.build() },
-        inResponseTo = inResponseTo.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+        instantiatesUri = instantiatesUri.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
+        inResponseTo = inResponseTo.mapToList { it.build() },
         status = status,
         statusReason = statusReason?.build(),
-        category = category.map { it.build() },
+        category = category.mapToList { it.build() },
         priority = priority,
-        medium = medium.map { it.build() },
+        medium = medium.mapToList { it.build() },
         subject = subject?.build(),
         topic = topic?.build(),
-        about = about.map { it.build() },
+        about = about.mapToList { it.build() },
         encounter = encounter?.build(),
         sent = sent?.build(),
         received = received?.build(),
-        recipient = recipient.map { it.build() },
+        recipient = recipient.mapToList { it.build() },
         sender = sender?.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        payload = payload.map { it.build() },
-        note = note.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        payload = payload.mapToList { it.build() },
+        note = note.mapToList { it.build() },
       )
   }
 

@@ -221,42 +221,41 @@ public data class ResearchStudy(
    */
   public val objective: List<Objective> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
-      Builder(status).apply {
-        id = this@with.id
-        meta = this@with.meta?.toBuilder()
-        implicitRules = this@with.implicitRules?.toBuilder()
-        language = this@with.language?.toBuilder()
-        text = this@with.text?.toBuilder()
-        contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-        modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-        identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-        title = this@with.title?.toBuilder()
-        protocol = this@with.protocol.map { it.toBuilder() }.toMutableList()
-        partOf = this@with.partOf.map { it.toBuilder() }.toMutableList()
-        primaryPurposeType = this@with.primaryPurposeType?.toBuilder()
-        phase = this@with.phase?.toBuilder()
-        category = this@with.category.map { it.toBuilder() }.toMutableList()
-        focus = this@with.focus.map { it.toBuilder() }.toMutableList()
-        condition = this@with.condition.map { it.toBuilder() }.toMutableList()
-        contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-        relatedArtifact = this@with.relatedArtifact.map { it.toBuilder() }.toMutableList()
-        keyword = this@with.keyword.map { it.toBuilder() }.toMutableList()
-        location = this@with.location.map { it.toBuilder() }.toMutableList()
-        description = this@with.description?.toBuilder()
-        enrollment = this@with.enrollment.map { it.toBuilder() }.toMutableList()
-        period = this@with.period?.toBuilder()
-        sponsor = this@with.sponsor?.toBuilder()
-        principalInvestigator = this@with.principalInvestigator?.toBuilder()
-        site = this@with.site.map { it.toBuilder() }.toMutableList()
-        reasonStopped = this@with.reasonStopped?.toBuilder()
-        note = this@with.note.map { it.toBuilder() }.toMutableList()
-        arm = this@with.arm.map { it.toBuilder() }.toMutableList()
-        objective = this@with.objective.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  override fun toBuilder(): Builder {
+    val builder = Builder(status)
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.title = title?.toBuilder()
+    builder.protocol = protocol.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.primaryPurposeType = primaryPurposeType?.toBuilder()
+    builder.phase = phase?.toBuilder()
+    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.condition = condition.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.keyword = keyword.mapToMutableList { it.toBuilder() }
+    builder.location = location.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.enrollment = enrollment.mapToMutableList { it.toBuilder() }
+    builder.period = period?.toBuilder()
+    builder.sponsor = sponsor?.toBuilder()
+    builder.principalInvestigator = principalInvestigator?.toBuilder()
+    builder.site = site.mapToMutableList { it.toBuilder() }
+    builder.reasonStopped = reasonStopped?.toBuilder()
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.arm = arm.mapToMutableList { it.toBuilder() }
+    builder.objective = objective.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /**
    * Describes an expected sequence of events for one of the participants of a study. E.g. Exposure
@@ -311,16 +310,15 @@ public data class ResearchStudy(
      */
     public val description: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(name.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          type = this@with.type?.toBuilder()
-          description = this@with.description?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(name.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.type = type?.toBuilder()
+      builder.description = description?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** Unique, human-readable label for this arm of the study. */
@@ -378,8 +376,8 @@ public data class ResearchStudy(
       public fun build(): Arm =
         Arm(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name.build(),
           type = type?.build(),
           description = description?.build(),
@@ -435,16 +433,15 @@ public data class ResearchStudy(
     /** The kind of study objective. */
     public val type: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          name = this@with.name?.toBuilder()
-          type = this@with.type?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.name = name?.toBuilder()
+      builder.type = type?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -496,8 +493,8 @@ public data class ResearchStudy(
       public fun build(): Objective =
         Objective(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           name = name?.build(),
           type = type?.build(),
         )
@@ -727,33 +724,33 @@ public data class ResearchStudy(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
         title = title?.build(),
-        protocol = protocol.map { it.build() },
-        partOf = partOf.map { it.build() },
+        protocol = protocol.mapToList { it.build() },
+        partOf = partOf.mapToList { it.build() },
         status = status,
         primaryPurposeType = primaryPurposeType?.build(),
         phase = phase?.build(),
-        category = category.map { it.build() },
-        focus = focus.map { it.build() },
-        condition = condition.map { it.build() },
-        contact = contact.map { it.build() },
-        relatedArtifact = relatedArtifact.map { it.build() },
-        keyword = keyword.map { it.build() },
-        location = location.map { it.build() },
+        category = category.mapToList { it.build() },
+        focus = focus.mapToList { it.build() },
+        condition = condition.mapToList { it.build() },
+        contact = contact.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        keyword = keyword.mapToList { it.build() },
+        location = location.mapToList { it.build() },
         description = description?.build(),
-        enrollment = enrollment.map { it.build() },
+        enrollment = enrollment.mapToList { it.build() },
         period = period?.build(),
         sponsor = sponsor?.build(),
         principalInvestigator = principalInvestigator?.build(),
-        site = site.map { it.build() },
+        site = site.mapToList { it.build() },
         reasonStopped = reasonStopped?.build(),
-        note = note.map { it.build() },
-        arm = arm.map { it.build() },
-        objective = objective.map { it.build() },
+        note = note.mapToList { it.build() },
+        arm = arm.mapToList { it.build() },
+        objective = objective.mapToList { it.build() },
       )
   }
 

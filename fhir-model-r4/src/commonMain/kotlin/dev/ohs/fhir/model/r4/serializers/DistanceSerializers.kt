@@ -45,45 +45,33 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object DistanceSerializer : KSerializer<Distance> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Distance") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("value", FhirDecimalSerializer.descriptor, isOptional = true)
-      element("_value", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("comparator", KotlinString.serializer().descriptor, isOptional = true)
-      element("_comparator", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("unit", KotlinString.serializer().descriptor, isOptional = true)
-      element("_unit", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("system", KotlinString.serializer().descriptor, isOptional = true)
-      element("_system", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("code", KotlinString.serializer().descriptor, isOptional = true)
-      element("_code", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      optionalElement("value", FhirDecimalSerializer.descriptor)
+      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("comparator", KotlinString.serializer().descriptor)
+      optionalElement("_comparator", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("unit", KotlinString.serializer().descriptor)
+      optionalElement("_unit", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("system", KotlinString.serializer().descriptor)
+      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("code", KotlinString.serializer().descriptor)
+      optionalElement("_code", lazyDescriptor { ElementSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): Distance =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<Distance>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: Distance) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): Distance {
+  override fun deserialize(decoder: Decoder): Distance {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var `value`: FhirDecimal? = null
@@ -97,79 +85,113 @@ internal object DistanceSerializer : KSerializer<Distance> {
     var code: KotlinString? = null
     var _code: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ExtensionSerializer.listSerializer,
+              null,
+            )
         2 ->
           `value` =
-            decoder.decodeNullableSerializableElement(descriptor, i, FhirDecimalSerializer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              FhirDecimalSerializer,
+              null,
+            )
         3 ->
-          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
-        4 -> comparator = decoder.decodeStringElement(descriptor, i)
+          _value =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 -> comparator = compositeDecoder.decodeStringElement(descriptor, i)
         5 ->
           _comparator =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
-        6 -> unit = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        6 -> unit = compositeDecoder.decodeStringElement(descriptor, i)
         7 ->
-          _unit = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
-        8 -> system = decoder.decodeStringElement(descriptor, i)
+          _unit =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        8 -> system = compositeDecoder.decodeStringElement(descriptor, i)
         9 ->
-          _system = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
-        10 -> code = decoder.decodeStringElement(descriptor, i)
+          _system =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        10 -> code = compositeDecoder.decodeStringElement(descriptor, i)
         11 ->
-          _code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
+          _code =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Distance: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return Distance(
       id = id,
       extension = extension ?: listOf(),
       `value` = Decimal.of(`value`, _value),
       comparator =
-        Enumeration.of(comparator?.let { Quantity.QuantityComparator.fromCode(it) }, _comparator),
+        Enumeration.of(
+          if (comparator != null) Quantity.QuantityComparator.fromCode(comparator) else null,
+          _comparator,
+        ),
       unit = R4String.of(unit, _unit),
       system = Uri.of(system, _system),
       code = Code.of(code, _code),
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: Distance) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: Distance) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.`value`?.value))?.let {
-      encoder.encodeSerializableElement(descriptor, 2, FhirDecimalSerializer, it)
-    }
-    (value.`value`?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueSer, it)
-    }
-    ((value.comparator?.value?.code))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-    (value.comparator?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
-    }
-    ((value.unit?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-    (value.unit?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueSer, it)
-    }
-    ((value.system?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-    (value.system?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueSer, it)
-    }
-    ((value.code?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-    (value.code?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val valueSer: KSerializer<Element> = Element.serializer()
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      2,
+      FhirDecimalSerializer,
+      value.`value`?.value,
+    )
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.`value`)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.comparator?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.comparator)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.unit?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.unit)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 8, value.system?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.system)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 10, value.code?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 11, value.code)
+    compositeEncoder.endStructure(descriptor)
   }
 }

@@ -338,50 +338,49 @@ public data class ConditionDefinition(
   /** Plan that is appropriate. */
   public val plan: List<Plan> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          status,
-          code.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          url = this@with.url?.toBuilder()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          versionAlgorithm = this@with.versionAlgorithm
-          name = this@with.name?.toBuilder()
-          title = this@with.title?.toBuilder()
-          subtitle = this@with.subtitle?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          jurisdiction = this@with.jurisdiction.map { it.toBuilder() }.toMutableList()
-          severity = this@with.severity?.toBuilder()
-          bodySite = this@with.bodySite?.toBuilder()
-          stage = this@with.stage?.toBuilder()
-          hasSeverity = this@with.hasSeverity?.toBuilder()
-          hasBodySite = this@with.hasBodySite?.toBuilder()
-          hasStage = this@with.hasStage?.toBuilder()
-          definition = this@with.definition.map { it.toBuilder() }.toMutableList()
-          observation = this@with.observation.map { it.toBuilder() }.toMutableList()
-          medication = this@with.medication.map { it.toBuilder() }.toMutableList()
-          precondition = this@with.precondition.map { it.toBuilder() }.toMutableList()
-          team = this@with.team.map { it.toBuilder() }.toMutableList()
-          questionnaire = this@with.questionnaire.map { it.toBuilder() }.toMutableList()
-          plan = this@with.plan.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        status,
+        code.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.url = url?.toBuilder()
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.versionAlgorithm = versionAlgorithm
+    builder.name = name?.toBuilder()
+    builder.title = title?.toBuilder()
+    builder.subtitle = subtitle?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.severity = severity?.toBuilder()
+    builder.bodySite = bodySite?.toBuilder()
+    builder.stage = stage?.toBuilder()
+    builder.hasSeverity = hasSeverity?.toBuilder()
+    builder.hasBodySite = hasBodySite?.toBuilder()
+    builder.hasStage = hasStage?.toBuilder()
+    builder.definition = definition.mapToMutableList { it.toBuilder() }
+    builder.observation = observation.mapToMutableList { it.toBuilder() }
+    builder.medication = medication.mapToMutableList { it.toBuilder() }
+    builder.precondition = precondition.mapToMutableList { it.toBuilder() }
+    builder.team = team.mapToMutableList { it.toBuilder() }
+    builder.questionnaire = questionnaire.mapToMutableList { it.toBuilder() }
+    builder.plan = plan.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Observations particularly relevant to this condition. */
   @Serializable(with = ConditionDefinitionObservationSerializer::class)
@@ -428,16 +427,15 @@ public data class ConditionDefinition(
     /** Code for relevant Observation. */
     public val code: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          category = this@with.category?.toBuilder()
-          code = this@with.code?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.category = category?.toBuilder()
+      builder.code = code?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -489,8 +487,8 @@ public data class ConditionDefinition(
       public fun build(): Observation =
         Observation(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           category = category?.build(),
           code = code?.build(),
         )
@@ -542,16 +540,15 @@ public data class ConditionDefinition(
     /** Code for relevant Medication. */
     public val code: CodeableConcept? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          category = this@with.category?.toBuilder()
-          code = this@with.code?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.category = category?.toBuilder()
+      builder.code = code?.toBuilder()
+      return builder
+    }
 
     public class Builder() {
       /**
@@ -603,8 +600,8 @@ public data class ConditionDefinition(
       public fun build(): Medication =
         Medication(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           category = category?.build(),
           code = code?.build(),
         )
@@ -658,19 +655,18 @@ public data class ConditionDefinition(
     /** Value of Observation. */
     public val `value`: Value? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            type,
-            code.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-            `value` = this@with.`value`
-          }
-      }
+          type,
+          code.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`value` = `value`
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -747,8 +743,8 @@ public data class ConditionDefinition(
       public fun build(): Precondition =
         Precondition(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           type = type,
           code = code.build(),
           `value` = `value`,
@@ -801,18 +797,17 @@ public data class ConditionDefinition(
     /** Specific Questionnaire. */
     public val reference: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
+    public fun toBuilder(): Builder {
+      val builder =
         Builder(
-            purpose,
-            reference.toBuilder(),
-          )
-          .apply {
-            id = this@with.id
-            extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-            modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          }
-      }
+          purpose,
+          reference.toBuilder(),
+        )
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      return builder
+    }
 
     public class Builder(
       /** Use of the questionnaire. */
@@ -863,8 +858,8 @@ public data class ConditionDefinition(
       public fun build(): Questionnaire =
         Questionnaire(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           purpose = purpose,
           reference = reference.build(),
         )
@@ -916,15 +911,14 @@ public data class ConditionDefinition(
     /** The actual plan. */
     public val reference: Reference,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(reference.toBuilder()).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          role = this@with.role?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(reference.toBuilder())
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.role = role?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The actual plan. */
@@ -976,8 +970,8 @@ public data class ConditionDefinition(
       public fun build(): Plan =
         Plan(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           role = role?.build(),
           reference = reference.build(),
         )
@@ -1350,11 +1344,11 @@ public data class ConditionDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url?.build(),
-        identifier = identifier.map { it.build() },
+        identifier = identifier.mapToList { it.build() },
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -1364,10 +1358,10 @@ public data class ConditionDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
-        jurisdiction = jurisdiction.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
+        jurisdiction = jurisdiction.mapToList { it.build() },
         code = code.build(),
         severity = severity?.build(),
         bodySite = bodySite?.build(),
@@ -1375,13 +1369,13 @@ public data class ConditionDefinition(
         hasSeverity = hasSeverity?.build(),
         hasBodySite = hasBodySite?.build(),
         hasStage = hasStage?.build(),
-        definition = definition.map { it.build() },
-        observation = observation.map { it.build() },
-        medication = medication.map { it.build() },
-        precondition = precondition.map { it.build() },
-        team = team.map { it.build() },
-        questionnaire = questionnaire.map { it.build() },
-        plan = plan.map { it.build() },
+        definition = definition.mapToList { it.build() },
+        observation = observation.mapToList { it.build() },
+        medication = medication.mapToList { it.build() },
+        precondition = precondition.mapToList { it.build() },
+        team = team.mapToList { it.build() },
+        questionnaire = questionnaire.mapToList { it.build() },
+        plan = plan.mapToList { it.build() },
       )
   }
 

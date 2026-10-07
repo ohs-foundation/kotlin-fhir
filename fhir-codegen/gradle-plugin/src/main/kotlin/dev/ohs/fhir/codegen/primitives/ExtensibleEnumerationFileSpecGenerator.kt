@@ -43,13 +43,13 @@ object ExtensibleEnumerationFileSpecGenerator {
     val typeVariable = TypeVariableName("T", ClassName(packageName, "FhirEnum"))
     val typeVariableCovariant =
       TypeVariableName("T", listOf(ClassName(packageName, "FhirEnum")), variance = KModifier.OUT)
-    val reifiedTypeVariable =
+    val enumTypeVariable =
       TypeVariableName(
-          "T",
-          ClassName("kotlin", "Enum").parameterizedBy(TypeVariableName("T")),
-          ClassName(packageName, "FhirEnum"),
-        )
-        .copy(reified = true)
+        "T",
+        ClassName("kotlin", "Enum").parameterizedBy(TypeVariableName("T")),
+        ClassName(packageName, "FhirEnum"),
+      )
+    val reifiedTypeVariable = enumTypeVariable.copy(reified = true)
     val extensionClassName = ClassName(packageName, "Extension")
     val elementClassName = ClassName(packageName, "Element")
     val listExtensionType =
@@ -183,9 +183,35 @@ object ExtensibleEnumerationFileSpecGenerator {
                     .parameterizedBy(TypeVariableName("T"))
                     .copy(nullable = true)
                 )
+                .addStatement(
+                  "return of(code, element, %M<T>())",
+                  MemberName("kotlin.enums", "enumEntries"),
+                )
+                .build()
+            )
+            .addFunction(
+              FunSpec.builder("of")
+                .addTypeVariable(enumTypeVariable)
+                .addParameter(ParameterSpec.builder("code", STRING.copy(nullable = true)).build())
+                .addParameter(
+                  ParameterSpec.builder("element", elementClassName.copy(nullable = true)).build()
+                )
+                .addParameter(
+                  ParameterSpec.builder(
+                      "entries",
+                      ClassName("kotlin.collections", "Iterable")
+                        .parameterizedBy(TypeVariableName("T")),
+                    )
+                    .build()
+                )
+                .returns(
+                  extensibleEnumClassName
+                    .parameterizedBy(TypeVariableName("T"))
+                    .copy(nullable = true)
+                )
                 .addCode(
                   """
-                  val parsed = code?.let·{ c -> %M<T>().firstOrNull·{ it.code == c } }
+                  val parsed = if (code != null) entries.firstOrNull·{ it.code == code } else null
                   return when {
                     parsed != null -> Predefined(parsed, element?.id, element?.extension ?: listOf())
                     code != null -> Custom(code, element?.id, element?.extension ?: listOf())
@@ -194,8 +220,7 @@ object ExtensibleEnumerationFileSpecGenerator {
                     else -> null
                   }
                   """
-                    .trimIndent() + "\n",
-                  MemberName("kotlin.enums", "enumEntries"),
+                    .trimIndent() + "\n"
                 )
                 .build()
             )

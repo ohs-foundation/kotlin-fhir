@@ -49,13 +49,12 @@ public data class Xhtml(
   /** Actual xhtml */
   public val `value`: String,
 ) : Element(id, extension) {
-  public fun toBuilder(): Builder =
-    with(this) {
-      Builder(`value`).apply {
-        id = this@with.id
-        extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-      }
-    }
+  public fun toBuilder(): Builder {
+    val builder = Builder(`value`)
+    builder.id = id
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   public fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -88,7 +87,7 @@ public data class Xhtml(
     public open fun build(): Xhtml =
       Xhtml(
         id = id,
-        extension = extension.map { it.build() },
+        extension = extension.mapToList { it.build() },
         `value` = `value`,
       )
   }

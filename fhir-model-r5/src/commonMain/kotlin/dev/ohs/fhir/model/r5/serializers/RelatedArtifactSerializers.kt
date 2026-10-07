@@ -48,68 +48,43 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
-import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.encoding.decodeStructure
-import kotlinx.serialization.encoding.encodeStructure
 
 internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("RelatedArtifact") {
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element(
+      optionalElement("id", KotlinString.serializer().descriptor)
+      optionalElement(
         "extension",
-        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
       )
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element(
+      optionalElement("type", KotlinString.serializer().descriptor)
+      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement(
         "classifier",
-        listSerialDescriptor(lazyDescriptor { CodeableConcept.serializer().descriptor }),
-        isOptional = true,
+        listSerialDescriptor(lazyDescriptor { CodeableConceptSerializer.descriptor }),
       )
-      element("label", KotlinString.serializer().descriptor, isOptional = true)
-      element("_label", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("display", KotlinString.serializer().descriptor, isOptional = true)
-      element("_display", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("citation", KotlinString.serializer().descriptor, isOptional = true)
-      element("_citation", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element("document", lazyDescriptor { Attachment.serializer().descriptor }, isOptional = true)
-      element("resource", KotlinString.serializer().descriptor, isOptional = true)
-      element("_resource", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
-      element(
-        "resourceReference",
-        lazyDescriptor { Reference.serializer().descriptor },
-        isOptional = true,
-      )
-      element("publicationStatus", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "_publicationStatus",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
-      element("publicationDate", KotlinString.serializer().descriptor, isOptional = true)
-      element(
-        "_publicationDate",
-        lazyDescriptor { Element.serializer().descriptor },
-        isOptional = true,
-      )
+      optionalElement("label", KotlinString.serializer().descriptor)
+      optionalElement("_label", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("display", KotlinString.serializer().descriptor)
+      optionalElement("_display", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("citation", KotlinString.serializer().descriptor)
+      optionalElement("_citation", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("document", lazyDescriptor { AttachmentSerializer.descriptor })
+      optionalElement("resource", KotlinString.serializer().descriptor)
+      optionalElement("_resource", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("resourceReference", lazyDescriptor { ReferenceSerializer.descriptor })
+      optionalElement("publicationStatus", KotlinString.serializer().descriptor)
+      optionalElement("_publicationStatus", lazyDescriptor { ElementSerializer.descriptor })
+      optionalElement("publicationDate", KotlinString.serializer().descriptor)
+      optionalElement("_publicationDate", lazyDescriptor { ElementSerializer.descriptor })
     }
 
-  override fun deserialize(decoder: Decoder): RelatedArtifact =
-    decoder.decodeStructure(descriptor) {
-      deserializeInternal(this)
-    }
+  internal val listSerializer: KSerializer<List<RelatedArtifact>> = ListSerializer(this)
 
-  override fun serialize(encoder: Encoder, `value`: RelatedArtifact) {
-    encoder.encodeStructure(descriptor) {
-      serializeInternal(this, value)
-    }
-  }
-
-  private fun deserializeInternal(decoder: CompositeDecoder): RelatedArtifact {
+  override fun deserialize(decoder: Decoder): RelatedArtifact {
+    val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var type: KotlinString? = null
@@ -130,59 +105,116 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
     var publicationDate: KotlinString? = null
     var _publicationDate: Element? = null
     while (true) {
-      when (val i = decoder.decodeElementIndex(descriptor)) {
-        0 -> id = decoder.decodeStringElement(descriptor, i)
+      when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
+        0 -> id = compositeDecoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(descriptor, i)
-        3 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        4 ->
-          classifier =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classifierSer, null)
-        5 -> label = decoder.decodeStringElement(descriptor, i)
-        6 ->
-          _label = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        7 -> display = decoder.decodeStringElement(descriptor, i)
-        8 ->
-          _display = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        9 -> citation = decoder.decodeStringElement(descriptor, i)
-        10 ->
-          _citation =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        11 ->
-          document =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.documentSer, null)
-        12 -> resource = decoder.decodeStringElement(descriptor, i)
-        13 ->
-          _resource =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        14 ->
-          resourceReference =
-            decoder.decodeNullableSerializableElement(
+            compositeDecoder.decodeNullableSerializableElement(
               descriptor,
               i,
-              Hoisted.resourceReferenceSer,
+              ExtensionSerializer.listSerializer,
               null,
             )
-        15 -> publicationStatus = decoder.decodeStringElement(descriptor, i)
+        2 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          _type =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        4 ->
+          classifier =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              CodeableConceptSerializer.listSerializer,
+              null,
+            )
+        5 -> label = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          _label =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        7 -> display = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          _display =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        9 -> citation = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          _citation =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        11 ->
+          document =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              AttachmentSerializer,
+              null,
+            )
+        12 -> resource = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          _resource =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        14 ->
+          resourceReference =
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ReferenceSerializer,
+              null,
+            )
+        15 -> publicationStatus = compositeDecoder.decodeStringElement(descriptor, i)
         16 ->
           _publicationStatus =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
-        17 -> publicationDate = decoder.decodeStringElement(descriptor, i)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
+        17 -> publicationDate = compositeDecoder.decodeStringElement(descriptor, i)
         18 ->
           _publicationDate =
-            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+            compositeDecoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              ElementSerializer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding RelatedArtifact: " + i)
       }
     }
+    compositeDecoder.endStructure(descriptor)
     return RelatedArtifact(
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(type?.let { RelatedArtifact.RelatedArtifactType.fromCode(it) }, _type)
-          ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
+        Enumeration.of(
+          if (type != null) RelatedArtifact.RelatedArtifactType.fromCode(type) else null,
+          _type,
+        ) ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
       classifier = classifier ?: listOf(),
       label = R5String.of(label, _label),
       display = R5String.of(display, _display),
@@ -192,74 +224,60 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       resourceReference = resourceReference,
       publicationStatus =
         Enumeration.of(
-          publicationStatus?.let { PublicationStatus.fromCode(it) },
+          if (publicationStatus != null) PublicationStatus.fromCode(publicationStatus) else null,
           _publicationStatus,
         ),
-      publicationDate = Date.of(publicationDate?.let { FhirDate.fromString(it) }, _publicationDate),
+      publicationDate =
+        Date.of(
+          if (publicationDate != null) FhirDate.fromString(publicationDate) else null,
+          _publicationDate,
+        ),
     )
   }
 
-  private fun serializeInternal(encoder: CompositeEncoder, `value`: RelatedArtifact) {
-    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+  override fun serialize(encoder: Encoder, `value`: RelatedArtifact) {
+    val compositeEncoder = encoder.beginStructure(descriptor)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.code))?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
-    }
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        1,
+        ExtensionSerializer.listSerializer,
+        value.extension,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.type)
     if (value.classifier.isNotEmpty())
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.classifierSer, value.classifier)
-    ((value.label?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-    (value.label?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it)
-    }
-    ((value.display?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-    (value.display?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, it)
-    }
-    ((value.citation?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-    (value.citation?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.typeSer, it)
-    }
-    (value.document)?.let {
-      encoder.encodeSerializableElement(descriptor, 11, Hoisted.documentSer, it)
-    }
-    ((value.resource?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-    (value.resource?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 13, Hoisted.typeSer, it)
-    }
-    (value.resourceReference)?.let {
-      encoder.encodeSerializableElement(descriptor, 14, Hoisted.resourceReferenceSer, it)
-    }
-    ((value.publicationStatus?.value?.code))?.let {
-      encoder.encodeStringElement(descriptor, 15, it)
-    }
-    (value.publicationStatus?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 16, Hoisted.typeSer, it)
-    }
-    ((value.publicationDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(descriptor, 17, it)
-    }
-    (value.publicationDate?.toElement())?.let {
-      encoder.encodeSerializableElement(descriptor, 18, Hoisted.typeSer, it)
-    }
-  }
-
-  private object Hoisted {
-    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
-
-    public val extensionSer: KSerializer<List<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
-
-    public val typeSer: KSerializer<Element> = Element.serializer()
-
-    public val classifierSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val classifierSer: KSerializer<List<CodeableConcept>> =
-      ListSerializer(Hoisted.classifierSerInner)
-
-    public val documentSer: KSerializer<Attachment> = Attachment.serializer()
-
-    public val resourceReferenceSer: KSerializer<Reference> = Reference.serializer()
+      compositeEncoder.encodeSerializableElement(
+        descriptor,
+        4,
+        CodeableConceptSerializer.listSerializer,
+        value.classifier,
+      )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.label?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.label)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.display?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.display)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.citation?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.citation)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      11,
+      AttachmentSerializer,
+      value.document,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 12, value.resource?.value)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 13, value.resource)
+    compositeEncoder.encodeSerializableIfNotNull(
+      descriptor,
+      14,
+      ReferenceSerializer,
+      value.resourceReference,
+    )
+    compositeEncoder.encodeStringIfNotNull(descriptor, 15, value.publicationStatus?.value?.code)
+    compositeEncoder.encodeElementIfNotNull(descriptor, 16, value.publicationStatus)
+    compositeEncoder.encodeStringIfNotNull(descriptor, 17, value.publicationDate?.value?.toString())
+    compositeEncoder.encodeElementIfNotNull(descriptor, 18, value.publicationDate)
+    compositeEncoder.endStructure(descriptor)
   }
 }

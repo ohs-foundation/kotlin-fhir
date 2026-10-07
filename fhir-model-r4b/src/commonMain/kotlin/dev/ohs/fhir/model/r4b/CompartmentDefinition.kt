@@ -263,35 +263,34 @@ public data class CompartmentDefinition(
   /** Information about how a resource is related to the compartment. */
   public val resource: List<Resource> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          url.toBuilder(),
-          name.toBuilder(),
-          status,
-          code,
-          search.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          version = this@with.version?.toBuilder()
-          experimental = this@with.experimental?.toBuilder()
-          date = this@with.date?.toBuilder()
-          publisher = this@with.publisher?.toBuilder()
-          contact = this@with.contact.map { it.toBuilder() }.toMutableList()
-          description = this@with.description?.toBuilder()
-          useContext = this@with.useContext.map { it.toBuilder() }.toMutableList()
-          purpose = this@with.purpose?.toBuilder()
-          resource = this@with.resource.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        url.toBuilder(),
+        name.toBuilder(),
+        status,
+        code,
+        search.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.version = version?.toBuilder()
+    builder.experimental = experimental?.toBuilder()
+    builder.date = date?.toBuilder()
+    builder.publisher = publisher?.toBuilder()
+    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.description = description?.toBuilder()
+    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.purpose = purpose?.toBuilder()
+    builder.resource = resource.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Information about how a resource is related to the compartment. */
   @Serializable(with = CompartmentDefinitionResourceSerializer::class)
@@ -345,16 +344,15 @@ public data class CompartmentDefinition(
     /** Additional documentation about the resource and compartment. */
     public val documentation: String? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder(code).apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          `param` = this@with.`param`.map { it.toBuilder() }.toMutableList()
-          documentation = this@with.documentation?.toBuilder()
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder(code)
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.`param` = `param`.mapToMutableList { it.toBuilder() }
+      builder.documentation = documentation?.toBuilder()
+      return builder
+    }
 
     public class Builder(
       /** The name of a resource supported by the server. */
@@ -414,10 +412,10 @@ public data class CompartmentDefinition(
       public fun build(): Resource =
         Resource(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code,
-          `param` = `param`.map { it.build() },
+          `param` = `param`.mapToList { it.build() },
           documentation = documentation?.build(),
         )
     }
@@ -679,9 +677,9 @@ public data class CompartmentDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
         url = url.build(),
         version = version?.build(),
         name = name.build(),
@@ -689,13 +687,13 @@ public data class CompartmentDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.map { it.build() },
+        contact = contact.mapToList { it.build() },
         description = description?.build(),
-        useContext = useContext.map { it.build() },
+        useContext = useContext.mapToList { it.build() },
         purpose = purpose?.build(),
         code = code,
         search = search.build(),
-        resource = resource.map { it.build() },
+        resource = resource.mapToList { it.build() },
       )
   }
 

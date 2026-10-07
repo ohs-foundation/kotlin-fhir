@@ -226,46 +226,44 @@ public data class DeviceRequest(
    */
   public val relevantHistory: List<Reference> = listOf(),
 ) : DomainResource() {
-  override fun toBuilder(): Builder =
-    with(this) {
+  override fun toBuilder(): Builder {
+    val builder =
       Builder(
-          intent,
-          code,
-          subject.toBuilder(),
-        )
-        .apply {
-          id = this@with.id
-          meta = this@with.meta?.toBuilder()
-          implicitRules = this@with.implicitRules?.toBuilder()
-          language = this@with.language?.toBuilder()
-          text = this@with.text?.toBuilder()
-          contained = this@with.contained.map { it.toBuilder() }.toMutableList()
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          identifier = this@with.identifier.map { it.toBuilder() }.toMutableList()
-          instantiatesCanonical =
-            this@with.instantiatesCanonical.map { it.toBuilder() }.toMutableList()
-          instantiatesUri = this@with.instantiatesUri.map { it.toBuilder() }.toMutableList()
-          basedOn = this@with.basedOn.map { it.toBuilder() }.toMutableList()
-          priorRequest = this@with.priorRequest.map { it.toBuilder() }.toMutableList()
-          groupIdentifier = this@with.groupIdentifier?.toBuilder()
-          status = this@with.status
-          priority = this@with.priority
-          parameter = this@with.parameter.map { it.toBuilder() }.toMutableList()
-          encounter = this@with.encounter?.toBuilder()
-          occurrence = this@with.occurrence
-          authoredOn = this@with.authoredOn?.toBuilder()
-          requester = this@with.requester?.toBuilder()
-          performerType = this@with.performerType?.toBuilder()
-          performer = this@with.performer?.toBuilder()
-          reasonCode = this@with.reasonCode.map { it.toBuilder() }.toMutableList()
-          reasonReference = this@with.reasonReference.map { it.toBuilder() }.toMutableList()
-          insurance = this@with.insurance.map { it.toBuilder() }.toMutableList()
-          supportingInfo = this@with.supportingInfo.map { it.toBuilder() }.toMutableList()
-          note = this@with.note.map { it.toBuilder() }.toMutableList()
-          relevantHistory = this@with.relevantHistory.map { it.toBuilder() }.toMutableList()
-        }
-    }
+        intent,
+        code,
+        subject.toBuilder(),
+      )
+    builder.id = id
+    builder.meta = meta?.toBuilder()
+    builder.implicitRules = implicitRules?.toBuilder()
+    builder.language = language?.toBuilder()
+    builder.text = text?.toBuilder()
+    builder.contained = contained.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
+    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.priorRequest = priorRequest.mapToMutableList { it.toBuilder() }
+    builder.groupIdentifier = groupIdentifier?.toBuilder()
+    builder.status = status
+    builder.priority = priority
+    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    builder.encounter = encounter?.toBuilder()
+    builder.occurrence = occurrence
+    builder.authoredOn = authoredOn?.toBuilder()
+    builder.requester = requester?.toBuilder()
+    builder.performerType = performerType?.toBuilder()
+    builder.performer = performer?.toBuilder()
+    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
+    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.insurance = insurance.mapToMutableList { it.toBuilder() }
+    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
+    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.relevantHistory = relevantHistory.mapToMutableList { it.toBuilder() }
+    return builder
+  }
 
   /** Specific parameters for the ordered item. For example, the prism value for lenses. */
   @Serializable(with = DeviceRequestParameterSerializer::class)
@@ -316,16 +314,15 @@ public data class DeviceRequest(
      */
     public val `value`: Value? = null,
   ) : BackboneElement() {
-    public fun toBuilder(): Builder =
-      with(this) {
-        Builder().apply {
-          id = this@with.id
-          extension = this@with.extension.map { it.toBuilder() }.toMutableList()
-          modifierExtension = this@with.modifierExtension.map { it.toBuilder() }.toMutableList()
-          code = this@with.code?.toBuilder()
-          `value` = this@with.`value`
-        }
-      }
+    public fun toBuilder(): Builder {
+      val builder = Builder()
+      builder.id = id
+      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.code = code?.toBuilder()
+      builder.`value` = `value`
+      return builder
+    }
 
     public sealed interface Value : FhirChoice {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
@@ -416,8 +413,8 @@ public data class DeviceRequest(
       public fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.map { it.build() },
-          modifierExtension = modifierExtension.map { it.build() },
+          extension = extension.mapToList { it.build() },
+          modifierExtension = modifierExtension.mapToList { it.build() },
           code = code?.build(),
           `value` = `value`,
         )
@@ -701,20 +698,20 @@ public data class DeviceRequest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.map { it.build() },
-        extension = extension.map { it.build() },
-        modifierExtension = modifierExtension.map { it.build() },
-        identifier = identifier.map { it.build() },
-        instantiatesCanonical = instantiatesCanonical.map { it.build() },
-        instantiatesUri = instantiatesUri.map { it.build() },
-        basedOn = basedOn.map { it.build() },
-        priorRequest = priorRequest.map { it.build() },
+        contained = contained.mapToList { it.build() },
+        extension = extension.mapToList { it.build() },
+        modifierExtension = modifierExtension.mapToList { it.build() },
+        identifier = identifier.mapToList { it.build() },
+        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
+        instantiatesUri = instantiatesUri.mapToList { it.build() },
+        basedOn = basedOn.mapToList { it.build() },
+        priorRequest = priorRequest.mapToList { it.build() },
         groupIdentifier = groupIdentifier?.build(),
         status = status,
         intent = intent,
         priority = priority,
         code = code,
-        parameter = parameter.map { it.build() },
+        parameter = parameter.mapToList { it.build() },
         subject = subject.build(),
         encounter = encounter?.build(),
         occurrence = occurrence,
@@ -722,12 +719,12 @@ public data class DeviceRequest(
         requester = requester?.build(),
         performerType = performerType?.build(),
         performer = performer?.build(),
-        reasonCode = reasonCode.map { it.build() },
-        reasonReference = reasonReference.map { it.build() },
-        insurance = insurance.map { it.build() },
-        supportingInfo = supportingInfo.map { it.build() },
-        note = note.map { it.build() },
-        relevantHistory = relevantHistory.map { it.build() },
+        reasonCode = reasonCode.mapToList { it.build() },
+        reasonReference = reasonReference.mapToList { it.build() },
+        insurance = insurance.mapToList { it.build() },
+        supportingInfo = supportingInfo.mapToList { it.build() },
+        note = note.mapToList { it.build() },
+        relevantHistory = relevantHistory.mapToList { it.build() },
       )
   }
 

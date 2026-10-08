@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.RequirementsSerializer
 import dev.ohs.fhir.model.r5.serializers.RequirementsStatementSerializer
+import dev.ohs.fhir.model.r5.terminologies.ConformanceExpectation
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -979,31 +980,5 @@ public data class Requirements(
         actor = actor.mapToList { it.build() },
         statement = statement.mapToList { it.build() },
       )
-  }
-
-  /** Description Needed Here */
-  public enum class ConformanceExpectation(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Shall("SHALL", "http://hl7.org/fhir/conformance-expectation", "SHALL"),
-    Should("SHOULD", "http://hl7.org/fhir/conformance-expectation", "SHOULD"),
-    May("MAY", "http://hl7.org/fhir/conformance-expectation", "MAY"),
-    Should_Not("SHOULD-NOT", "http://hl7.org/fhir/conformance-expectation", "SHOULD-NOT");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ConformanceExpectation =
-        when (code) {
-          "SHALL" -> Shall
-          "SHOULD" -> Should
-          "MAY" -> May
-          "SHOULD-NOT" -> Should_Not
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ConformanceExpectation")
-        }
-    }
   }
 }

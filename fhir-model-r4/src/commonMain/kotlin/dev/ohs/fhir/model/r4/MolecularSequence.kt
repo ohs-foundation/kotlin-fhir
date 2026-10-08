@@ -30,6 +30,11 @@ import dev.ohs.fhir.model.r4.serializers.MolecularSequenceStructureVariantInnerS
 import dev.ohs.fhir.model.r4.serializers.MolecularSequenceStructureVariantOuterSerializer
 import dev.ohs.fhir.model.r4.serializers.MolecularSequenceStructureVariantSerializer
 import dev.ohs.fhir.model.r4.serializers.MolecularSequenceVariantSerializer
+import dev.ohs.fhir.model.r4.terminologies.OrientationType
+import dev.ohs.fhir.model.r4.terminologies.QualityType
+import dev.ohs.fhir.model.r4.terminologies.RepositoryType
+import dev.ohs.fhir.model.r4.terminologies.SequenceType
+import dev.ohs.fhir.model.r4.terminologies.StrandType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1822,140 +1827,5 @@ public data class MolecularSequence(
         pointer = pointer.mapToList { it.build() },
         structureVariant = structureVariant.mapToList { it.build() },
       )
-  }
-
-  /** Type for orientation. */
-  public enum class OrientationType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Sense("sense", "http://hl7.org/fhir/orientation-type", "Sense orientation of referenceSeq"),
-    Antisense(
-      "antisense",
-      "http://hl7.org/fhir/orientation-type",
-      "Antisense orientation of referenceSeq",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): OrientationType =
-        when (code) {
-          "sense" -> Sense
-          "antisense" -> Antisense
-          else -> throw IllegalArgumentException("Unknown code $code for enum OrientationType")
-        }
-    }
-  }
-
-  /** Type for strand. */
-  public enum class StrandType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Watson("watson", "http://hl7.org/fhir/strand-type", "Watson strand of referenceSeq"),
-    Crick("crick", "http://hl7.org/fhir/strand-type", "Crick strand of referenceSeq");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): StrandType =
-        when (code) {
-          "watson" -> Watson
-          "crick" -> Crick
-          else -> throw IllegalArgumentException("Unknown code $code for enum StrandType")
-        }
-    }
-  }
-
-  /** Type for quality report. */
-  public enum class QualityType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Indel("indel", "http://hl7.org/fhir/quality-type", "INDEL Comparison"),
-    Snp("snp", "http://hl7.org/fhir/quality-type", "SNP Comparison"),
-    Unknown("unknown", "http://hl7.org/fhir/quality-type", "UNKNOWN Comparison");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): QualityType =
-        when (code) {
-          "indel" -> Indel
-          "snp" -> Snp
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum QualityType")
-        }
-    }
-  }
-
-  /** Type for access of external URI. */
-  public enum class RepositoryType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Directlink("directlink", "http://hl7.org/fhir/repository-type", "Click and see"),
-    Openapi(
-      "openapi",
-      "http://hl7.org/fhir/repository-type",
-      "The URL is the RESTful or other kind of API that can access to the result.",
-    ),
-    Login(
-      "login",
-      "http://hl7.org/fhir/repository-type",
-      "Result cannot be access unless an account is logged in",
-    ),
-    Oauth(
-      "oauth",
-      "http://hl7.org/fhir/repository-type",
-      "Result need to be fetched with API and need LOGIN( or cookies are required when visiting the link of resource)",
-    ),
-    Other(
-      "other",
-      "http://hl7.org/fhir/repository-type",
-      "Some other complicated or particular way to get resource from URL.",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): RepositoryType =
-        when (code) {
-          "directlink" -> Directlink
-          "openapi" -> Openapi
-          "login" -> Login
-          "oauth" -> Oauth
-          "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum RepositoryType")
-        }
-    }
-  }
-
-  /** Type if a sequence -- DNA, RNA, or amino acid sequence. */
-  public enum class SequenceType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Aa("aa", "http://hl7.org/fhir/sequence-type", "AA Sequence"),
-    Dna("dna", "http://hl7.org/fhir/sequence-type", "DNA Sequence"),
-    Rna("rna", "http://hl7.org/fhir/sequence-type", "RNA Sequence");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SequenceType =
-        when (code) {
-          "aa" -> Aa
-          "dna" -> Dna
-          "rna" -> Rna
-          else -> throw IllegalArgumentException("Unknown code $code for enum SequenceType")
-        }
-    }
   }
 }

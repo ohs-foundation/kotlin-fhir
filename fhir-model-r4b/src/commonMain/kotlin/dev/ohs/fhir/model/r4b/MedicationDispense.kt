@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.MedicationDispensePerformerSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationDispenseSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationDispenseSubstitutionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.MedicationDispenseStatusCodes
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -893,79 +894,5 @@ public data class MedicationDispense(
         detectedIssue = detectedIssue.mapToList { it.build() },
         eventHistory = eventHistory.mapToList { it.build() },
       )
-  }
-
-  /** MedicationDispense Status Codes */
-  public enum class MedicationDispenseStatusCodes(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Preparation(
-      "preparation",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "Preparation",
-    ),
-    In_Progress(
-      "in-progress",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "In Progress",
-    ),
-    Cancelled(
-      "cancelled",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "Cancelled",
-    ),
-    On_Hold(
-      "on-hold",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "On Hold",
-    ),
-    Completed(
-      "completed",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "Completed",
-    ),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "Entered in Error",
-    ),
-    Stopped(
-      "stopped",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "Stopped",
-    ),
-    Declined(
-      "declined",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "Declined",
-    ),
-    Unknown(
-      "unknown",
-      "http://terminology.hl7.org/CodeSystem/medicationdispense-status",
-      "Unknown",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): MedicationDispenseStatusCodes =
-        when (code) {
-          "preparation" -> Preparation
-          "in-progress" -> In_Progress
-          "cancelled" -> Cancelled
-          "on-hold" -> On_Hold
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "stopped" -> Stopped
-          "declined" -> Declined
-          "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationDispenseStatusCodes"
-            )
-        }
-    }
   }
 }

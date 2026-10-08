@@ -40,6 +40,7 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.Slot
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.SlotStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -293,7 +294,7 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
       schedule =
         schedule ?: throw SerializationException("Missing required property 'schedule' on Slot"),
       status =
-        Enumeration.of(if (status != null) Slot.SlotStatus.fromCode(status) else null, _status)
+        Enumeration.of(if (status != null) SlotStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on Slot"),
       start =
         Instant.of(if (start != null) FhirDateTime.fromString(start) else null, _start)

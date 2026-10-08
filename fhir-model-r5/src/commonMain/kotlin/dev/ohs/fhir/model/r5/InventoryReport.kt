@@ -24,6 +24,8 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.InventoryReportInventoryListingItemSerializer
 import dev.ohs.fhir.model.r5.serializers.InventoryReportInventoryListingSerializer
 import dev.ohs.fhir.model.r5.serializers.InventoryReportSerializer
+import dev.ohs.fhir.model.r5.terminologies.InventoryCountType
+import dev.ohs.fhir.model.r5.terminologies.InventoryReportStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -599,56 +601,5 @@ public data class InventoryReport(
         inventoryListing = inventoryListing.mapToList { it.build() },
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** The status of the InventoryReport. */
-  public enum class InventoryReportStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Draft("draft", "http://hl7.org/fhir/inventoryreport-status", "Draft"),
-    Requested("requested", "http://hl7.org/fhir/inventoryreport-status", "Requested"),
-    Active("active", "http://hl7.org/fhir/inventoryreport-status", "Active"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/inventoryreport-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): InventoryReportStatus =
-        when (code) {
-          "draft" -> Draft
-          "requested" -> Requested
-          "active" -> Active
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum InventoryReportStatus")
-        }
-    }
-  }
-
-  /** The type of count. */
-  public enum class InventoryCountType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Snapshot("snapshot", "http://hl7.org/fhir/inventoryreport-counttype", "Snapshot"),
-    Difference("difference", "http://hl7.org/fhir/inventoryreport-counttype", "Difference");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): InventoryCountType =
-        when (code) {
-          "snapshot" -> Snapshot
-          "difference" -> Difference
-          else -> throw IllegalArgumentException("Unknown code $code for enum InventoryCountType")
-        }
-    }
   }
 }

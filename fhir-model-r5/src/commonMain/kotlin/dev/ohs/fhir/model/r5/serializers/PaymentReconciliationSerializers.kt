@@ -44,7 +44,9 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r5.terminologies.NoteType
+import dev.ohs.fhir.model.r5.terminologies.PaymentOutcome
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -901,8 +903,7 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
           ),
       status =
         Enumeration.of(
-          if (status != null) PaymentReconciliation.FinancialResourceStatusCodes.fromCode(status)
-          else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -921,10 +922,7 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
       request = request,
       requestor = requestor,
       outcome =
-        Enumeration.of(
-          if (outcome != null) PaymentReconciliation.PaymentOutcome.fromCode(outcome) else null,
-          _outcome,
-        ),
+        Enumeration.of(if (outcome != null) PaymentOutcome.fromCode(outcome) else null, _outcome),
       disposition = R5String.of(disposition, _disposition),
       date =
         Date.of(if (date != null) FhirDate.fromString(date) else null, _date)

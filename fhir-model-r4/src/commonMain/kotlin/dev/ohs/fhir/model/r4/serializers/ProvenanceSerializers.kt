@@ -40,6 +40,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Signature
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.ProvenanceEntityRole
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -271,10 +272,8 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       role =
-        Enumeration.of(
-          if (role != null) Provenance.ProvenanceEntityRole.fromCode(role) else null,
-          _role,
-        ) ?: throw SerializationException("Missing required property 'role' on Provenance.Entity"),
+        Enumeration.of(if (role != null) ProvenanceEntityRole.fromCode(role) else null, _role)
+          ?: throw SerializationException("Missing required property 'role' on Provenance.Entity"),
       what =
         what
           ?: throw SerializationException("Missing required property 'what' on Provenance.Entity"),

@@ -40,6 +40,7 @@ import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.CatalogEntryRelationType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -129,8 +130,7 @@ internal object CatalogEntryRelatedEntrySerializer : KSerializer<CatalogEntry.Re
       modifierExtension = modifierExtension ?: listOf(),
       relationtype =
         Enumeration.of(
-          if (relationtype != null) CatalogEntry.CatalogEntryRelationType.fromCode(relationtype)
-          else null,
+          if (relationtype != null) CatalogEntryRelationType.fromCode(relationtype) else null,
           _relationtype,
         )
           ?: throw SerializationException(

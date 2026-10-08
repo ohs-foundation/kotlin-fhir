@@ -25,7 +25,9 @@ import dev.ohs.fhir.model.r4b.serializers.DocumentReferenceContentSerializer
 import dev.ohs.fhir.model.r4b.serializers.DocumentReferenceContextSerializer
 import dev.ohs.fhir.model.r4b.serializers.DocumentReferenceRelatesToSerializer
 import dev.ohs.fhir.model.r4b.serializers.DocumentReferenceSerializer
+import dev.ohs.fhir.model.r4b.terminologies.CompositionStatus
 import dev.ohs.fhir.model.r4b.terminologies.DocumentReferenceStatus
+import dev.ohs.fhir.model.r4b.terminologies.DocumentRelationshipType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1026,60 +1028,5 @@ public data class DocumentReference(
         content = content.mapToList { it.build() },
         context = context?.build(),
       )
-  }
-
-  /** The type of relationship between documents. */
-  public enum class DocumentRelationshipType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Replaces("replaces", "http://hl7.org/fhir/document-relationship-type", "Replaces"),
-    Transforms("transforms", "http://hl7.org/fhir/document-relationship-type", "Transforms"),
-    Signs("signs", "http://hl7.org/fhir/document-relationship-type", "Signs"),
-    Appends("appends", "http://hl7.org/fhir/document-relationship-type", "Appends");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DocumentRelationshipType =
-        when (code) {
-          "replaces" -> Replaces
-          "transforms" -> Transforms
-          "signs" -> Signs
-          "appends" -> Appends
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DocumentRelationshipType")
-        }
-    }
-  }
-
-  /** The workflow/clinical status of the composition. */
-  public enum class CompositionStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Preliminary("preliminary", "http://hl7.org/fhir/composition-status", "Preliminary"),
-    Final("final", "http://hl7.org/fhir/composition-status", "Final"),
-    Amended("amended", "http://hl7.org/fhir/composition-status", "Amended"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/composition-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CompositionStatus =
-        when (code) {
-          "preliminary" -> Preliminary
-          "final" -> Final
-          "amended" -> Amended
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum CompositionStatus")
-        }
-    }
   }
 }

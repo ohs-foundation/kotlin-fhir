@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.ClinicalImpressionStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -629,8 +630,7 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) ClinicalImpression.ClinicalImpressionStatus.fromCode(status)
-          else null,
+          if (status != null) ClinicalImpressionStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(

@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.RelatedArtifact
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Url
+import dev.ohs.fhir.model.r4b.terminologies.RelatedArtifactType
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -171,10 +172,8 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) RelatedArtifact.RelatedArtifactType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
+        Enumeration.of(if (type != null) RelatedArtifactType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
       label = R4bString.of(label, _label),
       display = R4bString.of(display, _display),
       citation = Markdown.of(citation, _citation),

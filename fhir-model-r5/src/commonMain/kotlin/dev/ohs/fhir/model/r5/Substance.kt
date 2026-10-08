@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.SubstanceIngredientSerializer
 import dev.ohs.fhir.model.r5.serializers.SubstanceSerializer
+import dev.ohs.fhir.model.r5.terminologies.FHIRSubstanceStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -501,32 +502,5 @@ public data class Substance(
         quantity = quantity?.build(),
         ingredient = ingredient.mapToList { it.build() },
       )
-  }
-
-  /** A code to indicate if the substance is actively used. */
-  public enum class FHIRSubstanceStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/substance-status", "Active"),
-    Inactive("inactive", "http://hl7.org/fhir/substance-status", "Inactive"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/substance-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): FHIRSubstanceStatus =
-        when (code) {
-          "active" -> Active
-          "inactive" -> Inactive
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum FHIRSubstanceStatus")
-        }
-    }
   }
 }

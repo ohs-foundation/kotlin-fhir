@@ -40,6 +40,7 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
+import dev.ohs.fhir.model.r5.terminologies.EndpointStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -429,10 +430,8 @@ internal object EndpointSerializer : FhirResourceSerializer<Endpoint> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Endpoint.EndpointStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Endpoint"),
+        Enumeration.of(if (status != null) EndpointStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Endpoint"),
       connectionType = connectionType ?: listOf(),
       name = R5String.of(name, _name),
       description = R5String.of(description, _description),

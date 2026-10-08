@@ -50,6 +50,8 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r4b.terminologies.Use
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -2860,13 +2862,13 @@ internal object ClaimSerializer : FhirResourceSerializer<Claim> {
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) Claim.FinancialResourceStatusCodes.fromCode(status) else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on Claim"),
       type = type ?: throw SerializationException("Missing required property 'type' on Claim"),
       subType = subType,
       use =
-        Enumeration.of(if (use != null) Claim.Use.fromCode(use) else null, _use)
+        Enumeration.of(if (use != null) Use.fromCode(use) else null, _use)
           ?: throw SerializationException("Missing required property 'use' on Claim"),
       patient =
         patient ?: throw SerializationException("Missing required property 'patient' on Claim"),

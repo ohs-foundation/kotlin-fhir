@@ -39,6 +39,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.AdverseEventActuality
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -616,7 +617,7 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
       identifier = identifier,
       actuality =
         Enumeration.of(
-          if (actuality != null) AdverseEvent.AdverseEventActuality.fromCode(actuality) else null,
+          if (actuality != null) AdverseEventActuality.fromCode(actuality) else null,
           _actuality,
         ) ?: throw SerializationException("Missing required property 'actuality' on AdverseEvent"),
       category = category ?: listOf(),

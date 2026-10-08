@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.CompartmentDefinitionResourceSerializer
 import dev.ohs.fhir.model.r5.serializers.CompartmentDefinitionSerializer
+import dev.ohs.fhir.model.r5.terminologies.CompartmentType
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Suppress
@@ -807,34 +808,5 @@ public data class CompartmentDefinition(
         search = search.build(),
         resource = resource.mapToList { it.build() },
       )
-  }
-
-  /** Which type a compartment definition describes. */
-  public enum class CompartmentType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Patient("Patient", "http://hl7.org/fhir/compartment-type", "Patient"),
-    Encounter("Encounter", "http://hl7.org/fhir/compartment-type", "Encounter"),
-    RelatedPerson("RelatedPerson", "http://hl7.org/fhir/compartment-type", "RelatedPerson"),
-    Practitioner("Practitioner", "http://hl7.org/fhir/compartment-type", "Practitioner"),
-    Device("Device", "http://hl7.org/fhir/compartment-type", "Device"),
-    EpisodeOfCare("EpisodeOfCare", "http://hl7.org/fhir/compartment-type", "EpisodeOfCare");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CompartmentType =
-        when (code) {
-          "Patient" -> Patient
-          "Encounter" -> Encounter
-          "RelatedPerson" -> RelatedPerson
-          "Practitioner" -> Practitioner
-          "Device" -> Device
-          "EpisodeOfCare" -> EpisodeOfCare
-          else -> throw IllegalArgumentException("Unknown code $code for enum CompartmentType")
-        }
-    }
   }
 }

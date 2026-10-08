@@ -29,9 +29,9 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDecimal
-import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.QuantityComparator
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -158,7 +158,7 @@ internal object DurationSerializer : KSerializer<Duration> {
       `value` = Decimal.of(`value`, _value),
       comparator =
         Enumeration.of(
-          if (comparator != null) Quantity.QuantityComparator.fromCode(comparator) else null,
+          if (comparator != null) QuantityComparator.fromCode(comparator) else null,
           _comparator,
         ),
       unit = R4bString.of(unit, _unit),

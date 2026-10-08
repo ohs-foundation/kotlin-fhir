@@ -44,6 +44,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.MedicationKnowledgeStatusCodes
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -2316,8 +2317,7 @@ internal object MedicationKnowledgeSerializer : FhirResourceSerializer<Medicatio
       code = code,
       status =
         Enumeration.of(
-          if (status != null) MedicationKnowledge.MedicationKnowledgeStatusCodes.fromCode(status)
-          else null,
+          if (status != null) MedicationKnowledgeStatusCodes.fromCode(status) else null,
           _status,
         ),
       manufacturer = manufacturer,

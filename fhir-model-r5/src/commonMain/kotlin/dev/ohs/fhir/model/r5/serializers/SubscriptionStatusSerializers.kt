@@ -39,6 +39,8 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.SubscriptionStatus
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.SubscriptionNotificationType
+import dev.ohs.fhir.model.r5.terminologies.SubscriptionStatusCodes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -386,13 +388,12 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
       modifierExtension = modifierExtension ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) SubscriptionStatus.SubscriptionStatusCodes.fromCode(status) else null,
+          if (status != null) SubscriptionStatusCodes.fromCode(status) else null,
           _status,
         ),
       type =
         Enumeration.of(
-          if (type != null) SubscriptionStatus.SubscriptionNotificationType.fromCode(type)
-          else null,
+          if (type != null) SubscriptionNotificationType.fromCode(type) else null,
           _type,
         ) ?: throw SerializationException("Missing required property 'type' on SubscriptionStatus"),
       eventsSinceSubscriptionStart =

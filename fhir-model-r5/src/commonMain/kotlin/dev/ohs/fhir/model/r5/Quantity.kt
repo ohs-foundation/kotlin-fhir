@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.QuantitySerializer
+import dev.ohs.fhir.model.r5.terminologies.QuantityComparator
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
@@ -180,36 +181,5 @@ public open class Quantity(
         system = system?.build(),
         code = code?.build(),
       )
-  }
-
-  /** How the Quantity should be understood and represented. */
-  public enum class QuantityComparator(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    LessThan("<", "http://hl7.org/fhir/quantity-comparator", "Less than"),
-    LessThanOrEqualTo("<=", "http://hl7.org/fhir/quantity-comparator", "Less or Equal to"),
-    GreaterThanOrEqualTo(">=", "http://hl7.org/fhir/quantity-comparator", "Greater or Equal to"),
-    GreaterThan(">", "http://hl7.org/fhir/quantity-comparator", "Greater than"),
-    Ad(
-      "ad",
-      "http://hl7.org/fhir/quantity-comparator",
-      "Sufficient to achieve this total quantity",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): QuantityComparator =
-        when (code) {
-          "<" -> LessThan
-          "<=" -> LessThanOrEqualTo
-          ">=" -> GreaterThanOrEqualTo
-          ">" -> GreaterThan
-          "ad" -> Ad
-          else -> throw IllegalArgumentException("Unknown code $code for enum QuantityComparator")
-        }
-    }
   }
 }

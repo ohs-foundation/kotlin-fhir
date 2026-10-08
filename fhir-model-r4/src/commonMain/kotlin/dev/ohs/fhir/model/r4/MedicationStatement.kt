@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.MedicationStatementSerializer
+import dev.ohs.fhir.model.r4.terminologies.MedicationStatementStatusCodes
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -175,7 +176,7 @@ public data class MedicationStatement(
    * This element is labeled as a modifier because the status contains codes that mark the resource
    * as not currently valid.
    */
-  public val status: Enumeration<MedicationStatusCodes>,
+  public val status: Enumeration<MedicationStatementStatusCodes>,
   /**
    * Captures the reason for the current state of the MedicationStatement.
    *
@@ -349,7 +350,7 @@ public data class MedicationStatement(
      * This element is labeled as a modifier because the status contains codes that mark the
      * resource as not currently valid.
      */
-    public var status: Enumeration<MedicationStatusCodes>,
+    public var status: Enumeration<MedicationStatementStatusCodes>,
     /**
      * Identifies the medication being administered. This is either a link to a resource
      * representing the details of the medication or a simple attribute carrying a code that
@@ -597,51 +598,5 @@ public data class MedicationStatement(
         note = note.mapToList { it.build() },
         dosage = dosage.mapToList { it.build() },
       )
-  }
-
-  /** Medication Status Codes */
-  public enum class MedicationStatusCodes(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Active"),
-    Completed(
-      "completed",
-      "http://hl7.org/fhir/CodeSystem/medication-statement-status",
-      "Completed",
-    ),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/CodeSystem/medication-statement-status",
-      "Entered in Error",
-    ),
-    Intended("intended", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Intended"),
-    Stopped("stopped", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Stopped"),
-    On_Hold("on-hold", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "On Hold"),
-    Unknown("unknown", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Unknown"),
-    Not_Taken(
-      "not-taken",
-      "http://hl7.org/fhir/CodeSystem/medication-statement-status",
-      "Not Taken",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): MedicationStatusCodes =
-        when (code) {
-          "active" -> Active
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "intended" -> Intended
-          "stopped" -> Stopped
-          "on-hold" -> On_Hold
-          "unknown" -> Unknown
-          "not-taken" -> Not_Taken
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum MedicationStatusCodes")
-        }
-    }
   }
 }

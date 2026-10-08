@@ -53,6 +53,8 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Time
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ObservationStatus
+import dev.ohs.fhir.model.r5.terminologies.TriggeredBytype
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -159,10 +161,7 @@ internal object ObservationTriggeredBySerializer : KSerializer<Observation.Trigg
             "Missing required property 'observation' on Observation.TriggeredBy"
           ),
       type =
-        Enumeration.of(
-          if (type != null) Observation.TriggeredBytype.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) TriggeredBytype.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on Observation.TriggeredBy"
           ),
@@ -1314,10 +1313,8 @@ internal object ObservationSerializer : FhirResourceSerializer<Observation> {
       triggeredBy = triggeredBy ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Observation.ObservationStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Observation"),
+        Enumeration.of(if (status != null) ObservationStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Observation"),
       category = category ?: listOf(),
       code =
         code ?: throw SerializationException("Missing required property 'code' on Observation"),

@@ -24,6 +24,8 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionAllowedResponseSerializer
 import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionFocusSerializer
 import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.MessageSignificanceCategory
+import dev.ohs.fhir.model.r4b.terminologies.MessageheaderResponseRequest
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import kotlin.Suppress
@@ -1014,74 +1016,5 @@ public data class MessageDefinition(
         allowedResponse = allowedResponse.mapToList { it.build() },
         graph = graph.mapToList { it.build() },
       )
-  }
-
-  /** The impact of the content of a message. */
-  public enum class MessageSignificanceCategory(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Consequence("consequence", "http://hl7.org/fhir/message-significance-category", "Consequence"),
-    Currency("currency", "http://hl7.org/fhir/message-significance-category", "Currency"),
-    Notification(
-      "notification",
-      "http://hl7.org/fhir/message-significance-category",
-      "Notification",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): MessageSignificanceCategory =
-        when (code) {
-          "consequence" -> Consequence
-          "currency" -> Currency
-          "notification" -> Notification
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MessageSignificanceCategory"
-            )
-        }
-    }
-  }
-
-  /**
-   * HL7-defined table of codes which identify conditions under which acknowledgments are required
-   * to be returned in response to a message.
-   */
-  public enum class MessageheaderResponseRequest(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Always("always", "http://hl7.org/fhir/messageheader-response-request", "Always"),
-    On_Error(
-      "on-error",
-      "http://hl7.org/fhir/messageheader-response-request",
-      "Error/reject conditions only",
-    ),
-    Never("never", "http://hl7.org/fhir/messageheader-response-request", "Never"),
-    On_Success(
-      "on-success",
-      "http://hl7.org/fhir/messageheader-response-request",
-      "Successful completion only",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): MessageheaderResponseRequest =
-        when (code) {
-          "always" -> Always
-          "on-error" -> On_Error
-          "never" -> Never
-          "on-success" -> On_Success
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MessageheaderResponseRequest"
-            )
-        }
-    }
   }
 }

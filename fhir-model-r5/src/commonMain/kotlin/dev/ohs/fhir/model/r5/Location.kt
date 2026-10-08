@@ -23,6 +23,8 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.LocationPositionSerializer
 import dev.ohs.fhir.model.r5.serializers.LocationSerializer
+import dev.ohs.fhir.model.r5.terminologies.LocationMode
+import dev.ohs.fhir.model.r5.terminologies.LocationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -697,51 +699,5 @@ public data class Location(
         virtualService = virtualService.mapToList { it.build() },
         endpoint = endpoint.mapToList { it.build() },
       )
-  }
-
-  /** Indicates whether the location is still in use. */
-  public enum class LocationStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/location-status", "Active"),
-    Suspended("suspended", "http://hl7.org/fhir/location-status", "Suspended"),
-    Inactive("inactive", "http://hl7.org/fhir/location-status", "Inactive");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): LocationStatus =
-        when (code) {
-          "active" -> Active
-          "suspended" -> Suspended
-          "inactive" -> Inactive
-          else -> throw IllegalArgumentException("Unknown code $code for enum LocationStatus")
-        }
-    }
-  }
-
-  /**
-   * Indicates whether a resource instance represents a specific location or a class of locations.
-   */
-  public enum class LocationMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Instance("instance", "http://hl7.org/fhir/location-mode", "Instance"),
-    Kind("kind", "http://hl7.org/fhir/location-mode", "Kind");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): LocationMode =
-        when (code) {
-          "instance" -> Instance
-          "kind" -> Kind
-          else -> throw IllegalArgumentException("Unknown code $code for enum LocationMode")
-        }
-    }
   }
 }

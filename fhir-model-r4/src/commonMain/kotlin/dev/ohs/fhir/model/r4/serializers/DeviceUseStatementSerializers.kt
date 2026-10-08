@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.DeviceUseStatementStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -323,8 +324,7 @@ internal object DeviceUseStatementSerializer : FhirResourceSerializer<DeviceUseS
       basedOn = basedOn ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) DeviceUseStatement.DeviceUseStatementStatus.fromCode(status)
-          else null,
+          if (status != null) DeviceUseStatementStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(

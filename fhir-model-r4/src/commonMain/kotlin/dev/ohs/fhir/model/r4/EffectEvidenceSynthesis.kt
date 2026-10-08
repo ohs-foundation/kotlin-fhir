@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4.serializers.EffectEvidenceSynthesisEffectEstimateSe
 import dev.ohs.fhir.model.r4.serializers.EffectEvidenceSynthesisResultsByExposureSerializer
 import dev.ohs.fhir.model.r4.serializers.EffectEvidenceSynthesisSampleSizeSerializer
 import dev.ohs.fhir.model.r4.serializers.EffectEvidenceSynthesisSerializer
+import dev.ohs.fhir.model.r4.terminologies.ExposureState
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1536,33 +1537,5 @@ public data class EffectEvidenceSynthesis(
         effectEstimate = effectEstimate.mapToList { it.build() },
         certainty = certainty.mapToList { it.build() },
       )
-  }
-
-  /**
-   * Whether the results by exposure is describing the results for the primary exposure of interest
-   * (exposure) or the alternative state (exposureAlternative).
-   */
-  public enum class ExposureState(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Exposure("exposure", "http://hl7.org/fhir/exposure-state", "Exposure"),
-    Exposure_Alternative(
-      "exposure-alternative",
-      "http://hl7.org/fhir/exposure-state",
-      "Exposure Alternative",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ExposureState =
-        when (code) {
-          "exposure" -> Exposure
-          "exposure-alternative" -> Exposure_Alternative
-          else -> throw IllegalArgumentException("Unknown code $code for enum ExposureState")
-        }
-    }
   }
 }

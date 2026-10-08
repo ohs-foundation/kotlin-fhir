@@ -46,7 +46,10 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.SubscriptionTopic
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.CriteriaNotExistsBehavior
+import dev.ohs.fhir.model.r4b.terminologies.InteractionTrigger
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.SubscriptionSearchModifier
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -195,9 +198,7 @@ internal object SubscriptionTopicResourceTriggerSerializer :
           maxOf(supportedInteraction?.size ?: 0, _supportedInteraction?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            supportedInteraction?.getOrNull(index)?.let {
-              SubscriptionTopic.InteractionTrigger.fromCode(it)
-            },
+            supportedInteraction?.getOrNull(index)?.let { InteractionTrigger.fromCode(it) },
             _supportedInteraction?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -364,16 +365,14 @@ internal object SubscriptionTopicResourceTriggerQueryCriteriaSerializer :
       previous = R4bString.of(previous, _previous),
       resultForCreate =
         Enumeration.of(
-          if (resultForCreate != null)
-            SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(resultForCreate)
+          if (resultForCreate != null) CriteriaNotExistsBehavior.fromCode(resultForCreate)
           else null,
           _resultForCreate,
         ),
       current = R4bString.of(current, _current),
       resultForDelete =
         Enumeration.of(
-          if (resultForDelete != null)
-            SubscriptionTopic.CriteriaNotExistsBehavior.fromCode(resultForDelete)
+          if (resultForDelete != null) CriteriaNotExistsBehavior.fromCode(resultForDelete)
           else null,
           _resultForDelete,
         ),
@@ -669,9 +668,7 @@ internal object SubscriptionTopicCanFilterBySerializer :
       modifier =
         (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            modifier?.getOrNull(index)?.let {
-              SubscriptionTopic.SubscriptionSearchModifier.fromCode(it)
-            },
+            modifier?.getOrNull(index)?.let { SubscriptionSearchModifier.fromCode(it) },
             _modifier?.getOrNull(index),
           )
             ?: throw SerializationException(

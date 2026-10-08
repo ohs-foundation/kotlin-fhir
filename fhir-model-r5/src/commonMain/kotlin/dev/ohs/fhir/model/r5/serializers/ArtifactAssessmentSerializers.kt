@@ -46,6 +46,9 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ArtifactAssessmentDisposition
+import dev.ohs.fhir.model.r5.terminologies.ArtifactAssessmentInformationType
+import dev.ohs.fhir.model.r5.terminologies.ArtifactAssessmentWorkflowStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -233,8 +236,7 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
       modifierExtension = modifierExtension ?: listOf(),
       informationType =
         Enumeration.of(
-          if (informationType != null)
-            ArtifactAssessment.ArtifactAssessmentInformationType.fromCode(informationType)
+          if (informationType != null) ArtifactAssessmentInformationType.fromCode(informationType)
           else null,
           _informationType,
         ),
@@ -627,16 +629,13 @@ internal object ArtifactAssessmentSerializer : FhirResourceSerializer<ArtifactAs
       content = content ?: listOf(),
       workflowStatus =
         Enumeration.of(
-          if (workflowStatus != null)
-            ArtifactAssessment.ArtifactAssessmentWorkflowStatus.fromCode(workflowStatus)
+          if (workflowStatus != null) ArtifactAssessmentWorkflowStatus.fromCode(workflowStatus)
           else null,
           _workflowStatus,
         ),
       disposition =
         Enumeration.of(
-          if (disposition != null)
-            ArtifactAssessment.ArtifactAssessmentDisposition.fromCode(disposition)
-          else null,
+          if (disposition != null) ArtifactAssessmentDisposition.fromCode(disposition) else null,
           _disposition,
         ),
     )

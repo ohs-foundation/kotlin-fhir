@@ -54,7 +54,12 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Time
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.EnableWhenBehavior
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.QuestionnaireAnswerConstraint
+import dev.ohs.fhir.model.r5.terminologies.QuestionnaireItemDisabledDisplay
+import dev.ohs.fhir.model.r5.terminologies.QuestionnaireItemOperator
+import dev.ohs.fhir.model.r5.terminologies.QuestionnaireItemType
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -355,21 +360,17 @@ internal object QuestionnaireItemSerializer : KSerializer<Questionnaire.Item> {
       prefix = R5String.of(prefix, _prefix),
       text = R5String.of(text, _text),
       type =
-        Enumeration.of(
-          if (type != null) Questionnaire.QuestionnaireItemType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on Questionnaire.Item"),
+        Enumeration.of(if (type != null) QuestionnaireItemType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on Questionnaire.Item"),
       enableWhen = enableWhen ?: listOf(),
       enableBehavior =
         Enumeration.of(
-          if (enableBehavior != null) Questionnaire.EnableWhenBehavior.fromCode(enableBehavior)
-          else null,
+          if (enableBehavior != null) EnableWhenBehavior.fromCode(enableBehavior) else null,
           _enableBehavior,
         ),
       disabledDisplay =
         Enumeration.of(
-          if (disabledDisplay != null)
-            Questionnaire.QuestionnaireItemDisabledDisplay.fromCode(disabledDisplay)
+          if (disabledDisplay != null) QuestionnaireItemDisabledDisplay.fromCode(disabledDisplay)
           else null,
           _disabledDisplay,
         ),
@@ -379,8 +380,7 @@ internal object QuestionnaireItemSerializer : KSerializer<Questionnaire.Item> {
       maxLength = Integer.of(maxLength, _maxLength),
       answerConstraint =
         Enumeration.of(
-          if (answerConstraint != null)
-            Questionnaire.QuestionnaireAnswerConstraint.fromCode(answerConstraint)
+          if (answerConstraint != null) QuestionnaireAnswerConstraint.fromCode(answerConstraint)
           else null,
           _answerConstraint,
         ),
@@ -685,8 +685,7 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
           ),
       `operator` =
         Enumeration.of(
-          if (`operator` != null) Questionnaire.QuestionnaireItemOperator.fromCode(`operator`)
-          else null,
+          if (`operator` != null) QuestionnaireItemOperator.fromCode(`operator`) else null,
           _operator,
         )
           ?: throw SerializationException(

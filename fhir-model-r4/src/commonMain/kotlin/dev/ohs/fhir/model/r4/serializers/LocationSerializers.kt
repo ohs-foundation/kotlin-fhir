@@ -44,6 +44,9 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Time
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.DaysOfWeek
+import dev.ohs.fhir.model.r4.terminologies.LocationMode
+import dev.ohs.fhir.model.r4.terminologies.LocationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -343,7 +346,7 @@ internal object LocationHoursOfOperationSerializer : KSerializer<Location.HoursO
       daysOfWeek =
         (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            daysOfWeek?.getOrNull(index)?.let { Location.DaysOfWeek.fromCode(it) },
+            daysOfWeek?.getOrNull(index)?.let { DaysOfWeek.fromCode(it) },
             _daysOfWeek?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -707,10 +710,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Location.LocationStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) LocationStatus.fromCode(status) else null, _status),
       operationalStatus = operationalStatus,
       name = R4String.of(name, _name),
       alias =
@@ -721,8 +721,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         }),
       description = R4String.of(description, _description),
-      mode =
-        Enumeration.of(if (mode != null) Location.LocationMode.fromCode(mode) else null, _mode),
+      mode = Enumeration.of(if (mode != null) LocationMode.fromCode(mode) else null, _mode),
       type = type ?: listOf(),
       telecom = telecom ?: listOf(),
       address = address,

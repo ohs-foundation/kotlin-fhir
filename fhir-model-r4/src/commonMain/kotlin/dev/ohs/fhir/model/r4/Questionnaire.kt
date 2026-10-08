@@ -26,7 +26,10 @@ import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemEnableWhenSerializer
 import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemInitialSerializer
 import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemSerializer
 import dev.ohs.fhir.model.r4.serializers.QuestionnaireSerializer
+import dev.ohs.fhir.model.r4.terminologies.EnableWhenBehavior
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.QuestionnaireItemOperator
+import dev.ohs.fhir.model.r4.terminologies.QuestionnaireItemType
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1744,112 +1747,5 @@ public data class Questionnaire(
         code = code.mapToList { it.build() },
         item = item.mapToList { it.build() },
       )
-  }
-
-  /** Distinguishes groups from questions and display text and indicates data type for questions. */
-  public enum class QuestionnaireItemType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Group("group", "http://hl7.org/fhir/item-type", "Group"),
-    Display("display", "http://hl7.org/fhir/item-type", "Display"),
-    Boolean("boolean", "http://hl7.org/fhir/item-type", "Boolean"),
-    Decimal("decimal", "http://hl7.org/fhir/item-type", "Decimal"),
-    Integer("integer", "http://hl7.org/fhir/item-type", "Integer"),
-    Date("date", "http://hl7.org/fhir/item-type", "Date"),
-    DateTime("dateTime", "http://hl7.org/fhir/item-type", "Date Time"),
-    Time("time", "http://hl7.org/fhir/item-type", "Time"),
-    String("string", "http://hl7.org/fhir/item-type", "String"),
-    Text("text", "http://hl7.org/fhir/item-type", "Text"),
-    Url("url", "http://hl7.org/fhir/item-type", "Url"),
-    Choice("choice", "http://hl7.org/fhir/item-type", "Choice"),
-    Open_Choice("open-choice", "http://hl7.org/fhir/item-type", "Open Choice"),
-    Attachment("attachment", "http://hl7.org/fhir/item-type", "Attachment"),
-    Reference("reference", "http://hl7.org/fhir/item-type", "Reference"),
-    Quantity("quantity", "http://hl7.org/fhir/item-type", "Quantity");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): QuestionnaireItemType =
-        when (code) {
-          "group" -> Group
-          "display" -> Display
-          "boolean" -> Boolean
-          "decimal" -> Decimal
-          "integer" -> Integer
-          "date" -> Date
-          "dateTime" -> DateTime
-          "time" -> Time
-          "string" -> String
-          "text" -> Text
-          "url" -> Url
-          "choice" -> Choice
-          "open-choice" -> Open_Choice
-          "attachment" -> Attachment
-          "reference" -> Reference
-          "quantity" -> Quantity
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum QuestionnaireItemType")
-        }
-    }
-  }
-
-  /** Controls how multiple enableWhen values are interpreted - whether all or any must be true. */
-  public enum class EnableWhenBehavior(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    All("all", "http://hl7.org/fhir/questionnaire-enable-behavior", "All"),
-    Any("any", "http://hl7.org/fhir/questionnaire-enable-behavior", "Any");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EnableWhenBehavior =
-        when (code) {
-          "all" -> All
-          "any" -> Any
-          else -> throw IllegalArgumentException("Unknown code $code for enum EnableWhenBehavior")
-        }
-    }
-  }
-
-  /** The criteria by which a question is enabled. */
-  public enum class QuestionnaireItemOperator(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Exists("exists", "http://hl7.org/fhir/questionnaire-enable-operator", "Exists"),
-    EqualTo("=", "http://hl7.org/fhir/questionnaire-enable-operator", "Equals"),
-    NotEqualTo("!=", "http://hl7.org/fhir/questionnaire-enable-operator", "Not Equals"),
-    GreaterThan(">", "http://hl7.org/fhir/questionnaire-enable-operator", "Greater Than"),
-    LessThan("<", "http://hl7.org/fhir/questionnaire-enable-operator", "Less Than"),
-    GreaterThanOrEqualTo(
-      ">=",
-      "http://hl7.org/fhir/questionnaire-enable-operator",
-      "Greater or Equals",
-    ),
-    LessThanOrEqualTo("<=", "http://hl7.org/fhir/questionnaire-enable-operator", "Less or Equals");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): QuestionnaireItemOperator =
-        when (code) {
-          "exists" -> Exists
-          "=" -> EqualTo
-          "!=" -> NotEqualTo
-          ">" -> GreaterThan
-          "<" -> LessThan
-          ">=" -> GreaterThanOrEqualTo
-          "<=" -> LessThanOrEqualTo
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum QuestionnaireItemOperator")
-        }
-    }
   }
 }

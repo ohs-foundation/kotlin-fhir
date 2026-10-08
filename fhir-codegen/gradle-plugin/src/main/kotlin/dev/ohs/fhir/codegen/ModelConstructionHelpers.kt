@@ -22,12 +22,11 @@ import dev.ohs.fhir.codegen.primitives.FhirPathType
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.Type
 import dev.ohs.fhir.codegen.schema.capitalized
+import dev.ohs.fhir.codegen.schema.enumName
 import dev.ohs.fhir.codegen.schema.getBindingValueSetUrl
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.getPathSimpleNames
-import dev.ohs.fhir.codegen.schema.isCommonBinding
 import dev.ohs.fhir.codegen.schema.isExtensibleBinding
-import dev.ohs.fhir.codegen.schema.normalizeEnumName
 import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
@@ -262,21 +261,11 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
   private fun Element.getEnumClass(
     modelClassName: ClassName,
     valueSetMap: Map<String, ValueSet>,
-  ): ClassName {
-    val elementBasePath: String? = base?.path
-    val valueSetName = valueSetMap.getValue(getBindingValueSetUrl()!!).name.normalizeEnumName()
-    return when {
-      this.isCommonBinding -> ClassName("${modelClassName.packageName}.terminologies", valueSetName)
-      !elementBasePath.isNullOrBlank() && path != elementBasePath -> {
-        ClassName(modelClassName.packageName, elementBasePath.substringBefore("."))
-          .nestedClass(valueSetName)
-      }
-      else -> {
-        ClassName(modelClassName.packageName, modelClassName.simpleNames.first())
-          .nestedClass(valueSetName)
-      }
-    }
-  }
+  ): ClassName =
+    ClassName(
+      "${modelClassName.packageName}.terminologies",
+      valueSetMap.getValue(getBindingValueSetUrl()!!).enumName,
+    )
 
   private fun CodeBlock.Builder.addChoiceTypeParamToModelClassConstructor(
     modelClassName: ClassName,

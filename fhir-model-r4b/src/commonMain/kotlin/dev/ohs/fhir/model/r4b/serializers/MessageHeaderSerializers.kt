@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.Url
+import dev.ohs.fhir.model.r4b.terminologies.ResponseType
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -429,7 +430,7 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
             "Missing required property 'identifier' on MessageHeader.Response"
           ),
       code =
-        Enumeration.of(if (code != null) MessageHeader.ResponseType.fromCode(code) else null, _code)
+        Enumeration.of(if (code != null) ResponseType.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on MessageHeader.Response"
           ),

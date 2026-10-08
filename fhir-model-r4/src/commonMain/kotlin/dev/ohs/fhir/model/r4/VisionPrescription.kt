@@ -24,6 +24,9 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.VisionPrescriptionLensSpecificationPrismSerializer
 import dev.ohs.fhir.model.r4.serializers.VisionPrescriptionLensSpecificationSerializer
 import dev.ohs.fhir.model.r4.serializers.VisionPrescriptionSerializer
+import dev.ohs.fhir.model.r4.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r4.terminologies.VisionBase
+import dev.ohs.fhir.model.r4.terminologies.VisionEyes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -689,79 +692,5 @@ public data class VisionPrescription(
         prescriber = prescriber.build(),
         lensSpecification = lensSpecification.mapToList { it.build() },
       )
-  }
-
-  /** A coded concept listing the eye codes. */
-  public enum class VisionEyes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Right("right", "http://hl7.org/fhir/vision-eye-codes", "Right Eye"),
-    Left("left", "http://hl7.org/fhir/vision-eye-codes", "Left Eye");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): VisionEyes =
-        when (code) {
-          "right" -> Right
-          "left" -> Left
-          else -> throw IllegalArgumentException("Unknown code $code for enum VisionEyes")
-        }
-    }
-  }
-
-  /** A coded concept listing the base codes. */
-  public enum class VisionBase(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Up("up", "http://hl7.org/fhir/vision-base-codes", "Up"),
-    Down("down", "http://hl7.org/fhir/vision-base-codes", "Down"),
-    In("in", "http://hl7.org/fhir/vision-base-codes", "In"),
-    Out("out", "http://hl7.org/fhir/vision-base-codes", "Out");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): VisionBase =
-        when (code) {
-          "up" -> Up
-          "down" -> Down
-          "in" -> In
-          "out" -> Out
-          else -> throw IllegalArgumentException("Unknown code $code for enum VisionBase")
-        }
-    }
-  }
-
-  /** This value set includes Status codes. */
-  public enum class FinancialResourceStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/fm-status", "Active"),
-    Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
-    Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
-        when (code) {
-          "active" -> Active
-          "cancelled" -> Cancelled
-          "draft" -> Draft
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
-        }
-    }
   }
 }

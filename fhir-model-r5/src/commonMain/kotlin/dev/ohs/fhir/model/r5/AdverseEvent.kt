@@ -29,6 +29,8 @@ import dev.ohs.fhir.model.r5.serializers.AdverseEventSerializer
 import dev.ohs.fhir.model.r5.serializers.AdverseEventSupportingInfoSerializer
 import dev.ohs.fhir.model.r5.serializers.AdverseEventSuspectEntityCausalitySerializer
 import dev.ohs.fhir.model.r5.serializers.AdverseEventSuspectEntitySerializer
+import dev.ohs.fhir.model.r5.terminologies.AdverseEventActuality
+import dev.ohs.fhir.model.r5.terminologies.AdverseEventStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1567,56 +1569,5 @@ public data class AdverseEvent(
         supportingInfo = supportingInfo.mapToList { it.build() },
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Codes identifying the lifecycle stage of an adverse event. */
-  public enum class AdverseEventStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
-    Completed("completed", "http://hl7.org/fhir/event-status", "Completed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/event-status", "Entered in Error"),
-    Unknown("unknown", "http://hl7.org/fhir/event-status", "Unknown");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): AdverseEventStatus =
-        when (code) {
-          "in-progress" -> In_Progress
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum AdverseEventStatus")
-        }
-    }
-  }
-
-  /** Overall nature of the adverse event, e.g. real or potential. */
-  public enum class AdverseEventActuality(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Actual("actual", "http://hl7.org/fhir/adverse-event-actuality", "Adverse Event"),
-    Potential(
-      "potential",
-      "http://hl7.org/fhir/adverse-event-actuality",
-      "Potential Adverse Event",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): AdverseEventActuality =
-        when (code) {
-          "actual" -> Actual
-          "potential" -> Potential
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AdverseEventActuality")
-        }
-    }
   }
 }

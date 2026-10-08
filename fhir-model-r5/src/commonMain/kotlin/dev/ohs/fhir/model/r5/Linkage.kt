@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.LinkageItemSerializer
 import dev.ohs.fhir.model.r5.serializers.LinkageSerializer
+import dev.ohs.fhir.model.r5.terminologies.LinkageType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -432,28 +433,5 @@ public data class Linkage(
         author = author?.build(),
         item = item.mapToList { it.build() },
       )
-  }
-
-  /** Used to distinguish different roles a resource can play within a set of linked resources. */
-  public enum class LinkageType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Source("source", "http://hl7.org/fhir/linkage-type", "Source of Truth"),
-    Alternate("alternate", "http://hl7.org/fhir/linkage-type", "Alternate Record"),
-    Historical("historical", "http://hl7.org/fhir/linkage-type", "Historical/Obsolete Record");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): LinkageType =
-        when (code) {
-          "source" -> Source
-          "alternate" -> Alternate
-          "historical" -> Historical
-          else -> throw IllegalArgumentException("Unknown code $code for enum LinkageType")
-        }
-    }
   }
 }

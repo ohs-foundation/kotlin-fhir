@@ -25,6 +25,9 @@ import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCategorySerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCharacteristicSerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCharacteristicTimeFromStartSerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableSerializer
+import dev.ohs.fhir.model.r4b.terminologies.CharacteristicCombination
+import dev.ohs.fhir.model.r4b.terminologies.EvidenceVariableHandling
+import dev.ohs.fhir.model.r4b.terminologies.GroupMeasure
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1187,93 +1190,5 @@ public data class EvidenceVariable(
         handling = handling,
         category = category.mapToList { it.build() },
       )
-  }
-
-  /** Possible group measure aggregates (E.g. Mean, Median). */
-  public enum class GroupMeasure(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Mean("mean", "http://hl7.org/fhir/group-measure", "Mean"),
-    Median("median", "http://hl7.org/fhir/group-measure", "Median"),
-    Mean_Of_Mean("mean-of-mean", "http://hl7.org/fhir/group-measure", "Mean of Study Means"),
-    Mean_Of_Median("mean-of-median", "http://hl7.org/fhir/group-measure", "Mean of Study Medins"),
-    Median_Of_Mean("median-of-mean", "http://hl7.org/fhir/group-measure", "Median of Study Means"),
-    Median_Of_Median(
-      "median-of-median",
-      "http://hl7.org/fhir/group-measure",
-      "Median of Study Medians",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GroupMeasure =
-        when (code) {
-          "mean" -> Mean
-          "median" -> Median
-          "mean-of-mean" -> Mean_Of_Mean
-          "mean-of-median" -> Mean_Of_Median
-          "median-of-mean" -> Median_Of_Mean
-          "median-of-median" -> Median_Of_Median
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupMeasure")
-        }
-    }
-  }
-
-  /** Logical grouping of characteristics. */
-  public enum class CharacteristicCombination(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Intersection("intersection", "http://hl7.org/fhir/characteristic-combination", "intersection"),
-    Union("union", "http://hl7.org/fhir/characteristic-combination", "union");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CharacteristicCombination =
-        when (code) {
-          "intersection" -> Intersection
-          "union" -> Union
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CharacteristicCombination")
-        }
-    }
-  }
-
-  /**
-   * The handling of the variable in statistical analysis for exposures or outcomes (E.g.
-   * Dichotomous, Continuous, Descriptive).
-   */
-  public enum class EvidenceVariableHandling(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Continuous("continuous", "http://hl7.org/fhir/variable-handling", "continuous variable"),
-    Dichotomous("dichotomous", "http://hl7.org/fhir/variable-handling", "dichotomous variable"),
-    Ordinal("ordinal", "http://hl7.org/fhir/variable-handling", "ordinal variable"),
-    Polychotomous(
-      "polychotomous",
-      "http://hl7.org/fhir/variable-handling",
-      "polychotomous variable",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EvidenceVariableHandling =
-        when (code) {
-          "continuous" -> Continuous
-          "dichotomous" -> Dichotomous
-          "ordinal" -> Ordinal
-          "polychotomous" -> Polychotomous
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum EvidenceVariableHandling")
-        }
-    }
   }
 }

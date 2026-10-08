@@ -31,6 +31,10 @@ import dev.ohs.fhir.model.r4b.serializers.TestReportTeardownActionSerializer
 import dev.ohs.fhir.model.r4b.serializers.TestReportTeardownSerializer
 import dev.ohs.fhir.model.r4b.serializers.TestReportTestActionSerializer
 import dev.ohs.fhir.model.r4b.serializers.TestReportTestSerializer
+import dev.ohs.fhir.model.r4b.terminologies.TestReportActionResult
+import dev.ohs.fhir.model.r4b.terminologies.TestReportParticipantType
+import dev.ohs.fhir.model.r4b.terminologies.TestReportResult
+import dev.ohs.fhir.model.r4b.terminologies.TestReportStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1474,111 +1478,5 @@ public data class TestReport(
         test = test.mapToList { it.build() },
         teardown = teardown?.build(),
       )
-  }
-
-  /** The type of participant. */
-  public enum class TestReportParticipantType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Test_Engine("test-engine", "http://hl7.org/fhir/report-participant-type", "Test Engine"),
-    Client("client", "http://hl7.org/fhir/report-participant-type", "Client"),
-    Server("server", "http://hl7.org/fhir/report-participant-type", "Server");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TestReportParticipantType =
-        when (code) {
-          "test-engine" -> Test_Engine
-          "client" -> Client
-          "server" -> Server
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum TestReportParticipantType")
-        }
-    }
-  }
-
-  /** The results of executing an action. */
-  public enum class TestReportActionResult(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Pass("pass", "http://hl7.org/fhir/report-action-result-codes", "Pass"),
-    Skip("skip", "http://hl7.org/fhir/report-action-result-codes", "Skip"),
-    Fail("fail", "http://hl7.org/fhir/report-action-result-codes", "Fail"),
-    Warning("warning", "http://hl7.org/fhir/report-action-result-codes", "Warning"),
-    Error("error", "http://hl7.org/fhir/report-action-result-codes", "Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TestReportActionResult =
-        when (code) {
-          "pass" -> Pass
-          "skip" -> Skip
-          "fail" -> Fail
-          "warning" -> Warning
-          "error" -> Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum TestReportActionResult")
-        }
-    }
-  }
-
-  /** The current status of the test report. */
-  public enum class TestReportStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Completed("completed", "http://hl7.org/fhir/report-status-codes", "Completed"),
-    In_Progress("in-progress", "http://hl7.org/fhir/report-status-codes", "In Progress"),
-    Waiting("waiting", "http://hl7.org/fhir/report-status-codes", "Waiting"),
-    Stopped("stopped", "http://hl7.org/fhir/report-status-codes", "Stopped"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/report-status-codes",
-      "Entered In Error",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TestReportStatus =
-        when (code) {
-          "completed" -> Completed
-          "in-progress" -> In_Progress
-          "waiting" -> Waiting
-          "stopped" -> Stopped
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum TestReportStatus")
-        }
-    }
-  }
-
-  /** The reported execution result. */
-  public enum class TestReportResult(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Pass("pass", "http://hl7.org/fhir/report-result-codes", "Pass"),
-    Fail("fail", "http://hl7.org/fhir/report-result-codes", "Fail"),
-    Pending("pending", "http://hl7.org/fhir/report-result-codes", "Pending");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TestReportResult =
-        when (code) {
-          "pass" -> Pass
-          "fail" -> Fail
-          "pending" -> Pending
-          else -> throw IllegalArgumentException("Unknown code $code for enum TestReportResult")
-        }
-    }
   }
 }

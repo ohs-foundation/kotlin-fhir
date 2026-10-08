@@ -51,6 +51,7 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.UnsignedInt
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.EvidenceVariableHandling
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Int
 import kotlin.OptIn
@@ -1058,7 +1059,7 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
           ),
       handling =
         Enumeration.of(
-          if (handling != null) Evidence.EvidenceVariableHandling.fromCode(handling) else null,
+          if (handling != null) EvidenceVariableHandling.fromCode(handling) else null,
           _handling,
         ),
       valueCategory = valueCategory ?: listOf(),

@@ -46,7 +46,9 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.ListMode
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.ReportRelationshipType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -435,10 +437,7 @@ internal object EvidenceReportRelatesToSerializer : KSerializer<EvidenceReport.R
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          if (code != null) EvidenceReport.ReportRelationshipType.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) ReportRelationshipType.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on EvidenceReport.RelatesTo"
           ),
@@ -786,8 +785,7 @@ internal object EvidenceReportSectionSerializer : KSerializer<EvidenceReport.Sec
       focusReference = focusReference,
       author = author ?: listOf(),
       text = text,
-      mode =
-        Enumeration.of(if (mode != null) EvidenceReport.ListMode.fromCode(mode) else null, _mode),
+      mode = Enumeration.of(if (mode != null) ListMode.fromCode(mode) else null, _mode),
       orderedBy = orderedBy,
       entryClassifier = entryClassifier ?: listOf(),
       entryReference = entryReference ?: listOf(),

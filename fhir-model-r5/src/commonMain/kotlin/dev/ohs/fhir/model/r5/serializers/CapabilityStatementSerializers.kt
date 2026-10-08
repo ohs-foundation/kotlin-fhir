@@ -47,10 +47,20 @@ import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.CapabilityStatementKind
+import dev.ohs.fhir.model.r5.terminologies.ConditionalDeleteStatus
+import dev.ohs.fhir.model.r5.terminologies.ConditionalReadStatus
+import dev.ohs.fhir.model.r5.terminologies.DocumentMode
+import dev.ohs.fhir.model.r5.terminologies.EventCapabilityMode
 import dev.ohs.fhir.model.r5.terminologies.FHIRVersion
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.ReferenceHandlingPolicy
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
+import dev.ohs.fhir.model.r5.terminologies.ResourceVersionPolicy
+import dev.ohs.fhir.model.r5.terminologies.RestfulCapabilityMode
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SystemRestfulInteraction
+import dev.ohs.fhir.model.r5.terminologies.TypeRestfulInteraction
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -469,10 +479,7 @@ internal object CapabilityStatementRestSerializer : KSerializer<CapabilityStatem
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          if (mode != null) CapabilityStatement.RestfulCapabilityMode.fromCode(mode) else null,
-          _mode,
-        )
+        Enumeration.of(if (mode != null) RestfulCapabilityMode.fromCode(mode) else null, _mode)
           ?: throw SerializationException(
             "Missing required property 'mode' on CapabilityStatement.Rest"
           ),
@@ -1005,8 +1012,7 @@ internal object CapabilityStatementRestResourceSerializer :
       interaction = interaction ?: listOf(),
       versioning =
         Enumeration.of(
-          if (versioning != null) CapabilityStatement.ResourceVersionPolicy.fromCode(versioning)
-          else null,
+          if (versioning != null) ResourceVersionPolicy.fromCode(versioning) else null,
           _versioning,
         ),
       readHistory = R5Boolean.of(readHistory, _readHistory),
@@ -1014,17 +1020,14 @@ internal object CapabilityStatementRestResourceSerializer :
       conditionalCreate = R5Boolean.of(conditionalCreate, _conditionalCreate),
       conditionalRead =
         Enumeration.of(
-          if (conditionalRead != null)
-            CapabilityStatement.ConditionalReadStatus.fromCode(conditionalRead)
-          else null,
+          if (conditionalRead != null) ConditionalReadStatus.fromCode(conditionalRead) else null,
           _conditionalRead,
         ),
       conditionalUpdate = R5Boolean.of(conditionalUpdate, _conditionalUpdate),
       conditionalPatch = R5Boolean.of(conditionalPatch, _conditionalPatch),
       conditionalDelete =
         Enumeration.of(
-          if (conditionalDelete != null)
-            CapabilityStatement.ConditionalDeleteStatus.fromCode(conditionalDelete)
+          if (conditionalDelete != null) ConditionalDeleteStatus.fromCode(conditionalDelete)
           else null,
           _conditionalDelete,
         ),
@@ -1032,9 +1035,7 @@ internal object CapabilityStatementRestResourceSerializer :
         (kotlin.collections.List(maxOf(referencePolicy?.size ?: 0, _referencePolicy?.size ?: 0)) {
           index ->
           Enumeration.of(
-            referencePolicy?.getOrNull(index)?.let {
-              CapabilityStatement.ReferenceHandlingPolicy.fromCode(it)
-            },
+            referencePolicy?.getOrNull(index)?.let { ReferenceHandlingPolicy.fromCode(it) },
             _referencePolicy?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -1235,10 +1236,7 @@ internal object CapabilityStatementRestResourceInteractionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          if (code != null) CapabilityStatement.TypeRestfulInteraction.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) TypeRestfulInteraction.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on CapabilityStatement.Rest.Resource.Interaction"
           ),
@@ -1609,10 +1607,7 @@ internal object CapabilityStatementRestInteractionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          if (code != null) CapabilityStatement.SystemRestfulInteraction.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) SystemRestfulInteraction.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on CapabilityStatement.Rest.Interaction"
           ),
@@ -1965,10 +1960,7 @@ internal object CapabilityStatementMessagingSupportedMessageSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          if (mode != null) CapabilityStatement.EventCapabilityMode.fromCode(mode) else null,
-          _mode,
-        )
+        Enumeration.of(if (mode != null) EventCapabilityMode.fromCode(mode) else null, _mode)
           ?: throw SerializationException(
             "Missing required property 'mode' on CapabilityStatement.Messaging.SupportedMessage"
           ),
@@ -2092,10 +2084,7 @@ internal object CapabilityStatementDocumentSerializer : KSerializer<CapabilitySt
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          if (mode != null) CapabilityStatement.DocumentMode.fromCode(mode) else null,
-          _mode,
-        )
+        Enumeration.of(if (mode != null) DocumentMode.fromCode(mode) else null, _mode)
           ?: throw SerializationException(
             "Missing required property 'mode' on CapabilityStatement.Document"
           ),
@@ -2685,10 +2674,7 @@ internal object CapabilityStatementSerializer : FhirResourceSerializer<Capabilit
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       kind =
-        Enumeration.of(
-          if (kind != null) CapabilityStatement.CapabilityStatementKind.fromCode(kind) else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) CapabilityStatementKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on CapabilityStatement"
           ),

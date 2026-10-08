@@ -45,6 +45,10 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.CarePlanActivityKind
+import dev.ohs.fhir.model.r4.terminologies.CarePlanActivityStatus
+import dev.ohs.fhir.model.r4.terminologies.CarePlanIntent
+import dev.ohs.fhir.model.r4.terminologies.RequestStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -498,11 +502,7 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      kind =
-        Enumeration.of(
-          if (kind != null) CarePlan.CarePlanActivityKind.fromCode(kind) else null,
-          _kind,
-        ),
+      kind = Enumeration.of(if (kind != null) CarePlanActivityKind.fromCode(kind) else null, _kind),
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
@@ -529,7 +529,7 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       goal = goal ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) CarePlan.CarePlanActivityStatus.fromCode(status) else null,
+          if (status != null) CarePlanActivityStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -1079,15 +1079,11 @@ internal object CarePlanSerializer : FhirResourceSerializer<CarePlan> {
       replaces = replaces ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) CarePlan.RequestStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on CarePlan"),
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on CarePlan"),
       intent =
-        Enumeration.of(
-          if (intent != null) CarePlan.CarePlanIntent.fromCode(intent) else null,
-          _intent,
-        ) ?: throw SerializationException("Missing required property 'intent' on CarePlan"),
+        Enumeration.of(if (intent != null) CarePlanIntent.fromCode(intent) else null, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on CarePlan"),
       category = category ?: listOf(),
       title = R4String.of(title, _title),
       description = R4String.of(description, _description),

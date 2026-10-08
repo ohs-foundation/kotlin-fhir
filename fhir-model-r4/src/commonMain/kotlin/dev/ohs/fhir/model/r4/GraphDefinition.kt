@@ -25,6 +25,9 @@ import dev.ohs.fhir.model.r4.serializers.GraphDefinitionLinkSerializer
 import dev.ohs.fhir.model.r4.serializers.GraphDefinitionLinkTargetCompartmentSerializer
 import dev.ohs.fhir.model.r4.serializers.GraphDefinitionLinkTargetSerializer
 import dev.ohs.fhir.model.r4.serializers.GraphDefinitionSerializer
+import dev.ohs.fhir.model.r4.terminologies.CompartmentType
+import dev.ohs.fhir.model.r4.terminologies.GraphCompartmentRule
+import dev.ohs.fhir.model.r4.terminologies.GraphCompartmentUse
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Suppress
@@ -1010,78 +1013,5 @@ public data class GraphDefinition(
         profile = profile?.build(),
         link = link.mapToList { it.build() },
       )
-  }
-
-  /** Defines how a compartment rule is used. */
-  public enum class GraphCompartmentUse(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Condition("condition", "http://hl7.org/fhir/graph-compartment-use", "Condition"),
-    Requirement("requirement", "http://hl7.org/fhir/graph-compartment-use", "Requirement");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GraphCompartmentUse =
-        when (code) {
-          "condition" -> Condition
-          "requirement" -> Requirement
-          else -> throw IllegalArgumentException("Unknown code $code for enum GraphCompartmentUse")
-        }
-    }
-  }
-
-  /** Which type a compartment definition describes. */
-  public enum class CompartmentType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Patient("Patient", "http://hl7.org/fhir/compartment-type", "Patient"),
-    Encounter("Encounter", "http://hl7.org/fhir/compartment-type", "Encounter"),
-    RelatedPerson("RelatedPerson", "http://hl7.org/fhir/compartment-type", "RelatedPerson"),
-    Practitioner("Practitioner", "http://hl7.org/fhir/compartment-type", "Practitioner"),
-    Device("Device", "http://hl7.org/fhir/compartment-type", "Device");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CompartmentType =
-        when (code) {
-          "Patient" -> Patient
-          "Encounter" -> Encounter
-          "RelatedPerson" -> RelatedPerson
-          "Practitioner" -> Practitioner
-          "Device" -> Device
-          else -> throw IllegalArgumentException("Unknown code $code for enum CompartmentType")
-        }
-    }
-  }
-
-  /** How a compartment must be linked. */
-  public enum class GraphCompartmentRule(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Identical("identical", "http://hl7.org/fhir/graph-compartment-rule", "Identical"),
-    Matching("matching", "http://hl7.org/fhir/graph-compartment-rule", "Matching"),
-    Different("different", "http://hl7.org/fhir/graph-compartment-rule", "Different"),
-    Custom("custom", "http://hl7.org/fhir/graph-compartment-rule", "Custom");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GraphCompartmentRule =
-        when (code) {
-          "identical" -> Identical
-          "matching" -> Matching
-          "different" -> Different
-          "custom" -> Custom
-          else -> throw IllegalArgumentException("Unknown code $code for enum GraphCompartmentRule")
-        }
-    }
   }
 }

@@ -30,6 +30,9 @@ import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupUnmappedSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapPropertySerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapSerializer
+import dev.ohs.fhir.model.r5.terminologies.ConceptMapAttributeType
+import dev.ohs.fhir.model.r5.terminologies.ConceptMapGroupUnmappedMode
+import dev.ohs.fhir.model.r5.terminologies.ConceptMapPropertyType
 import dev.ohs.fhir.model.r5.terminologies.ConceptMapRelationship
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -2446,95 +2449,5 @@ public data class ConceptMap(
         targetScope = targetScope,
         group = group.mapToList { it.build() },
       )
-  }
-
-  /** The type of a ConceptMap mapping property value. */
-  public enum class ConceptMapPropertyType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Coding("Coding", "http://hl7.org/fhir/conceptmap-property-type", "Coding (external reference)"),
-    String("string", "http://hl7.org/fhir/conceptmap-property-type", "string"),
-    Integer("integer", "http://hl7.org/fhir/conceptmap-property-type", "integer"),
-    Boolean("boolean", "http://hl7.org/fhir/conceptmap-property-type", "boolean"),
-    DateTime("dateTime", "http://hl7.org/fhir/conceptmap-property-type", "dateTime"),
-    Decimal("decimal", "http://hl7.org/fhir/conceptmap-property-type", "decimal"),
-    Code("code", "http://hl7.org/fhir/conceptmap-property-type", "code");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ConceptMapPropertyType =
-        when (code) {
-          "Coding" -> Coding
-          "string" -> String
-          "integer" -> Integer
-          "boolean" -> Boolean
-          "dateTime" -> DateTime
-          "decimal" -> Decimal
-          "code" -> Code
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ConceptMapPropertyType")
-        }
-    }
-  }
-
-  /** The type of a ConceptMap mapping attribute value. */
-  public enum class ConceptMapAttributeType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Code("code", "http://hl7.org/fhir/conceptmap-attribute-type", "code"),
-    Coding("Coding", "http://hl7.org/fhir/conceptmap-attribute-type", "Coding"),
-    String("string", "http://hl7.org/fhir/conceptmap-attribute-type", "string"),
-    Boolean("boolean", "http://hl7.org/fhir/conceptmap-attribute-type", "boolean"),
-    Quantity("Quantity", "http://hl7.org/fhir/conceptmap-attribute-type", "Quantity");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ConceptMapAttributeType =
-        when (code) {
-          "code" -> Code
-          "Coding" -> Coding
-          "string" -> String
-          "boolean" -> Boolean
-          "Quantity" -> Quantity
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ConceptMapAttributeType")
-        }
-    }
-  }
-
-  /** Defines which action to take if there is no match in the group. */
-  public enum class ConceptMapGroupUnmappedMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Use_Source_Code(
-      "use-source-code",
-      "http://hl7.org/fhir/conceptmap-unmapped-mode",
-      "Use Provided Source Code",
-    ),
-    Fixed("fixed", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Fixed Code"),
-    Other_Map("other-map", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Other Map");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ConceptMapGroupUnmappedMode =
-        when (code) {
-          "use-source-code" -> Use_Source_Code
-          "fixed" -> Fixed
-          "other-map" -> Other_Map
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ConceptMapGroupUnmappedMode"
-            )
-        }
-    }
   }
 }

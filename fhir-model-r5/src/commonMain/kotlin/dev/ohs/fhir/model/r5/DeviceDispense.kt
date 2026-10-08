@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.DeviceDispensePerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDispenseSerializer
+import dev.ohs.fhir.model.r5.terminologies.DeviceDispenseStatusCodes
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -627,45 +628,5 @@ public data class DeviceDispense(
         usageInstruction = usageInstruction?.build(),
         eventHistory = eventHistory.mapToList { it.build() },
       )
-  }
-
-  /** DeviceDispense Status Codes */
-  public enum class DeviceDispenseStatusCodes(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Preparation("preparation", "http://hl7.org/fhir/devicedispense-status", "Preparation"),
-    In_Progress("in-progress", "http://hl7.org/fhir/devicedispense-status", "In Progress"),
-    Cancelled("cancelled", "http://hl7.org/fhir/devicedispense-status", "Cancelled"),
-    On_Hold("on-hold", "http://hl7.org/fhir/devicedispense-status", "On Hold"),
-    Completed("completed", "http://hl7.org/fhir/devicedispense-status", "Completed"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/devicedispense-status",
-      "Entered in Error",
-    ),
-    Stopped("stopped", "http://hl7.org/fhir/devicedispense-status", "Stopped"),
-    Declined("declined", "http://hl7.org/fhir/devicedispense-status", "Declined"),
-    Unknown("unknown", "http://hl7.org/fhir/devicedispense-status", "Unknown");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DeviceDispenseStatusCodes =
-        when (code) {
-          "preparation" -> Preparation
-          "in-progress" -> In_Progress
-          "cancelled" -> Cancelled
-          "on-hold" -> On_Hold
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "stopped" -> Stopped
-          "declined" -> Declined
-          "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DeviceDispenseStatusCodes")
-        }
-    }
   }
 }

@@ -24,6 +24,8 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.DetectedIssueEvidenceSerializer
 import dev.ohs.fhir.model.r5.serializers.DetectedIssueMitigationSerializer
 import dev.ohs.fhir.model.r5.serializers.DetectedIssueSerializer
+import dev.ohs.fhir.model.r5.terminologies.DetectedIssueSeverity
+import dev.ohs.fhir.model.r5.terminologies.DetectedIssueStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -763,58 +765,5 @@ public data class DetectedIssue(
         reference = reference?.build(),
         mitigation = mitigation.mapToList { it.build() },
       )
-  }
-
-  /** Indicates the status of a detected issue */
-  public enum class DetectedIssueStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Preliminary("preliminary", "http://hl7.org/fhir/observation-status", "Preliminary"),
-    Final("final", "http://hl7.org/fhir/observation-status", "Final"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/observation-status",
-      "Entered in Error",
-    ),
-    Mitigated("mitigated", "http://hl7.org/fhir/detectedissue-status", "Mitigated");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DetectedIssueStatus =
-        when (code) {
-          "preliminary" -> Preliminary
-          "final" -> Final
-          "entered-in-error" -> Entered_In_Error
-          "mitigated" -> Mitigated
-          else -> throw IllegalArgumentException("Unknown code $code for enum DetectedIssueStatus")
-        }
-    }
-  }
-
-  /** Indicates the potential degree of impact of the identified issue on the patient. */
-  public enum class DetectedIssueSeverity(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    High("high", "http://hl7.org/fhir/detectedissue-severity", "High"),
-    Moderate("moderate", "http://hl7.org/fhir/detectedissue-severity", "Moderate"),
-    Low("low", "http://hl7.org/fhir/detectedissue-severity", "Low");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DetectedIssueSeverity =
-        when (code) {
-          "high" -> High
-          "moderate" -> Moderate
-          "low" -> Low
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DetectedIssueSeverity")
-        }
-    }
   }
 }

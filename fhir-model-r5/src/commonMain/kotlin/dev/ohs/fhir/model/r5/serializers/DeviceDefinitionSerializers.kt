@@ -51,6 +51,10 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.DeviceCorrectiveActionScope
+import dev.ohs.fhir.model.r5.terminologies.DeviceDefinitionRegulatoryIdentifierType
+import dev.ohs.fhir.model.r5.terminologies.DeviceNameType
+import dev.ohs.fhir.model.r5.terminologies.DeviceProductionIdentifierInUDI
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -431,8 +435,7 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          if (type != null) DeviceDefinition.DeviceDefinitionRegulatoryIdentifierType.fromCode(type)
-          else null,
+          if (type != null) DeviceDefinitionRegulatoryIdentifierType.fromCode(type) else null,
           _type,
         )
           ?: throw SerializationException(
@@ -560,10 +563,7 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
             "Missing required property 'name' on DeviceDefinition.DeviceName"
           ),
       type =
-        Enumeration.of(
-          if (type != null) DeviceDefinition.DeviceNameType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) DeviceNameType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on DeviceDefinition.DeviceName"
           ),
@@ -2069,7 +2069,7 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
           ),
       scope =
         Enumeration.of(
-          if (scope != null) DeviceDefinition.DeviceCorrectiveActionScope.fromCode(scope) else null,
+          if (scope != null) DeviceCorrectiveActionScope.fromCode(scope) else null,
           _scope,
         ),
       period =
@@ -2669,7 +2669,7 @@ internal object DeviceDefinitionSerializer : FhirResourceSerializer<DeviceDefini
         ) { index ->
           Enumeration.of(
             productionIdentifierInUDI?.getOrNull(index)?.let {
-              DeviceDefinition.DeviceProductionIdentifierInUDI.fromCode(it)
+              DeviceProductionIdentifierInUDI.fromCode(it)
             },
             _productionIdentifierInUDI?.getOrNull(index),
           )

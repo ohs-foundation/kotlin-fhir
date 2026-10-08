@@ -53,6 +53,7 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.RelatedArtifactTypeExpanded
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1497,7 +1498,7 @@ internal object CitationCitedArtifactRelatesToSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          if (type != null) Citation.RelatedArtifactTypeExpanded.fromCode(type) else null,
+          if (type != null) RelatedArtifactTypeExpanded.fromCode(type) else null,
           _type,
         )
           ?: throw SerializationException(

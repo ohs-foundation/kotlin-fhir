@@ -25,6 +25,9 @@ import dev.ohs.fhir.model.r4b.serializers.MedicationRequestDispenseRequestInitia
 import dev.ohs.fhir.model.r4b.serializers.MedicationRequestDispenseRequestSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationRequestSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationRequestSubstitutionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.MedicationRequestIntent
+import dev.ohs.fhir.model.r4b.terminologies.MedicationrequestStatus
+import dev.ohs.fhir.model.r4b.terminologies.RequestPriority
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1324,118 +1327,5 @@ public data class MedicationRequest(
         detectedIssue = detectedIssue.mapToList { it.build() },
         eventHistory = eventHistory.mapToList { it.build() },
       )
-  }
-
-  /** MedicationRequest Status Codes */
-  public enum class MedicationrequestStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Active"),
-    On_Hold("on-hold", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "On Hold"),
-    Cancelled("cancelled", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Cancelled"),
-    Completed("completed", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Completed"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/CodeSystem/medicationrequest-status",
-      "Entered in Error",
-    ),
-    Stopped("stopped", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Stopped"),
-    Draft("draft", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Draft"),
-    Unknown("unknown", "http://hl7.org/fhir/CodeSystem/medicationrequest-status", "Unknown");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): MedicationrequestStatus =
-        when (code) {
-          "active" -> Active
-          "on-hold" -> On_Hold
-          "cancelled" -> Cancelled
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "stopped" -> Stopped
-          "draft" -> Draft
-          "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum MedicationrequestStatus")
-        }
-    }
-  }
-
-  /** MedicationRequest Intent Codes */
-  public enum class MedicationRequestIntent(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Proposal("proposal", "http://hl7.org/fhir/CodeSystem/medicationrequest-intent", "Proposal"),
-    Plan("plan", "http://hl7.org/fhir/CodeSystem/medicationrequest-intent", "Plan"),
-    Order("order", "http://hl7.org/fhir/CodeSystem/medicationrequest-intent", "Order"),
-    Original_Order(
-      "original-order",
-      "http://hl7.org/fhir/CodeSystem/medicationrequest-intent",
-      "Original Order",
-    ),
-    Reflex_Order(
-      "reflex-order",
-      "http://hl7.org/fhir/CodeSystem/medicationrequest-intent",
-      "Reflex Order",
-    ),
-    Filler_Order(
-      "filler-order",
-      "http://hl7.org/fhir/CodeSystem/medicationrequest-intent",
-      "Filler Order",
-    ),
-    Instance_Order(
-      "instance-order",
-      "http://hl7.org/fhir/CodeSystem/medicationrequest-intent",
-      "Instance Order",
-    ),
-    Option("option", "http://hl7.org/fhir/CodeSystem/medicationrequest-intent", "Option");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): MedicationRequestIntent =
-        when (code) {
-          "proposal" -> Proposal
-          "plan" -> Plan
-          "order" -> Order
-          "original-order" -> Original_Order
-          "reflex-order" -> Reflex_Order
-          "filler-order" -> Filler_Order
-          "instance-order" -> Instance_Order
-          "option" -> Option
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum MedicationRequestIntent")
-        }
-    }
-  }
-
-  /** Identifies the level of importance to be assigned to actioning the request. */
-  public enum class RequestPriority(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
-    Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
-    Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
-    Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): RequestPriority =
-        when (code) {
-          "routine" -> Routine
-          "urgent" -> Urgent
-          "asap" -> Asap
-          "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
-        }
-    }
   }
 }

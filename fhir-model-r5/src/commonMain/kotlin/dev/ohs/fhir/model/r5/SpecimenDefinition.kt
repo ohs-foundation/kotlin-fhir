@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerSe
 import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedHandlingSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.SpecimenContainedPreference
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1430,29 +1431,5 @@ public data class SpecimenDefinition(
         collection = collection.mapToList { it.build() },
         typeTested = typeTested.mapToList { it.build() },
       )
-  }
-
-  /** Degree of preference of a type of conditioned specimen. */
-  public enum class SpecimenContainedPreference(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Preferred("preferred", "http://hl7.org/fhir/specimen-contained-preference", "Preferred"),
-    Alternate("alternate", "http://hl7.org/fhir/specimen-contained-preference", "Alternate");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SpecimenContainedPreference =
-        when (code) {
-          "preferred" -> Preferred
-          "alternate" -> Alternate
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum SpecimenContainedPreference"
-            )
-        }
-    }
   }
 }

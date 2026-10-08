@@ -45,6 +45,8 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.VirtualServiceDetail
+import dev.ohs.fhir.model.r5.terminologies.LocationMode
+import dev.ohs.fhir.model.r5.terminologies.LocationStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -532,10 +534,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Location.LocationStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) LocationStatus.fromCode(status) else null, _status),
       operationalStatus = operationalStatus,
       name = R5String.of(name, _name),
       alias =
@@ -546,8 +545,7 @@ internal object LocationSerializer : FhirResourceSerializer<Location> {
             )
         }),
       description = Markdown.of(description, _description),
-      mode =
-        Enumeration.of(if (mode != null) Location.LocationMode.fromCode(mode) else null, _mode),
+      mode = Enumeration.of(if (mode != null) LocationMode.fromCode(mode) else null, _mode),
       type = type ?: listOf(),
       contact = contact ?: listOf(),
       address = address,

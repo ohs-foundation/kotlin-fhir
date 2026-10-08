@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.HumanName
 import dev.ohs.fhir.model.r4b.Period
 import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.terminologies.NameUse
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -197,7 +198,7 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
     return HumanName(
       id = id,
       extension = extension ?: listOf(),
-      use = Enumeration.of(if (use != null) HumanName.NameUse.fromCode(use) else null, _use),
+      use = Enumeration.of(if (use != null) NameUse.fromCode(use) else null, _use),
       text = R4bString.of(text, _text),
       family = R4bString.of(family, _family),
       given =

@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductDispensePerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductDispenseSerializer
+import dev.ohs.fhir.model.r5.terminologies.BiologicallyDerivedProductDispenseCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -514,65 +515,5 @@ public data class BiologicallyDerivedProductDispense(
         note = note.mapToList { it.build() },
         usageInstruction = usageInstruction?.build(),
       )
-  }
-
-  /** BiologicallyDerivedProductDispense Status Codes */
-  public enum class BiologicallyDerivedProductDispenseCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Preparation(
-      "preparation",
-      "http://hl7.org/fhir/biologicallyderivedproductdispense-status",
-      "Preparation",
-    ),
-    In_Progress(
-      "in-progress",
-      "http://hl7.org/fhir/biologicallyderivedproductdispense-status",
-      "In Progress",
-    ),
-    Allocated(
-      "allocated",
-      "http://hl7.org/fhir/biologicallyderivedproductdispense-status",
-      "Allocated",
-    ),
-    Issued("issued", "http://hl7.org/fhir/biologicallyderivedproductdispense-status", "Issued"),
-    Unfulfilled(
-      "unfulfilled",
-      "http://hl7.org/fhir/biologicallyderivedproductdispense-status",
-      "Unfulfilled",
-    ),
-    Returned(
-      "returned",
-      "http://hl7.org/fhir/biologicallyderivedproductdispense-status",
-      "Returned",
-    ),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/biologicallyderivedproductdispense-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/biologicallyderivedproductdispense-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): BiologicallyDerivedProductDispenseCodes =
-        when (code) {
-          "preparation" -> Preparation
-          "in-progress" -> In_Progress
-          "allocated" -> Allocated
-          "issued" -> Issued
-          "unfulfilled" -> Unfulfilled
-          "returned" -> Returned
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum BiologicallyDerivedProductDispenseCodes"
-            )
-        }
-    }
   }
 }

@@ -38,6 +38,8 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Subscription
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.Url
+import dev.ohs.fhir.model.r4.terminologies.SubscriptionChannelType
+import dev.ohs.fhir.model.r4.terminologies.SubscriptionStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -160,10 +162,7 @@ internal object SubscriptionChannelSerializer : KSerializer<Subscription.Channel
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) Subscription.SubscriptionChannelType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) SubscriptionChannelType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on Subscription.Channel"
           ),
@@ -406,10 +405,8 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Subscription.SubscriptionStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Subscription"),
+        Enumeration.of(if (status != null) SubscriptionStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Subscription"),
       contact = contact ?: listOf(),
       end = Instant.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
       reason =

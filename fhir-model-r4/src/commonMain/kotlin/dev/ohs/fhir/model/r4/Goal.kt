@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.GoalSerializer
 import dev.ohs.fhir.model.r4.serializers.GoalTargetSerializer
+import dev.ohs.fhir.model.r4.terminologies.GoalLifecycleStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -756,42 +757,5 @@ public data class Goal(
         outcomeCode = outcomeCode.mapToList { it.build() },
         outcomeReference = outcomeReference.mapToList { it.build() },
       )
-  }
-
-  /**
-   * Codes that reflect the current state of a goal and whether the goal is still being targeted.
-   */
-  public enum class GoalLifecycleStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Proposed("proposed", "http://hl7.org/fhir/goal-status", "Proposed"),
-    Planned("planned", "http://hl7.org/fhir/goal-status", "Planned"),
-    Accepted("accepted", "http://hl7.org/fhir/goal-status", "Accepted"),
-    Active("active", "http://hl7.org/fhir/goal-status", "Active"),
-    On_Hold("on-hold", "http://hl7.org/fhir/goal-status", "On Hold"),
-    Completed("completed", "http://hl7.org/fhir/goal-status", "Completed"),
-    Cancelled("cancelled", "http://hl7.org/fhir/goal-status", "Cancelled"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/goal-status", "Entered in Error"),
-    Rejected("rejected", "http://hl7.org/fhir/goal-status", "Rejected");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GoalLifecycleStatus =
-        when (code) {
-          "proposed" -> Proposed
-          "planned" -> Planned
-          "accepted" -> Accepted
-          "active" -> Active
-          "on-hold" -> On_Hold
-          "completed" -> Completed
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          "rejected" -> Rejected
-          else -> throw IllegalArgumentException("Unknown code $code for enum GoalLifecycleStatus")
-        }
-    }
   }
 }

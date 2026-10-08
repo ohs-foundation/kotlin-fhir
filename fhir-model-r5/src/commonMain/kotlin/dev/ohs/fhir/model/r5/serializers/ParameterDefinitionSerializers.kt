@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r5.Integer
 import dev.ohs.fhir.model.r5.ParameterDefinition
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.FHIRTypes
+import dev.ohs.fhir.model.r5.terminologies.OperationParameterUse
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -176,10 +177,8 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
       extension = extension ?: listOf(),
       name = Code.of(name, _name),
       use =
-        Enumeration.of(
-          if (use != null) ParameterDefinition.OperationParameterUse.fromCode(use) else null,
-          _use,
-        ) ?: throw SerializationException("Missing required property 'use' on ParameterDefinition"),
+        Enumeration.of(if (use != null) OperationParameterUse.fromCode(use) else null, _use)
+          ?: throw SerializationException("Missing required property 'use' on ParameterDefinition"),
       min = Integer.of(min, _min),
       max = R5String.of(max, _max),
       documentation = R5String.of(documentation, _documentation),

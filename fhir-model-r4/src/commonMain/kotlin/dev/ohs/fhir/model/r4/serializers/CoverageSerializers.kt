@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.FinancialResourceStatusCodes
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -705,7 +706,7 @@ internal object CoverageSerializer : FhirResourceSerializer<Coverage> {
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) Coverage.FinancialResourceStatusCodes.fromCode(status) else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on Coverage"),
       type = type,

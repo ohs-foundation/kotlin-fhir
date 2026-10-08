@@ -20,3 +20,16 @@ import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
 val ValueSet.urlPart
   get() = url.substringBeforeLast("|")
+
+/**
+ * Returns the Kotlin enum class name for this [ValueSet].
+ *
+ * In FHIR R4, both `medication-status` and `medication-statement-status` share the name
+ * `"Medication Status Codes"` (a spec typo fixed in R4B to `"MedicationStatement Status Codes"`).
+ */
+val ValueSet.enumName: String
+  get() =
+    when (urlPart) {
+      "http://hl7.org/fhir/ValueSet/medication-statement-status" -> "MedicationStatementStatusCodes"
+      else -> name.normalizeEnumName()
+    }

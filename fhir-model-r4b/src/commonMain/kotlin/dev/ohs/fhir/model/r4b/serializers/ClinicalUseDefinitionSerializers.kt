@@ -40,6 +40,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.ClinicalUseDefinitionType
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -1259,11 +1260,7 @@ internal object ClinicalUseDefinitionSerializer : FhirResourceSerializer<Clinica
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) ClinicalUseDefinition.ClinicalUseDefinitionType.fromCode(type)
-          else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ClinicalUseDefinitionType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ClinicalUseDefinition"
           ),

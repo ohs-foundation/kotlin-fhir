@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.ResearchStudyArmSerializer
 import dev.ohs.fhir.model.r4b.serializers.ResearchStudyObjectiveSerializer
 import dev.ohs.fhir.model.r4b.serializers.ResearchStudySerializer
+import dev.ohs.fhir.model.r4b.terminologies.ResearchStudyStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -752,65 +753,5 @@ public data class ResearchStudy(
         arm = arm.mapToList { it.build() },
         objective = objective.mapToList { it.build() },
       )
-  }
-
-  /** Codes that convey the current status of the research study. */
-  public enum class ResearchStudyStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/research-study-status", "Active"),
-    Administratively_Completed(
-      "administratively-completed",
-      "http://hl7.org/fhir/research-study-status",
-      "Administratively Completed",
-    ),
-    Approved("approved", "http://hl7.org/fhir/research-study-status", "Approved"),
-    Closed_To_Accrual(
-      "closed-to-accrual",
-      "http://hl7.org/fhir/research-study-status",
-      "Closed to Accrual",
-    ),
-    Closed_To_Accrual_And_Intervention(
-      "closed-to-accrual-and-intervention",
-      "http://hl7.org/fhir/research-study-status",
-      "Closed to Accrual and Intervention",
-    ),
-    Completed("completed", "http://hl7.org/fhir/research-study-status", "Completed"),
-    Disapproved("disapproved", "http://hl7.org/fhir/research-study-status", "Disapproved"),
-    In_Review("in-review", "http://hl7.org/fhir/research-study-status", "In Review"),
-    Temporarily_Closed_To_Accrual(
-      "temporarily-closed-to-accrual",
-      "http://hl7.org/fhir/research-study-status",
-      "Temporarily Closed to Accrual",
-    ),
-    Temporarily_Closed_To_Accrual_And_Intervention(
-      "temporarily-closed-to-accrual-and-intervention",
-      "http://hl7.org/fhir/research-study-status",
-      "Temporarily Closed to Accrual and Intervention",
-    ),
-    Withdrawn("withdrawn", "http://hl7.org/fhir/research-study-status", "Withdrawn");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ResearchStudyStatus =
-        when (code) {
-          "active" -> Active
-          "administratively-completed" -> Administratively_Completed
-          "approved" -> Approved
-          "closed-to-accrual" -> Closed_To_Accrual
-          "closed-to-accrual-and-intervention" -> Closed_To_Accrual_And_Intervention
-          "completed" -> Completed
-          "disapproved" -> Disapproved
-          "in-review" -> In_Review
-          "temporarily-closed-to-accrual" -> Temporarily_Closed_To_Accrual
-          "temporarily-closed-to-accrual-and-intervention" ->
-            Temporarily_Closed_To_Accrual_And_Intervention
-          "withdrawn" -> Withdrawn
-          else -> throw IllegalArgumentException("Unknown code $code for enum ResearchStudyStatus")
-        }
-    }
   }
 }

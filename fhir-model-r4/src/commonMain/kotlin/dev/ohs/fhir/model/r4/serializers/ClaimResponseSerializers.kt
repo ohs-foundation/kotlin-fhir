@@ -50,7 +50,10 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.ClaimProcessingCodes
+import dev.ohs.fhir.model.r4.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r4.terminologies.NoteType
+import dev.ohs.fhir.model.r4.terminologies.Use
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -2733,14 +2736,14 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) ClaimResponse.FinancialResourceStatusCodes.fromCode(status) else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on ClaimResponse"),
       type =
         type ?: throw SerializationException("Missing required property 'type' on ClaimResponse"),
       subType = subType,
       use =
-        Enumeration.of(if (use != null) ClaimResponse.Use.fromCode(use) else null, _use)
+        Enumeration.of(if (use != null) Use.fromCode(use) else null, _use)
           ?: throw SerializationException("Missing required property 'use' on ClaimResponse"),
       patient =
         patient
@@ -2755,7 +2758,7 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
       request = request,
       outcome =
         Enumeration.of(
-          if (outcome != null) ClaimResponse.ClaimProcessingCodes.fromCode(outcome) else null,
+          if (outcome != null) ClaimProcessingCodes.fromCode(outcome) else null,
           _outcome,
         ) ?: throw SerializationException("Missing required property 'outcome' on ClaimResponse"),
       disposition = R4String.of(disposition, _disposition),

@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.ProvenanceAgentSerializer
 import dev.ohs.fhir.model.r4b.serializers.ProvenanceEntitySerializer
 import dev.ohs.fhir.model.r4b.serializers.ProvenanceSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ProvenanceEntityRole
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -763,32 +764,5 @@ public data class Provenance(
         entity = entity.mapToList { it.build() },
         signature = signature.mapToList { it.build() },
       )
-  }
-
-  /** How an entity was used in an activity. */
-  public enum class ProvenanceEntityRole(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Derivation("derivation", "http://hl7.org/fhir/provenance-entity-role", "Derivation"),
-    Revision("revision", "http://hl7.org/fhir/provenance-entity-role", "Revision"),
-    Quotation("quotation", "http://hl7.org/fhir/provenance-entity-role", "Quotation"),
-    Source("source", "http://hl7.org/fhir/provenance-entity-role", "Source"),
-    Removal("removal", "http://hl7.org/fhir/provenance-entity-role", "Removal");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): ProvenanceEntityRole =
-        when (code) {
-          "derivation" -> Derivation
-          "revision" -> Revision
-          "quotation" -> Quotation
-          "source" -> Source
-          "removal" -> Removal
-          else -> throw IllegalArgumentException("Unknown code $code for enum ProvenanceEntityRole")
-        }
-    }
   }
 }

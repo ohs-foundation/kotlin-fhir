@@ -41,6 +41,10 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.TestReport
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.TestReportActionResult
+import dev.ohs.fhir.model.r4b.terminologies.TestReportParticipantType
+import dev.ohs.fhir.model.r4b.terminologies.TestReportResult
+import dev.ohs.fhir.model.r4b.terminologies.TestReportStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -143,10 +147,7 @@ internal object TestReportParticipantSerializer : KSerializer<TestReport.Partici
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) TestReport.TestReportParticipantType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) TestReportParticipantType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on TestReport.Participant"
           ),
@@ -458,7 +459,7 @@ internal object TestReportSetupActionOperationSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       result =
         Enumeration.of(
-          if (result != null) TestReport.TestReportActionResult.fromCode(result) else null,
+          if (result != null) TestReportActionResult.fromCode(result) else null,
           _result,
         )
           ?: throw SerializationException(
@@ -582,7 +583,7 @@ internal object TestReportSetupActionAssertSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       result =
         Enumeration.of(
-          if (result != null) TestReport.TestReportActionResult.fromCode(result) else null,
+          if (result != null) TestReportActionResult.fromCode(result) else null,
           _result,
         )
           ?: throw SerializationException(
@@ -1264,18 +1265,14 @@ internal object TestReportSerializer : FhirResourceSerializer<TestReport> {
       identifier = identifier,
       name = R4bString.of(name, _name),
       status =
-        Enumeration.of(
-          if (status != null) TestReport.TestReportStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on TestReport"),
+        Enumeration.of(if (status != null) TestReportStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on TestReport"),
       testScript =
         testScript
           ?: throw SerializationException("Missing required property 'testScript' on TestReport"),
       result =
-        Enumeration.of(
-          if (result != null) TestReport.TestReportResult.fromCode(result) else null,
-          _result,
-        ) ?: throw SerializationException("Missing required property 'result' on TestReport"),
+        Enumeration.of(if (result != null) TestReportResult.fromCode(result) else null, _result)
+          ?: throw SerializationException("Missing required property 'result' on TestReport"),
       score = Decimal.of(score, _score),
       tester = R4bString.of(tester, _tester),
       issued = DateTime.of(if (issued != null) FhirDateTime.fromString(issued) else null, _issued),

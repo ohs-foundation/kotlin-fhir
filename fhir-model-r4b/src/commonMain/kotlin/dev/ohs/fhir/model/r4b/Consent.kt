@@ -27,6 +27,9 @@ import dev.ohs.fhir.model.r4b.serializers.ConsentProvisionDataSerializer
 import dev.ohs.fhir.model.r4b.serializers.ConsentProvisionSerializer
 import dev.ohs.fhir.model.r4b.serializers.ConsentSerializer
 import dev.ohs.fhir.model.r4b.serializers.ConsentVerificationSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ConsentDataMeaning
+import dev.ohs.fhir.model.r4b.terminologies.ConsentProvisionType
+import dev.ohs.fhir.model.r4b.terminologies.ConsentState
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1260,84 +1263,5 @@ public data class Consent(
         verification = verification.mapToList { it.build() },
         provision = provision?.build(),
       )
-  }
-
-  /** How a rule statement is applied, such as adding additional consent or removing consent. */
-  public enum class ConsentProvisionType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Deny("deny", "http://hl7.org/fhir/consent-provision-type", "Opt Out"),
-    Permit("permit", "http://hl7.org/fhir/consent-provision-type", "Opt In");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): ConsentProvisionType =
-        when (code) {
-          "deny" -> Deny
-          "permit" -> Permit
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConsentProvisionType")
-        }
-    }
-  }
-
-  /** How a resource reference is interpreted when testing consent restrictions. */
-  public enum class ConsentDataMeaning(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Instance("instance", "http://hl7.org/fhir/consent-data-meaning", "Instance"),
-    Related("related", "http://hl7.org/fhir/consent-data-meaning", "Related"),
-    Dependents("dependents", "http://hl7.org/fhir/consent-data-meaning", "Dependents"),
-    Authoredby("authoredby", "http://hl7.org/fhir/consent-data-meaning", "AuthoredBy");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): ConsentDataMeaning =
-        when (code) {
-          "instance" -> Instance
-          "related" -> Related
-          "dependents" -> Dependents
-          "authoredby" -> Authoredby
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConsentDataMeaning")
-        }
-    }
-  }
-
-  /** Indicates the state of the consent. */
-  public enum class ConsentState(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Draft("draft", "http://hl7.org/fhir/consent-state-codes", "Pending"),
-    Proposed("proposed", "http://hl7.org/fhir/consent-state-codes", "Proposed"),
-    Active("active", "http://hl7.org/fhir/consent-state-codes", "Active"),
-    Rejected("rejected", "http://hl7.org/fhir/consent-state-codes", "Rejected"),
-    Inactive("inactive", "http://hl7.org/fhir/consent-state-codes", "Inactive"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/consent-state-codes",
-      "Entered in Error",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): ConsentState =
-        when (code) {
-          "draft" -> Draft
-          "proposed" -> Proposed
-          "active" -> Active
-          "rejected" -> Rejected
-          "inactive" -> Inactive
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConsentState")
-        }
-    }
   }
 }

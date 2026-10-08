@@ -23,6 +23,8 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.CarePlanActivitySerializer
 import dev.ohs.fhir.model.r5.serializers.CarePlanSerializer
+import dev.ohs.fhir.model.r5.terminologies.CarePlanIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -845,63 +847,5 @@ public data class CarePlan(
         activity = activity.mapToList { it.build() },
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Codes identifying the lifecycle stage of a request. */
-  public enum class RequestStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Draft("draft", "http://hl7.org/fhir/request-status", "Draft"),
-    Active("active", "http://hl7.org/fhir/request-status", "Active"),
-    On_Hold("on-hold", "http://hl7.org/fhir/request-status", "On Hold"),
-    Revoked("revoked", "http://hl7.org/fhir/request-status", "Revoked"),
-    Completed("completed", "http://hl7.org/fhir/request-status", "Completed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/request-status", "Entered in Error"),
-    Unknown("unknown", "http://hl7.org/fhir/request-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): RequestStatus =
-        when (code) {
-          "draft" -> Draft
-          "active" -> Active
-          "on-hold" -> On_Hold
-          "revoked" -> Revoked
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestStatus")
-        }
-    }
-  }
-
-  /** Codes indicating the degree of authority/intentionality associated with a care plan. */
-  public enum class CarePlanIntent(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
-    Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
-    Order("order", "http://hl7.org/fhir/request-intent", "Order"),
-    Option("option", "http://hl7.org/fhir/request-intent", "Option"),
-    Directive("directive", "http://hl7.org/fhir/request-intent", "Directive");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CarePlanIntent =
-        when (code) {
-          "proposal" -> Proposal
-          "plan" -> Plan
-          "order" -> Order
-          "option" -> Option
-          "directive" -> Directive
-          else -> throw IllegalArgumentException("Unknown code $code for enum CarePlanIntent")
-        }
-    }
   }
 }

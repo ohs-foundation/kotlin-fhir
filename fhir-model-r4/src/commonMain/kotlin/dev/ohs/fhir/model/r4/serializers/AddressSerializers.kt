@@ -28,6 +28,8 @@ import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.terminologies.AddressType
+import dev.ohs.fhir.model.r4.terminologies.AddressUse
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -216,8 +218,8 @@ internal object AddressSerializer : KSerializer<Address> {
     return Address(
       id = id,
       extension = extension ?: listOf(),
-      use = Enumeration.of(if (use != null) Address.AddressUse.fromCode(use) else null, _use),
-      type = Enumeration.of(if (type != null) Address.AddressType.fromCode(type) else null, _type),
+      use = Enumeration.of(if (use != null) AddressUse.fromCode(use) else null, _use),
+      type = Enumeration.of(if (type != null) AddressType.fromCode(type) else null, _type),
       text = R4String.of(text, _text),
       line =
         (kotlin.collections.List(maxOf(line?.size ?: 0, _line?.size ?: 0)) { index ->

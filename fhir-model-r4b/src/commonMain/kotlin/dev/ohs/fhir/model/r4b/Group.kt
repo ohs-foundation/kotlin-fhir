@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.GroupCharacteristicSerializer
 import dev.ohs.fhir.model.r4b.serializers.GroupMemberSerializer
 import dev.ohs.fhir.model.r4b.serializers.GroupSerializer
+import dev.ohs.fhir.model.r4b.terminologies.GroupType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -723,34 +724,5 @@ public data class Group(
         characteristic = characteristic.mapToList { it.build() },
         member = member.mapToList { it.build() },
       )
-  }
-
-  /** Types of resources that are part of group. */
-  public enum class GroupType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Person("person", "http://hl7.org/fhir/group-type", "Person"),
-    Animal("animal", "http://hl7.org/fhir/group-type", "Animal"),
-    Practitioner("practitioner", "http://hl7.org/fhir/group-type", "Practitioner"),
-    Device("device", "http://hl7.org/fhir/group-type", "Device"),
-    Medication("medication", "http://hl7.org/fhir/group-type", "Medication"),
-    Substance("substance", "http://hl7.org/fhir/group-type", "Substance");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GroupType =
-        when (code) {
-          "person" -> Person
-          "animal" -> Animal
-          "practitioner" -> Practitioner
-          "device" -> Device
-          "medication" -> Medication
-          "substance" -> Substance
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupType")
-        }
-    }
   }
 }

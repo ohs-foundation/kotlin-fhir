@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.FlagStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -241,7 +242,7 @@ internal object FlagSerializer : FhirResourceSerializer<Flag> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(if (status != null) Flag.FlagStatus.fromCode(status) else null, _status)
+        Enumeration.of(if (status != null) FlagStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on Flag"),
       category = category ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on Flag"),

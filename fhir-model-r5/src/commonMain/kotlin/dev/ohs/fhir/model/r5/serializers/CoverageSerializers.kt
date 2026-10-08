@@ -42,6 +42,8 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r5.terminologies.Kind
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -895,11 +897,11 @@ internal object CoverageSerializer : FhirResourceSerializer<Coverage> {
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) Coverage.FinancialResourceStatusCodes.fromCode(status) else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on Coverage"),
       kind =
-        Enumeration.of(if (kind != null) Coverage.Kind.fromCode(kind) else null, _kind)
+        Enumeration.of(if (kind != null) Kind.fromCode(kind) else null, _kind)
           ?: throw SerializationException("Missing required property 'kind' on Coverage"),
       paymentBy = paymentBy ?: listOf(),
       type = type,

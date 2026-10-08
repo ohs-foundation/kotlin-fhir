@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ResearchSubjectSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ResearchSubjectStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -318,69 +319,5 @@ public data class ResearchSubject(
         actualArm = actualArm?.build(),
         consent = consent?.build(),
       )
-  }
-
-  /** Indicates the progression of a study subject through a study. */
-  public enum class ResearchSubjectStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Candidate("candidate", "http://hl7.org/fhir/research-subject-status", "Candidate"),
-    Eligible("eligible", "http://hl7.org/fhir/research-subject-status", "Eligible"),
-    Follow_Up("follow-up", "http://hl7.org/fhir/research-subject-status", "Follow-up"),
-    Ineligible("ineligible", "http://hl7.org/fhir/research-subject-status", "Ineligible"),
-    Not_Registered(
-      "not-registered",
-      "http://hl7.org/fhir/research-subject-status",
-      "Not Registered",
-    ),
-    Off_Study("off-study", "http://hl7.org/fhir/research-subject-status", "Off-study"),
-    On_Study("on-study", "http://hl7.org/fhir/research-subject-status", "On-study"),
-    On_Study_Intervention(
-      "on-study-intervention",
-      "http://hl7.org/fhir/research-subject-status",
-      "On-study-intervention",
-    ),
-    On_Study_Observation(
-      "on-study-observation",
-      "http://hl7.org/fhir/research-subject-status",
-      "On-study-observation",
-    ),
-    Pending_On_Study(
-      "pending-on-study",
-      "http://hl7.org/fhir/research-subject-status",
-      "Pending on-study",
-    ),
-    Potential_Candidate(
-      "potential-candidate",
-      "http://hl7.org/fhir/research-subject-status",
-      "Potential Candidate",
-    ),
-    Screening("screening", "http://hl7.org/fhir/research-subject-status", "Screening"),
-    Withdrawn("withdrawn", "http://hl7.org/fhir/research-subject-status", "Withdrawn");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ResearchSubjectStatus =
-        when (code) {
-          "candidate" -> Candidate
-          "eligible" -> Eligible
-          "follow-up" -> Follow_Up
-          "ineligible" -> Ineligible
-          "not-registered" -> Not_Registered
-          "off-study" -> Off_Study
-          "on-study" -> On_Study
-          "on-study-intervention" -> On_Study_Intervention
-          "on-study-observation" -> On_Study_Observation
-          "pending-on-study" -> Pending_On_Study
-          "potential-candidate" -> Potential_Candidate
-          "screening" -> Screening
-          "withdrawn" -> Withdrawn
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ResearchSubjectStatus")
-        }
-    }
   }
 }

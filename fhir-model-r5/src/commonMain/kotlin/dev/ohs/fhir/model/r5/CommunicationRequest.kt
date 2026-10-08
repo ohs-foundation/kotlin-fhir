@@ -23,6 +23,9 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.CommunicationRequestPayloadSerializer
 import dev.ohs.fhir.model.r5.serializers.CommunicationRequestSerializer
+import dev.ohs.fhir.model.r5.terminologies.RequestIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
+import dev.ohs.fhir.model.r5.terminologies.RequestStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -777,96 +780,5 @@ public data class CommunicationRequest(
         reason = reason.mapToList { it.build() },
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Codes identifying the lifecycle stage of a request. */
-  public enum class RequestStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Draft("draft", "http://hl7.org/fhir/request-status", "Draft"),
-    Active("active", "http://hl7.org/fhir/request-status", "Active"),
-    On_Hold("on-hold", "http://hl7.org/fhir/request-status", "On Hold"),
-    Revoked("revoked", "http://hl7.org/fhir/request-status", "Revoked"),
-    Completed("completed", "http://hl7.org/fhir/request-status", "Completed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/request-status", "Entered in Error"),
-    Unknown("unknown", "http://hl7.org/fhir/request-status", "Unknown");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): RequestStatus =
-        when (code) {
-          "draft" -> Draft
-          "active" -> Active
-          "on-hold" -> On_Hold
-          "revoked" -> Revoked
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestStatus")
-        }
-    }
-  }
-
-  /** Codes indicating the degree of authority/intentionality associated with a request. */
-  public enum class RequestIntent(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
-    Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
-    Directive("directive", "http://hl7.org/fhir/request-intent", "Directive"),
-    Order("order", "http://hl7.org/fhir/request-intent", "Order"),
-    Original_Order("original-order", "http://hl7.org/fhir/request-intent", "Original Order"),
-    Reflex_Order("reflex-order", "http://hl7.org/fhir/request-intent", "Reflex Order"),
-    Filler_Order("filler-order", "http://hl7.org/fhir/request-intent", "Filler Order"),
-    Instance_Order("instance-order", "http://hl7.org/fhir/request-intent", "Instance Order"),
-    Option("option", "http://hl7.org/fhir/request-intent", "Option");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): RequestIntent =
-        when (code) {
-          "proposal" -> Proposal
-          "plan" -> Plan
-          "directive" -> Directive
-          "order" -> Order
-          "original-order" -> Original_Order
-          "reflex-order" -> Reflex_Order
-          "filler-order" -> Filler_Order
-          "instance-order" -> Instance_Order
-          "option" -> Option
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestIntent")
-        }
-    }
-  }
-
-  /** Identifies the level of importance to be assigned to actioning the request. */
-  public enum class RequestPriority(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
-    Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
-    Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
-    Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): RequestPriority =
-        when (code) {
-          "routine" -> Routine
-          "urgent" -> Urgent
-          "asap" -> Asap
-          "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
-        }
-    }
   }
 }

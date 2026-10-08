@@ -47,6 +47,7 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.EventStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -795,10 +796,8 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Procedure.EventStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Procedure"),
+        Enumeration.of(if (status != null) EventStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Procedure"),
       statusReason = statusReason,
       category = category ?: listOf(),
       code = code,

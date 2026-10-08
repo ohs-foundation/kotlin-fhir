@@ -52,6 +52,7 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.SpecimenContainedPreference
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -236,9 +237,7 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       type = type,
       preference =
         Enumeration.of(
-          if (preference != null)
-            SpecimenDefinition.SpecimenContainedPreference.fromCode(preference)
-          else null,
+          if (preference != null) SpecimenContainedPreference.fromCode(preference) else null,
           _preference,
         )
           ?: throw SerializationException(

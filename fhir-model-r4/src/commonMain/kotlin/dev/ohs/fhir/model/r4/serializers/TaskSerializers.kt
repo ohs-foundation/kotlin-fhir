@@ -83,6 +83,9 @@ import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.Url
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.Uuid
+import dev.ohs.fhir.model.r4.terminologies.RequestPriority
+import dev.ohs.fhir.model.r4.terminologies.TaskIntent
+import dev.ohs.fhir.model.r4.terminologies.TaskStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -2554,16 +2557,16 @@ internal object TaskSerializer : FhirResourceSerializer<Task> {
       groupIdentifier = groupIdentifier,
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(if (status != null) Task.TaskStatus.fromCode(status) else null, _status)
+        Enumeration.of(if (status != null) TaskStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on Task"),
       statusReason = statusReason,
       businessStatus = businessStatus,
       intent =
-        Enumeration.of(if (intent != null) Task.TaskIntent.fromCode(intent) else null, _intent)
+        Enumeration.of(if (intent != null) TaskIntent.fromCode(intent) else null, _intent)
           ?: throw SerializationException("Missing required property 'intent' on Task"),
       priority =
         Enumeration.of(
-          if (priority != null) Task.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       code = code,

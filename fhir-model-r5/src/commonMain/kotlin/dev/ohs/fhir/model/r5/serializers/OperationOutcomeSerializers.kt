@@ -35,6 +35,8 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.IssueSeverity
+import dev.ohs.fhir.model.r5.terminologies.IssueType
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -187,15 +189,12 @@ internal object OperationOutcomeIssueSerializer : KSerializer<OperationOutcome.I
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       severity =
-        Enumeration.of(
-          if (severity != null) OperationOutcome.IssueSeverity.fromCode(severity) else null,
-          _severity,
-        )
+        Enumeration.of(if (severity != null) IssueSeverity.fromCode(severity) else null, _severity)
           ?: throw SerializationException(
             "Missing required property 'severity' on OperationOutcome.Issue"
           ),
       code =
-        Enumeration.of(if (code != null) OperationOutcome.IssueType.fromCode(code) else null, _code)
+        Enumeration.of(if (code != null) IssueType.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on OperationOutcome.Issue"
           ),

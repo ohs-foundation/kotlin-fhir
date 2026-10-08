@@ -46,6 +46,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r5.terminologies.IdentityAssuranceLevel
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -240,7 +241,7 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
         target ?: throw SerializationException("Missing required property 'target' on Person.Link"),
       assurance =
         Enumeration.of(
-          if (assurance != null) Person.IdentityAssuranceLevel.fromCode(assurance) else null,
+          if (assurance != null) IdentityAssuranceLevel.fromCode(assurance) else null,
           _assurance,
         ),
     )

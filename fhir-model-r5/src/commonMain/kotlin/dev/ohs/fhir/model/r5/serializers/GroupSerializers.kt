@@ -43,6 +43,8 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.GroupMembershipBasis
+import dev.ohs.fhir.model.r5.terminologies.GroupType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -605,11 +607,11 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
       identifier = identifier ?: listOf(),
       active = R5Boolean.of(active, _active),
       type =
-        Enumeration.of(if (type != null) Group.GroupType.fromCode(type) else null, _type)
+        Enumeration.of(if (type != null) GroupType.fromCode(type) else null, _type)
           ?: throw SerializationException("Missing required property 'type' on Group"),
       membership =
         Enumeration.of(
-          if (membership != null) Group.GroupMembershipBasis.fromCode(membership) else null,
+          if (membership != null) GroupMembershipBasis.fromCode(membership) else null,
           _membership,
         ) ?: throw SerializationException("Missing required property 'membership' on Group"),
       code = code,

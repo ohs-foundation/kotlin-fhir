@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticModelCharacteristicVar
 import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticSampleSizeSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableDefinitionSerializer
+import dev.ohs.fhir.model.r5.terminologies.EvidenceVariableHandling
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1944,38 +1945,5 @@ public data class Evidence(
         statistic = statistic.mapToList { it.build() },
         certainty = certainty.mapToList { it.build() },
       )
-  }
-
-  /**
-   * The handling of the variable in statistical analysis for exposures or outcomes (E.g.
-   * Dichotomous, Continuous, Descriptive).
-   */
-  public enum class EvidenceVariableHandling(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Continuous("continuous", "http://hl7.org/fhir/variable-handling", "continuous variable"),
-    Dichotomous("dichotomous", "http://hl7.org/fhir/variable-handling", "dichotomous variable"),
-    Ordinal("ordinal", "http://hl7.org/fhir/variable-handling", "ordinal variable"),
-    Polychotomous(
-      "polychotomous",
-      "http://hl7.org/fhir/variable-handling",
-      "polychotomous variable",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EvidenceVariableHandling =
-        when (code) {
-          "continuous" -> Continuous
-          "dichotomous" -> Dichotomous
-          "ordinal" -> Ordinal
-          "polychotomous" -> Polychotomous
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum EvidenceVariableHandling")
-        }
-    }
   }
 }

@@ -43,6 +43,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.DeviceNameType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -267,10 +268,7 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
             "Missing required property 'name' on DeviceDefinition.DeviceName"
           ),
       type =
-        Enumeration.of(
-          if (type != null) DeviceDefinition.DeviceNameType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) DeviceNameType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on DeviceDefinition.DeviceName"
           ),

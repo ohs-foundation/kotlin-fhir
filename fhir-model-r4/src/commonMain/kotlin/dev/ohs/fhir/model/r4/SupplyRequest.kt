@@ -23,6 +23,8 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.SupplyRequestParameterSerializer
 import dev.ohs.fhir.model.r4.serializers.SupplyRequestSerializer
+import dev.ohs.fhir.model.r4.terminologies.RequestPriority
+import dev.ohs.fhir.model.r4.terminologies.SupplyRequestStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -608,65 +610,5 @@ public data class SupplyRequest(
         deliverFrom = deliverFrom?.build(),
         deliverTo = deliverTo?.build(),
       )
-  }
-
-  /** Status of the supply request. */
-  public enum class SupplyRequestStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Draft("draft", "http://hl7.org/fhir/supplyrequest-status", "Draft"),
-    Active("active", "http://hl7.org/fhir/supplyrequest-status", "Active"),
-    Suspended("suspended", "http://hl7.org/fhir/supplyrequest-status", "Suspended"),
-    Cancelled("cancelled", "http://hl7.org/fhir/supplyrequest-status", "Cancelled"),
-    Completed("completed", "http://hl7.org/fhir/supplyrequest-status", "Completed"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/supplyrequest-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/supplyrequest-status", "Unknown");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): SupplyRequestStatus =
-        when (code) {
-          "draft" -> Draft
-          "active" -> Active
-          "suspended" -> Suspended
-          "cancelled" -> Cancelled
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum SupplyRequestStatus")
-        }
-    }
-  }
-
-  /** The clinical priority of a diagnostic order. */
-  public enum class RequestPriority(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
-    Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
-    Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
-    Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): RequestPriority =
-        when (code) {
-          "routine" -> Routine
-          "urgent" -> Urgent
-          "asap" -> Asap
-          "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
-        }
-    }
   }
 }

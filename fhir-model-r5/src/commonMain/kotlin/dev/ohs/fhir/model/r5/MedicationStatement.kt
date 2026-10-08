@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.MedicationStatementAdherenceSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationStatementSerializer
+import dev.ohs.fhir.model.r5.terminologies.MedicationStatementStatusCodes
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -720,35 +721,5 @@ public data class MedicationStatement(
         dosage = dosage.mapToList { it.build() },
         adherence = adherence?.build(),
       )
-  }
-
-  /** MedicationStatement Status Codes */
-  public enum class MedicationStatementStatusCodes(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Recorded("recorded", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Recorded"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/CodeSystem/medication-statement-status",
-      "Entered in Error",
-    ),
-    Draft("draft", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Draft");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): MedicationStatementStatusCodes =
-        when (code) {
-          "recorded" -> Recorded
-          "entered-in-error" -> Entered_In_Error
-          "draft" -> Draft
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationStatementStatusCodes"
-            )
-        }
-    }
   }
 }

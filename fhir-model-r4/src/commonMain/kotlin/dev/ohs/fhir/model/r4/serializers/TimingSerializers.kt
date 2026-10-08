@@ -37,6 +37,9 @@ import dev.ohs.fhir.model.r4.Range
 import dev.ohs.fhir.model.r4.Time
 import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.UnsignedInt
+import dev.ohs.fhir.model.r4.terminologies.DaysOfWeek
+import dev.ohs.fhir.model.r4.terminologies.EventTiming
+import dev.ohs.fhir.model.r4.terminologies.UnitsOfTime
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -362,7 +365,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       durationMax = Decimal.of(durationMax, _durationMax),
       durationUnit =
         Enumeration.of(
-          if (durationUnit != null) Timing.UnitsOfTime.fromCode(durationUnit) else null,
+          if (durationUnit != null) UnitsOfTime.fromCode(durationUnit) else null,
           _durationUnit,
         ),
       frequency = PositiveInt.of(frequency, _frequency),
@@ -371,13 +374,13 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       periodMax = Decimal.of(periodMax, _periodMax),
       periodUnit =
         Enumeration.of(
-          if (periodUnit != null) Timing.UnitsOfTime.fromCode(periodUnit) else null,
+          if (periodUnit != null) UnitsOfTime.fromCode(periodUnit) else null,
           _periodUnit,
         ),
       dayOfWeek =
         (kotlin.collections.List(maxOf(dayOfWeek?.size ?: 0, _dayOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            dayOfWeek?.getOrNull(index)?.let { Timing.DaysOfWeek.fromCode(it) },
+            dayOfWeek?.getOrNull(index)?.let { DaysOfWeek.fromCode(it) },
             _dayOfWeek?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -394,7 +397,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       `when` =
         (kotlin.collections.List(maxOf(`when`?.size ?: 0, _when?.size ?: 0)) { index ->
           Enumeration.of(
-            `when`?.getOrNull(index)?.let { Timing.EventTiming.fromCode(it) },
+            `when`?.getOrNull(index)?.let { EventTiming.fromCode(it) },
             _when?.getOrNull(index),
           )
             ?: throw SerializationException(

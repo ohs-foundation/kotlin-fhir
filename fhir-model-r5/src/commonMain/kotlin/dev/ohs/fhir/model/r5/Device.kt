@@ -27,6 +27,9 @@ import dev.ohs.fhir.model.r5.serializers.DevicePropertySerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceUdiCarrierSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceVersionSerializer
+import dev.ohs.fhir.model.r5.terminologies.DeviceNameType
+import dev.ohs.fhir.model.r5.terminologies.FHIRDeviceStatus
+import dev.ohs.fhir.model.r5.terminologies.UDIEntryType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1535,94 +1538,5 @@ public data class Device(
         safety = safety.mapToList { it.build() },
         parent = parent?.build(),
       )
-  }
-
-  /** Codes to identify how UDI data was entered. */
-  public enum class UDIEntryType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Barcode("barcode", "http://hl7.org/fhir/udi-entry-type", "Barcode"),
-    Rfid("rfid", "http://hl7.org/fhir/udi-entry-type", "RFID"),
-    Manual("manual", "http://hl7.org/fhir/udi-entry-type", "Manual"),
-    Card("card", "http://hl7.org/fhir/udi-entry-type", "Card"),
-    Self_Reported("self-reported", "http://hl7.org/fhir/udi-entry-type", "Self Reported"),
-    Electronic_Transmission(
-      "electronic-transmission",
-      "http://hl7.org/fhir/udi-entry-type",
-      "Electronic Transmission",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/udi-entry-type", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): UDIEntryType =
-        when (code) {
-          "barcode" -> Barcode
-          "rfid" -> Rfid
-          "manual" -> Manual
-          "card" -> Card
-          "self-reported" -> Self_Reported
-          "electronic-transmission" -> Electronic_Transmission
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum UDIEntryType")
-        }
-    }
-  }
-
-  /** The type of name the device is referred by. */
-  public enum class DeviceNameType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered_Name("registered-name", "http://hl7.org/fhir/device-nametype", "Registered name"),
-    User_Friendly_Name(
-      "user-friendly-name",
-      "http://hl7.org/fhir/device-nametype",
-      "User Friendly name",
-    ),
-    Patient_Reported_Name(
-      "patient-reported-name",
-      "http://hl7.org/fhir/device-nametype",
-      "Patient Reported name",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DeviceNameType =
-        when (code) {
-          "registered-name" -> Registered_Name
-          "user-friendly-name" -> User_Friendly_Name
-          "patient-reported-name" -> Patient_Reported_Name
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceNameType")
-        }
-    }
-  }
-
-  /** The status of the Device record. */
-  public enum class FHIRDeviceStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/device-status", "Active"),
-    Inactive("inactive", "http://hl7.org/fhir/device-status", "Inactive"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/device-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FHIRDeviceStatus =
-        when (code) {
-          "active" -> Active
-          "inactive" -> Inactive
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum FHIRDeviceStatus")
-        }
-    }
   }
 }

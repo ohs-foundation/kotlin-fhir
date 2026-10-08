@@ -26,6 +26,9 @@ import dev.ohs.fhir.model.r4b.serializers.BiologicallyDerivedProductManipulation
 import dev.ohs.fhir.model.r4b.serializers.BiologicallyDerivedProductProcessingSerializer
 import dev.ohs.fhir.model.r4b.serializers.BiologicallyDerivedProductSerializer
 import dev.ohs.fhir.model.r4b.serializers.BiologicallyDerivedProductStorageSerializer
+import dev.ohs.fhir.model.r4b.terminologies.BiologicallyDerivedProductCategory
+import dev.ohs.fhir.model.r4b.terminologies.BiologicallyDerivedProductStatus
+import dev.ohs.fhir.model.r4b.terminologies.BiologicallyDerivedProductStorageScale
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -945,85 +948,5 @@ public data class BiologicallyDerivedProduct(
         manipulation = manipulation?.build(),
         storage = storage.mapToList { it.build() },
       )
-  }
-
-  /** BiologicallyDerived Product Storage Scale. */
-  public enum class BiologicallyDerivedProductStorageScale(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Farenheit("farenheit", "http://hl7.org/fhir/product-storage-scale", "Fahrenheit"),
-    Celsius("celsius", "http://hl7.org/fhir/product-storage-scale", "Celsius"),
-    Kelvin("kelvin", "http://hl7.org/fhir/product-storage-scale", "Kelvin");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): BiologicallyDerivedProductStorageScale =
-        when (code) {
-          "farenheit" -> Farenheit
-          "celsius" -> Celsius
-          "kelvin" -> Kelvin
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum BiologicallyDerivedProductStorageScale"
-            )
-        }
-    }
-  }
-
-  /** Biologically Derived Product Category. */
-  public enum class BiologicallyDerivedProductCategory(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Organ("organ", "http://hl7.org/fhir/product-category", "Organ"),
-    Tissue("tissue", "http://hl7.org/fhir/product-category", "Tissue"),
-    Fluid("fluid", "http://hl7.org/fhir/product-category", "Fluid"),
-    Cells("cells", "http://hl7.org/fhir/product-category", "Cells"),
-    BiologicalAgent("biologicalAgent", "http://hl7.org/fhir/product-category", "BiologicalAgent");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): BiologicallyDerivedProductCategory =
-        when (code) {
-          "organ" -> Organ
-          "tissue" -> Tissue
-          "fluid" -> Fluid
-          "cells" -> Cells
-          "biologicalAgent" -> BiologicalAgent
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum BiologicallyDerivedProductCategory"
-            )
-        }
-    }
-  }
-
-  /** Biologically Derived Product Status. */
-  public enum class BiologicallyDerivedProductStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Available("available", "http://hl7.org/fhir/product-status", "Available"),
-    Unavailable("unavailable", "http://hl7.org/fhir/product-status", "Unavailable");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): BiologicallyDerivedProductStatus =
-        when (code) {
-          "available" -> Available
-          "unavailable" -> Unavailable
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum BiologicallyDerivedProductStatus"
-            )
-        }
-    }
   }
 }

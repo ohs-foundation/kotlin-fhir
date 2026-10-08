@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.serializers.PatientContactSerializer
 import dev.ohs.fhir.model.r5.serializers.PatientLinkSerializer
 import dev.ohs.fhir.model.r5.serializers.PatientSerializer
 import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r5.terminologies.LinkType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1082,30 +1083,5 @@ public data class Patient(
         managingOrganization = managingOrganization?.build(),
         link = link.mapToList { it.build() },
       )
-  }
-
-  /** The type of link between this Patient resource and another Patient/RelatedPerson resource. */
-  public enum class LinkType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Replaced_By("replaced-by", "http://hl7.org/fhir/link-type", "Replaced-by"),
-    Replaces("replaces", "http://hl7.org/fhir/link-type", "Replaces"),
-    Refer("refer", "http://hl7.org/fhir/link-type", "Refer"),
-    Seealso("seealso", "http://hl7.org/fhir/link-type", "See also");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): LinkType =
-        when (code) {
-          "replaced-by" -> Replaced_By
-          "replaces" -> Replaces
-          "refer" -> Refer
-          "seealso" -> Seealso
-          else -> throw IllegalArgumentException("Unknown code $code for enum LinkType")
-        }
-    }
   }
 }

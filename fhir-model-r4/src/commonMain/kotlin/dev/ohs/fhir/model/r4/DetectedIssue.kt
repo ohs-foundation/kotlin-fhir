@@ -24,6 +24,8 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.DetectedIssueEvidenceSerializer
 import dev.ohs.fhir.model.r4.serializers.DetectedIssueMitigationSerializer
 import dev.ohs.fhir.model.r4.serializers.DetectedIssueSerializer
+import dev.ohs.fhir.model.r4.terminologies.DetectedIssueSeverity
+import dev.ohs.fhir.model.r4.terminologies.ObservationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -704,66 +706,5 @@ public data class DetectedIssue(
         reference = reference?.build(),
         mitigation = mitigation.mapToList { it.build() },
       )
-  }
-
-  /** Codes providing the status of an observation. */
-  public enum class ObservationStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered("registered", "http://hl7.org/fhir/observation-status", "Registered"),
-    Preliminary("preliminary", "http://hl7.org/fhir/observation-status", "Preliminary"),
-    Final("final", "http://hl7.org/fhir/observation-status", "Final"),
-    Amended("amended", "http://hl7.org/fhir/observation-status", "Amended"),
-    Corrected("corrected", "http://hl7.org/fhir/observation-status", "Corrected"),
-    Cancelled("cancelled", "http://hl7.org/fhir/observation-status", "Cancelled"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/observation-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/observation-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ObservationStatus =
-        when (code) {
-          "registered" -> Registered
-          "preliminary" -> Preliminary
-          "final" -> Final
-          "amended" -> Amended
-          "corrected" -> Corrected
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum ObservationStatus")
-        }
-    }
-  }
-
-  /** Indicates the potential degree of impact of the identified issue on the patient. */
-  public enum class DetectedIssueSeverity(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    High("high", "http://hl7.org/fhir/detectedissue-severity", "High"),
-    Moderate("moderate", "http://hl7.org/fhir/detectedissue-severity", "Moderate"),
-    Low("low", "http://hl7.org/fhir/detectedissue-severity", "Low");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DetectedIssueSeverity =
-        when (code) {
-          "high" -> High
-          "moderate" -> Moderate
-          "low" -> Low
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DetectedIssueSeverity")
-        }
-    }
   }
 }

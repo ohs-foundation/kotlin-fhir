@@ -46,6 +46,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.AccountStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1141,10 +1142,8 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Account.AccountStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Account"),
+        Enumeration.of(if (status != null) AccountStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Account"),
       billingStatus = billingStatus,
       type = type,
       name = R5String.of(name, _name),

@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.serializers.IngredientSerializer
 import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceSerializer
 import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthReferenceStrengthSerializer
 import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthSerializer
+import dev.ohs.fhir.model.r4b.terminologies.IngredientManufacturerRole
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1010,45 +1011,5 @@ public data class Ingredient(
         manufacturer = manufacturer.mapToList { it.build() },
         substance = substance.build(),
       )
-  }
-
-  /**
-   * The way in which this manufacturer is associated with the ingredient. For example whether it is
-   * a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that
-   * this is not the manufacturing process role.
-   */
-  public enum class IngredientManufacturerRole(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Allowed(
-      "allowed",
-      "http://hl7.org/fhir/ingredient-manufacturer-role",
-      "Manufacturer is specifically allowed for this ingredient",
-    ),
-    Possible(
-      "possible",
-      "http://hl7.org/fhir/ingredient-manufacturer-role",
-      "Manufacturer is known to make this ingredient in general",
-    ),
-    Actual(
-      "actual",
-      "http://hl7.org/fhir/ingredient-manufacturer-role",
-      "Manufacturer actually makes this particular ingredient",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): IngredientManufacturerRole =
-        when (code) {
-          "allowed" -> Allowed
-          "possible" -> Possible
-          "actual" -> Actual
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum IngredientManufacturerRole")
-        }
-    }
   }
 }

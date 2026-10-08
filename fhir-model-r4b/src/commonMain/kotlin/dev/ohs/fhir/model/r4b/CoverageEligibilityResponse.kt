@@ -26,6 +26,8 @@ import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseInsuranceIt
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseInsuranceItemSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseInsuranceSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseSerializer
+import dev.ohs.fhir.model.r4b.terminologies.EligibilityResponsePurpose
+import dev.ohs.fhir.model.r4b.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1196,67 +1198,5 @@ public data class CoverageEligibilityResponse(
         form = form?.build(),
         error = error.mapToList { it.build() },
       )
-  }
-
-  /** This value set includes Status codes. */
-  public enum class FinancialResourceStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/fm-status", "Active"),
-    Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
-    Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
-        when (code) {
-          "active" -> Active
-          "cancelled" -> Cancelled
-          "draft" -> Draft
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
-        }
-    }
-  }
-
-  /** A code specifying the types of information being requested. */
-  public enum class EligibilityResponsePurpose(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Auth_Requirements(
-      "auth-requirements",
-      "http://hl7.org/fhir/eligibilityresponse-purpose",
-      "Coverage auth-requirements",
-    ),
-    Benefits("benefits", "http://hl7.org/fhir/eligibilityresponse-purpose", "Coverage benefits"),
-    Discovery("discovery", "http://hl7.org/fhir/eligibilityresponse-purpose", "Coverage Discovery"),
-    Validation(
-      "validation",
-      "http://hl7.org/fhir/eligibilityresponse-purpose",
-      "Coverage Validation",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EligibilityResponsePurpose =
-        when (code) {
-          "auth-requirements" -> Auth_Requirements
-          "benefits" -> Benefits
-          "discovery" -> Discovery
-          "validation" -> Validation
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum EligibilityResponsePurpose")
-        }
-    }
   }
 }

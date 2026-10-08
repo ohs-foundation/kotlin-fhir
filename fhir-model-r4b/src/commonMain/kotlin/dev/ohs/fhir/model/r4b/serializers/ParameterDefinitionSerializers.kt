@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4b.Integer
 import dev.ohs.fhir.model.r4b.ParameterDefinition
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.terminologies.FHIRAllTypes
+import dev.ohs.fhir.model.r4b.terminologies.OperationParameterUse
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -176,10 +177,8 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
       extension = extension ?: listOf(),
       name = Code.of(name, _name),
       use =
-        Enumeration.of(
-          if (use != null) ParameterDefinition.OperationParameterUse.fromCode(use) else null,
-          _use,
-        ) ?: throw SerializationException("Missing required property 'use' on ParameterDefinition"),
+        Enumeration.of(if (use != null) OperationParameterUse.fromCode(use) else null, _use)
+          ?: throw SerializationException("Missing required property 'use' on ParameterDefinition"),
       min = Integer.of(min, _min),
       max = R4bString.of(max, _max),
       documentation = R4bString.of(documentation, _documentation),

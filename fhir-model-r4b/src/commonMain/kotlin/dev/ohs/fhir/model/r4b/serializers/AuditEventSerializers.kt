@@ -42,6 +42,9 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.AuditEventAction
+import dev.ohs.fhir.model.r4b.terminologies.AuditEventAgentNetworkType
+import dev.ohs.fhir.model.r4b.terminologies.AuditEventOutcome
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -400,7 +403,7 @@ internal object AuditEventAgentNetworkSerializer : KSerializer<AuditEvent.Agent.
       address = R4bString.of(address, _address),
       type =
         Enumeration.of(
-          if (type != null) AuditEvent.AuditEventAgentNetworkType.fromCode(type) else null,
+          if (type != null) AuditEventAgentNetworkType.fromCode(type) else null,
           _type,
         ),
     )
@@ -1108,17 +1111,14 @@ internal object AuditEventSerializer : FhirResourceSerializer<AuditEvent> {
       type = type ?: throw SerializationException("Missing required property 'type' on AuditEvent"),
       subtype = subtype ?: listOf(),
       action =
-        Enumeration.of(
-          if (action != null) AuditEvent.AuditEventAction.fromCode(action) else null,
-          _action,
-        ),
+        Enumeration.of(if (action != null) AuditEventAction.fromCode(action) else null, _action),
       period = period,
       recorded =
         Instant.of(if (recorded != null) FhirDateTime.fromString(recorded) else null, _recorded)
           ?: throw SerializationException("Missing required property 'recorded' on AuditEvent"),
       outcome =
         Enumeration.of(
-          if (outcome != null) AuditEvent.AuditEventOutcome.fromCode(outcome) else null,
+          if (outcome != null) AuditEventOutcome.fromCode(outcome) else null,
           _outcome,
         ),
       outcomeDesc = R4bString.of(outcomeDesc, _outcomeDesc),

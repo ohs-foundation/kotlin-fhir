@@ -40,6 +40,9 @@ import dev.ohs.fhir.model.r4.Signature
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.UnsignedInt
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.BundleType
+import dev.ohs.fhir.model.r4.terminologies.HTTPVerb
+import dev.ohs.fhir.model.r4.terminologies.SearchEntryMode
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -410,8 +413,7 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      mode =
-        Enumeration.of(if (mode != null) Bundle.SearchEntryMode.fromCode(mode) else null, _mode),
+      mode = Enumeration.of(if (mode != null) SearchEntryMode.fromCode(mode) else null, _mode),
       score = Decimal.of(score, _score),
     )
   }
@@ -568,7 +570,7 @@ internal object BundleEntryRequestSerializer : KSerializer<Bundle.Entry.Request>
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       method =
-        Enumeration.of(if (method != null) Bundle.HTTPVerb.fromCode(method) else null, _method)
+        Enumeration.of(if (method != null) HTTPVerb.fromCode(method) else null, _method)
           ?: throw SerializationException(
             "Missing required property 'method' on Bundle.Entry.Request"
           ),
@@ -916,7 +918,7 @@ internal object BundleSerializer : FhirResourceSerializer<Bundle> {
       language = Code.of(language, _language),
       identifier = identifier,
       type =
-        Enumeration.of(if (type != null) Bundle.BundleType.fromCode(type) else null, _type)
+        Enumeration.of(if (type != null) BundleType.fromCode(type) else null, _type)
           ?: throw SerializationException("Missing required property 'type' on Bundle"),
       timestamp =
         Instant.of(if (timestamp != null) FhirDateTime.fromString(timestamp) else null, _timestamp),

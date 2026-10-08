@@ -45,6 +45,8 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.UnsignedInt
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.MessageSignificanceCategory
+import dev.ohs.fhir.model.r4b.terminologies.MessageheaderResponseRequest
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
@@ -785,15 +787,13 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
           ?: throw SerializationException("Missing required property 'event' on MessageDefinition"),
       category =
         Enumeration.of(
-          if (category != null) MessageDefinition.MessageSignificanceCategory.fromCode(category)
-          else null,
+          if (category != null) MessageSignificanceCategory.fromCode(category) else null,
           _category,
         ),
       focus = focus ?: listOf(),
       responseRequired =
         Enumeration.of(
-          if (responseRequired != null)
-            MessageDefinition.MessageheaderResponseRequest.fromCode(responseRequired)
+          if (responseRequired != null) MessageheaderResponseRequest.fromCode(responseRequired)
           else null,
           _responseRequired,
         ),

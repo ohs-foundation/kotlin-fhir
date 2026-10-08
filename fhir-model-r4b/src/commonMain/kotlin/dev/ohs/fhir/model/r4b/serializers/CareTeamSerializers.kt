@@ -40,6 +40,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.CareTeamStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -428,10 +429,7 @@ internal object CareTeamSerializer : FhirResourceSerializer<CareTeam> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) CareTeam.CareTeamStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) CareTeamStatus.fromCode(status) else null, _status),
       category = category ?: listOf(),
       name = R4bString.of(name, _name),
       subject = subject,

@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.SpecimenDefinition
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.SpecimenContainedPreference
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -202,9 +203,7 @@ internal object SpecimenDefinitionTypeTestedSerializer :
       type = type,
       preference =
         Enumeration.of(
-          if (preference != null)
-            SpecimenDefinition.SpecimenContainedPreference.fromCode(preference)
-          else null,
+          if (preference != null) SpecimenContainedPreference.fromCode(preference) else null,
           _preference,
         )
           ?: throw SerializationException(

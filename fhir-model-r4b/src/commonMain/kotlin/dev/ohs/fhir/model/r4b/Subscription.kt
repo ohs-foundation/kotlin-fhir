@@ -23,6 +23,8 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.SubscriptionChannelSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubscriptionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.SubscriptionChannelType
+import dev.ohs.fhir.model.r4b.terminologies.SubscriptionStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -526,59 +528,5 @@ public data class Subscription(
         error = error?.build(),
         channel = channel.build(),
       )
-  }
-
-  /** The type of method used to execute a subscription. */
-  public enum class SubscriptionChannelType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Rest_Hook("rest-hook", "http://hl7.org/fhir/subscription-channel-type", "Rest Hook"),
-    Websocket("websocket", "http://hl7.org/fhir/subscription-channel-type", "Websocket"),
-    Email("email", "http://hl7.org/fhir/subscription-channel-type", "Email"),
-    Sms("sms", "http://hl7.org/fhir/subscription-channel-type", "SMS"),
-    Message("message", "http://hl7.org/fhir/subscription-channel-type", "Message");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SubscriptionChannelType =
-        when (code) {
-          "rest-hook" -> Rest_Hook
-          "websocket" -> Websocket
-          "email" -> Email
-          "sms" -> Sms
-          "message" -> Message
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionChannelType")
-        }
-    }
-  }
-
-  /** The status of a subscription. */
-  public enum class SubscriptionStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Requested("requested", "http://hl7.org/fhir/subscription-status", "Requested"),
-    Active("active", "http://hl7.org/fhir/subscription-status", "Active"),
-    Error("error", "http://hl7.org/fhir/subscription-status", "Error"),
-    Off("off", "http://hl7.org/fhir/subscription-status", "Off");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SubscriptionStatusCodes =
-        when (code) {
-          "requested" -> Requested
-          "active" -> Active
-          "error" -> Error
-          "off" -> Off
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionStatusCodes")
-        }
-    }
   }
 }

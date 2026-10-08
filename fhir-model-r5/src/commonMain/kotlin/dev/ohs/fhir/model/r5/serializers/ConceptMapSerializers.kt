@@ -52,6 +52,9 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.ConceptMapAttributeType
+import dev.ohs.fhir.model.r5.terminologies.ConceptMapGroupUnmappedMode
+import dev.ohs.fhir.model.r5.terminologies.ConceptMapPropertyType
 import dev.ohs.fhir.model.r5.terminologies.ConceptMapRelationship
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
@@ -190,10 +193,7 @@ internal object ConceptMapPropertySerializer : KSerializer<ConceptMap.Property> 
       uri = Uri.of(uri, _uri),
       description = R5String.of(description, _description),
       type =
-        Enumeration.of(
-          if (type != null) ConceptMap.ConceptMapPropertyType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ConceptMapPropertyType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ConceptMap.Property"
           ),
@@ -337,10 +337,7 @@ internal object ConceptMapAdditionalAttributeSerializer :
       uri = Uri.of(uri, _uri),
       description = R5String.of(description, _description),
       type =
-        Enumeration.of(
-          if (type != null) ConceptMap.ConceptMapAttributeType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ConceptMapAttributeType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ConceptMap.AdditionalAttribute"
           ),
@@ -1428,7 +1425,7 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
       modifierExtension = modifierExtension ?: listOf(),
       mode =
         Enumeration.of(
-          if (mode != null) ConceptMap.ConceptMapGroupUnmappedMode.fromCode(mode) else null,
+          if (mode != null) ConceptMapGroupUnmappedMode.fromCode(mode) else null,
           _mode,
         )
           ?: throw SerializationException(

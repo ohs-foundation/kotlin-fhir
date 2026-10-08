@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationDosageSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationPerformerSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationSerializer
+import dev.ohs.fhir.model.r4.terminologies.MedicationAdministrationStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -933,55 +934,5 @@ public data class MedicationAdministration(
         dosage = dosage?.build(),
         eventHistory = eventHistory.mapToList { it.build() },
       )
-  }
-
-  /** MedicationAdministration Status Codes */
-  public enum class MedicationAdministrationStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    In_Progress(
-      "in-progress",
-      "http://terminology.hl7.org/CodeSystem/medication-admin-status",
-      "In Progress",
-    ),
-    Not_Done(
-      "not-done",
-      "http://terminology.hl7.org/CodeSystem/medication-admin-status",
-      "Not Done",
-    ),
-    On_Hold("on-hold", "http://terminology.hl7.org/CodeSystem/medication-admin-status", "On Hold"),
-    Completed(
-      "completed",
-      "http://terminology.hl7.org/CodeSystem/medication-admin-status",
-      "Completed",
-    ),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://terminology.hl7.org/CodeSystem/medication-admin-status",
-      "Entered in Error",
-    ),
-    Stopped("stopped", "http://terminology.hl7.org/CodeSystem/medication-admin-status", "Stopped"),
-    Unknown("unknown", "http://terminology.hl7.org/CodeSystem/medication-admin-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): MedicationAdministrationStatusCodes =
-        when (code) {
-          "in-progress" -> In_Progress
-          "not-done" -> Not_Done
-          "on-hold" -> On_Hold
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "stopped" -> Stopped
-          "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationAdministrationStatusCodes"
-            )
-        }
-    }
   }
 }

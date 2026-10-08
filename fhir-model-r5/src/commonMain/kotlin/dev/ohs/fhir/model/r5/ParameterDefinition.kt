@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ParameterDefinitionSerializer
 import dev.ohs.fhir.model.r5.terminologies.FHIRTypes
+import dev.ohs.fhir.model.r5.terminologies.OperationParameterUse
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -151,27 +152,5 @@ public data class ParameterDefinition(
         type = type,
         profile = profile?.build(),
       )
-  }
-
-  /** Whether an operation parameter is an input or an output parameter. */
-  public enum class OperationParameterUse(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    In("in", "http://hl7.org/fhir/operation-parameter-use", "In"),
-    Out("out", "http://hl7.org/fhir/operation-parameter-use", "Out");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): OperationParameterUse =
-        when (code) {
-          "in" -> In
-          "out" -> Out
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum OperationParameterUse")
-        }
-    }
   }
 }

@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.MonetaryComponent
 import dev.ohs.fhir.model.r5.Money
+import dev.ohs.fhir.model.r5.terminologies.PriceComponentType
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
@@ -126,10 +127,8 @@ internal object MonetaryComponentSerializer : KSerializer<MonetaryComponent> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) MonetaryComponent.PriceComponentType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on MonetaryComponent"),
+        Enumeration.of(if (type != null) PriceComponentType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on MonetaryComponent"),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,

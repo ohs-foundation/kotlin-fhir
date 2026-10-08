@@ -44,6 +44,8 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.RequestIntent
+import dev.ohs.fhir.model.r4b.terminologies.RequestStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -1272,15 +1274,11 @@ internal object NutritionOrderSerializer : FhirResourceSerializer<NutritionOrder
             )
         }),
       status =
-        Enumeration.of(
-          if (status != null) NutritionOrder.RequestStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on NutritionOrder"),
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on NutritionOrder"),
       intent =
-        Enumeration.of(
-          if (intent != null) NutritionOrder.RequestIntent.fromCode(intent) else null,
-          _intent,
-        ) ?: throw SerializationException("Missing required property 'intent' on NutritionOrder"),
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on NutritionOrder"),
       patient =
         patient
           ?: throw SerializationException("Missing required property 'patient' on NutritionOrder"),

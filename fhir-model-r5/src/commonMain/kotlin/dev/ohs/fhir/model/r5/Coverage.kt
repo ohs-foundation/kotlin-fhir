@@ -26,6 +26,8 @@ import dev.ohs.fhir.model.r5.serializers.CoverageCostToBeneficiaryExceptionSeria
 import dev.ohs.fhir.model.r5.serializers.CoverageCostToBeneficiarySerializer
 import dev.ohs.fhir.model.r5.serializers.CoveragePaymentBySerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageSerializer
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r5.terminologies.Kind
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1139,56 +1141,5 @@ public data class Coverage(
         contract = contract.mapToList { it.build() },
         insurancePlan = insurancePlan?.build(),
       )
-  }
-
-  /** This value set includes Status codes. */
-  public enum class FinancialResourceStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/fm-status", "Active"),
-    Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
-    Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
-        when (code) {
-          "active" -> Active
-          "cancelled" -> Cancelled
-          "draft" -> Draft
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
-        }
-    }
-  }
-
-  /** The kind of coverage: insurance, selfpay or other. */
-  public enum class Kind(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Insurance("insurance", "http://hl7.org/fhir/coverage-kind", "Insurance"),
-    Self_Pay("self-pay", "http://hl7.org/fhir/coverage-kind", "Self-pay"),
-    Other("other", "http://hl7.org/fhir/coverage-kind", "Other");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): Kind =
-        when (code) {
-          "insurance" -> Insurance
-          "self-pay" -> Self_Pay
-          "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum Kind")
-        }
-    }
   }
 }

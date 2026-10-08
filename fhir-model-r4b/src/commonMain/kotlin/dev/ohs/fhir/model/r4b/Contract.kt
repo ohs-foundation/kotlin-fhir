@@ -37,6 +37,8 @@ import dev.ohs.fhir.model.r4b.serializers.ContractTermOfferPartySerializer
 import dev.ohs.fhir.model.r4b.serializers.ContractTermOfferSerializer
 import dev.ohs.fhir.model.r4b.serializers.ContractTermSecurityLabelSerializer
 import dev.ohs.fhir.model.r4b.serializers.ContractTermSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ContractResourcePublicationStatusCodes
+import dev.ohs.fhir.model.r4b.terminologies.ContractResourceStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -3489,109 +3491,5 @@ public data class Contract(
         rule = rule.mapToList { it.build() },
         legallyBinding = legallyBinding,
       )
-  }
-
-  /** This value set contract specific codes for status. */
-  public enum class ContractResourcePublicationStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Amended("amended", "http://hl7.org/fhir/contract-publicationstatus", "Amended"),
-    Appended("appended", "http://hl7.org/fhir/contract-publicationstatus", "Appended"),
-    Cancelled("cancelled", "http://hl7.org/fhir/contract-publicationstatus", "Cancelled"),
-    Disputed("disputed", "http://hl7.org/fhir/contract-publicationstatus", "Disputed"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/contract-publicationstatus",
-      "Entered in Error",
-    ),
-    Executable("executable", "http://hl7.org/fhir/contract-publicationstatus", "Executable"),
-    Executed("executed", "http://hl7.org/fhir/contract-publicationstatus", "Executed"),
-    Negotiable("negotiable", "http://hl7.org/fhir/contract-publicationstatus", "Negotiable"),
-    Offered("offered", "http://hl7.org/fhir/contract-publicationstatus", "Offered"),
-    Policy("policy", "http://hl7.org/fhir/contract-publicationstatus", "Policy"),
-    Rejected("rejected", "http://hl7.org/fhir/contract-publicationstatus", "Rejected"),
-    Renewed("renewed", "http://hl7.org/fhir/contract-publicationstatus", "Renewed"),
-    Revoked("revoked", "http://hl7.org/fhir/contract-publicationstatus", "Revoked"),
-    Resolved("resolved", "http://hl7.org/fhir/contract-publicationstatus", "Resolved"),
-    Terminated("terminated", "http://hl7.org/fhir/contract-publicationstatus", "Terminated");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ContractResourcePublicationStatusCodes =
-        when (code) {
-          "amended" -> Amended
-          "appended" -> Appended
-          "cancelled" -> Cancelled
-          "disputed" -> Disputed
-          "entered-in-error" -> Entered_In_Error
-          "executable" -> Executable
-          "executed" -> Executed
-          "negotiable" -> Negotiable
-          "offered" -> Offered
-          "policy" -> Policy
-          "rejected" -> Rejected
-          "renewed" -> Renewed
-          "revoked" -> Revoked
-          "resolved" -> Resolved
-          "terminated" -> Terminated
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ContractResourcePublicationStatusCodes"
-            )
-        }
-    }
-  }
-
-  /** This value set contract specific codes for status. */
-  public enum class ContractResourceStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Amended("amended", "http://hl7.org/fhir/contract-status", "Amended"),
-    Appended("appended", "http://hl7.org/fhir/contract-status", "Appended"),
-    Cancelled("cancelled", "http://hl7.org/fhir/contract-status", "Cancelled"),
-    Disputed("disputed", "http://hl7.org/fhir/contract-status", "Disputed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/contract-status", "Entered in Error"),
-    Executable("executable", "http://hl7.org/fhir/contract-status", "Executable"),
-    Executed("executed", "http://hl7.org/fhir/contract-status", "Executed"),
-    Negotiable("negotiable", "http://hl7.org/fhir/contract-status", "Negotiable"),
-    Offered("offered", "http://hl7.org/fhir/contract-status", "Offered"),
-    Policy("policy", "http://hl7.org/fhir/contract-status", "Policy"),
-    Rejected("rejected", "http://hl7.org/fhir/contract-status", "Rejected"),
-    Renewed("renewed", "http://hl7.org/fhir/contract-status", "Renewed"),
-    Revoked("revoked", "http://hl7.org/fhir/contract-status", "Revoked"),
-    Resolved("resolved", "http://hl7.org/fhir/contract-status", "Resolved"),
-    Terminated("terminated", "http://hl7.org/fhir/contract-status", "Terminated");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ContractResourceStatusCodes =
-        when (code) {
-          "amended" -> Amended
-          "appended" -> Appended
-          "cancelled" -> Cancelled
-          "disputed" -> Disputed
-          "entered-in-error" -> Entered_In_Error
-          "executable" -> Executable
-          "executed" -> Executed
-          "negotiable" -> Negotiable
-          "offered" -> Offered
-          "policy" -> Policy
-          "rejected" -> Rejected
-          "renewed" -> Renewed
-          "revoked" -> Revoked
-          "resolved" -> Resolved
-          "terminated" -> Terminated
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ContractResourceStatusCodes"
-            )
-        }
-    }
   }
 }

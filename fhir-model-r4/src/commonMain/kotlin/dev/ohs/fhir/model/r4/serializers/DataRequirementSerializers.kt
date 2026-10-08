@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r4.PositiveInt
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.terminologies.FHIRAllTypes
+import dev.ohs.fhir.model.r4.terminologies.SortDirection
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -379,7 +380,7 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
           ),
       direction =
         Enumeration.of(
-          if (direction != null) DataRequirement.SortDirection.fromCode(direction) else null,
+          if (direction != null) SortDirection.fromCode(direction) else null,
           _direction,
         )
           ?: throw SerializationException(

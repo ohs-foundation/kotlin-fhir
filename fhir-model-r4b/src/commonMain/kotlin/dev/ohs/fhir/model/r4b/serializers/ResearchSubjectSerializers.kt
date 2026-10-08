@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.ResearchSubjectStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -248,7 +249,7 @@ internal object ResearchSubjectSerializer : FhirResourceSerializer<ResearchSubje
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) ResearchSubject.ResearchSubjectStatus.fromCode(status) else null,
+          if (status != null) ResearchSubjectStatus.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on ResearchSubject"),
       period = period,

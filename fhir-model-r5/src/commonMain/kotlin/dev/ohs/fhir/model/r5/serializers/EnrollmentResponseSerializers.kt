@@ -38,6 +38,8 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.EnrollmentOutcome
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -252,14 +254,13 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) EnrollmentResponse.FinancialResourceStatusCodes.fromCode(status)
-          else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         ),
       request = request,
       outcome =
         Enumeration.of(
-          if (outcome != null) EnrollmentResponse.EnrollmentOutcome.fromCode(outcome) else null,
+          if (outcome != null) EnrollmentOutcome.fromCode(outcome) else null,
           _outcome,
         ),
       disposition = R5String.of(disposition, _disposition),

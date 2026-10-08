@@ -27,6 +27,9 @@ import dev.ohs.fhir.model.r4b.serializers.AuditEventEntityDetailSerializer
 import dev.ohs.fhir.model.r4b.serializers.AuditEventEntitySerializer
 import dev.ohs.fhir.model.r4b.serializers.AuditEventSerializer
 import dev.ohs.fhir.model.r4b.serializers.AuditEventSourceSerializer
+import dev.ohs.fhir.model.r4b.terminologies.AuditEventAction
+import dev.ohs.fhir.model.r4b.terminologies.AuditEventAgentNetworkType
+import dev.ohs.fhir.model.r4b.terminologies.AuditEventOutcome
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1313,85 +1316,5 @@ public data class AuditEvent(
         source = source.build(),
         entity = entity.mapToList { it.build() },
       )
-  }
-
-  /** The type of network access point of this agent in the audit event. */
-  public enum class AuditEventAgentNetworkType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    _1("1", "http://hl7.org/fhir/network-type", "Machine Name"),
-    _2("2", "http://hl7.org/fhir/network-type", "IP Address"),
-    _3("3", "http://hl7.org/fhir/network-type", "Telephone Number"),
-    _4("4", "http://hl7.org/fhir/network-type", "Email address"),
-    _5("5", "http://hl7.org/fhir/network-type", "URI");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AuditEventAgentNetworkType =
-        when (code) {
-          "1" -> _1
-          "2" -> _2
-          "3" -> _3
-          "4" -> _4
-          "5" -> _5
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AuditEventAgentNetworkType")
-        }
-    }
-  }
-
-  /** Indicator for type of action performed during the event that generated the event. */
-  public enum class AuditEventAction(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    C("C", "http://hl7.org/fhir/audit-event-action", "Create"),
-    R("R", "http://hl7.org/fhir/audit-event-action", "Read/View/Print"),
-    U("U", "http://hl7.org/fhir/audit-event-action", "Update"),
-    D("D", "http://hl7.org/fhir/audit-event-action", "Delete"),
-    E("E", "http://hl7.org/fhir/audit-event-action", "Execute");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AuditEventAction =
-        when (code) {
-          "C" -> C
-          "R" -> R
-          "U" -> U
-          "D" -> D
-          "E" -> E
-          else -> throw IllegalArgumentException("Unknown code $code for enum AuditEventAction")
-        }
-    }
-  }
-
-  /** Indicates whether the event succeeded or failed. */
-  public enum class AuditEventOutcome(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    _0("0", "http://hl7.org/fhir/audit-event-outcome", "Success"),
-    _4("4", "http://hl7.org/fhir/audit-event-outcome", "Minor failure"),
-    _8("8", "http://hl7.org/fhir/audit-event-outcome", "Serious failure"),
-    _12("12", "http://hl7.org/fhir/audit-event-outcome", "Major failure");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AuditEventOutcome =
-        when (code) {
-          "0" -> _0
-          "4" -> _4
-          "8" -> _8
-          "12" -> _12
-          else -> throw IllegalArgumentException("Unknown code $code for enum AuditEventOutcome")
-        }
-    }
   }
 }

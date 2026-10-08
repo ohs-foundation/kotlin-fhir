@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.VerificationResult
+import dev.ohs.fhir.model.r5.terminologies.VerificationResultStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -852,8 +853,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
       need = need,
       status =
         Enumeration.of(
-          if (status != null) VerificationResult.VerificationResultStatus.fromCode(status)
-          else null,
+          if (status != null) VerificationResultStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(

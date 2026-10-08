@@ -42,6 +42,8 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.MeasureReportStatus
+import dev.ohs.fhir.model.r4.terminologies.MeasureReportType
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -1037,15 +1039,11 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) MeasureReport.MeasureReportStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on MeasureReport"),
+        Enumeration.of(if (status != null) MeasureReportStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on MeasureReport"),
       type =
-        Enumeration.of(
-          if (type != null) MeasureReport.MeasureReportType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on MeasureReport"),
+        Enumeration.of(if (type != null) MeasureReportType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on MeasureReport"),
       measure =
         Canonical.of(measure, _measure)
           ?: throw SerializationException("Missing required property 'measure' on MeasureReport"),

@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.CareTeamStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -427,10 +428,7 @@ internal object CareTeamSerializer : FhirResourceSerializer<CareTeam> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) CareTeam.CareTeamStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) CareTeamStatus.fromCode(status) else null, _status),
       category = category ?: listOf(),
       name = R5String.of(name, _name),
       subject = subject,

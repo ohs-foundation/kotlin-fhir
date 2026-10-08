@@ -49,7 +49,11 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.UnsignedInt
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.CodeSystemContentMode
+import dev.ohs.fhir.model.r4.terminologies.CodeSystemHierarchyMeaning
 import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
+import dev.ohs.fhir.model.r4.terminologies.FilterOperator
+import dev.ohs.fhir.model.r4.terminologies.PropertyType
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -180,7 +184,7 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
       `operator` =
         (kotlin.collections.List(maxOf(`operator`?.size ?: 0, _operator?.size ?: 0)) { index ->
           Enumeration.of(
-            `operator`?.getOrNull(index)?.let { CodeSystem.FilterOperator.fromCode(it) },
+            `operator`?.getOrNull(index)?.let { FilterOperator.fromCode(it) },
             _operator?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -332,7 +336,7 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
       uri = Uri.of(uri, _uri),
       description = R4String.of(description, _description),
       type =
-        Enumeration.of(if (type != null) CodeSystem.PropertyType.fromCode(type) else null, _type)
+        Enumeration.of(if (type != null) PropertyType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on CodeSystem.Property"
           ),
@@ -1337,8 +1341,7 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
       valueSet = Canonical.of(valueSet, _valueSet),
       hierarchyMeaning =
         Enumeration.of(
-          if (hierarchyMeaning != null)
-            CodeSystem.CodeSystemHierarchyMeaning.fromCode(hierarchyMeaning)
+          if (hierarchyMeaning != null) CodeSystemHierarchyMeaning.fromCode(hierarchyMeaning)
           else null,
           _hierarchyMeaning,
         ),
@@ -1346,7 +1349,7 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
       versionNeeded = R4Boolean.of(versionNeeded, _versionNeeded),
       content =
         Enumeration.of(
-          if (content != null) CodeSystem.CodeSystemContentMode.fromCode(content) else null,
+          if (content != null) CodeSystemContentMode.fromCode(content) else null,
           _content,
         ) ?: throw SerializationException("Missing required property 'content' on CodeSystem"),
       supplements = Canonical.of(supplements, _supplements),

@@ -45,6 +45,7 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.ExampleScenarioActorType
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -167,10 +168,7 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
             "Missing required property 'key' on ExampleScenario.Actor"
           ),
       type =
-        Enumeration.of(
-          if (type != null) ExampleScenario.ExampleScenarioActorType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ExampleScenarioActorType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ExampleScenario.Actor"
           ),

@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.FamilyMemberHistoryConditionSerializer
 import dev.ohs.fhir.model.r4b.serializers.FamilyMemberHistorySerializer
+import dev.ohs.fhir.model.r4b.terminologies.FamilyHistoryStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -812,30 +813,5 @@ public data class FamilyMemberHistory(
         note = note.mapToList { it.build() },
         condition = condition.mapToList { it.build() },
       )
-  }
-
-  /** A code that identifies the status of the family history record. */
-  public enum class FamilyHistoryStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Partial("partial", "http://hl7.org/fhir/history-status", "Partial"),
-    Completed("completed", "http://hl7.org/fhir/history-status", "Completed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/history-status", "Entered in Error"),
-    Health_Unknown("health-unknown", "http://hl7.org/fhir/history-status", "Health Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FamilyHistoryStatus =
-        when (code) {
-          "partial" -> Partial
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "health-unknown" -> Health_Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum FamilyHistoryStatus")
-        }
-    }
   }
 }

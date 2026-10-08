@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.HumanNameSerializer
+import dev.ohs.fhir.model.r5.terminologies.NameUse
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -195,36 +196,5 @@ public data class HumanName(
         suffix = suffix.mapToList { it.build() },
         period = period?.build(),
       )
-  }
-
-  /** The use of a human name. */
-  public enum class NameUse(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Usual("usual", "http://hl7.org/fhir/name-use", "Usual"),
-    Official("official", "http://hl7.org/fhir/name-use", "Official"),
-    Temp("temp", "http://hl7.org/fhir/name-use", "Temp"),
-    Nickname("nickname", "http://hl7.org/fhir/name-use", "Nickname"),
-    Anonymous("anonymous", "http://hl7.org/fhir/name-use", "Anonymous"),
-    Old("old", "http://hl7.org/fhir/name-use", "Old"),
-    Maiden("maiden", "http://hl7.org/fhir/name-use", "Name changed for Marriage");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): NameUse =
-        when (code) {
-          "usual" -> Usual
-          "official" -> Official
-          "temp" -> Temp
-          "nickname" -> Nickname
-          "anonymous" -> Anonymous
-          "old" -> Old
-          "maiden" -> Maiden
-          else -> throw IllegalArgumentException("Unknown code $code for enum NameUse")
-        }
-    }
   }
 }

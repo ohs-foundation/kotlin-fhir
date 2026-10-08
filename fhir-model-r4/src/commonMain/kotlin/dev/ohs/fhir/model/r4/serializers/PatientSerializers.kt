@@ -48,6 +48,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r4.terminologies.LinkType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -417,7 +418,7 @@ internal object PatientLinkSerializer : KSerializer<Patient.Link> {
       other =
         other ?: throw SerializationException("Missing required property 'other' on Patient.Link"),
       type =
-        Enumeration.of(if (type != null) Patient.LinkType.fromCode(type) else null, _type)
+        Enumeration.of(if (type != null) LinkType.fromCode(type) else null, _type)
           ?: throw SerializationException("Missing required property 'type' on Patient.Link"),
     )
   }

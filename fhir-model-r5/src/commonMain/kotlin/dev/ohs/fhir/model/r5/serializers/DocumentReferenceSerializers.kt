@@ -46,6 +46,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.CompositionStatus
 import dev.ohs.fhir.model.r5.terminologies.DocumentReferenceStatus
 import kotlin.Int
 import kotlin.OptIn
@@ -875,7 +876,7 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
           ),
       docStatus =
         Enumeration.of(
-          if (docStatus != null) DocumentReference.CompositionStatus.fromCode(docStatus) else null,
+          if (docStatus != null) CompositionStatus.fromCode(docStatus) else null,
           _docStatus,
         ),
       modality = modality ?: listOf(),

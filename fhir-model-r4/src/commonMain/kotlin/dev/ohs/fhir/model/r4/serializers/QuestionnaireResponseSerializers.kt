@@ -49,6 +49,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Time
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.QuestionnaireResponseStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -792,8 +793,7 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
       questionnaire = Canonical.of(questionnaire, _questionnaire),
       status =
         Enumeration.of(
-          if (status != null) QuestionnaireResponse.QuestionnaireResponseStatus.fromCode(status)
-          else null,
+          if (status != null) QuestionnaireResponseStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(

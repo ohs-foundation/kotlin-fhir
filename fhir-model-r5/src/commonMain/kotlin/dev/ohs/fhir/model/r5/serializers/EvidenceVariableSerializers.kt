@@ -55,6 +55,8 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.CharacteristicCombination
+import dev.ohs.fhir.model.r5.terminologies.EvidenceVariableHandling
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -740,10 +742,7 @@ internal object EvidenceVariableCharacteristicDefinitionByCombinationSerializer 
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          if (code != null) EvidenceVariable.CharacteristicCombination.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) CharacteristicCombination.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on EvidenceVariable.Characteristic.DefinitionByCombination"
           ),
@@ -1630,8 +1629,7 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
       characteristic = characteristic ?: listOf(),
       handling =
         Enumeration.of(
-          if (handling != null) EvidenceVariable.EvidenceVariableHandling.fromCode(handling)
-          else null,
+          if (handling != null) EvidenceVariableHandling.fromCode(handling) else null,
           _handling,
         ),
       category = category ?: listOf(),

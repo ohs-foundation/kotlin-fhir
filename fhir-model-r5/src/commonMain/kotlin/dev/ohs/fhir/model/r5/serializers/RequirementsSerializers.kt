@@ -47,6 +47,7 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.ConformanceExpectation
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -268,7 +269,7 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
       conformance =
         (kotlin.collections.List(maxOf(conformance?.size ?: 0, _conformance?.size ?: 0)) { index ->
           Enumeration.of(
-            conformance?.getOrNull(index)?.let { Requirements.ConformanceExpectation.fromCode(it) },
+            conformance?.getOrNull(index)?.let { ConformanceExpectation.fromCode(it) },
             _conformance?.getOrNull(index),
           )
             ?: throw SerializationException(

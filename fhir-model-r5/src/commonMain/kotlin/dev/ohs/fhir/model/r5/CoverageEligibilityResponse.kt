@@ -27,6 +27,9 @@ import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceIte
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseSerializer
+import dev.ohs.fhir.model.r5.terminologies.EligibilityOutcome
+import dev.ohs.fhir.model.r5.terminologies.EligibilityResponsePurpose
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1369,92 +1372,5 @@ public data class CoverageEligibilityResponse(
         form = form?.build(),
         error = error.mapToList { it.build() },
       )
-  }
-
-  /** This value set includes Status codes. */
-  public enum class FinancialResourceStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/fm-status", "Active"),
-    Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
-    Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
-        when (code) {
-          "active" -> Active
-          "cancelled" -> Cancelled
-          "draft" -> Draft
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
-        }
-    }
-  }
-
-  /** A code specifying the types of information being requested. */
-  public enum class EligibilityResponsePurpose(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Auth_Requirements(
-      "auth-requirements",
-      "http://hl7.org/fhir/eligibilityresponse-purpose",
-      "Coverage auth-requirements",
-    ),
-    Benefits("benefits", "http://hl7.org/fhir/eligibilityresponse-purpose", "Coverage benefits"),
-    Discovery("discovery", "http://hl7.org/fhir/eligibilityresponse-purpose", "Coverage Discovery"),
-    Validation(
-      "validation",
-      "http://hl7.org/fhir/eligibilityresponse-purpose",
-      "Coverage Validation",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EligibilityResponsePurpose =
-        when (code) {
-          "auth-requirements" -> Auth_Requirements
-          "benefits" -> Benefits
-          "discovery" -> Discovery
-          "validation" -> Validation
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum EligibilityResponsePurpose")
-        }
-    }
-  }
-
-  /** The outcome of the processing. */
-  public enum class EligibilityOutcome(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Queued("queued", "http://hl7.org/fhir/eligibility-outcome", "Queued"),
-    Complete("complete", "http://hl7.org/fhir/eligibility-outcome", "Processing Complete"),
-    Error("error", "http://hl7.org/fhir/eligibility-outcome", "Error"),
-    Partial("partial", "http://hl7.org/fhir/eligibility-outcome", "Partial Processing");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EligibilityOutcome =
-        when (code) {
-          "queued" -> Queued
-          "complete" -> Complete
-          "error" -> Error
-          "partial" -> Partial
-          else -> throw IllegalArgumentException("Unknown code $code for enum EligibilityOutcome")
-        }
-    }
   }
 }

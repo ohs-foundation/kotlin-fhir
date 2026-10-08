@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.EventStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -496,10 +497,7 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) ClinicalImpression.EventStatus.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) EventStatus.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on ClinicalImpression"
           ),

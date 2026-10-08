@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r5.Narrative
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.FormularyItemStatusCodes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -191,7 +192,7 @@ internal object FormularyItemSerializer : FhirResourceSerializer<FormularyItem> 
       code = code,
       status =
         Enumeration.of(
-          if (status != null) FormularyItem.FormularyItemStatusCodes.fromCode(status) else null,
+          if (status != null) FormularyItemStatusCodes.fromCode(status) else null,
           _status,
         ),
     )

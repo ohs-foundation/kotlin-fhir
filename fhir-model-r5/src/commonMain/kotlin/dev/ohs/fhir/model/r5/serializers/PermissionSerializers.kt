@@ -40,6 +40,10 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ConsentDataMeaning
+import dev.ohs.fhir.model.r5.terminologies.ConsentProvisionType
+import dev.ohs.fhir.model.r5.terminologies.PermissionRuleCombining
+import dev.ohs.fhir.model.r5.terminologies.PermissionStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -248,11 +252,7 @@ internal object PermissionRuleSerializer : KSerializer<Permission.Rule> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(
-          if (type != null) Permission.ConsentProvisionType.fromCode(type) else null,
-          _type,
-        ),
+      type = Enumeration.of(if (type != null) ConsentProvisionType.fromCode(type) else null, _type),
       `data` = `data` ?: listOf(),
       activity = activity ?: listOf(),
       limit = limit ?: listOf(),
@@ -510,7 +510,7 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
       modifierExtension = modifierExtension ?: listOf(),
       meaning =
         Enumeration.of(
-          if (meaning != null) Permission.ConsentDataMeaning.fromCode(meaning) else null,
+          if (meaning != null) ConsentDataMeaning.fromCode(meaning) else null,
           _meaning,
         )
           ?: throw SerializationException(
@@ -861,10 +861,8 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Permission.PermissionStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Permission"),
+        Enumeration.of(if (status != null) PermissionStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Permission"),
       asserter = asserter,
       date =
         (kotlin.collections.List(maxOf(date?.size ?: 0, _date?.size ?: 0)) { index ->
@@ -880,7 +878,7 @@ internal object PermissionSerializer : FhirResourceSerializer<Permission> {
       justification = justification,
       combining =
         Enumeration.of(
-          if (combining != null) Permission.PermissionRuleCombining.fromCode(combining) else null,
+          if (combining != null) PermissionRuleCombining.fromCode(combining) else null,
           _combining,
         ) ?: throw SerializationException("Missing required property 'combining' on Permission"),
       rule = rule ?: listOf(),

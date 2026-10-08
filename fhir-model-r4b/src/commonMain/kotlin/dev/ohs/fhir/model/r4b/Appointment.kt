@@ -23,6 +23,9 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.AppointmentParticipantSerializer
 import dev.ohs.fhir.model.r4b.serializers.AppointmentSerializer
+import dev.ohs.fhir.model.r4b.terminologies.AppointmentStatus
+import dev.ohs.fhir.model.r4b.terminologies.ParticipantRequired
+import dev.ohs.fhir.model.r4b.terminologies.ParticipationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -755,98 +758,5 @@ public data class Appointment(
         participant = participant.mapToList { it.build() },
         requestedPeriod = requestedPeriod.mapToList { it.build() },
       )
-  }
-
-  /** Is the Participant required to attend the appointment. */
-  public enum class ParticipantRequired(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Required("required", "http://hl7.org/fhir/participantrequired", "Required"),
-    Optional("optional", "http://hl7.org/fhir/participantrequired", "Optional"),
-    Information_Only(
-      "information-only",
-      "http://hl7.org/fhir/participantrequired",
-      "Information Only",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ParticipantRequired =
-        when (code) {
-          "required" -> Required
-          "optional" -> Optional
-          "information-only" -> Information_Only
-          else -> throw IllegalArgumentException("Unknown code $code for enum ParticipantRequired")
-        }
-    }
-  }
-
-  /** The Participation status of an appointment. */
-  public enum class ParticipationStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Accepted("accepted", "http://hl7.org/fhir/participationstatus", "Accepted"),
-    Declined("declined", "http://hl7.org/fhir/participationstatus", "Declined"),
-    Tentative("tentative", "http://hl7.org/fhir/participationstatus", "Tentative"),
-    Needs_Action("needs-action", "http://hl7.org/fhir/participationstatus", "Needs Action");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ParticipationStatus =
-        when (code) {
-          "accepted" -> Accepted
-          "declined" -> Declined
-          "tentative" -> Tentative
-          "needs-action" -> Needs_Action
-          else -> throw IllegalArgumentException("Unknown code $code for enum ParticipationStatus")
-        }
-    }
-  }
-
-  /** The free/busy status of an appointment. */
-  public enum class AppointmentStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Proposed("proposed", "http://hl7.org/fhir/appointmentstatus", "Proposed"),
-    Pending("pending", "http://hl7.org/fhir/appointmentstatus", "Pending"),
-    Booked("booked", "http://hl7.org/fhir/appointmentstatus", "Booked"),
-    Arrived("arrived", "http://hl7.org/fhir/appointmentstatus", "Arrived"),
-    Fulfilled("fulfilled", "http://hl7.org/fhir/appointmentstatus", "Fulfilled"),
-    Cancelled("cancelled", "http://hl7.org/fhir/appointmentstatus", "Cancelled"),
-    Noshow("noshow", "http://hl7.org/fhir/appointmentstatus", "No Show"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/appointmentstatus",
-      "Entered in error",
-    ),
-    Checked_In("checked-in", "http://hl7.org/fhir/appointmentstatus", "Checked In"),
-    Waitlist("waitlist", "http://hl7.org/fhir/appointmentstatus", "Waitlisted");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AppointmentStatus =
-        when (code) {
-          "proposed" -> Proposed
-          "pending" -> Pending
-          "booked" -> Booked
-          "arrived" -> Arrived
-          "fulfilled" -> Fulfilled
-          "cancelled" -> Cancelled
-          "noshow" -> Noshow
-          "entered-in-error" -> Entered_In_Error
-          "checked-in" -> Checked_In
-          "waitlist" -> Waitlist
-          else -> throw IllegalArgumentException("Unknown code $code for enum AppointmentStatus")
-        }
-    }
   }
 }

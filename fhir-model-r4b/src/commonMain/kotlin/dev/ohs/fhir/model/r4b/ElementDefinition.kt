@@ -30,7 +30,13 @@ import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionSerializer
 import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionSlicingDiscriminatorSerializer
 import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionSlicingSerializer
 import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionTypeSerializer
+import dev.ohs.fhir.model.r4b.terminologies.AggregationMode
 import dev.ohs.fhir.model.r4b.terminologies.BindingStrength
+import dev.ohs.fhir.model.r4b.terminologies.ConstraintSeverity
+import dev.ohs.fhir.model.r4b.terminologies.DiscriminatorType
+import dev.ohs.fhir.model.r4b.terminologies.PropertyRepresentation
+import dev.ohs.fhir.model.r4b.terminologies.ReferenceVersionRules
+import dev.ohs.fhir.model.r4b.terminologies.SlicingRules
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -3372,162 +3378,5 @@ public data class ElementDefinition(
         binding = binding?.build(),
         mapping = mapping.mapToList { it.build() },
       )
-  }
-
-  /** How slices are interpreted when evaluating an instance. */
-  public enum class SlicingRules(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Closed("closed", "http://hl7.org/fhir/resource-slicing-rules", "Closed"),
-    Open("open", "http://hl7.org/fhir/resource-slicing-rules", "Open"),
-    OpenAtEnd("openAtEnd", "http://hl7.org/fhir/resource-slicing-rules", "Open at End");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SlicingRules =
-        when (code) {
-          "closed" -> Closed
-          "open" -> Open
-          "openAtEnd" -> OpenAtEnd
-          else -> throw IllegalArgumentException("Unknown code $code for enum SlicingRules")
-        }
-    }
-  }
-
-  /** How an element value is interpreted when discrimination is evaluated. */
-  public enum class DiscriminatorType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Value("value", "http://hl7.org/fhir/discriminator-type", "Value"),
-    Exists("exists", "http://hl7.org/fhir/discriminator-type", "Exists"),
-    Pattern("pattern", "http://hl7.org/fhir/discriminator-type", "Pattern"),
-    Type("type", "http://hl7.org/fhir/discriminator-type", "Type"),
-    Profile("profile", "http://hl7.org/fhir/discriminator-type", "Profile");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DiscriminatorType =
-        when (code) {
-          "value" -> Value
-          "exists" -> Exists
-          "pattern" -> Pattern
-          "type" -> Type
-          "profile" -> Profile
-          else -> throw IllegalArgumentException("Unknown code $code for enum DiscriminatorType")
-        }
-    }
-  }
-
-  /** How resource references can be aggregated. */
-  public enum class AggregationMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Contained("contained", "http://hl7.org/fhir/resource-aggregation-mode", "Contained"),
-    Referenced("referenced", "http://hl7.org/fhir/resource-aggregation-mode", "Referenced"),
-    Bundled("bundled", "http://hl7.org/fhir/resource-aggregation-mode", "Bundled");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AggregationMode =
-        when (code) {
-          "contained" -> Contained
-          "referenced" -> Referenced
-          "bundled" -> Bundled
-          else -> throw IllegalArgumentException("Unknown code $code for enum AggregationMode")
-        }
-    }
-  }
-
-  /**
-   * Whether a reference needs to be version specific or version independent, or whether either can
-   * be used.
-   */
-  public enum class ReferenceVersionRules(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Either(
-      "either",
-      "http://hl7.org/fhir/reference-version-rules",
-      "Either Specific or independent",
-    ),
-    Independent(
-      "independent",
-      "http://hl7.org/fhir/reference-version-rules",
-      "Version independent",
-    ),
-    Specific("specific", "http://hl7.org/fhir/reference-version-rules", "Version Specific");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ReferenceVersionRules =
-        when (code) {
-          "either" -> Either
-          "independent" -> Independent
-          "specific" -> Specific
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ReferenceVersionRules")
-        }
-    }
-  }
-
-  /** SHALL applications comply with this constraint? */
-  public enum class ConstraintSeverity(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Error("error", "http://hl7.org/fhir/constraint-severity", "Error"),
-    Warning("warning", "http://hl7.org/fhir/constraint-severity", "Warning");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ConstraintSeverity =
-        when (code) {
-          "error" -> Error
-          "warning" -> Warning
-          else -> throw IllegalArgumentException("Unknown code $code for enum ConstraintSeverity")
-        }
-    }
-  }
-
-  /** How a property is represented when serialized. */
-  public enum class PropertyRepresentation(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    XmlAttr("xmlAttr", "http://hl7.org/fhir/property-representation", "XML Attribute"),
-    XmlText("xmlText", "http://hl7.org/fhir/property-representation", "XML Text"),
-    TypeAttr("typeAttr", "http://hl7.org/fhir/property-representation", "Type Attribute"),
-    CdaText("cdaText", "http://hl7.org/fhir/property-representation", "CDA Text Format"),
-    Xhtml("xhtml", "http://hl7.org/fhir/property-representation", "XHTML");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): PropertyRepresentation =
-        when (code) {
-          "xmlAttr" -> XmlAttr
-          "xmlText" -> XmlText
-          "typeAttr" -> TypeAttr
-          "cdaText" -> CdaText
-          "xhtml" -> Xhtml
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum PropertyRepresentation")
-        }
-    }
   }
 }

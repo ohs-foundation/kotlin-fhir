@@ -27,7 +27,9 @@ import dev.ohs.fhir.model.r5.serializers.EvidenceReportSectionSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportSubjectCharacteristicSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportSubjectSerializer
+import dev.ohs.fhir.model.r5.terminologies.ListMode
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.ReportRelationshipType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1484,66 +1486,5 @@ public data class EvidenceReport(
         relatesTo = relatesTo.mapToList { it.build() },
         section = section.mapToList { it.build() },
       )
-  }
-
-  /** The type of relationship between reports. */
-  public enum class ReportRelationshipType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Replaces("replaces", "http://hl7.org/fhir/report-relation-type", "Replaces"),
-    Amends("amends", "http://hl7.org/fhir/report-relation-type", "Amends"),
-    Appends("appends", "http://hl7.org/fhir/report-relation-type", "Appends"),
-    Transforms("transforms", "http://hl7.org/fhir/report-relation-type", "Transforms"),
-    ReplacedWith("replacedWith", "http://hl7.org/fhir/report-relation-type", "Replaced With"),
-    AmendedWith("amendedWith", "http://hl7.org/fhir/report-relation-type", "Amended With"),
-    AppendedWith("appendedWith", "http://hl7.org/fhir/report-relation-type", "Appended With"),
-    TransformedWith(
-      "transformedWith",
-      "http://hl7.org/fhir/report-relation-type",
-      "Transformed With",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ReportRelationshipType =
-        when (code) {
-          "replaces" -> Replaces
-          "amends" -> Amends
-          "appends" -> Appends
-          "transforms" -> Transforms
-          "replacedWith" -> ReplacedWith
-          "amendedWith" -> AmendedWith
-          "appendedWith" -> AppendedWith
-          "transformedWith" -> TransformedWith
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ReportRelationshipType")
-        }
-    }
-  }
-
-  /** The processing mode that applies to this list. */
-  public enum class ListMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Working("working", "http://hl7.org/fhir/list-mode", "Working List"),
-    Snapshot("snapshot", "http://hl7.org/fhir/list-mode", "Snapshot List"),
-    Changes("changes", "http://hl7.org/fhir/list-mode", "Change List");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ListMode =
-        when (code) {
-          "working" -> Working
-          "snapshot" -> Snapshot
-          "changes" -> Changes
-          else -> throw IllegalArgumentException("Unknown code $code for enum ListMode")
-        }
-    }
   }
 }

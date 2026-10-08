@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.ResearchStudyStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -638,10 +639,8 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
       protocol = protocol ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) ResearchStudy.ResearchStudyStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on ResearchStudy"),
+        Enumeration.of(if (status != null) ResearchStudyStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on ResearchStudy"),
       primaryPurposeType = primaryPurposeType,
       phase = phase,
       category = category ?: listOf(),

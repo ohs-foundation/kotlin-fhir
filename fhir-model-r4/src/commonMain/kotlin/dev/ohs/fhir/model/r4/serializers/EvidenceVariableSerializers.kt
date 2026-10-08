@@ -54,6 +54,8 @@ import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.TriggerDefinition
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.EvidenceVariableType
+import dev.ohs.fhir.model.r4.terminologies.GroupMeasure
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -315,7 +317,7 @@ internal object EvidenceVariableCharacteristicSerializer :
       timeFromStart = timeFromStart,
       groupMeasure =
         Enumeration.of(
-          if (groupMeasure != null) EvidenceVariable.GroupMeasure.fromCode(groupMeasure) else null,
+          if (groupMeasure != null) GroupMeasure.fromCode(groupMeasure) else null,
           _groupMeasure,
         ),
     )
@@ -873,11 +875,7 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
       reviewer = reviewer ?: listOf(),
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
-      type =
-        Enumeration.of(
-          if (type != null) EvidenceVariable.EvidenceVariableType.fromCode(type) else null,
-          _type,
-        ),
+      type = Enumeration.of(if (type != null) EvidenceVariableType.fromCode(type) else null, _type),
       characteristic = characteristic ?: listOf(),
     )
   }

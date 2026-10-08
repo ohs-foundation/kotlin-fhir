@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.AccountCoverageSerializer
 import dev.ohs.fhir.model.r4.serializers.AccountGuarantorSerializer
 import dev.ohs.fhir.model.r4.serializers.AccountSerializer
+import dev.ohs.fhir.model.r4.terminologies.AccountStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -669,32 +670,5 @@ public data class Account(
         guarantor = guarantor.mapToList { it.build() },
         partOf = partOf?.build(),
       )
-  }
-
-  /** Indicates whether the account is available to be used. */
-  public enum class AccountStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/account-status", "Active"),
-    Inactive("inactive", "http://hl7.org/fhir/account-status", "Inactive"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/account-status", "Entered in error"),
-    On_Hold("on-hold", "http://hl7.org/fhir/account-status", "On Hold"),
-    Unknown("unknown", "http://hl7.org/fhir/account-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AccountStatus =
-        when (code) {
-          "active" -> Active
-          "inactive" -> Inactive
-          "entered-in-error" -> Entered_In_Error
-          "on-hold" -> On_Hold
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum AccountStatus")
-        }
-    }
   }
 }

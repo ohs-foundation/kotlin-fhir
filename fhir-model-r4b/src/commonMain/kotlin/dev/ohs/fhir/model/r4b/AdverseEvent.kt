@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.AdverseEventSerializer
 import dev.ohs.fhir.model.r4b.serializers.AdverseEventSuspectEntityCausalitySerializer
 import dev.ohs.fhir.model.r4b.serializers.AdverseEventSuspectEntitySerializer
+import dev.ohs.fhir.model.r4b.terminologies.AdverseEventActuality
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -749,31 +750,5 @@ public data class AdverseEvent(
         referenceDocument = referenceDocument.mapToList { it.build() },
         study = study.mapToList { it.build() },
       )
-  }
-
-  /** Overall nature of the adverse event, e.g. real or potential. */
-  public enum class AdverseEventActuality(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Actual("actual", "http://hl7.org/fhir/adverse-event-actuality", "Adverse Event"),
-    Potential(
-      "potential",
-      "http://hl7.org/fhir/adverse-event-actuality",
-      "Potential Adverse Event",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AdverseEventActuality =
-        when (code) {
-          "actual" -> Actual
-          "potential" -> Potential
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AdverseEventActuality")
-        }
-    }
   }
 }

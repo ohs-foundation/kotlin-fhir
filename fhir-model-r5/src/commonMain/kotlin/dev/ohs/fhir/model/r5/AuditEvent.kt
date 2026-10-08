@@ -27,6 +27,8 @@ import dev.ohs.fhir.model.r5.serializers.AuditEventEntitySerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventOutcomeSerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventSerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventSourceSerializer
+import dev.ohs.fhir.model.r5.terminologies.AuditEventAction
+import dev.ohs.fhir.model.r5.terminologies.AuditEventSeverity
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1445,65 +1447,5 @@ public data class AuditEvent(
         source = source.build(),
         entity = entity.mapToList { it.build() },
       )
-  }
-
-  /** Indicator for type of action performed during the event that generated the event. */
-  public enum class AuditEventAction(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    C("C", "http://hl7.org/fhir/audit-event-action", "Create"),
-    R("R", "http://hl7.org/fhir/audit-event-action", "Read"),
-    U("U", "http://hl7.org/fhir/audit-event-action", "Update"),
-    D("D", "http://hl7.org/fhir/audit-event-action", "Delete"),
-    E("E", "http://hl7.org/fhir/audit-event-action", "Execute");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): AuditEventAction =
-        when (code) {
-          "C" -> C
-          "R" -> R
-          "U" -> U
-          "D" -> D
-          "E" -> E
-          else -> throw IllegalArgumentException("Unknown code $code for enum AuditEventAction")
-        }
-    }
-  }
-
-  /** The severity of the audit entry. */
-  public enum class AuditEventSeverity(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Emergency("emergency", "http://hl7.org/fhir/audit-event-severity", "Emergency"),
-    Alert("alert", "http://hl7.org/fhir/audit-event-severity", "Alert"),
-    Critical("critical", "http://hl7.org/fhir/audit-event-severity", "Critical"),
-    Error("error", "http://hl7.org/fhir/audit-event-severity", "Error"),
-    Warning("warning", "http://hl7.org/fhir/audit-event-severity", "Warning"),
-    Notice("notice", "http://hl7.org/fhir/audit-event-severity", "Notice"),
-    Informational("informational", "http://hl7.org/fhir/audit-event-severity", "Informational"),
-    Debug("debug", "http://hl7.org/fhir/audit-event-severity", "Debug");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): AuditEventSeverity =
-        when (code) {
-          "emergency" -> Emergency
-          "alert" -> Alert
-          "critical" -> Critical
-          "error" -> Error
-          "warning" -> Warning
-          "notice" -> Notice
-          "informational" -> Informational
-          "debug" -> Debug
-          else -> throw IllegalArgumentException("Unknown code $code for enum AuditEventSeverity")
-        }
-    }
   }
 }

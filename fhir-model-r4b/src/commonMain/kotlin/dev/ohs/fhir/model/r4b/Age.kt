@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.AgeSerializer
+import dev.ohs.fhir.model.r4b.terminologies.QuantityComparator
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -64,7 +65,7 @@ public data class Age(
    * less than the stated value due to measurement issues; e.g. if the comparator is "<" , then the
    * real value is < stated value.
    */
-  override val comparator: Enumeration<Quantity.QuantityComparator>? = null,
+  override val comparator: Enumeration<QuantityComparator>? = null,
   /** A human-readable form of the unit. */
   override val unit: String? = null,
   /** The identification of the system that provides the coded form of the unit. */
@@ -124,7 +125,7 @@ public data class Age(
      * less than the stated value due to measurement issues; e.g. if the comparator is "<" , then
      * the real value is < stated value.
      */
-    open override var comparator: Enumeration<Quantity.QuantityComparator>? = null
+    open override var comparator: Enumeration<QuantityComparator>? = null
 
     /** A human-readable form of the unit. */
     open override var unit: String.Builder? = null
@@ -151,30 +152,5 @@ public data class Age(
         system = system?.build(),
         code = code?.build(),
       )
-  }
-
-  /** How the Quantity should be understood and represented. */
-  public enum class QuantityComparator(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    LessThan("<", "http://hl7.org/fhir/quantity-comparator", "Less than"),
-    LessThanOrEqualTo("<=", "http://hl7.org/fhir/quantity-comparator", "Less or Equal to"),
-    GreaterThanOrEqualTo(">=", "http://hl7.org/fhir/quantity-comparator", "Greater or Equal to"),
-    GreaterThan(">", "http://hl7.org/fhir/quantity-comparator", "Greater than");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): QuantityComparator =
-        when (code) {
-          "<" -> LessThan
-          "<=" -> LessThanOrEqualTo
-          ">=" -> GreaterThanOrEqualTo
-          ">" -> GreaterThan
-          else -> throw IllegalArgumentException("Unknown code $code for enum QuantityComparator")
-        }
-    }
   }
 }

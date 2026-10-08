@@ -23,6 +23,10 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.AllergyIntoleranceReactionSerializer
 import dev.ohs.fhir.model.r4b.serializers.AllergyIntoleranceSerializer
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceCategory
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceCriticality
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceSeverity
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -915,113 +919,5 @@ public data class AllergyIntolerance(
         note = note.mapToList { it.build() },
         reaction = reaction.mapToList { it.build() },
       )
-  }
-
-  /**
-   * Clinical assessment of the severity of a reaction event as a whole, potentially considering
-   * multiple different manifestations.
-   */
-  public enum class AllergyIntoleranceSeverity(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Mild("mild", "http://hl7.org/fhir/reaction-event-severity", "Mild"),
-    Moderate("moderate", "http://hl7.org/fhir/reaction-event-severity", "Moderate"),
-    Severe("severe", "http://hl7.org/fhir/reaction-event-severity", "Severe");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AllergyIntoleranceSeverity =
-        when (code) {
-          "mild" -> Mild
-          "moderate" -> Moderate
-          "severe" -> Severe
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AllergyIntoleranceSeverity")
-        }
-    }
-  }
-
-  /** Identification of the underlying physiological mechanism for a Reaction Risk. */
-  public enum class AllergyIntoleranceType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Allergy("allergy", "http://hl7.org/fhir/allergy-intolerance-type", "Allergy"),
-    Intolerance("intolerance", "http://hl7.org/fhir/allergy-intolerance-type", "Intolerance");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AllergyIntoleranceType =
-        when (code) {
-          "allergy" -> Allergy
-          "intolerance" -> Intolerance
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AllergyIntoleranceType")
-        }
-    }
-  }
-
-  /** Category of an identified substance associated with allergies or intolerances. */
-  public enum class AllergyIntoleranceCategory(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Food("food", "http://hl7.org/fhir/allergy-intolerance-category", "Food"),
-    Medication("medication", "http://hl7.org/fhir/allergy-intolerance-category", "Medication"),
-    Environment("environment", "http://hl7.org/fhir/allergy-intolerance-category", "Environment"),
-    Biologic("biologic", "http://hl7.org/fhir/allergy-intolerance-category", "Biologic");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AllergyIntoleranceCategory =
-        when (code) {
-          "food" -> Food
-          "medication" -> Medication
-          "environment" -> Environment
-          "biologic" -> Biologic
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AllergyIntoleranceCategory")
-        }
-    }
-  }
-
-  /**
-   * Estimate of the potential clinical harm, or seriousness, of a reaction to an identified
-   * substance.
-   */
-  public enum class AllergyIntoleranceCriticality(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Low("low", "http://hl7.org/fhir/allergy-intolerance-criticality", "Low Risk"),
-    High("high", "http://hl7.org/fhir/allergy-intolerance-criticality", "High Risk"),
-    Unable_To_Assess(
-      "unable-to-assess",
-      "http://hl7.org/fhir/allergy-intolerance-criticality",
-      "Unable to Assess Risk",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AllergyIntoleranceCriticality =
-        when (code) {
-          "low" -> Low
-          "high" -> High
-          "unable-to-assess" -> Unable_To_Assess
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum AllergyIntoleranceCriticality"
-            )
-        }
-    }
   }
 }

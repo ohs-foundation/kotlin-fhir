@@ -38,6 +38,10 @@ import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionUdiDeviceIdentifierMarketDistributionSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionUdiDeviceIdentifierSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionVersionSerializer
+import dev.ohs.fhir.model.r5.terminologies.DeviceCorrectiveActionScope
+import dev.ohs.fhir.model.r5.terminologies.DeviceDefinitionRegulatoryIdentifierType
+import dev.ohs.fhir.model.r5.terminologies.DeviceNameType
+import dev.ohs.fhir.model.r5.terminologies.DeviceProductionIdentifierInUDI
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -2725,148 +2729,5 @@ public data class DeviceDefinition(
         correctiveAction = correctiveAction?.build(),
         chargeItem = chargeItem.mapToList { it.build() },
       )
-  }
-
-  /** Regulatory Identifier type */
-  public enum class DeviceDefinitionRegulatoryIdentifierType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Basic("basic", "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type", "Basic"),
-    Master("master", "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type", "Master"),
-    License(
-      "license",
-      "http://hl7.org/fhir/devicedefinition-regulatory-identifier-type",
-      "License",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DeviceDefinitionRegulatoryIdentifierType =
-        when (code) {
-          "basic" -> Basic
-          "master" -> Master
-          "license" -> License
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceDefinitionRegulatoryIdentifierType"
-            )
-        }
-    }
-  }
-
-  /** The type of name the device is referred by. */
-  public enum class DeviceNameType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered_Name("registered-name", "http://hl7.org/fhir/device-nametype", "Registered name"),
-    User_Friendly_Name(
-      "user-friendly-name",
-      "http://hl7.org/fhir/device-nametype",
-      "User Friendly name",
-    ),
-    Patient_Reported_Name(
-      "patient-reported-name",
-      "http://hl7.org/fhir/device-nametype",
-      "Patient Reported name",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DeviceNameType =
-        when (code) {
-          "registered-name" -> Registered_Name
-          "user-friendly-name" -> User_Friendly_Name
-          "patient-reported-name" -> Patient_Reported_Name
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceNameType")
-        }
-    }
-  }
-
-  /** Device - Corrective action scope */
-  public enum class DeviceCorrectiveActionScope(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Model("model", "http://hl7.org/fhir/device-correctiveactionscope", "Model"),
-    Lot_Numbers("lot-numbers", "http://hl7.org/fhir/device-correctiveactionscope", "Lot Numbers"),
-    Serial_Numbers(
-      "serial-numbers",
-      "http://hl7.org/fhir/device-correctiveactionscope",
-      "Serial Numbers",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DeviceCorrectiveActionScope =
-        when (code) {
-          "model" -> Model
-          "lot-numbers" -> Lot_Numbers
-          "serial-numbers" -> Serial_Numbers
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceCorrectiveActionScope"
-            )
-        }
-    }
-  }
-
-  /** Device Production Identifier in UDI */
-  public enum class DeviceProductionIdentifierInUDI(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Lot_Number("lot-number", "http://hl7.org/fhir/device-productidentifierinudi", "Lot Number"),
-    Manufactured_Date(
-      "manufactured-date",
-      "http://hl7.org/fhir/device-productidentifierinudi",
-      "Manufactured date",
-    ),
-    Serial_Number(
-      "serial-number",
-      "http://hl7.org/fhir/device-productidentifierinudi",
-      "Serial Number",
-    ),
-    Expiration_Date(
-      "expiration-date",
-      "http://hl7.org/fhir/device-productidentifierinudi",
-      "Expiration date",
-    ),
-    Biological_Source(
-      "biological-source",
-      "http://hl7.org/fhir/device-productidentifierinudi",
-      "Biological source",
-    ),
-    Software_Version(
-      "software-version",
-      "http://hl7.org/fhir/device-productidentifierinudi",
-      "Software Version",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DeviceProductionIdentifierInUDI =
-        when (code) {
-          "lot-number" -> Lot_Number
-          "manufactured-date" -> Manufactured_Date
-          "serial-number" -> Serial_Number
-          "expiration-date" -> Expiration_Date
-          "biological-source" -> Biological_Source
-          "software-version" -> Software_Version
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceProductionIdentifierInUDI"
-            )
-        }
-    }
   }
 }

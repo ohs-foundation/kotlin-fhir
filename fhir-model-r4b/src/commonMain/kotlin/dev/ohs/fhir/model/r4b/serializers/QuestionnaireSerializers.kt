@@ -54,7 +54,10 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Time
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.EnableWhenBehavior
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.QuestionnaireItemOperator
+import dev.ohs.fhir.model.r4b.terminologies.QuestionnaireItemType
 import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -329,15 +332,12 @@ internal object QuestionnaireItemSerializer : KSerializer<Questionnaire.Item> {
       prefix = R4bString.of(prefix, _prefix),
       text = R4bString.of(text, _text),
       type =
-        Enumeration.of(
-          if (type != null) Questionnaire.QuestionnaireItemType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on Questionnaire.Item"),
+        Enumeration.of(if (type != null) QuestionnaireItemType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on Questionnaire.Item"),
       enableWhen = enableWhen ?: listOf(),
       enableBehavior =
         Enumeration.of(
-          if (enableBehavior != null) Questionnaire.EnableWhenBehavior.fromCode(enableBehavior)
-          else null,
+          if (enableBehavior != null) EnableWhenBehavior.fromCode(enableBehavior) else null,
           _enableBehavior,
         ),
       required = R4bBoolean.of(required, _required),
@@ -641,8 +641,7 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
           ),
       `operator` =
         Enumeration.of(
-          if (`operator` != null) Questionnaire.QuestionnaireItemOperator.fromCode(`operator`)
-          else null,
+          if (`operator` != null) QuestionnaireItemOperator.fromCode(`operator`) else null,
           _operator,
         )
           ?: throw SerializationException(

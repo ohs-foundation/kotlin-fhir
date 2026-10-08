@@ -34,6 +34,7 @@ import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionPropertySerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetScopeSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetSerializer
+import dev.ohs.fhir.model.r5.terminologies.FilterOperator
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -3161,52 +3162,5 @@ public data class ValueSet(
         expansion = expansion?.build(),
         scope = scope?.build(),
       )
-  }
-
-  /** The kind of operation to perform as a part of a property based filter. */
-  public enum class FilterOperator(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    EqualTo("=", "http://hl7.org/fhir/filter-operator", "Equals"),
-    Is_A("is-a", "http://hl7.org/fhir/filter-operator", "Is A (by subsumption)"),
-    Descendent_Of(
-      "descendent-of",
-      "http://hl7.org/fhir/filter-operator",
-      "Descendent Of (by subsumption)",
-    ),
-    Is_Not_A("is-not-a", "http://hl7.org/fhir/filter-operator", "Not (Is A) (by subsumption)"),
-    Regex("regex", "http://hl7.org/fhir/filter-operator", "Regular Expression"),
-    In("in", "http://hl7.org/fhir/filter-operator", "In Set"),
-    Not_In("not-in", "http://hl7.org/fhir/filter-operator", "Not in Set"),
-    Generalizes(
-      "generalizes",
-      "http://hl7.org/fhir/filter-operator",
-      "Generalizes (by Subsumption)",
-    ),
-    Child_Of("child-of", "http://hl7.org/fhir/filter-operator", "Child Of"),
-    Descendent_Leaf("descendent-leaf", "http://hl7.org/fhir/filter-operator", "Descendent Leaf"),
-    Exists("exists", "http://hl7.org/fhir/filter-operator", "Exists");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FilterOperator =
-        when (code) {
-          "=" -> EqualTo
-          "is-a" -> Is_A
-          "descendent-of" -> Descendent_Of
-          "is-not-a" -> Is_Not_A
-          "regex" -> Regex
-          "in" -> In
-          "not-in" -> Not_In
-          "generalizes" -> Generalizes
-          "child-of" -> Child_Of
-          "descendent-leaf" -> Descendent_Leaf
-          "exists" -> Exists
-          else -> throw IllegalArgumentException("Unknown code $code for enum FilterOperator")
-        }
-    }
   }
 }

@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.DiagnosticReportStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -471,7 +472,7 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
       basedOn = basedOn ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) DiagnosticReport.DiagnosticReportStatus.fromCode(status) else null,
+          if (status != null) DiagnosticReportStatus.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on DiagnosticReport"),
       category = category ?: listOf(),

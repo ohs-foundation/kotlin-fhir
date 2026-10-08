@@ -43,6 +43,8 @@ import dev.ohs.fhir.model.r4.TerminologyCapabilities
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.Url
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.CapabilityStatementKind
+import dev.ohs.fhir.model.r4.terminologies.CodeSearchSupport
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -1672,11 +1674,7 @@ internal object TerminologyCapabilitiesSerializer :
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       kind =
-        Enumeration.of(
-          if (kind != null) TerminologyCapabilities.CapabilityStatementKind.fromCode(kind)
-          else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) CapabilityStatementKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on TerminologyCapabilities"
           ),
@@ -1687,8 +1685,7 @@ internal object TerminologyCapabilitiesSerializer :
       expansion = expansion,
       codeSearch =
         Enumeration.of(
-          if (codeSearch != null) TerminologyCapabilities.CodeSearchSupport.fromCode(codeSearch)
-          else null,
+          if (codeSearch != null) CodeSearchSupport.fromCode(codeSearch) else null,
           _codeSearch,
         ),
       validateCode = validateCode,

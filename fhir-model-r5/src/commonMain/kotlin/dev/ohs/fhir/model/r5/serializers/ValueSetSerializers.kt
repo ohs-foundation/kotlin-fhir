@@ -51,6 +51,7 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.ValueSet
+import dev.ohs.fhir.model.r5.terminologies.FilterOperator
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -782,7 +783,7 @@ internal object ValueSetComposeIncludeFilterSerializer :
             "Missing required property 'property' on ValueSet.Compose.Include.Filter"
           ),
       op =
-        Enumeration.of(if (op != null) ValueSet.FilterOperator.fromCode(op) else null, _op)
+        Enumeration.of(if (op != null) FilterOperator.fromCode(op) else null, _op)
           ?: throw SerializationException(
             "Missing required property 'op' on ValueSet.Compose.Include.Filter"
           ),

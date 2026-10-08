@@ -44,7 +44,10 @@ import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.ResourceType
+import dev.ohs.fhir.model.r4b.terminologies.SearchComparator
+import dev.ohs.fhir.model.r4b.terminologies.SearchModifierCode
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.XPathUsageType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -681,7 +684,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       xpath = R4bString.of(xpath, _xpath),
       xpathUsage =
         Enumeration.of(
-          if (xpathUsage != null) SearchParameter.XPathUsageType.fromCode(xpathUsage) else null,
+          if (xpathUsage != null) XPathUsageType.fromCode(xpathUsage) else null,
           _xpathUsage,
         ),
       target =
@@ -699,7 +702,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       comparator =
         (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { index ->
           Enumeration.of(
-            comparator?.getOrNull(index)?.let { SearchParameter.SearchComparator.fromCode(it) },
+            comparator?.getOrNull(index)?.let { SearchComparator.fromCode(it) },
             _comparator?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -709,7 +712,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       modifier =
         (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            modifier?.getOrNull(index)?.let { SearchParameter.SearchModifierCode.fromCode(it) },
+            modifier?.getOrNull(index)?.let { SearchModifierCode.fromCode(it) },
             _modifier?.getOrNull(index),
           )
             ?: throw SerializationException(

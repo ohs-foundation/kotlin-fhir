@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.UnsignedInt
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.GroupType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -591,7 +592,7 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
       identifier = identifier ?: listOf(),
       active = R4Boolean.of(active, _active),
       type =
-        Enumeration.of(if (type != null) Group.GroupType.fromCode(type) else null, _type)
+        Enumeration.of(if (type != null) GroupType.fromCode(type) else null, _type)
           ?: throw SerializationException("Missing required property 'type' on Group"),
       `actual` =
         R4Boolean.of(`actual`, _actual)

@@ -47,6 +47,9 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.RequestIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
+import dev.ohs.fhir.model.r5.terminologies.RequestStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1836,18 +1839,14 @@ internal object NutritionOrderSerializer : FhirResourceSerializer<NutritionOrder
       basedOn = basedOn ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          if (status != null) NutritionOrder.RequestStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on NutritionOrder"),
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on NutritionOrder"),
       intent =
-        Enumeration.of(
-          if (intent != null) NutritionOrder.RequestIntent.fromCode(intent) else null,
-          _intent,
-        ) ?: throw SerializationException("Missing required property 'intent' on NutritionOrder"),
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on NutritionOrder"),
       priority =
         Enumeration.of(
-          if (priority != null) NutritionOrder.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       subject =

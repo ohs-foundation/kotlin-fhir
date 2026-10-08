@@ -55,7 +55,10 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.ActionParticipantType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.RequestIntent
+import dev.ohs.fhir.model.r4b.terminologies.RequestPriority
 import dev.ohs.fhir.model.r4b.terminologies.RequestResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -146,10 +149,7 @@ internal object ActivityDefinitionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) ActivityDefinition.ActionParticipantType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ActionParticipantType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ActivityDefinition.Participant"
           ),
@@ -1071,13 +1071,10 @@ internal object ActivityDefinitionSerializer : FhirResourceSerializer<ActivityDe
       profile = Canonical.of(profile, _profile),
       code = code,
       intent =
-        Enumeration.of(
-          if (intent != null) ActivityDefinition.RequestIntent.fromCode(intent) else null,
-          _intent,
-        ),
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent),
       priority =
         Enumeration.of(
-          if (priority != null) ActivityDefinition.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       doNotPerform = R4bBoolean.of(doNotPerform, _doNotPerform),

@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r4b.serializers.ExampleScenarioProcessStepAlternativeS
 import dev.ohs.fhir.model.r4b.serializers.ExampleScenarioProcessStepOperationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExampleScenarioProcessStepSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExampleScenarioSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ExampleScenarioActorType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import kotlin.Suppress
@@ -1670,27 +1671,5 @@ public data class ExampleScenario(
         process = process.mapToList { it.build() },
         workflow = workflow.mapToList { it.build() },
       )
-  }
-
-  /** The type of actor - system or human. */
-  public enum class ExampleScenarioActorType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Person("person", "http://hl7.org/fhir/examplescenario-actor-type", "Person"),
-    Entity("entity", "http://hl7.org/fhir/examplescenario-actor-type", "System");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ExampleScenarioActorType =
-        when (code) {
-          "person" -> Person
-          "entity" -> Entity
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ExampleScenarioActorType")
-        }
-    }
   }
 }

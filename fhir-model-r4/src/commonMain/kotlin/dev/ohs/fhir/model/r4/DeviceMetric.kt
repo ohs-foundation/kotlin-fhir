@@ -23,6 +23,11 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.DeviceMetricCalibrationSerializer
 import dev.ohs.fhir.model.r4.serializers.DeviceMetricSerializer
+import dev.ohs.fhir.model.r4.terminologies.DeviceMetricCalibrationState
+import dev.ohs.fhir.model.r4.terminologies.DeviceMetricCalibrationType
+import dev.ohs.fhir.model.r4.terminologies.DeviceMetricCategory
+import dev.ohs.fhir.model.r4.terminologies.DeviceMetricColor
+import dev.ohs.fhir.model.r4.terminologies.DeviceMetricOperationalStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -532,159 +537,5 @@ public data class DeviceMetric(
         measurementPeriod = measurementPeriod?.build(),
         calibration = calibration.mapToList { it.build() },
       )
-  }
-
-  /** Describes the type of a metric calibration. */
-  public enum class DeviceMetricCalibrationType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Unspecified("unspecified", "http://hl7.org/fhir/metric-calibration-type", "Unspecified"),
-    Offset("offset", "http://hl7.org/fhir/metric-calibration-type", "Offset"),
-    Gain("gain", "http://hl7.org/fhir/metric-calibration-type", "Gain"),
-    Two_Point("two-point", "http://hl7.org/fhir/metric-calibration-type", "Two Point");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DeviceMetricCalibrationType =
-        when (code) {
-          "unspecified" -> Unspecified
-          "offset" -> Offset
-          "gain" -> Gain
-          "two-point" -> Two_Point
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceMetricCalibrationType"
-            )
-        }
-    }
-  }
-
-  /** Describes the state of a metric calibration. */
-  public enum class DeviceMetricCalibrationState(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Not_Calibrated(
-      "not-calibrated",
-      "http://hl7.org/fhir/metric-calibration-state",
-      "Not Calibrated",
-    ),
-    Calibration_Required(
-      "calibration-required",
-      "http://hl7.org/fhir/metric-calibration-state",
-      "Calibration Required",
-    ),
-    Calibrated("calibrated", "http://hl7.org/fhir/metric-calibration-state", "Calibrated"),
-    Unspecified("unspecified", "http://hl7.org/fhir/metric-calibration-state", "Unspecified");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DeviceMetricCalibrationState =
-        when (code) {
-          "not-calibrated" -> Not_Calibrated
-          "calibration-required" -> Calibration_Required
-          "calibrated" -> Calibrated
-          "unspecified" -> Unspecified
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceMetricCalibrationState"
-            )
-        }
-    }
-  }
-
-  /** Describes the operational status of the DeviceMetric. */
-  public enum class DeviceMetricOperationalStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    On("on", "http://hl7.org/fhir/metric-operational-status", "On"),
-    Off("off", "http://hl7.org/fhir/metric-operational-status", "Off"),
-    Standby("standby", "http://hl7.org/fhir/metric-operational-status", "Standby"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/metric-operational-status",
-      "Entered In Error",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DeviceMetricOperationalStatus =
-        when (code) {
-          "on" -> On
-          "off" -> Off
-          "standby" -> Standby
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum DeviceMetricOperationalStatus"
-            )
-        }
-    }
-  }
-
-  /** Describes the typical color of representation. */
-  public enum class DeviceMetricColor(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Black("black", "http://hl7.org/fhir/metric-color", "Color Black"),
-    Red("red", "http://hl7.org/fhir/metric-color", "Color Red"),
-    Green("green", "http://hl7.org/fhir/metric-color", "Color Green"),
-    Yellow("yellow", "http://hl7.org/fhir/metric-color", "Color Yellow"),
-    Blue("blue", "http://hl7.org/fhir/metric-color", "Color Blue"),
-    Magenta("magenta", "http://hl7.org/fhir/metric-color", "Color Magenta"),
-    Cyan("cyan", "http://hl7.org/fhir/metric-color", "Color Cyan"),
-    White("white", "http://hl7.org/fhir/metric-color", "Color White");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DeviceMetricColor =
-        when (code) {
-          "black" -> Black
-          "red" -> Red
-          "green" -> Green
-          "yellow" -> Yellow
-          "blue" -> Blue
-          "magenta" -> Magenta
-          "cyan" -> Cyan
-          "white" -> White
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceMetricColor")
-        }
-    }
-  }
-
-  /** Describes the category of the metric. */
-  public enum class DeviceMetricCategory(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Measurement("measurement", "http://hl7.org/fhir/metric-category", "Measurement"),
-    Setting("setting", "http://hl7.org/fhir/metric-category", "Setting"),
-    Calculation("calculation", "http://hl7.org/fhir/metric-category", "Calculation"),
-    Unspecified("unspecified", "http://hl7.org/fhir/metric-category", "Unspecified");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DeviceMetricCategory =
-        when (code) {
-          "measurement" -> Measurement
-          "setting" -> Setting
-          "calculation" -> Calculation
-          "unspecified" -> Unspecified
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceMetricCategory")
-        }
-    }
   }
 }

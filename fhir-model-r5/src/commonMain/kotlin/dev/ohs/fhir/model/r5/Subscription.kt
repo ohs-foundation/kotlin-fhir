@@ -24,6 +24,10 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.SubscriptionFilterBySerializer
 import dev.ohs.fhir.model.r5.serializers.SubscriptionParameterSerializer
 import dev.ohs.fhir.model.r5.serializers.SubscriptionSerializer
+import dev.ohs.fhir.model.r5.terminologies.SearchComparator
+import dev.ohs.fhir.model.r5.terminologies.SearchModifierCode
+import dev.ohs.fhir.model.r5.terminologies.SubscriptionPayloadContent
+import dev.ohs.fhir.model.r5.terminologies.SubscriptionStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -812,147 +816,5 @@ public data class Subscription(
         content = content,
         maxCount = maxCount?.build(),
       )
-  }
-
-  /** What Search Comparator Codes are supported in search. */
-  public enum class SearchComparator(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Eq("eq", "http://hl7.org/fhir/search-comparator", "Equals"),
-    Ne("ne", "http://hl7.org/fhir/search-comparator", "Not Equals"),
-    Gt("gt", "http://hl7.org/fhir/search-comparator", "Greater Than"),
-    Lt("lt", "http://hl7.org/fhir/search-comparator", "Less Than"),
-    Ge("ge", "http://hl7.org/fhir/search-comparator", "Greater or Equals"),
-    Le("le", "http://hl7.org/fhir/search-comparator", "Less of Equal"),
-    Sa("sa", "http://hl7.org/fhir/search-comparator", "Starts After"),
-    Eb("eb", "http://hl7.org/fhir/search-comparator", "Ends Before"),
-    Ap("ap", "http://hl7.org/fhir/search-comparator", "Approximately");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SearchComparator =
-        when (code) {
-          "eq" -> Eq
-          "ne" -> Ne
-          "gt" -> Gt
-          "lt" -> Lt
-          "ge" -> Ge
-          "le" -> Le
-          "sa" -> Sa
-          "eb" -> Eb
-          "ap" -> Ap
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchComparator")
-        }
-    }
-  }
-
-  /** A supported modifier for a search parameter. */
-  public enum class SearchModifierCode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Missing("missing", "http://hl7.org/fhir/search-modifier-code", "Missing"),
-    Exact("exact", "http://hl7.org/fhir/search-modifier-code", "Exact"),
-    Contains("contains", "http://hl7.org/fhir/search-modifier-code", "Contains"),
-    Not("not", "http://hl7.org/fhir/search-modifier-code", "Not"),
-    Text("text", "http://hl7.org/fhir/search-modifier-code", "Text"),
-    In("in", "http://hl7.org/fhir/search-modifier-code", "In"),
-    Not_In("not-in", "http://hl7.org/fhir/search-modifier-code", "Not In"),
-    Below("below", "http://hl7.org/fhir/search-modifier-code", "Below"),
-    Above("above", "http://hl7.org/fhir/search-modifier-code", "Above"),
-    Type("type", "http://hl7.org/fhir/search-modifier-code", "Type"),
-    Identifier("identifier", "http://hl7.org/fhir/search-modifier-code", "Identifier"),
-    Of_Type("of-type", "http://hl7.org/fhir/search-modifier-code", "Of Type"),
-    Code_Text("code-text", "http://hl7.org/fhir/search-modifier-code", "Code Text"),
-    Text_Advanced("text-advanced", "http://hl7.org/fhir/search-modifier-code", "Text Advanced"),
-    Iterate("iterate", "http://hl7.org/fhir/search-modifier-code", "Iterate");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SearchModifierCode =
-        when (code) {
-          "missing" -> Missing
-          "exact" -> Exact
-          "contains" -> Contains
-          "not" -> Not
-          "text" -> Text
-          "in" -> In
-          "not-in" -> Not_In
-          "below" -> Below
-          "above" -> Above
-          "type" -> Type
-          "identifier" -> Identifier
-          "of-type" -> Of_Type
-          "code-text" -> Code_Text
-          "text-advanced" -> Text_Advanced
-          "iterate" -> Iterate
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchModifierCode")
-        }
-    }
-  }
-
-  /** State values for FHIR Subscriptions. */
-  public enum class SubscriptionStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Requested("requested", "http://hl7.org/fhir/subscription-status", "Requested"),
-    Active("active", "http://hl7.org/fhir/subscription-status", "Active"),
-    Error("error", "http://hl7.org/fhir/subscription-status", "Error"),
-    Off("off", "http://hl7.org/fhir/subscription-status", "Off"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/subscription-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SubscriptionStatusCodes =
-        when (code) {
-          "requested" -> Requested
-          "active" -> Active
-          "error" -> Error
-          "off" -> Off
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionStatusCodes")
-        }
-    }
-  }
-
-  /** Codes to represent how much resource content to send in the notification payload. */
-  public enum class SubscriptionPayloadContent(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Empty("empty", "http://hl7.org/fhir/subscription-payload-content", "Empty"),
-    Id_Only("id-only", "http://hl7.org/fhir/subscription-payload-content", "Id-only"),
-    Full_Resource(
-      "full-resource",
-      "http://hl7.org/fhir/subscription-payload-content",
-      "Full-resource",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SubscriptionPayloadContent =
-        when (code) {
-          "empty" -> Empty
-          "id-only" -> Id_Only
-          "full-resource" -> Full_Resource
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionPayloadContent")
-        }
-    }
   }
 }

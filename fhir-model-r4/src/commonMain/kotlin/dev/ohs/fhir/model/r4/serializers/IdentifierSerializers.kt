@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.IdentifierUse
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -151,7 +152,7 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
     return Identifier(
       id = id,
       extension = extension ?: listOf(),
-      use = Enumeration.of(if (use != null) Identifier.IdentifierUse.fromCode(use) else null, _use),
+      use = Enumeration.of(if (use != null) IdentifierUse.fromCode(use) else null, _use),
       type = type,
       system = Uri.of(system, _system),
       `value` = R4String.of(`value`, _value),

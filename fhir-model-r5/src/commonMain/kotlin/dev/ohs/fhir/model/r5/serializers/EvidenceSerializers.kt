@@ -53,6 +53,7 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.EvidenceVariableHandling
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -1061,7 +1062,7 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
           ),
       handling =
         Enumeration.of(
-          if (handling != null) Evidence.EvidenceVariableHandling.fromCode(handling) else null,
+          if (handling != null) EvidenceVariableHandling.fromCode(handling) else null,
           _handling,
         ),
       valueCategory = valueCategory ?: listOf(),

@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.serializers.SpecimenFeatureSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenProcessingSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenSerializer
 import dev.ohs.fhir.model.r5.terminologies.SpecimenCombined
+import dev.ohs.fhir.model.r5.terminologies.SpecimenStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1124,30 +1125,5 @@ public data class Specimen(
         condition = condition.mapToList { it.build() },
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Codes providing the status/availability of a specimen. */
-  public enum class SpecimenStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Available("available", "http://hl7.org/fhir/specimen-status", "Available"),
-    Unavailable("unavailable", "http://hl7.org/fhir/specimen-status", "Unavailable"),
-    Unsatisfactory("unsatisfactory", "http://hl7.org/fhir/specimen-status", "Unsatisfactory"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/specimen-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SpecimenStatus =
-        when (code) {
-          "available" -> Available
-          "unavailable" -> Unavailable
-          "unsatisfactory" -> Unsatisfactory
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum SpecimenStatus")
-        }
-    }
   }
 }

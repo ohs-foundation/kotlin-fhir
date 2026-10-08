@@ -28,6 +28,8 @@ import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumCom
 import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumPopulationSerializer
 import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumSerializer
 import dev.ohs.fhir.model.r4b.serializers.MeasureReportSerializer
+import dev.ohs.fhir.model.r4b.terminologies.MeasureReportStatus
+import dev.ohs.fhir.model.r4b.terminologies.MeasureReportType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1195,57 +1197,5 @@ public data class MeasureReport(
         group = group.mapToList { it.build() },
         evaluatedResource = evaluatedResource.mapToList { it.build() },
       )
-  }
-
-  /** The status of the measure report. */
-  public enum class MeasureReportStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Complete("complete", "http://hl7.org/fhir/measure-report-status", "Complete"),
-    Pending("pending", "http://hl7.org/fhir/measure-report-status", "Pending"),
-    Error("error", "http://hl7.org/fhir/measure-report-status", "Error");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): MeasureReportStatus =
-        when (code) {
-          "complete" -> Complete
-          "pending" -> Pending
-          "error" -> Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum MeasureReportStatus")
-        }
-    }
-  }
-
-  /** The type of the measure report. */
-  public enum class MeasureReportType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Individual("individual", "http://hl7.org/fhir/measure-report-type", "Individual"),
-    Subject_List("subject-list", "http://hl7.org/fhir/measure-report-type", "Subject List"),
-    Summary("summary", "http://hl7.org/fhir/measure-report-type", "Summary"),
-    Data_Collection(
-      "data-collection",
-      "http://hl7.org/fhir/measure-report-type",
-      "Data Collection",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): MeasureReportType =
-        when (code) {
-          "individual" -> Individual
-          "subject-list" -> Subject_List
-          "summary" -> Summary
-          "data-collection" -> Data_Collection
-          else -> throw IllegalArgumentException("Unknown code $code for enum MeasureReportType")
-        }
-    }
   }
 }

@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.EpisodeOfCareDiagnosisSerializer
 import dev.ohs.fhir.model.r4.serializers.EpisodeOfCareSerializer
 import dev.ohs.fhir.model.r4.serializers.EpisodeOfCareStatusHistorySerializer
+import dev.ohs.fhir.model.r4.terminologies.EpisodeOfCareStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -651,40 +652,5 @@ public data class EpisodeOfCare(
         team = team.mapToList { it.build() },
         account = account.mapToList { it.build() },
       )
-  }
-
-  /** The status of the episode of care. */
-  public enum class EpisodeOfCareStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Planned("planned", "http://hl7.org/fhir/episode-of-care-status", "Planned"),
-    Waitlist("waitlist", "http://hl7.org/fhir/episode-of-care-status", "Waitlist"),
-    Active("active", "http://hl7.org/fhir/episode-of-care-status", "Active"),
-    Onhold("onhold", "http://hl7.org/fhir/episode-of-care-status", "On Hold"),
-    Finished("finished", "http://hl7.org/fhir/episode-of-care-status", "Finished"),
-    Cancelled("cancelled", "http://hl7.org/fhir/episode-of-care-status", "Cancelled"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/episode-of-care-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): EpisodeOfCareStatus =
-        when (code) {
-          "planned" -> Planned
-          "waitlist" -> Waitlist
-          "active" -> Active
-          "onhold" -> Onhold
-          "finished" -> Finished
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum EpisodeOfCareStatus")
-        }
-    }
   }
 }

@@ -43,6 +43,8 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.RequestPriority
+import dev.ohs.fhir.model.r4.terminologies.RequestStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -545,10 +547,7 @@ internal object CommunicationRequestSerializer : FhirResourceSerializer<Communic
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          if (status != null) CommunicationRequest.RequestStatus.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on CommunicationRequest"
           ),
@@ -556,7 +555,7 @@ internal object CommunicationRequestSerializer : FhirResourceSerializer<Communic
       category = category ?: listOf(),
       priority =
         Enumeration.of(
-          if (priority != null) CommunicationRequest.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       doNotPerform = R4Boolean.of(doNotPerform, _doNotPerform),

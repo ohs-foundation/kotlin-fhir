@@ -23,6 +23,9 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.TimingRepeatSerializer
 import dev.ohs.fhir.model.r4.serializers.TimingSerializer
+import dev.ohs.fhir.model.r4.terminologies.DaysOfWeek
+import dev.ohs.fhir.model.r4.terminologies.EventTiming
+import dev.ohs.fhir.model.r4.terminologies.UnitsOfTime
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -486,136 +489,5 @@ public data class Timing(
         repeat = repeat?.build(),
         code = code?.build(),
       )
-  }
-
-  /** A unit of time (units from UCUM). */
-  public enum class UnitsOfTime(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    S("s", "http://unitsofmeasure.org", "秒"),
-    Min("min", "http://unitsofmeasure.org", "分钟"),
-    H("h", "http://unitsofmeasure.org", "小时"),
-    D("d", "http://unitsofmeasure.org", "天"),
-    Wk("wk", "http://unitsofmeasure.org", "星期"),
-    Mo("mo", "http://unitsofmeasure.org", "月"),
-    A("a", "http://unitsofmeasure.org", "年");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): UnitsOfTime =
-        when (code) {
-          "s" -> S
-          "min" -> Min
-          "h" -> H
-          "d" -> D
-          "wk" -> Wk
-          "mo" -> Mo
-          "a" -> A
-          else -> throw IllegalArgumentException("Unknown code $code for enum UnitsOfTime")
-        }
-    }
-  }
-
-  /** The days of the week. */
-  public enum class DaysOfWeek(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Mon("mon", "http://hl7.org/fhir/days-of-week", "Monday"),
-    Tue("tue", "http://hl7.org/fhir/days-of-week", "Tuesday"),
-    Wed("wed", "http://hl7.org/fhir/days-of-week", "Wednesday"),
-    Thu("thu", "http://hl7.org/fhir/days-of-week", "Thursday"),
-    Fri("fri", "http://hl7.org/fhir/days-of-week", "Friday"),
-    Sat("sat", "http://hl7.org/fhir/days-of-week", "Saturday"),
-    Sun("sun", "http://hl7.org/fhir/days-of-week", "Sunday");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DaysOfWeek =
-        when (code) {
-          "mon" -> Mon
-          "tue" -> Tue
-          "wed" -> Wed
-          "thu" -> Thu
-          "fri" -> Fri
-          "sat" -> Sat
-          "sun" -> Sun
-          else -> throw IllegalArgumentException("Unknown code $code for enum DaysOfWeek")
-        }
-    }
-  }
-
-  /** Real world event relating to the schedule. */
-  public enum class EventTiming(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Morn("MORN", "http://hl7.org/fhir/event-timing", "Morning"),
-    Morn_Early("MORN.early", "http://hl7.org/fhir/event-timing", "Early Morning"),
-    Morn_Late("MORN.late", "http://hl7.org/fhir/event-timing", "Late Morning"),
-    Noon("NOON", "http://hl7.org/fhir/event-timing", "Noon"),
-    Aft("AFT", "http://hl7.org/fhir/event-timing", "Afternoon"),
-    Aft_Early("AFT.early", "http://hl7.org/fhir/event-timing", "Early Afternoon"),
-    Aft_Late("AFT.late", "http://hl7.org/fhir/event-timing", "Late Afternoon"),
-    Eve("EVE", "http://hl7.org/fhir/event-timing", "Evening"),
-    Eve_Early("EVE.early", "http://hl7.org/fhir/event-timing", "Early Evening"),
-    Eve_Late("EVE.late", "http://hl7.org/fhir/event-timing", "Late Evening"),
-    Night("NIGHT", "http://hl7.org/fhir/event-timing", "Night"),
-    Phs("PHS", "http://hl7.org/fhir/event-timing", "After Sleep"),
-    Hs("HS", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "HS"),
-    Wake("WAKE", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "WAKE"),
-    C("C", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "C"),
-    Cm("CM", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "CM"),
-    Cd("CD", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "CD"),
-    Cv("CV", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "CV"),
-    Ac("AC", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "AC"),
-    Acm("ACM", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "ACM"),
-    Acd("ACD", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "ACD"),
-    Acv("ACV", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "ACV"),
-    Pc("PC", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "PC"),
-    Pcm("PCM", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "PCM"),
-    Pcd("PCD", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "PCD"),
-    Pcv("PCV", "http://terminology.hl7.org/CodeSystem/v3-TimingEvent", "PCV");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): EventTiming =
-        when (code) {
-          "MORN" -> Morn
-          "MORN.early" -> Morn_Early
-          "MORN.late" -> Morn_Late
-          "NOON" -> Noon
-          "AFT" -> Aft
-          "AFT.early" -> Aft_Early
-          "AFT.late" -> Aft_Late
-          "EVE" -> Eve
-          "EVE.early" -> Eve_Early
-          "EVE.late" -> Eve_Late
-          "NIGHT" -> Night
-          "PHS" -> Phs
-          "HS" -> Hs
-          "WAKE" -> Wake
-          "C" -> C
-          "CM" -> Cm
-          "CD" -> Cd
-          "CV" -> Cv
-          "AC" -> Ac
-          "ACM" -> Acm
-          "ACD" -> Acd
-          "ACV" -> Acv
-          "PC" -> Pc
-          "PCM" -> Pcm
-          "PCD" -> Pcd
-          "PCV" -> Pcv
-          else -> throw IllegalArgumentException("Unknown code $code for enum EventTiming")
-        }
-    }
   }
 }

@@ -47,8 +47,11 @@ import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.Url
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.FHIRVersion
+import dev.ohs.fhir.model.r4.terminologies.GuidePageGeneration
+import dev.ohs.fhir.model.r4.terminologies.GuideParameterCode
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
+import dev.ohs.fhir.model.r4.terminologies.SPDXLicense
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -907,8 +910,7 @@ internal object ImplementationGuideDefinitionPageSerializer :
           ),
       generation =
         Enumeration.of(
-          if (generation != null) ImplementationGuide.GuidePageGeneration.fromCode(generation)
-          else null,
+          if (generation != null) GuidePageGeneration.fromCode(generation) else null,
           _generation,
         )
           ?: throw SerializationException(
@@ -1031,10 +1033,7 @@ internal object ImplementationGuideDefinitionParameterSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          if (code != null) ImplementationGuide.GuideParameterCode.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) GuideParameterCode.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on ImplementationGuide.Definition.Parameter"
           ),
@@ -2054,7 +2053,7 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
           ?: throw SerializationException(
             "Missing required property 'packageId' on ImplementationGuide"
           ),
-      license = ExtensibleEnumeration.of<ImplementationGuide.SPDXLicense>(license, _license),
+      license = ExtensibleEnumeration.of<SPDXLicense>(license, _license),
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(

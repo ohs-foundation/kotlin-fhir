@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.EncounterStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -407,10 +408,8 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
       encounter = encounter,
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) EncounterHistory.EncounterStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on EncounterHistory"),
+        Enumeration.of(if (status != null) EncounterStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on EncounterHistory"),
       `class` =
         `class`
           ?: throw SerializationException("Missing required property 'class' on EncounterHistory"),

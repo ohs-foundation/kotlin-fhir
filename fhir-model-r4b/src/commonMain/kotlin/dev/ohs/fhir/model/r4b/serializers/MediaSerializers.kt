@@ -46,6 +46,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.EventStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -430,7 +431,7 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(if (status != null) Media.EventStatus.fromCode(status) else null, _status)
+        Enumeration.of(if (status != null) EventStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on Media"),
       type = type,
       modality = modality,

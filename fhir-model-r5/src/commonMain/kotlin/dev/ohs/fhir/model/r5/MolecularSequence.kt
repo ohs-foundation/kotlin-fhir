@@ -25,6 +25,9 @@ import dev.ohs.fhir.model.r5.serializers.MolecularSequenceRelativeEditSerializer
 import dev.ohs.fhir.model.r5.serializers.MolecularSequenceRelativeSerializer
 import dev.ohs.fhir.model.r5.serializers.MolecularSequenceRelativeStartingSequenceSerializer
 import dev.ohs.fhir.model.r5.serializers.MolecularSequenceSerializer
+import dev.ohs.fhir.model.r5.terminologies.OrientationType
+import dev.ohs.fhir.model.r5.terminologies.SequenceType
+import dev.ohs.fhir.model.r5.terminologies.StrandType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -903,74 +906,5 @@ public data class MolecularSequence(
         formatted = formatted.mapToList { it.build() },
         relative = relative.mapToList { it.build() },
       )
-  }
-
-  /** Type for orientation. */
-  public enum class OrientationType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Sense("sense", "http://hl7.org/fhir/orientation-type", "Sense orientation of referenceSeq"),
-    Antisense(
-      "antisense",
-      "http://hl7.org/fhir/orientation-type",
-      "Antisense orientation of referenceSeq",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): OrientationType =
-        when (code) {
-          "sense" -> Sense
-          "antisense" -> Antisense
-          else -> throw IllegalArgumentException("Unknown code $code for enum OrientationType")
-        }
-    }
-  }
-
-  /** Type for strand. */
-  public enum class StrandType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Watson("watson", "http://hl7.org/fhir/strand-type", "Watson strand of starting sequence"),
-    Crick("crick", "http://hl7.org/fhir/strand-type", "Crick strand of starting sequence");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): StrandType =
-        when (code) {
-          "watson" -> Watson
-          "crick" -> Crick
-          else -> throw IllegalArgumentException("Unknown code $code for enum StrandType")
-        }
-    }
-  }
-
-  /** Type if a sequence -- DNA, RNA, or amino acid sequence. */
-  public enum class SequenceType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Aa("aa", "http://hl7.org/fhir/sequence-type", "AA Sequence"),
-    Dna("dna", "http://hl7.org/fhir/sequence-type", "DNA Sequence"),
-    Rna("rna", "http://hl7.org/fhir/sequence-type", "RNA Sequence");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SequenceType =
-        when (code) {
-          "aa" -> Aa
-          "dna" -> Dna
-          "rna" -> Rna
-          else -> throw IllegalArgumentException("Unknown code $code for enum SequenceType")
-        }
-    }
   }
 }

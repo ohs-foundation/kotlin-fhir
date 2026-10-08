@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.VerificationResult
+import dev.ohs.fhir.model.r4.terminologies.Status
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -851,10 +852,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
         }),
       need = need,
       status =
-        Enumeration.of(
-          if (status != null) VerificationResult.Status.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) Status.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on VerificationResult"
           ),

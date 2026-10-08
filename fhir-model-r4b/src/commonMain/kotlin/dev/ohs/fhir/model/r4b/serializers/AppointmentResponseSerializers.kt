@@ -39,6 +39,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.ParticipationStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -262,9 +263,7 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
       actor = actor,
       participantStatus =
         Enumeration.of(
-          if (participantStatus != null)
-            AppointmentResponse.ParticipationStatus.fromCode(participantStatus)
-          else null,
+          if (participantStatus != null) ParticipationStatus.fromCode(participantStatus) else null,
           _participantStatus,
         )
           ?: throw SerializationException(

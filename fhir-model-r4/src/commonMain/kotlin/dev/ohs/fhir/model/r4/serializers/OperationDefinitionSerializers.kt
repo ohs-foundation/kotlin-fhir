@@ -45,6 +45,8 @@ import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.BindingStrength
 import dev.ohs.fhir.model.r4.terminologies.FHIRAllTypes
+import dev.ohs.fhir.model.r4.terminologies.OperationKind
+import dev.ohs.fhir.model.r4.terminologies.OperationParameterUse
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
@@ -266,10 +268,7 @@ internal object OperationDefinitionParameterSerializer :
             "Missing required property 'name' on OperationDefinition.Parameter"
           ),
       use =
-        Enumeration.of(
-          if (use != null) OperationDefinition.OperationParameterUse.fromCode(use) else null,
-          _use,
-        )
+        Enumeration.of(if (use != null) OperationParameterUse.fromCode(use) else null, _use)
           ?: throw SerializationException(
             "Missing required property 'use' on OperationDefinition.Parameter"
           ),
@@ -1155,10 +1154,7 @@ internal object OperationDefinitionSerializer : FhirResourceSerializer<Operation
             "Missing required property 'status' on OperationDefinition"
           ),
       kind =
-        Enumeration.of(
-          if (kind != null) OperationDefinition.OperationKind.fromCode(kind) else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) OperationKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on OperationDefinition"
           ),

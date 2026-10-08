@@ -42,6 +42,8 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.AdverseEventActuality
+import dev.ohs.fhir.model.r5.terminologies.AdverseEventStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1225,13 +1227,11 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) AdverseEvent.AdverseEventStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on AdverseEvent"),
+        Enumeration.of(if (status != null) AdverseEventStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on AdverseEvent"),
       actuality =
         Enumeration.of(
-          if (actuality != null) AdverseEvent.AdverseEventActuality.fromCode(actuality) else null,
+          if (actuality != null) AdverseEventActuality.fromCode(actuality) else null,
           _actuality,
         ) ?: throw SerializationException("Missing required property 'actuality' on AdverseEvent"),
       category = category ?: listOf(),

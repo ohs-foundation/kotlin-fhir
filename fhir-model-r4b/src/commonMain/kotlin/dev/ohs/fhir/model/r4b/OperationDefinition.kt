@@ -28,6 +28,8 @@ import dev.ohs.fhir.model.r4b.serializers.OperationDefinitionParameterSerializer
 import dev.ohs.fhir.model.r4b.serializers.OperationDefinitionSerializer
 import dev.ohs.fhir.model.r4b.terminologies.BindingStrength
 import dev.ohs.fhir.model.r4b.terminologies.FHIRAllTypes
+import dev.ohs.fhir.model.r4b.terminologies.OperationKind
+import dev.ohs.fhir.model.r4b.terminologies.OperationParameterUse
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
@@ -1413,48 +1415,5 @@ public data class OperationDefinition(
         parameter = parameter.mapToList { it.build() },
         overload = overload.mapToList { it.build() },
       )
-  }
-
-  /** Whether an operation parameter is an input or an output parameter. */
-  public enum class OperationParameterUse(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    In("in", "http://hl7.org/fhir/operation-parameter-use", "In"),
-    Out("out", "http://hl7.org/fhir/operation-parameter-use", "Out");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): OperationParameterUse =
-        when (code) {
-          "in" -> In
-          "out" -> Out
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum OperationParameterUse")
-        }
-    }
-  }
-
-  /** Whether an operation is a normal operation or a query. */
-  public enum class OperationKind(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Operation("operation", "http://hl7.org/fhir/operation-kind", "Operation"),
-    Query("query", "http://hl7.org/fhir/operation-kind", "Query");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): OperationKind =
-        when (code) {
-          "operation" -> Operation
-          "query" -> Query
-          else -> throw IllegalArgumentException("Unknown code $code for enum OperationKind")
-        }
-    }
   }
 }

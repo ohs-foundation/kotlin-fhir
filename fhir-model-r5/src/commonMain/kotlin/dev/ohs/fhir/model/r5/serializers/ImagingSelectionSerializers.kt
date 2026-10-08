@@ -45,6 +45,9 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ImagingSelection2DGraphicType
+import dev.ohs.fhir.model.r5.terminologies.ImagingSelection3DGraphicType
+import dev.ohs.fhir.model.r5.terminologies.ImagingSelectionStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -433,9 +436,7 @@ internal object ImagingSelectionInstanceImageRegion2DSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       regionType =
         Enumeration.of(
-          if (regionType != null)
-            ImagingSelection.ImagingSelection2DGraphicType.fromCode(regionType)
-          else null,
+          if (regionType != null) ImagingSelection2DGraphicType.fromCode(regionType) else null,
           _regionType,
         )
           ?: throw SerializationException(
@@ -563,9 +564,7 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       regionType =
         Enumeration.of(
-          if (regionType != null)
-            ImagingSelection.ImagingSelection3DGraphicType.fromCode(regionType)
-          else null,
+          if (regionType != null) ImagingSelection3DGraphicType.fromCode(regionType) else null,
           _regionType,
         )
           ?: throw SerializationException(
@@ -909,7 +908,7 @@ internal object ImagingSelectionSerializer : FhirResourceSerializer<ImagingSelec
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) ImagingSelection.ImagingSelectionStatus.fromCode(status) else null,
+          if (status != null) ImagingSelectionStatus.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on ImagingSelection"),
       subject = subject,

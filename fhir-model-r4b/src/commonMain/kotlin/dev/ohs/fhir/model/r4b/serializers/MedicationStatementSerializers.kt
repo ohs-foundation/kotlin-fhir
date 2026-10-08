@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.MedicationStatementStatusCodes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -364,8 +365,7 @@ internal object MedicationStatementSerializer : FhirResourceSerializer<Medicatio
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) MedicationStatement.MedicationStatementStatusCodes.fromCode(status)
-          else null,
+          if (status != null) MedicationStatementStatusCodes.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(

@@ -52,6 +52,17 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ActionCardinalityBehavior
+import dev.ohs.fhir.model.r5.terminologies.ActionConditionKind
+import dev.ohs.fhir.model.r5.terminologies.ActionGroupingBehavior
+import dev.ohs.fhir.model.r5.terminologies.ActionParticipantType
+import dev.ohs.fhir.model.r5.terminologies.ActionPrecheckBehavior
+import dev.ohs.fhir.model.r5.terminologies.ActionRelationshipType
+import dev.ohs.fhir.model.r5.terminologies.ActionRequiredBehavior
+import dev.ohs.fhir.model.r5.terminologies.ActionSelectionBehavior
+import dev.ohs.fhir.model.r5.terminologies.RequestIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
+import dev.ohs.fhir.model.r5.terminologies.RequestStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -504,7 +515,7 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
       textEquivalent = Markdown.of(textEquivalent, _textEquivalent),
       priority =
         Enumeration.of(
-          if (priority != null) RequestOrchestration.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       code = code ?: listOf(),
@@ -531,36 +542,28 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
       type = type,
       groupingBehavior =
         Enumeration.of(
-          if (groupingBehavior != null)
-            RequestOrchestration.ActionGroupingBehavior.fromCode(groupingBehavior)
-          else null,
+          if (groupingBehavior != null) ActionGroupingBehavior.fromCode(groupingBehavior) else null,
           _groupingBehavior,
         ),
       selectionBehavior =
         Enumeration.of(
-          if (selectionBehavior != null)
-            RequestOrchestration.ActionSelectionBehavior.fromCode(selectionBehavior)
+          if (selectionBehavior != null) ActionSelectionBehavior.fromCode(selectionBehavior)
           else null,
           _selectionBehavior,
         ),
       requiredBehavior =
         Enumeration.of(
-          if (requiredBehavior != null)
-            RequestOrchestration.ActionRequiredBehavior.fromCode(requiredBehavior)
-          else null,
+          if (requiredBehavior != null) ActionRequiredBehavior.fromCode(requiredBehavior) else null,
           _requiredBehavior,
         ),
       precheckBehavior =
         Enumeration.of(
-          if (precheckBehavior != null)
-            RequestOrchestration.ActionPrecheckBehavior.fromCode(precheckBehavior)
-          else null,
+          if (precheckBehavior != null) ActionPrecheckBehavior.fromCode(precheckBehavior) else null,
           _precheckBehavior,
         ),
       cardinalityBehavior =
         Enumeration.of(
-          if (cardinalityBehavior != null)
-            RequestOrchestration.ActionCardinalityBehavior.fromCode(cardinalityBehavior)
+          if (cardinalityBehavior != null) ActionCardinalityBehavior.fromCode(cardinalityBehavior)
           else null,
           _cardinalityBehavior,
         ),
@@ -811,10 +814,7 @@ internal object RequestOrchestrationActionConditionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       kind =
-        Enumeration.of(
-          if (kind != null) RequestOrchestration.ActionConditionKind.fromCode(kind) else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) ActionConditionKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on RequestOrchestration.Action.Condition"
           ),
@@ -1193,9 +1193,7 @@ internal object RequestOrchestrationActionRelatedActionSerializer :
           ),
       relationship =
         Enumeration.of(
-          if (relationship != null)
-            RequestOrchestration.ActionRelationshipType.fromCode(relationship)
-          else null,
+          if (relationship != null) ActionRelationshipType.fromCode(relationship) else null,
           _relationship,
         )
           ?: throw SerializationException(
@@ -1203,9 +1201,7 @@ internal object RequestOrchestrationActionRelatedActionSerializer :
           ),
       endRelationship =
         Enumeration.of(
-          if (endRelationship != null)
-            RequestOrchestration.ActionRelationshipType.fromCode(endRelationship)
-          else null,
+          if (endRelationship != null) ActionRelationshipType.fromCode(endRelationship) else null,
           _endRelationship,
         ),
       offset = RequestOrchestration.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
@@ -1373,10 +1369,7 @@ internal object RequestOrchestrationActionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) RequestOrchestration.ActionParticipantType.fromCode(type) else null,
-          _type,
-        ),
+        Enumeration.of(if (type != null) ActionParticipantType.fromCode(type) else null, _type),
       typeCanonical = Canonical.of(typeCanonical, _typeCanonical),
       typeReference = typeReference,
       role = role,
@@ -1891,24 +1884,18 @@ internal object RequestOrchestrationSerializer : FhirResourceSerializer<RequestO
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          if (status != null) RequestOrchestration.RequestStatus.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on RequestOrchestration"
           ),
       intent =
-        Enumeration.of(
-          if (intent != null) RequestOrchestration.RequestIntent.fromCode(intent) else null,
-          _intent,
-        )
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent)
           ?: throw SerializationException(
             "Missing required property 'intent' on RequestOrchestration"
           ),
       priority =
         Enumeration.of(
-          if (priority != null) RequestOrchestration.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       code = code,

@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.TriggerDefinition
+import dev.ohs.fhir.model.r5.terminologies.TriggerType
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -207,10 +208,8 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) TriggerDefinition.TriggerType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on TriggerDefinition"),
+        Enumeration.of(if (type != null) TriggerType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on TriggerDefinition"),
       name = R5String.of(name, _name),
       code = code,
       subscriptionTopic = Canonical.of(subscriptionTopic, _subscriptionTopic),

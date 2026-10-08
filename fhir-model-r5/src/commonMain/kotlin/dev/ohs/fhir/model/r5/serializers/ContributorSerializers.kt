@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.terminologies.ContributorType
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -112,10 +113,8 @@ internal object ContributorSerializer : KSerializer<Contributor> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) Contributor.ContributorType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on Contributor"),
+        Enumeration.of(if (type != null) ContributorType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on Contributor"),
       name =
         R5String.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on Contributor"),

@@ -57,7 +57,10 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.ActionParticipantType
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.RequestIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
 import dev.ohs.fhir.model.r5.terminologies.RequestResourceTypes
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -181,10 +184,7 @@ internal object ActivityDefinitionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) ActivityDefinition.ActionParticipantType.fromCode(type) else null,
-          _type,
-        ),
+        Enumeration.of(if (type != null) ActionParticipantType.fromCode(type) else null, _type),
       typeCanonical = Canonical.of(typeCanonical, _typeCanonical),
       typeReference = typeReference,
       role = role,
@@ -1198,13 +1198,10 @@ internal object ActivityDefinitionSerializer : FhirResourceSerializer<ActivityDe
       profile = Canonical.of(profile, _profile),
       code = code,
       intent =
-        Enumeration.of(
-          if (intent != null) ActivityDefinition.RequestIntent.fromCode(intent) else null,
-          _intent,
-        ),
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent),
       priority =
         Enumeration.of(
-          if (priority != null) ActivityDefinition.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),

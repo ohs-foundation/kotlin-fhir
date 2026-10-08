@@ -47,6 +47,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.InvoiceStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -651,10 +652,8 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Invoice.InvoiceStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Invoice"),
+        Enumeration.of(if (status != null) InvoiceStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Invoice"),
       cancelledReason = R5String.of(cancelledReason, _cancelledReason),
       type = type,
       subject = subject,

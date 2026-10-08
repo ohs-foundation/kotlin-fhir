@@ -26,8 +26,11 @@ import dev.ohs.fhir.model.r4b.serializers.StructureDefinitionDifferentialSeriali
 import dev.ohs.fhir.model.r4b.serializers.StructureDefinitionMappingSerializer
 import dev.ohs.fhir.model.r4b.serializers.StructureDefinitionSerializer
 import dev.ohs.fhir.model.r4b.serializers.StructureDefinitionSnapshotSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ExtensionContextType
 import dev.ohs.fhir.model.r4b.terminologies.FHIRVersion
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.StructureDefinitionKind
+import dev.ohs.fhir.model.r4b.terminologies.TypeDerivationRule
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1328,83 +1331,5 @@ public data class StructureDefinition(
         snapshot = snapshot?.build(),
         differential = differential?.build(),
       )
-  }
-
-  /** How an extension context is interpreted. */
-  public enum class ExtensionContextType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Fhirpath("fhirpath", "http://hl7.org/fhir/extension-context-type", "FHIRPath"),
-    Element("element", "http://hl7.org/fhir/extension-context-type", "Element ID"),
-    Extension("extension", "http://hl7.org/fhir/extension-context-type", "Extension URL");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ExtensionContextType =
-        when (code) {
-          "fhirpath" -> Fhirpath
-          "element" -> Element
-          "extension" -> Extension
-          else -> throw IllegalArgumentException("Unknown code $code for enum ExtensionContextType")
-        }
-    }
-  }
-
-  /** Defines the type of structure that a definition is describing. */
-  public enum class StructureDefinitionKind(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Primitive_Type(
-      "primitive-type",
-      "http://hl7.org/fhir/structure-definition-kind",
-      "Primitive Data Type",
-    ),
-    Complex_Type(
-      "complex-type",
-      "http://hl7.org/fhir/structure-definition-kind",
-      "Complex Data Type",
-    ),
-    Resource("resource", "http://hl7.org/fhir/structure-definition-kind", "Resource"),
-    Logical("logical", "http://hl7.org/fhir/structure-definition-kind", "Logical");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): StructureDefinitionKind =
-        when (code) {
-          "primitive-type" -> Primitive_Type
-          "complex-type" -> Complex_Type
-          "resource" -> Resource
-          "logical" -> Logical
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum StructureDefinitionKind")
-        }
-    }
-  }
-
-  /** How a type relates to its baseDefinition. */
-  public enum class TypeDerivationRule(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Specialization("specialization", "http://hl7.org/fhir/type-derivation-rule", "Specialization"),
-    Constraint("constraint", "http://hl7.org/fhir/type-derivation-rule", "Constraint");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TypeDerivationRule =
-        when (code) {
-          "specialization" -> Specialization
-          "constraint" -> Constraint
-          else -> throw IllegalArgumentException("Unknown code $code for enum TypeDerivationRule")
-        }
-    }
   }
 }

@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.PaymentNoticeSerializer
+import dev.ohs.fhir.model.r4b.terminologies.FinancialResourceStatusCodes
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -367,33 +368,5 @@ public data class PaymentNotice(
         amount = amount.build(),
         paymentStatus = paymentStatus?.build(),
       )
-  }
-
-  /** This value set includes Status codes. */
-  public enum class FinancialResourceStatusCodes(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/fm-status", "Active"),
-    Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
-    Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): FinancialResourceStatusCodes =
-        when (code) {
-          "active" -> Active
-          "cancelled" -> Cancelled
-          "draft" -> Draft
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
-        }
-    }
   }
 }

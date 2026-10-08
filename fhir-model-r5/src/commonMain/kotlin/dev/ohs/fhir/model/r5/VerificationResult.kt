@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.serializers.VerificationResultAttestationSerializer
 import dev.ohs.fhir.model.r5.serializers.VerificationResultPrimarySourceSerializer
 import dev.ohs.fhir.model.r5.serializers.VerificationResultSerializer
 import dev.ohs.fhir.model.r5.serializers.VerificationResultValidatorSerializer
+import dev.ohs.fhir.model.r5.terminologies.VerificationResultStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -829,57 +830,5 @@ public data class VerificationResult(
         attestation = attestation?.build(),
         validator = validator.mapToList { it.build() },
       )
-  }
-
-  /** The validation status of the target */
-  public enum class VerificationResultStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Attested("attested", "http://hl7.org/fhir/CodeSystem/verificationresult-status", "Attested"),
-    Validated("validated", "http://hl7.org/fhir/CodeSystem/verificationresult-status", "Validated"),
-    In_Process(
-      "in-process",
-      "http://hl7.org/fhir/CodeSystem/verificationresult-status",
-      "In process",
-    ),
-    Req_Revalid(
-      "req-revalid",
-      "http://hl7.org/fhir/CodeSystem/verificationresult-status",
-      "Requires revalidation",
-    ),
-    Val_Fail(
-      "val-fail",
-      "http://hl7.org/fhir/CodeSystem/verificationresult-status",
-      "Validation failed",
-    ),
-    Reval_Fail(
-      "reval-fail",
-      "http://hl7.org/fhir/CodeSystem/verificationresult-status",
-      "Re-Validation failed",
-    ),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/CodeSystem/verificationresult-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): VerificationResultStatus =
-        when (code) {
-          "attested" -> Attested
-          "validated" -> Validated
-          "in-process" -> In_Process
-          "req-revalid" -> Req_Revalid
-          "val-fail" -> Val_Fail
-          "reval-fail" -> Reval_Fail
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum VerificationResultStatus")
-        }
-    }
   }
 }

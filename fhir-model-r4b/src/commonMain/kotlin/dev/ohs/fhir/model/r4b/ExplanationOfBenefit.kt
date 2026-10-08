@@ -42,8 +42,10 @@ import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitRelatedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitSupportingInfoSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitTotalSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ExplanationOfBenefitStatus
 import dev.ohs.fhir.model.r4b.terminologies.NoteType
 import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
+import dev.ohs.fhir.model.r4b.terminologies.Use
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -4931,58 +4933,5 @@ public data class ExplanationOfBenefit(
         benefitPeriod = benefitPeriod?.build(),
         benefitBalance = benefitBalance.mapToList { it.build() },
       )
-  }
-
-  /** A code specifying the state of the resource instance. */
-  public enum class ExplanationOfBenefitStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/explanationofbenefit-status", "Active"),
-    Cancelled("cancelled", "http://hl7.org/fhir/explanationofbenefit-status", "Cancelled"),
-    Draft("draft", "http://hl7.org/fhir/explanationofbenefit-status", "Draft"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/explanationofbenefit-status",
-      "Entered In Error",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ExplanationOfBenefitStatus =
-        when (code) {
-          "active" -> Active
-          "cancelled" -> Cancelled
-          "draft" -> Draft
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ExplanationOfBenefitStatus")
-        }
-    }
-  }
-
-  /** The purpose of the Claim: predetermination, preauthorization, claim. */
-  public enum class Use(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Claim("claim", "http://hl7.org/fhir/claim-use", "Claim"),
-    Preauthorization("preauthorization", "http://hl7.org/fhir/claim-use", "Preauthorization"),
-    Predetermination("predetermination", "http://hl7.org/fhir/claim-use", "Predetermination");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): Use =
-        when (code) {
-          "claim" -> Claim
-          "preauthorization" -> Preauthorization
-          "predetermination" -> Predetermination
-          else -> throw IllegalArgumentException("Unknown code $code for enum Use")
-        }
-    }
   }
 }

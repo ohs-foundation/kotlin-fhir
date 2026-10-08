@@ -38,6 +38,7 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.EpisodeOfCareStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -124,10 +125,7 @@ internal object EpisodeOfCareStatusHistorySerializer : KSerializer<EpisodeOfCare
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) EpisodeOfCare.EpisodeOfCareStatus.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) EpisodeOfCareStatus.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on EpisodeOfCare.StatusHistory"
           ),
@@ -512,10 +510,8 @@ internal object EpisodeOfCareSerializer : FhirResourceSerializer<EpisodeOfCare> 
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) EpisodeOfCare.EpisodeOfCareStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on EpisodeOfCare"),
+        Enumeration.of(if (status != null) EpisodeOfCareStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on EpisodeOfCare"),
       statusHistory = statusHistory ?: listOf(),
       type = type ?: listOf(),
       diagnosis = diagnosis ?: listOf(),

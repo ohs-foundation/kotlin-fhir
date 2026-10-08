@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ImmunizationEvaluationSerializer
+import dev.ohs.fhir.model.r5.terminologies.ImmunizationEvaluationStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -389,37 +390,5 @@ public data class ImmunizationEvaluation(
         doseNumber = doseNumber?.build(),
         seriesDoses = seriesDoses?.build(),
       )
-  }
-
-  /**
-   * The value set to instantiate this attribute should be drawn from a terminologically robust code
-   * system that consists of or contains concepts to support describing the current status of the
-   * evaluation for vaccine administration event.
-   */
-  public enum class ImmunizationEvaluationStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Completed("completed", "http://hl7.org/fhir/CodeSystem/medication-admin-status", "Completed"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/CodeSystem/medication-admin-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ImmunizationEvaluationStatusCodes =
-        when (code) {
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ImmunizationEvaluationStatusCodes"
-            )
-        }
-    }
   }
 }

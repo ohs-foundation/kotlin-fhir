@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Time
+import dev.ohs.fhir.model.r5.terminologies.DaysOfWeek
 import kotlin.Boolean as KotlinBoolean
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -162,7 +163,7 @@ internal object AvailabilityAvailableTimeSerializer : KSerializer<Availability.A
       daysOfWeek =
         (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            daysOfWeek?.getOrNull(index)?.let { Availability.DaysOfWeek.fromCode(it) },
+            daysOfWeek?.getOrNull(index)?.let { DaysOfWeek.fromCode(it) },
             _daysOfWeek?.getOrNull(index),
           )
             ?: throw SerializationException(

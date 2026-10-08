@@ -50,6 +50,9 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.DeviceNameType
+import dev.ohs.fhir.model.r5.terminologies.FHIRDeviceStatus
+import dev.ohs.fhir.model.r5.terminologies.UDIEntryType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -206,7 +209,7 @@ internal object DeviceUdiCarrierSerializer : KSerializer<Device.UdiCarrier> {
       carrierHRF = R5String.of(carrierHRF, _carrierHRF),
       entryType =
         Enumeration.of(
-          if (entryType != null) Device.UDIEntryType.fromCode(entryType) else null,
+          if (entryType != null) UDIEntryType.fromCode(entryType) else null,
           _entryType,
         ),
     )
@@ -331,7 +334,7 @@ internal object DeviceNameSerializer : KSerializer<Device.Name> {
         R5String.of(`value`, _value)
           ?: throw SerializationException("Missing required property 'value' on Device.Name"),
       type =
-        Enumeration.of(if (type != null) Device.DeviceNameType.fromCode(type) else null, _type)
+        Enumeration.of(if (type != null) DeviceNameType.fromCode(type) else null, _type)
           ?: throw SerializationException("Missing required property 'type' on Device.Name"),
       display = R5Boolean.of(display, _display),
     )
@@ -1279,10 +1282,7 @@ internal object DeviceSerializer : FhirResourceSerializer<Device> {
       definition = definition,
       udiCarrier = udiCarrier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Device.FHIRDeviceStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) FHIRDeviceStatus.fromCode(status) else null, _status),
       availabilityStatus = availabilityStatus,
       biologicalSourceEvent = biologicalSourceEvent,
       manufacturer = R5String.of(manufacturer, _manufacturer),

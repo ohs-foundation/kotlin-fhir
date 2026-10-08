@@ -24,6 +24,9 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.LocationHoursOfOperationSerializer
 import dev.ohs.fhir.model.r4b.serializers.LocationPositionSerializer
 import dev.ohs.fhir.model.r4b.serializers.LocationSerializer
+import dev.ohs.fhir.model.r4b.terminologies.DaysOfWeek
+import dev.ohs.fhir.model.r4b.terminologies.LocationMode
+import dev.ohs.fhir.model.r4b.terminologies.LocationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -752,82 +755,5 @@ public data class Location(
         availabilityExceptions = availabilityExceptions?.build(),
         endpoint = endpoint.mapToList { it.build() },
       )
-  }
-
-  /** The days of the week. */
-  public enum class DaysOfWeek(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Mon("mon", "http://hl7.org/fhir/days-of-week", "Monday"),
-    Tue("tue", "http://hl7.org/fhir/days-of-week", "Tuesday"),
-    Wed("wed", "http://hl7.org/fhir/days-of-week", "Wednesday"),
-    Thu("thu", "http://hl7.org/fhir/days-of-week", "Thursday"),
-    Fri("fri", "http://hl7.org/fhir/days-of-week", "Friday"),
-    Sat("sat", "http://hl7.org/fhir/days-of-week", "Saturday"),
-    Sun("sun", "http://hl7.org/fhir/days-of-week", "Sunday");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DaysOfWeek =
-        when (code) {
-          "mon" -> Mon
-          "tue" -> Tue
-          "wed" -> Wed
-          "thu" -> Thu
-          "fri" -> Fri
-          "sat" -> Sat
-          "sun" -> Sun
-          else -> throw IllegalArgumentException("Unknown code $code for enum DaysOfWeek")
-        }
-    }
-  }
-
-  /** Indicates whether the location is still in use. */
-  public enum class LocationStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/location-status", "Active"),
-    Suspended("suspended", "http://hl7.org/fhir/location-status", "Suspended"),
-    Inactive("inactive", "http://hl7.org/fhir/location-status", "Inactive");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): LocationStatus =
-        when (code) {
-          "active" -> Active
-          "suspended" -> Suspended
-          "inactive" -> Inactive
-          else -> throw IllegalArgumentException("Unknown code $code for enum LocationStatus")
-        }
-    }
-  }
-
-  /**
-   * Indicates whether a resource instance represents a specific location or a class of locations.
-   */
-  public enum class LocationMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Instance("instance", "http://hl7.org/fhir/location-mode", "Instance"),
-    Kind("kind", "http://hl7.org/fhir/location-mode", "Kind");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): LocationMode =
-        when (code) {
-          "instance" -> Instance
-          "kind" -> Kind
-          else -> throw IllegalArgumentException("Unknown code $code for enum LocationMode")
-        }
-    }
   }
 }

@@ -52,8 +52,10 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.UnsignedInt
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.ExplanationOfBenefitStatus
 import dev.ohs.fhir.model.r4b.terminologies.NoteType
 import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
+import dev.ohs.fhir.model.r4b.terminologies.Use
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -5090,8 +5092,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(status)
-          else null,
+          if (status != null) ExplanationOfBenefitStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -5104,7 +5105,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
           ),
       subType = subType,
       use =
-        Enumeration.of(if (use != null) ExplanationOfBenefit.Use.fromCode(use) else null, _use)
+        Enumeration.of(if (use != null) Use.fromCode(use) else null, _use)
           ?: throw SerializationException(
             "Missing required property 'use' on ExplanationOfBenefit"
           ),

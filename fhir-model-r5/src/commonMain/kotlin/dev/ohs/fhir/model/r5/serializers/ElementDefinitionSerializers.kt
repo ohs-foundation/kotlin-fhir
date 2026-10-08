@@ -83,7 +83,14 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.Uuid
+import dev.ohs.fhir.model.r5.terminologies.AdditionalBindingPurposeVS
+import dev.ohs.fhir.model.r5.terminologies.AggregationMode
 import dev.ohs.fhir.model.r5.terminologies.BindingStrength
+import dev.ohs.fhir.model.r5.terminologies.ConstraintSeverity
+import dev.ohs.fhir.model.r5.terminologies.DiscriminatorType
+import dev.ohs.fhir.model.r5.terminologies.PropertyRepresentation
+import dev.ohs.fhir.model.r5.terminologies.ReferenceVersionRules
+import dev.ohs.fhir.model.r5.terminologies.SlicingRules
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -190,10 +197,7 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
       description = R5String.of(description, _description),
       ordered = R5Boolean.of(ordered, _ordered),
       rules =
-        Enumeration.of(
-          if (rules != null) ElementDefinition.SlicingRules.fromCode(rules) else null,
-          _rules,
-        )
+        Enumeration.of(if (rules != null) SlicingRules.fromCode(rules) else null, _rules)
           ?: throw SerializationException(
             "Missing required property 'rules' on ElementDefinition.Slicing"
           ),
@@ -288,10 +292,7 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) ElementDefinition.DiscriminatorType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) DiscriminatorType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
           ),
@@ -571,7 +572,7 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
       aggregation =
         (kotlin.collections.List(maxOf(aggregation?.size ?: 0, _aggregation?.size ?: 0)) { index ->
           Enumeration.of(
-            aggregation?.getOrNull(index)?.let { ElementDefinition.AggregationMode.fromCode(it) },
+            aggregation?.getOrNull(index)?.let { AggregationMode.fromCode(it) },
             _aggregation?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -580,8 +581,7 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
         }),
       versioning =
         Enumeration.of(
-          if (versioning != null) ElementDefinition.ReferenceVersionRules.fromCode(versioning)
-          else null,
+          if (versioning != null) ReferenceVersionRules.fromCode(versioning) else null,
           _versioning,
         ),
     )
@@ -1777,7 +1777,7 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
       requirements = Markdown.of(requirements, _requirements),
       severity =
         Enumeration.of(
-          if (severity != null) ElementDefinition.ConstraintSeverity.fromCode(severity) else null,
+          if (severity != null) ConstraintSeverity.fromCode(severity) else null,
           _severity,
         )
           ?: throw SerializationException(
@@ -2058,8 +2058,7 @@ internal object ElementDefinitionBindingAdditionalSerializer :
       extension = extension ?: listOf(),
       purpose =
         Enumeration.of(
-          if (purpose != null) ElementDefinition.AdditionalBindingPurposeVS.fromCode(purpose)
-          else null,
+          if (purpose != null) AdditionalBindingPurposeVS.fromCode(purpose) else null,
           _purpose,
         )
           ?: throw SerializationException(
@@ -4723,9 +4722,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
         (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) {
           index ->
           Enumeration.of(
-            representation?.getOrNull(index)?.let {
-              ElementDefinition.PropertyRepresentation.fromCode(it)
-            },
+            representation?.getOrNull(index)?.let { PropertyRepresentation.fromCode(it) },
             _representation?.getOrNull(index),
           )
             ?: throw SerializationException(

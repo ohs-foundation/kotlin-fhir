@@ -45,6 +45,9 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.RequestIntent
+import dev.ohs.fhir.model.r4b.terminologies.RequestPriority
+import dev.ohs.fhir.model.r4b.terminologies.RequestStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -650,18 +653,13 @@ internal object DeviceRequestSerializer : FhirResourceSerializer<DeviceRequest> 
       priorRequest = priorRequest ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          if (status != null) DeviceRequest.RequestStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status),
       intent =
-        Enumeration.of(
-          if (intent != null) DeviceRequest.RequestIntent.fromCode(intent) else null,
-          _intent,
-        ) ?: throw SerializationException("Missing required property 'intent' on DeviceRequest"),
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on DeviceRequest"),
       priority =
         Enumeration.of(
-          if (priority != null) DeviceRequest.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       code =

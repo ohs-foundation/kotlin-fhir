@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.Id
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.ExpressionLanguage
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -148,7 +149,7 @@ internal object ExpressionSerializer : KSerializer<Expression> {
       description = R4String.of(description, _description),
       name = Id.of(name, _name),
       language =
-        ExtensibleEnumeration.of<Expression.ExpressionLanguage>(language, _language)
+        ExtensibleEnumeration.of<ExpressionLanguage>(language, _language)
           ?: throw SerializationException("Missing required property 'language' on Expression"),
       expression = R4String.of(expression, _expression),
       reference = Uri.of(reference, _reference),

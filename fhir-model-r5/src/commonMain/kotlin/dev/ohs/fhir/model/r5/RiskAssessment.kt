@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.RiskAssessmentPredictionSerializer
 import dev.ohs.fhir.model.r5.serializers.RiskAssessmentSerializer
+import dev.ohs.fhir.model.r5.terminologies.ObservationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -650,42 +651,5 @@ public data class RiskAssessment(
         mitigation = mitigation?.build(),
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Codes providing the status of an observation. */
-  public enum class ObservationStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered("registered", "http://hl7.org/fhir/observation-status", "Registered"),
-    Preliminary("preliminary", "http://hl7.org/fhir/observation-status", "Preliminary"),
-    Final("final", "http://hl7.org/fhir/observation-status", "Final"),
-    Amended("amended", "http://hl7.org/fhir/observation-status", "Amended"),
-    Corrected("corrected", "http://hl7.org/fhir/observation-status", "Corrected"),
-    Cancelled("cancelled", "http://hl7.org/fhir/observation-status", "Cancelled"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/observation-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/observation-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ObservationStatus =
-        when (code) {
-          "registered" -> Registered
-          "preliminary" -> Preliminary
-          "final" -> Final
-          "amended" -> Amended
-          "corrected" -> Corrected
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum ObservationStatus")
-        }
-    }
   }
 }

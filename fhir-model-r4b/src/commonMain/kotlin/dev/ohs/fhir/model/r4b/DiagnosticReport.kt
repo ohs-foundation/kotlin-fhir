@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.DiagnosticReportMediaSerializer
 import dev.ohs.fhir.model.r4b.serializers.DiagnosticReportSerializer
+import dev.ohs.fhir.model.r4b.terminologies.DiagnosticReportStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -719,47 +720,5 @@ public data class DiagnosticReport(
         conclusionCode = conclusionCode.mapToList { it.build() },
         presentedForm = presentedForm.mapToList { it.build() },
       )
-  }
-
-  /** The status of the diagnostic report. */
-  public enum class DiagnosticReportStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered("registered", "http://hl7.org/fhir/diagnostic-report-status", "Registered"),
-    Partial("partial", "http://hl7.org/fhir/diagnostic-report-status", "Partial"),
-    Preliminary("preliminary", "http://hl7.org/fhir/diagnostic-report-status", "Preliminary"),
-    Final("final", "http://hl7.org/fhir/diagnostic-report-status", "Final"),
-    Amended("amended", "http://hl7.org/fhir/diagnostic-report-status", "Amended"),
-    Corrected("corrected", "http://hl7.org/fhir/diagnostic-report-status", "Corrected"),
-    Appended("appended", "http://hl7.org/fhir/diagnostic-report-status", "Appended"),
-    Cancelled("cancelled", "http://hl7.org/fhir/diagnostic-report-status", "Cancelled"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/diagnostic-report-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/diagnostic-report-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DiagnosticReportStatus =
-        when (code) {
-          "registered" -> Registered
-          "partial" -> Partial
-          "preliminary" -> Preliminary
-          "final" -> Final
-          "amended" -> Amended
-          "corrected" -> Corrected
-          "appended" -> Appended
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum DiagnosticReportStatus")
-        }
-    }
   }
 }

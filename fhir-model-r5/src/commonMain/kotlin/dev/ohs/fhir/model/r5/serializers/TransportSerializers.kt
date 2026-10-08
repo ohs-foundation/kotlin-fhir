@@ -87,6 +87,9 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.Uuid
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
+import dev.ohs.fhir.model.r5.terminologies.TransportIntent
+import dev.ohs.fhir.model.r5.terminologies.TransportStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -2723,19 +2726,14 @@ internal object TransportSerializer : FhirResourceSerializer<Transport> {
       groupIdentifier = groupIdentifier,
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Transport.TransportStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) TransportStatus.fromCode(status) else null, _status),
       statusReason = statusReason,
       intent =
-        Enumeration.of(
-          if (intent != null) Transport.TransportIntent.fromCode(intent) else null,
-          _intent,
-        ) ?: throw SerializationException("Missing required property 'intent' on Transport"),
+        Enumeration.of(if (intent != null) TransportIntent.fromCode(intent) else null, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on Transport"),
       priority =
         Enumeration.of(
-          if (priority != null) Transport.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       code = code,

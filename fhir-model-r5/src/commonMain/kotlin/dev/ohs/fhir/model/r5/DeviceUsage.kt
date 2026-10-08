@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.DeviceUsageAdherenceSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceUsageSerializer
+import dev.ohs.fhir.model.r5.terminologies.DeviceUsageStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -607,40 +608,5 @@ public data class DeviceUsage(
         bodySite = bodySite?.build(),
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** A coded concept indicating the current status of the Device Usage. */
-  public enum class DeviceUsageStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/deviceusage-status", "Active"),
-    Completed("completed", "http://hl7.org/fhir/deviceusage-status", "Completed"),
-    Not_Done("not-done", "http://hl7.org/fhir/deviceusage-status", "Not done"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/deviceusage-status",
-      "Entered in Error",
-    ),
-    Intended("intended", "http://hl7.org/fhir/deviceusage-status", "Intended"),
-    Stopped("stopped", "http://hl7.org/fhir/deviceusage-status", "Stopped"),
-    On_Hold("on-hold", "http://hl7.org/fhir/deviceusage-status", "On Hold");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): DeviceUsageStatus =
-        when (code) {
-          "active" -> Active
-          "completed" -> Completed
-          "not-done" -> Not_Done
-          "entered-in-error" -> Entered_In_Error
-          "intended" -> Intended
-          "stopped" -> Stopped
-          "on-hold" -> On_Hold
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceUsageStatus")
-        }
-    }
   }
 }

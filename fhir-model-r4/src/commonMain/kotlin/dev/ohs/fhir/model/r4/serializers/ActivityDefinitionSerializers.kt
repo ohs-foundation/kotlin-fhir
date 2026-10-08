@@ -55,7 +55,11 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.ActionParticipantType
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.RequestIntent
+import dev.ohs.fhir.model.r4.terminologies.RequestPriority
+import dev.ohs.fhir.model.r4.terminologies.RequestResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -145,10 +149,7 @@ internal object ActivityDefinitionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) ActivityDefinition.ActionParticipantType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ActionParticipantType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ActivityDefinition.Participant"
           ),
@@ -1048,21 +1049,14 @@ internal object ActivityDefinitionSerializer : FhirResourceSerializer<ActivityDe
               "An entry of 'library' on ActivityDefinition has neither a value nor an id/extension"
             )
         }),
-      kind =
-        Enumeration.of(
-          if (kind != null) ActivityDefinition.RequestResourceType.fromCode(kind) else null,
-          _kind,
-        ),
+      kind = Enumeration.of(if (kind != null) RequestResourceType.fromCode(kind) else null, _kind),
       profile = Canonical.of(profile, _profile),
       code = code,
       intent =
-        Enumeration.of(
-          if (intent != null) ActivityDefinition.RequestIntent.fromCode(intent) else null,
-          _intent,
-        ),
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent),
       priority =
         Enumeration.of(
-          if (priority != null) ActivityDefinition.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       doNotPerform = R4Boolean.of(doNotPerform, _doNotPerform),

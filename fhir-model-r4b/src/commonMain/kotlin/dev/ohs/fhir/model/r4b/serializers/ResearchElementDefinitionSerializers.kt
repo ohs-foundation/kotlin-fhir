@@ -52,7 +52,10 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.GroupMeasure
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.ResearchElementType
+import dev.ohs.fhir.model.r4b.terminologies.VariableType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -381,8 +384,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
       studyEffectiveTimeFromStart = studyEffectiveTimeFromStart,
       studyEffectiveGroupMeasure =
         Enumeration.of(
-          if (studyEffectiveGroupMeasure != null)
-            ResearchElementDefinition.GroupMeasure.fromCode(studyEffectiveGroupMeasure)
+          if (studyEffectiveGroupMeasure != null) GroupMeasure.fromCode(studyEffectiveGroupMeasure)
           else null,
           _studyEffectiveGroupMeasure,
         ),
@@ -404,7 +406,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
       participantEffectiveGroupMeasure =
         Enumeration.of(
           if (participantEffectiveGroupMeasure != null)
-            ResearchElementDefinition.GroupMeasure.fromCode(participantEffectiveGroupMeasure)
+            GroupMeasure.fromCode(participantEffectiveGroupMeasure)
           else null,
           _participantEffectiveGroupMeasure,
         ),
@@ -1120,17 +1122,13 @@ internal object ResearchElementDefinitionSerializer :
             )
         }),
       type =
-        Enumeration.of(
-          if (type != null) ResearchElementDefinition.ResearchElementType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ResearchElementType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ResearchElementDefinition"
           ),
       variableType =
         Enumeration.of(
-          if (variableType != null) ResearchElementDefinition.VariableType.fromCode(variableType)
-          else null,
+          if (variableType != null) VariableType.fromCode(variableType) else null,
           _variableType,
         ),
       characteristic = characteristic ?: listOf(),

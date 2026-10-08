@@ -44,6 +44,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.RiskAssessment
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.ObservationStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -576,10 +577,8 @@ internal object RiskAssessmentSerializer : FhirResourceSerializer<RiskAssessment
       basedOn = basedOn,
       parent = parent,
       status =
-        Enumeration.of(
-          if (status != null) RiskAssessment.ObservationStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on RiskAssessment"),
+        Enumeration.of(if (status != null) ObservationStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on RiskAssessment"),
       method = method,
       code = code,
       subject =

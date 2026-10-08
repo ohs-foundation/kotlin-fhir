@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.SlotSerializer
+import dev.ohs.fhir.model.r4.terminologies.SlotStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -360,32 +361,5 @@ public data class Slot(
         overbooked = overbooked?.build(),
         comment = comment?.build(),
       )
-  }
-
-  /** The free/busy status of the slot. */
-  public enum class SlotStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Busy("busy", "http://hl7.org/fhir/slotstatus", "Busy"),
-    Free("free", "http://hl7.org/fhir/slotstatus", "Free"),
-    Busy_Unavailable("busy-unavailable", "http://hl7.org/fhir/slotstatus", "Busy (Unavailable)"),
-    Busy_Tentative("busy-tentative", "http://hl7.org/fhir/slotstatus", "Busy (Tentative)"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/slotstatus", "Entered in error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SlotStatus =
-        when (code) {
-          "busy" -> Busy
-          "free" -> Free
-          "busy-unavailable" -> Busy_Unavailable
-          "busy-tentative" -> Busy_Tentative
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum SlotStatus")
-        }
-    }
   }
 }

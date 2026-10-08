@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.Narrative
 import dev.ohs.fhir.model.r5.Xhtml
+import dev.ohs.fhir.model.r5.terminologies.NarrativeStatus
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
@@ -101,10 +102,8 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
       id = id,
       extension = extension ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Narrative.NarrativeStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Narrative"),
+        Enumeration.of(if (status != null) NarrativeStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Narrative"),
       div =
         Xhtml.of(
           div ?: throw SerializationException("Missing required property 'div' on Narrative"),

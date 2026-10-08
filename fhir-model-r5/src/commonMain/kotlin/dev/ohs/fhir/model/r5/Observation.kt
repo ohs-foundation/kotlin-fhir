@@ -25,6 +25,8 @@ import dev.ohs.fhir.model.r5.serializers.ObservationComponentSerializer
 import dev.ohs.fhir.model.r5.serializers.ObservationReferenceRangeSerializer
 import dev.ohs.fhir.model.r5.serializers.ObservationSerializer
 import dev.ohs.fhir.model.r5.serializers.ObservationTriggeredBySerializer
+import dev.ohs.fhir.model.r5.terminologies.ObservationStatus
+import dev.ohs.fhir.model.r5.terminologies.TriggeredBytype
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1681,65 +1683,5 @@ public data class Observation(
         derivedFrom = derivedFrom.mapToList { it.build() },
         component = component.mapToList { it.build() },
       )
-  }
-
-  /** Codes providing the type of triggeredBy observation. */
-  public enum class TriggeredBytype(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Reflex("reflex", "http://hl7.org/fhir/observation-triggeredbytype", "Reflex"),
-    Repeat("repeat", "http://hl7.org/fhir/observation-triggeredbytype", "Repeat (per policy)"),
-    Re_Run("re-run", "http://hl7.org/fhir/observation-triggeredbytype", "Re-run (per policy)");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TriggeredBytype =
-        when (code) {
-          "reflex" -> Reflex
-          "repeat" -> Repeat
-          "re-run" -> Re_Run
-          else -> throw IllegalArgumentException("Unknown code $code for enum TriggeredBytype")
-        }
-    }
-  }
-
-  /** Codes providing the status of an observation. */
-  public enum class ObservationStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered("registered", "http://hl7.org/fhir/observation-status", "Registered"),
-    Preliminary("preliminary", "http://hl7.org/fhir/observation-status", "Preliminary"),
-    Final("final", "http://hl7.org/fhir/observation-status", "Final"),
-    Amended("amended", "http://hl7.org/fhir/observation-status", "Amended"),
-    Corrected("corrected", "http://hl7.org/fhir/observation-status", "Corrected"),
-    Cancelled("cancelled", "http://hl7.org/fhir/observation-status", "Cancelled"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/observation-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/observation-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ObservationStatus =
-        when (code) {
-          "registered" -> Registered
-          "preliminary" -> Preliminary
-          "final" -> Final
-          "amended" -> Amended
-          "corrected" -> Corrected
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum ObservationStatus")
-        }
-    }
   }
 }

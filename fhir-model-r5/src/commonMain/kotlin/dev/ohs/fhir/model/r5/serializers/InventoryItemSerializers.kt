@@ -51,6 +51,8 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
+import dev.ohs.fhir.model.r5.terminologies.CommonLanguages
+import dev.ohs.fhir.model.r5.terminologies.InventoryItemStatusCodes
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -157,7 +159,7 @@ internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
           ),
       language =
         Enumeration.of(
-          if (language != null) InventoryItem.CommonLanguages.fromCode(language) else null,
+          if (language != null) CommonLanguages.fromCode(language) else null,
           _language,
         )
           ?: throw SerializationException(
@@ -373,7 +375,7 @@ internal object InventoryItemDescriptionSerializer : KSerializer<InventoryItem.D
       modifierExtension = modifierExtension ?: listOf(),
       language =
         Enumeration.of(
-          if (language != null) InventoryItem.CommonLanguages.fromCode(language) else null,
+          if (language != null) CommonLanguages.fromCode(language) else null,
           _language,
         ),
       description = R5String.of(description, _description),
@@ -1241,7 +1243,7 @@ internal object InventoryItemSerializer : FhirResourceSerializer<InventoryItem> 
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) InventoryItem.InventoryItemStatusCodes.fromCode(status) else null,
+          if (status != null) InventoryItemStatusCodes.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on InventoryItem"),
       category = category ?: listOf(),

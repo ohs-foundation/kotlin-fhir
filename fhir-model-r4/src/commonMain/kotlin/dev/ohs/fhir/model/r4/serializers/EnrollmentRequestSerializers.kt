@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.FinancialResourceStatusCodes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -235,8 +236,7 @@ internal object EnrollmentRequestSerializer : FhirResourceSerializer<EnrollmentR
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) EnrollmentRequest.FinancialResourceStatusCodes.fromCode(status)
-          else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         ),
       created =

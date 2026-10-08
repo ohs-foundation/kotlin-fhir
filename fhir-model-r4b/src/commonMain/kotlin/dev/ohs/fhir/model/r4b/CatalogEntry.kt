@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.CatalogEntryRelatedEntrySerializer
 import dev.ohs.fhir.model.r4b.serializers.CatalogEntrySerializer
+import dev.ohs.fhir.model.r4b.terminologies.CatalogEntryRelationType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.String
 import kotlin.Suppress
@@ -494,27 +495,5 @@ public data class CatalogEntry(
         additionalClassification = additionalClassification.mapToList { it.build() },
         relatedEntry = relatedEntry.mapToList { it.build() },
       )
-  }
-
-  /** The type of relations between entries. */
-  public enum class CatalogEntryRelationType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Triggers("triggers", "http://hl7.org/fhir/relation-type", "Triggers"),
-    Is_Replaced_By("is-replaced-by", "http://hl7.org/fhir/relation-type", "Replaced By");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): CatalogEntryRelationType =
-        when (code) {
-          "triggers" -> Triggers
-          "is-replaced-by" -> Is_Replaced_By
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CatalogEntryRelationType")
-        }
-    }
   }
 }

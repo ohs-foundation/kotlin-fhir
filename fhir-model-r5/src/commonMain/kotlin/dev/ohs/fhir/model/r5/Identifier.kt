@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.IdentifierSerializer
+import dev.ohs.fhir.model.r5.terminologies.IdentifierUse
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -199,32 +200,5 @@ public data class Identifier(
         period = period?.build(),
         assigner = assigner?.build(),
       )
-  }
-
-  /** Identifies the purpose for this identifier, if known . */
-  public enum class IdentifierUse(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Usual("usual", "http://hl7.org/fhir/identifier-use", "Usual"),
-    Official("official", "http://hl7.org/fhir/identifier-use", "Official"),
-    Temp("temp", "http://hl7.org/fhir/identifier-use", "Temp"),
-    Secondary("secondary", "http://hl7.org/fhir/identifier-use", "Secondary"),
-    Old("old", "http://hl7.org/fhir/identifier-use", "Old");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): IdentifierUse =
-        when (code) {
-          "usual" -> Usual
-          "official" -> Official
-          "temp" -> Temp
-          "secondary" -> Secondary
-          "old" -> Old
-          else -> throw IllegalArgumentException("Unknown code $code for enum IdentifierUse")
-        }
-    }
   }
 }

@@ -28,6 +28,9 @@ import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumComp
 import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumPopulationSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportSerializer
+import dev.ohs.fhir.model.r5.terminologies.MeasureReportStatus
+import dev.ohs.fhir.model.r5.terminologies.MeasureReportType
+import dev.ohs.fhir.model.r5.terminologies.SubmitDataUpdateType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1680,81 +1683,5 @@ public data class MeasureReport(
         supplementalData = supplementalData.mapToList { it.build() },
         evaluatedResource = evaluatedResource.mapToList { it.build() },
       )
-  }
-
-  /** The status of the measure report. */
-  public enum class MeasureReportStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Complete("complete", "http://hl7.org/fhir/measure-report-status", "Complete"),
-    Pending("pending", "http://hl7.org/fhir/measure-report-status", "Pending"),
-    Error("error", "http://hl7.org/fhir/measure-report-status", "Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): MeasureReportStatus =
-        when (code) {
-          "complete" -> Complete
-          "pending" -> Pending
-          "error" -> Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum MeasureReportStatus")
-        }
-    }
-  }
-
-  /** The type of the measure report. */
-  public enum class MeasureReportType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Individual("individual", "http://hl7.org/fhir/measure-report-type", "Individual"),
-    Subject_List("subject-list", "http://hl7.org/fhir/measure-report-type", "Subject List"),
-    Summary("summary", "http://hl7.org/fhir/measure-report-type", "Summary"),
-    Data_Exchange("data-exchange", "http://hl7.org/fhir/measure-report-type", "Data Exchange");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): MeasureReportType =
-        when (code) {
-          "individual" -> Individual
-          "subject-list" -> Subject_List
-          "summary" -> Summary
-          "data-exchange" -> Data_Exchange
-          else -> throw IllegalArgumentException("Unknown code $code for enum MeasureReportType")
-        }
-    }
-  }
-
-  /**
-   * Concepts for how a measure report consumer and receiver coordinate data exchange updates. The
-   * choices are snapshot or incremental updates
-   */
-  public enum class SubmitDataUpdateType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Incremental(
-      "incremental",
-      "http://hl7.org/fhir/CodeSystem/submit-data-update-type",
-      "Incremental",
-    ),
-    Snapshot("snapshot", "http://hl7.org/fhir/CodeSystem/submit-data-update-type", "Snapshot");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SubmitDataUpdateType =
-        when (code) {
-          "incremental" -> Incremental
-          "snapshot" -> Snapshot
-          else -> throw IllegalArgumentException("Unknown code $code for enum SubmitDataUpdateType")
-        }
-    }
   }
 }

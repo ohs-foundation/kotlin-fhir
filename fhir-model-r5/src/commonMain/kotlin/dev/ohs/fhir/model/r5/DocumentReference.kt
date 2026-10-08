@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.serializers.DocumentReferenceContentProfileSerializ
 import dev.ohs.fhir.model.r5.serializers.DocumentReferenceContentSerializer
 import dev.ohs.fhir.model.r5.serializers.DocumentReferenceRelatesToSerializer
 import dev.ohs.fhir.model.r5.serializers.DocumentReferenceSerializer
+import dev.ohs.fhir.model.r5.terminologies.CompositionStatus
 import dev.ohs.fhir.model.r5.terminologies.DocumentReferenceStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1190,48 +1191,5 @@ public data class DocumentReference(
         securityLabel = securityLabel.mapToList { it.build() },
         content = content.mapToList { it.build() },
       )
-  }
-
-  /** The workflow/clinical status of the composition. */
-  public enum class CompositionStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered("registered", "http://hl7.org/fhir/composition-status", "Registered"),
-    Partial("partial", "http://hl7.org/fhir/composition-status", "Partial"),
-    Preliminary("preliminary", "http://hl7.org/fhir/composition-status", "Preliminary"),
-    Final("final", "http://hl7.org/fhir/composition-status", "Final"),
-    Amended("amended", "http://hl7.org/fhir/composition-status", "Amended"),
-    Corrected("corrected", "http://hl7.org/fhir/composition-status", "Corrected"),
-    Appended("appended", "http://hl7.org/fhir/composition-status", "Appended"),
-    Cancelled("cancelled", "http://hl7.org/fhir/composition-status", "Cancelled"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/composition-status",
-      "Entered in Error",
-    ),
-    Deprecated("deprecated", "http://hl7.org/fhir/composition-status", "Deprecated"),
-    Unknown("unknown", "http://hl7.org/fhir/composition-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CompositionStatus =
-        when (code) {
-          "registered" -> Registered
-          "partial" -> Partial
-          "preliminary" -> Preliminary
-          "final" -> Final
-          "amended" -> Amended
-          "corrected" -> Corrected
-          "appended" -> Appended
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          "deprecated" -> Deprecated
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum CompositionStatus")
-        }
-    }
   }
 }

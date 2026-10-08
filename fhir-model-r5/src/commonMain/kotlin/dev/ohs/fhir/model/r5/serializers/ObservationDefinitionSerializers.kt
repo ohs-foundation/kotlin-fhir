@@ -50,6 +50,8 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r5.terminologies.ObservationDataType
+import dev.ohs.fhir.model.r5.terminologies.ObservationRangeCategory
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -254,9 +256,7 @@ internal object ObservationDefinitionQualifiedValueSerializer :
       condition = R5String.of(condition, _condition),
       rangeCategory =
         Enumeration.of(
-          if (rangeCategory != null)
-            ObservationDefinition.ObservationRangeCategory.fromCode(rangeCategory)
-          else null,
+          if (rangeCategory != null) ObservationRangeCategory.fromCode(rangeCategory) else null,
           _rangeCategory,
         ),
       range = range,
@@ -433,9 +433,7 @@ internal object ObservationDefinitionComponentSerializer :
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            permittedDataType?.getOrNull(index)?.let {
-              ObservationDefinition.ObservationDataType.fromCode(it)
-            },
+            permittedDataType?.getOrNull(index)?.let { ObservationDataType.fromCode(it) },
             _permittedDataType?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -1134,9 +1132,7 @@ internal object ObservationDefinitionSerializer : FhirResourceSerializer<Observa
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            permittedDataType?.getOrNull(index)?.let {
-              ObservationDefinition.ObservationDataType.fromCode(it)
-            },
+            permittedDataType?.getOrNull(index)?.let { ObservationDataType.fromCode(it) },
             _permittedDataType?.getOrNull(index),
           )
             ?: throw SerializationException(

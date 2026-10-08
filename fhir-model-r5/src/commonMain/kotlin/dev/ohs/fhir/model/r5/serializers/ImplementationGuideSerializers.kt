@@ -49,8 +49,10 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.FHIRVersion
+import dev.ohs.fhir.model.r5.terminologies.GuidePageGeneration
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
+import dev.ohs.fhir.model.r5.terminologies.SPDXLicense
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -970,8 +972,7 @@ internal object ImplementationGuideDefinitionPageSerializer :
           ),
       generation =
         Enumeration.of(
-          if (generation != null) ImplementationGuide.GuidePageGeneration.fromCode(generation)
-          else null,
+          if (generation != null) GuidePageGeneration.fromCode(generation) else null,
           _generation,
         )
           ?: throw SerializationException(
@@ -2195,7 +2196,7 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
           ?: throw SerializationException(
             "Missing required property 'packageId' on ImplementationGuide"
           ),
-      license = ExtensibleEnumeration.of<ImplementationGuide.SPDXLicense>(license, _license),
+      license = ExtensibleEnumeration.of<SPDXLicense>(license, _license),
       fhirVersion =
         (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(

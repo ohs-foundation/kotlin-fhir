@@ -49,6 +49,9 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.CharacteristicCombination
+import dev.ohs.fhir.model.r4b.terminologies.EvidenceVariableHandling
+import dev.ohs.fhir.model.r4b.terminologies.GroupMeasure
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -247,7 +250,7 @@ internal object EvidenceVariableCharacteristicSerializer :
       timeFromStart = timeFromStart,
       groupMeasure =
         Enumeration.of(
-          if (groupMeasure != null) EvidenceVariable.GroupMeasure.fromCode(groupMeasure) else null,
+          if (groupMeasure != null) GroupMeasure.fromCode(groupMeasure) else null,
           _groupMeasure,
         ),
     )
@@ -979,15 +982,14 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
       characteristicCombination =
         Enumeration.of(
           if (characteristicCombination != null)
-            EvidenceVariable.CharacteristicCombination.fromCode(characteristicCombination)
+            CharacteristicCombination.fromCode(characteristicCombination)
           else null,
           _characteristicCombination,
         ),
       characteristic = characteristic ?: listOf(),
       handling =
         Enumeration.of(
-          if (handling != null) EvidenceVariable.EvidenceVariableHandling.fromCode(handling)
-          else null,
+          if (handling != null) EvidenceVariableHandling.fromCode(handling) else null,
           _handling,
         ),
       category = category ?: listOf(),

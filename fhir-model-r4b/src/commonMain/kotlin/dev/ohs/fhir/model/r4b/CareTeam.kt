@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.CareTeamParticipantSerializer
 import dev.ohs.fhir.model.r4b.serializers.CareTeamSerializer
+import dev.ohs.fhir.model.r4b.terminologies.CareTeamStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -596,36 +597,5 @@ public data class CareTeam(
         telecom = telecom.mapToList { it.build() },
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Indicates the status of the care team. */
-  public enum class CareTeamStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Proposed("proposed", "http://hl7.org/fhir/care-team-status", "Proposed"),
-    Active("active", "http://hl7.org/fhir/care-team-status", "Active"),
-    Suspended("suspended", "http://hl7.org/fhir/care-team-status", "Suspended"),
-    Inactive("inactive", "http://hl7.org/fhir/care-team-status", "Inactive"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/care-team-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CareTeamStatus =
-        when (code) {
-          "proposed" -> Proposed
-          "active" -> Active
-          "suspended" -> Suspended
-          "inactive" -> Inactive
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum CareTeamStatus")
-        }
-    }
   }
 }

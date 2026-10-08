@@ -149,7 +149,13 @@ abstract class FhirCodegenTask : DefaultTask() {
         }
         .toMap()
     val fhirCodegen =
-      FhirCodegen(packageName, valueSetMap, baseClasses, typeGraph, primitiveValueIsNonNull)
+      FhirCodegen(
+        packageName = packageName,
+        valueSetMap = valueSetMap,
+        baseClassesSet = baseClasses,
+        typeGraph = typeGraph,
+        primitiveValueIsNonNull = primitiveValueIsNonNull,
+      )
 
     structureDefinitions
       .flatMap { fhirCodegen.generateFileSpecs(it) }

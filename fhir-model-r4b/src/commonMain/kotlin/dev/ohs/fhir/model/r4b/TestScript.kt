@@ -38,8 +38,12 @@ import dev.ohs.fhir.model.r4b.serializers.TestScriptTeardownSerializer
 import dev.ohs.fhir.model.r4b.serializers.TestScriptTestActionSerializer
 import dev.ohs.fhir.model.r4b.serializers.TestScriptTestSerializer
 import dev.ohs.fhir.model.r4b.serializers.TestScriptVariableSerializer
+import dev.ohs.fhir.model.r4b.terminologies.AssertionDirectionType
+import dev.ohs.fhir.model.r4b.terminologies.AssertionOperatorType
+import dev.ohs.fhir.model.r4b.terminologies.AssertionResponseTypes
 import dev.ohs.fhir.model.r4b.terminologies.FHIRDefinedType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.TestScriptRequestMethodCode
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -3722,155 +3726,5 @@ public data class TestScript(
         test = test.mapToList { it.build() },
         teardown = teardown?.build(),
       )
-  }
-
-  /** The allowable request method or HTTP operation codes. */
-  public enum class TestScriptRequestMethodCode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Delete("delete", "http://hl7.org/fhir/http-operations", "DELETE"),
-    Get("get", "http://hl7.org/fhir/http-operations", "GET"),
-    Options("options", "http://hl7.org/fhir/http-operations", "OPTIONS"),
-    Patch("patch", "http://hl7.org/fhir/http-operations", "PATCH"),
-    Post("post", "http://hl7.org/fhir/http-operations", "POST"),
-    Put("put", "http://hl7.org/fhir/http-operations", "PUT"),
-    Head("head", "http://hl7.org/fhir/http-operations", "HEAD");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TestScriptRequestMethodCode =
-        when (code) {
-          "delete" -> Delete
-          "get" -> Get
-          "options" -> Options
-          "patch" -> Patch
-          "post" -> Post
-          "put" -> Put
-          "head" -> Head
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum TestScriptRequestMethodCode"
-            )
-        }
-    }
-  }
-
-  /** The type of direction to use for assertion. */
-  public enum class AssertionDirectionType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Response("response", "http://hl7.org/fhir/assert-direction-codes", "response"),
-    Request("request", "http://hl7.org/fhir/assert-direction-codes", "request");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AssertionDirectionType =
-        when (code) {
-          "response" -> Response
-          "request" -> Request
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AssertionDirectionType")
-        }
-    }
-  }
-
-  /** The type of operator to use for assertion. */
-  public enum class AssertionOperatorType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Equals("equals", "http://hl7.org/fhir/assert-operator-codes", "equals"),
-    NotEquals("notEquals", "http://hl7.org/fhir/assert-operator-codes", "notEquals"),
-    In("in", "http://hl7.org/fhir/assert-operator-codes", "in"),
-    NotIn("notIn", "http://hl7.org/fhir/assert-operator-codes", "notIn"),
-    GreaterThan("greaterThan", "http://hl7.org/fhir/assert-operator-codes", "greaterThan"),
-    LessThan("lessThan", "http://hl7.org/fhir/assert-operator-codes", "lessThan"),
-    Empty("empty", "http://hl7.org/fhir/assert-operator-codes", "empty"),
-    NotEmpty("notEmpty", "http://hl7.org/fhir/assert-operator-codes", "notEmpty"),
-    Contains("contains", "http://hl7.org/fhir/assert-operator-codes", "contains"),
-    NotContains("notContains", "http://hl7.org/fhir/assert-operator-codes", "notContains"),
-    Eval("eval", "http://hl7.org/fhir/assert-operator-codes", "evaluate");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AssertionOperatorType =
-        when (code) {
-          "equals" -> Equals
-          "notEquals" -> NotEquals
-          "in" -> In
-          "notIn" -> NotIn
-          "greaterThan" -> GreaterThan
-          "lessThan" -> LessThan
-          "empty" -> Empty
-          "notEmpty" -> NotEmpty
-          "contains" -> Contains
-          "notContains" -> NotContains
-          "eval" -> Eval
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AssertionOperatorType")
-        }
-    }
-  }
-
-  /** The type of response code to use for assertion. */
-  public enum class AssertionResponseTypes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Okay("okay", "http://hl7.org/fhir/assert-response-code-types", "okay"),
-    Created("created", "http://hl7.org/fhir/assert-response-code-types", "created"),
-    NoContent("noContent", "http://hl7.org/fhir/assert-response-code-types", "noContent"),
-    NotModified("notModified", "http://hl7.org/fhir/assert-response-code-types", "notModified"),
-    Bad("bad", "http://hl7.org/fhir/assert-response-code-types", "bad"),
-    Forbidden("forbidden", "http://hl7.org/fhir/assert-response-code-types", "forbidden"),
-    NotFound("notFound", "http://hl7.org/fhir/assert-response-code-types", "notFound"),
-    MethodNotAllowed(
-      "methodNotAllowed",
-      "http://hl7.org/fhir/assert-response-code-types",
-      "methodNotAllowed",
-    ),
-    Conflict("conflict", "http://hl7.org/fhir/assert-response-code-types", "conflict"),
-    Gone("gone", "http://hl7.org/fhir/assert-response-code-types", "gone"),
-    PreconditionFailed(
-      "preconditionFailed",
-      "http://hl7.org/fhir/assert-response-code-types",
-      "preconditionFailed",
-    ),
-    Unprocessable(
-      "unprocessable",
-      "http://hl7.org/fhir/assert-response-code-types",
-      "unprocessable",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): AssertionResponseTypes =
-        when (code) {
-          "okay" -> Okay
-          "created" -> Created
-          "noContent" -> NoContent
-          "notModified" -> NotModified
-          "bad" -> Bad
-          "forbidden" -> Forbidden
-          "notFound" -> NotFound
-          "methodNotAllowed" -> MethodNotAllowed
-          "conflict" -> Conflict
-          "gone" -> Gone
-          "preconditionFailed" -> PreconditionFailed
-          "unprocessable" -> Unprocessable
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AssertionResponseTypes")
-        }
-    }
   }
 }

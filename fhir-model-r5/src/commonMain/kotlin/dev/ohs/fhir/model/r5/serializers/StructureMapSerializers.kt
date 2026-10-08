@@ -52,6 +52,12 @@ import dev.ohs.fhir.model.r5.Time
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.StructureMapGroupTypeMode
+import dev.ohs.fhir.model.r5.terminologies.StructureMapInputMode
+import dev.ohs.fhir.model.r5.terminologies.StructureMapModelMode
+import dev.ohs.fhir.model.r5.terminologies.StructureMapSourceListMode
+import dev.ohs.fhir.model.r5.terminologies.StructureMapTargetListMode
+import dev.ohs.fhir.model.r5.terminologies.StructureMapTransform
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -174,10 +180,7 @@ internal object StructureMapStructureSerializer : KSerializer<StructureMap.Struc
             "Missing required property 'url' on StructureMap.Structure"
           ),
       mode =
-        Enumeration.of(
-          if (mode != null) StructureMap.StructureMapModelMode.fromCode(mode) else null,
-          _mode,
-        )
+        Enumeration.of(if (mode != null) StructureMapModelMode.fromCode(mode) else null, _mode)
           ?: throw SerializationException(
             "Missing required property 'mode' on StructureMap.Structure"
           ),
@@ -435,7 +438,7 @@ internal object StructureMapGroupSerializer : KSerializer<StructureMap.Group> {
       extends = Id.of(extends, _extends),
       typeMode =
         Enumeration.of(
-          if (typeMode != null) StructureMap.StructureMapGroupTypeMode.fromCode(typeMode) else null,
+          if (typeMode != null) StructureMapGroupTypeMode.fromCode(typeMode) else null,
           _typeMode,
         ),
       documentation = R5String.of(documentation, _documentation),
@@ -589,10 +592,7 @@ internal object StructureMapGroupInputSerializer : KSerializer<StructureMap.Grou
           ),
       type = R5String.of(type, _type),
       mode =
-        Enumeration.of(
-          if (mode != null) StructureMap.StructureMapInputMode.fromCode(mode) else null,
-          _mode,
-        )
+        Enumeration.of(if (mode != null) StructureMapInputMode.fromCode(mode) else null, _mode)
           ?: throw SerializationException(
             "Missing required property 'mode' on StructureMap.Group.Input"
           ),
@@ -1006,8 +1006,7 @@ internal object StructureMapGroupRuleSourceSerializer :
       element = R5String.of(element, _element),
       listMode =
         Enumeration.of(
-          if (listMode != null) StructureMap.StructureMapSourceListMode.fromCode(listMode)
-          else null,
+          if (listMode != null) StructureMapSourceListMode.fromCode(listMode) else null,
           _listMode,
         ),
       variable = Id.of(variable, _variable),
@@ -1209,9 +1208,7 @@ internal object StructureMapGroupRuleTargetSerializer :
       listMode =
         (kotlin.collections.List(maxOf(listMode?.size ?: 0, _listMode?.size ?: 0)) { index ->
           Enumeration.of(
-            listMode?.getOrNull(index)?.let {
-              StructureMap.StructureMapTargetListMode.fromCode(it)
-            },
+            listMode?.getOrNull(index)?.let { StructureMapTargetListMode.fromCode(it) },
             _listMode?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -1221,7 +1218,7 @@ internal object StructureMapGroupRuleTargetSerializer :
       listRuleId = Id.of(listRuleId, _listRuleId),
       transform =
         Enumeration.of(
-          if (transform != null) StructureMap.StructureMapTransform.fromCode(transform) else null,
+          if (transform != null) StructureMapTransform.fromCode(transform) else null,
           _transform,
         ),
       parameter = parameter ?: listOf(),

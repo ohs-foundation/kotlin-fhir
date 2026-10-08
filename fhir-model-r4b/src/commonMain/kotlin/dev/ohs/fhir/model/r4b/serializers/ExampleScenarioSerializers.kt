@@ -43,6 +43,7 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.ExampleScenarioActorType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
@@ -166,10 +167,7 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
             "Missing required property 'actorId' on ExampleScenario.Actor"
           ),
       type =
-        Enumeration.of(
-          if (type != null) ExampleScenario.ExampleScenarioActorType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ExampleScenarioActorType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ExampleScenario.Actor"
           ),

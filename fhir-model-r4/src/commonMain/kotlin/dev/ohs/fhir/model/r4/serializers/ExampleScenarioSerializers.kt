@@ -43,7 +43,9 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.ExampleScenarioActorType
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -165,10 +167,7 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
             "Missing required property 'actorId' on ExampleScenario.Actor"
           ),
       type =
-        Enumeration.of(
-          if (type != null) ExampleScenario.ExampleScenarioActorType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ExampleScenarioActorType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ExampleScenario.Actor"
           ),
@@ -331,7 +330,7 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
           ),
       resourceType =
         Enumeration.of(
-          if (resourceType != null) ExampleScenario.ResourceType.fromCode(resourceType) else null,
+          if (resourceType != null) ResourceType.fromCode(resourceType) else null,
           _resourceType,
         )
           ?: throw SerializationException(

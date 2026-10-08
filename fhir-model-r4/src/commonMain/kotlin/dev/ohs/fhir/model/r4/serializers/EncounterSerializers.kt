@@ -40,6 +40,8 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.EncounterLocationStatus
+import dev.ohs.fhir.model.r4.terminologies.EncounterStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -126,10 +128,7 @@ internal object EncounterStatusHistorySerializer : KSerializer<Encounter.StatusH
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Encounter.EncounterStatus.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) EncounterStatus.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on Encounter.StatusHistory"
           ),
@@ -805,7 +804,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
           ),
       status =
         Enumeration.of(
-          if (status != null) Encounter.EncounterLocationStatus.fromCode(status) else null,
+          if (status != null) EncounterLocationStatus.fromCode(status) else null,
           _status,
         ),
       physicalType = physicalType,
@@ -1184,10 +1183,8 @@ internal object EncounterSerializer : FhirResourceSerializer<Encounter> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Encounter.EncounterStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Encounter"),
+        Enumeration.of(if (status != null) EncounterStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Encounter"),
       statusHistory = statusHistory ?: listOf(),
       `class` =
         `class` ?: throw SerializationException("Missing required property 'class' on Encounter"),

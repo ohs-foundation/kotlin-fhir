@@ -44,6 +44,7 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.CompositionStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -803,10 +804,8 @@ internal object CompositionSerializer : FhirResourceSerializer<Composition> {
       identifier = identifier ?: listOf(),
       version = R5String.of(version, _version),
       status =
-        Enumeration.of(
-          if (status != null) Composition.CompositionStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Composition"),
+        Enumeration.of(if (status != null) CompositionStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Composition"),
       type =
         type ?: throw SerializationException("Missing required property 'type' on Composition"),
       category = category ?: listOf(),

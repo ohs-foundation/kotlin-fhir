@@ -25,7 +25,10 @@ import dev.ohs.fhir.model.r4.serializers.SearchParameterComponentSerializer
 import dev.ohs.fhir.model.r4.serializers.SearchParameterSerializer
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
+import dev.ohs.fhir.model.r4.terminologies.SearchComparator
+import dev.ohs.fhir.model.r4.terminologies.SearchModifierCode
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.XPathUsageType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -867,110 +870,5 @@ public data class SearchParameter(
         chain = chain.mapToList { it.build() },
         component = component.mapToList { it.build() },
       )
-  }
-
-  /**
-   * How a search parameter relates to the set of elements returned by evaluating its xpath query.
-   */
-  public enum class XPathUsageType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Normal("normal", "http://hl7.org/fhir/search-xpath-usage", "Normal"),
-    Phonetic("phonetic", "http://hl7.org/fhir/search-xpath-usage", "Phonetic"),
-    Nearby("nearby", "http://hl7.org/fhir/search-xpath-usage", "Nearby"),
-    Distance("distance", "http://hl7.org/fhir/search-xpath-usage", "Distance"),
-    Other("other", "http://hl7.org/fhir/search-xpath-usage", "Other");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): XPathUsageType =
-        when (code) {
-          "normal" -> Normal
-          "phonetic" -> Phonetic
-          "nearby" -> Nearby
-          "distance" -> Distance
-          "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum XPathUsageType")
-        }
-    }
-  }
-
-  /** What Search Comparator Codes are supported in search. */
-  public enum class SearchComparator(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Eq("eq", "http://hl7.org/fhir/search-comparator", "Equals"),
-    Ne("ne", "http://hl7.org/fhir/search-comparator", "Not Equals"),
-    Gt("gt", "http://hl7.org/fhir/search-comparator", "Greater Than"),
-    Lt("lt", "http://hl7.org/fhir/search-comparator", "Less Than"),
-    Ge("ge", "http://hl7.org/fhir/search-comparator", "Greater or Equals"),
-    Le("le", "http://hl7.org/fhir/search-comparator", "Less of Equal"),
-    Sa("sa", "http://hl7.org/fhir/search-comparator", "Starts After"),
-    Eb("eb", "http://hl7.org/fhir/search-comparator", "Ends Before"),
-    Ap("ap", "http://hl7.org/fhir/search-comparator", "Approximately");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SearchComparator =
-        when (code) {
-          "eq" -> Eq
-          "ne" -> Ne
-          "gt" -> Gt
-          "lt" -> Lt
-          "ge" -> Ge
-          "le" -> Le
-          "sa" -> Sa
-          "eb" -> Eb
-          "ap" -> Ap
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchComparator")
-        }
-    }
-  }
-
-  /** A supported modifier for a search parameter. */
-  public enum class SearchModifierCode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Missing("missing", "http://hl7.org/fhir/search-modifier-code", "Missing"),
-    Exact("exact", "http://hl7.org/fhir/search-modifier-code", "Exact"),
-    Contains("contains", "http://hl7.org/fhir/search-modifier-code", "Contains"),
-    Not("not", "http://hl7.org/fhir/search-modifier-code", "Not"),
-    Text("text", "http://hl7.org/fhir/search-modifier-code", "Text"),
-    In("in", "http://hl7.org/fhir/search-modifier-code", "In"),
-    Not_In("not-in", "http://hl7.org/fhir/search-modifier-code", "Not In"),
-    Below("below", "http://hl7.org/fhir/search-modifier-code", "Below"),
-    Above("above", "http://hl7.org/fhir/search-modifier-code", "Above"),
-    Type("type", "http://hl7.org/fhir/search-modifier-code", "Type"),
-    Identifier("identifier", "http://hl7.org/fhir/search-modifier-code", "Identifier"),
-    OfType("ofType", "http://hl7.org/fhir/search-modifier-code", "Of Type");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SearchModifierCode =
-        when (code) {
-          "missing" -> Missing
-          "exact" -> Exact
-          "contains" -> Contains
-          "not" -> Not
-          "text" -> Text
-          "in" -> In
-          "not-in" -> Not_In
-          "below" -> Below
-          "above" -> Above
-          "type" -> Type
-          "identifier" -> Identifier
-          "ofType" -> OfType
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchModifierCode")
-        }
-    }
   }
 }

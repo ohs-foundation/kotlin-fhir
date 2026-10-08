@@ -50,6 +50,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.InvoicePriceComponentType
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -396,10 +397,7 @@ internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) ChargeItemDefinition.InvoicePriceComponentType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) InvoicePriceComponentType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ChargeItemDefinition.PropertyGroup.PriceComponent"
           ),

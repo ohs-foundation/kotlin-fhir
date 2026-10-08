@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.serializers.PersonCommunicationSerializer
 import dev.ohs.fhir.model.r5.serializers.PersonLinkSerializer
 import dev.ohs.fhir.model.r5.serializers.PersonSerializer
 import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r5.terminologies.IdentityAssuranceLevel
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -734,34 +735,5 @@ public data class Person(
         managingOrganization = managingOrganization?.build(),
         link = link.mapToList { it.build() },
       )
-  }
-
-  /**
-   * The level of confidence that this link represents the same actual person, based on NIST
-   * Authentication Levels.
-   */
-  public enum class IdentityAssuranceLevel(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Level1("level1", "http://hl7.org/fhir/identity-assuranceLevel", "Level 1"),
-    Level2("level2", "http://hl7.org/fhir/identity-assuranceLevel", "Level 2"),
-    Level3("level3", "http://hl7.org/fhir/identity-assuranceLevel", "Level 3"),
-    Level4("level4", "http://hl7.org/fhir/identity-assuranceLevel", "Level 4");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): IdentityAssuranceLevel =
-        when (code) {
-          "level1" -> Level1
-          "level2" -> Level2
-          "level3" -> Level3
-          "level4" -> Level4
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum IdentityAssuranceLevel")
-        }
-    }
   }
 }

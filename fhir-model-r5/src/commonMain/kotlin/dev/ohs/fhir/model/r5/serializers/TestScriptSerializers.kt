@@ -48,7 +48,12 @@ import dev.ohs.fhir.model.r5.TestScript
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.AssertionDirectionType
+import dev.ohs.fhir.model.r5.terminologies.AssertionManualCompletionType
+import dev.ohs.fhir.model.r5.terminologies.AssertionOperatorType
+import dev.ohs.fhir.model.r5.terminologies.AssertionResponseTypes
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.TestScriptRequestMethodCode
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1649,7 +1654,7 @@ internal object TestScriptSetupActionOperationSerializer :
           ),
       method =
         Enumeration.of(
-          if (method != null) TestScript.TestScriptRequestMethodCode.fromCode(method) else null,
+          if (method != null) TestScriptRequestMethodCode.fromCode(method) else null,
           _method,
         ),
       origin = Integer.of(origin, _origin),
@@ -2208,7 +2213,7 @@ internal object TestScriptSetupActionAssertSerializer :
       description = R5String.of(description, _description),
       direction =
         Enumeration.of(
-          if (direction != null) TestScript.AssertionDirectionType.fromCode(direction) else null,
+          if (direction != null) AssertionDirectionType.fromCode(direction) else null,
           _direction,
         ),
       compareToSourceId = R5String.of(compareToSourceId, _compareToSourceId),
@@ -2219,7 +2224,7 @@ internal object TestScriptSetupActionAssertSerializer :
       defaultManualCompletion =
         Enumeration.of(
           if (defaultManualCompletion != null)
-            TestScript.AssertionManualCompletionType.fromCode(defaultManualCompletion)
+            AssertionManualCompletionType.fromCode(defaultManualCompletion)
           else null,
           _defaultManualCompletion,
         ),
@@ -2229,21 +2234,20 @@ internal object TestScriptSetupActionAssertSerializer :
       navigationLinks = R5Boolean.of(navigationLinks, _navigationLinks),
       `operator` =
         Enumeration.of(
-          if (`operator` != null) TestScript.AssertionOperatorType.fromCode(`operator`) else null,
+          if (`operator` != null) AssertionOperatorType.fromCode(`operator`) else null,
           _operator,
         ),
       path = R5String.of(path, _path),
       requestMethod =
         Enumeration.of(
-          if (requestMethod != null) TestScript.TestScriptRequestMethodCode.fromCode(requestMethod)
-          else null,
+          if (requestMethod != null) TestScriptRequestMethodCode.fromCode(requestMethod) else null,
           _requestMethod,
         ),
       requestURL = R5String.of(requestURL, _requestURL),
       resource = Uri.of(resource, _resource),
       response =
         Enumeration.of(
-          if (response != null) TestScript.AssertionResponseTypes.fromCode(response) else null,
+          if (response != null) AssertionResponseTypes.fromCode(response) else null,
           _response,
         ),
       responseCode = R5String.of(responseCode, _responseCode),

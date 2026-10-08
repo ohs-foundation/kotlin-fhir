@@ -44,6 +44,7 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.ConceptMapEquivalence
+import dev.ohs.fhir.model.r4.terminologies.ConceptMapGroupUnmappedMode
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -768,7 +769,7 @@ internal object ConceptMapGroupUnmappedSerializer : KSerializer<ConceptMap.Group
       modifierExtension = modifierExtension ?: listOf(),
       mode =
         Enumeration.of(
-          if (mode != null) ConceptMap.ConceptMapGroupUnmappedMode.fromCode(mode) else null,
+          if (mode != null) ConceptMapGroupUnmappedMode.fromCode(mode) else null,
           _mode,
         )
           ?: throw SerializationException(

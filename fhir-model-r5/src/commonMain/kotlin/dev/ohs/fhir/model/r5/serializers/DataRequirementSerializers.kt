@@ -37,6 +37,8 @@ import dev.ohs.fhir.model.r5.PositiveInt
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.FHIRTypes
+import dev.ohs.fhir.model.r5.terminologies.SortDirection
+import dev.ohs.fhir.model.r5.terminologies.ValueFilterComparator
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -422,8 +424,7 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
       searchParam = R5String.of(searchParam, _searchParam),
       comparator =
         Enumeration.of(
-          if (comparator != null) DataRequirement.ValueFilterComparator.fromCode(comparator)
-          else null,
+          if (comparator != null) ValueFilterComparator.fromCode(comparator) else null,
           _comparator,
         ),
       `value` =
@@ -539,7 +540,7 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
           ),
       direction =
         Enumeration.of(
-          if (direction != null) DataRequirement.SortDirection.fromCode(direction) else null,
+          if (direction != null) SortDirection.fromCode(direction) else null,
           _direction,
         )
           ?: throw SerializationException(

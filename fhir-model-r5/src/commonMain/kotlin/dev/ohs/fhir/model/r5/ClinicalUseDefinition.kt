@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionInteractionSeriali
 import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionSerializer
 import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionUndesirableEffectSerializer
 import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionWarningSerializer
+import dev.ohs.fhir.model.r5.terminologies.ClinicalUseDefinitionType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1404,41 +1405,5 @@ public data class ClinicalUseDefinition(
         undesirableEffect = undesirableEffect?.build(),
         warning = warning?.build(),
       )
-  }
-
-  /** Overall defining type of this clinical use definition. */
-  public enum class ClinicalUseDefinitionType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Indication("indication", "http://hl7.org/fhir/clinical-use-definition-type", "Indication"),
-    Contraindication(
-      "contraindication",
-      "http://hl7.org/fhir/clinical-use-definition-type",
-      "Contraindication",
-    ),
-    Interaction("interaction", "http://hl7.org/fhir/clinical-use-definition-type", "Interaction"),
-    Undesirable_Effect(
-      "undesirable-effect",
-      "http://hl7.org/fhir/clinical-use-definition-type",
-      "Undesirable Effect",
-    ),
-    Warning("warning", "http://hl7.org/fhir/clinical-use-definition-type", "Warning");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): ClinicalUseDefinitionType =
-        when (code) {
-          "indication" -> Indication
-          "contraindication" -> Contraindication
-          "interaction" -> Interaction
-          "undesirable-effect" -> Undesirable_Effect
-          "warning" -> Warning
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ClinicalUseDefinitionType")
-        }
-    }
   }
 }

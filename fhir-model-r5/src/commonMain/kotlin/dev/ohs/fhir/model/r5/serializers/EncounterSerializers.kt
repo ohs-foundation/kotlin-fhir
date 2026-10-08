@@ -42,6 +42,8 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.VirtualServiceDetail
+import dev.ohs.fhir.model.r5.terminologies.EncounterLocationStatus
+import dev.ohs.fhir.model.r5.terminologies.EncounterStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -633,7 +635,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
           ),
       status =
         Enumeration.of(
-          if (status != null) Encounter.EncounterLocationStatus.fromCode(status) else null,
+          if (status != null) EncounterLocationStatus.fromCode(status) else null,
           _status,
         ),
       form = form,
@@ -1068,10 +1070,8 @@ internal object EncounterSerializer : FhirResourceSerializer<Encounter> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Encounter.EncounterStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Encounter"),
+        Enumeration.of(if (status != null) EncounterStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Encounter"),
       `class` = `class` ?: listOf(),
       priority = priority,
       type = type ?: listOf(),

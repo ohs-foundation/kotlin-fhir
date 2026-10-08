@@ -50,6 +50,7 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Time
 import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.ObservationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1060,10 +1061,8 @@ internal object ObservationSerializer : FhirResourceSerializer<Observation> {
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Observation.ObservationStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Observation"),
+        Enumeration.of(if (status != null) ObservationStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Observation"),
       category = category ?: listOf(),
       code =
         code ?: throw SerializationException("Missing required property 'code' on Observation"),

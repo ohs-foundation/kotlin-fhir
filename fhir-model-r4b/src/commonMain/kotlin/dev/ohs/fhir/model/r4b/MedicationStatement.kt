@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.MedicationStatementSerializer
+import dev.ohs.fhir.model.r4b.terminologies.MedicationStatementStatusCodes
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -598,53 +599,5 @@ public data class MedicationStatement(
         note = note.mapToList { it.build() },
         dosage = dosage.mapToList { it.build() },
       )
-  }
-
-  /** MedicationStatement Status Codes */
-  public enum class MedicationStatementStatusCodes(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Active"),
-    Completed(
-      "completed",
-      "http://hl7.org/fhir/CodeSystem/medication-statement-status",
-      "Completed",
-    ),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/CodeSystem/medication-statement-status",
-      "Entered in Error",
-    ),
-    Intended("intended", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Intended"),
-    Stopped("stopped", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Stopped"),
-    On_Hold("on-hold", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "On Hold"),
-    Unknown("unknown", "http://hl7.org/fhir/CodeSystem/medication-statement-status", "Unknown"),
-    Not_Taken(
-      "not-taken",
-      "http://hl7.org/fhir/CodeSystem/medication-statement-status",
-      "Not Taken",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): MedicationStatementStatusCodes =
-        when (code) {
-          "active" -> Active
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "intended" -> Intended
-          "stopped" -> Stopped
-          "on-hold" -> On_Hold
-          "unknown" -> Unknown
-          "not-taken" -> Not_Taken
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationStatementStatusCodes"
-            )
-        }
-    }
   }
 }

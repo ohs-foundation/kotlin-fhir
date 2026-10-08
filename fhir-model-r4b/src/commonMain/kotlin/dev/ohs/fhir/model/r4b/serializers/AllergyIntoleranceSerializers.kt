@@ -43,6 +43,10 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceCategory
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceCriticality
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceSeverity
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceType
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -190,8 +194,7 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
       onset = DateTime.of(if (onset != null) FhirDateTime.fromString(onset) else null, _onset),
       severity =
         Enumeration.of(
-          if (severity != null) AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(severity)
-          else null,
+          if (severity != null) AllergyIntoleranceSeverity.fromCode(severity) else null,
           _severity,
         ),
       exposureRoute = exposureRoute,
@@ -579,16 +582,11 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
       clinicalStatus = clinicalStatus,
       verificationStatus = verificationStatus,
       type =
-        Enumeration.of(
-          if (type != null) AllergyIntolerance.AllergyIntoleranceType.fromCode(type) else null,
-          _type,
-        ),
+        Enumeration.of(if (type != null) AllergyIntoleranceType.fromCode(type) else null, _type),
       category =
         (kotlin.collections.List(maxOf(category?.size ?: 0, _category?.size ?: 0)) { index ->
           Enumeration.of(
-            category?.getOrNull(index)?.let {
-              AllergyIntolerance.AllergyIntoleranceCategory.fromCode(it)
-            },
+            category?.getOrNull(index)?.let { AllergyIntoleranceCategory.fromCode(it) },
             _category?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -597,9 +595,7 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
         }),
       criticality =
         Enumeration.of(
-          if (criticality != null)
-            AllergyIntolerance.AllergyIntoleranceCriticality.fromCode(criticality)
-          else null,
+          if (criticality != null) AllergyIntoleranceCriticality.fromCode(criticality) else null,
           _criticality,
         ),
       code = code,

@@ -41,6 +41,8 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ListMode
+import dev.ohs.fhir.model.r5.terminologies.ListStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -438,10 +440,10 @@ internal object ListSerializer : FhirResourceSerializer<R5List> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(if (status != null) R5List.ListStatus.fromCode(status) else null, _status)
+        Enumeration.of(if (status != null) ListStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on List"),
       mode =
-        Enumeration.of(if (mode != null) R5List.ListMode.fromCode(mode) else null, _mode)
+        Enumeration.of(if (mode != null) ListMode.fromCode(mode) else null, _mode)
           ?: throw SerializationException("Missing required property 'mode' on List"),
       title = R5String.of(title, _title),
       code = code,

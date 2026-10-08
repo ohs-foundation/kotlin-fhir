@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.serializers.DataRequirementDateFilterSerializer
 import dev.ohs.fhir.model.r4b.serializers.DataRequirementSerializer
 import dev.ohs.fhir.model.r4b.serializers.DataRequirementSortSerializer
 import dev.ohs.fhir.model.r4b.terminologies.FHIRAllTypes
+import dev.ohs.fhir.model.r4b.terminologies.SortDirection
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -616,26 +617,5 @@ public data class DataRequirement(
         limit = limit?.build(),
         sort = sort.mapToList { it.build() },
       )
-  }
-
-  /** The possible sort directions, ascending or descending. */
-  public enum class SortDirection(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Ascending("ascending", "http://hl7.org/fhir/sort-direction", "Ascending"),
-    Descending("descending", "http://hl7.org/fhir/sort-direction", "Descending");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SortDirection =
-        when (code) {
-          "ascending" -> Ascending
-          "descending" -> Descending
-          else -> throw IllegalArgumentException("Unknown code $code for enum SortDirection")
-        }
-    }
   }
 }

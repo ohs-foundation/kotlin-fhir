@@ -27,7 +27,10 @@ import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicNotificationShapeSeri
 import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicResourceTriggerQueryCriteriaSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicResourceTriggerSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicSerializer
+import dev.ohs.fhir.model.r4b.terminologies.CriteriaNotExistsBehavior
+import dev.ohs.fhir.model.r4b.terminologies.InteractionTrigger
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.SubscriptionSearchModifier
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1534,117 +1537,5 @@ public data class SubscriptionTopic(
         canFilterBy = canFilterBy.mapToList { it.build() },
         notificationShape = notificationShape.mapToList { it.build() },
       )
-  }
-
-  /** FHIR RESTful interaction codes used for SubscriptionTopic trigger. */
-  public enum class InteractionTrigger(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Create("create", "http://hl7.org/fhir/restful-interaction", "create"),
-    Update("update", "http://hl7.org/fhir/restful-interaction", "update"),
-    Delete("delete", "http://hl7.org/fhir/restful-interaction", "delete");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): InteractionTrigger =
-        when (code) {
-          "create" -> Create
-          "update" -> Update
-          "delete" -> Delete
-          else -> throw IllegalArgumentException("Unknown code $code for enum InteractionTrigger")
-        }
-    }
-  }
-
-  /**
-   * Behavior a server can exhibit when a criteria state does not exist (e.g., state prior to a
-   * create or after a delete).
-   */
-  public enum class CriteriaNotExistsBehavior(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Test_Passes("test-passes", "http://hl7.org/fhir/subscriptiontopic-cr-behavior", "test passes"),
-    Test_Fails("test-fails", "http://hl7.org/fhir/subscriptiontopic-cr-behavior", "test fails");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CriteriaNotExistsBehavior =
-        when (code) {
-          "test-passes" -> Test_Passes
-          "test-fails" -> Test_Fails
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CriteriaNotExistsBehavior")
-        }
-    }
-  }
-
-  /** FHIR search modifiers allowed for use in Subscriptions and SubscriptionTopics. */
-  public enum class SubscriptionSearchModifier(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    EqualTo("=", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "="),
-    Eq("eq", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Equal"),
-    Ne("ne", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Not Equal"),
-    Gt("gt", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Greater Than"),
-    Lt("lt", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Less Than"),
-    Ge(
-      "ge",
-      "http://terminology.hl7.org/CodeSystem/subscription-search-modifier",
-      "Greater Than or Equal",
-    ),
-    Le(
-      "le",
-      "http://terminology.hl7.org/CodeSystem/subscription-search-modifier",
-      "Less Than or Equal",
-    ),
-    Sa("sa", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Starts After"),
-    Eb("eb", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Ends Before"),
-    Ap("ap", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Approximately"),
-    Above("above", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Above"),
-    Below("below", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "Below"),
-    In("in", "http://terminology.hl7.org/CodeSystem/subscription-search-modifier", "In"),
-    Not_In(
-      "not-in",
-      "http://terminology.hl7.org/CodeSystem/subscription-search-modifier",
-      "Not In",
-    ),
-    Of_Type(
-      "of-type",
-      "http://terminology.hl7.org/CodeSystem/subscription-search-modifier",
-      "Of Type",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SubscriptionSearchModifier =
-        when (code) {
-          "=" -> EqualTo
-          "eq" -> Eq
-          "ne" -> Ne
-          "gt" -> Gt
-          "lt" -> Lt
-          "ge" -> Ge
-          "le" -> Le
-          "sa" -> Sa
-          "eb" -> Eb
-          "ap" -> Ap
-          "above" -> Above
-          "below" -> Below
-          "in" -> In
-          "not-in" -> Not_In
-          "of-type" -> Of_Type
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum SubscriptionSearchModifier")
-        }
-    }
   }
 }

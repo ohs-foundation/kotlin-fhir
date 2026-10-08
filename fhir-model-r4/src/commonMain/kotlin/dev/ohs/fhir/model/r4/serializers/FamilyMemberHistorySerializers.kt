@@ -47,6 +47,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.FamilyHistoryStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -676,10 +677,7 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
             )
         }),
       status =
-        Enumeration.of(
-          if (status != null) FamilyMemberHistory.FamilyHistoryStatus.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) FamilyHistoryStatus.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on FamilyMemberHistory"
           ),

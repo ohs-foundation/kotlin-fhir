@@ -43,6 +43,9 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.RequestIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
+import dev.ohs.fhir.model.r5.terminologies.RequestStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -549,26 +552,20 @@ internal object CommunicationRequestSerializer : FhirResourceSerializer<Communic
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          if (status != null) CommunicationRequest.RequestStatus.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on CommunicationRequest"
           ),
       statusReason = statusReason,
       intent =
-        Enumeration.of(
-          if (intent != null) CommunicationRequest.RequestIntent.fromCode(intent) else null,
-          _intent,
-        )
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent)
           ?: throw SerializationException(
             "Missing required property 'intent' on CommunicationRequest"
           ),
       category = category ?: listOf(),
       priority =
         Enumeration.of(
-          if (priority != null) CommunicationRequest.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),

@@ -46,7 +46,11 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.CompartmentType
+import dev.ohs.fhir.model.r5.terminologies.GraphCompartmentRule
+import dev.ohs.fhir.model.r5.terminologies.GraphCompartmentUse
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.VersionIndependentResourceTypesAll
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -170,8 +174,7 @@ internal object GraphDefinitionNodeSerializer : KSerializer<GraphDefinition.Node
       description = R5String.of(description, _description),
       type =
         Enumeration.of(
-          if (type != null) GraphDefinition.VersionIndependentResourceTypesAll.fromCode(type)
-          else null,
+          if (type != null) VersionIndependentResourceTypesAll.fromCode(type) else null,
           _type,
         )
           ?: throw SerializationException(
@@ -545,26 +548,17 @@ internal object GraphDefinitionLinkCompartmentSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       use =
-        Enumeration.of(
-          if (use != null) GraphDefinition.GraphCompartmentUse.fromCode(use) else null,
-          _use,
-        )
+        Enumeration.of(if (use != null) GraphCompartmentUse.fromCode(use) else null, _use)
           ?: throw SerializationException(
             "Missing required property 'use' on GraphDefinition.Link.Compartment"
           ),
       rule =
-        Enumeration.of(
-          if (rule != null) GraphDefinition.GraphCompartmentRule.fromCode(rule) else null,
-          _rule,
-        )
+        Enumeration.of(if (rule != null) GraphCompartmentRule.fromCode(rule) else null, _rule)
           ?: throw SerializationException(
             "Missing required property 'rule' on GraphDefinition.Link.Compartment"
           ),
       code =
-        Enumeration.of(
-          if (code != null) GraphDefinition.CompartmentType.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) CompartmentType.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on GraphDefinition.Link.Compartment"
           ),

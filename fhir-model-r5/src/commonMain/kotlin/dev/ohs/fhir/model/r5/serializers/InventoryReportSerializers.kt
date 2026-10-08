@@ -42,6 +42,8 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.InventoryCountType
+import dev.ohs.fhir.model.r5.terminologies.InventoryReportStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -543,12 +545,12 @@ internal object InventoryReportSerializer : FhirResourceSerializer<InventoryRepo
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) InventoryReport.InventoryReportStatus.fromCode(status) else null,
+          if (status != null) InventoryReportStatus.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on InventoryReport"),
       countType =
         Enumeration.of(
-          if (countType != null) InventoryReport.InventoryCountType.fromCode(countType) else null,
+          if (countType != null) InventoryCountType.fromCode(countType) else null,
           _countType,
         )
           ?: throw SerializationException(

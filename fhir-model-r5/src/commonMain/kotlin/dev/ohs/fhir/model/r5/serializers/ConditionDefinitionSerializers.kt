@@ -45,6 +45,8 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.ConditionPreconditionType
+import dev.ohs.fhir.model.r5.terminologies.ConditionQuestionnairePurpose
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -361,10 +363,7 @@ internal object ConditionDefinitionPreconditionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) ConditionDefinition.ConditionPreconditionType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ConditionPreconditionType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on ConditionDefinition.Precondition"
           ),
@@ -485,8 +484,7 @@ internal object ConditionDefinitionQuestionnaireSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       purpose =
         Enumeration.of(
-          if (purpose != null) ConditionDefinition.ConditionQuestionnairePurpose.fromCode(purpose)
-          else null,
+          if (purpose != null) ConditionQuestionnairePurpose.fromCode(purpose) else null,
           _purpose,
         )
           ?: throw SerializationException(

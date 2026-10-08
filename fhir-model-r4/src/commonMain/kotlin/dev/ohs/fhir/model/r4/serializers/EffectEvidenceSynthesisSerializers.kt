@@ -50,6 +50,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.ExposureState
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Int
 import kotlin.OptIn
@@ -281,8 +282,7 @@ internal object EffectEvidenceSynthesisResultsByExposureSerializer :
       description = R4String.of(description, _description),
       exposureState =
         Enumeration.of(
-          if (exposureState != null) EffectEvidenceSynthesis.ExposureState.fromCode(exposureState)
-          else null,
+          if (exposureState != null) ExposureState.fromCode(exposureState) else null,
           _exposureState,
         ),
       variantState = variantState,

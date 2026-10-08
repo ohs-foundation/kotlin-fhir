@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.ExtensibleEnumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ExpressionLanguage
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -147,7 +148,7 @@ internal object ExpressionSerializer : KSerializer<Expression> {
       extension = extension ?: listOf(),
       description = R5String.of(description, _description),
       name = Code.of(name, _name),
-      language = ExtensibleEnumeration.of<Expression.ExpressionLanguage>(language, _language),
+      language = ExtensibleEnumeration.of<ExpressionLanguage>(language, _language),
       expression = R5String.of(expression, _expression),
       reference = Uri.of(reference, _reference),
     )

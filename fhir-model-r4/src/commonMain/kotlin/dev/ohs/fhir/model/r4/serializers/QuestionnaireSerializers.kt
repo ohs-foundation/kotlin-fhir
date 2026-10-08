@@ -54,7 +54,10 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Time
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.EnableWhenBehavior
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.QuestionnaireItemOperator
+import dev.ohs.fhir.model.r4.terminologies.QuestionnaireItemType
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -329,15 +332,12 @@ internal object QuestionnaireItemSerializer : KSerializer<Questionnaire.Item> {
       prefix = R4String.of(prefix, _prefix),
       text = R4String.of(text, _text),
       type =
-        Enumeration.of(
-          if (type != null) Questionnaire.QuestionnaireItemType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on Questionnaire.Item"),
+        Enumeration.of(if (type != null) QuestionnaireItemType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on Questionnaire.Item"),
       enableWhen = enableWhen ?: listOf(),
       enableBehavior =
         Enumeration.of(
-          if (enableBehavior != null) Questionnaire.EnableWhenBehavior.fromCode(enableBehavior)
-          else null,
+          if (enableBehavior != null) EnableWhenBehavior.fromCode(enableBehavior) else null,
           _enableBehavior,
         ),
       required = R4Boolean.of(required, _required),
@@ -641,8 +641,7 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
           ),
       `operator` =
         Enumeration.of(
-          if (`operator` != null) Questionnaire.QuestionnaireItemOperator.fromCode(`operator`)
-          else null,
+          if (`operator` != null) QuestionnaireItemOperator.fromCode(`operator`) else null,
           _operator,
         )
           ?: throw SerializationException(

@@ -22,6 +22,8 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.EnrollmentResponseSerializer
+import dev.ohs.fhir.model.r5.terminologies.EnrollmentOutcome
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -332,58 +334,5 @@ public data class EnrollmentResponse(
         organization = organization?.build(),
         requestProvider = requestProvider?.build(),
       )
-  }
-
-  /** This value set includes Status codes. */
-  public enum class FinancialResourceStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/fm-status", "Active"),
-    Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
-    Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
-        when (code) {
-          "active" -> Active
-          "cancelled" -> Cancelled
-          "draft" -> Draft
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
-        }
-    }
-  }
-
-  /** The outcome of the processing. */
-  public enum class EnrollmentOutcome(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Queued("queued", "http://hl7.org/fhir/enrollment-outcome", "Queued"),
-    Complete("complete", "http://hl7.org/fhir/enrollment-outcome", "Processing Complete"),
-    Error("error", "http://hl7.org/fhir/enrollment-outcome", "Error"),
-    Partial("partial", "http://hl7.org/fhir/enrollment-outcome", "Partial Processing");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EnrollmentOutcome =
-        when (code) {
-          "queued" -> Queued
-          "complete" -> Complete
-          "error" -> Error
-          "partial" -> Partial
-          else -> throw IllegalArgumentException("Unknown code $code for enum EnrollmentOutcome")
-        }
-    }
   }
 }

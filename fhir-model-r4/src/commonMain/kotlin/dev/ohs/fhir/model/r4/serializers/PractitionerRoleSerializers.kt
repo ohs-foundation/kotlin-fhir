@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Time
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.DaysOfWeek
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -183,7 +184,7 @@ internal object PractitionerRoleAvailableTimeSerializer :
       daysOfWeek =
         (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            daysOfWeek?.getOrNull(index)?.let { PractitionerRole.DaysOfWeek.fromCode(it) },
+            daysOfWeek?.getOrNull(index)?.let { DaysOfWeek.fromCode(it) },
             _daysOfWeek?.getOrNull(index),
           )
             ?: throw SerializationException(

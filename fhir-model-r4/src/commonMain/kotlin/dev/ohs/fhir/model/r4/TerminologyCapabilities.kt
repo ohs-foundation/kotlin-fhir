@@ -32,6 +32,8 @@ import dev.ohs.fhir.model.r4.serializers.TerminologyCapabilitiesSerializer
 import dev.ohs.fhir.model.r4.serializers.TerminologyCapabilitiesSoftwareSerializer
 import dev.ohs.fhir.model.r4.serializers.TerminologyCapabilitiesTranslationSerializer
 import dev.ohs.fhir.model.r4.serializers.TerminologyCapabilitiesValidateCodeSerializer
+import dev.ohs.fhir.model.r4.terminologies.CapabilityStatementKind
+import dev.ohs.fhir.model.r4.terminologies.CodeSearchSupport
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1938,53 +1940,5 @@ public data class TerminologyCapabilities(
         translation = translation?.build(),
         closure = closure?.build(),
       )
-  }
-
-  /** How a capability statement is intended to be used. */
-  public enum class CapabilityStatementKind(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Instance("instance", "http://hl7.org/fhir/capability-statement-kind", "Instance"),
-    Capability("capability", "http://hl7.org/fhir/capability-statement-kind", "Capability"),
-    Requirements("requirements", "http://hl7.org/fhir/capability-statement-kind", "Requirements");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CapabilityStatementKind =
-        when (code) {
-          "instance" -> Instance
-          "capability" -> Capability
-          "requirements" -> Requirements
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CapabilityStatementKind")
-        }
-    }
-  }
-
-  /**
-   * The degree to which the server supports the code search parameter on ValueSet, if it is
-   * supported.
-   */
-  public enum class CodeSearchSupport(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Explicit("explicit", "http://hl7.org/fhir/code-search-support", "Explicit Codes"),
-    All("all", "http://hl7.org/fhir/code-search-support", "Implicit Codes");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CodeSearchSupport =
-        when (code) {
-          "explicit" -> Explicit
-          "all" -> All
-          else -> throw IllegalArgumentException("Unknown code $code for enum CodeSearchSupport")
-        }
-    }
   }
 }

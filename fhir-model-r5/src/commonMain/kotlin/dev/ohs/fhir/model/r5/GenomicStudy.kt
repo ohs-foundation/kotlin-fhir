@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisOutputSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisPerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudySerializer
+import dev.ohs.fhir.model.r5.terminologies.GenomicStudyStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1125,36 +1126,5 @@ public data class GenomicStudy(
         description = description?.build(),
         analysis = analysis.mapToList { it.build() },
       )
-  }
-
-  /** The status of the GenomicStudy. */
-  public enum class GenomicStudyStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered("registered", "http://hl7.org/fhir/genomicstudy-status", "Registered"),
-    Available("available", "http://hl7.org/fhir/genomicstudy-status", "Available"),
-    Cancelled("cancelled", "http://hl7.org/fhir/genomicstudy-status", "Cancelled"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/genomicstudy-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/genomicstudy-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GenomicStudyStatus =
-        when (code) {
-          "registered" -> Registered
-          "available" -> Available
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum GenomicStudyStatus")
-        }
-    }
   }
 }

@@ -27,6 +27,9 @@ import dev.ohs.fhir.model.r4.serializers.BundleEntrySearchSerializer
 import dev.ohs.fhir.model.r4.serializers.BundleEntrySerializer
 import dev.ohs.fhir.model.r4.serializers.BundleLinkSerializer
 import dev.ohs.fhir.model.r4.serializers.BundleSerializer
+import dev.ohs.fhir.model.r4.terminologies.BundleType
+import dev.ohs.fhir.model.r4.terminologies.HTTPVerb
+import dev.ohs.fhir.model.r4.terminologies.SearchEntryMode
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1185,102 +1188,5 @@ public data class Bundle(
         entry = entry.mapToList { it.build() },
         signature = signature?.build(),
       )
-  }
-
-  /**
-   * Why an entry is in the result set - whether it's included as a match or because of an _include
-   * requirement, or to convey information or warning information about the search process.
-   */
-  public enum class SearchEntryMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Match("match", "http://hl7.org/fhir/search-entry-mode", "Match"),
-    Include("include", "http://hl7.org/fhir/search-entry-mode", "Include"),
-    Outcome("outcome", "http://hl7.org/fhir/search-entry-mode", "Outcome");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): SearchEntryMode =
-        when (code) {
-          "match" -> Match
-          "include" -> Include
-          "outcome" -> Outcome
-          else -> throw IllegalArgumentException("Unknown code $code for enum SearchEntryMode")
-        }
-    }
-  }
-
-  /**
-   * HTTP verbs (in the HTTP command line). See [HTTP rfc](https://tools.ietf.org/html/rfc7231) for
-   * details.
-   */
-  public enum class HTTPVerb(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Get("GET", "http://hl7.org/fhir/http-verb", "GET"),
-    Head("HEAD", "http://hl7.org/fhir/http-verb", "HEAD"),
-    Post("POST", "http://hl7.org/fhir/http-verb", "POST"),
-    Put("PUT", "http://hl7.org/fhir/http-verb", "PUT"),
-    Delete("DELETE", "http://hl7.org/fhir/http-verb", "DELETE"),
-    Patch("PATCH", "http://hl7.org/fhir/http-verb", "PATCH");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): HTTPVerb =
-        when (code) {
-          "GET" -> Get
-          "HEAD" -> Head
-          "POST" -> Post
-          "PUT" -> Put
-          "DELETE" -> Delete
-          "PATCH" -> Patch
-          else -> throw IllegalArgumentException("Unknown code $code for enum HTTPVerb")
-        }
-    }
-  }
-
-  /** Indicates the purpose of a bundle - how it is intended to be used. */
-  public enum class BundleType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Document("document", "http://hl7.org/fhir/bundle-type", "Document"),
-    Message("message", "http://hl7.org/fhir/bundle-type", "Message"),
-    Transaction("transaction", "http://hl7.org/fhir/bundle-type", "Transaction"),
-    Transaction_Response(
-      "transaction-response",
-      "http://hl7.org/fhir/bundle-type",
-      "Transaction Response",
-    ),
-    Batch("batch", "http://hl7.org/fhir/bundle-type", "Batch"),
-    Batch_Response("batch-response", "http://hl7.org/fhir/bundle-type", "Batch Response"),
-    History("history", "http://hl7.org/fhir/bundle-type", "History List"),
-    Searchset("searchset", "http://hl7.org/fhir/bundle-type", "Search Results"),
-    Collection("collection", "http://hl7.org/fhir/bundle-type", "Collection");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): BundleType =
-        when (code) {
-          "document" -> Document
-          "message" -> Message
-          "transaction" -> Transaction
-          "transaction-response" -> Transaction_Response
-          "batch" -> Batch
-          "batch-response" -> Batch_Response
-          "history" -> History
-          "searchset" -> Searchset
-          "collection" -> Collection
-          else -> throw IllegalArgumentException("Unknown code $code for enum BundleType")
-        }
-    }
   }
 }

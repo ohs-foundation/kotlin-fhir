@@ -44,6 +44,10 @@ import dev.ohs.fhir.model.r5.Subscription
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
+import dev.ohs.fhir.model.r5.terminologies.SearchComparator
+import dev.ohs.fhir.model.r5.terminologies.SearchModifierCode
+import dev.ohs.fhir.model.r5.terminologies.SubscriptionPayloadContent
+import dev.ohs.fhir.model.r5.terminologies.SubscriptionStatusCodes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -179,12 +183,12 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
           ),
       comparator =
         Enumeration.of(
-          if (comparator != null) Subscription.SearchComparator.fromCode(comparator) else null,
+          if (comparator != null) SearchComparator.fromCode(comparator) else null,
           _comparator,
         ),
       modifier =
         Enumeration.of(
-          if (modifier != null) Subscription.SearchModifierCode.fromCode(modifier) else null,
+          if (modifier != null) SearchModifierCode.fromCode(modifier) else null,
           _modifier,
         ),
       `value` =
@@ -645,7 +649,7 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
       name = R5String.of(name, _name),
       status =
         Enumeration.of(
-          if (status != null) Subscription.SubscriptionStatusCodes.fromCode(status) else null,
+          if (status != null) SubscriptionStatusCodes.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on Subscription"),
       topic =
@@ -668,7 +672,7 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
       contentType = Code.of(contentType, _contentType),
       content =
         Enumeration.of(
-          if (content != null) Subscription.SubscriptionPayloadContent.fromCode(content) else null,
+          if (content != null) SubscriptionPayloadContent.fromCode(content) else null,
           _content,
         ),
       maxCount = PositiveInt.of(maxCount, _maxCount),

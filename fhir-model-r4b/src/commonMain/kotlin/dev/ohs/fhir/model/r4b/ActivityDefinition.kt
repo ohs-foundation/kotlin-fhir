@@ -24,7 +24,10 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.ActivityDefinitionDynamicValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.ActivityDefinitionParticipantSerializer
 import dev.ohs.fhir.model.r4b.serializers.ActivityDefinitionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ActionParticipantType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.RequestIntent
+import dev.ohs.fhir.model.r4b.terminologies.RequestPriority
 import dev.ohs.fhir.model.r4b.terminologies.RequestResourceType
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1403,95 +1406,5 @@ public data class ActivityDefinition(
         transform = transform?.build(),
         dynamicValue = dynamicValue.mapToList { it.build() },
       )
-  }
-
-  /** The type of participant for the action. */
-  public enum class ActionParticipantType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Patient("patient", "http://hl7.org/fhir/action-participant-type", "Patient"),
-    Practitioner("practitioner", "http://hl7.org/fhir/action-participant-type", "Practitioner"),
-    Related_Person(
-      "related-person",
-      "http://hl7.org/fhir/action-participant-type",
-      "Related Person",
-    ),
-    Device("device", "http://hl7.org/fhir/action-participant-type", "Device");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ActionParticipantType =
-        when (code) {
-          "patient" -> Patient
-          "practitioner" -> Practitioner
-          "related-person" -> Related_Person
-          "device" -> Device
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionParticipantType")
-        }
-    }
-  }
-
-  /** Codes indicating the degree of authority/intentionality associated with a request. */
-  public enum class RequestIntent(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
-    Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
-    Directive("directive", "http://hl7.org/fhir/request-intent", "Directive"),
-    Order("order", "http://hl7.org/fhir/request-intent", "Order"),
-    Original_Order("original-order", "http://hl7.org/fhir/request-intent", "Original Order"),
-    Reflex_Order("reflex-order", "http://hl7.org/fhir/request-intent", "Reflex Order"),
-    Filler_Order("filler-order", "http://hl7.org/fhir/request-intent", "Filler Order"),
-    Instance_Order("instance-order", "http://hl7.org/fhir/request-intent", "Instance Order"),
-    Option("option", "http://hl7.org/fhir/request-intent", "Option");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): RequestIntent =
-        when (code) {
-          "proposal" -> Proposal
-          "plan" -> Plan
-          "directive" -> Directive
-          "order" -> Order
-          "original-order" -> Original_Order
-          "reflex-order" -> Reflex_Order
-          "filler-order" -> Filler_Order
-          "instance-order" -> Instance_Order
-          "option" -> Option
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestIntent")
-        }
-    }
-  }
-
-  /** Identifies the level of importance to be assigned to actioning the request. */
-  public enum class RequestPriority(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
-    Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
-    Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
-    Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): RequestPriority =
-        when (code) {
-          "routine" -> Routine
-          "urgent" -> Urgent
-          "asap" -> Asap
-          "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
-        }
-    }
   }
 }

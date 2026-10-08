@@ -47,8 +47,12 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.TestScript
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.AssertionDirectionType
+import dev.ohs.fhir.model.r4b.terminologies.AssertionOperatorType
+import dev.ohs.fhir.model.r4b.terminologies.AssertionResponseTypes
 import dev.ohs.fhir.model.r4b.terminologies.FHIRDefinedType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.TestScriptRequestMethodCode
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1500,7 +1504,7 @@ internal object TestScriptSetupActionOperationSerializer :
           ),
       method =
         Enumeration.of(
-          if (method != null) TestScript.TestScriptRequestMethodCode.fromCode(method) else null,
+          if (method != null) TestScriptRequestMethodCode.fromCode(method) else null,
           _method,
         ),
       origin = Integer.of(origin, _origin),
@@ -2020,7 +2024,7 @@ internal object TestScriptSetupActionAssertSerializer :
       description = R4bString.of(description, _description),
       direction =
         Enumeration.of(
-          if (direction != null) TestScript.AssertionDirectionType.fromCode(direction) else null,
+          if (direction != null) AssertionDirectionType.fromCode(direction) else null,
           _direction,
         ),
       compareToSourceId = R4bString.of(compareToSourceId, _compareToSourceId),
@@ -2034,14 +2038,13 @@ internal object TestScriptSetupActionAssertSerializer :
       navigationLinks = R4bBoolean.of(navigationLinks, _navigationLinks),
       `operator` =
         Enumeration.of(
-          if (`operator` != null) TestScript.AssertionOperatorType.fromCode(`operator`) else null,
+          if (`operator` != null) AssertionOperatorType.fromCode(`operator`) else null,
           _operator,
         ),
       path = R4bString.of(path, _path),
       requestMethod =
         Enumeration.of(
-          if (requestMethod != null) TestScript.TestScriptRequestMethodCode.fromCode(requestMethod)
-          else null,
+          if (requestMethod != null) TestScriptRequestMethodCode.fromCode(requestMethod) else null,
           _requestMethod,
         ),
       requestURL = R4bString.of(requestURL, _requestURL),
@@ -2052,7 +2055,7 @@ internal object TestScriptSetupActionAssertSerializer :
         ),
       response =
         Enumeration.of(
-          if (response != null) TestScript.AssertionResponseTypes.fromCode(response) else null,
+          if (response != null) AssertionResponseTypes.fromCode(response) else null,
           _response,
         ),
       responseCode = R4bString.of(responseCode, _responseCode),

@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4b.serializers.HealthcareServiceAvailableTimeSerializ
 import dev.ohs.fhir.model.r4b.serializers.HealthcareServiceEligibilitySerializer
 import dev.ohs.fhir.model.r4b.serializers.HealthcareServiceNotAvailableSerializer
 import dev.ohs.fhir.model.r4b.serializers.HealthcareServiceSerializer
+import dev.ohs.fhir.model.r4b.terminologies.DaysOfWeek
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -993,36 +994,5 @@ public data class HealthcareService(
         availabilityExceptions = availabilityExceptions?.build(),
         endpoint = endpoint.mapToList { it.build() },
       )
-  }
-
-  /** The days of the week. */
-  public enum class DaysOfWeek(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Mon("mon", "http://hl7.org/fhir/days-of-week", "Monday"),
-    Tue("tue", "http://hl7.org/fhir/days-of-week", "Tuesday"),
-    Wed("wed", "http://hl7.org/fhir/days-of-week", "Wednesday"),
-    Thu("thu", "http://hl7.org/fhir/days-of-week", "Thursday"),
-    Fri("fri", "http://hl7.org/fhir/days-of-week", "Friday"),
-    Sat("sat", "http://hl7.org/fhir/days-of-week", "Saturday"),
-    Sun("sun", "http://hl7.org/fhir/days-of-week", "Sunday");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DaysOfWeek =
-        when (code) {
-          "mon" -> Mon
-          "tue" -> Tue
-          "wed" -> Wed
-          "thu" -> Thu
-          "fri" -> Fri
-          "sat" -> Sat
-          "sun" -> Sun
-          else -> throw IllegalArgumentException("Unknown code $code for enum DaysOfWeek")
-        }
-    }
   }
 }

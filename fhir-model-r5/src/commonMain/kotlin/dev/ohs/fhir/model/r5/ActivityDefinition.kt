@@ -24,7 +24,10 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionDynamicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionParticipantSerializer
 import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionSerializer
+import dev.ohs.fhir.model.r5.terminologies.ActionParticipantType
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.RequestIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
 import dev.ohs.fhir.model.r5.terminologies.RequestResourceTypes
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1641,111 +1644,5 @@ public data class ActivityDefinition(
         transform = transform?.build(),
         dynamicValue = dynamicValue.mapToList { it.build() },
       )
-  }
-
-  /** The type of participant for the action. */
-  public enum class ActionParticipantType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Careteam("careteam", "http://hl7.org/fhir/action-participant-type", "CareTeam"),
-    Device("device", "http://hl7.org/fhir/action-participant-type", "Device"),
-    Group("group", "http://hl7.org/fhir/action-participant-type", "Group"),
-    Healthcareservice(
-      "healthcareservice",
-      "http://hl7.org/fhir/action-participant-type",
-      "HealthcareService",
-    ),
-    Location("location", "http://hl7.org/fhir/action-participant-type", "Location"),
-    Organization("organization", "http://hl7.org/fhir/action-participant-type", "Organization"),
-    Patient("patient", "http://hl7.org/fhir/action-participant-type", "Patient"),
-    Practitioner("practitioner", "http://hl7.org/fhir/action-participant-type", "Practitioner"),
-    Practitionerrole(
-      "practitionerrole",
-      "http://hl7.org/fhir/action-participant-type",
-      "PractitionerRole",
-    ),
-    Relatedperson("relatedperson", "http://hl7.org/fhir/action-participant-type", "RelatedPerson");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ActionParticipantType =
-        when (code) {
-          "careteam" -> Careteam
-          "device" -> Device
-          "group" -> Group
-          "healthcareservice" -> Healthcareservice
-          "location" -> Location
-          "organization" -> Organization
-          "patient" -> Patient
-          "practitioner" -> Practitioner
-          "practitionerrole" -> Practitionerrole
-          "relatedperson" -> Relatedperson
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ActionParticipantType")
-        }
-    }
-  }
-
-  /** Codes indicating the degree of authority/intentionality associated with a request. */
-  public enum class RequestIntent(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
-    Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
-    Directive("directive", "http://hl7.org/fhir/request-intent", "Directive"),
-    Order("order", "http://hl7.org/fhir/request-intent", "Order"),
-    Original_Order("original-order", "http://hl7.org/fhir/request-intent", "Original Order"),
-    Reflex_Order("reflex-order", "http://hl7.org/fhir/request-intent", "Reflex Order"),
-    Filler_Order("filler-order", "http://hl7.org/fhir/request-intent", "Filler Order"),
-    Instance_Order("instance-order", "http://hl7.org/fhir/request-intent", "Instance Order"),
-    Option("option", "http://hl7.org/fhir/request-intent", "Option");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): RequestIntent =
-        when (code) {
-          "proposal" -> Proposal
-          "plan" -> Plan
-          "directive" -> Directive
-          "order" -> Order
-          "original-order" -> Original_Order
-          "reflex-order" -> Reflex_Order
-          "filler-order" -> Filler_Order
-          "instance-order" -> Instance_Order
-          "option" -> Option
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestIntent")
-        }
-    }
-  }
-
-  /** Identifies the level of importance to be assigned to actioning the request. */
-  public enum class RequestPriority(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
-    Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
-    Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
-    Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): RequestPriority =
-        when (code) {
-          "routine" -> Routine
-          "urgent" -> Urgent
-          "asap" -> Asap
-          "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
-        }
-    }
   }
 }

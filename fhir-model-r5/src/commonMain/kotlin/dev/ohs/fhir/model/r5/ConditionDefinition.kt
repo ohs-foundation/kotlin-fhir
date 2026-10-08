@@ -27,6 +27,8 @@ import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionPlanSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionPreconditionSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionQuestionnaireSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionSerializer
+import dev.ohs.fhir.model.r5.terminologies.ConditionPreconditionType
+import dev.ohs.fhir.model.r5.terminologies.ConditionQuestionnairePurpose
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1377,57 +1379,5 @@ public data class ConditionDefinition(
         questionnaire = questionnaire.mapToList { it.build() },
         plan = plan.mapToList { it.build() },
       )
-  }
-
-  /** Kind of precondition for the condition. */
-  public enum class ConditionPreconditionType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Sensitive("sensitive", "http://hl7.org/fhir/condition-precondition-type", "Sensitive"),
-    Specific("specific", "http://hl7.org/fhir/condition-precondition-type", "Specific");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ConditionPreconditionType =
-        when (code) {
-          "sensitive" -> Sensitive
-          "specific" -> Specific
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ConditionPreconditionType")
-        }
-    }
-  }
-
-  /** The use of a questionnaire. */
-  public enum class ConditionQuestionnairePurpose(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Preadmit("preadmit", "http://hl7.org/fhir/condition-questionnaire-purpose", "Pre-admit"),
-    Diff_Diagnosis(
-      "diff-diagnosis",
-      "http://hl7.org/fhir/condition-questionnaire-purpose",
-      "Diff Diagnosis",
-    ),
-    Outcome("outcome", "http://hl7.org/fhir/condition-questionnaire-purpose", "Outcome");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ConditionQuestionnairePurpose =
-        when (code) {
-          "preadmit" -> Preadmit
-          "diff-diagnosis" -> Diff_Diagnosis
-          "outcome" -> Outcome
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ConditionQuestionnairePurpose"
-            )
-        }
-    }
   }
 }

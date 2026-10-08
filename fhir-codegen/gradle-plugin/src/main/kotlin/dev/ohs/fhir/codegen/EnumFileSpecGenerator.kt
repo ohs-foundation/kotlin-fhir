@@ -23,6 +23,8 @@ import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 /** Generates [FileSpec]s for Kotlin enum classes based on a provided map of [ValueSet]s. */
 class EnumFileSpecGenerator(val codegenContext: CodegenContext) {
 
+  private val generatedValueSetUrls = mutableSetOf<String>()
+
   /**
    * Generates a list of [FileSpec]s for enum classes from the elements within a
    * [StructureDefinition]. The enum classes are created inside the terminologies' subpackage of the
@@ -34,14 +36,11 @@ class EnumFileSpecGenerator(val codegenContext: CodegenContext) {
     structureDefinition.snapshot
       ?.element
       ?.asSequence()
-      ?.filter {
-        it.getBindingValueSetUrl() != null &&
-          codegenContext.valueSetMap.containsKey(it.getBindingValueSetUrl())
-      }
-      ?.filterNot { !it.isCommonBinding }
+      ?.filter { it.typeShouldGenerateEnum(codegenContext.valueSetMap) }
+      ?.filter { generatedValueSetUrls.add(it.getBindingValueSetUrl()!!) }
       ?.mapNotNull { element ->
         val valueSet = codegenContext.valueSetMap.getValue(element.getBindingValueSetUrl()!!)
-        val valueSetName = valueSet.name.normalizeEnumName()
+        val valueSetName = valueSet.enumName
         val enumTypeSpec =
           EnumTypeSpecGenerator.generate(valueSetName, valueSet, codegenContext.packageName)
         enumTypeSpec?.let {

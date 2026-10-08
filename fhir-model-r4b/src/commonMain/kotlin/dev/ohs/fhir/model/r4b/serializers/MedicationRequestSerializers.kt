@@ -46,6 +46,9 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.UnsignedInt
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.MedicationRequestIntent
+import dev.ohs.fhir.model.r4b.terminologies.MedicationrequestStatus
+import dev.ohs.fhir.model.r4b.terminologies.RequestPriority
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -961,7 +964,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) MedicationRequest.MedicationrequestStatus.fromCode(status) else null,
+          if (status != null) MedicationrequestStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -970,7 +973,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       statusReason = statusReason,
       intent =
         Enumeration.of(
-          if (intent != null) MedicationRequest.MedicationRequestIntent.fromCode(intent) else null,
+          if (intent != null) MedicationRequestIntent.fromCode(intent) else null,
           _intent,
         )
           ?: throw SerializationException(
@@ -979,7 +982,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       category = category ?: listOf(),
       priority =
         Enumeration.of(
-          if (priority != null) MedicationRequest.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       doNotPerform = R4bBoolean.of(doNotPerform, _doNotPerform),

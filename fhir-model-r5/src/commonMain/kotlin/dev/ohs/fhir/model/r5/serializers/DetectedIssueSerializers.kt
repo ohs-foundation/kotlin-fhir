@@ -41,6 +41,8 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.DetectedIssueSeverity
+import dev.ohs.fhir.model.r5.terminologies.DetectedIssueStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -569,15 +571,13 @@ internal object DetectedIssueSerializer : FhirResourceSerializer<DetectedIssue> 
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) DetectedIssue.DetectedIssueStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on DetectedIssue"),
+        Enumeration.of(if (status != null) DetectedIssueStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on DetectedIssue"),
       category = category ?: listOf(),
       code = code,
       severity =
         Enumeration.of(
-          if (severity != null) DetectedIssue.DetectedIssueSeverity.fromCode(severity) else null,
+          if (severity != null) DetectedIssueSeverity.fromCode(severity) else null,
           _severity,
         ),
       subject = subject,

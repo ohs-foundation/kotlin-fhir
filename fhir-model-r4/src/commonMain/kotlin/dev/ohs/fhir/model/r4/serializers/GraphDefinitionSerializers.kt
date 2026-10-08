@@ -43,6 +43,9 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.CompartmentType
+import dev.ohs.fhir.model.r4.terminologies.GraphCompartmentRule
+import dev.ohs.fhir.model.r4.terminologies.GraphCompartmentUse
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
@@ -502,26 +505,17 @@ internal object GraphDefinitionLinkTargetCompartmentSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       use =
-        Enumeration.of(
-          if (use != null) GraphDefinition.GraphCompartmentUse.fromCode(use) else null,
-          _use,
-        )
+        Enumeration.of(if (use != null) GraphCompartmentUse.fromCode(use) else null, _use)
           ?: throw SerializationException(
             "Missing required property 'use' on GraphDefinition.Link.Target.Compartment"
           ),
       code =
-        Enumeration.of(
-          if (code != null) GraphDefinition.CompartmentType.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) CompartmentType.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on GraphDefinition.Link.Target.Compartment"
           ),
       rule =
-        Enumeration.of(
-          if (rule != null) GraphDefinition.GraphCompartmentRule.fromCode(rule) else null,
-          _rule,
-        )
+        Enumeration.of(if (rule != null) GraphCompartmentRule.fromCode(rule) else null, _rule)
           ?: throw SerializationException(
             "Missing required property 'rule' on GraphDefinition.Link.Target.Compartment"
           ),

@@ -45,6 +45,10 @@ import dev.ohs.fhir.model.r5.TerminologyCapabilities
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.CapabilityStatementKind
+import dev.ohs.fhir.model.r5.terminologies.CodeSearchSupport
+import dev.ohs.fhir.model.r5.terminologies.CodeSystemContentMode
+import dev.ohs.fhir.model.r5.terminologies.CommonLanguages
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -377,8 +381,7 @@ internal object TerminologyCapabilitiesCodeSystemSerializer :
       version = version ?: listOf(),
       content =
         Enumeration.of(
-          if (content != null) TerminologyCapabilities.CodeSystemContentMode.fromCode(content)
-          else null,
+          if (content != null) CodeSystemContentMode.fromCode(content) else null,
           _content,
         )
           ?: throw SerializationException(
@@ -565,9 +568,7 @@ internal object TerminologyCapabilitiesCodeSystemVersionSerializer :
       language =
         (kotlin.collections.List(maxOf(language?.size ?: 0, _language?.size ?: 0)) { index ->
           Enumeration.of(
-            language?.getOrNull(index)?.let {
-              TerminologyCapabilities.CommonLanguages.fromCode(it)
-            },
+            language?.getOrNull(index)?.let { CommonLanguages.fromCode(it) },
             _language?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -1756,11 +1757,7 @@ internal object TerminologyCapabilitiesSerializer :
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       kind =
-        Enumeration.of(
-          if (kind != null) TerminologyCapabilities.CapabilityStatementKind.fromCode(kind)
-          else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) CapabilityStatementKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on TerminologyCapabilities"
           ),
@@ -1771,8 +1768,7 @@ internal object TerminologyCapabilitiesSerializer :
       expansion = expansion,
       codeSearch =
         Enumeration.of(
-          if (codeSearch != null) TerminologyCapabilities.CodeSearchSupport.fromCode(codeSearch)
-          else null,
+          if (codeSearch != null) CodeSearchSupport.fromCode(codeSearch) else null,
           _codeSearch,
         ),
       validateCode = validateCode,

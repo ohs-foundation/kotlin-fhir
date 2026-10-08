@@ -39,6 +39,10 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.DeviceMetricCalibrationState
+import dev.ohs.fhir.model.r5.terminologies.DeviceMetricCalibrationType
+import dev.ohs.fhir.model.r5.terminologies.DeviceMetricCategory
+import dev.ohs.fhir.model.r5.terminologies.DeviceMetricOperationalStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -142,12 +146,12 @@ internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Cal
       modifierExtension = modifierExtension ?: listOf(),
       type =
         Enumeration.of(
-          if (type != null) DeviceMetric.DeviceMetricCalibrationType.fromCode(type) else null,
+          if (type != null) DeviceMetricCalibrationType.fromCode(type) else null,
           _type,
         ),
       state =
         Enumeration.of(
-          if (state != null) DeviceMetric.DeviceMetricCalibrationState.fromCode(state) else null,
+          if (state != null) DeviceMetricCalibrationState.fromCode(state) else null,
           _state,
         ),
       time = Instant.of(if (time != null) FhirDateTime.fromString(time) else null, _time),
@@ -394,15 +398,14 @@ internal object DeviceMetricSerializer : FhirResourceSerializer<DeviceMetric> {
           ?: throw SerializationException("Missing required property 'device' on DeviceMetric"),
       operationalStatus =
         Enumeration.of(
-          if (operationalStatus != null)
-            DeviceMetric.DeviceMetricOperationalStatus.fromCode(operationalStatus)
+          if (operationalStatus != null) DeviceMetricOperationalStatus.fromCode(operationalStatus)
           else null,
           _operationalStatus,
         ),
       color = Code.of(color, _color),
       category =
         Enumeration.of(
-          if (category != null) DeviceMetric.DeviceMetricCategory.fromCode(category) else null,
+          if (category != null) DeviceMetricCategory.fromCode(category) else null,
           _category,
         ) ?: throw SerializationException("Missing required property 'category' on DeviceMetric"),
       measurementFrequency = measurementFrequency,

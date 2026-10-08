@@ -49,6 +49,8 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.VirtualServiceDetail
+import dev.ohs.fhir.model.r5.terminologies.AppointmentStatus
+import dev.ohs.fhir.model.r5.terminologies.ParticipationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -173,10 +175,7 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
       actor = actor,
       required = R5Boolean.of(required, _required),
       status =
-        Enumeration.of(
-          if (status != null) Appointment.ParticipationStatus.fromCode(status) else null,
-          _status,
-        )
+        Enumeration.of(if (status != null) ParticipationStatus.fromCode(status) else null, _status)
           ?: throw SerializationException(
             "Missing required property 'status' on Appointment.Participant"
           ),
@@ -1425,10 +1424,8 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Appointment.AppointmentStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Appointment"),
+        Enumeration.of(if (status != null) AppointmentStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Appointment"),
       cancellationReason = cancellationReason,
       `class` = `class` ?: listOf(),
       serviceCategory = serviceCategory ?: listOf(),

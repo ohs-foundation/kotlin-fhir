@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.ChargeItemPerformerSerializer
 import dev.ohs.fhir.model.r4.serializers.ChargeItemSerializer
+import dev.ohs.fhir.model.r4.terminologies.ChargeItemStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -798,40 +799,5 @@ public data class ChargeItem(
         note = note.mapToList { it.build() },
         supportingInformation = supportingInformation.mapToList { it.build() },
       )
-  }
-
-  /** Codes identifying the lifecycle stage of a ChargeItem. */
-  public enum class ChargeItemStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Planned("planned", "http://hl7.org/fhir/chargeitem-status", "Planned"),
-    Billable("billable", "http://hl7.org/fhir/chargeitem-status", "Billable"),
-    Not_Billable("not-billable", "http://hl7.org/fhir/chargeitem-status", "Not billable"),
-    Aborted("aborted", "http://hl7.org/fhir/chargeitem-status", "Aborted"),
-    Billed("billed", "http://hl7.org/fhir/chargeitem-status", "Billed"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/chargeitem-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/chargeitem-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ChargeItemStatus =
-        when (code) {
-          "planned" -> Planned
-          "billable" -> Billable
-          "not-billable" -> Not_Billable
-          "aborted" -> Aborted
-          "billed" -> Billed
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum ChargeItemStatus")
-        }
-    }
   }
 }

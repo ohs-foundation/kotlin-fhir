@@ -45,6 +45,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.EventStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -832,10 +833,8 @@ internal object NutritionIntakeSerializer : FhirResourceSerializer<NutritionInta
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) NutritionIntake.EventStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on NutritionIntake"),
+        Enumeration.of(if (status != null) EventStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on NutritionIntake"),
       statusReason = statusReason ?: listOf(),
       code = code,
       subject =

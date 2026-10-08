@@ -24,6 +24,8 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.GroupCharacteristicSerializer
 import dev.ohs.fhir.model.r5.serializers.GroupMemberSerializer
 import dev.ohs.fhir.model.r5.serializers.GroupSerializer
+import dev.ohs.fhir.model.r5.terminologies.GroupMembershipBasis
+import dev.ohs.fhir.model.r5.terminologies.GroupType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -770,63 +772,5 @@ public data class Group(
         characteristic = characteristic.mapToList { it.build() },
         member = member.mapToList { it.build() },
       )
-  }
-
-  /** Types of resources that are part of group. */
-  public enum class GroupType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Person("person", "http://hl7.org/fhir/group-type", "Person"),
-    Animal("animal", "http://hl7.org/fhir/group-type", "Animal"),
-    Practitioner("practitioner", "http://hl7.org/fhir/group-type", "Practitioner"),
-    Device("device", "http://hl7.org/fhir/group-type", "Device"),
-    Careteam("careteam", "http://hl7.org/fhir/group-type", "CareTeam"),
-    Healthcareservice("healthcareservice", "http://hl7.org/fhir/group-type", "HealthcareService"),
-    Location("location", "http://hl7.org/fhir/group-type", "Location"),
-    Organization("organization", "http://hl7.org/fhir/group-type", "Organization"),
-    Relatedperson("relatedperson", "http://hl7.org/fhir/group-type", "RelatedPerson"),
-    Specimen("specimen", "http://hl7.org/fhir/group-type", "Specimen");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GroupType =
-        when (code) {
-          "person" -> Person
-          "animal" -> Animal
-          "practitioner" -> Practitioner
-          "device" -> Device
-          "careteam" -> Careteam
-          "healthcareservice" -> Healthcareservice
-          "location" -> Location
-          "organization" -> Organization
-          "relatedperson" -> Relatedperson
-          "specimen" -> Specimen
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupType")
-        }
-    }
-  }
-
-  /** Basis for membership in a group */
-  public enum class GroupMembershipBasis(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Definitional("definitional", "http://hl7.org/fhir/group-membership-basis", "Definitional"),
-    Enumerated("enumerated", "http://hl7.org/fhir/group-membership-basis", "Enumerated");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GroupMembershipBasis =
-        when (code) {
-          "definitional" -> Definitional
-          "enumerated" -> Enumerated
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupMembershipBasis")
-        }
-    }
   }
 }

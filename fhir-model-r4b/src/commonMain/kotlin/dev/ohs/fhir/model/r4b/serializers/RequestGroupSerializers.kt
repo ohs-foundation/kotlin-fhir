@@ -49,6 +49,16 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.ActionCardinalityBehavior
+import dev.ohs.fhir.model.r4b.terminologies.ActionConditionKind
+import dev.ohs.fhir.model.r4b.terminologies.ActionGroupingBehavior
+import dev.ohs.fhir.model.r4b.terminologies.ActionPrecheckBehavior
+import dev.ohs.fhir.model.r4b.terminologies.ActionRelationshipType
+import dev.ohs.fhir.model.r4b.terminologies.ActionRequiredBehavior
+import dev.ohs.fhir.model.r4b.terminologies.ActionSelectionBehavior
+import dev.ohs.fhir.model.r4b.terminologies.RequestIntent
+import dev.ohs.fhir.model.r4b.terminologies.RequestPriority
+import dev.ohs.fhir.model.r4b.terminologies.RequestStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -386,7 +396,7 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
       textEquivalent = R4bString.of(textEquivalent, _textEquivalent),
       priority =
         Enumeration.of(
-          if (priority != null) RequestGroup.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       code = code ?: listOf(),
@@ -409,36 +419,28 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
       type = type,
       groupingBehavior =
         Enumeration.of(
-          if (groupingBehavior != null)
-            RequestGroup.ActionGroupingBehavior.fromCode(groupingBehavior)
-          else null,
+          if (groupingBehavior != null) ActionGroupingBehavior.fromCode(groupingBehavior) else null,
           _groupingBehavior,
         ),
       selectionBehavior =
         Enumeration.of(
-          if (selectionBehavior != null)
-            RequestGroup.ActionSelectionBehavior.fromCode(selectionBehavior)
+          if (selectionBehavior != null) ActionSelectionBehavior.fromCode(selectionBehavior)
           else null,
           _selectionBehavior,
         ),
       requiredBehavior =
         Enumeration.of(
-          if (requiredBehavior != null)
-            RequestGroup.ActionRequiredBehavior.fromCode(requiredBehavior)
-          else null,
+          if (requiredBehavior != null) ActionRequiredBehavior.fromCode(requiredBehavior) else null,
           _requiredBehavior,
         ),
       precheckBehavior =
         Enumeration.of(
-          if (precheckBehavior != null)
-            RequestGroup.ActionPrecheckBehavior.fromCode(precheckBehavior)
-          else null,
+          if (precheckBehavior != null) ActionPrecheckBehavior.fromCode(precheckBehavior) else null,
           _precheckBehavior,
         ),
       cardinalityBehavior =
         Enumeration.of(
-          if (cardinalityBehavior != null)
-            RequestGroup.ActionCardinalityBehavior.fromCode(cardinalityBehavior)
+          if (cardinalityBehavior != null) ActionCardinalityBehavior.fromCode(cardinalityBehavior)
           else null,
           _cardinalityBehavior,
         ),
@@ -632,10 +634,7 @@ internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       kind =
-        Enumeration.of(
-          if (kind != null) RequestGroup.ActionConditionKind.fromCode(kind) else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) ActionConditionKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on RequestGroup.Action.Condition"
           ),
@@ -765,8 +764,7 @@ internal object RequestGroupActionRelatedActionSerializer :
           ),
       relationship =
         Enumeration.of(
-          if (relationship != null) RequestGroup.ActionRelationshipType.fromCode(relationship)
-          else null,
+          if (relationship != null) ActionRelationshipType.fromCode(relationship) else null,
           _relationship,
         )
           ?: throw SerializationException(
@@ -1152,18 +1150,14 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
       replaces = replaces ?: listOf(),
       groupIdentifier = groupIdentifier,
       status =
-        Enumeration.of(
-          if (status != null) RequestGroup.RequestStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on RequestGroup"),
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on RequestGroup"),
       intent =
-        Enumeration.of(
-          if (intent != null) RequestGroup.RequestIntent.fromCode(intent) else null,
-          _intent,
-        ) ?: throw SerializationException("Missing required property 'intent' on RequestGroup"),
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on RequestGroup"),
       priority =
         Enumeration.of(
-          if (priority != null) RequestGroup.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       code = code,

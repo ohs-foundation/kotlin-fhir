@@ -42,6 +42,11 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.OrientationType
+import dev.ohs.fhir.model.r4.terminologies.QualityType
+import dev.ohs.fhir.model.r4.terminologies.RepositoryType
+import dev.ohs.fhir.model.r4.terminologies.SequenceType
+import dev.ohs.fhir.model.r4.terminologies.StrandType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -219,18 +224,13 @@ internal object MolecularSequenceReferenceSeqSerializer :
       genomeBuild = R4String.of(genomeBuild, _genomeBuild),
       orientation =
         Enumeration.of(
-          if (orientation != null) MolecularSequence.OrientationType.fromCode(orientation)
-          else null,
+          if (orientation != null) OrientationType.fromCode(orientation) else null,
           _orientation,
         ),
       referenceSeqId = referenceSeqId,
       referenceSeqPointer = referenceSeqPointer,
       referenceSeqString = R4String.of(referenceSeqString, _referenceSeqString),
-      strand =
-        Enumeration.of(
-          if (strand != null) MolecularSequence.StrandType.fromCode(strand) else null,
-          _strand,
-        ),
+      strand = Enumeration.of(if (strand != null) StrandType.fromCode(strand) else null, _strand),
       windowStart = Integer.of(windowStart, _windowStart),
       windowEnd = Integer.of(windowEnd, _windowEnd),
     )
@@ -734,10 +734,7 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) MolecularSequence.QualityType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) QualityType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on MolecularSequence.Quality"
           ),
@@ -1303,10 +1300,7 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) MolecularSequence.RepositoryType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) RepositoryType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on MolecularSequence.Repository"
           ),
@@ -1986,11 +1980,7 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
-      type =
-        Enumeration.of(
-          if (type != null) MolecularSequence.SequenceType.fromCode(type) else null,
-          _type,
-        ),
+      type = Enumeration.of(if (type != null) SequenceType.fromCode(type) else null, _type),
       coordinateSystem =
         Integer.of(coordinateSystem, _coordinateSystem)
           ?: throw SerializationException(

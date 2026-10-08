@@ -40,6 +40,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.AccountStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -494,10 +495,8 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Account.AccountStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Account"),
+        Enumeration.of(if (status != null) AccountStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Account"),
       type = type,
       name = R4bString.of(name, _name),
       subject = subject ?: listOf(),

@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.AppointmentResponseSerializer
+import dev.ohs.fhir.model.r5.terminologies.AppointmentResponseStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -470,37 +471,5 @@ public data class AppointmentResponse(
         occurrenceDate = occurrenceDate?.build(),
         recurrenceId = recurrenceId?.build(),
       )
-  }
-
-  /** The Participation status for a participant in response to a request for an appointment. */
-  public enum class AppointmentResponseStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Accepted("accepted", "http://hl7.org/fhir/participationstatus", "Accepted"),
-    Declined("declined", "http://hl7.org/fhir/participationstatus", "Declined"),
-    Tentative("tentative", "http://hl7.org/fhir/participationstatus", "Tentative"),
-    Needs_Action("needs-action", "http://hl7.org/fhir/participationstatus", "Needs Action"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/appointmentstatus",
-      "Entered in error",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): AppointmentResponseStatus =
-        when (code) {
-          "accepted" -> Accepted
-          "declined" -> Declined
-          "tentative" -> Tentative
-          "needs-action" -> Needs_Action
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum AppointmentResponseStatus")
-        }
-    }
   }
 }

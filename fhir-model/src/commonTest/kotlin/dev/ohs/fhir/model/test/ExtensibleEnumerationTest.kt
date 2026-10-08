@@ -17,14 +17,14 @@
 package dev.ohs.fhir.model.test
 
 import dev.ohs.fhir.model.r4.Element as R4Element
-import dev.ohs.fhir.model.r4.Expression.ExpressionLanguage as R4ExpressionLanguage
 import dev.ohs.fhir.model.r4.ExtensibleEnumeration as R4ExtensibleEnumeration
+import dev.ohs.fhir.model.r4.terminologies.ExpressionLanguage as R4ExpressionLanguage
 import dev.ohs.fhir.model.r4b.Element as R4bElement
-import dev.ohs.fhir.model.r4b.Expression.ExpressionLanguage as R4bExpressionLanguage
 import dev.ohs.fhir.model.r4b.ExtensibleEnumeration as R4bExtensibleEnumeration
+import dev.ohs.fhir.model.r4b.terminologies.ExpressionLanguage as R4bExpressionLanguage
 import dev.ohs.fhir.model.r5.Element as R5Element
-import dev.ohs.fhir.model.r5.Expression.ExpressionLanguage as R5ExpressionLanguage
 import dev.ohs.fhir.model.r5.ExtensibleEnumeration as R5ExtensibleEnumeration
+import dev.ohs.fhir.model.r5.terminologies.ExpressionLanguage as R5ExpressionLanguage
 import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
 import kotlin.test.assertIs

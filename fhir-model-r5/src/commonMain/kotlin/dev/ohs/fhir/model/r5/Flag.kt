@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.FlagSerializer
+import dev.ohs.fhir.model.r5.terminologies.FlagStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -394,31 +395,5 @@ public data class Flag(
         encounter = encounter?.build(),
         author = author?.build(),
       )
-  }
-
-  /**
-   * Indicates whether this flag is active and needs to be displayed to a user, or whether it is no
-   * longer needed or was entered in error.
-   */
-  public enum class FlagStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/flag-status", "Active"),
-    Inactive("inactive", "http://hl7.org/fhir/flag-status", "Inactive"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/flag-status", "Entered in Error");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): FlagStatus =
-        when (code) {
-          "active" -> Active
-          "inactive" -> Inactive
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum FlagStatus")
-        }
-    }
   }
 }

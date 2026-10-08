@@ -27,7 +27,11 @@ import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptSerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemFilterSerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemPropertySerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemSerializer
+import dev.ohs.fhir.model.r4.terminologies.CodeSystemContentMode
+import dev.ohs.fhir.model.r4.terminologies.CodeSystemHierarchyMeaning
 import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
+import dev.ohs.fhir.model.r4.terminologies.FilterOperator
+import dev.ohs.fhir.model.r4.terminologies.PropertyType
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1575,140 +1579,5 @@ public data class CodeSystem(
         `property` = `property`.mapToList { it.build() },
         concept = concept.mapToList { it.build() },
       )
-  }
-
-  /** The kind of operation to perform as a part of a property based filter. */
-  public enum class FilterOperator(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    EqualTo("=", "http://hl7.org/fhir/filter-operator", "Equals"),
-    Is_A("is-a", "http://hl7.org/fhir/filter-operator", "Is A (by subsumption)"),
-    Descendent_Of(
-      "descendent-of",
-      "http://hl7.org/fhir/filter-operator",
-      "Descendent Of (by subsumption)",
-    ),
-    Is_Not_A("is-not-a", "http://hl7.org/fhir/filter-operator", "Not (Is A) (by subsumption)"),
-    Regex("regex", "http://hl7.org/fhir/filter-operator", "Regular Expression"),
-    In("in", "http://hl7.org/fhir/filter-operator", "In Set"),
-    Not_In("not-in", "http://hl7.org/fhir/filter-operator", "Not in Set"),
-    Generalizes(
-      "generalizes",
-      "http://hl7.org/fhir/filter-operator",
-      "Generalizes (by Subsumption)",
-    ),
-    Exists("exists", "http://hl7.org/fhir/filter-operator", "Exists");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FilterOperator =
-        when (code) {
-          "=" -> EqualTo
-          "is-a" -> Is_A
-          "descendent-of" -> Descendent_Of
-          "is-not-a" -> Is_Not_A
-          "regex" -> Regex
-          "in" -> In
-          "not-in" -> Not_In
-          "generalizes" -> Generalizes
-          "exists" -> Exists
-          else -> throw IllegalArgumentException("Unknown code $code for enum FilterOperator")
-        }
-    }
-  }
-
-  /** The type of a property value. */
-  public enum class PropertyType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Code("code", "http://hl7.org/fhir/concept-property-type", "code (internal reference)"),
-    Coding("Coding", "http://hl7.org/fhir/concept-property-type", "Coding (external reference)"),
-    String("string", "http://hl7.org/fhir/concept-property-type", "string"),
-    Integer("integer", "http://hl7.org/fhir/concept-property-type", "integer"),
-    Boolean("boolean", "http://hl7.org/fhir/concept-property-type", "boolean"),
-    DateTime("dateTime", "http://hl7.org/fhir/concept-property-type", "dateTime"),
-    Decimal("decimal", "http://hl7.org/fhir/concept-property-type", "decimal");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): PropertyType =
-        when (code) {
-          "code" -> Code
-          "Coding" -> Coding
-          "string" -> String
-          "integer" -> Integer
-          "boolean" -> Boolean
-          "dateTime" -> DateTime
-          "decimal" -> Decimal
-          else -> throw IllegalArgumentException("Unknown code $code for enum PropertyType")
-        }
-    }
-  }
-
-  /** The meaning of the hierarchy of concepts in a code system. */
-  public enum class CodeSystemHierarchyMeaning(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Grouped_By("grouped-by", "http://hl7.org/fhir/codesystem-hierarchy-meaning", "Grouped By"),
-    Is_A("is-a", "http://hl7.org/fhir/codesystem-hierarchy-meaning", "Is-A"),
-    Part_Of("part-of", "http://hl7.org/fhir/codesystem-hierarchy-meaning", "Part Of"),
-    Classified_With(
-      "classified-with",
-      "http://hl7.org/fhir/codesystem-hierarchy-meaning",
-      "Classified With",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CodeSystemHierarchyMeaning =
-        when (code) {
-          "grouped-by" -> Grouped_By
-          "is-a" -> Is_A
-          "part-of" -> Part_Of
-          "classified-with" -> Classified_With
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CodeSystemHierarchyMeaning")
-        }
-    }
-  }
-
-  /**
-   * The extent of the content of the code system (the concepts and codes it defines) are
-   * represented in a code system resource.
-   */
-  public enum class CodeSystemContentMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Not_Present("not-present", "http://hl7.org/fhir/codesystem-content-mode", "Not Present"),
-    Example("example", "http://hl7.org/fhir/codesystem-content-mode", "Example"),
-    Fragment("fragment", "http://hl7.org/fhir/codesystem-content-mode", "Fragment"),
-    Complete("complete", "http://hl7.org/fhir/codesystem-content-mode", "Complete"),
-    Supplement("supplement", "http://hl7.org/fhir/codesystem-content-mode", "Supplement");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CodeSystemContentMode =
-        when (code) {
-          "not-present" -> Not_Present
-          "example" -> Example
-          "fragment" -> Fragment
-          "complete" -> Complete
-          "supplement" -> Supplement
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CodeSystemContentMode")
-        }
-    }
   }
 }

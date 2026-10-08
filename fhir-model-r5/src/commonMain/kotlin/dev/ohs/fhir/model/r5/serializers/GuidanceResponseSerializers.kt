@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.GuidanceResponseStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -343,7 +344,7 @@ internal object GuidanceResponseSerializer : FhirResourceSerializer<GuidanceResp
         ) ?: throw SerializationException("Missing required property 'module' on GuidanceResponse"),
       status =
         Enumeration.of(
-          if (status != null) GuidanceResponse.GuidanceResponseStatus.fromCode(status) else null,
+          if (status != null) GuidanceResponseStatus.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on GuidanceResponse"),
       subject = subject,

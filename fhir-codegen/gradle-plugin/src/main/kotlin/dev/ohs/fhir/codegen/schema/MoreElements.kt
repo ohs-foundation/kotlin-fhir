@@ -39,21 +39,6 @@ internal fun Element.isBackboneElement(): Boolean {
   return typeCode == "BackboneElement" || typeCode == "Element"
 }
 
-const val ELEMENT_IS_COMMON_BINDING_EXTENSION_URL =
-  "http://hl7.org/fhir/StructureDefinition/elementdefinition-isCommonBinding"
-
-val Element.isCommonBinding
-  get() = getBindingExtension(ELEMENT_IS_COMMON_BINDING_EXTENSION_URL)?.valueBoolean == true
-
-/**
- * Retrieves an [Extension] in `binding` with the provided url if one exists. Otherwise, returns
- * `null`
- */
-private fun Element.getBindingExtension(url: String): Extension? {
-  if (binding == null || binding.extension.isNullOrEmpty()) return null
-  return binding.extension.find { it.url == url }
-}
-
 /**
  * Retrieves the [dev.ohs.fhir.codegen.schema.valueset.ValueSet.url] from the [Element]. Extracts
  * the URI part from the set url excluding the FHIR versions E.g.

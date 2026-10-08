@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r5.FhirDecimal
 import dev.ohs.fhir.model.r5.Quantity
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.QuantityComparator
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -157,7 +158,7 @@ internal object QuantitySerializer : KSerializer<Quantity> {
       `value` = Decimal.of(`value`, _value),
       comparator =
         Enumeration.of(
-          if (comparator != null) Quantity.QuantityComparator.fromCode(comparator) else null,
+          if (comparator != null) QuantityComparator.fromCode(comparator) else null,
           _comparator,
         ),
       unit = R5String.of(unit, _unit),

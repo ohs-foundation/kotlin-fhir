@@ -43,6 +43,8 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.SupplyRequest
 import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.RequestPriority
+import dev.ohs.fhir.model.r4b.terminologies.SupplyRequestStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -512,14 +514,11 @@ internal object SupplyRequestSerializer : FhirResourceSerializer<SupplyRequest> 
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) SupplyRequest.SupplyRequestStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) SupplyRequestStatus.fromCode(status) else null, _status),
       category = category,
       priority =
         Enumeration.of(
-          if (priority != null) SupplyRequest.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       item =

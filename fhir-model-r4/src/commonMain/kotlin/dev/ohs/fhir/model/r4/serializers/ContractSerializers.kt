@@ -56,6 +56,8 @@ import dev.ohs.fhir.model.r4.Time
 import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.UnsignedInt
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.ContractResourcePublicationStatusCodes
+import dev.ohs.fhir.model.r4.terminologies.ContractResourceStatusCodes
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -204,7 +206,7 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
       publicationStatus =
         Enumeration.of(
           if (publicationStatus != null)
-            Contract.ContractResourcePublicationStatusCodes.fromCode(publicationStatus)
+            ContractResourcePublicationStatusCodes.fromCode(publicationStatus)
           else null,
           _publicationStatus,
         )
@@ -3890,7 +3892,7 @@ internal object ContractSerializer : FhirResourceSerializer<Contract> {
       version = R4String.of(version, _version),
       status =
         Enumeration.of(
-          if (status != null) Contract.ContractResourceStatusCodes.fromCode(status) else null,
+          if (status != null) ContractResourceStatusCodes.fromCode(status) else null,
           _status,
         ),
       legalState = legalState,

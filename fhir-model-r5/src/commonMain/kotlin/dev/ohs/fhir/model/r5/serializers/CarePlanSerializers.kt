@@ -43,6 +43,8 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.CarePlanIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -577,15 +579,11 @@ internal object CarePlanSerializer : FhirResourceSerializer<CarePlan> {
       replaces = replaces ?: listOf(),
       partOf = partOf ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) CarePlan.RequestStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on CarePlan"),
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on CarePlan"),
       intent =
-        Enumeration.of(
-          if (intent != null) CarePlan.CarePlanIntent.fromCode(intent) else null,
-          _intent,
-        ) ?: throw SerializationException("Missing required property 'intent' on CarePlan"),
+        Enumeration.of(if (intent != null) CarePlanIntent.fromCode(intent) else null, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on CarePlan"),
       category = category ?: listOf(),
       title = R5String.of(title, _title),
       description = R5String.of(description, _description),

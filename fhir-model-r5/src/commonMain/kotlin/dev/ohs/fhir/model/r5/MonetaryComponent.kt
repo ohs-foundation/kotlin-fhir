@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.MonetaryComponentSerializer
+import dev.ohs.fhir.model.r5.terminologies.PriceComponentType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -110,34 +111,5 @@ public data class MonetaryComponent(
         factor = factor?.build(),
         amount = amount?.build(),
       )
-  }
-
-  /** Codes indicating the kind of the price component. */
-  public enum class PriceComponentType(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Base("base", "http://hl7.org/fhir/price-component-type", "base price"),
-    Surcharge("surcharge", "http://hl7.org/fhir/price-component-type", "surcharge"),
-    Deduction("deduction", "http://hl7.org/fhir/price-component-type", "deduction"),
-    Discount("discount", "http://hl7.org/fhir/price-component-type", "discount"),
-    Tax("tax", "http://hl7.org/fhir/price-component-type", "tax"),
-    Informational("informational", "http://hl7.org/fhir/price-component-type", "informational");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): PriceComponentType =
-        when (code) {
-          "base" -> Base
-          "surcharge" -> Surcharge
-          "deduction" -> Deduction
-          "discount" -> Discount
-          "tax" -> Tax
-          "informational" -> Informational
-          else -> throw IllegalArgumentException("Unknown code $code for enum PriceComponentType")
-        }
-    }
   }
 }

@@ -44,6 +44,9 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r5.terminologies.VisionBase
+import dev.ohs.fhir.model.r5.terminologies.VisionEyes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -329,7 +332,7 @@ internal object VisionPrescriptionLensSpecificationSerializer :
             "Missing required property 'product' on VisionPrescription.LensSpecification"
           ),
       eye =
-        Enumeration.of(if (eye != null) VisionPrescription.VisionEyes.fromCode(eye) else null, _eye)
+        Enumeration.of(if (eye != null) VisionEyes.fromCode(eye) else null, _eye)
           ?: throw SerializationException(
             "Missing required property 'eye' on VisionPrescription.LensSpecification"
           ),
@@ -524,10 +527,7 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
             "Missing required property 'amount' on VisionPrescription.LensSpecification.Prism"
           ),
       base =
-        Enumeration.of(
-          if (base != null) VisionPrescription.VisionBase.fromCode(base) else null,
-          _base,
-        )
+        Enumeration.of(if (base != null) VisionBase.fromCode(base) else null, _base)
           ?: throw SerializationException(
             "Missing required property 'base' on VisionPrescription.LensSpecification.Prism"
           ),
@@ -764,8 +764,7 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) VisionPrescription.FinancialResourceStatusCodes.fromCode(status)
-          else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(

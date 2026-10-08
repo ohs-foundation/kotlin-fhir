@@ -44,6 +44,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.ClaimProcessingCodes
+import dev.ohs.fhir.model.r4.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r4.terminologies.NoteType
 import kotlin.Int
 import kotlin.OptIn
@@ -648,8 +649,7 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) PaymentReconciliation.FinancialResourceStatusCodes.fromCode(status)
-          else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(

@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.serializers.ImmunizationPerformerSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImmunizationProtocolAppliedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImmunizationReactionSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImmunizationSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ImmunizationStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1197,33 +1198,5 @@ public data class Immunization(
         reaction = reaction.mapToList { it.build() },
         protocolApplied = protocolApplied.mapToList { it.build() },
       )
-  }
-
-  /**
-   * The value set to instantiate this attribute should be drawn from a terminologically robust code
-   * system that consists of or contains concepts to support describing the current status of the
-   * administered dose of vaccine.
-   */
-  public enum class ImmunizationStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Completed("completed", "http://hl7.org/fhir/event-status", "Completed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/event-status", "Entered in Error"),
-    Not_Done("not-done", "http://hl7.org/fhir/event-status", "Not Done");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ImmunizationStatusCodes =
-        when (code) {
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "not-done" -> Not_Done
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ImmunizationStatusCodes")
-        }
-    }
   }
 }

@@ -40,6 +40,11 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.CompositionAttestationMode
+import dev.ohs.fhir.model.r4b.terminologies.CompositionStatus
+import dev.ohs.fhir.model.r4b.terminologies.Confidentiality
+import dev.ohs.fhir.model.r4b.terminologies.DocumentRelationshipType
+import dev.ohs.fhir.model.r4b.terminologies.ListMode
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -139,10 +144,7 @@ internal object CompositionAttesterSerializer : KSerializer<Composition.Attester
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       mode =
-        Enumeration.of(
-          if (mode != null) Composition.CompositionAttestationMode.fromCode(mode) else null,
-          _mode,
-        )
+        Enumeration.of(if (mode != null) CompositionAttestationMode.fromCode(mode) else null, _mode)
           ?: throw SerializationException(
             "Missing required property 'mode' on Composition.Attester"
           ),
@@ -254,10 +256,7 @@ internal object CompositionRelatesToSerializer : KSerializer<Composition.Relates
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          if (code != null) Composition.DocumentRelationshipType.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) DocumentRelationshipType.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on Composition.RelatesTo"
           ),
@@ -577,7 +576,7 @@ internal object CompositionSectionSerializer : KSerializer<Composition.Section> 
       author = author ?: listOf(),
       focus = focus,
       text = text,
-      mode = Enumeration.of(if (mode != null) Composition.ListMode.fromCode(mode) else null, _mode),
+      mode = Enumeration.of(if (mode != null) ListMode.fromCode(mode) else null, _mode),
       orderedBy = orderedBy,
       entry = entry ?: listOf(),
       emptyReason = emptyReason,
@@ -920,10 +919,8 @@ internal object CompositionSerializer : FhirResourceSerializer<Composition> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier,
       status =
-        Enumeration.of(
-          if (status != null) Composition.CompositionStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Composition"),
+        Enumeration.of(if (status != null) CompositionStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Composition"),
       type =
         type ?: throw SerializationException("Missing required property 'type' on Composition"),
       category = category ?: listOf(),
@@ -938,8 +935,7 @@ internal object CompositionSerializer : FhirResourceSerializer<Composition> {
           ?: throw SerializationException("Missing required property 'title' on Composition"),
       confidentiality =
         Enumeration.of(
-          if (confidentiality != null) Composition.Confidentiality.fromCode(confidentiality)
-          else null,
+          if (confidentiality != null) Confidentiality.fromCode(confidentiality) else null,
           _confidentiality,
         ),
       attester = attester ?: listOf(),

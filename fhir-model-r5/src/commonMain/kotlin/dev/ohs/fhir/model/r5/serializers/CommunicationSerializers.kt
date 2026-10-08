@@ -42,6 +42,8 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.EventStatus
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -570,15 +572,13 @@ internal object CommunicationSerializer : FhirResourceSerializer<Communication> 
       partOf = partOf ?: listOf(),
       inResponseTo = inResponseTo ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Communication.EventStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Communication"),
+        Enumeration.of(if (status != null) EventStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Communication"),
       statusReason = statusReason,
       category = category ?: listOf(),
       priority =
         Enumeration.of(
-          if (priority != null) Communication.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       medium = medium ?: listOf(),

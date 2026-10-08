@@ -23,6 +23,8 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.ListEntrySerializer
 import dev.ohs.fhir.model.r4.serializers.ListSerializer
+import dev.ohs.fhir.model.r4.terminologies.ListMode
+import dev.ohs.fhir.model.r4.terminologies.ListStatus
 import kotlin.Suppress
 import kotlin.collections.MutableList
 import kotlinx.serialization.SerialName
@@ -604,51 +606,5 @@ public data class List(
         entry = entry.mapToList { it.build() },
         emptyReason = emptyReason?.build(),
       )
-  }
-
-  /** The current state of the list. */
-  public enum class ListStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Current("current", "http://hl7.org/fhir/list-status", "Current"),
-    Retired("retired", "http://hl7.org/fhir/list-status", "Retired"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/list-status", "Entered In Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ListStatus =
-        when (code) {
-          "current" -> Current
-          "retired" -> Retired
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum ListStatus")
-        }
-    }
-  }
-
-  /** The processing mode that applies to this list. */
-  public enum class ListMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Working("working", "http://hl7.org/fhir/list-mode", "Working List"),
-    Snapshot("snapshot", "http://hl7.org/fhir/list-mode", "Snapshot List"),
-    Changes("changes", "http://hl7.org/fhir/list-mode", "Change List");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ListMode =
-        when (code) {
-          "working" -> Working
-          "snapshot" -> Snapshot
-          "changes" -> Changes
-          else -> throw IllegalArgumentException("Unknown code $code for enum ListMode")
-        }
-    }
   }
 }

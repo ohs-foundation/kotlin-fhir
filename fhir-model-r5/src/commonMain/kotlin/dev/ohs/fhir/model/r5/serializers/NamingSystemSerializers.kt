@@ -47,6 +47,8 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.NamingSystemIdentifierType
+import dev.ohs.fhir.model.r5.terminologies.NamingSystemType
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -187,10 +189,7 @@ internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.Unique
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) NamingSystem.NamingSystemIdentifierType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) NamingSystemIdentifierType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on NamingSystem.UniqueId"
           ),
@@ -733,10 +732,8 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
         Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on NamingSystem"),
       kind =
-        Enumeration.of(
-          if (kind != null) NamingSystem.NamingSystemType.fromCode(kind) else null,
-          _kind,
-        ) ?: throw SerializationException("Missing required property 'kind' on NamingSystem"),
+        Enumeration.of(if (kind != null) NamingSystemType.fromCode(kind) else null, _kind)
+          ?: throw SerializationException("Missing required property 'kind' on NamingSystem"),
       experimental = R5Boolean.of(experimental, _experimental),
       date =
         DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date)

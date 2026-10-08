@@ -46,6 +46,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.NutritionProductStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -865,7 +866,7 @@ internal object NutritionProductSerializer : FhirResourceSerializer<NutritionPro
       code = code,
       status =
         Enumeration.of(
-          if (status != null) NutritionProduct.NutritionProductStatus.fromCode(status) else null,
+          if (status != null) NutritionProductStatus.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on NutritionProduct"),
       category = category ?: listOf(),

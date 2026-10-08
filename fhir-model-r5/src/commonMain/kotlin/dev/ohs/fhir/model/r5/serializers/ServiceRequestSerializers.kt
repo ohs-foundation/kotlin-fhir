@@ -49,6 +49,9 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.RequestIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
+import dev.ohs.fhir.model.r5.terminologies.RequestStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1019,19 +1022,15 @@ internal object ServiceRequestSerializer : FhirResourceSerializer<ServiceRequest
       replaces = replaces ?: listOf(),
       requisition = requisition,
       status =
-        Enumeration.of(
-          if (status != null) ServiceRequest.RequestStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on ServiceRequest"),
+        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on ServiceRequest"),
       intent =
-        Enumeration.of(
-          if (intent != null) ServiceRequest.RequestIntent.fromCode(intent) else null,
-          _intent,
-        ) ?: throw SerializationException("Missing required property 'intent' on ServiceRequest"),
+        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent)
+          ?: throw SerializationException("Missing required property 'intent' on ServiceRequest"),
       category = category ?: listOf(),
       priority =
         Enumeration.of(
-          if (priority != null) ServiceRequest.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),

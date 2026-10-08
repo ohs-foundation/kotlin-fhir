@@ -32,15 +32,11 @@ import dev.ohs.fhir.codegen.schema.StructureDefinition
 import dev.ohs.fhir.codegen.schema.Type
 import dev.ohs.fhir.codegen.schema.backboneElements
 import dev.ohs.fhir.codegen.schema.capitalized
-import dev.ohs.fhir.codegen.schema.getBindingValueSetUrl
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.hasPrimaryConstructor
-import dev.ohs.fhir.codegen.schema.isCommonBinding
-import dev.ohs.fhir.codegen.schema.normalizeEnumName
 import dev.ohs.fhir.codegen.schema.rootElements
 import dev.ohs.fhir.codegen.schema.sanitizeKDoc
 import dev.ohs.fhir.codegen.schema.serializableWithCustomSerializer
-import dev.ohs.fhir.codegen.schema.typeShouldGenerateEnum
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -49,8 +45,6 @@ import kotlinx.serialization.Serializable
 class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
 
   fun generate(structureDefinition: StructureDefinition): FileSpec {
-    // Nested enums are all created inside the enclosing parent class for reusability
-    val enumClassesMap = mutableMapOf<String, TypeSpec>()
     val modelClassName = codegenContext.getModelClassName(structureDefinition)
     val typeSpec =
       TypeSpec.classBuilder(modelClassName)
@@ -177,9 +171,6 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             backboneElements = structureDefinition.backboneElements,
             structureDefinition = structureDefinition,
             valueSetMap = codegenContext.valueSetMap,
-            createEnumNameToTypeSpecEntry = { enumClassName, typeSpec ->
-              enumClassesMap.putIfAbsent(enumClassName, typeSpec)
-            },
           )
 
           addSealedInterfaces(modelClassName, structureDefinition.rootElements)
@@ -189,14 +180,6 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             modelClassName,
             codegenContext.valueSetMap,
             isBaseClass = isBaseClass,
-          )
-
-          addEnumClassTypeSpec(
-            valueSetMap = codegenContext.valueSetMap,
-            elements = structureDefinition.rootElements,
-            createEnumNameToTypeSpecEntry = { enumClassName, typeSpec ->
-              enumClassesMap.putIfAbsent(enumClassName, typeSpec)
-            },
           )
 
           if (structureDefinition.kind == StructureDefinition.Kind.PRIMITIVE_TYPE) {
@@ -222,11 +205,6 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
                 }
                 .build()
             )
-          }
-
-          enumClassesMap.forEach {
-            modelClassName.nestedClass(it.key)
-            addType(it.value)
           }
         }
         .build()
@@ -298,7 +276,6 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
     backboneElements: Map<Element, List<Element>>,
     structureDefinition: StructureDefinition,
     valueSetMap: Map<String, ValueSet>,
-    createEnumNameToTypeSpecEntry: (String, TypeSpec) -> Unit,
   ): TypeSpec.Builder {
     backboneElements
       .filter { (backboneElement, _) ->
@@ -329,7 +306,6 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
               backboneElements,
               structureDefinition,
               valueSetMap,
-              createEnumNameToTypeSpecEntry,
             )
             // Add sealed interfaces inside a backbone element
             .addSealedInterfaces(backboneElementClassName, elements)
@@ -342,37 +318,7 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             .build()
         )
       }
-
-    addEnumClassTypeSpec(
-      valueSetMap = valueSetMap,
-      elements = backboneElements.values.flatten(),
-      createEnumNameToTypeSpecEntry = createEnumNameToTypeSpecEntry,
-    )
     return this
-  }
-
-  /**
-   * Adds [TypeSpec] for enum classes based on the [Element] definitions. This function also tracks
-   * the ValueSet urls for common binding Elements.
-   */
-  private fun addEnumClassTypeSpec(
-    valueSetMap: Map<String, ValueSet>,
-    elements: List<Element>,
-    createEnumNameToTypeSpecEntry: (String, TypeSpec) -> Unit,
-  ) {
-    elements
-      .filter { it.typeShouldGenerateEnum(valueSetMap) && !it.isCommonBinding }
-      .mapNotNull { element ->
-        val valueSet = valueSetMap.getValue(element.getBindingValueSetUrl()!!)
-        val valueSetName = valueSet.name.normalizeEnumName()
-        EnumTypeSpecGenerator.generate(
-            valueSetName,
-            valueSet,
-            codegenContext.packageName,
-          )
-          ?.let { typeSpec -> valueSetName to typeSpec }
-      }
-      .forEach { createEnumNameToTypeSpecEntry(it.first, it.second) }
   }
 }
 

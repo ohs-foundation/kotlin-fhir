@@ -25,6 +25,9 @@ import dev.ohs.fhir.model.r4b.serializers.TaskInputSerializer
 import dev.ohs.fhir.model.r4b.serializers.TaskOutputSerializer
 import dev.ohs.fhir.model.r4b.serializers.TaskRestrictionSerializer
 import dev.ohs.fhir.model.r4b.serializers.TaskSerializer
+import dev.ohs.fhir.model.r4b.terminologies.RequestPriority
+import dev.ohs.fhir.model.r4b.terminologies.TaskIntent
+import dev.ohs.fhir.model.r4b.terminologies.TaskStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1675,106 +1678,5 @@ public data class Task(
         input = input.mapToList { it.build() },
         output = output.mapToList { it.build() },
       )
-  }
-
-  /** The current status of the task. */
-  public enum class TaskStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Draft("draft", "http://hl7.org/fhir/task-status", "Draft"),
-    Requested("requested", "http://hl7.org/fhir/task-status", "Requested"),
-    Received("received", "http://hl7.org/fhir/task-status", "Received"),
-    Accepted("accepted", "http://hl7.org/fhir/task-status", "Accepted"),
-    Rejected("rejected", "http://hl7.org/fhir/task-status", "Rejected"),
-    Ready("ready", "http://hl7.org/fhir/task-status", "Ready"),
-    Cancelled("cancelled", "http://hl7.org/fhir/task-status", "Cancelled"),
-    In_Progress("in-progress", "http://hl7.org/fhir/task-status", "In Progress"),
-    On_Hold("on-hold", "http://hl7.org/fhir/task-status", "On Hold"),
-    Failed("failed", "http://hl7.org/fhir/task-status", "Failed"),
-    Completed("completed", "http://hl7.org/fhir/task-status", "Completed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/task-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TaskStatus =
-        when (code) {
-          "draft" -> Draft
-          "requested" -> Requested
-          "received" -> Received
-          "accepted" -> Accepted
-          "rejected" -> Rejected
-          "ready" -> Ready
-          "cancelled" -> Cancelled
-          "in-progress" -> In_Progress
-          "on-hold" -> On_Hold
-          "failed" -> Failed
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum TaskStatus")
-        }
-    }
-  }
-
-  /** Distinguishes whether the task is a proposal, plan or full order. */
-  public enum class TaskIntent(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Unknown("unknown", "http://hl7.org/fhir/task-intent", "Unknown"),
-    Proposal("proposal", "http://hl7.org/fhir/request-intent", "Proposal"),
-    Plan("plan", "http://hl7.org/fhir/request-intent", "Plan"),
-    Order("order", "http://hl7.org/fhir/request-intent", "Order"),
-    Original_Order("original-order", "http://hl7.org/fhir/request-intent", "Original Order"),
-    Reflex_Order("reflex-order", "http://hl7.org/fhir/request-intent", "Reflex Order"),
-    Filler_Order("filler-order", "http://hl7.org/fhir/request-intent", "Filler Order"),
-    Instance_Order("instance-order", "http://hl7.org/fhir/request-intent", "Instance Order"),
-    Option("option", "http://hl7.org/fhir/request-intent", "Option");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): TaskIntent =
-        when (code) {
-          "unknown" -> Unknown
-          "proposal" -> Proposal
-          "plan" -> Plan
-          "order" -> Order
-          "original-order" -> Original_Order
-          "reflex-order" -> Reflex_Order
-          "filler-order" -> Filler_Order
-          "instance-order" -> Instance_Order
-          "option" -> Option
-          else -> throw IllegalArgumentException("Unknown code $code for enum TaskIntent")
-        }
-    }
-  }
-
-  /** Identifies the level of importance to be assigned to actioning the request. */
-  public enum class RequestPriority(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Routine("routine", "http://hl7.org/fhir/request-priority", "Routine"),
-    Urgent("urgent", "http://hl7.org/fhir/request-priority", "Urgent"),
-    Asap("asap", "http://hl7.org/fhir/request-priority", "ASAP"),
-    Stat("stat", "http://hl7.org/fhir/request-priority", "STAT");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): RequestPriority =
-        when (code) {
-          "routine" -> Routine
-          "urgent" -> Urgent
-          "asap" -> Asap
-          "stat" -> Stat
-          else -> throw IllegalArgumentException("Unknown code $code for enum RequestPriority")
-        }
-    }
   }
 }

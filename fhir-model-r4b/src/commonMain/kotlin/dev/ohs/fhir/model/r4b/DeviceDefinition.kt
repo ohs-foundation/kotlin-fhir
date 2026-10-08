@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4b.serializers.DeviceDefinitionPropertySerializer
 import dev.ohs.fhir.model.r4b.serializers.DeviceDefinitionSerializer
 import dev.ohs.fhir.model.r4b.serializers.DeviceDefinitionSpecializationSerializer
 import dev.ohs.fhir.model.r4b.serializers.DeviceDefinitionUdiDeviceIdentifierSerializer
+import dev.ohs.fhir.model.r4b.terminologies.DeviceNameType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1220,46 +1221,5 @@ public data class DeviceDefinition(
         parentDevice = parentDevice?.build(),
         material = material.mapToList { it.build() },
       )
-  }
-
-  /** The type of name the device is referred by. */
-  public enum class DeviceNameType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Udi_Label_Name("udi-label-name", "http://hl7.org/fhir/device-nametype", "UDI Label name"),
-    User_Friendly_Name(
-      "user-friendly-name",
-      "http://hl7.org/fhir/device-nametype",
-      "User Friendly name",
-    ),
-    Patient_Reported_Name(
-      "patient-reported-name",
-      "http://hl7.org/fhir/device-nametype",
-      "Patient Reported name",
-    ),
-    Manufacturer_Name(
-      "manufacturer-name",
-      "http://hl7.org/fhir/device-nametype",
-      "Manufacturer name",
-    ),
-    Model_Name("model-name", "http://hl7.org/fhir/device-nametype", "Model name"),
-    Other("other", "http://hl7.org/fhir/device-nametype", "other");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): DeviceNameType =
-        when (code) {
-          "udi-label-name" -> Udi_Label_Name
-          "user-friendly-name" -> User_Friendly_Name
-          "patient-reported-name" -> Patient_Reported_Name
-          "manufacturer-name" -> Manufacturer_Name
-          "model-name" -> Model_Name
-          "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum DeviceNameType")
-        }
-    }
   }
 }

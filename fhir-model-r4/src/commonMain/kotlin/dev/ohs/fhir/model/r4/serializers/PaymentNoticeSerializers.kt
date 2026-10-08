@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.FinancialResourceStatusCodes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -287,7 +288,7 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) PaymentNotice.FinancialResourceStatusCodes.fromCode(status) else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on PaymentNotice"),
       request = request,

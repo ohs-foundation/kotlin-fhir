@@ -43,6 +43,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.FHIRSubstanceStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -387,10 +388,7 @@ internal object SubstanceSerializer : FhirResourceSerializer<Substance> {
         R5Boolean.of(instance, _instance)
           ?: throw SerializationException("Missing required property 'instance' on Substance"),
       status =
-        Enumeration.of(
-          if (status != null) Substance.FHIRSubstanceStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) FHIRSubstanceStatus.fromCode(status) else null, _status),
       category = category ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on Substance"),
       description = Markdown.of(description, _description),

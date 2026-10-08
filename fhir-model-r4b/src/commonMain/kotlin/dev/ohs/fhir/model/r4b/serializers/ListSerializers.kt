@@ -41,6 +41,8 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.ListMode
+import dev.ohs.fhir.model.r4b.terminologies.ListStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -438,10 +440,10 @@ internal object ListSerializer : FhirResourceSerializer<R4bList> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(if (status != null) R4bList.ListStatus.fromCode(status) else null, _status)
+        Enumeration.of(if (status != null) ListStatus.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on List"),
       mode =
-        Enumeration.of(if (mode != null) R4bList.ListMode.fromCode(mode) else null, _mode)
+        Enumeration.of(if (mode != null) ListMode.fromCode(mode) else null, _mode)
           ?: throw SerializationException("Missing required property 'mode' on List"),
       title = R4bString.of(title, _title),
       code = code,

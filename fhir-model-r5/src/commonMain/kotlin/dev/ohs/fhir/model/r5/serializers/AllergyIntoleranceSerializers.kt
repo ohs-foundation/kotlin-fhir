@@ -44,6 +44,9 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.AllergyIntoleranceCategory
+import dev.ohs.fhir.model.r5.terminologies.AllergyIntoleranceCriticality
+import dev.ohs.fhir.model.r5.terminologies.AllergyIntoleranceSeverity
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -293,8 +296,7 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
       onset = DateTime.of(if (onset != null) FhirDateTime.fromString(onset) else null, _onset),
       severity =
         Enumeration.of(
-          if (severity != null) AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(severity)
-          else null,
+          if (severity != null) AllergyIntoleranceSeverity.fromCode(severity) else null,
           _severity,
         ),
       exposureRoute = exposureRoute,
@@ -675,9 +677,7 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
       category =
         (kotlin.collections.List(maxOf(category?.size ?: 0, _category?.size ?: 0)) { index ->
           Enumeration.of(
-            category?.getOrNull(index)?.let {
-              AllergyIntolerance.AllergyIntoleranceCategory.fromCode(it)
-            },
+            category?.getOrNull(index)?.let { AllergyIntoleranceCategory.fromCode(it) },
             _category?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -686,9 +686,7 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
         }),
       criticality =
         Enumeration.of(
-          if (criticality != null)
-            AllergyIntolerance.AllergyIntoleranceCriticality.fromCode(criticality)
-          else null,
+          if (criticality != null) AllergyIntoleranceCriticality.fromCode(criticality) else null,
           _criticality,
         ),
       code = code,

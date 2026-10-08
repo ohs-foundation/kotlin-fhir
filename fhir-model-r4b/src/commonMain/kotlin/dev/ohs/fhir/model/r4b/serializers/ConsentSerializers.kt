@@ -42,6 +42,9 @@ import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.ConsentDataMeaning
+import dev.ohs.fhir.model.r4b.terminologies.ConsentProvisionType
+import dev.ohs.fhir.model.r4b.terminologies.ConsentState
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -444,11 +447,7 @@ internal object ConsentProvisionSerializer : KSerializer<Consent.Provision> {
       id = id,
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(
-          if (type != null) Consent.ConsentProvisionType.fromCode(type) else null,
-          _type,
-        ),
+      type = Enumeration.of(if (type != null) ConsentProvisionType.fromCode(type) else null, _type),
       period = period,
       actor = actor ?: listOf(),
       action = action ?: listOf(),
@@ -710,7 +709,7 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
       modifierExtension = modifierExtension ?: listOf(),
       meaning =
         Enumeration.of(
-          if (meaning != null) Consent.ConsentDataMeaning.fromCode(meaning) else null,
+          if (meaning != null) ConsentDataMeaning.fromCode(meaning) else null,
           _meaning,
         )
           ?: throw SerializationException(
@@ -1001,7 +1000,7 @@ internal object ConsentSerializer : FhirResourceSerializer<Consent> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(if (status != null) Consent.ConsentState.fromCode(status) else null, _status)
+        Enumeration.of(if (status != null) ConsentState.fromCode(status) else null, _status)
           ?: throw SerializationException("Missing required property 'status' on Consent"),
       scope = scope ?: throw SerializationException("Missing required property 'scope' on Consent"),
       category = category ?: listOf(),

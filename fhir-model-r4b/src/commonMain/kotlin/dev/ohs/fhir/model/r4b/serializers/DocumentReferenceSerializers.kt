@@ -42,7 +42,9 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.CompositionStatus
 import dev.ohs.fhir.model.r4b.terminologies.DocumentReferenceStatus
+import dev.ohs.fhir.model.r4b.terminologies.DocumentRelationshipType
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -129,10 +131,7 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       code =
-        Enumeration.of(
-          if (code != null) DocumentReference.DocumentRelationshipType.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) DocumentRelationshipType.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on DocumentReference.RelatesTo"
           ),
@@ -741,7 +740,7 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
           ),
       docStatus =
         Enumeration.of(
-          if (docStatus != null) DocumentReference.CompositionStatus.fromCode(docStatus) else null,
+          if (docStatus != null) CompositionStatus.fromCode(docStatus) else null,
           _docStatus,
         ),
       type = type,

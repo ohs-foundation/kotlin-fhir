@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.DeviceUsageStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -469,10 +470,8 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
       identifier = identifier ?: listOf(),
       basedOn = basedOn ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) DeviceUsage.DeviceUsageStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on DeviceUsage"),
+        Enumeration.of(if (status != null) DeviceUsageStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on DeviceUsage"),
       category = category ?: listOf(),
       patient =
         patient

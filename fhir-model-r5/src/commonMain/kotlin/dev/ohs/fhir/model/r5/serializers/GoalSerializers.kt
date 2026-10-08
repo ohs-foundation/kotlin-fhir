@@ -47,6 +47,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.GoalLifecycleStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -593,7 +594,7 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
       identifier = identifier ?: listOf(),
       lifecycleStatus =
         Enumeration.of(
-          if (lifecycleStatus != null) Goal.GoalLifecycleStatus.fromCode(lifecycleStatus) else null,
+          if (lifecycleStatus != null) GoalLifecycleStatus.fromCode(lifecycleStatus) else null,
           _lifecycleStatus,
         ) ?: throw SerializationException("Missing required property 'lifecycleStatus' on Goal"),
       achievementStatus = achievementStatus,

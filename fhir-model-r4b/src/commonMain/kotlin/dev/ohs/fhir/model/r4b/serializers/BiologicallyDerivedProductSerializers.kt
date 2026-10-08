@@ -43,6 +43,9 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.BiologicallyDerivedProductCategory
+import dev.ohs.fhir.model.r4b.terminologies.BiologicallyDerivedProductStatus
+import dev.ohs.fhir.model.r4b.terminologies.BiologicallyDerivedProductStorageScale
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -587,9 +590,7 @@ internal object BiologicallyDerivedProductStorageSerializer :
       temperature = Decimal.of(temperature, _temperature),
       scale =
         Enumeration.of(
-          if (scale != null)
-            BiologicallyDerivedProduct.BiologicallyDerivedProductStorageScale.fromCode(scale)
-          else null,
+          if (scale != null) BiologicallyDerivedProductStorageScale.fromCode(scale) else null,
           _scale,
         ),
       duration = duration,
@@ -864,17 +865,14 @@ internal object BiologicallyDerivedProductSerializer :
       identifier = identifier ?: listOf(),
       productCategory =
         Enumeration.of(
-          if (productCategory != null)
-            BiologicallyDerivedProduct.BiologicallyDerivedProductCategory.fromCode(productCategory)
+          if (productCategory != null) BiologicallyDerivedProductCategory.fromCode(productCategory)
           else null,
           _productCategory,
         ),
       productCode = productCode,
       status =
         Enumeration.of(
-          if (status != null)
-            BiologicallyDerivedProduct.BiologicallyDerivedProductStatus.fromCode(status)
-          else null,
+          if (status != null) BiologicallyDerivedProductStatus.fromCode(status) else null,
           _status,
         ),
       request = request ?: listOf(),

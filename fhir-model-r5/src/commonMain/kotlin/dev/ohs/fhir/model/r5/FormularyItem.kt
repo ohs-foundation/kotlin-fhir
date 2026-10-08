@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.FormularyItemSerializer
+import dev.ohs.fhir.model.r5.terminologies.FormularyItemStatusCodes
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -313,33 +314,5 @@ public data class FormularyItem(
         code = code?.build(),
         status = status,
       )
-  }
-
-  /** FormularyItem Status Codes */
-  public enum class FormularyItemStatusCodes(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/CodeSystem/formularyitem-status", "Active"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/CodeSystem/formularyitem-status",
-      "Entered in Error",
-    ),
-    Inactive("inactive", "http://hl7.org/fhir/CodeSystem/formularyitem-status", "Inactive");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): FormularyItemStatusCodes =
-        when (code) {
-          "active" -> Active
-          "entered-in-error" -> Entered_In_Error
-          "inactive" -> Inactive
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum FormularyItemStatusCodes")
-        }
-    }
   }
 }

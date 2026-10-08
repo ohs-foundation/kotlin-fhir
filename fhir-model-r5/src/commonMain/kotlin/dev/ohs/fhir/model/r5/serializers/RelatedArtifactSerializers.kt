@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedArtifact
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.RelatedArtifactType
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -211,10 +212,8 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) RelatedArtifact.RelatedArtifactType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
+        Enumeration.of(if (type != null) RelatedArtifactType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on RelatedArtifact"),
       classifier = classifier ?: listOf(),
       label = R5String.of(label, _label),
       display = R5String.of(display, _display),

@@ -43,6 +43,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.AppointmentResponseStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -320,8 +321,7 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
       actor = actor,
       participantStatus =
         Enumeration.of(
-          if (participantStatus != null)
-            AppointmentResponse.AppointmentResponseStatus.fromCode(participantStatus)
+          if (participantStatus != null) AppointmentResponseStatus.fromCode(participantStatus)
           else null,
           _participantStatus,
         )

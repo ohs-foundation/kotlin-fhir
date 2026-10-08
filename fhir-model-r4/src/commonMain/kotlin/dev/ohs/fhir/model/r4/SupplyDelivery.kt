@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.SupplyDeliverySerializer
 import dev.ohs.fhir.model.r4.serializers.SupplyDeliverySuppliedItemSerializer
+import dev.ohs.fhir.model.r4.terminologies.SupplyDeliveryStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -563,34 +564,5 @@ public data class SupplyDelivery(
         destination = destination?.build(),
         `receiver` = `receiver`.mapToList { it.build() },
       )
-  }
-
-  /** Status of the supply delivery. */
-  public enum class SupplyDeliveryStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    In_Progress("in-progress", "http://hl7.org/fhir/supplydelivery-status", "In Progress"),
-    Completed("completed", "http://hl7.org/fhir/supplydelivery-status", "Delivered"),
-    Abandoned("abandoned", "http://hl7.org/fhir/supplydelivery-status", "Abandoned"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/supplydelivery-status",
-      "Entered In Error",
-    );
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): SupplyDeliveryStatus =
-        when (code) {
-          "in-progress" -> In_Progress
-          "completed" -> Completed
-          "abandoned" -> Abandoned
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum SupplyDeliveryStatus")
-        }
-    }
   }
 }

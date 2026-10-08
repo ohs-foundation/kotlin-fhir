@@ -43,6 +43,8 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r4.terminologies.ObservationDataType
+import dev.ohs.fhir.model.r4.terminologies.ObservationRangeCategory
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -331,8 +333,7 @@ internal object ObservationDefinitionQualifiedIntervalSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       category =
         Enumeration.of(
-          if (category != null) ObservationDefinition.ObservationRangeCategory.fromCode(category)
-          else null,
+          if (category != null) ObservationRangeCategory.fromCode(category) else null,
           _category,
         ),
       range = range,
@@ -667,9 +668,7 @@ internal object ObservationDefinitionSerializer : FhirResourceSerializer<Observa
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
         ) { index ->
           Enumeration.of(
-            permittedDataType?.getOrNull(index)?.let {
-              ObservationDefinition.ObservationDataType.fromCode(it)
-            },
+            permittedDataType?.getOrNull(index)?.let { ObservationDataType.fromCode(it) },
             _permittedDataType?.getOrNull(index),
           )
             ?: throw SerializationException(

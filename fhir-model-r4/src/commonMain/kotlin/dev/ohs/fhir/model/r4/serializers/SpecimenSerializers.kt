@@ -43,6 +43,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.Specimen
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.SpecimenStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -871,10 +872,7 @@ internal object SpecimenSerializer : FhirResourceSerializer<Specimen> {
       identifier = identifier ?: listOf(),
       accessionIdentifier = accessionIdentifier,
       status =
-        Enumeration.of(
-          if (status != null) Specimen.SpecimenStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) SpecimenStatus.fromCode(status) else null, _status),
       type = type,
       subject = subject,
       receivedTime =

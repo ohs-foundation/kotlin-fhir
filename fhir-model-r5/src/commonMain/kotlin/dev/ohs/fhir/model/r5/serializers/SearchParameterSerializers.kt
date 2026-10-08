@@ -45,7 +45,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.SearchComparator
+import dev.ohs.fhir.model.r5.terminologies.SearchModifierCode
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchProcessingModeType
+import dev.ohs.fhir.model.r5.terminologies.VersionIndependentResourceTypesAll
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -749,9 +753,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       base =
         (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { index ->
           Enumeration.of(
-            base?.getOrNull(index)?.let {
-              SearchParameter.VersionIndependentResourceTypesAll.fromCode(it)
-            },
+            base?.getOrNull(index)?.let { VersionIndependentResourceTypesAll.fromCode(it) },
             _base?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -764,18 +766,14 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       expression = R5String.of(expression, _expression),
       processingMode =
         Enumeration.of(
-          if (processingMode != null)
-            SearchParameter.SearchProcessingModeType.fromCode(processingMode)
-          else null,
+          if (processingMode != null) SearchProcessingModeType.fromCode(processingMode) else null,
           _processingMode,
         ),
       constraint = R5String.of(constraint, _constraint),
       target =
         (kotlin.collections.List(maxOf(target?.size ?: 0, _target?.size ?: 0)) { index ->
           Enumeration.of(
-            target?.getOrNull(index)?.let {
-              SearchParameter.VersionIndependentResourceTypesAll.fromCode(it)
-            },
+            target?.getOrNull(index)?.let { VersionIndependentResourceTypesAll.fromCode(it) },
             _target?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -787,7 +785,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       comparator =
         (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { index ->
           Enumeration.of(
-            comparator?.getOrNull(index)?.let { SearchParameter.SearchComparator.fromCode(it) },
+            comparator?.getOrNull(index)?.let { SearchComparator.fromCode(it) },
             _comparator?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -797,7 +795,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       modifier =
         (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            modifier?.getOrNull(index)?.let { SearchParameter.SearchModifierCode.fromCode(it) },
+            modifier?.getOrNull(index)?.let { SearchModifierCode.fromCode(it) },
             _modifier?.getOrNull(index),
           )
             ?: throw SerializationException(

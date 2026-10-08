@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4b.serializers.ConceptMapGroupSerializer
 import dev.ohs.fhir.model.r4b.serializers.ConceptMapGroupUnmappedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ConceptMapSerializer
 import dev.ohs.fhir.model.r4b.terminologies.ConceptMapEquivalence
+import dev.ohs.fhir.model.r4b.terminologies.ConceptMapGroupUnmappedMode
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1538,31 +1539,5 @@ public data class ConceptMap(
         target = target,
         group = group.mapToList { it.build() },
       )
-  }
-
-  /** Defines which action to take if there is no match in the group. */
-  public enum class ConceptMapGroupUnmappedMode(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Provided("provided", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Provided Code"),
-    Fixed("fixed", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Fixed Code"),
-    Other_Map("other-map", "http://hl7.org/fhir/conceptmap-unmapped-mode", "Other Map");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ConceptMapGroupUnmappedMode =
-        when (code) {
-          "provided" -> Provided
-          "fixed" -> Fixed
-          "other-map" -> Other_Map
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum ConceptMapGroupUnmappedMode"
-            )
-        }
-    }
   }
 }

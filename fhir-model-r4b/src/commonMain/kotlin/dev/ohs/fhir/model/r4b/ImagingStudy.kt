@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4b.serializers.ImagingStudySerializer
 import dev.ohs.fhir.model.r4b.serializers.ImagingStudySeriesInstanceSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImagingStudySeriesPerformerSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImagingStudySeriesSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ImagingStudyStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1015,36 +1016,5 @@ public data class ImagingStudy(
         description = description?.build(),
         series = series.mapToList { it.build() },
       )
-  }
-
-  /** The status of the ImagingStudy. */
-  public enum class ImagingStudyStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Registered("registered", "http://hl7.org/fhir/imagingstudy-status", "Registered"),
-    Available("available", "http://hl7.org/fhir/imagingstudy-status", "Available"),
-    Cancelled("cancelled", "http://hl7.org/fhir/imagingstudy-status", "Cancelled"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/imagingstudy-status",
-      "Entered in Error",
-    ),
-    Unknown("unknown", "http://hl7.org/fhir/imagingstudy-status", "Unknown");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ImagingStudyStatus =
-        when (code) {
-          "registered" -> Registered
-          "available" -> Available
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum ImagingStudyStatus")
-        }
-    }
   }
 }

@@ -29,6 +29,8 @@ import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.PositiveInt
 import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.terminologies.ContactPointSystem
+import dev.ohs.fhir.model.r4.terminologies.ContactPointUse
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -144,13 +146,9 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
       id = id,
       extension = extension ?: listOf(),
       system =
-        Enumeration.of(
-          if (system != null) ContactPoint.ContactPointSystem.fromCode(system) else null,
-          _system,
-        ),
+        Enumeration.of(if (system != null) ContactPointSystem.fromCode(system) else null, _system),
       `value` = R4String.of(`value`, _value),
-      use =
-        Enumeration.of(if (use != null) ContactPoint.ContactPointUse.fromCode(use) else null, _use),
+      use = Enumeration.of(if (use != null) ContactPointUse.fromCode(use) else null, _use),
       rank = PositiveInt.of(rank, _rank),
       period = period,
     )

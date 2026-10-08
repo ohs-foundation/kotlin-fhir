@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionFindingSerializer
 import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionInvestigationSerializer
 import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionSerializer
+import dev.ohs.fhir.model.r4.terminologies.ClinicalImpressionStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -839,29 +840,5 @@ public data class ClinicalImpression(
         supportingInfo = supportingInfo.mapToList { it.build() },
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Codes that reflect the current state of a clinical impression within its overall lifecycle. */
-  public enum class ClinicalImpressionStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
-    Completed("completed", "http://hl7.org/fhir/event-status", "Completed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/event-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ClinicalImpressionStatus =
-        when (code) {
-          "in-progress" -> In_Progress
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ClinicalImpressionStatus")
-        }
-    }
   }
 }

@@ -57,7 +57,16 @@ import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.TriggerDefinition
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.ActionCardinalityBehavior
+import dev.ohs.fhir.model.r4.terminologies.ActionConditionKind
+import dev.ohs.fhir.model.r4.terminologies.ActionGroupingBehavior
+import dev.ohs.fhir.model.r4.terminologies.ActionParticipantType
+import dev.ohs.fhir.model.r4.terminologies.ActionPrecheckBehavior
+import dev.ohs.fhir.model.r4.terminologies.ActionRelationshipType
+import dev.ohs.fhir.model.r4.terminologies.ActionRequiredBehavior
+import dev.ohs.fhir.model.r4.terminologies.ActionSelectionBehavior
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.RequestPriority
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -857,7 +866,7 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       textEquivalent = R4String.of(textEquivalent, _textEquivalent),
       priority =
         Enumeration.of(
-          if (priority != null) PlanDefinition.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       code = code ?: listOf(),
@@ -892,36 +901,28 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       type = type,
       groupingBehavior =
         Enumeration.of(
-          if (groupingBehavior != null)
-            PlanDefinition.ActionGroupingBehavior.fromCode(groupingBehavior)
-          else null,
+          if (groupingBehavior != null) ActionGroupingBehavior.fromCode(groupingBehavior) else null,
           _groupingBehavior,
         ),
       selectionBehavior =
         Enumeration.of(
-          if (selectionBehavior != null)
-            PlanDefinition.ActionSelectionBehavior.fromCode(selectionBehavior)
+          if (selectionBehavior != null) ActionSelectionBehavior.fromCode(selectionBehavior)
           else null,
           _selectionBehavior,
         ),
       requiredBehavior =
         Enumeration.of(
-          if (requiredBehavior != null)
-            PlanDefinition.ActionRequiredBehavior.fromCode(requiredBehavior)
-          else null,
+          if (requiredBehavior != null) ActionRequiredBehavior.fromCode(requiredBehavior) else null,
           _requiredBehavior,
         ),
       precheckBehavior =
         Enumeration.of(
-          if (precheckBehavior != null)
-            PlanDefinition.ActionPrecheckBehavior.fromCode(precheckBehavior)
-          else null,
+          if (precheckBehavior != null) ActionPrecheckBehavior.fromCode(precheckBehavior) else null,
           _precheckBehavior,
         ),
       cardinalityBehavior =
         Enumeration.of(
-          if (cardinalityBehavior != null)
-            PlanDefinition.ActionCardinalityBehavior.fromCode(cardinalityBehavior)
+          if (cardinalityBehavior != null) ActionCardinalityBehavior.fromCode(cardinalityBehavior)
           else null,
           _cardinalityBehavior,
         ),
@@ -1192,10 +1193,7 @@ internal object PlanDefinitionActionConditionSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       kind =
-        Enumeration.of(
-          if (kind != null) PlanDefinition.ActionConditionKind.fromCode(kind) else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) ActionConditionKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on PlanDefinition.Action.Condition"
           ),
@@ -1325,8 +1323,7 @@ internal object PlanDefinitionActionRelatedActionSerializer :
           ),
       relationship =
         Enumeration.of(
-          if (relationship != null) PlanDefinition.ActionRelationshipType.fromCode(relationship)
-          else null,
+          if (relationship != null) ActionRelationshipType.fromCode(relationship) else null,
           _relationship,
         )
           ?: throw SerializationException(
@@ -1439,10 +1436,7 @@ internal object PlanDefinitionActionParticipantSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) PlanDefinition.ActionParticipantType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ActionParticipantType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on PlanDefinition.Action.Participant"
           ),

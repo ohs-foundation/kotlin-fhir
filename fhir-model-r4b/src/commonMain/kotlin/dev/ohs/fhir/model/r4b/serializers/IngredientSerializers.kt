@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.IngredientManufacturerRole
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -130,7 +131,7 @@ internal object IngredientManufacturerSerializer : KSerializer<Ingredient.Manufa
       modifierExtension = modifierExtension ?: listOf(),
       role =
         Enumeration.of(
-          if (role != null) Ingredient.IngredientManufacturerRole.fromCode(role) else null,
+          if (role != null) IngredientManufacturerRole.fromCode(role) else null,
           _role,
         ),
       manufacturer =

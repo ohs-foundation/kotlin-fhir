@@ -48,6 +48,8 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Time
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.AuditEventAction
+import dev.ohs.fhir.model.r5.terminologies.AuditEventSeverity
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1257,13 +1259,10 @@ internal object AuditEventSerializer : FhirResourceSerializer<AuditEvent> {
       category = category ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on AuditEvent"),
       action =
-        Enumeration.of(
-          if (action != null) AuditEvent.AuditEventAction.fromCode(action) else null,
-          _action,
-        ),
+        Enumeration.of(if (action != null) AuditEventAction.fromCode(action) else null, _action),
       severity =
         Enumeration.of(
-          if (severity != null) AuditEvent.AuditEventSeverity.fromCode(severity) else null,
+          if (severity != null) AuditEventSeverity.fromCode(severity) else null,
           _severity,
         ),
       occurred =

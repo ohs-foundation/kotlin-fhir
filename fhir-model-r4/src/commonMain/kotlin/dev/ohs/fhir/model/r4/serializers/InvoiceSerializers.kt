@@ -45,6 +45,8 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.InvoicePriceComponentType
+import dev.ohs.fhir.model.r4.terminologies.InvoiceStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -400,10 +402,7 @@ internal object InvoiceLineItemPriceComponentSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) Invoice.InvoicePriceComponentType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) InvoicePriceComponentType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on Invoice.LineItem.PriceComponent"
           ),
@@ -722,10 +721,8 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) Invoice.InvoiceStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Invoice"),
+        Enumeration.of(if (status != null) InvoiceStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on Invoice"),
       cancelledReason = R4String.of(cancelledReason, _cancelledReason),
       type = type,
       subject = subject,

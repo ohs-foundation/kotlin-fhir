@@ -44,6 +44,7 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ImagingStudyStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -879,10 +880,8 @@ internal object ImagingStudySerializer : FhirResourceSerializer<ImagingStudy> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) ImagingStudy.ImagingStudyStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on ImagingStudy"),
+        Enumeration.of(if (status != null) ImagingStudyStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on ImagingStudy"),
       modality = modality ?: listOf(),
       subject =
         subject

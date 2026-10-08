@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.ExpressionSerializer
+import dev.ohs.fhir.model.r4.terminologies.ExpressionLanguage
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -142,32 +143,5 @@ public data class Expression(
         expression = expression?.build(),
         reference = reference?.build(),
       )
-  }
-
-  /** The media type of the expression language. */
-  public enum class ExpressionLanguage(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Text_Cql("text/cql", "http://hl7.org/fhir/expression-language", "CQL"),
-    Text_Fhirpath("text/fhirpath", "http://hl7.org/fhir/expression-language", "FHIRPath"),
-    Application_X_Fhir_Query(
-      "application/x-fhir-query",
-      "http://hl7.org/fhir/expression-language",
-      "FHIR Query",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ExpressionLanguage =
-        when (code) {
-          "text/cql" -> Text_Cql
-          "text/fhirpath" -> Text_Fhirpath
-          "application/x-fhir-query" -> Application_X_Fhir_Query
-          else -> throw IllegalArgumentException("Unknown code $code for enum ExpressionLanguage")
-        }
-    }
   }
 }

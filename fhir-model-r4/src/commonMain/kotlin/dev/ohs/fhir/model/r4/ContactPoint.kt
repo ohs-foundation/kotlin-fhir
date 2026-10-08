@@ -22,6 +22,8 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.ContactPointSerializer
+import dev.ohs.fhir.model.r4.terminologies.ContactPointSystem
+import dev.ohs.fhir.model.r4.terminologies.ContactPointUse
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -160,63 +162,5 @@ public data class ContactPoint(
         rank = rank?.build(),
         period = period?.build(),
       )
-  }
-
-  /** Telecommunications form for contact point. */
-  public enum class ContactPointSystem(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Phone("phone", "http://hl7.org/fhir/contact-point-system", "Phone"),
-    Fax("fax", "http://hl7.org/fhir/contact-point-system", "Fax"),
-    Email("email", "http://hl7.org/fhir/contact-point-system", "Email"),
-    Pager("pager", "http://hl7.org/fhir/contact-point-system", "Pager"),
-    Url("url", "http://hl7.org/fhir/contact-point-system", "URL"),
-    Sms("sms", "http://hl7.org/fhir/contact-point-system", "SMS"),
-    Other("other", "http://hl7.org/fhir/contact-point-system", "Other");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ContactPointSystem =
-        when (code) {
-          "phone" -> Phone
-          "fax" -> Fax
-          "email" -> Email
-          "pager" -> Pager
-          "url" -> Url
-          "sms" -> Sms
-          "other" -> Other
-          else -> throw IllegalArgumentException("Unknown code $code for enum ContactPointSystem")
-        }
-    }
-  }
-
-  /** Use of contact point. */
-  public enum class ContactPointUse(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Home("home", "http://hl7.org/fhir/contact-point-use", "Home"),
-    Work("work", "http://hl7.org/fhir/contact-point-use", "Work"),
-    Temp("temp", "http://hl7.org/fhir/contact-point-use", "Temp"),
-    Old("old", "http://hl7.org/fhir/contact-point-use", "Old"),
-    Mobile("mobile", "http://hl7.org/fhir/contact-point-use", "Mobile");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ContactPointUse =
-        when (code) {
-          "home" -> Home
-          "work" -> Work
-          "temp" -> Temp
-          "old" -> Old
-          "mobile" -> Mobile
-          else -> throw IllegalArgumentException("Unknown code $code for enum ContactPointUse")
-        }
-    }
   }
 }

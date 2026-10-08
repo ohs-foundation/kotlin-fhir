@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.serializers.NutritionIntakeConsumedItemSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionIntakeIngredientLabelSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionIntakePerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionIntakeSerializer
+import dev.ohs.fhir.model.r5.terminologies.EventStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -957,38 +958,5 @@ public data class NutritionIntake(
         reason = reason.mapToList { it.build() },
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Codes identifying the lifecycle stage of an event. */
-  public enum class EventStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Preparation("preparation", "http://hl7.org/fhir/event-status", "Preparation"),
-    In_Progress("in-progress", "http://hl7.org/fhir/event-status", "In Progress"),
-    Not_Done("not-done", "http://hl7.org/fhir/event-status", "Not Done"),
-    On_Hold("on-hold", "http://hl7.org/fhir/event-status", "On Hold"),
-    Stopped("stopped", "http://hl7.org/fhir/event-status", "Stopped"),
-    Completed("completed", "http://hl7.org/fhir/event-status", "Completed"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/event-status", "Entered in Error"),
-    Unknown("unknown", "http://hl7.org/fhir/event-status", "Unknown");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): EventStatus =
-        when (code) {
-          "preparation" -> Preparation
-          "in-progress" -> In_Progress
-          "not-done" -> Not_Done
-          "on-hold" -> On_Hold
-          "stopped" -> Stopped
-          "completed" -> Completed
-          "entered-in-error" -> Entered_In_Error
-          "unknown" -> Unknown
-          else -> throw IllegalArgumentException("Unknown code $code for enum EventStatus")
-        }
-    }
   }
 }

@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireResponseItemAnswerSerializer
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireResponseItemSerializer
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireResponseSerializer
+import dev.ohs.fhir.model.r5.terminologies.QuestionnaireResponseStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -954,39 +955,5 @@ public data class QuestionnaireResponse(
         source = source?.build(),
         item = item.mapToList { it.build() },
       )
-  }
-
-  /** Lifecycle status of the questionnaire response. */
-  public enum class QuestionnaireResponseStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    In_Progress("in-progress", "http://hl7.org/fhir/questionnaire-answers-status", "In Progress"),
-    Completed("completed", "http://hl7.org/fhir/questionnaire-answers-status", "Completed"),
-    Amended("amended", "http://hl7.org/fhir/questionnaire-answers-status", "Amended"),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://hl7.org/fhir/questionnaire-answers-status",
-      "Entered in Error",
-    ),
-    Stopped("stopped", "http://hl7.org/fhir/questionnaire-answers-status", "Stopped");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): QuestionnaireResponseStatus =
-        when (code) {
-          "in-progress" -> In_Progress
-          "completed" -> Completed
-          "amended" -> Amended
-          "entered-in-error" -> Entered_In_Error
-          "stopped" -> Stopped
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum QuestionnaireResponseStatus"
-            )
-        }
-    }
   }
 }

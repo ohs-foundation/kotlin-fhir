@@ -26,13 +26,12 @@ import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.Type
 import dev.ohs.fhir.codegen.schema.capitalized
 import dev.ohs.fhir.codegen.schema.elementIdToTypeNameMap
+import dev.ohs.fhir.codegen.schema.enumName
 import dev.ohs.fhir.codegen.schema.getBindingValueSetUrl
 import dev.ohs.fhir.codegen.schema.getContentReferenceType
 import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.isBackboneElement
-import dev.ohs.fhir.codegen.schema.isCommonBinding
 import dev.ohs.fhir.codegen.schema.isExtensibleBinding
-import dev.ohs.fhir.codegen.schema.normalizeEnumName
 import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
@@ -265,25 +264,8 @@ internal class PropertyMapper(
     if (!element.typeShouldBindToEnum(valueSetMap)) {
       return null
     }
-
-    val elementBasePath = element.base?.path
-    // Use the ValueSet.name for the enum class, subclasses re-use enums from the parent
-    val valueSetName =
-      valueSetMap.getValue(element.getBindingValueSetUrl()!!).name.normalizeEnumName()
-    val enumClassName =
-      if (element.path == elementBasePath) {
-        valueSetName
-      } else {
-        // In rare cases, refer to the base enum, e.g., Distance.comparator and Quantity.comparator
-        "${elementBasePath?.substringBefore(".") ?: ""}.$valueSetName"
-      }
-    val enumClassPackageName =
-      when {
-        element.isCommonBinding -> modelClassName.packageName + ".terminologies"
-        enumClassName.contains(".") -> modelClassName.packageName
-        else -> ""
-      }
-    val enumClass = ClassName(enumClassPackageName, enumClassName)
+    val valueSetName = valueSetMap.getValue(element.getBindingValueSetUrl()!!).enumName
+    val enumClass = ClassName("${modelClassName.packageName}.terminologies", valueSetName)
     val wrapperName = if (element.isExtensibleBinding) "ExtensibleEnumeration" else "Enumeration"
     return ClassName(modelClassName.packageName, wrapperName).parameterizedBy(enumClass)
   }

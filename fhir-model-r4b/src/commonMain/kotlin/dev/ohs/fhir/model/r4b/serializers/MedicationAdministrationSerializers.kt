@@ -43,6 +43,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.MedicationAdministrationStatusCodes
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -685,9 +686,7 @@ internal object MedicationAdministrationSerializer :
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null)
-            MedicationAdministration.MedicationAdministrationStatusCodes.fromCode(status)
-          else null,
+          if (status != null) MedicationAdministrationStatusCodes.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(

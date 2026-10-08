@@ -47,6 +47,9 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.MedicationRequestIntent
+import dev.ohs.fhir.model.r5.terminologies.MedicationrequestStatus
+import dev.ohs.fhir.model.r5.terminologies.RequestPriority
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -976,7 +979,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       groupIdentifier = groupIdentifier,
       status =
         Enumeration.of(
-          if (status != null) MedicationRequest.MedicationrequestStatus.fromCode(status) else null,
+          if (status != null) MedicationrequestStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -990,7 +993,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
         ),
       intent =
         Enumeration.of(
-          if (intent != null) MedicationRequest.MedicationRequestIntent.fromCode(intent) else null,
+          if (intent != null) MedicationRequestIntent.fromCode(intent) else null,
           _intent,
         )
           ?: throw SerializationException(
@@ -999,7 +1002,7 @@ internal object MedicationRequestSerializer : FhirResourceSerializer<MedicationR
       category = category ?: listOf(),
       priority =
         Enumeration.of(
-          if (priority != null) MedicationRequest.RequestPriority.fromCode(priority) else null,
+          if (priority != null) RequestPriority.fromCode(priority) else null,
           _priority,
         ),
       doNotPerform = R5Boolean.of(doNotPerform, _doNotPerform),

@@ -47,6 +47,7 @@ import dev.ohs.fhir.model.r4.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.ChargeItemStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -620,10 +621,8 @@ internal object ChargeItemSerializer : FhirResourceSerializer<ChargeItem> {
             )
         }),
       status =
-        Enumeration.of(
-          if (status != null) ChargeItem.ChargeItemStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on ChargeItem"),
+        Enumeration.of(if (status != null) ChargeItemStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on ChargeItem"),
       partOf = partOf ?: listOf(),
       code = code ?: throw SerializationException("Missing required property 'code' on ChargeItem"),
       subject =

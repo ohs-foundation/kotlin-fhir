@@ -46,8 +46,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.ExtensionContextType
 import dev.ohs.fhir.model.r5.terminologies.FHIRVersion
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.StructureDefinitionKind
+import dev.ohs.fhir.model.r5.terminologies.TypeDerivationRule
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -273,10 +276,7 @@ internal object StructureDefinitionContextSerializer : KSerializer<StructureDefi
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) StructureDefinition.ExtensionContextType.fromCode(type) else null,
-          _type,
-        )
+        Enumeration.of(if (type != null) ExtensionContextType.fromCode(type) else null, _type)
           ?: throw SerializationException(
             "Missing required property 'type' on StructureDefinition.Context"
           ),
@@ -997,10 +997,7 @@ internal object StructureDefinitionSerializer : FhirResourceSerializer<Structure
         ),
       mapping = mapping ?: listOf(),
       kind =
-        Enumeration.of(
-          if (kind != null) StructureDefinition.StructureDefinitionKind.fromCode(kind) else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) StructureDefinitionKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on StructureDefinition"
           ),
@@ -1027,8 +1024,7 @@ internal object StructureDefinitionSerializer : FhirResourceSerializer<Structure
       baseDefinition = Canonical.of(baseDefinition, _baseDefinition),
       derivation =
         Enumeration.of(
-          if (derivation != null) StructureDefinition.TypeDerivationRule.fromCode(derivation)
-          else null,
+          if (derivation != null) TypeDerivationRule.fromCode(derivation) else null,
           _derivation,
         ),
       snapshot = snapshot,

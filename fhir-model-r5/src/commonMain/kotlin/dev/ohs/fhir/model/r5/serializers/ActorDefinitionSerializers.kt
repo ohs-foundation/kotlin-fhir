@@ -45,6 +45,7 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.ExampleScenarioActorType
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -488,10 +489,8 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       type =
-        Enumeration.of(
-          if (type != null) ActorDefinition.ExampleScenarioActorType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on ActorDefinition"),
+        Enumeration.of(if (type != null) ExampleScenarioActorType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on ActorDefinition"),
       documentation = Markdown.of(documentation, _documentation),
       reference =
         (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { index ->

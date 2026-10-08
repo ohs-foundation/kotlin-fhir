@@ -53,6 +53,9 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ClaimProcessingCodes
+import dev.ohs.fhir.model.r5.terminologies.ExplanationOfBenefitStatus
+import dev.ohs.fhir.model.r5.terminologies.Use
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -6048,8 +6051,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       traceNumber = traceNumber ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) ExplanationOfBenefit.ExplanationOfBenefitStatus.fromCode(status)
-          else null,
+          if (status != null) ExplanationOfBenefitStatus.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -6062,7 +6064,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
           ),
       subType = subType,
       use =
-        Enumeration.of(if (use != null) ExplanationOfBenefit.Use.fromCode(use) else null, _use)
+        Enumeration.of(if (use != null) Use.fromCode(use) else null, _use)
           ?: throw SerializationException(
             "Missing required property 'use' on ExplanationOfBenefit"
           ),
@@ -6095,8 +6097,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       claimResponse = claimResponse,
       outcome =
         Enumeration.of(
-          if (outcome != null) ExplanationOfBenefit.ClaimProcessingCodes.fromCode(outcome)
-          else null,
+          if (outcome != null) ClaimProcessingCodes.fromCode(outcome) else null,
           _outcome,
         )
           ?: throw SerializationException(

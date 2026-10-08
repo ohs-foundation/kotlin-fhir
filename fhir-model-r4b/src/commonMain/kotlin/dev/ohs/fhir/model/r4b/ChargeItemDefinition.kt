@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4b.serializers.ChargeItemDefinitionApplicabilitySeria
 import dev.ohs.fhir.model.r4b.serializers.ChargeItemDefinitionPropertyGroupPriceComponentSerializer
 import dev.ohs.fhir.model.r4b.serializers.ChargeItemDefinitionPropertyGroupSerializer
 import dev.ohs.fhir.model.r4b.serializers.ChargeItemDefinitionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.InvoicePriceComponentType
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1146,39 +1147,5 @@ public data class ChargeItemDefinition(
         applicability = applicability.mapToList { it.build() },
         propertyGroup = propertyGroup.mapToList { it.build() },
       )
-  }
-
-  /** Codes indicating the kind of the price component. */
-  public enum class InvoicePriceComponentType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Base("base", "http://hl7.org/fhir/invoice-priceComponentType", "base price"),
-    Surcharge("surcharge", "http://hl7.org/fhir/invoice-priceComponentType", "surcharge"),
-    Deduction("deduction", "http://hl7.org/fhir/invoice-priceComponentType", "deduction"),
-    Discount("discount", "http://hl7.org/fhir/invoice-priceComponentType", "discount"),
-    Tax("tax", "http://hl7.org/fhir/invoice-priceComponentType", "tax"),
-    Informational(
-      "informational",
-      "http://hl7.org/fhir/invoice-priceComponentType",
-      "informational",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): InvoicePriceComponentType =
-        when (code) {
-          "base" -> Base
-          "surcharge" -> Surcharge
-          "deduction" -> Deduction
-          "discount" -> Discount
-          "tax" -> Tax
-          "informational" -> Informational
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum InvoicePriceComponentType")
-        }
-    }
   }
 }

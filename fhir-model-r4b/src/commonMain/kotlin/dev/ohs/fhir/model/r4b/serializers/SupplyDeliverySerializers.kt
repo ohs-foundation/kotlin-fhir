@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.SupplyDelivery
 import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.SupplyDeliveryStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -420,7 +421,7 @@ internal object SupplyDeliverySerializer : FhirResourceSerializer<SupplyDelivery
       partOf = partOf ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) SupplyDelivery.SupplyDeliveryStatus.fromCode(status) else null,
+          if (status != null) SupplyDeliveryStatus.fromCode(status) else null,
           _status,
         ),
       patient = patient,

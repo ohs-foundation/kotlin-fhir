@@ -25,6 +25,8 @@ import dev.ohs.fhir.model.r4.serializers.InvoiceLineItemPriceComponentSerializer
 import dev.ohs.fhir.model.r4.serializers.InvoiceLineItemSerializer
 import dev.ohs.fhir.model.r4.serializers.InvoiceParticipantSerializer
 import dev.ohs.fhir.model.r4.serializers.InvoiceSerializer
+import dev.ohs.fhir.model.r4.terminologies.InvoicePriceComponentType
+import dev.ohs.fhir.model.r4.terminologies.InvoiceStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -943,66 +945,5 @@ public data class Invoice(
         paymentTerms = paymentTerms?.build(),
         note = note.mapToList { it.build() },
       )
-  }
-
-  /** Codes indicating the kind of the price component. */
-  public enum class InvoicePriceComponentType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Base("base", "http://hl7.org/fhir/invoice-priceComponentType", "base price"),
-    Surcharge("surcharge", "http://hl7.org/fhir/invoice-priceComponentType", "surcharge"),
-    Deduction("deduction", "http://hl7.org/fhir/invoice-priceComponentType", "deduction"),
-    Discount("discount", "http://hl7.org/fhir/invoice-priceComponentType", "discount"),
-    Tax("tax", "http://hl7.org/fhir/invoice-priceComponentType", "tax"),
-    Informational(
-      "informational",
-      "http://hl7.org/fhir/invoice-priceComponentType",
-      "informational",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): InvoicePriceComponentType =
-        when (code) {
-          "base" -> Base
-          "surcharge" -> Surcharge
-          "deduction" -> Deduction
-          "discount" -> Discount
-          "tax" -> Tax
-          "informational" -> Informational
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum InvoicePriceComponentType")
-        }
-    }
-  }
-
-  /** Codes identifying the lifecycle stage of an Invoice. */
-  public enum class InvoiceStatus(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Draft("draft", "http://hl7.org/fhir/invoice-status", "draft"),
-    Issued("issued", "http://hl7.org/fhir/invoice-status", "issued"),
-    Balanced("balanced", "http://hl7.org/fhir/invoice-status", "balanced"),
-    Cancelled("cancelled", "http://hl7.org/fhir/invoice-status", "cancelled"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/invoice-status", "entered in error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): InvoiceStatus =
-        when (code) {
-          "draft" -> Draft
-          "issued" -> Issued
-          "balanced" -> Balanced
-          "cancelled" -> Cancelled
-          "entered-in-error" -> Entered_In_Error
-          else -> throw IllegalArgumentException("Unknown code $code for enum InvoiceStatus")
-        }
-    }
   }
 }

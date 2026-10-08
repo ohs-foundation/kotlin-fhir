@@ -25,6 +25,8 @@ import dev.ohs.fhir.model.r4.serializers.ObservationDefinitionQualifiedIntervalS
 import dev.ohs.fhir.model.r4.serializers.ObservationDefinitionQuantitativeDetailsSerializer
 import dev.ohs.fhir.model.r4.serializers.ObservationDefinitionSerializer
 import dev.ohs.fhir.model.r4.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r4.terminologies.ObservationDataType
+import dev.ohs.fhir.model.r4.terminologies.ObservationRangeCategory
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -766,72 +768,5 @@ public data class ObservationDefinition(
         abnormalCodedValueSet = abnormalCodedValueSet?.build(),
         criticalCodedValueSet = criticalCodedValueSet?.build(),
       )
-  }
-
-  /** Codes identifying the category of observation range. */
-  public enum class ObservationRangeCategory(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Reference("reference", "http://hl7.org/fhir/observation-range-category", "reference range"),
-    Critical("critical", "http://hl7.org/fhir/observation-range-category", "critical range"),
-    Absolute("absolute", "http://hl7.org/fhir/observation-range-category", "absolute range");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ObservationRangeCategory =
-        when (code) {
-          "reference" -> Reference
-          "critical" -> Critical
-          "absolute" -> Absolute
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ObservationRangeCategory")
-        }
-    }
-  }
-
-  /** Permitted data type for observation value. */
-  public enum class ObservationDataType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Quantity("Quantity", "http://hl7.org/fhir/permitted-data-type", "Quantity"),
-    CodeableConcept(
-      "CodeableConcept",
-      "http://hl7.org/fhir/permitted-data-type",
-      "CodeableConcept",
-    ),
-    String("string", "http://hl7.org/fhir/permitted-data-type", "string"),
-    Boolean("boolean", "http://hl7.org/fhir/permitted-data-type", "boolean"),
-    Integer("integer", "http://hl7.org/fhir/permitted-data-type", "integer"),
-    Range("Range", "http://hl7.org/fhir/permitted-data-type", "Range"),
-    Ratio("Ratio", "http://hl7.org/fhir/permitted-data-type", "Ratio"),
-    SampledData("SampledData", "http://hl7.org/fhir/permitted-data-type", "SampledData"),
-    Time("time", "http://hl7.org/fhir/permitted-data-type", "time"),
-    DateTime("dateTime", "http://hl7.org/fhir/permitted-data-type", "dateTime"),
-    Period("Period", "http://hl7.org/fhir/permitted-data-type", "Period");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ObservationDataType =
-        when (code) {
-          "Quantity" -> Quantity
-          "CodeableConcept" -> CodeableConcept
-          "string" -> String
-          "boolean" -> Boolean
-          "integer" -> Integer
-          "Range" -> Range
-          "Ratio" -> Ratio
-          "SampledData" -> SampledData
-          "time" -> Time
-          "dateTime" -> DateTime
-          "Period" -> Period
-          else -> throw IllegalArgumentException("Unknown code $code for enum ObservationDataType")
-        }
-    }
   }
 }

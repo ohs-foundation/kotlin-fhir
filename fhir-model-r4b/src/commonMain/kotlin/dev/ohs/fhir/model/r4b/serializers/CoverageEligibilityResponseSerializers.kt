@@ -45,6 +45,8 @@ import dev.ohs.fhir.model.r4b.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.UnsignedInt
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.EligibilityResponsePurpose
+import dev.ohs.fhir.model.r4b.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
@@ -1090,9 +1092,7 @@ internal object CoverageEligibilityResponseSerializer :
       identifier = identifier ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null)
-            CoverageEligibilityResponse.FinancialResourceStatusCodes.fromCode(status)
-          else null,
+          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
           _status,
         )
           ?: throw SerializationException(
@@ -1101,9 +1101,7 @@ internal object CoverageEligibilityResponseSerializer :
       purpose =
         (kotlin.collections.List(maxOf(purpose?.size ?: 0, _purpose?.size ?: 0)) { index ->
           Enumeration.of(
-            purpose?.getOrNull(index)?.let {
-              CoverageEligibilityResponse.EligibilityResponsePurpose.fromCode(it)
-            },
+            purpose?.getOrNull(index)?.let { EligibilityResponsePurpose.fromCode(it) },
             _purpose?.getOrNull(index),
           )
             ?: throw SerializationException(

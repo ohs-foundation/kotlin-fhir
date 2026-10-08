@@ -45,6 +45,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.ImmunizationStatusCodes
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -973,7 +974,7 @@ internal object ImmunizationSerializer : FhirResourceSerializer<Immunization> {
       basedOn = basedOn ?: listOf(),
       status =
         Enumeration.of(
-          if (status != null) Immunization.ImmunizationStatusCodes.fromCode(status) else null,
+          if (status != null) ImmunizationStatusCodes.fromCode(status) else null,
           _status,
         ) ?: throw SerializationException("Missing required property 'status' on Immunization"),
       statusReason = statusReason,

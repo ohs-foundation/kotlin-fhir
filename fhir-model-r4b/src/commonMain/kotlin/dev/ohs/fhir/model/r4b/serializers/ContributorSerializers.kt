@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.terminologies.ContributorType
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
@@ -119,10 +120,8 @@ internal object ContributorSerializer : KSerializer<Contributor> {
       id = id,
       extension = extension ?: listOf(),
       type =
-        Enumeration.of(
-          if (type != null) Contributor.ContributorType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on Contributor"),
+        Enumeration.of(if (type != null) ContributorType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on Contributor"),
       name =
         R4bString.of(name, _name)
           ?: throw SerializationException("Missing required property 'name' on Contributor"),

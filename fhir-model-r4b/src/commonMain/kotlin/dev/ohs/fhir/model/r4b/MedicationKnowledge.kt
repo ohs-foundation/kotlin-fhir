@@ -38,6 +38,7 @@ import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeRegulatorySerialize
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeRegulatorySubstitutionSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeRelatedMedicationKnowledgeSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeSerializer
+import dev.ohs.fhir.model.r4b.terminologies.MedicationKnowledgeStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -2576,39 +2577,5 @@ public data class MedicationKnowledge(
         regulatory = regulatory.mapToList { it.build() },
         kinetics = kinetics.mapToList { it.build() },
       )
-  }
-
-  /** MedicationKnowledge Status Codes */
-  public enum class MedicationKnowledgeStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://terminology.hl7.org/CodeSystem/medicationknowledge-status", "Active"),
-    Inactive(
-      "inactive",
-      "http://terminology.hl7.org/CodeSystem/medicationknowledge-status",
-      "Inactive",
-    ),
-    Entered_In_Error(
-      "entered-in-error",
-      "http://terminology.hl7.org/CodeSystem/medicationknowledge-status",
-      "Entered in Error",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): MedicationKnowledgeStatusCodes =
-        when (code) {
-          "active" -> Active
-          "inactive" -> Inactive
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum MedicationKnowledgeStatusCodes"
-            )
-        }
-    }
   }
 }

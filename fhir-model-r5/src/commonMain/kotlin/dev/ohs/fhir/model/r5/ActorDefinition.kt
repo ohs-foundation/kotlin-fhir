@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ActorDefinitionSerializer
+import dev.ohs.fhir.model.r5.terminologies.ExampleScenarioActorType
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -732,27 +733,5 @@ public data class ActorDefinition(
         capabilities = capabilities?.build(),
         derivedFrom = derivedFrom.mapToList { it.build() },
       )
-  }
-
-  /** The type of actor - system or human. */
-  public enum class ExampleScenarioActorType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Person("person", "http://hl7.org/fhir/examplescenario-actor-type", "Person"),
-    System("system", "http://hl7.org/fhir/examplescenario-actor-type", "System");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ExampleScenarioActorType =
-        when (code) {
-          "person" -> Person
-          "system" -> System
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum ExampleScenarioActorType")
-        }
-    }
   }
 }

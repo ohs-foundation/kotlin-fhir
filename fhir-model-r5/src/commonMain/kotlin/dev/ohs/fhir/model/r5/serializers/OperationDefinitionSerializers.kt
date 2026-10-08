@@ -47,8 +47,12 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.BindingStrength
 import dev.ohs.fhir.model.r5.terminologies.FHIRTypes
+import dev.ohs.fhir.model.r5.terminologies.OperationKind
+import dev.ohs.fhir.model.r5.terminologies.OperationParameterScope
+import dev.ohs.fhir.model.r5.terminologies.OperationParameterUse
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.VersionIndependentResourceTypesAll
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -307,19 +311,14 @@ internal object OperationDefinitionParameterSerializer :
             "Missing required property 'name' on OperationDefinition.Parameter"
           ),
       use =
-        Enumeration.of(
-          if (use != null) OperationDefinition.OperationParameterUse.fromCode(use) else null,
-          _use,
-        )
+        Enumeration.of(if (use != null) OperationParameterUse.fromCode(use) else null, _use)
           ?: throw SerializationException(
             "Missing required property 'use' on OperationDefinition.Parameter"
           ),
       scope =
         (kotlin.collections.List(maxOf(scope?.size ?: 0, _scope?.size ?: 0)) { index ->
           Enumeration.of(
-            scope?.getOrNull(index)?.let {
-              OperationDefinition.OperationParameterScope.fromCode(it)
-            },
+            scope?.getOrNull(index)?.let { OperationParameterScope.fromCode(it) },
             _scope?.getOrNull(index),
           )
             ?: throw SerializationException(
@@ -1301,10 +1300,7 @@ internal object OperationDefinitionSerializer : FhirResourceSerializer<Operation
             "Missing required property 'status' on OperationDefinition"
           ),
       kind =
-        Enumeration.of(
-          if (kind != null) OperationDefinition.OperationKind.fromCode(kind) else null,
-          _kind,
-        )
+        Enumeration.of(if (kind != null) OperationKind.fromCode(kind) else null, _kind)
           ?: throw SerializationException(
             "Missing required property 'kind' on OperationDefinition"
           ),
@@ -1329,9 +1325,7 @@ internal object OperationDefinitionSerializer : FhirResourceSerializer<Operation
       resource =
         (kotlin.collections.List(maxOf(resource?.size ?: 0, _resource?.size ?: 0)) { index ->
           Enumeration.of(
-            resource?.getOrNull(index)?.let {
-              OperationDefinition.VersionIndependentResourceTypesAll.fromCode(it)
-            },
+            resource?.getOrNull(index)?.let { VersionIndependentResourceTypesAll.fromCode(it) },
             _resource?.getOrNull(index),
           )
             ?: throw SerializationException(

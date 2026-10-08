@@ -23,6 +23,8 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.EvidenceVariableCharacteristicSerializer
 import dev.ohs.fhir.model.r4.serializers.EvidenceVariableSerializer
+import dev.ohs.fhir.model.r4.terminologies.EvidenceVariableType
+import dev.ohs.fhir.model.r4.terminologies.GroupMeasure
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1017,64 +1019,5 @@ public data class EvidenceVariable(
         type = type,
         characteristic = characteristic.mapToList { it.build() },
       )
-  }
-
-  /** Possible group measure aggregates (E.g. Mean, Median). */
-  public enum class GroupMeasure(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Mean("mean", "http://hl7.org/fhir/group-measure", "Mean"),
-    Median("median", "http://hl7.org/fhir/group-measure", "Median"),
-    Mean_Of_Mean("mean-of-mean", "http://hl7.org/fhir/group-measure", "Mean of Study Means"),
-    Mean_Of_Median("mean-of-median", "http://hl7.org/fhir/group-measure", "Mean of Study Medins"),
-    Median_Of_Mean("median-of-mean", "http://hl7.org/fhir/group-measure", "Median of Study Means"),
-    Median_Of_Median(
-      "median-of-median",
-      "http://hl7.org/fhir/group-measure",
-      "Median of Study Medians",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): GroupMeasure =
-        when (code) {
-          "mean" -> Mean
-          "median" -> Median
-          "mean-of-mean" -> Mean_Of_Mean
-          "mean-of-median" -> Mean_Of_Median
-          "median-of-mean" -> Median_Of_Mean
-          "median-of-median" -> Median_Of_Median
-          else -> throw IllegalArgumentException("Unknown code $code for enum GroupMeasure")
-        }
-    }
-  }
-
-  /**
-   * The possible types of variables for exposures or outcomes (E.g. Dichotomous, Continuous,
-   * Descriptive).
-   */
-  public enum class EvidenceVariableType(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Dichotomous("dichotomous", "http://hl7.org/fhir/variable-type", "Dichotomous"),
-    Continuous("continuous", "http://hl7.org/fhir/variable-type", "Continuous"),
-    Descriptive("descriptive", "http://hl7.org/fhir/variable-type", "Descriptive");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EvidenceVariableType =
-        when (code) {
-          "dichotomous" -> Dichotomous
-          "continuous" -> Continuous
-          "descriptive" -> Descriptive
-          else -> throw IllegalArgumentException("Unknown code $code for enum EvidenceVariableType")
-        }
-    }
   }
 }

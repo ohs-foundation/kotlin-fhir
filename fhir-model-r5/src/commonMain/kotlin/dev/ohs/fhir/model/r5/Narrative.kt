@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.NarrativeSerializer
+import dev.ohs.fhir.model.r5.terminologies.NarrativeStatus
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -123,30 +124,5 @@ public data class Narrative(
         status = status,
         div = div.build(),
       )
-  }
-
-  /** The status of a resource narrative. */
-  public enum class NarrativeStatus(
-    override val code: String,
-    override val system: String,
-    override val display: String?,
-  ) : FhirEnum {
-    Generated("generated", "http://hl7.org/fhir/narrative-status", "Generated"),
-    Extensions("extensions", "http://hl7.org/fhir/narrative-status", "Extensions"),
-    Additional("additional", "http://hl7.org/fhir/narrative-status", "Additional"),
-    Empty("empty", "http://hl7.org/fhir/narrative-status", "Empty");
-
-    override fun toString(): String = code
-
-    public companion object {
-      public fun fromCode(code: String): NarrativeStatus =
-        when (code) {
-          "generated" -> Generated
-          "extensions" -> Extensions
-          "additional" -> Additional
-          "empty" -> Empty
-          else -> throw IllegalArgumentException("Unknown code $code for enum NarrativeStatus")
-        }
-    }
   }
 }

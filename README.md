@@ -161,12 +161,8 @@ How an element is typed depends on its
 - **`example` bindings** (and bindings without expansions): instances are free to use any code, so
   the element is typed as the open `Code` primitive.
 
-Depending on their binding scope, generated enums are placed in one of two locations:
-- **Shared enums** (`dev.ohs.fhir.model.<r4|r4b|r5>.terminologies`): Generated for elements with a
-  [common binding](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html)
-  (e.g. `AdministrativeGender`).
-- **Local enums**: Nested inside their parent class for elements with non-common bindings (e.g.
-  `HumanName.NameUse`).
+All generated enum classes are placed in the `terminologies` subpackage of each FHIR version (e.g.
+`dev.ohs.fhir.model.r4.terminologies.AdministrativeGender`, `dev.ohs.fhir.model.r4.terminologies.NameUse`).
 
 Enum constant names are derived from the codes defined in the `ValueSet` expansions. To comply with
 Kotlin naming conventions, codes are normalized into PascalCase valid identifiers (handling special

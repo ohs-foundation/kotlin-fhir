@@ -27,6 +27,8 @@ import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitio
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicTimeFromEventSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableSerializer
+import dev.ohs.fhir.model.r5.terminologies.CharacteristicCombination
+import dev.ohs.fhir.model.r5.terminologies.EvidenceVariableHandling
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1786,70 +1788,5 @@ public data class EvidenceVariable(
         handling = handling,
         category = category.mapToList { it.build() },
       )
-  }
-
-  /** Logical grouping of characteristics. */
-  public enum class CharacteristicCombination(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    All_Of("all-of", "http://hl7.org/fhir/characteristic-combination", "All of"),
-    Any_Of("any-of", "http://hl7.org/fhir/characteristic-combination", "Any of"),
-    At_Least("at-least", "http://hl7.org/fhir/characteristic-combination", "At least"),
-    At_Most("at-most", "http://hl7.org/fhir/characteristic-combination", "At most"),
-    Statistical("statistical", "http://hl7.org/fhir/characteristic-combination", "Statistical"),
-    Net_Effect("net-effect", "http://hl7.org/fhir/characteristic-combination", "Net effect"),
-    Dataset("dataset", "http://hl7.org/fhir/characteristic-combination", "Dataset");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): CharacteristicCombination =
-        when (code) {
-          "all-of" -> All_Of
-          "any-of" -> Any_Of
-          "at-least" -> At_Least
-          "at-most" -> At_Most
-          "statistical" -> Statistical
-          "net-effect" -> Net_Effect
-          "dataset" -> Dataset
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum CharacteristicCombination")
-        }
-    }
-  }
-
-  /**
-   * The handling of the variable in statistical analysis for exposures or outcomes (E.g.
-   * Dichotomous, Continuous, Descriptive).
-   */
-  public enum class EvidenceVariableHandling(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Continuous("continuous", "http://hl7.org/fhir/variable-handling", "continuous variable"),
-    Dichotomous("dichotomous", "http://hl7.org/fhir/variable-handling", "dichotomous variable"),
-    Ordinal("ordinal", "http://hl7.org/fhir/variable-handling", "ordinal variable"),
-    Polychotomous(
-      "polychotomous",
-      "http://hl7.org/fhir/variable-handling",
-      "polychotomous variable",
-    );
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): EvidenceVariableHandling =
-        when (code) {
-          "continuous" -> Continuous
-          "dichotomous" -> Dichotomous
-          "ordinal" -> Ordinal
-          "polychotomous" -> Polychotomous
-          else ->
-            throw IllegalArgumentException("Unknown code $code for enum EvidenceVariableHandling")
-        }
-    }
   }
 }

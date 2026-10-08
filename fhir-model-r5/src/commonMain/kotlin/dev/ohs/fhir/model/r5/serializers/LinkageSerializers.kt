@@ -35,6 +35,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.LinkageType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -122,7 +123,7 @@ internal object LinkageItemSerializer : KSerializer<Linkage.Item> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       type =
-        Enumeration.of(if (type != null) Linkage.LinkageType.fromCode(type) else null, _type)
+        Enumeration.of(if (type != null) LinkageType.fromCode(type) else null, _type)
           ?: throw SerializationException("Missing required property 'type' on Linkage.Item"),
       resource =
         resource

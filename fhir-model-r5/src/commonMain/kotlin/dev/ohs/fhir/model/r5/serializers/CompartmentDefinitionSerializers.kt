@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.CompartmentType
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
@@ -581,10 +582,7 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
       useContext = useContext ?: listOf(),
       purpose = Markdown.of(purpose, _purpose),
       code =
-        Enumeration.of(
-          if (code != null) CompartmentDefinition.CompartmentType.fromCode(code) else null,
-          _code,
-        )
+        Enumeration.of(if (code != null) CompartmentType.fromCode(code) else null, _code)
           ?: throw SerializationException(
             "Missing required property 'code' on CompartmentDefinition"
           ),

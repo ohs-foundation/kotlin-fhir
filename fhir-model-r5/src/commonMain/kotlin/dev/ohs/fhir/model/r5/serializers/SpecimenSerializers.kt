@@ -45,6 +45,7 @@ import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SpecimenCombined
+import dev.ohs.fhir.model.r5.terminologies.SpecimenStatus
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String as KotlinString
@@ -966,10 +967,7 @@ internal object SpecimenSerializer : FhirResourceSerializer<Specimen> {
       identifier = identifier ?: listOf(),
       accessionIdentifier = accessionIdentifier,
       status =
-        Enumeration.of(
-          if (status != null) Specimen.SpecimenStatus.fromCode(status) else null,
-          _status,
-        ),
+        Enumeration.of(if (status != null) SpecimenStatus.fromCode(status) else null, _status),
       type = type,
       subject = subject,
       receivedTime =

@@ -46,6 +46,9 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ResourcePolymorphicSerializer
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.MeasureReportStatus
+import dev.ohs.fhir.model.r5.terminologies.MeasureReportType
+import dev.ohs.fhir.model.r5.terminologies.SubmitDataUpdateType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.OptIn
@@ -1557,19 +1560,14 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       status =
-        Enumeration.of(
-          if (status != null) MeasureReport.MeasureReportStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on MeasureReport"),
+        Enumeration.of(if (status != null) MeasureReportStatus.fromCode(status) else null, _status)
+          ?: throw SerializationException("Missing required property 'status' on MeasureReport"),
       type =
-        Enumeration.of(
-          if (type != null) MeasureReport.MeasureReportType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on MeasureReport"),
+        Enumeration.of(if (type != null) MeasureReportType.fromCode(type) else null, _type)
+          ?: throw SerializationException("Missing required property 'type' on MeasureReport"),
       dataUpdateType =
         Enumeration.of(
-          if (dataUpdateType != null) MeasureReport.SubmitDataUpdateType.fromCode(dataUpdateType)
-          else null,
+          if (dataUpdateType != null) SubmitDataUpdateType.fromCode(dataUpdateType) else null,
           _dataUpdateType,
         ),
       measure = Canonical.of(measure, _measure),

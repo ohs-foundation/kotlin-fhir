@@ -37,6 +37,9 @@ import dev.ohs.fhir.model.r5.serializers.ClaimResponsePaymentSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseProcessNoteSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseTotalSerializer
+import dev.ohs.fhir.model.r5.terminologies.ClaimProcessingCodes
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r5.terminologies.Use
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -3518,81 +3521,5 @@ public data class ClaimResponse(
         insurance = insurance.mapToList { it.build() },
         error = error.mapToList { it.build() },
       )
-  }
-
-  /** This value set includes Status codes. */
-  public enum class FinancialResourceStatusCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Active("active", "http://hl7.org/fhir/fm-status", "Active"),
-    Cancelled("cancelled", "http://hl7.org/fhir/fm-status", "Cancelled"),
-    Draft("draft", "http://hl7.org/fhir/fm-status", "Draft"),
-    Entered_In_Error("entered-in-error", "http://hl7.org/fhir/fm-status", "Entered in Error");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): FinancialResourceStatusCodes =
-        when (code) {
-          "active" -> Active
-          "cancelled" -> Cancelled
-          "draft" -> Draft
-          "entered-in-error" -> Entered_In_Error
-          else ->
-            throw IllegalArgumentException(
-              "Unknown code $code for enum FinancialResourceStatusCodes"
-            )
-        }
-    }
-  }
-
-  /** The purpose of the Claim: predetermination, preauthorization, claim. */
-  public enum class Use(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Claim("claim", "http://hl7.org/fhir/claim-use", "Claim"),
-    Preauthorization("preauthorization", "http://hl7.org/fhir/claim-use", "Preauthorization"),
-    Predetermination("predetermination", "http://hl7.org/fhir/claim-use", "Predetermination");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): Use =
-        when (code) {
-          "claim" -> Claim
-          "preauthorization" -> Preauthorization
-          "predetermination" -> Predetermination
-          else -> throw IllegalArgumentException("Unknown code $code for enum Use")
-        }
-    }
-  }
-
-  /** This value set includes Claim Processing Outcome codes. */
-  public enum class ClaimProcessingCodes(
-    override val code: kotlin.String,
-    override val system: kotlin.String,
-    override val display: kotlin.String?,
-  ) : FhirEnum {
-    Queued("queued", "http://hl7.org/fhir/claim-outcome", "Queued"),
-    Complete("complete", "http://hl7.org/fhir/claim-outcome", "Processing Complete"),
-    Error("error", "http://hl7.org/fhir/claim-outcome", "Error"),
-    Partial("partial", "http://hl7.org/fhir/claim-outcome", "Partial Processing");
-
-    override fun toString(): kotlin.String = code
-
-    public companion object {
-      public fun fromCode(code: kotlin.String): ClaimProcessingCodes =
-        when (code) {
-          "queued" -> Queued
-          "complete" -> Complete
-          "error" -> Error
-          "partial" -> Partial
-          else -> throw IllegalArgumentException("Unknown code $code for enum ClaimProcessingCodes")
-        }
-    }
   }
 }

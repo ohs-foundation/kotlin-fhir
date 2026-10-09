@@ -547,9 +547,9 @@ def _render_web_section(
         "web" in (baseline.get(m) or {}) for m in mods_with_web
     )
 
-    lines: list[str] = ["### 🌐 Web (`R4` canary)\n"]
+    lines: list[str] = ["### 🌐 JS / Wasm (`R4`)\n"]
     if baseline is not None and not has_baseline_web:
-        lines.append("*No Web baseline in `main` yet — showing current sizes.*\n")
+        lines.append("*No JS/Wasm baseline in `main` yet — showing current sizes.*\n")
 
     lines.append("| Module | Target | Gzipped | Uncompressed |")
     lines.append("| :--- | :--- | ---: | ---: |")

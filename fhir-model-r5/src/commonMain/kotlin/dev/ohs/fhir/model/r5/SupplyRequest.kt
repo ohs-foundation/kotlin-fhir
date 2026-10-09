@@ -195,21 +195,21 @@ public data class SupplyRequest(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.status = status
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.toBuilderList()
     builder.category = category?.toBuilder()
     builder.priority = priority
     builder.deliverFor = deliverFor?.toBuilder()
-    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    builder.parameter = parameter.toBuilderList()
     builder.occurrence = occurrence
     builder.authoredOn = authoredOn?.toBuilder()
     builder.requester = requester?.toBuilder()
-    builder.supplier = supplier.mapToMutableList { it.toBuilder() }
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.supplier = supplier.toBuilderList()
+    builder.reason = reason.toBuilderList()
     builder.deliverFrom = deliverFrom?.toBuilder()
     builder.deliverTo = deliverTo?.toBuilder()
     return builder
@@ -263,12 +263,12 @@ public data class SupplyRequest(
      * Range means device should have a value that falls somewhere within the specified range.
      */
     public val `value`: Value? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.code = code?.toBuilder()
       builder.`value` = `value`
       return builder
@@ -309,7 +309,7 @@ public data class SupplyRequest(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -360,11 +360,11 @@ public data class SupplyRequest(
        */
       public var `value`: Value? = null
 
-      public fun build(): Parameter =
+      override fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code?.build(),
           `value` = `value`,
         )
@@ -578,23 +578,23 @@ public data class SupplyRequest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        basedOn = basedOn.mapToList { it.build() },
+        basedOn = basedOn.buildList(),
         category = category?.build(),
         priority = priority,
         deliverFor = deliverFor?.build(),
         item = item.build(),
         quantity = quantity.build(),
-        parameter = parameter.mapToList { it.build() },
+        parameter = parameter.buildList(),
         occurrence = occurrence,
         authoredOn = authoredOn?.build(),
         requester = requester?.build(),
-        supplier = supplier.mapToList { it.build() },
-        reason = reason.mapToList { it.build() },
+        supplier = supplier.buildList(),
+        reason = reason.buildList(),
         deliverFrom = deliverFrom?.build(),
         deliverTo = deliverTo?.build(),
       )

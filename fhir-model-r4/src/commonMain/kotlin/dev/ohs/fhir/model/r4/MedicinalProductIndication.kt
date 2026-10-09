@@ -159,18 +159,18 @@ public data class MedicinalProductIndication(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.subject = subject.toBuilderList()
     builder.diseaseSymptomProcedure = diseaseSymptomProcedure?.toBuilder()
     builder.diseaseStatus = diseaseStatus?.toBuilder()
-    builder.comorbidity = comorbidity.mapToMutableList { it.toBuilder() }
+    builder.comorbidity = comorbidity.toBuilderList()
     builder.intendedEffect = intendedEffect?.toBuilder()
     builder.duration = duration?.toBuilder()
-    builder.otherTherapy = otherTherapy.mapToMutableList { it.toBuilder() }
-    builder.undesirableEffect = undesirableEffect.mapToMutableList { it.toBuilder() }
-    builder.population = population.mapToMutableList { it.toBuilder() }
+    builder.otherTherapy = otherTherapy.toBuilderList()
+    builder.undesirableEffect = undesirableEffect.toBuilderList()
+    builder.population = population.toBuilderList()
     return builder
   }
 
@@ -227,16 +227,16 @@ public data class MedicinalProductIndication(
      * as part of an indication or contraindication.
      */
     public val medication: Medication,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           therapyRelationshipType.toBuilder(),
           medication,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -275,7 +275,7 @@ public data class MedicinalProductIndication(
        * products) as part of an indication or contraindication.
        */
       public var medication: Medication,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -316,11 +316,11 @@ public data class MedicinalProductIndication(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): OtherTherapy =
+      override fun build(): OtherTherapy =
         OtherTherapy(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           therapyRelationshipType = therapyRelationshipType.build(),
           medication = medication,
         )
@@ -470,18 +470,18 @@ public data class MedicinalProductIndication(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        subject = subject.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        subject = subject.buildList(),
         diseaseSymptomProcedure = diseaseSymptomProcedure?.build(),
         diseaseStatus = diseaseStatus?.build(),
-        comorbidity = comorbidity.mapToList { it.build() },
+        comorbidity = comorbidity.buildList(),
         intendedEffect = intendedEffect?.build(),
         duration = duration?.build(),
-        otherTherapy = otherTherapy.mapToList { it.build() },
-        undesirableEffect = undesirableEffect.mapToList { it.build() },
-        population = population.mapToList { it.build() },
+        otherTherapy = otherTherapy.buildList(),
+        undesirableEffect = undesirableEffect.buildList(),
+        population = population.buildList(),
       )
   }
 }

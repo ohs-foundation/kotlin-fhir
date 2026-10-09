@@ -55,13 +55,13 @@ public data class Availability(
   public val availableTime: List<AvailableTime> = listOf(),
   /** Not available during this time due to provided reason. */
   public val notAvailableTime: List<NotAvailableTime> = listOf(),
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.availableTime = availableTime.mapToMutableList { it.toBuilder() }
-    builder.notAvailableTime = notAvailableTime.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.availableTime = availableTime.toBuilderList()
+    builder.notAvailableTime = notAvailableTime.toBuilderList()
     return builder
   }
 
@@ -102,11 +102,11 @@ public data class Availability(
      * The timezone is expected to be specified or implied by the context this datatype is used.
      */
     public val availableEndTime: Time? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.daysOfWeek = daysOfWeek.toMutableList()
       builder.allDay = allDay?.toBuilder()
       builder.availableStartTime = availableStartTime?.toBuilder()
@@ -114,7 +114,7 @@ public data class Availability(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -155,10 +155,10 @@ public data class Availability(
        */
       public var availableEndTime: Time.Builder? = null
 
-      public fun build(): AvailableTime =
+      override fun build(): AvailableTime =
         AvailableTime(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           daysOfWeek = daysOfWeek,
           allDay = allDay?.build(),
           availableStartTime = availableStartTime?.build(),
@@ -203,17 +203,17 @@ public data class Availability(
     public val description: String? = null,
     /** Service not available during this period. */
     public val during: Period? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.during = during?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -251,17 +251,17 @@ public data class Availability(
       /** Service not available during this period. */
       public var during: Period.Builder? = null
 
-      public fun build(): NotAvailableTime =
+      override fun build(): NotAvailableTime =
         NotAvailableTime(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           description = description?.build(),
           during = during?.build(),
         )
     }
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -288,12 +288,12 @@ public data class Availability(
     /** Not available during this time due to provided reason. */
     public open var notAvailableTime: MutableList<NotAvailableTime.Builder> = mutableListOf()
 
-    public open fun build(): Availability =
+    open override fun build(): Availability =
       Availability(
         id = id,
-        extension = extension.mapToList { it.build() },
-        availableTime = availableTime.mapToList { it.build() },
-        notAvailableTime = notAvailableTime.mapToList { it.build() },
+        extension = extension.buildList(),
+        availableTime = availableTime.buildList(),
+        notAvailableTime = notAvailableTime.buildList(),
       )
   }
 }

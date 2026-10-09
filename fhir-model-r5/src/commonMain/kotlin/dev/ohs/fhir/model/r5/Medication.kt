@@ -213,16 +213,16 @@ public data class Medication(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.code = code?.toBuilder()
     builder.status = status
     builder.marketingAuthorizationHolder = marketingAuthorizationHolder?.toBuilder()
     builder.doseForm = doseForm?.toBuilder()
     builder.totalVolume = totalVolume?.toBuilder()
-    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.ingredient = ingredient.toBuilderList()
     builder.batch = batch?.toBuilder()
     builder.definition = definition?.toBuilder()
     return builder
@@ -283,12 +283,12 @@ public data class Medication(
      * tablet.
      */
     public val strength: Strength? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(item.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.isActive = isActive?.toBuilder()
       builder.strength = strength
       return builder
@@ -330,7 +330,7 @@ public data class Medication(
        * Medication).
        */
       public var item: CodeableReference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -382,11 +382,11 @@ public data class Medication(
        */
       public var strength: Strength? = null
 
-      public fun build(): Ingredient =
+      override fun build(): Ingredient =
         Ingredient(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           item = item.build(),
           isActive = isActive?.build(),
           strength = strength,
@@ -438,18 +438,18 @@ public data class Medication(
     public val lotNumber: String? = null,
     /** When this specific batch of product will expire. */
     public val expirationDate: DateTime? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.lotNumber = lotNumber?.toBuilder()
       builder.expirationDate = expirationDate?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -496,11 +496,11 @@ public data class Medication(
       /** When this specific batch of product will expire. */
       public var expirationDate: DateTime.Builder? = null
 
-      public fun build(): Batch =
+      override fun build(): Batch =
         Batch(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           lotNumber = lotNumber?.build(),
           expirationDate = expirationDate?.build(),
         )
@@ -700,16 +700,16 @@ public data class Medication(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         code = code?.build(),
         status = status,
         marketingAuthorizationHolder = marketingAuthorizationHolder?.build(),
         doseForm = doseForm?.build(),
         totalVolume = totalVolume?.build(),
-        ingredient = ingredient.mapToList { it.build() },
+        ingredient = ingredient.buildList(),
         batch = batch?.build(),
         definition = definition?.build(),
       )

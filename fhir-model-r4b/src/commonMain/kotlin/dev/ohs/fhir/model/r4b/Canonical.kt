@@ -55,7 +55,7 @@ public data class Canonical(
   override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -91,7 +91,7 @@ public data class Canonical(
     open override fun build(): Canonical =
       Canonical(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

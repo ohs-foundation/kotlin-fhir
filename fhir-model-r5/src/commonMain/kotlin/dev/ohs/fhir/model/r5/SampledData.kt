@@ -113,11 +113,11 @@ public data class SampledData(
    * required for any actual use of a SampledData.
    */
   public val `data`: String? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(origin.toBuilder(), intervalUnit.toBuilder(), dimensions.toBuilder())
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.interval = interval?.toBuilder()
     builder.factor = factor?.toBuilder()
     builder.lowerLimit = lowerLimit?.toBuilder()
@@ -145,7 +145,7 @@ public data class SampledData(
      * the dimensions (typically ECG data).
      */
     public open var dimensions: PositiveInt.Builder,
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -219,10 +219,10 @@ public data class SampledData(
      */
     public open var `data`: String.Builder? = null
 
-    public open fun build(): SampledData =
+    open override fun build(): SampledData =
       SampledData(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         origin = origin.build(),
         interval = interval?.build(),
         intervalUnit = intervalUnit.build(),

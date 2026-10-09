@@ -229,32 +229,32 @@ public data class ResearchStudy(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.title = title?.toBuilder()
-    builder.protocol = protocol.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.protocol = protocol.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
     builder.primaryPurposeType = primaryPurposeType?.toBuilder()
     builder.phase = phase?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
-    builder.focus = focus.mapToMutableList { it.toBuilder() }
-    builder.condition = condition.mapToMutableList { it.toBuilder() }
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
-    builder.keyword = keyword.mapToMutableList { it.toBuilder() }
-    builder.location = location.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
+    builder.focus = focus.toBuilderList()
+    builder.condition = condition.toBuilderList()
+    builder.contact = contact.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
+    builder.keyword = keyword.toBuilderList()
+    builder.location = location.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.enrollment = enrollment.mapToMutableList { it.toBuilder() }
+    builder.enrollment = enrollment.toBuilderList()
     builder.period = period?.toBuilder()
     builder.sponsor = sponsor?.toBuilder()
     builder.principalInvestigator = principalInvestigator?.toBuilder()
-    builder.site = site.mapToMutableList { it.toBuilder() }
+    builder.site = site.toBuilderList()
     builder.reasonStopped = reasonStopped?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.arm = arm.mapToMutableList { it.toBuilder() }
-    builder.objective = objective.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
+    builder.arm = arm.toBuilderList()
+    builder.objective = objective.toBuilderList()
     return builder
   }
 
@@ -310,12 +310,12 @@ public data class ResearchStudy(
      * adhering to this arm.
      */
     public val description: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(name.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.description = description?.toBuilder()
       return builder
@@ -324,7 +324,7 @@ public data class ResearchStudy(
     public class Builder(
       /** Unique, human-readable label for this arm of the study. */
       public var name: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -374,11 +374,11 @@ public data class ResearchStudy(
        */
       public var description: String.Builder? = null
 
-      public fun build(): Arm =
+      override fun build(): Arm =
         Arm(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name.build(),
           type = type?.build(),
           description = description?.build(),
@@ -433,18 +433,18 @@ public data class ResearchStudy(
     public val name: String? = null,
     /** The kind of study objective. */
     public val type: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       builder.type = type?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -491,11 +491,11 @@ public data class ResearchStudy(
       /** The kind of study objective. */
       public var type: CodeableConcept.Builder? = null
 
-      public fun build(): Objective =
+      override fun build(): Objective =
         Objective(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name?.build(),
           type = type?.build(),
         )
@@ -725,33 +725,33 @@ public data class ResearchStudy(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         title = title?.build(),
-        protocol = protocol.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        protocol = protocol.buildList(),
+        partOf = partOf.buildList(),
         status = status,
         primaryPurposeType = primaryPurposeType?.build(),
         phase = phase?.build(),
-        category = category.mapToList { it.build() },
-        focus = focus.mapToList { it.build() },
-        condition = condition.mapToList { it.build() },
-        contact = contact.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
-        keyword = keyword.mapToList { it.build() },
-        location = location.mapToList { it.build() },
+        category = category.buildList(),
+        focus = focus.buildList(),
+        condition = condition.buildList(),
+        contact = contact.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
+        keyword = keyword.buildList(),
+        location = location.buildList(),
         description = description?.build(),
-        enrollment = enrollment.mapToList { it.build() },
+        enrollment = enrollment.buildList(),
         period = period?.build(),
         sponsor = sponsor?.build(),
         principalInvestigator = principalInvestigator?.build(),
-        site = site.mapToList { it.build() },
+        site = site.buildList(),
         reasonStopped = reasonStopped?.build(),
-        note = note.mapToList { it.build() },
-        arm = arm.mapToList { it.build() },
-        objective = objective.mapToList { it.build() },
+        note = note.buildList(),
+        arm = arm.buildList(),
+        objective = objective.buildList(),
       )
   }
 }

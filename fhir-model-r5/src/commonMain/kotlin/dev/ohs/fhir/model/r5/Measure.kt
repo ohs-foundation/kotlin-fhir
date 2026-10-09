@@ -529,11 +529,11 @@ public data class Measure(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.name = name?.toBuilder()
@@ -544,10 +544,10 @@ public data class Measure(
     builder.basis = basis
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.usage = usage?.toBuilder()
     builder.copyright = copyright?.toBuilder()
@@ -555,27 +555,27 @@ public data class Measure(
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.topic = topic.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
-    builder.library = library.mapToMutableList { it.toBuilder() }
+    builder.topic = topic.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
+    builder.library = library.toBuilderList()
     builder.disclaimer = disclaimer?.toBuilder()
     builder.scoring = scoring?.toBuilder()
     builder.scoringUnit = scoringUnit?.toBuilder()
     builder.compositeScoring = compositeScoring?.toBuilder()
-    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.type = type.toBuilderList()
     builder.riskAdjustment = riskAdjustment?.toBuilder()
     builder.rateAggregation = rateAggregation?.toBuilder()
     builder.rationale = rationale?.toBuilder()
     builder.clinicalRecommendationStatement = clinicalRecommendationStatement?.toBuilder()
     builder.improvementNotation = improvementNotation?.toBuilder()
-    builder.term = term.mapToMutableList { it.toBuilder() }
+    builder.term = term.toBuilderList()
     builder.guidance = guidance?.toBuilder()
-    builder.group = group.mapToMutableList { it.toBuilder() }
-    builder.supplementalData = supplementalData.mapToMutableList { it.toBuilder() }
+    builder.group = group.toBuilderList()
+    builder.supplementalData = supplementalData.toBuilderList()
     return builder
   }
 
@@ -623,18 +623,18 @@ public data class Measure(
     public val code: CodeableConcept? = null,
     /** Provides a definition for the term as used within the measure. */
     public val definition: Markdown? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.code = code?.toBuilder()
       builder.definition = definition?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -681,11 +681,11 @@ public data class Measure(
       /** Provides a definition for the term as used within the measure. */
       public var definition: Markdown.Builder? = null
 
-      public fun build(): Term =
+      override fun build(): Term =
         Term(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code?.build(),
           definition = definition?.build(),
         )
@@ -837,25 +837,25 @@ public data class Measure(
      * expression defined within a referenced library or a valid FHIR Resource Path.
      */
     public val stratifier: List<Stratifier> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.linkId = linkId?.toBuilder()
       builder.code = code?.toBuilder()
       builder.description = description?.toBuilder()
-      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.type = type.toBuilderList()
       builder.subject = subject
       builder.basis = basis
       builder.scoring = scoring?.toBuilder()
       builder.scoringUnit = scoringUnit?.toBuilder()
       builder.rateAggregation = rateAggregation?.toBuilder()
       builder.improvementNotation = improvementNotation?.toBuilder()
-      builder.library = library.mapToMutableList { it.toBuilder() }
-      builder.population = population.mapToMutableList { it.toBuilder() }
-      builder.stratifier = stratifier.mapToMutableList { it.toBuilder() }
+      builder.library = library.toBuilderList()
+      builder.population = population.toBuilderList()
+      builder.stratifier = stratifier.toBuilderList()
       return builder
     }
 
@@ -950,12 +950,12 @@ public data class Measure(
        * ensure correct calculation.
        */
       public val aggregateMethod: CodeableConcept? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.linkId = linkId?.toBuilder()
         builder.code = code?.toBuilder()
         builder.description = description?.toBuilder()
@@ -966,7 +966,7 @@ public data class Measure(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1065,11 +1065,11 @@ public data class Measure(
          */
         public var aggregateMethod: CodeableConcept.Builder? = null
 
-        public fun build(): Population =
+        override fun build(): Population =
           Population(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             linkId = linkId?.build(),
             code = code?.build(),
             description = description?.build(),
@@ -1165,18 +1165,18 @@ public data class Measure(
        * Stratifiers are defined either as a single criteria, or as a set of component criteria.
        */
       public val component: List<Component> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.linkId = linkId?.toBuilder()
         builder.code = code?.toBuilder()
         builder.description = description?.toBuilder()
         builder.criteria = criteria?.toBuilder()
         builder.groupDefinition = groupDefinition?.toBuilder()
-        builder.component = component.mapToMutableList { it.toBuilder() }
+        builder.component = component.toBuilderList()
         return builder
       }
 
@@ -1258,12 +1258,12 @@ public data class Measure(
          * actual) group.
          */
         public val groupDefinition: Reference? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.linkId = linkId?.toBuilder()
           builder.code = code?.toBuilder()
           builder.description = description?.toBuilder()
@@ -1272,7 +1272,7 @@ public data class Measure(
           return builder
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1352,11 +1352,11 @@ public data class Measure(
            */
           public var groupDefinition: Reference.Builder? = null
 
-          public fun build(): Component =
+          override fun build(): Component =
             Component(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               linkId = linkId?.build(),
               code = code?.build(),
               description = description?.build(),
@@ -1366,7 +1366,7 @@ public data class Measure(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1455,17 +1455,17 @@ public data class Measure(
          */
         public var component: MutableList<Component.Builder> = mutableListOf()
 
-        public fun build(): Stratifier =
+        override fun build(): Stratifier =
           Stratifier(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             linkId = linkId?.build(),
             code = code?.build(),
             description = description?.build(),
             criteria = criteria?.build(),
             groupDefinition = groupDefinition?.build(),
-            component = component.mapToList { it.build() },
+            component = component.buildList(),
           )
       }
     }
@@ -1493,7 +1493,7 @@ public data class Measure(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1654,24 +1654,24 @@ public data class Measure(
        */
       public var stratifier: MutableList<Stratifier.Builder> = mutableListOf()
 
-      public fun build(): Group =
+      override fun build(): Group =
         Group(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           linkId = linkId?.build(),
           code = code?.build(),
           description = description?.build(),
-          type = type.mapToList { it.build() },
+          type = type.buildList(),
           subject = subject,
           basis = basis,
           scoring = scoring?.build(),
           scoringUnit = scoringUnit?.build(),
           rateAggregation = rateAggregation?.build(),
           improvementNotation = improvementNotation?.build(),
-          library = library.mapToList { it.build() },
-          population = population.mapToList { it.build() },
-          stratifier = stratifier.mapToList { it.build() },
+          library = library.buildList(),
+          population = population.buildList(),
+          stratifier = stratifier.buildList(),
         )
     }
   }
@@ -1751,15 +1751,15 @@ public data class Measure(
      * The criteria defines the data to be returned for this element.
      */
     public val criteria: Expression,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(criteria.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.linkId = linkId?.toBuilder()
       builder.code = code?.toBuilder()
-      builder.usage = usage.mapToMutableList { it.toBuilder() }
+      builder.usage = usage.toBuilderList()
       builder.description = description?.toBuilder()
       return builder
     }
@@ -1771,7 +1771,7 @@ public data class Measure(
        * The criteria defines the data to be returned for this element.
        */
       public var criteria: Expression.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1842,14 +1842,14 @@ public data class Measure(
       /** The human readable description of this supplemental data. */
       public var description: Markdown.Builder? = null
 
-      public fun build(): SupplementalData =
+      override fun build(): SupplementalData =
         SupplementalData(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           linkId = linkId?.build(),
           code = code?.build(),
-          usage = usage.mapToList { it.build() },
+          usage = usage.buildList(),
           description = description?.build(),
           criteria = criteria.build(),
         )
@@ -2447,11 +2447,11 @@ public data class Measure(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -2463,10 +2463,10 @@ public data class Measure(
         basis = basis,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         usage = usage?.build(),
         copyright = copyright?.build(),
@@ -2474,27 +2474,27 @@ public data class Measure(
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
-        library = library.mapToList { it.build() },
+        topic = topic.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
+        library = library.buildList(),
         disclaimer = disclaimer?.build(),
         scoring = scoring?.build(),
         scoringUnit = scoringUnit?.build(),
         compositeScoring = compositeScoring?.build(),
-        type = type.mapToList { it.build() },
+        type = type.buildList(),
         riskAdjustment = riskAdjustment?.build(),
         rateAggregation = rateAggregation?.build(),
         rationale = rationale?.build(),
         clinicalRecommendationStatement = clinicalRecommendationStatement?.build(),
         improvementNotation = improvementNotation?.build(),
-        term = term.mapToList { it.build() },
+        term = term.buildList(),
         guidance = guidance?.build(),
-        group = group.mapToList { it.build() },
-        supplementalData = supplementalData.mapToList { it.build() },
+        group = group.buildList(),
+        supplementalData = supplementalData.buildList(),
       )
   }
 }

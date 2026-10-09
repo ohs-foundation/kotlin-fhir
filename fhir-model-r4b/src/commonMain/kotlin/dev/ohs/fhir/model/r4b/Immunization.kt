@@ -271,10 +271,10 @@ public data class Immunization(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.statusReason = statusReason?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.recorded = recorded?.toBuilder()
@@ -287,17 +287,17 @@ public data class Immunization(
     builder.site = site?.toBuilder()
     builder.route = route?.toBuilder()
     builder.doseQuantity = doseQuantity?.toBuilder()
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
-    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.reasonCode = reasonCode.toBuilderList()
+    builder.reasonReference = reasonReference.toBuilderList()
     builder.isSubpotent = isSubpotent?.toBuilder()
-    builder.subpotentReason = subpotentReason.mapToMutableList { it.toBuilder() }
-    builder.education = education.mapToMutableList { it.toBuilder() }
-    builder.programEligibility = programEligibility.mapToMutableList { it.toBuilder() }
+    builder.subpotentReason = subpotentReason.toBuilderList()
+    builder.education = education.toBuilderList()
+    builder.programEligibility = programEligibility.toBuilderList()
     builder.fundingSource = fundingSource?.toBuilder()
-    builder.reaction = reaction.mapToMutableList { it.toBuilder() }
-    builder.protocolApplied = protocolApplied.mapToMutableList { it.toBuilder() }
+    builder.reaction = reaction.toBuilderList()
+    builder.protocolApplied = protocolApplied.toBuilderList()
     return builder
   }
 
@@ -349,12 +349,12 @@ public data class Immunization(
      * When the individual practitioner who performed the action is known, it is best to send.
      */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -366,7 +366,7 @@ public data class Immunization(
        * When the individual practitioner who performed the action is known, it is best to send.
        */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -412,11 +412,11 @@ public data class Immunization(
        */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -477,12 +477,12 @@ public data class Immunization(
     public val publicationDate: DateTime? = null,
     /** Date the educational material was given to the patient. */
     public val presentationDate: DateTime? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.documentType = documentType?.toBuilder()
       builder.reference = reference?.toBuilder()
       builder.publicationDate = publicationDate?.toBuilder()
@@ -490,7 +490,7 @@ public data class Immunization(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -546,11 +546,11 @@ public data class Immunization(
       /** Date the educational material was given to the patient. */
       public var presentationDate: DateTime.Builder? = null
 
-      public fun build(): Education =
+      override fun build(): Education =
         Education(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           documentType = documentType?.build(),
           reference = reference?.build(),
           publicationDate = publicationDate?.build(),
@@ -605,19 +605,19 @@ public data class Immunization(
     public val detail: Reference? = null,
     /** Self-reported indicator. */
     public val reported: Boolean? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.date = date?.toBuilder()
       builder.detail = detail?.toBuilder()
       builder.reported = reported?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -667,11 +667,11 @@ public data class Immunization(
       /** Self-reported indicator. */
       public var reported: Boolean.Builder? = null
 
-      public fun build(): Reaction =
+      override fun build(): Reaction =
         Reaction(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           date = date?.build(),
           detail = detail?.build(),
           reported = reported?.build(),
@@ -744,15 +744,15 @@ public data class Immunization(
      * integer is not available (such as when documenting a recurring booster dose).
      */
     public val seriesDoses: SeriesDoses? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(doseNumber)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.series = series?.toBuilder()
       builder.authority = authority?.toBuilder()
-      builder.targetDisease = targetDisease.mapToMutableList { it.toBuilder() }
+      builder.targetDisease = targetDisease.toBuilderList()
       builder.seriesDoses = seriesDoses
       return builder
     }
@@ -809,7 +809,7 @@ public data class Immunization(
        * integer is not available (such as when documenting a recurring booster dose).
        */
       public var doseNumber: DoseNumber
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -870,14 +870,14 @@ public data class Immunization(
        */
       public var seriesDoses: SeriesDoses? = null
 
-      public fun build(): ProtocolApplied =
+      override fun build(): ProtocolApplied =
         ProtocolApplied(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           series = series?.build(),
           authority = authority?.build(),
-          targetDisease = targetDisease.mapToList { it.build() },
+          targetDisease = targetDisease.buildList(),
           doseNumber = doseNumber,
           seriesDoses = seriesDoses,
         )
@@ -1166,10 +1166,10 @@ public data class Immunization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         statusReason = statusReason?.build(),
         vaccineCode = vaccineCode.build(),
@@ -1186,17 +1186,17 @@ public data class Immunization(
         site = site?.build(),
         route = route?.build(),
         doseQuantity = doseQuantity?.build(),
-        performer = performer.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        reasonCode = reasonCode.mapToList { it.build() },
-        reasonReference = reasonReference.mapToList { it.build() },
+        performer = performer.buildList(),
+        note = note.buildList(),
+        reasonCode = reasonCode.buildList(),
+        reasonReference = reasonReference.buildList(),
         isSubpotent = isSubpotent?.build(),
-        subpotentReason = subpotentReason.mapToList { it.build() },
-        education = education.mapToList { it.build() },
-        programEligibility = programEligibility.mapToList { it.build() },
+        subpotentReason = subpotentReason.buildList(),
+        education = education.buildList(),
+        programEligibility = programEligibility.buildList(),
         fundingSource = fundingSource?.build(),
-        reaction = reaction.mapToList { it.build() },
-        protocolApplied = protocolApplied.mapToList { it.build() },
+        reaction = reaction.buildList(),
+        protocolApplied = protocolApplied.buildList(),
       )
   }
 }

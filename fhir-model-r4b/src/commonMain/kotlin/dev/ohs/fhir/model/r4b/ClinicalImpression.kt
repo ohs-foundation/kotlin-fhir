@@ -259,10 +259,10 @@ public data class ClinicalImpression(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.statusReason = statusReason?.toBuilder()
     builder.code = code?.toBuilder()
     builder.description = description?.toBuilder()
@@ -271,15 +271,15 @@ public data class ClinicalImpression(
     builder.date = date?.toBuilder()
     builder.assessor = assessor?.toBuilder()
     builder.previous = previous?.toBuilder()
-    builder.problem = problem.mapToMutableList { it.toBuilder() }
-    builder.investigation = investigation.mapToMutableList { it.toBuilder() }
-    builder.protocol = protocol.mapToMutableList { it.toBuilder() }
+    builder.problem = problem.toBuilderList()
+    builder.investigation = investigation.toBuilderList()
+    builder.protocol = protocol.toBuilderList()
     builder.summary = summary?.toBuilder()
-    builder.finding = finding.mapToMutableList { it.toBuilder() }
-    builder.prognosisCodeableConcept = prognosisCodeableConcept.mapToMutableList { it.toBuilder() }
-    builder.prognosisReference = prognosisReference.mapToMutableList { it.toBuilder() }
-    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.finding = finding.toBuilderList()
+    builder.prognosisCodeableConcept = prognosisCodeableConcept.toBuilderList()
+    builder.prognosisReference = prognosisReference.toBuilderList()
+    builder.supportingInfo = supportingInfo.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -341,13 +341,13 @@ public data class ClinicalImpression(
      * data collection resources can also be used.
      */
     public val item: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.item = item.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.item = item.toBuilderList()
       return builder
     }
 
@@ -358,7 +358,7 @@ public data class ClinicalImpression(
        * such groups such as (exposure|family|travel|nutritional) history may be used.
        */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -407,13 +407,13 @@ public data class ClinicalImpression(
        */
       public var item: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Investigation =
+      override fun build(): Investigation =
         Investigation(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
-          item = item.mapToList { it.build() },
+          item = item.buildList(),
         )
     }
   }
@@ -472,19 +472,19 @@ public data class ClinicalImpression(
     public val itemReference: Reference? = null,
     /** Which investigations support finding or diagnosis. */
     public val basis: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.itemCodeableConcept = itemCodeableConcept?.toBuilder()
       builder.itemReference = itemReference?.toBuilder()
       builder.basis = basis?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -540,11 +540,11 @@ public data class ClinicalImpression(
       /** Which investigations support finding or diagnosis. */
       public var basis: String.Builder? = null
 
-      public fun build(): Finding =
+      override fun build(): Finding =
         Finding(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           itemCodeableConcept = itemCodeableConcept?.build(),
           itemReference = itemReference?.build(),
           basis = basis?.build(),
@@ -816,10 +816,10 @@ public data class ClinicalImpression(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         statusReason = statusReason?.build(),
         code = code?.build(),
@@ -830,15 +830,15 @@ public data class ClinicalImpression(
         date = date?.build(),
         assessor = assessor?.build(),
         previous = previous?.build(),
-        problem = problem.mapToList { it.build() },
-        investigation = investigation.mapToList { it.build() },
-        protocol = protocol.mapToList { it.build() },
+        problem = problem.buildList(),
+        investigation = investigation.buildList(),
+        protocol = protocol.buildList(),
         summary = summary?.build(),
-        finding = finding.mapToList { it.build() },
-        prognosisCodeableConcept = prognosisCodeableConcept.mapToList { it.build() },
-        prognosisReference = prognosisReference.mapToList { it.build() },
-        supportingInfo = supportingInfo.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        finding = finding.buildList(),
+        prognosisCodeableConcept = prognosisCodeableConcept.buildList(),
+        prognosisReference = prognosisReference.buildList(),
+        supportingInfo = supportingInfo.buildList(),
+        note = note.buildList(),
       )
   }
 }

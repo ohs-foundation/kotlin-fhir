@@ -221,23 +221,23 @@ public data class DeviceUsage(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
-    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.category = category.toBuilderList()
+    builder.derivedFrom = derivedFrom.toBuilderList()
     builder.context = context?.toBuilder()
     builder.timing = timing
     builder.dateAsserted = dateAsserted?.toBuilder()
     builder.usageStatus = usageStatus?.toBuilder()
-    builder.usageReason = usageReason.mapToMutableList { it.toBuilder() }
+    builder.usageReason = usageReason.toBuilderList()
     builder.adherence = adherence?.toBuilder()
     builder.informationSource = informationSource?.toBuilder()
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.toBuilderList()
     builder.bodySite = bodySite?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -285,16 +285,16 @@ public data class DeviceUsage(
     public val code: CodeableConcept,
     /** Reason for adherence type. */
     public val reason: List<CodeableConcept>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           code.toBuilder(),
-          reason.mapToMutableList { it.toBuilder() },
+          reason.toBuilderList(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -303,7 +303,7 @@ public data class DeviceUsage(
       public var code: CodeableConcept.Builder,
       /** Reason for adherence type. */
       public var reason: MutableList<CodeableConcept.Builder>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -344,13 +344,13 @@ public data class DeviceUsage(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Adherence =
+      override fun build(): Adherence =
         Adherence(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
-          reason = reason.mapToList { it.build() },
+          reason = reason.buildList(),
         )
     }
   }
@@ -587,26 +587,26 @@ public data class DeviceUsage(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        basedOn = basedOn.buildList(),
         status = status,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         patient = patient.build(),
-        derivedFrom = derivedFrom.mapToList { it.build() },
+        derivedFrom = derivedFrom.buildList(),
         context = context?.build(),
         timing = timing,
         dateAsserted = dateAsserted?.build(),
         usageStatus = usageStatus?.build(),
-        usageReason = usageReason.mapToList { it.build() },
+        usageReason = usageReason.buildList(),
         adherence = adherence?.build(),
         informationSource = informationSource?.build(),
         device = device.build(),
-        reason = reason.mapToList { it.build() },
+        reason = reason.buildList(),
         bodySite = bodySite?.build(),
-        note = note.mapToList { it.build() },
+        note = note.buildList(),
       )
   }
 }

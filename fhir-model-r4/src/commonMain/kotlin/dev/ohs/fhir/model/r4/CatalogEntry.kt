@@ -177,20 +177,20 @@ public data class CatalogEntry(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.type = type?.toBuilder()
-    builder.additionalIdentifier = additionalIdentifier.mapToMutableList { it.toBuilder() }
-    builder.classification = classification.mapToMutableList { it.toBuilder() }
+    builder.additionalIdentifier = additionalIdentifier.toBuilderList()
+    builder.classification = classification.toBuilderList()
     builder.status = status
     builder.validityPeriod = validityPeriod?.toBuilder()
     builder.validTo = validTo?.toBuilder()
     builder.lastUpdated = lastUpdated?.toBuilder()
-    builder.additionalCharacteristic = additionalCharacteristic.mapToMutableList { it.toBuilder() }
-    builder.additionalClassification = additionalClassification.mapToMutableList { it.toBuilder() }
-    builder.relatedEntry = relatedEntry.mapToMutableList { it.toBuilder() }
+    builder.additionalCharacteristic = additionalCharacteristic.toBuilderList()
+    builder.additionalClassification = additionalClassification.toBuilderList()
+    builder.relatedEntry = relatedEntry.toBuilderList()
     return builder
   }
 
@@ -241,16 +241,16 @@ public data class CatalogEntry(
     public val relationtype: Enumeration<CatalogEntryRelationType>,
     /** The reference to the related item. */
     public val item: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           relationtype,
           item.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -262,7 +262,7 @@ public data class CatalogEntry(
       public var relationtype: Enumeration<CatalogEntryRelationType>,
       /** The reference to the related item. */
       public var item: Reference.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -303,11 +303,11 @@ public data class CatalogEntry(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): RelatedEntry =
+      override fun build(): RelatedEntry =
         RelatedEntry(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           relationtype = relationtype,
           item = item.build(),
         )
@@ -478,22 +478,22 @@ public data class CatalogEntry(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         type = type?.build(),
         orderable = orderable.build(),
         referencedItem = referencedItem.build(),
-        additionalIdentifier = additionalIdentifier.mapToList { it.build() },
-        classification = classification.mapToList { it.build() },
+        additionalIdentifier = additionalIdentifier.buildList(),
+        classification = classification.buildList(),
         status = status,
         validityPeriod = validityPeriod?.build(),
         validTo = validTo?.build(),
         lastUpdated = lastUpdated?.build(),
-        additionalCharacteristic = additionalCharacteristic.mapToList { it.build() },
-        additionalClassification = additionalClassification.mapToList { it.build() },
-        relatedEntry = relatedEntry.mapToList { it.build() },
+        additionalCharacteristic = additionalCharacteristic.buildList(),
+        additionalClassification = additionalClassification.buildList(),
+        relatedEntry = relatedEntry.buildList(),
       )
   }
 }

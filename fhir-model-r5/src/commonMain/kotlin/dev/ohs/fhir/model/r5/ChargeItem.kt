@@ -295,32 +295,32 @@ public data class ChargeItem(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.definitionUri = definitionUri.mapToMutableList { it.toBuilder() }
-    builder.definitionCanonical = definitionCanonical.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.definitionUri = definitionUri.toBuilderList()
+    builder.definitionCanonical = definitionCanonical.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     builder.occurrence = occurrence
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
     builder.performingOrganization = performingOrganization?.toBuilder()
     builder.requestingOrganization = requestingOrganization?.toBuilder()
     builder.costCenter = costCenter?.toBuilder()
     builder.quantity = quantity?.toBuilder()
-    builder.bodysite = bodysite.mapToMutableList { it.toBuilder() }
+    builder.bodysite = bodysite.toBuilderList()
     builder.unitPriceComponent = unitPriceComponent?.toBuilder()
     builder.totalPriceComponent = totalPriceComponent?.toBuilder()
     builder.overrideReason = overrideReason?.toBuilder()
     builder.enterer = enterer?.toBuilder()
     builder.enteredDate = enteredDate?.toBuilder()
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.service = service.mapToMutableList { it.toBuilder() }
-    builder.product = product.mapToMutableList { it.toBuilder() }
-    builder.account = account.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.toBuilderList()
+    builder.service = service.toBuilderList()
+    builder.product = product.toBuilderList()
+    builder.account = account.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.supportingInformation = supportingInformation.toBuilderList()
     return builder
   }
 
@@ -371,12 +371,12 @@ public data class ChargeItem(
     public val function: CodeableConcept? = null,
     /** The device, practitioner, etc. who performed or participated in the service. */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -384,7 +384,7 @@ public data class ChargeItem(
     public class Builder(
       /** The device, practitioner, etc. who performed or participated in the service. */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -431,11 +431,11 @@ public data class ChargeItem(
        */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -753,35 +753,35 @@ public data class ChargeItem(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        definitionUri = definitionUri.mapToList { it.build() },
-        definitionCanonical = definitionCanonical.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        definitionUri = definitionUri.buildList(),
+        definitionCanonical = definitionCanonical.buildList(),
         status = status,
-        partOf = partOf.mapToList { it.build() },
+        partOf = partOf.buildList(),
         code = code.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
         occurrence = occurrence,
-        performer = performer.mapToList { it.build() },
+        performer = performer.buildList(),
         performingOrganization = performingOrganization?.build(),
         requestingOrganization = requestingOrganization?.build(),
         costCenter = costCenter?.build(),
         quantity = quantity?.build(),
-        bodysite = bodysite.mapToList { it.build() },
+        bodysite = bodysite.buildList(),
         unitPriceComponent = unitPriceComponent?.build(),
         totalPriceComponent = totalPriceComponent?.build(),
         overrideReason = overrideReason?.build(),
         enterer = enterer?.build(),
         enteredDate = enteredDate?.build(),
-        reason = reason.mapToList { it.build() },
-        service = service.mapToList { it.build() },
-        product = product.mapToList { it.build() },
-        account = account.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        supportingInformation = supportingInformation.mapToList { it.build() },
+        reason = reason.buildList(),
+        service = service.buildList(),
+        product = product.buildList(),
+        account = account.buildList(),
+        note = note.buildList(),
+        supportingInformation = supportingInformation.buildList(),
       )
   }
 }

@@ -119,19 +119,19 @@ public data class DataRequirement(
    * applied in the order they appear in the resource.
    */
   public val sort: List<Sort> = listOf(),
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(type)
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.profile = profile.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.profile = profile.toBuilderList()
     builder.subject = subject
-    builder.mustSupport = mustSupport.mapToMutableList { it.toBuilder() }
-    builder.codeFilter = codeFilter.mapToMutableList { it.toBuilder() }
-    builder.dateFilter = dateFilter.mapToMutableList { it.toBuilder() }
-    builder.valueFilter = valueFilter.mapToMutableList { it.toBuilder() }
+    builder.mustSupport = mustSupport.toBuilderList()
+    builder.codeFilter = codeFilter.toBuilderList()
+    builder.dateFilter = dateFilter.toBuilderList()
+    builder.valueFilter = valueFilter.toBuilderList()
     builder.limit = limit?.toBuilder()
-    builder.sort = sort.mapToMutableList { it.toBuilder() }
+    builder.sort = sort.toBuilderList()
     return builder
   }
 
@@ -191,19 +191,19 @@ public data class DataRequirement(
      * items matching a code in the value set or one of the specified codes.
      */
     public val code: List<Coding> = listOf(),
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.path = path?.toBuilder()
       builder.searchParam = searchParam?.toBuilder()
       builder.valueSet = valueSet?.toBuilder()
-      builder.code = code.mapToMutableList { it.toBuilder() }
+      builder.code = code.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -259,14 +259,14 @@ public data class DataRequirement(
        */
       public var code: MutableList<Coding.Builder> = mutableListOf()
 
-      public fun build(): CodeFilter =
+      override fun build(): CodeFilter =
         CodeFilter(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           path = path?.build(),
           searchParam = searchParam?.build(),
           valueSet = valueSet?.build(),
-          code = code.mapToList { it.build() },
+          code = code.buildList(),
         )
     }
   }
@@ -323,11 +323,11 @@ public data class DataRequirement(
      * that fall within Duration before now.
      */
     public val `value`: Value? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.path = path?.toBuilder()
       builder.searchParam = searchParam?.toBuilder()
       builder.`value` = `value`
@@ -361,7 +361,7 @@ public data class DataRequirement(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -412,10 +412,10 @@ public data class DataRequirement(
        */
       public var `value`: Value? = null
 
-      public fun build(): DateFilter =
+      override fun build(): DateFilter =
         DateFilter(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           path = path?.build(),
           searchParam = searchParam?.build(),
           `value` = `value`,
@@ -470,11 +470,11 @@ public data class DataRequirement(
     public val comparator: Enumeration<ValueFilterComparator>? = null,
     /** The value of the filter. */
     public val `value`: Value? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.path = path?.toBuilder()
       builder.searchParam = searchParam?.toBuilder()
       builder.comparator = comparator
@@ -509,7 +509,7 @@ public data class DataRequirement(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -556,10 +556,10 @@ public data class DataRequirement(
       /** The value of the filter. */
       public var `value`: Value? = null
 
-      public fun build(): ValueFilter =
+      override fun build(): ValueFilter =
         ValueFilter(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           path = path?.build(),
           searchParam = searchParam?.build(),
           comparator = comparator,
@@ -598,15 +598,15 @@ public data class DataRequirement(
     public val path: String,
     /** The direction of the sort, ascending or descending. */
     public val direction: Enumeration<SortDirection>,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           path.toBuilder(),
           direction,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       return builder
     }
 
@@ -620,7 +620,7 @@ public data class DataRequirement(
       public var path: String.Builder,
       /** The direction of the sort, ascending or descending. */
       public var direction: Enumeration<SortDirection>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -641,10 +641,10 @@ public data class DataRequirement(
        */
       public var extension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Sort =
+      override fun build(): Sort =
         Sort(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           path = path.build(),
           direction = direction,
         )
@@ -679,7 +679,7 @@ public data class DataRequirement(
      * value is set to the type of the base resource of the profile.
      */
     public open var type: Enumeration<FHIRTypes>
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -764,19 +764,19 @@ public data class DataRequirement(
      */
     public open var sort: MutableList<Sort.Builder> = mutableListOf()
 
-    public open fun build(): DataRequirement =
+    open override fun build(): DataRequirement =
       DataRequirement(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         type = type,
-        profile = profile.mapToList { it.build() },
+        profile = profile.buildList(),
         subject = subject,
-        mustSupport = mustSupport.mapToList { it.build() },
-        codeFilter = codeFilter.mapToList { it.build() },
-        dateFilter = dateFilter.mapToList { it.build() },
-        valueFilter = valueFilter.mapToList { it.build() },
+        mustSupport = mustSupport.buildList(),
+        codeFilter = codeFilter.buildList(),
+        dateFilter = dateFilter.buildList(),
+        valueFilter = valueFilter.buildList(),
         limit = limit?.build(),
-        sort = sort.mapToList { it.build() },
+        sort = sort.buildList(),
       )
   }
 }

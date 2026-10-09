@@ -334,36 +334,36 @@ public data class Citation(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.summary = summary.mapToMutableList { it.toBuilder() }
-    builder.classification = classification.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.currentState = currentState.mapToMutableList { it.toBuilder() }
-    builder.statusDate = statusDate.mapToMutableList { it.toBuilder() }
-    builder.relatesTo = relatesTo.mapToMutableList { it.toBuilder() }
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.summary = summary.toBuilderList()
+    builder.classification = classification.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.currentState = currentState.toBuilderList()
+    builder.statusDate = statusDate.toBuilderList()
+    builder.relatesTo = relatesTo.toBuilderList()
     builder.citedArtifact = citedArtifact?.toBuilder()
     return builder
   }
@@ -412,12 +412,12 @@ public data class Citation(
     public val style: CodeableConcept? = null,
     /** The human-readable display of the citation. */
     public val text: Markdown,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(text.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.style = style?.toBuilder()
       return builder
     }
@@ -425,7 +425,7 @@ public data class Citation(
     public class Builder(
       /** The human-readable display of the citation. */
       public var text: Markdown.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -469,11 +469,11 @@ public data class Citation(
       /** Format for display of the citation. */
       public var style: CodeableConcept.Builder? = null
 
-      public fun build(): Summary =
+      override fun build(): Summary =
         Summary(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           style = style?.build(),
           text = text.build(),
         )
@@ -524,18 +524,18 @@ public data class Citation(
     public val type: CodeableConcept? = null,
     /** The specific classification value. */
     public val classifier: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
-      builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+      builder.classifier = classifier.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -582,13 +582,13 @@ public data class Citation(
       /** The specific classification value. */
       public var classifier: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): Classification =
+      override fun build(): Classification =
         Classification(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
-          classifier = classifier.mapToList { it.build() },
+          classifier = classifier.buildList(),
         )
     }
   }
@@ -643,12 +643,12 @@ public data class Citation(
      * For an instance, place the same value in both start and end elements.
      */
     public val period: Period,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(activity.toBuilder(), period.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.`actual` = `actual`?.toBuilder()
       return builder
     }
@@ -662,7 +662,7 @@ public data class Citation(
        * For an instance, place the same value in both start and end elements.
        */
       public var period: Period.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -706,11 +706,11 @@ public data class Citation(
       /** Either occurred or expected. */
       public var `actual`: Boolean.Builder? = null
 
-      public fun build(): StatusDate =
+      override fun build(): StatusDate =
         StatusDate(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           activity = activity.build(),
           `actual` = `actual`?.build(),
           period = period.build(),
@@ -764,17 +764,17 @@ public data class Citation(
     public val targetClassifier: List<CodeableConcept> = listOf(),
     /** The article or artifact that the Citation Resource is related to. */
     public val target: Target,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           relationshipType.toBuilder(),
           target,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.targetClassifier = targetClassifier.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.targetClassifier = targetClassifier.toBuilderList()
       return builder
     }
 
@@ -816,7 +816,7 @@ public data class Citation(
       public var relationshipType: CodeableConcept.Builder,
       /** The article or artifact that the Citation Resource is related to. */
       public var target: Target,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -860,13 +860,13 @@ public data class Citation(
       /** The clasification of the related artifact. */
       public var targetClassifier: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): RelatesTo =
+      override fun build(): RelatesTo =
         RelatesTo(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           relationshipType = relationshipType.build(),
-          targetClassifier = targetClassifier.mapToList { it.build() },
+          targetClassifier = targetClassifier.buildList(),
           target = target,
         )
     }
@@ -962,27 +962,27 @@ public data class Citation(
     public val contributorship: Contributorship? = null,
     /** Any additional information or content for the article or artifact. */
     public val note: List<Annotation> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-      builder.relatedIdentifier = relatedIdentifier.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.identifier = identifier.toBuilderList()
+      builder.relatedIdentifier = relatedIdentifier.toBuilderList()
       builder.dateAccessed = dateAccessed?.toBuilder()
       builder.version = version?.toBuilder()
-      builder.currentState = currentState.mapToMutableList { it.toBuilder() }
-      builder.statusDate = statusDate.mapToMutableList { it.toBuilder() }
-      builder.title = title.mapToMutableList { it.toBuilder() }
-      builder.`abstract` = `abstract`.mapToMutableList { it.toBuilder() }
+      builder.currentState = currentState.toBuilderList()
+      builder.statusDate = statusDate.toBuilderList()
+      builder.title = title.toBuilderList()
+      builder.`abstract` = `abstract`.toBuilderList()
       builder.part = part?.toBuilder()
-      builder.relatesTo = relatesTo.mapToMutableList { it.toBuilder() }
-      builder.publicationForm = publicationForm.mapToMutableList { it.toBuilder() }
-      builder.webLocation = webLocation.mapToMutableList { it.toBuilder() }
-      builder.classification = classification.mapToMutableList { it.toBuilder() }
+      builder.relatesTo = relatesTo.toBuilderList()
+      builder.publicationForm = publicationForm.toBuilderList()
+      builder.webLocation = webLocation.toBuilderList()
+      builder.classification = classification.toBuilderList()
       builder.contributorship = contributorship?.toBuilder()
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.note = note.toBuilderList()
       return builder
     }
 
@@ -1030,12 +1030,12 @@ public data class Citation(
       public val `value`: String,
       /** Citation for the main version of the cited artifact. */
       public val baseCitation: Reference? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(`value`.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.baseCitation = baseCitation?.toBuilder()
         return builder
       }
@@ -1043,7 +1043,7 @@ public data class Citation(
       public class Builder(
         /** The version number or other version identifier. */
         public var `value`: String.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1087,11 +1087,11 @@ public data class Citation(
         /** Citation for the main version of the cited artifact. */
         public var baseCitation: Reference.Builder? = null
 
-        public fun build(): Version =
+        override fun build(): Version =
           Version(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             `value` = `value`.build(),
             baseCitation = baseCitation?.build(),
           )
@@ -1148,12 +1148,12 @@ public data class Citation(
        * For an instance, place the same value in both start and end elements.
        */
       public val period: Period,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(activity.toBuilder(), period.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.`actual` = `actual`?.toBuilder()
         return builder
       }
@@ -1167,7 +1167,7 @@ public data class Citation(
          * For an instance, place the same value in both start and end elements.
          */
         public var period: Period.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1211,11 +1211,11 @@ public data class Citation(
         /** Either occurred or expected. */
         public var `actual`: Boolean.Builder? = null
 
-        public fun build(): StatusDate =
+        override fun build(): StatusDate =
           StatusDate(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             activity = activity.build(),
             `actual` = `actual`?.build(),
             period = period.build(),
@@ -1269,13 +1269,13 @@ public data class Citation(
       public val language: CodeableConcept? = null,
       /** The title of the article or artifact. */
       public val text: Markdown,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(text.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.type = type.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.type = type.toBuilderList()
         builder.language = language?.toBuilder()
         return builder
       }
@@ -1283,7 +1283,7 @@ public data class Citation(
       public class Builder(
         /** The title of the article or artifact. */
         public var text: Markdown.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1330,12 +1330,12 @@ public data class Citation(
         /** Used to express the specific language. */
         public var language: CodeableConcept.Builder? = null
 
-        public fun build(): Title =
+        override fun build(): Title =
           Title(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
-            type = type.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
+            type = type.buildList(),
             language = language?.build(),
             text = text.build(),
           )
@@ -1390,12 +1390,12 @@ public data class Citation(
       public val text: Markdown,
       /** Copyright notice for the abstract. */
       public val copyright: Markdown? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(text.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.type = type?.toBuilder()
         builder.language = language?.toBuilder()
         builder.copyright = copyright?.toBuilder()
@@ -1405,7 +1405,7 @@ public data class Citation(
       public class Builder(
         /** Abstract content. */
         public var text: Markdown.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1455,11 +1455,11 @@ public data class Citation(
         /** Copyright notice for the abstract. */
         public var copyright: Markdown.Builder? = null
 
-        public fun build(): Abstract =
+        override fun build(): Abstract =
           Abstract(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type?.build(),
             language = language?.build(),
             text = text.build(),
@@ -1514,19 +1514,19 @@ public data class Citation(
       public val `value`: String? = null,
       /** The citation for the full article or artifact. */
       public val baseCitation: Reference? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.type = type?.toBuilder()
         builder.`value` = `value`?.toBuilder()
         builder.baseCitation = baseCitation?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1576,11 +1576,11 @@ public data class Citation(
         /** The citation for the full article or artifact. */
         public var baseCitation: Reference.Builder? = null
 
-        public fun build(): Part =
+        override fun build(): Part =
           Part(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type?.build(),
             `value` = `value`?.build(),
             baseCitation = baseCitation?.build(),
@@ -1634,17 +1634,17 @@ public data class Citation(
       public val targetClassifier: List<CodeableConcept> = listOf(),
       /** The article or artifact that the cited artifact is related to. */
       public val target: Target,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             relationshipType.toBuilder(),
             target,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.targetClassifier = targetClassifier.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.targetClassifier = targetClassifier.toBuilderList()
         return builder
       }
 
@@ -1688,7 +1688,7 @@ public data class Citation(
         public var relationshipType: CodeableConcept.Builder,
         /** The article or artifact that the cited artifact is related to. */
         public var target: Target,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1732,13 +1732,13 @@ public data class Citation(
         /** The clasification of the related artifact. */
         public var targetClassifier: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-        public fun build(): RelatesTo =
+        override fun build(): RelatesTo =
           RelatesTo(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             relationshipType = relationshipType.build(),
-            targetClassifier = targetClassifier.mapToList { it.build() },
+            targetClassifier = targetClassifier.buildList(),
             target = target,
           )
       }
@@ -1823,17 +1823,17 @@ public data class Citation(
       public val pageCount: String? = null,
       /** Copyright notice for the full article or artifact. */
       public val copyright: Markdown? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.publishedIn = publishedIn?.toBuilder()
         builder.periodicRelease = periodicRelease?.toBuilder()
         builder.articleDate = articleDate?.toBuilder()
         builder.lastRevisionDate = lastRevisionDate?.toBuilder()
-        builder.language = language.mapToMutableList { it.toBuilder() }
+        builder.language = language.toBuilderList()
         builder.accessionNumber = accessionNumber?.toBuilder()
         builder.pageString = pageString?.toBuilder()
         builder.firstPage = firstPage?.toBuilder()
@@ -1904,21 +1904,21 @@ public data class Citation(
         public val publisher: Reference? = null,
         /** Geographic location of the publisher. */
         public val publisherLocation: String? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.type = type?.toBuilder()
-          builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+          builder.identifier = identifier.toBuilderList()
           builder.title = title?.toBuilder()
           builder.publisher = publisher?.toBuilder()
           builder.publisherLocation = publisherLocation?.toBuilder()
           return builder
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1985,13 +1985,13 @@ public data class Citation(
           /** Geographic location of the publisher. */
           public var publisherLocation: String.Builder? = null
 
-          public fun build(): PublishedIn =
+          override fun build(): PublishedIn =
             PublishedIn(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               type = type?.build(),
-              identifier = identifier.mapToList { it.build() },
+              identifier = identifier.buildList(),
               title = title?.build(),
               publisher = publisher?.build(),
               publisherLocation = publisherLocation?.build(),
@@ -2051,12 +2051,12 @@ public data class Citation(
         public val issue: String? = null,
         /** Defining the date on which the issue of the journal was published. */
         public val dateOfPublication: DateOfPublication? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.citedMedium = citedMedium?.toBuilder()
           builder.volume = volume?.toBuilder()
           builder.issue = issue?.toBuilder()
@@ -2119,12 +2119,12 @@ public data class Citation(
           public val season: String? = null,
           /** Text representation of the date of which the issue of the journal was published. */
           public val text: String? = null,
-        ) : BackboneElement() {
-          public fun toBuilder(): Builder {
+        ) : BackboneElement(), FhirBuildable {
+          override fun toBuilder(): Builder {
             val builder = Builder()
             builder.id = id
-            builder.extension = extension.mapToMutableList { it.toBuilder() }
-            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.extension = extension.toBuilderList()
+            builder.modifierExtension = modifierExtension.toBuilderList()
             builder.date = date?.toBuilder()
             builder.year = year?.toBuilder()
             builder.month = month?.toBuilder()
@@ -2134,7 +2134,7 @@ public data class Citation(
             return builder
           }
 
-          public class Builder() {
+          public class Builder() : FhirBuilder {
             /**
              * Unique id for the element within a resource (for internal references). This may be
              * any string value that does not contain spaces.
@@ -2194,11 +2194,11 @@ public data class Citation(
             /** Text representation of the date of which the issue of the journal was published. */
             public var text: String.Builder? = null
 
-            public fun build(): DateOfPublication =
+            override fun build(): DateOfPublication =
               DateOfPublication(
                 id = id,
-                extension = extension.mapToList { it.build() },
-                modifierExtension = modifierExtension.mapToList { it.build() },
+                extension = extension.buildList(),
+                modifierExtension = modifierExtension.buildList(),
                 date = date?.build(),
                 year = year?.build(),
                 month = month?.build(),
@@ -2209,7 +2209,7 @@ public data class Citation(
           }
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -2266,11 +2266,11 @@ public data class Citation(
           /** Defining the date on which the issue of the journal was published. */
           public var dateOfPublication: DateOfPublication.Builder? = null
 
-          public fun build(): PeriodicRelease =
+          override fun build(): PeriodicRelease =
             PeriodicRelease(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               citedMedium = citedMedium?.build(),
               volume = volume?.build(),
               issue = issue?.build(),
@@ -2279,7 +2279,7 @@ public data class Citation(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -2367,16 +2367,16 @@ public data class Citation(
         /** Copyright notice for the full article or artifact. */
         public var copyright: Markdown.Builder? = null
 
-        public fun build(): PublicationForm =
+        override fun build(): PublicationForm =
           PublicationForm(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             publishedIn = publishedIn?.build(),
             periodicRelease = periodicRelease?.build(),
             articleDate = articleDate?.build(),
             lastRevisionDate = lastRevisionDate?.build(),
-            language = language.mapToList { it.build() },
+            language = language.buildList(),
             accessionNumber = accessionNumber?.build(),
             pageString = pageString?.build(),
             firstPage = firstPage?.build(),
@@ -2435,18 +2435,18 @@ public data class Citation(
        * Persistent URLs, like doi, are preferred.
        */
       public val url: Uri? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.type = type?.toBuilder()
         builder.url = url?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -2497,11 +2497,11 @@ public data class Citation(
          */
         public var url: Uri.Builder? = null
 
-        public fun build(): WebLocation =
+        override fun build(): WebLocation =
           WebLocation(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type?.build(),
             url = url?.build(),
           )
@@ -2554,14 +2554,14 @@ public data class Citation(
       public val classifier: List<CodeableConcept> = listOf(),
       /** Provenance and copyright of classification. */
       public val whoClassified: WhoClassified? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.type = type?.toBuilder()
-        builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+        builder.classifier = classifier.toBuilderList()
         builder.whoClassified = whoClassified?.toBuilder()
         return builder
       }
@@ -2619,12 +2619,12 @@ public data class Citation(
         public val classifierCopyright: String? = null,
         /** Acceptable to re-use the classification. */
         public val freeToShare: Boolean? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.person = person?.toBuilder()
           builder.organization = organization?.toBuilder()
           builder.publisher = publisher?.toBuilder()
@@ -2633,7 +2633,7 @@ public data class Citation(
           return builder
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -2692,11 +2692,11 @@ public data class Citation(
           /** Acceptable to re-use the classification. */
           public var freeToShare: Boolean.Builder? = null
 
-          public fun build(): WhoClassified =
+          override fun build(): WhoClassified =
             WhoClassified(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               person = person?.build(),
               organization = organization?.build(),
               publisher = publisher?.build(),
@@ -2706,7 +2706,7 @@ public data class Citation(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -2756,13 +2756,13 @@ public data class Citation(
         /** Provenance and copyright of classification. */
         public var whoClassified: WhoClassified.Builder? = null
 
-        public fun build(): Classification =
+        override fun build(): Classification =
           Classification(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type?.build(),
-            classifier = classifier.mapToList { it.build() },
+            classifier = classifier.buildList(),
             whoClassified = whoClassified?.build(),
           )
       }
@@ -2829,15 +2829,15 @@ public data class Citation(
        * list member.
        */
       public val summary: List<Summary> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.complete = complete?.toBuilder()
-        builder.entry = entry.mapToMutableList { it.toBuilder() }
-        builder.summary = summary.mapToMutableList { it.toBuilder() }
+        builder.entry = entry.toBuilderList()
+        builder.summary = summary.toBuilderList()
         return builder
       }
 
@@ -2933,22 +2933,22 @@ public data class Citation(
         public val correspondingContact: Boolean? = null,
         /** Used to code order of authors. */
         public val listOrder: PositiveInt? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.name = name?.toBuilder()
           builder.initials = initials?.toBuilder()
           builder.collectiveName = collectiveName?.toBuilder()
-          builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-          builder.affiliationInfo = affiliationInfo.mapToMutableList { it.toBuilder() }
-          builder.address = address.mapToMutableList { it.toBuilder() }
-          builder.telecom = telecom.mapToMutableList { it.toBuilder() }
-          builder.contributionType = contributionType.mapToMutableList { it.toBuilder() }
+          builder.identifier = identifier.toBuilderList()
+          builder.affiliationInfo = affiliationInfo.toBuilderList()
+          builder.address = address.toBuilderList()
+          builder.telecom = telecom.toBuilderList()
+          builder.contributionType = contributionType.toBuilderList()
           builder.role = role?.toBuilder()
-          builder.contributionInstance = contributionInstance.mapToMutableList { it.toBuilder() }
+          builder.contributionInstance = contributionInstance.toBuilderList()
           builder.correspondingContact = correspondingContact?.toBuilder()
           builder.listOrder = listOrder?.toBuilder()
           return builder
@@ -3002,19 +3002,19 @@ public data class Citation(
           public val role: String? = null,
           /** Identifier for the organization. */
           public val identifier: List<Identifier> = listOf(),
-        ) : BackboneElement() {
-          public fun toBuilder(): Builder {
+        ) : BackboneElement(), FhirBuildable {
+          override fun toBuilder(): Builder {
             val builder = Builder()
             builder.id = id
-            builder.extension = extension.mapToMutableList { it.toBuilder() }
-            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.extension = extension.toBuilderList()
+            builder.modifierExtension = modifierExtension.toBuilderList()
             builder.affiliation = affiliation?.toBuilder()
             builder.role = role?.toBuilder()
-            builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+            builder.identifier = identifier.toBuilderList()
             return builder
           }
 
-          public class Builder() {
+          public class Builder() : FhirBuilder {
             /**
              * Unique id for the element within a resource (for internal references). This may be
              * any string value that does not contain spaces.
@@ -3065,14 +3065,14 @@ public data class Citation(
             /** Identifier for the organization. */
             public var identifier: MutableList<Identifier.Builder> = mutableListOf()
 
-            public fun build(): AffiliationInfo =
+            override fun build(): AffiliationInfo =
               AffiliationInfo(
                 id = id,
-                extension = extension.mapToList { it.build() },
-                modifierExtension = modifierExtension.mapToList { it.build() },
+                extension = extension.buildList(),
+                modifierExtension = modifierExtension.buildList(),
                 affiliation = affiliation?.build(),
                 role = role?.build(),
-                identifier = identifier.mapToList { it.build() },
+                identifier = identifier.buildList(),
               )
           }
         }
@@ -3123,12 +3123,12 @@ public data class Citation(
           public val type: CodeableConcept,
           /** The time that the contribution was made. */
           public val time: DateTime? = null,
-        ) : BackboneElement() {
-          public fun toBuilder(): Builder {
+        ) : BackboneElement(), FhirBuildable {
+          override fun toBuilder(): Builder {
             val builder = Builder(type.toBuilder())
             builder.id = id
-            builder.extension = extension.mapToMutableList { it.toBuilder() }
-            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.extension = extension.toBuilderList()
+            builder.modifierExtension = modifierExtension.toBuilderList()
             builder.time = time?.toBuilder()
             return builder
           }
@@ -3136,7 +3136,7 @@ public data class Citation(
           public class Builder(
             /** The specific contribution. */
             public var type: CodeableConcept.Builder
-          ) {
+          ) : FhirBuilder {
             /**
              * Unique id for the element within a resource (for internal references). This may be
              * any string value that does not contain spaces.
@@ -3181,18 +3181,18 @@ public data class Citation(
             /** The time that the contribution was made. */
             public var time: DateTime.Builder? = null
 
-            public fun build(): ContributionInstance =
+            override fun build(): ContributionInstance =
               ContributionInstance(
                 id = id,
-                extension = extension.mapToList { it.build() },
-                modifierExtension = modifierExtension.mapToList { it.build() },
+                extension = extension.buildList(),
+                modifierExtension = modifierExtension.buildList(),
                 type = type.build(),
                 time = time?.build(),
               )
           }
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -3299,21 +3299,21 @@ public data class Citation(
           /** Used to code order of authors. */
           public var listOrder: PositiveInt.Builder? = null
 
-          public fun build(): Entry =
+          override fun build(): Entry =
             Entry(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               name = name?.build(),
               initials = initials?.build(),
               collectiveName = collectiveName?.build(),
-              identifier = identifier.mapToList { it.build() },
-              affiliationInfo = affiliationInfo.mapToList { it.build() },
-              address = address.mapToList { it.build() },
-              telecom = telecom.mapToList { it.build() },
-              contributionType = contributionType.mapToList { it.build() },
+              identifier = identifier.buildList(),
+              affiliationInfo = affiliationInfo.buildList(),
+              address = address.buildList(),
+              telecom = telecom.buildList(),
+              contributionType = contributionType.buildList(),
               role = role?.build(),
-              contributionInstance = contributionInstance.mapToList { it.build() },
+              contributionInstance = contributionInstance.buildList(),
               correspondingContact = correspondingContact?.build(),
               listOrder = listOrder?.build(),
             )
@@ -3373,12 +3373,12 @@ public data class Citation(
          * The display string for the author list, contributor list, or contributorship statement.
          */
         public val `value`: Markdown,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(`value`.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.type = type?.toBuilder()
           builder.style = style?.toBuilder()
           builder.source = source?.toBuilder()
@@ -3390,7 +3390,7 @@ public data class Citation(
            * The display string for the author list, contributor list, or contributorship statement.
            */
           public var `value`: Markdown.Builder
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -3440,11 +3440,11 @@ public data class Citation(
           /** Used to code the producer or rule for creating the display string. */
           public var source: CodeableConcept.Builder? = null
 
-          public fun build(): Summary =
+          override fun build(): Summary =
             Summary(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               type = type?.build(),
               style = style?.build(),
               source = source?.build(),
@@ -3453,7 +3453,7 @@ public data class Citation(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -3515,19 +3515,19 @@ public data class Citation(
          */
         public var summary: MutableList<Summary.Builder> = mutableListOf()
 
-        public fun build(): Contributorship =
+        override fun build(): Contributorship =
           Contributorship(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             complete = complete?.build(),
-            entry = entry.mapToList { it.build() },
-            summary = summary.mapToList { it.build() },
+            entry = entry.buildList(),
+            summary = summary.buildList(),
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -3634,26 +3634,26 @@ public data class Citation(
       /** Any additional information or content for the article or artifact. */
       public var note: MutableList<Annotation.Builder> = mutableListOf()
 
-      public fun build(): CitedArtifact =
+      override fun build(): CitedArtifact =
         CitedArtifact(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          identifier = identifier.mapToList { it.build() },
-          relatedIdentifier = relatedIdentifier.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          identifier = identifier.buildList(),
+          relatedIdentifier = relatedIdentifier.buildList(),
           dateAccessed = dateAccessed?.build(),
           version = version?.build(),
-          currentState = currentState.mapToList { it.build() },
-          statusDate = statusDate.mapToList { it.build() },
-          title = title.mapToList { it.build() },
-          `abstract` = `abstract`.mapToList { it.build() },
+          currentState = currentState.buildList(),
+          statusDate = statusDate.buildList(),
+          title = title.buildList(),
+          `abstract` = `abstract`.buildList(),
           part = part?.build(),
-          relatesTo = relatesTo.mapToList { it.build() },
-          publicationForm = publicationForm.mapToList { it.build() },
-          webLocation = webLocation.mapToList { it.build() },
-          classification = classification.mapToList { it.build() },
+          relatesTo = relatesTo.buildList(),
+          publicationForm = publicationForm.buildList(),
+          webLocation = webLocation.buildList(),
+          classification = classification.buildList(),
           contributorship = contributorship?.build(),
-          note = note.mapToList { it.build() },
+          note = note.buildList(),
         )
     }
   }
@@ -3970,11 +3970,11 @@ public data class Citation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -3982,25 +3982,25 @@ public data class Citation(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        summary = summary.mapToList { it.build() },
-        classification = classification.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        currentState = currentState.mapToList { it.build() },
-        statusDate = statusDate.mapToList { it.build() },
-        relatesTo = relatesTo.mapToList { it.build() },
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        summary = summary.buildList(),
+        classification = classification.buildList(),
+        note = note.buildList(),
+        currentState = currentState.buildList(),
+        statusDate = statusDate.buildList(),
+        relatesTo = relatesTo.buildList(),
         citedArtifact = citedArtifact?.build(),
       )
   }

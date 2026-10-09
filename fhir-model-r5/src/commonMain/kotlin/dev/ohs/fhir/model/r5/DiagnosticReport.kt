@@ -303,28 +303,28 @@ public data class DiagnosticReport(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.subject = subject?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.effective = effective
     builder.issued = issued?.toBuilder()
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
-    builder.resultsInterpreter = resultsInterpreter.mapToMutableList { it.toBuilder() }
-    builder.specimen = specimen.mapToMutableList { it.toBuilder() }
-    builder.result = result.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.study = study.mapToMutableList { it.toBuilder() }
-    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
-    builder.media = media.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
+    builder.resultsInterpreter = resultsInterpreter.toBuilderList()
+    builder.specimen = specimen.toBuilderList()
+    builder.result = result.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.study = study.toBuilderList()
+    builder.supportingInfo = supportingInfo.toBuilderList()
+    builder.media = media.toBuilderList()
     builder.composition = composition?.toBuilder()
     builder.conclusion = conclusion?.toBuilder()
-    builder.conclusionCode = conclusionCode.mapToMutableList { it.toBuilder() }
-    builder.presentedForm = presentedForm.mapToMutableList { it.toBuilder() }
+    builder.conclusionCode = conclusionCode.toBuilderList()
+    builder.presentedForm = presentedForm.toBuilderList()
     return builder
   }
 
@@ -375,12 +375,12 @@ public data class DiagnosticReport(
     public val type: CodeableConcept,
     /** The reference for the supporting information in the diagnostic report. */
     public val reference: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder(), reference.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -389,7 +389,7 @@ public data class DiagnosticReport(
       public var type: CodeableConcept.Builder,
       /** The reference for the supporting information in the diagnostic report. */
       public var reference: Reference.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -430,11 +430,11 @@ public data class DiagnosticReport(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): SupportingInfo =
+      override fun build(): SupportingInfo =
         SupportingInfo(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           reference = reference.build(),
         )
@@ -496,12 +496,12 @@ public data class DiagnosticReport(
     public val comment: String? = null,
     /** Reference to the image or data source. */
     public val link: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(link.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.comment = comment?.toBuilder()
       return builder
     }
@@ -509,7 +509,7 @@ public data class DiagnosticReport(
     public class Builder(
       /** Reference to the image or data source. */
       public var link: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -560,11 +560,11 @@ public data class DiagnosticReport(
        */
       public var comment: String.Builder? = null
 
-      public fun build(): Media =
+      override fun build(): Media =
         Media(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           comment = comment?.build(),
           link = link.build(),
         )
@@ -879,30 +879,30 @@ public data class DiagnosticReport(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        basedOn = basedOn.buildList(),
         status = status,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         code = code.build(),
         subject = subject?.build(),
         encounter = encounter?.build(),
         effective = effective,
         issued = issued?.build(),
-        performer = performer.mapToList { it.build() },
-        resultsInterpreter = resultsInterpreter.mapToList { it.build() },
-        specimen = specimen.mapToList { it.build() },
-        result = result.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        study = study.mapToList { it.build() },
-        supportingInfo = supportingInfo.mapToList { it.build() },
-        media = media.mapToList { it.build() },
+        performer = performer.buildList(),
+        resultsInterpreter = resultsInterpreter.buildList(),
+        specimen = specimen.buildList(),
+        result = result.buildList(),
+        note = note.buildList(),
+        study = study.buildList(),
+        supportingInfo = supportingInfo.buildList(),
+        media = media.buildList(),
         composition = composition?.build(),
         conclusion = conclusion?.build(),
-        conclusionCode = conclusionCode.mapToList { it.build() },
-        presentedForm = presentedForm.mapToList { it.build() },
+        conclusionCode = conclusionCode.buildList(),
+        presentedForm = presentedForm.buildList(),
       )
   }
 }

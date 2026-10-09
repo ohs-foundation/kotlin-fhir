@@ -351,16 +351,16 @@ public data class Procedure(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+    builder.instantiatesUri = instantiatesUri.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
     builder.statusReason = statusReason?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.code = code?.toBuilder()
     builder.focus = focus?.toBuilder()
     builder.encounter = encounter?.toBuilder()
@@ -368,18 +368,18 @@ public data class Procedure(
     builder.recorded = recorded?.toBuilder()
     builder.recorder = recorder?.toBuilder()
     builder.reported = reported
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
     builder.location = location?.toBuilder()
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.bodySite = bodySite.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.toBuilderList()
+    builder.bodySite = bodySite.toBuilderList()
     builder.outcome = outcome?.toBuilder()
-    builder.report = report.mapToMutableList { it.toBuilder() }
-    builder.complication = complication.mapToMutableList { it.toBuilder() }
-    builder.followUp = followUp.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.focalDevice = focalDevice.mapToMutableList { it.toBuilder() }
-    builder.used = used.mapToMutableList { it.toBuilder() }
-    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
+    builder.report = report.toBuilderList()
+    builder.complication = complication.toBuilderList()
+    builder.followUp = followUp.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.focalDevice = focalDevice.toBuilderList()
+    builder.used = used.toBuilderList()
+    builder.supportingInfo = supportingInfo.toBuilderList()
     return builder
   }
 
@@ -441,12 +441,12 @@ public data class Procedure(
     public val onBehalfOf: Reference? = null,
     /** Time period during which the performer performed the procedure. */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       builder.onBehalfOf = onBehalfOf?.toBuilder()
       builder.period = period?.toBuilder()
@@ -456,7 +456,7 @@ public data class Procedure(
     public class Builder(
       /** Indicates who or what performed the procedure. */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -516,11 +516,11 @@ public data class Procedure(
       /** Time period during which the performer performed the procedure. */
       public var period: Period.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
           onBehalfOf = onBehalfOf?.build(),
@@ -576,12 +576,12 @@ public data class Procedure(
     public val action: CodeableConcept? = null,
     /** The device that was manipulated (changed) during the procedure. */
     public val manipulated: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(manipulated.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.action = action?.toBuilder()
       return builder
     }
@@ -589,7 +589,7 @@ public data class Procedure(
     public class Builder(
       /** The device that was manipulated (changed) during the procedure. */
       public var manipulated: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -633,11 +633,11 @@ public data class Procedure(
       /** The kind of change that happened to the device during the procedure. */
       public var action: CodeableConcept.Builder? = null
 
-      public fun build(): FocalDevice =
+      override fun build(): FocalDevice =
         FocalDevice(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           action = action?.build(),
           manipulated = manipulated.build(),
         )
@@ -1053,17 +1053,17 @@ public data class Procedure(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-        instantiatesUri = instantiatesUri.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        instantiatesCanonical = instantiatesCanonical.buildList(),
+        instantiatesUri = instantiatesUri.buildList(),
+        basedOn = basedOn.buildList(),
+        partOf = partOf.buildList(),
         status = status,
         statusReason = statusReason?.build(),
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         code = code?.build(),
         subject = subject.build(),
         focus = focus?.build(),
@@ -1072,18 +1072,18 @@ public data class Procedure(
         recorded = recorded?.build(),
         recorder = recorder?.build(),
         reported = reported,
-        performer = performer.mapToList { it.build() },
+        performer = performer.buildList(),
         location = location?.build(),
-        reason = reason.mapToList { it.build() },
-        bodySite = bodySite.mapToList { it.build() },
+        reason = reason.buildList(),
+        bodySite = bodySite.buildList(),
         outcome = outcome?.build(),
-        report = report.mapToList { it.build() },
-        complication = complication.mapToList { it.build() },
-        followUp = followUp.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        focalDevice = focalDevice.mapToList { it.build() },
-        used = used.mapToList { it.build() },
-        supportingInfo = supportingInfo.mapToList { it.build() },
+        report = report.buildList(),
+        complication = complication.buildList(),
+        followUp = followUp.buildList(),
+        note = note.buildList(),
+        focalDevice = focalDevice.buildList(),
+        used = used.buildList(),
+        supportingInfo = supportingInfo.buildList(),
       )
   }
 }

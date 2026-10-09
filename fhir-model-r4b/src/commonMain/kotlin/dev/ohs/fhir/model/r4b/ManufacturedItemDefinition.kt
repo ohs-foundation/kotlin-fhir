@@ -170,14 +170,14 @@ public data class ManufacturedItemDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.unitOfPresentation = unitOfPresentation?.toBuilder()
-    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
-    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
-    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    builder.manufacturer = manufacturer.toBuilderList()
+    builder.ingredient = ingredient.toBuilderList()
+    builder.`property` = `property`.toBuilderList()
     return builder
   }
 
@@ -225,12 +225,12 @@ public data class ManufacturedItemDefinition(
     public val type: CodeableConcept,
     /** A value for the characteristic. */
     public val `value`: Value? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.`value` = `value`
       return builder
     }
@@ -279,7 +279,7 @@ public data class ManufacturedItemDefinition(
     public class Builder(
       /** A code expressing the type of characteristic. */
       public var type: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -323,11 +323,11 @@ public data class ManufacturedItemDefinition(
       /** A value for the characteristic. */
       public var `value`: Value? = null
 
-      public fun build(): Property =
+      override fun build(): Property =
         Property(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           `value` = `value`,
         )
@@ -477,16 +477,16 @@ public data class ManufacturedItemDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         manufacturedDoseForm = manufacturedDoseForm.build(),
         unitOfPresentation = unitOfPresentation?.build(),
-        manufacturer = manufacturer.mapToList { it.build() },
-        ingredient = ingredient.mapToList { it.build() },
-        `property` = `property`.mapToList { it.build() },
+        manufacturer = manufacturer.buildList(),
+        ingredient = ingredient.buildList(),
+        `property` = `property`.buildList(),
       )
   }
 }

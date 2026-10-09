@@ -371,31 +371,31 @@ public data class MessageDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
-    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.replaces = replaces.toBuilderList()
     builder.experimental = experimental?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
     builder.base = base?.toBuilder()
-    builder.parent = parent.mapToMutableList { it.toBuilder() }
+    builder.parent = parent.toBuilderList()
     builder.category = category
-    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.focus = focus.toBuilderList()
     builder.responseRequired = responseRequired
-    builder.allowedResponse = allowedResponse.mapToMutableList { it.toBuilder() }
+    builder.allowedResponse = allowedResponse.toBuilderList()
     builder.graph = graph?.toBuilder()
     return builder
   }
@@ -469,16 +469,16 @@ public data class MessageDefinition(
      * in order for it to be valid against this MessageDefinition.
      */
     public val max: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           code,
           min.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.profile = profile?.toBuilder()
       builder.max = max?.toBuilder()
       return builder
@@ -497,7 +497,7 @@ public data class MessageDefinition(
        * message in order for it to be valid against this MessageDefinition.
        */
       public var min: UnsignedInt.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -554,11 +554,11 @@ public data class MessageDefinition(
        */
       public var max: String.Builder? = null
 
-      public fun build(): Focus =
+      override fun build(): Focus =
         Focus(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code,
           profile = profile?.build(),
           min = min.build(),
@@ -616,12 +616,12 @@ public data class MessageDefinition(
      * to one of the alternative responses).
      */
     public val situation: Markdown? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(message.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.situation = situation?.toBuilder()
       return builder
     }
@@ -631,7 +631,7 @@ public data class MessageDefinition(
        * A reference to the message definition that must be adhered to by this supported response.
        */
       public var message: Canonical.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -678,11 +678,11 @@ public data class MessageDefinition(
        */
       public var situation: Markdown.Builder? = null
 
-      public fun build(): AllowedResponse =
+      override fun build(): AllowedResponse =
         AllowedResponse(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           message = message.build(),
           situation = situation?.build(),
         )
@@ -1091,34 +1091,34 @@ public data class MessageDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
         title = title?.build(),
-        replaces = replaces.mapToList { it.build() },
+        replaces = replaces.buildList(),
         status = status,
         experimental = experimental?.build(),
         date = date.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         base = base?.build(),
-        parent = parent.mapToList { it.build() },
+        parent = parent.buildList(),
         event = event,
         category = category,
-        focus = focus.mapToList { it.build() },
+        focus = focus.buildList(),
         responseRequired = responseRequired,
-        allowedResponse = allowedResponse.mapToList { it.build() },
+        allowedResponse = allowedResponse.buildList(),
         graph = graph?.build(),
       )
   }

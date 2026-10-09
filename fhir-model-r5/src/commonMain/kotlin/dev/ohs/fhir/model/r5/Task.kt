@@ -342,15 +342,15 @@ public data class Task(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.instantiatesCanonical = instantiatesCanonical?.toBuilder()
     builder.instantiatesUri = instantiatesUri?.toBuilder()
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.toBuilderList()
     builder.groupIdentifier = groupIdentifier?.toBuilder()
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.partOf = partOf.toBuilderList()
     builder.statusReason = statusReason?.toBuilder()
     builder.businessStatus = businessStatus?.toBuilder()
     builder.priority = priority
@@ -365,17 +365,17 @@ public data class Task(
     builder.authoredOn = authoredOn?.toBuilder()
     builder.lastModified = lastModified?.toBuilder()
     builder.requester = requester?.toBuilder()
-    builder.requestedPerformer = requestedPerformer.mapToMutableList { it.toBuilder() }
+    builder.requestedPerformer = requestedPerformer.toBuilderList()
     builder.owner = owner?.toBuilder()
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
     builder.location = location?.toBuilder()
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.insurance = insurance.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.relevantHistory = relevantHistory.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.toBuilderList()
+    builder.insurance = insurance.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.relevantHistory = relevantHistory.toBuilderList()
     builder.restriction = restriction?.toBuilder()
-    builder.input = input.mapToMutableList { it.toBuilder() }
-    builder.output = output.mapToMutableList { it.toBuilder() }
+    builder.input = input.toBuilderList()
+    builder.output = output.toBuilderList()
     return builder
   }
 
@@ -423,12 +423,12 @@ public data class Task(
     public val function: CodeableConcept? = null,
     /** The actor or entity who performed the task. */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -436,7 +436,7 @@ public data class Task(
     public class Builder(
       /** The actor or entity who performed the task. */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -480,11 +480,11 @@ public data class Task(
       /** A code or description of the performer of the task. */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -558,19 +558,19 @@ public data class Task(
      * is fulfillment is sought for.
      */
     public val recipient: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.repetitions = repetitions?.toBuilder()
       builder.period = period?.toBuilder()
-      builder.recipient = recipient.mapToMutableList { it.toBuilder() }
+      builder.recipient = recipient.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -637,14 +637,14 @@ public data class Task(
        */
       public var recipient: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Restriction =
+      override fun build(): Restriction =
         Restriction(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           repetitions = repetitions?.build(),
           period = period?.build(),
-          recipient = recipient.mapToList { it.build() },
+          recipient = recipient.buildList(),
         )
     }
   }
@@ -699,16 +699,16 @@ public data class Task(
     public val type: CodeableConcept,
     /** The value of the input parameter as a basic type. */
     public val `value`: Value,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type.toBuilder(),
           `value`,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -1076,7 +1076,7 @@ public data class Task(
       public var type: CodeableConcept.Builder,
       /** The value of the input parameter as a basic type. */
       public var `value`: Value,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1117,11 +1117,11 @@ public data class Task(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Input =
+      override fun build(): Input =
         Input(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           `value` = `value`,
         )
@@ -1172,16 +1172,16 @@ public data class Task(
     public val type: CodeableConcept,
     /** The value of the Output parameter as a basic type. */
     public val `value`: Value,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type.toBuilder(),
           `value`,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -1543,7 +1543,7 @@ public data class Task(
       public var type: CodeableConcept.Builder,
       /** The value of the Output parameter as a basic type. */
       public var `value`: Value,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1584,11 +1584,11 @@ public data class Task(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Output =
+      override fun build(): Output =
         Output(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           `value` = `value`,
         )
@@ -1939,15 +1939,15 @@ public data class Task(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         instantiatesCanonical = instantiatesCanonical?.build(),
         instantiatesUri = instantiatesUri?.build(),
-        basedOn = basedOn.mapToList { it.build() },
+        basedOn = basedOn.buildList(),
         groupIdentifier = groupIdentifier?.build(),
-        partOf = partOf.mapToList { it.build() },
+        partOf = partOf.buildList(),
         status = status,
         statusReason = statusReason?.build(),
         businessStatus = businessStatus?.build(),
@@ -1964,17 +1964,17 @@ public data class Task(
         authoredOn = authoredOn?.build(),
         lastModified = lastModified?.build(),
         requester = requester?.build(),
-        requestedPerformer = requestedPerformer.mapToList { it.build() },
+        requestedPerformer = requestedPerformer.buildList(),
         owner = owner?.build(),
-        performer = performer.mapToList { it.build() },
+        performer = performer.buildList(),
         location = location?.build(),
-        reason = reason.mapToList { it.build() },
-        insurance = insurance.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        relevantHistory = relevantHistory.mapToList { it.build() },
+        reason = reason.buildList(),
+        insurance = insurance.buildList(),
+        note = note.buildList(),
+        relevantHistory = relevantHistory.buildList(),
         restriction = restriction?.build(),
-        input = input.mapToList { it.build() },
-        output = output.mapToList { it.build() },
+        input = input.buildList(),
+        output = output.buildList(),
       )
   }
 }

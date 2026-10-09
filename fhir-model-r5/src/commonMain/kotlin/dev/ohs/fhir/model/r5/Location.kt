@@ -263,27 +263,27 @@ public data class Location(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.status = status
     builder.operationalStatus = operationalStatus?.toBuilder()
     builder.name = name?.toBuilder()
-    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.alias = alias.toBuilderList()
     builder.description = description?.toBuilder()
     builder.mode = mode
-    builder.type = type.mapToMutableList { it.toBuilder() }
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.type = type.toBuilderList()
+    builder.contact = contact.toBuilderList()
     builder.address = address?.toBuilder()
     builder.form = form?.toBuilder()
     builder.position = position?.toBuilder()
     builder.managingOrganization = managingOrganization?.toBuilder()
     builder.partOf = partOf?.toBuilder()
-    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
-    builder.hoursOfOperation = hoursOfOperation.mapToMutableList { it.toBuilder() }
-    builder.virtualService = virtualService.mapToMutableList { it.toBuilder() }
-    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.characteristic = characteristic.toBuilderList()
+    builder.hoursOfOperation = hoursOfOperation.toBuilderList()
+    builder.virtualService = virtualService.toBuilderList()
+    builder.endpoint = endpoint.toBuilderList()
     return builder
   }
 
@@ -345,12 +345,12 @@ public data class Location(
      * altitude element in KML (see notes on Location main page).
      */
     public val altitude: Decimal? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(longitude.toBuilder(), latitude.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.altitude = altitude?.toBuilder()
       return builder
     }
@@ -366,7 +366,7 @@ public data class Location(
        * latitude element in KML (see notes on Location main page).
        */
       public var latitude: Decimal.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -413,11 +413,11 @@ public data class Location(
        */
       public var altitude: Decimal.Builder? = null
 
-      public fun build(): Position =
+      override fun build(): Position =
         Position(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           longitude = longitude.build(),
           latitude = latitude.build(),
           altitude = altitude?.build(),
@@ -677,27 +677,27 @@ public data class Location(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         operationalStatus = operationalStatus?.build(),
         name = name?.build(),
-        alias = alias.mapToList { it.build() },
+        alias = alias.buildList(),
         description = description?.build(),
         mode = mode,
-        type = type.mapToList { it.build() },
-        contact = contact.mapToList { it.build() },
+        type = type.buildList(),
+        contact = contact.buildList(),
         address = address?.build(),
         form = form?.build(),
         position = position?.build(),
         managingOrganization = managingOrganization?.build(),
         partOf = partOf?.build(),
-        characteristic = characteristic.mapToList { it.build() },
-        hoursOfOperation = hoursOfOperation.mapToList { it.build() },
-        virtualService = virtualService.mapToList { it.build() },
-        endpoint = endpoint.mapToList { it.build() },
+        characteristic = characteristic.buildList(),
+        hoursOfOperation = hoursOfOperation.buildList(),
+        virtualService = virtualService.buildList(),
+        endpoint = endpoint.buildList(),
       )
   }
 }

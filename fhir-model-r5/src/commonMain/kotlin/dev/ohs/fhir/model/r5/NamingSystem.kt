@@ -428,41 +428,41 @@ public data class NamingSystem(
         status,
         kind,
         date.toBuilder(),
-        uniqueId.mapToMutableList { it.toBuilder() },
+        uniqueId.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.responsible = responsible?.toBuilder()
     builder.type = type?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.topic = topic.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.topic = topic.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
     builder.usage = usage?.toBuilder()
     return builder
   }
@@ -550,16 +550,16 @@ public data class NamingSystem(
      * system.
      */
     public val authoritative: Boolean? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type,
           `value`.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.preferred = preferred?.toBuilder()
       builder.comment = comment?.toBuilder()
       builder.period = period?.toBuilder()
@@ -584,7 +584,7 @@ public data class NamingSystem(
        * contain "\" or "?" or "," since this makes escaping very difficult.
        */
       public var `value`: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -656,11 +656,11 @@ public data class NamingSystem(
        */
       public var authoritative: Boolean.Builder? = null
 
-      public fun build(): UniqueId =
+      override fun build(): UniqueId =
         UniqueId(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
           `value` = `value`.build(),
           preferred = preferred?.build(),
@@ -1119,11 +1119,11 @@ public data class NamingSystem(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name.build(),
@@ -1133,26 +1133,26 @@ public data class NamingSystem(
         experimental = experimental?.build(),
         date = date.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         responsible = responsible?.build(),
         type = type?.build(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        topic = topic.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
         usage = usage?.build(),
-        uniqueId = uniqueId.mapToList { it.build() },
+        uniqueId = uniqueId.buildList(),
       )
   }
 }

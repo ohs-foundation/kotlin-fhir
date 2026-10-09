@@ -380,11 +380,11 @@ public data class PlanDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
@@ -394,25 +394,25 @@ public data class PlanDefinition(
     builder.subject = subject
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.usage = usage?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.topic = topic.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
-    builder.library = library.mapToMutableList { it.toBuilder() }
-    builder.goal = goal.mapToMutableList { it.toBuilder() }
-    builder.action = action.mapToMutableList { it.toBuilder() }
+    builder.topic = topic.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
+    builder.library = library.toBuilderList()
+    builder.goal = goal.toBuilderList()
+    builder.action = action.toBuilderList()
     return builder
   }
 
@@ -486,18 +486,18 @@ public data class PlanDefinition(
     public val documentation: List<RelatedArtifact> = listOf(),
     /** Indicates what should be done and within what timeframe. */
     public val target: List<Target> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(description.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.category = category?.toBuilder()
       builder.priority = priority?.toBuilder()
       builder.start = start?.toBuilder()
-      builder.addresses = addresses.mapToMutableList { it.toBuilder() }
-      builder.documentation = documentation.mapToMutableList { it.toBuilder() }
-      builder.target = target.mapToMutableList { it.toBuilder() }
+      builder.addresses = addresses.toBuilderList()
+      builder.documentation = documentation.toBuilderList()
+      builder.target = target.toBuilderList()
       return builder
     }
 
@@ -556,12 +556,12 @@ public data class PlanDefinition(
       public val detail: Detail? = null,
       /** Indicates the timeframe after the start of the goal in which the goal should be met. */
       public val due: Duration? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.measure = measure?.toBuilder()
         builder.detail = detail
         builder.due = due?.toBuilder()
@@ -597,7 +597,7 @@ public data class PlanDefinition(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -656,11 +656,11 @@ public data class PlanDefinition(
         /** Indicates the timeframe after the start of the goal in which the goal should be met. */
         public var due: Duration.Builder? = null
 
-        public fun build(): Target =
+        override fun build(): Target =
           Target(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             measure = measure?.build(),
             detail = detail,
             due = due?.build(),
@@ -677,7 +677,7 @@ public data class PlanDefinition(
        * If no code is available, use CodeableConcept.text.
        */
       public var description: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -743,18 +743,18 @@ public data class PlanDefinition(
       /** Indicates what should be done and within what timeframe. */
       public var target: MutableList<Target.Builder> = mutableListOf()
 
-      public fun build(): Goal =
+      override fun build(): Goal =
         Goal(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           category = category?.build(),
           description = description.build(),
           priority = priority?.build(),
           start = start?.build(),
-          addresses = addresses.mapToList { it.build() },
-          documentation = documentation.mapToList { it.build() },
-          target = target.mapToList { it.build() },
+          addresses = addresses.buildList(),
+          documentation = documentation.buildList(),
+          target = target.buildList(),
         )
     }
   }
@@ -922,29 +922,29 @@ public data class PlanDefinition(
      * definition.
      */
     public val action: List<Action> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.prefix = prefix?.toBuilder()
       builder.title = title?.toBuilder()
       builder.description = description?.toBuilder()
       builder.textEquivalent = textEquivalent?.toBuilder()
       builder.priority = priority
-      builder.code = code.mapToMutableList { it.toBuilder() }
-      builder.reason = reason.mapToMutableList { it.toBuilder() }
-      builder.documentation = documentation.mapToMutableList { it.toBuilder() }
-      builder.goalId = goalId.mapToMutableList { it.toBuilder() }
+      builder.code = code.toBuilderList()
+      builder.reason = reason.toBuilderList()
+      builder.documentation = documentation.toBuilderList()
+      builder.goalId = goalId.toBuilderList()
       builder.subject = subject
-      builder.trigger = trigger.mapToMutableList { it.toBuilder() }
-      builder.condition = condition.mapToMutableList { it.toBuilder() }
-      builder.input = input.mapToMutableList { it.toBuilder() }
-      builder.output = output.mapToMutableList { it.toBuilder() }
-      builder.relatedAction = relatedAction.mapToMutableList { it.toBuilder() }
+      builder.trigger = trigger.toBuilderList()
+      builder.condition = condition.toBuilderList()
+      builder.input = input.toBuilderList()
+      builder.output = output.toBuilderList()
+      builder.relatedAction = relatedAction.toBuilderList()
       builder.timing = timing
-      builder.participant = participant.mapToMutableList { it.toBuilder() }
+      builder.participant = participant.toBuilderList()
       builder.type = type?.toBuilder()
       builder.groupingBehavior = groupingBehavior
       builder.selectionBehavior = selectionBehavior
@@ -953,8 +953,8 @@ public data class PlanDefinition(
       builder.cardinalityBehavior = cardinalityBehavior
       builder.definition = definition
       builder.transform = transform?.toBuilder()
-      builder.dynamicValue = dynamicValue.mapToMutableList { it.toBuilder() }
-      builder.action = action.mapToMutableList { it.toBuilder() }
+      builder.dynamicValue = dynamicValue.toBuilderList()
+      builder.action = action.toBuilderList()
       return builder
     }
 
@@ -1015,12 +1015,12 @@ public data class PlanDefinition(
        * library referenced by the library element.
        */
       public val expression: Expression? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(kind)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.expression = expression?.toBuilder()
         return builder
       }
@@ -1034,7 +1034,7 @@ public data class PlanDefinition(
          * application and used to describe enter/exit criteria for an action.
          */
         public var kind: Enumeration<ActionConditionKind>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1083,11 +1083,11 @@ public data class PlanDefinition(
          */
         public var expression: Expression.Builder? = null
 
-        public fun build(): Condition =
+        override fun build(): Condition =
           Condition(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             kind = kind,
             expression = expression?.build(),
           )
@@ -1143,16 +1143,16 @@ public data class PlanDefinition(
        * before.
        */
       public val offset: Offset? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             actionId.toBuilder(),
             relationship,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.offset = offset
         return builder
       }
@@ -1183,7 +1183,7 @@ public data class PlanDefinition(
         public var actionId: Id.Builder,
         /** The relationship of this action to the related action. */
         public var relationship: Enumeration<ActionRelationshipType>,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1230,11 +1230,11 @@ public data class PlanDefinition(
          */
         public var offset: Offset? = null
 
-        public fun build(): RelatedAction =
+        override fun build(): RelatedAction =
           RelatedAction(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             actionId = actionId.build(),
             relationship = relationship,
             offset = offset,
@@ -1286,12 +1286,12 @@ public data class PlanDefinition(
       public val type: Enumeration<ActionParticipantType>,
       /** The role the participant should play in performing the described action. */
       public val role: CodeableConcept? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(type)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.role = role?.toBuilder()
         return builder
       }
@@ -1299,7 +1299,7 @@ public data class PlanDefinition(
       public class Builder(
         /** The type of participant in the action. */
         public var type: Enumeration<ActionParticipantType>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1343,11 +1343,11 @@ public data class PlanDefinition(
         /** The role the participant should play in performing the described action. */
         public var role: CodeableConcept.Builder? = null
 
-        public fun build(): Participant =
+        override fun build(): Participant =
           Participant(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type,
             role = role?.build(),
           )
@@ -1422,18 +1422,18 @@ public data class PlanDefinition(
        * library referenced by the library element.
        */
       public val expression: Expression? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.path = path?.toBuilder()
         builder.expression = expression?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1499,11 +1499,11 @@ public data class PlanDefinition(
          */
         public var expression: Expression.Builder? = null
 
-        public fun build(): DynamicValue =
+        override fun build(): DynamicValue =
           DynamicValue(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             path = path?.build(),
             expression = expression?.build(),
           )
@@ -1602,7 +1602,7 @@ public data class PlanDefinition(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1794,28 +1794,28 @@ public data class PlanDefinition(
        */
       public var action: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Action =
+      override fun build(): Action =
         Action(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           prefix = prefix?.build(),
           title = title?.build(),
           description = description?.build(),
           textEquivalent = textEquivalent?.build(),
           priority = priority,
-          code = code.mapToList { it.build() },
-          reason = reason.mapToList { it.build() },
-          documentation = documentation.mapToList { it.build() },
-          goalId = goalId.mapToList { it.build() },
+          code = code.buildList(),
+          reason = reason.buildList(),
+          documentation = documentation.buildList(),
+          goalId = goalId.buildList(),
           subject = subject,
-          trigger = trigger.mapToList { it.build() },
-          condition = condition.mapToList { it.build() },
-          input = input.mapToList { it.build() },
-          output = output.mapToList { it.build() },
-          relatedAction = relatedAction.mapToList { it.build() },
+          trigger = trigger.buildList(),
+          condition = condition.buildList(),
+          input = input.buildList(),
+          output = output.buildList(),
+          relatedAction = relatedAction.buildList(),
           timing = timing,
-          participant = participant.mapToList { it.build() },
+          participant = participant.buildList(),
           type = type?.build(),
           groupingBehavior = groupingBehavior,
           selectionBehavior = selectionBehavior,
@@ -1824,8 +1824,8 @@ public data class PlanDefinition(
           cardinalityBehavior = cardinalityBehavior,
           definition = definition,
           transform = transform?.build(),
-          dynamicValue = dynamicValue.mapToList { it.build() },
-          action = action.mapToList { it.build() },
+          dynamicValue = dynamicValue.buildList(),
+          action = action.buildList(),
         )
     }
   }
@@ -2228,11 +2228,11 @@ public data class PlanDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -2243,25 +2243,25 @@ public data class PlanDefinition(
         subject = subject,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         usage = usage?.build(),
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
-        library = library.mapToList { it.build() },
-        goal = goal.mapToList { it.build() },
-        action = action.mapToList { it.build() },
+        topic = topic.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
+        library = library.buildList(),
+        goal = goal.buildList(),
+        action = action.buildList(),
       )
   }
 }

@@ -382,21 +382,21 @@ public data class CodeSystem(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.caseSensitive = caseSensitive?.toBuilder()
@@ -406,9 +406,9 @@ public data class CodeSystem(
     builder.versionNeeded = versionNeeded?.toBuilder()
     builder.supplements = supplements?.toBuilder()
     builder.count = count?.toBuilder()
-    builder.filter = filter.mapToMutableList { it.toBuilder() }
-    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
-    builder.concept = concept.mapToMutableList { it.toBuilder() }
+    builder.filter = filter.toBuilderList()
+    builder.`property` = `property`.toBuilderList()
+    builder.concept = concept.toBuilderList()
     return builder
   }
 
@@ -466,8 +466,8 @@ public data class CodeSystem(
     public val `operator`: List<Enumeration<FilterOperator>>,
     /** A description of what the value for the filter should be. */
     public val `value`: String,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           code.toBuilder(),
@@ -475,8 +475,8 @@ public data class CodeSystem(
           `value`.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       return builder
     }
@@ -491,7 +491,7 @@ public data class CodeSystem(
       public var `operator`: MutableList<Enumeration<FilterOperator>>,
       /** A description of what the value for the filter should be. */
       public var `value`: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -535,11 +535,11 @@ public data class CodeSystem(
       /** A description of how or why the filter is used. */
       public var description: String.Builder? = null
 
-      public fun build(): Filter =
+      override fun build(): Filter =
         Filter(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           description = description?.build(),
           `operator` = `operator`,
@@ -608,16 +608,16 @@ public data class CodeSystem(
      * system (e.g. a reference to another defined concept).
      */
     public val type: Enumeration<PropertyType>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           code.toBuilder(),
           type,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.uri = uri?.toBuilder()
       builder.description = description?.toBuilder()
       return builder
@@ -634,7 +634,7 @@ public data class CodeSystem(
        * code system (e.g. a reference to another defined concept).
        */
       public var type: Enumeration<PropertyType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -684,11 +684,11 @@ public data class CodeSystem(
       /** A description of the property- why it is defined, and how its value might be used. */
       public var description: String.Builder? = null
 
-      public fun build(): Property =
+      override fun build(): Property =
         Property(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           uri = uri?.build(),
           description = description?.build(),
@@ -770,17 +770,17 @@ public data class CodeSystem(
      * relationships is variable (is-a/contains/categorizes) - see hierarchyMeaning.
      */
     public val concept: List<Concept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.display = display?.toBuilder()
       builder.definition = definition?.toBuilder()
-      builder.designation = designation.mapToMutableList { it.toBuilder() }
-      builder.`property` = `property`.mapToMutableList { it.toBuilder() }
-      builder.concept = concept.mapToMutableList { it.toBuilder() }
+      builder.designation = designation.toBuilderList()
+      builder.`property` = `property`.toBuilderList()
+      builder.concept = concept.toBuilderList()
       return builder
     }
 
@@ -842,12 +842,12 @@ public data class CodeSystem(
       public val use: Coding? = null,
       /** The text value for this designation. */
       public val `value`: String,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(`value`.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.language = language
         builder.use = use?.toBuilder()
         return builder
@@ -856,7 +856,7 @@ public data class CodeSystem(
       public class Builder(
         /** The text value for this designation. */
         public var `value`: String.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -912,11 +912,11 @@ public data class CodeSystem(
          */
         public var use: Coding.Builder? = null
 
-        public fun build(): Designation =
+        override fun build(): Designation =
           Designation(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             language = language,
             use = use?.build(),
             `value` = `value`.build(),
@@ -968,16 +968,16 @@ public data class CodeSystem(
       public val code: Code,
       /** The value of this property. */
       public val `value`: Value,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             code.toBuilder(),
             `value`,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -1037,7 +1037,7 @@ public data class CodeSystem(
         public var code: Code.Builder,
         /** The value of this property. */
         public var `value`: Value,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1078,11 +1078,11 @@ public data class CodeSystem(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Property =
+        override fun build(): Property =
           Property(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code.build(),
             `value` = `value`,
           )
@@ -1092,7 +1092,7 @@ public data class CodeSystem(
     public class Builder(
       /** A code - a text symbol - that uniquely identifies the concept within the code system. */
       public var code: Code.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1165,17 +1165,17 @@ public data class CodeSystem(
        */
       public var concept: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Concept =
+      override fun build(): Concept =
         Concept(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           display = display?.build(),
           definition = definition?.build(),
-          designation = designation.mapToList { it.build() },
-          `property` = `property`.mapToList { it.build() },
-          concept = concept.mapToList { it.build() },
+          designation = designation.buildList(),
+          `property` = `property`.buildList(),
+          concept = concept.buildList(),
         )
     }
   }
@@ -1549,11 +1549,11 @@ public data class CodeSystem(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -1561,10 +1561,10 @@ public data class CodeSystem(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         caseSensitive = caseSensitive?.build(),
@@ -1575,9 +1575,9 @@ public data class CodeSystem(
         content = content,
         supplements = supplements?.build(),
         count = count?.build(),
-        filter = filter.mapToList { it.build() },
-        `property` = `property`.mapToList { it.build() },
-        concept = concept.mapToList { it.build() },
+        filter = filter.buildList(),
+        `property` = `property`.buildList(),
+        concept = concept.buildList(),
       )
   }
 }

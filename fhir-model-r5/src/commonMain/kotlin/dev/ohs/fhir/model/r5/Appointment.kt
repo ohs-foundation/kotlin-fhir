@@ -361,46 +361,46 @@ public data class Appointment(
     val builder =
       Builder(
         status,
-        participant.mapToMutableList { it.toBuilder() },
+        participant.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.cancellationReason = cancellationReason?.toBuilder()
-    builder.`class` = `class`.mapToMutableList { it.toBuilder() }
-    builder.serviceCategory = serviceCategory.mapToMutableList { it.toBuilder() }
-    builder.serviceType = serviceType.mapToMutableList { it.toBuilder() }
-    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.`class` = `class`.toBuilderList()
+    builder.serviceCategory = serviceCategory.toBuilderList()
+    builder.serviceType = serviceType.toBuilderList()
+    builder.specialty = specialty.toBuilderList()
     builder.appointmentType = appointmentType?.toBuilder()
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.toBuilderList()
     builder.priority = priority?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
-    builder.virtualService = virtualService.mapToMutableList { it.toBuilder() }
-    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
+    builder.replaces = replaces.toBuilderList()
+    builder.virtualService = virtualService.toBuilderList()
+    builder.supportingInformation = supportingInformation.toBuilderList()
     builder.previousAppointment = previousAppointment?.toBuilder()
     builder.originatingAppointment = originatingAppointment?.toBuilder()
     builder.start = start?.toBuilder()
     builder.end = end?.toBuilder()
     builder.minutesDuration = minutesDuration?.toBuilder()
-    builder.requestedPeriod = requestedPeriod.mapToMutableList { it.toBuilder() }
-    builder.slot = slot.mapToMutableList { it.toBuilder() }
-    builder.account = account.mapToMutableList { it.toBuilder() }
+    builder.requestedPeriod = requestedPeriod.toBuilderList()
+    builder.slot = slot.toBuilderList()
+    builder.account = account.toBuilderList()
     builder.created = created?.toBuilder()
     builder.cancellationDate = cancellationDate?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.patientInstruction = patientInstruction.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
+    builder.patientInstruction = patientInstruction.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
     builder.subject = subject?.toBuilder()
     builder.recurrenceId = recurrenceId?.toBuilder()
     builder.occurrenceChanged = occurrenceChanged?.toBuilder()
-    builder.recurrenceTemplate = recurrenceTemplate.mapToMutableList { it.toBuilder() }
+    builder.recurrenceTemplate = recurrenceTemplate.toBuilderList()
     return builder
   }
 
@@ -479,13 +479,13 @@ public data class Appointment(
     public val required: Boolean? = null,
     /** Participation status of the actor. */
     public val status: Enumeration<ParticipationStatus>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(status)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.type = type.toBuilderList()
       builder.period = period?.toBuilder()
       builder.actor = actor?.toBuilder()
       builder.required = required?.toBuilder()
@@ -495,7 +495,7 @@ public data class Appointment(
     public class Builder(
       /** Participation status of the actor. */
       public var status: Enumeration<ParticipationStatus>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -573,12 +573,12 @@ public data class Appointment(
        */
       public var required: Boolean.Builder? = null
 
-      public fun build(): Participant =
+      override fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          type = type.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          type = type.buildList(),
           period = period?.build(),
           actor = actor?.build(),
           required = required?.build(),
@@ -662,21 +662,21 @@ public data class Appointment(
      * appointment that would fall on the excluded date in the excludingRecurrenceId property.
      */
     public val excludingRecurrenceId: List<PositiveInt> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(recurrenceType.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.timezone = timezone?.toBuilder()
       builder.lastOccurrenceDate = lastOccurrenceDate?.toBuilder()
       builder.occurrenceCount = occurrenceCount?.toBuilder()
-      builder.occurrenceDate = occurrenceDate.mapToMutableList { it.toBuilder() }
+      builder.occurrenceDate = occurrenceDate.toBuilderList()
       builder.weeklyTemplate = weeklyTemplate?.toBuilder()
       builder.monthlyTemplate = monthlyTemplate?.toBuilder()
       builder.yearlyTemplate = yearlyTemplate?.toBuilder()
-      builder.excludingDate = excludingDate.mapToMutableList { it.toBuilder() }
-      builder.excludingRecurrenceId = excludingRecurrenceId.mapToMutableList { it.toBuilder() }
+      builder.excludingDate = excludingDate.toBuilderList()
+      builder.excludingRecurrenceId = excludingRecurrenceId.toBuilderList()
       return builder
     }
 
@@ -742,12 +742,12 @@ public data class Appointment(
        * interval would be 3.
        */
       public val weekInterval: PositiveInt? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.monday = monday?.toBuilder()
         builder.tuesday = tuesday?.toBuilder()
         builder.wednesday = wednesday?.toBuilder()
@@ -759,7 +759,7 @@ public data class Appointment(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -830,11 +830,11 @@ public data class Appointment(
          */
         public var weekInterval: PositiveInt.Builder? = null
 
-        public fun build(): WeeklyTemplate =
+        override fun build(): WeeklyTemplate =
           WeeklyTemplate(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             monday = monday?.build(),
             tuesday = tuesday?.build(),
             wednesday = wednesday?.build(),
@@ -905,12 +905,12 @@ public data class Appointment(
       public val dayOfWeek: Coding? = null,
       /** Indicates that recurring appointments should occur every nth month. */
       public val monthInterval: PositiveInt,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(monthInterval.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.dayOfMonth = dayOfMonth?.toBuilder()
         builder.nthWeekOfMonth = nthWeekOfMonth?.toBuilder()
         builder.dayOfWeek = dayOfWeek?.toBuilder()
@@ -920,7 +920,7 @@ public data class Appointment(
       public class Builder(
         /** Indicates that recurring appointments should occur every nth month. */
         public var monthInterval: PositiveInt.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -980,11 +980,11 @@ public data class Appointment(
          */
         public var dayOfWeek: Coding.Builder? = null
 
-        public fun build(): MonthlyTemplate =
+        override fun build(): MonthlyTemplate =
           MonthlyTemplate(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             dayOfMonth = dayOfMonth?.build(),
             nthWeekOfMonth = nthWeekOfMonth?.build(),
             dayOfWeek = dayOfWeek?.build(),
@@ -1035,19 +1035,19 @@ public data class Appointment(
       override val modifierExtension: List<Extension> = listOf(),
       /** Appointment recurs every nth year. */
       public val yearInterval: PositiveInt,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(yearInterval.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
       public class Builder(
         /** Appointment recurs every nth year. */
         public var yearInterval: PositiveInt.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1088,11 +1088,11 @@ public data class Appointment(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): YearlyTemplate =
+        override fun build(): YearlyTemplate =
           YearlyTemplate(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             yearInterval = yearInterval.build(),
           )
       }
@@ -1101,7 +1101,7 @@ public data class Appointment(
     public class Builder(
       /** How often the appointment series should recur. */
       public var recurrenceType: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1181,21 +1181,21 @@ public data class Appointment(
        */
       public var excludingRecurrenceId: MutableList<PositiveInt.Builder> = mutableListOf()
 
-      public fun build(): RecurrenceTemplate =
+      override fun build(): RecurrenceTemplate =
         RecurrenceTemplate(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           timezone = timezone?.build(),
           recurrenceType = recurrenceType.build(),
           lastOccurrenceDate = lastOccurrenceDate?.build(),
           occurrenceCount = occurrenceCount?.build(),
-          occurrenceDate = occurrenceDate.mapToList { it.build() },
+          occurrenceDate = occurrenceDate.buildList(),
           weeklyTemplate = weeklyTemplate?.build(),
           monthlyTemplate = monthlyTemplate?.build(),
           yearlyTemplate = yearlyTemplate?.build(),
-          excludingDate = excludingDate.mapToList { it.build() },
-          excludingRecurrenceId = excludingRecurrenceId.mapToList { it.build() },
+          excludingDate = excludingDate.buildList(),
+          excludingRecurrenceId = excludingRecurrenceId.buildList(),
         )
     }
   }
@@ -1565,41 +1565,41 @@ public data class Appointment(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         cancellationReason = cancellationReason?.build(),
-        `class` = `class`.mapToList { it.build() },
-        serviceCategory = serviceCategory.mapToList { it.build() },
-        serviceType = serviceType.mapToList { it.build() },
-        specialty = specialty.mapToList { it.build() },
+        `class` = `class`.buildList(),
+        serviceCategory = serviceCategory.buildList(),
+        serviceType = serviceType.buildList(),
+        specialty = specialty.buildList(),
         appointmentType = appointmentType?.build(),
-        reason = reason.mapToList { it.build() },
+        reason = reason.buildList(),
         priority = priority?.build(),
         description = description?.build(),
-        replaces = replaces.mapToList { it.build() },
-        virtualService = virtualService.mapToList { it.build() },
-        supportingInformation = supportingInformation.mapToList { it.build() },
+        replaces = replaces.buildList(),
+        virtualService = virtualService.buildList(),
+        supportingInformation = supportingInformation.buildList(),
         previousAppointment = previousAppointment?.build(),
         originatingAppointment = originatingAppointment?.build(),
         start = start?.build(),
         end = end?.build(),
         minutesDuration = minutesDuration?.build(),
-        requestedPeriod = requestedPeriod.mapToList { it.build() },
-        slot = slot.mapToList { it.build() },
-        account = account.mapToList { it.build() },
+        requestedPeriod = requestedPeriod.buildList(),
+        slot = slot.buildList(),
+        account = account.buildList(),
         created = created?.build(),
         cancellationDate = cancellationDate?.build(),
-        note = note.mapToList { it.build() },
-        patientInstruction = patientInstruction.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
+        note = note.buildList(),
+        patientInstruction = patientInstruction.buildList(),
+        basedOn = basedOn.buildList(),
         subject = subject?.build(),
-        participant = participant.mapToList { it.build() },
+        participant = participant.buildList(),
         recurrenceId = recurrenceId?.build(),
         occurrenceChanged = occurrenceChanged?.build(),
-        recurrenceTemplate = recurrenceTemplate.mapToList { it.build() },
+        recurrenceTemplate = recurrenceTemplate.buildList(),
       )
   }
 }

@@ -149,17 +149,17 @@ public data class ImmunizationRecommendation(
       Builder(
         patient.toBuilder(),
         date.toBuilder(),
-        recommendation.mapToMutableList { it.toBuilder() },
+        recommendation.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.authority = authority?.toBuilder()
     return builder
   }
@@ -248,27 +248,23 @@ public data class ImmunizationRecommendation(
      * observations, adverse reactions and allergy/intolerance information.
      */
     public val supportingPatientInformation: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(forecastStatus.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.vaccineCode = vaccineCode.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.vaccineCode = vaccineCode.toBuilderList()
       builder.targetDisease = targetDisease?.toBuilder()
-      builder.contraindicatedVaccineCode = contraindicatedVaccineCode.mapToMutableList {
-        it.toBuilder()
-      }
-      builder.forecastReason = forecastReason.mapToMutableList { it.toBuilder() }
-      builder.dateCriterion = dateCriterion.mapToMutableList { it.toBuilder() }
+      builder.contraindicatedVaccineCode = contraindicatedVaccineCode.toBuilderList()
+      builder.forecastReason = forecastReason.toBuilderList()
+      builder.dateCriterion = dateCriterion.toBuilderList()
       builder.description = description?.toBuilder()
       builder.series = series?.toBuilder()
       builder.doseNumber = doseNumber
       builder.seriesDoses = seriesDoses
-      builder.supportingImmunization = supportingImmunization.mapToMutableList { it.toBuilder() }
-      builder.supportingPatientInformation = supportingPatientInformation.mapToMutableList {
-        it.toBuilder()
-      }
+      builder.supportingImmunization = supportingImmunization.toBuilderList()
+      builder.supportingPatientInformation = supportingPatientInformation.toBuilderList()
       return builder
     }
 
@@ -322,12 +318,12 @@ public data class ImmunizationRecommendation(
       public val code: CodeableConcept,
       /** The date whose meaning is specified by dateCriterion.code. */
       public val `value`: DateTime,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(code.toBuilder(), `value`.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -339,7 +335,7 @@ public data class ImmunizationRecommendation(
         public var code: CodeableConcept.Builder,
         /** The date whose meaning is specified by dateCriterion.code. */
         public var `value`: DateTime.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -380,11 +376,11 @@ public data class ImmunizationRecommendation(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): DateCriterion =
+        override fun build(): DateCriterion =
           DateCriterion(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code.build(),
             `value` = `value`.build(),
           )
@@ -440,7 +436,7 @@ public data class ImmunizationRecommendation(
        * Indicates the patient status with respect to the path to immunity for the target disease.
        */
       public var forecastStatus: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -536,23 +532,23 @@ public data class ImmunizationRecommendation(
        */
       public var supportingPatientInformation: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Recommendation =
+      override fun build(): Recommendation =
         Recommendation(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          vaccineCode = vaccineCode.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          vaccineCode = vaccineCode.buildList(),
           targetDisease = targetDisease?.build(),
-          contraindicatedVaccineCode = contraindicatedVaccineCode.mapToList { it.build() },
+          contraindicatedVaccineCode = contraindicatedVaccineCode.buildList(),
           forecastStatus = forecastStatus.build(),
-          forecastReason = forecastReason.mapToList { it.build() },
-          dateCriterion = dateCriterion.mapToList { it.build() },
+          forecastReason = forecastReason.buildList(),
+          dateCriterion = dateCriterion.buildList(),
           description = description?.build(),
           series = series?.build(),
           doseNumber = doseNumber,
           seriesDoses = seriesDoses,
-          supportingImmunization = supportingImmunization.mapToList { it.build() },
-          supportingPatientInformation = supportingPatientInformation.mapToList { it.build() },
+          supportingImmunization = supportingImmunization.buildList(),
+          supportingPatientInformation = supportingPatientInformation.buildList(),
         )
     }
   }
@@ -683,14 +679,14 @@ public data class ImmunizationRecommendation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         patient = patient.build(),
         date = date.build(),
         authority = authority?.build(),
-        recommendation = recommendation.mapToList { it.build() },
+        recommendation = recommendation.buildList(),
       )
   }
 }

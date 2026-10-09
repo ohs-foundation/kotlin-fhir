@@ -236,14 +236,14 @@ public data class RequestOrchestration(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+    builder.instantiatesUri = instantiatesUri.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.replaces = replaces.toBuilderList()
     builder.groupIdentifier = groupIdentifier?.toBuilder()
     builder.priority = priority
     builder.code = code?.toBuilder()
@@ -251,10 +251,10 @@ public data class RequestOrchestration(
     builder.encounter = encounter?.toBuilder()
     builder.authoredOn = authoredOn?.toBuilder()
     builder.author = author?.toBuilder()
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.goal = goal.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.action = action.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.toBuilderList()
+    builder.goal = goal.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.action = action.toBuilderList()
     return builder
   }
 
@@ -424,28 +424,28 @@ public data class RequestOrchestration(
     public val dynamicValue: List<DynamicValue> = listOf(),
     /** Sub actions. */
     public val action: List<Action> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.linkId = linkId?.toBuilder()
       builder.prefix = prefix?.toBuilder()
       builder.title = title?.toBuilder()
       builder.description = description?.toBuilder()
       builder.textEquivalent = textEquivalent?.toBuilder()
       builder.priority = priority
-      builder.code = code.mapToMutableList { it.toBuilder() }
-      builder.documentation = documentation.mapToMutableList { it.toBuilder() }
-      builder.goal = goal.mapToMutableList { it.toBuilder() }
-      builder.condition = condition.mapToMutableList { it.toBuilder() }
-      builder.input = input.mapToMutableList { it.toBuilder() }
-      builder.output = output.mapToMutableList { it.toBuilder() }
-      builder.relatedAction = relatedAction.mapToMutableList { it.toBuilder() }
+      builder.code = code.toBuilderList()
+      builder.documentation = documentation.toBuilderList()
+      builder.goal = goal.toBuilderList()
+      builder.condition = condition.toBuilderList()
+      builder.input = input.toBuilderList()
+      builder.output = output.toBuilderList()
+      builder.relatedAction = relatedAction.toBuilderList()
       builder.timing = timing
       builder.location = location?.toBuilder()
-      builder.participant = participant.mapToMutableList { it.toBuilder() }
+      builder.participant = participant.toBuilderList()
       builder.type = type?.toBuilder()
       builder.groupingBehavior = groupingBehavior
       builder.selectionBehavior = selectionBehavior
@@ -455,8 +455,8 @@ public data class RequestOrchestration(
       builder.resource = resource?.toBuilder()
       builder.definition = definition
       builder.transform = transform?.toBuilder()
-      builder.dynamicValue = dynamicValue.mapToMutableList { it.toBuilder() }
-      builder.action = action.mapToMutableList { it.toBuilder() }
+      builder.dynamicValue = dynamicValue.toBuilderList()
+      builder.action = action.toBuilderList()
       return builder
     }
 
@@ -518,12 +518,12 @@ public data class RequestOrchestration(
        * library referenced by the library element.
        */
       public val expression: Expression? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(kind)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.expression = expression?.toBuilder()
         return builder
       }
@@ -537,7 +537,7 @@ public data class RequestOrchestration(
          * application and used to describe enter/exit criteria for an action.
          */
         public var kind: Enumeration<ActionConditionKind>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -587,11 +587,11 @@ public data class RequestOrchestration(
          */
         public var expression: Expression.Builder? = null
 
-        public fun build(): Condition =
+        override fun build(): Condition =
           Condition(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             kind = kind,
             expression = expression?.build(),
           )
@@ -654,19 +654,19 @@ public data class RequestOrchestration(
        * input to a different action
        */
       public val relatedData: Id? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.title = title?.toBuilder()
         builder.requirement = requirement?.toBuilder()
         builder.relatedData = relatedData?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -726,11 +726,11 @@ public data class RequestOrchestration(
          */
         public var relatedData: Id.Builder? = null
 
-        public fun build(): Input =
+        override fun build(): Input =
           Input(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             title = title?.build(),
             requirement = requirement?.build(),
             relatedData = relatedData?.build(),
@@ -794,19 +794,19 @@ public data class RequestOrchestration(
        * output of a different action
        */
       public val relatedData: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.title = title?.toBuilder()
         builder.requirement = requirement?.toBuilder()
         builder.relatedData = relatedData?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -866,11 +866,11 @@ public data class RequestOrchestration(
          */
         public var relatedData: String.Builder? = null
 
-        public fun build(): Output =
+        override fun build(): Output =
           Output(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             title = title?.build(),
             requirement = requirement?.build(),
             relatedData = relatedData?.build(),
@@ -929,16 +929,16 @@ public data class RequestOrchestration(
        * before.
        */
       public val offset: Offset? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             targetId.toBuilder(),
             relationship,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.endRelationship = endRelationship
         builder.offset = offset
         return builder
@@ -970,7 +970,7 @@ public data class RequestOrchestration(
         public var targetId: Id.Builder,
         /** The relationship of this action to the related action. */
         public var relationship: Enumeration<ActionRelationshipType>,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1020,11 +1020,11 @@ public data class RequestOrchestration(
          */
         public var offset: Offset? = null
 
-        public fun build(): RelatedAction =
+        override fun build(): RelatedAction =
           RelatedAction(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             targetId = targetId.build(),
             relationship = relationship,
             endRelationship = endRelationship,
@@ -1092,12 +1092,12 @@ public data class RequestOrchestration(
       public val function: CodeableConcept? = null,
       /** A reference to the actual participant. */
       public val actor: Actor? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.type = type
         builder.typeCanonical = typeCanonical?.toBuilder()
         builder.typeReference = typeReference?.toBuilder()
@@ -1128,7 +1128,7 @@ public data class RequestOrchestration(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1194,11 +1194,11 @@ public data class RequestOrchestration(
         /** A reference to the actual participant. */
         public var actor: Actor? = null
 
-        public fun build(): Participant =
+        override fun build(): Participant =
           Participant(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type,
             typeCanonical = typeCanonical?.build(),
             typeReference = typeReference?.build(),
@@ -1277,18 +1277,18 @@ public data class RequestOrchestration(
        * library referenced by the library element.
        */
       public val expression: Expression? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.path = path?.toBuilder()
         builder.expression = expression?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1354,11 +1354,11 @@ public data class RequestOrchestration(
          */
         public var expression: Expression.Builder? = null
 
-        public fun build(): DynamicValue =
+        override fun build(): DynamicValue =
           DynamicValue(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             path = path?.build(),
             expression = expression?.build(),
           )
@@ -1434,7 +1434,7 @@ public data class RequestOrchestration(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1629,27 +1629,27 @@ public data class RequestOrchestration(
       /** Sub actions. */
       public var action: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Action =
+      override fun build(): Action =
         Action(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           linkId = linkId?.build(),
           prefix = prefix?.build(),
           title = title?.build(),
           description = description?.build(),
           textEquivalent = textEquivalent?.build(),
           priority = priority,
-          code = code.mapToList { it.build() },
-          documentation = documentation.mapToList { it.build() },
-          goal = goal.mapToList { it.build() },
-          condition = condition.mapToList { it.build() },
-          input = input.mapToList { it.build() },
-          output = output.mapToList { it.build() },
-          relatedAction = relatedAction.mapToList { it.build() },
+          code = code.buildList(),
+          documentation = documentation.buildList(),
+          goal = goal.buildList(),
+          condition = condition.buildList(),
+          input = input.buildList(),
+          output = output.buildList(),
+          relatedAction = relatedAction.buildList(),
           timing = timing,
           location = location?.build(),
-          participant = participant.mapToList { it.build() },
+          participant = participant.buildList(),
           type = type?.build(),
           groupingBehavior = groupingBehavior,
           selectionBehavior = selectionBehavior,
@@ -1659,8 +1659,8 @@ public data class RequestOrchestration(
           resource = resource?.build(),
           definition = definition,
           transform = transform?.build(),
-          dynamicValue = dynamicValue.mapToList { it.build() },
-          action = action.mapToList { it.build() },
+          dynamicValue = dynamicValue.buildList(),
+          action = action.buildList(),
         )
     }
   }
@@ -1871,14 +1871,14 @@ public data class RequestOrchestration(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-        instantiatesUri = instantiatesUri.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        replaces = replaces.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        instantiatesCanonical = instantiatesCanonical.buildList(),
+        instantiatesUri = instantiatesUri.buildList(),
+        basedOn = basedOn.buildList(),
+        replaces = replaces.buildList(),
         groupIdentifier = groupIdentifier?.build(),
         status = status,
         intent = intent,
@@ -1888,10 +1888,10 @@ public data class RequestOrchestration(
         encounter = encounter?.build(),
         authoredOn = authoredOn?.build(),
         author = author?.build(),
-        reason = reason.mapToList { it.build() },
-        goal = goal.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        action = action.mapToList { it.build() },
+        reason = reason.buildList(),
+        goal = goal.buildList(),
+        note = note.buildList(),
+        action = action.buildList(),
       )
   }
 }

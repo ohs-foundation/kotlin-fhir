@@ -329,11 +329,11 @@ public data class Requirements(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.name = name?.toBuilder()
@@ -341,17 +341,17 @@ public data class Requirements(
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
-    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
-    builder.reference = reference.mapToMutableList { it.toBuilder() }
-    builder.actor = actor.mapToMutableList { it.toBuilder() }
-    builder.statement = statement.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.toBuilderList()
+    builder.reference = reference.toBuilderList()
+    builder.actor = actor.toBuilderList()
+    builder.statement = statement.toBuilderList()
     return builder
   }
 
@@ -460,20 +460,20 @@ public data class Requirements(
      * knows who it is if it matters.
      */
     public val source: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(key.toBuilder(), requirement.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.label = label?.toBuilder()
       builder.conformance = conformance.toMutableList()
       builder.conditionality = conditionality?.toBuilder()
       builder.derivedFrom = derivedFrom?.toBuilder()
       builder.parent = parent?.toBuilder()
-      builder.satisfiedBy = satisfiedBy.mapToMutableList { it.toBuilder() }
-      builder.reference = reference.mapToMutableList { it.toBuilder() }
-      builder.source = source.mapToMutableList { it.toBuilder() }
+      builder.satisfiedBy = satisfiedBy.toBuilderList()
+      builder.reference = reference.toBuilderList()
+      builder.source = source.toBuilderList()
       return builder
     }
 
@@ -486,7 +486,7 @@ public data class Requirements(
       public var key: Id.Builder,
       /** The actual requirement for human consumption. */
       public var requirement: Markdown.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -592,11 +592,11 @@ public data class Requirements(
        */
       public var source: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Statement =
+      override fun build(): Statement =
         Statement(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           key = key.build(),
           label = label?.build(),
           conformance = conformance,
@@ -604,9 +604,9 @@ public data class Requirements(
           requirement = requirement.build(),
           derivedFrom = derivedFrom?.build(),
           parent = parent?.build(),
-          satisfiedBy = satisfiedBy.mapToList { it.build() },
-          reference = reference.mapToList { it.build() },
-          source = source.mapToList { it.build() },
+          satisfiedBy = satisfiedBy.buildList(),
+          reference = reference.buildList(),
+          source = source.buildList(),
         )
     }
   }
@@ -955,11 +955,11 @@ public data class Requirements(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -968,17 +968,17 @@ public data class Requirements(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
-        derivedFrom = derivedFrom.mapToList { it.build() },
-        reference = reference.mapToList { it.build() },
-        actor = actor.mapToList { it.build() },
-        statement = statement.mapToList { it.build() },
+        derivedFrom = derivedFrom.buildList(),
+        reference = reference.buildList(),
+        actor = actor.buildList(),
+        statement = statement.buildList(),
       )
   }
 }

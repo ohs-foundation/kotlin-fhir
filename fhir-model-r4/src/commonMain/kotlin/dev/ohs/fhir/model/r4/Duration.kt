@@ -78,7 +78,7 @@ public data class Duration(
   override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`?.toBuilder()
     builder.comparator = comparator
     builder.unit = unit?.toBuilder()
@@ -142,7 +142,7 @@ public data class Duration(
     open override fun build(): Duration =
       Duration(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`?.build(),
         comparator = comparator,
         unit = unit?.build(),

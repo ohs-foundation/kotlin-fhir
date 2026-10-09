@@ -253,22 +253,22 @@ public data class Goal(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.achievementStatus = achievementStatus?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.continuous = continuous?.toBuilder()
     builder.priority = priority?.toBuilder()
     builder.start = start
-    builder.target = target.mapToMutableList { it.toBuilder() }
+    builder.target = target.toBuilderList()
     builder.statusDate = statusDate?.toBuilder()
     builder.statusReason = statusReason?.toBuilder()
     builder.source = source?.toBuilder()
-    builder.addresses = addresses.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.outcome = outcome.mapToMutableList { it.toBuilder() }
+    builder.addresses = addresses.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.outcome = outcome.toBuilderList()
     return builder
   }
 
@@ -330,12 +330,12 @@ public data class Goal(
     public val detail: Detail? = null,
     /** Indicates either the date or the duration after start by which the goal should be met. */
     public val due: Due? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.measure = measure?.toBuilder()
       builder.detail = detail
       builder.due = due
@@ -416,7 +416,7 @@ public data class Goal(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -479,11 +479,11 @@ public data class Goal(
       /** Indicates either the date or the duration after start by which the goal should be met. */
       public var due: Due? = null
 
-      public fun build(): Target =
+      override fun build(): Target =
         Target(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           measure = measure?.build(),
           detail = detail,
           due = due,
@@ -747,25 +747,25 @@ public data class Goal(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         lifecycleStatus = lifecycleStatus,
         achievementStatus = achievementStatus?.build(),
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         continuous = continuous?.build(),
         priority = priority?.build(),
         description = description.build(),
         subject = subject.build(),
         start = start,
-        target = target.mapToList { it.build() },
+        target = target.buildList(),
         statusDate = statusDate?.build(),
         statusReason = statusReason?.build(),
         source = source?.build(),
-        addresses = addresses.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        outcome = outcome.mapToList { it.build() },
+        addresses = addresses.buildList(),
+        note = note.buildList(),
+        outcome = outcome.buildList(),
       )
   }
 }

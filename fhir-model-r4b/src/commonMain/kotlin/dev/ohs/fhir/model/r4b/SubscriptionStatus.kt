@@ -170,14 +170,14 @@ public data class SubscriptionStatus(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.status = status
     builder.eventsSinceSubscriptionStart = eventsSinceSubscriptionStart?.toBuilder()
-    builder.notificationEvent = notificationEvent.mapToMutableList { it.toBuilder() }
+    builder.notificationEvent = notificationEvent.toBuilderList()
     builder.topic = topic?.toBuilder()
-    builder.error = error.mapToMutableList { it.toBuilder() }
+    builder.error = error.toBuilderList()
     return builder
   }
 
@@ -239,15 +239,15 @@ public data class SubscriptionStatus(
      * however it MAY refer to non-FHIR objects.
      */
     public val additionalContext: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(eventNumber.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.timestamp = timestamp?.toBuilder()
       builder.focus = focus?.toBuilder()
-      builder.additionalContext = additionalContext.mapToMutableList { it.toBuilder() }
+      builder.additionalContext = additionalContext.toBuilderList()
       return builder
     }
 
@@ -257,7 +257,7 @@ public data class SubscriptionStatus(
        * 64-bit integer value, encoded as a string.
        */
       public var eventNumber: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -314,15 +314,15 @@ public data class SubscriptionStatus(
        */
       public var additionalContext: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): NotificationEvent =
+      override fun build(): NotificationEvent =
         NotificationEvent(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           eventNumber = eventNumber.build(),
           timestamp = timestamp?.build(),
           focus = focus?.build(),
-          additionalContext = additionalContext.mapToList { it.build() },
+          additionalContext = additionalContext.buildList(),
         )
     }
   }
@@ -476,16 +476,16 @@ public data class SubscriptionStatus(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         status = status,
         type = type,
         eventsSinceSubscriptionStart = eventsSinceSubscriptionStart?.build(),
-        notificationEvent = notificationEvent.mapToList { it.build() },
+        notificationEvent = notificationEvent.buildList(),
         subscription = subscription.build(),
         topic = topic?.build(),
-        error = error.mapToList { it.build() },
+        error = error.buildList(),
       )
   }
 }

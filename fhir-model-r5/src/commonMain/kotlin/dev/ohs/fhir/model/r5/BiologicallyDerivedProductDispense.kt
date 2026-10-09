@@ -189,21 +189,21 @@ public data class BiologicallyDerivedProductDispense(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
     builder.originRelationshipType = originRelationshipType?.toBuilder()
     builder.matchStatus = matchStatus?.toBuilder()
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
     builder.location = location?.toBuilder()
     builder.quantity = quantity?.toBuilder()
     builder.preparedDate = preparedDate?.toBuilder()
     builder.whenHandedOver = whenHandedOver?.toBuilder()
     builder.destination = destination?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
     builder.usageInstruction = usageInstruction?.toBuilder()
     return builder
   }
@@ -252,12 +252,12 @@ public data class BiologicallyDerivedProductDispense(
     public val function: CodeableConcept? = null,
     /** Identifies the person responsible for the action. */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -265,7 +265,7 @@ public data class BiologicallyDerivedProductDispense(
     public class Builder(
       /** Identifies the person responsible for the action. */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -309,11 +309,11 @@ public data class BiologicallyDerivedProductDispense(
       /** Identifies the function of the performer during the dispense. */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -495,24 +495,24 @@ public data class BiologicallyDerivedProductDispense(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        basedOn = basedOn.buildList(),
+        partOf = partOf.buildList(),
         status = status,
         originRelationshipType = originRelationshipType?.build(),
         product = product.build(),
         patient = patient.build(),
         matchStatus = matchStatus?.build(),
-        performer = performer.mapToList { it.build() },
+        performer = performer.buildList(),
         location = location?.build(),
         quantity = quantity?.build(),
         preparedDate = preparedDate?.build(),
         whenHandedOver = whenHandedOver?.build(),
         destination = destination?.build(),
-        note = note.mapToList { it.build() },
+        note = note.buildList(),
         usageInstruction = usageInstruction?.build(),
       )
   }

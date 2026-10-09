@@ -434,21 +434,21 @@ public data class OperationDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
@@ -458,8 +458,8 @@ public data class OperationDefinition(
     builder.resource = resource.toMutableList()
     builder.inputProfile = inputProfile?.toBuilder()
     builder.outputProfile = outputProfile?.toBuilder()
-    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
-    builder.overload = overload.mapToMutableList { it.toBuilder() }
+    builder.parameter = parameter.toBuilderList()
+    builder.overload = overload.toBuilderList()
     return builder
   }
 
@@ -586,8 +586,8 @@ public data class OperationDefinition(
      * described, but can be to allow a profile to be defined.
      */
     public val part: List<Parameter> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           name.toBuilder(),
@@ -596,17 +596,17 @@ public data class OperationDefinition(
           max.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.scope = scope.toMutableList()
       builder.documentation = documentation?.toBuilder()
       builder.type = type
       builder.allowedType = allowedType.toMutableList()
-      builder.targetProfile = targetProfile.mapToMutableList { it.toBuilder() }
+      builder.targetProfile = targetProfile.toBuilderList()
       builder.searchType = searchType
       builder.binding = binding?.toBuilder()
-      builder.referencedFrom = referencedFrom.mapToMutableList { it.toBuilder() }
-      builder.part = part.mapToMutableList { it.toBuilder() }
+      builder.referencedFrom = referencedFrom.toBuilderList()
+      builder.part = part.toBuilderList()
       return builder
     }
 
@@ -665,16 +665,16 @@ public data class OperationDefinition(
        * The reference may be version-specific or not.
        */
       public val valueSet: Canonical,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             strength,
             valueSet.toBuilder(),
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -694,7 +694,7 @@ public data class OperationDefinition(
          * description. The reference may be version-specific or not.
          */
         public var valueSet: Canonical.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -735,11 +735,11 @@ public data class OperationDefinition(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Binding =
+        override fun build(): Binding =
           Binding(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             strength = strength,
             valueSet = valueSet.build(),
           )
@@ -799,12 +799,12 @@ public data class OperationDefinition(
        * resource.
        */
       public val sourceId: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(source.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.sourceId = sourceId?.toBuilder()
         return builder
       }
@@ -815,7 +815,7 @@ public data class OperationDefinition(
          * resource parameter that is expected to contain a reference to this resource.
          */
         public var source: String.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -862,11 +862,11 @@ public data class OperationDefinition(
          */
         public var sourceId: String.Builder? = null
 
-        public fun build(): ReferencedFrom =
+        override fun build(): ReferencedFrom =
           ReferencedFrom(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             source = source.build(),
             sourceId = sourceId?.build(),
           )
@@ -895,7 +895,7 @@ public data class OperationDefinition(
        * The maximum number of times this element is permitted to appear in the request or response.
        */
       public var max: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1007,11 +1007,11 @@ public data class OperationDefinition(
        */
       public var part: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Parameter =
+      override fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name.build(),
           use = use,
           scope = scope,
@@ -1020,11 +1020,11 @@ public data class OperationDefinition(
           documentation = documentation?.build(),
           type = type,
           allowedType = allowedType,
-          targetProfile = targetProfile.mapToList { it.build() },
+          targetProfile = targetProfile.buildList(),
           searchType = searchType,
           binding = binding?.build(),
-          referencedFrom = referencedFrom.mapToList { it.build() },
-          part = part.mapToList { it.build() },
+          referencedFrom = referencedFrom.buildList(),
+          part = part.buildList(),
         )
     }
   }
@@ -1076,18 +1076,18 @@ public data class OperationDefinition(
     public val parameterName: List<String> = listOf(),
     /** Comments to go on overload. */
     public val comment: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.parameterName = parameterName.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.parameterName = parameterName.toBuilderList()
       builder.comment = comment?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1134,12 +1134,12 @@ public data class OperationDefinition(
       /** Comments to go on overload. */
       public var comment: String.Builder? = null
 
-      public fun build(): Overload =
+      override fun build(): Overload =
         Overload(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          parameterName = parameterName.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          parameterName = parameterName.buildList(),
           comment = comment?.build(),
         )
     }
@@ -1579,11 +1579,11 @@ public data class OperationDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name.build(),
@@ -1593,10 +1593,10 @@ public data class OperationDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
@@ -1610,8 +1610,8 @@ public data class OperationDefinition(
         instance = instance.build(),
         inputProfile = inputProfile?.build(),
         outputProfile = outputProfile?.build(),
-        parameter = parameter.mapToList { it.build() },
-        overload = overload.mapToList { it.build() },
+        parameter = parameter.buildList(),
+        overload = overload.buildList(),
       )
   }
 }

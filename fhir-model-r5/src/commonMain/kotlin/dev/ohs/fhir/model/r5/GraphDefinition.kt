@@ -336,27 +336,27 @@ public data class GraphDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
     builder.start = start?.toBuilder()
-    builder.node = node.mapToMutableList { it.toBuilder() }
-    builder.link = link.mapToMutableList { it.toBuilder() }
+    builder.node = node.toBuilderList()
+    builder.link = link.toBuilderList()
     return builder
   }
 
@@ -408,16 +408,16 @@ public data class GraphDefinition(
     public val type: Enumeration<VersionIndependentResourceTypesAll>,
     /** Profile for the target resource. */
     public val profile: Canonical? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           nodeId.toBuilder(),
           type,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.profile = profile?.toBuilder()
       return builder
@@ -428,7 +428,7 @@ public data class GraphDefinition(
       public var nodeId: Id.Builder,
       /** Type of resource this link refers to. */
       public var type: Enumeration<VersionIndependentResourceTypesAll>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -475,11 +475,11 @@ public data class GraphDefinition(
       /** Profile for the target resource. */
       public var profile: Canonical.Builder? = null
 
-      public fun build(): Node =
+      override fun build(): Node =
         Node(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           nodeId = nodeId.build(),
           description = description?.build(),
           type = type,
@@ -556,19 +556,19 @@ public data class GraphDefinition(
     public val params: String? = null,
     /** Compartment Consistency Rules. */
     public val compartment: List<Compartment> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(sourceId.toBuilder(), targetId.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.min = min?.toBuilder()
       builder.max = max?.toBuilder()
       builder.path = path?.toBuilder()
       builder.sliceName = sliceName?.toBuilder()
       builder.params = params?.toBuilder()
-      builder.compartment = compartment.mapToMutableList { it.toBuilder() }
+      builder.compartment = compartment.toBuilderList()
       return builder
     }
 
@@ -627,8 +627,8 @@ public data class GraphDefinition(
       public val expression: String? = null,
       /** Documentation for FHIRPath expression. */
       public val description: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             use,
@@ -636,8 +636,8 @@ public data class GraphDefinition(
             code,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.expression = expression?.toBuilder()
         builder.description = description?.toBuilder()
         return builder
@@ -655,7 +655,7 @@ public data class GraphDefinition(
         public var rule: Enumeration<GraphCompartmentRule>,
         /** Identifies the compartment. */
         public var code: Enumeration<CompartmentType>,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -702,11 +702,11 @@ public data class GraphDefinition(
         /** Documentation for FHIRPath expression. */
         public var description: String.Builder? = null
 
-        public fun build(): Compartment =
+        override fun build(): Compartment =
           Compartment(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             use = use,
             rule = rule,
             code = code,
@@ -721,7 +721,7 @@ public data class GraphDefinition(
       public var sourceId: Id.Builder,
       /** The target node for this link. */
       public var targetId: Id.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -794,11 +794,11 @@ public data class GraphDefinition(
       /** Compartment Consistency Rules. */
       public var compartment: MutableList<Compartment.Builder> = mutableListOf()
 
-      public fun build(): Link =
+      override fun build(): Link =
         Link(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           min = min?.build(),
           max = max?.build(),
@@ -807,7 +807,7 @@ public data class GraphDefinition(
           sliceName = sliceName?.build(),
           targetId = targetId.build(),
           params = params?.build(),
-          compartment = compartment.mapToList { it.build() },
+          compartment = compartment.buildList(),
         )
     }
   }
@@ -1151,11 +1151,11 @@ public data class GraphDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name.build(),
@@ -1164,16 +1164,16 @@ public data class GraphDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         start = start?.build(),
-        node = node.mapToList { it.build() },
-        link = link.mapToList { it.build() },
+        node = node.buildList(),
+        link = link.buildList(),
       )
   }
 }

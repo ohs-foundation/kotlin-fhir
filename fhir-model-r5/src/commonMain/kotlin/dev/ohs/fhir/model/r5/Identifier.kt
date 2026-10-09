@@ -100,11 +100,11 @@ public data class Identifier(
    * reflecting the name or other textual information about the assigning organization.
    */
   public val assigner: Reference? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.use = use
     builder.type = type?.toBuilder()
     builder.system = system?.toBuilder()
@@ -114,7 +114,7 @@ public data class Identifier(
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -189,10 +189,10 @@ public data class Identifier(
      */
     public open var assigner: Reference.Builder? = null
 
-    public open fun build(): Identifier =
+    open override fun build(): Identifier =
       Identifier(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         use = use,
         type = type?.build(),
         system = system?.build(),

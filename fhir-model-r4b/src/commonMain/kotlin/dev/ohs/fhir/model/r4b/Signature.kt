@@ -107,16 +107,16 @@ public data class Signature(
    * Signature" form.
    */
   public val `data`: Base64Binary? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder =
       Builder(
-        type.mapToMutableList { it.toBuilder() },
+        type.toBuilderList(),
         `when`.toBuilder(),
         who.toBuilder(),
       )
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.onBehalfOf = onBehalfOf?.toBuilder()
     builder.targetFormat = targetFormat?.toBuilder()
     builder.sigFormat = sigFormat?.toBuilder()
@@ -147,7 +147,7 @@ public data class Signature(
      * This should agree with the information in the signature.
      */
     public open var who: Reference.Builder,
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -202,11 +202,11 @@ public data class Signature(
      */
     public open var `data`: Base64Binary.Builder? = null
 
-    public open fun build(): Signature =
+    open override fun build(): Signature =
       Signature(
         id = id,
-        extension = extension.mapToList { it.build() },
-        type = type.mapToList { it.build() },
+        extension = extension.buildList(),
+        type = type.buildList(),
         `when` = `when`.build(),
         who = who.build(),
         onBehalfOf = onBehalfOf?.build(),

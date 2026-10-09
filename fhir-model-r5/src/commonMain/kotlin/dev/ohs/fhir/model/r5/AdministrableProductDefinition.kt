@@ -212,25 +212,25 @@ public data class AdministrableProductDefinition(
     val builder =
       Builder(
         status,
-        routeOfAdministration.mapToMutableList { it.toBuilder() },
+        routeOfAdministration.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.formOf = formOf.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.formOf = formOf.toBuilderList()
     builder.administrableDoseForm = administrableDoseForm?.toBuilder()
     builder.unitOfPresentation = unitOfPresentation?.toBuilder()
-    builder.producedFrom = producedFrom.mapToMutableList { it.toBuilder() }
-    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.producedFrom = producedFrom.toBuilderList()
+    builder.ingredient = ingredient.toBuilderList()
     builder.device = device?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    builder.`property` = `property`.toBuilderList()
     return builder
   }
 
@@ -280,12 +280,12 @@ public data class AdministrableProductDefinition(
     public val `value`: Value? = null,
     /** The status of characteristic e.g. assigned or pending. */
     public val status: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.`value` = `value`
       builder.status = status?.toBuilder()
       return builder
@@ -347,7 +347,7 @@ public data class AdministrableProductDefinition(
     public class Builder(
       /** A code expressing the type of characteristic. */
       public var type: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -394,11 +394,11 @@ public data class AdministrableProductDefinition(
       /** The status of characteristic e.g. assigned or pending. */
       public var status: CodeableConcept.Builder? = null
 
-      public fun build(): Property =
+      override fun build(): Property =
         Property(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           `value` = `value`,
           status = status?.build(),
@@ -473,18 +473,18 @@ public data class AdministrableProductDefinition(
     public val maxTreatmentPeriod: Duration? = null,
     /** A species for which this route applies. */
     public val targetSpecies: List<TargetSpecies> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.firstDose = firstDose?.toBuilder()
       builder.maxSingleDose = maxSingleDose?.toBuilder()
       builder.maxDosePerDay = maxDosePerDay?.toBuilder()
       builder.maxDosePerTreatmentPeriod = maxDosePerTreatmentPeriod?.toBuilder()
       builder.maxTreatmentPeriod = maxTreatmentPeriod?.toBuilder()
-      builder.targetSpecies = targetSpecies.mapToMutableList { it.toBuilder() }
+      builder.targetSpecies = targetSpecies.toBuilderList()
       return builder
     }
 
@@ -534,13 +534,13 @@ public data class AdministrableProductDefinition(
       public val code: CodeableConcept,
       /** A species specific time during which consumption of animal product is not appropriate. */
       public val withdrawalPeriod: List<WithdrawalPeriod> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(code.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.withdrawalPeriod = withdrawalPeriod.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.withdrawalPeriod = withdrawalPeriod.toBuilderList()
         return builder
       }
 
@@ -596,12 +596,12 @@ public data class AdministrableProductDefinition(
         public val `value`: Quantity,
         /** Extra information about the withdrawal period. */
         public val supportingInformation: String? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(tissue.toBuilder(), `value`.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.supportingInformation = supportingInformation?.toBuilder()
           return builder
         }
@@ -614,7 +614,7 @@ public data class AdministrableProductDefinition(
           public var tissue: CodeableConcept.Builder,
           /** A value for the time. */
           public var `value`: Quantity.Builder,
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -658,11 +658,11 @@ public data class AdministrableProductDefinition(
           /** Extra information about the withdrawal period. */
           public var supportingInformation: String.Builder? = null
 
-          public fun build(): WithdrawalPeriod =
+          override fun build(): WithdrawalPeriod =
             WithdrawalPeriod(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               tissue = tissue.build(),
               `value` = `value`.build(),
               supportingInformation = supportingInformation?.build(),
@@ -673,7 +673,7 @@ public data class AdministrableProductDefinition(
       public class Builder(
         /** Coded expression for the species. */
         public var code: CodeableConcept.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -719,13 +719,13 @@ public data class AdministrableProductDefinition(
          */
         public var withdrawalPeriod: MutableList<WithdrawalPeriod.Builder> = mutableListOf()
 
-        public fun build(): TargetSpecies =
+        override fun build(): TargetSpecies =
           TargetSpecies(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code.build(),
-            withdrawalPeriod = withdrawalPeriod.mapToList { it.build() },
+            withdrawalPeriod = withdrawalPeriod.buildList(),
           )
       }
     }
@@ -733,7 +733,7 @@ public data class AdministrableProductDefinition(
     public class Builder(
       /** Coded expression for the route. */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -801,18 +801,18 @@ public data class AdministrableProductDefinition(
       /** A species for which this route applies. */
       public var targetSpecies: MutableList<TargetSpecies.Builder> = mutableListOf()
 
-      public fun build(): RouteOfAdministration =
+      override fun build(): RouteOfAdministration =
         RouteOfAdministration(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           firstDose = firstDose?.build(),
           maxSingleDose = maxSingleDose?.build(),
           maxDosePerDay = maxDosePerDay?.build(),
           maxDosePerTreatmentPeriod = maxDosePerTreatmentPeriod?.build(),
           maxTreatmentPeriod = maxTreatmentPeriod?.build(),
-          targetSpecies = targetSpecies.mapToList { it.build() },
+          targetSpecies = targetSpecies.buildList(),
         )
     }
   }
@@ -1011,20 +1011,20 @@ public data class AdministrableProductDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        formOf = formOf.mapToList { it.build() },
+        formOf = formOf.buildList(),
         administrableDoseForm = administrableDoseForm?.build(),
         unitOfPresentation = unitOfPresentation?.build(),
-        producedFrom = producedFrom.mapToList { it.build() },
-        ingredient = ingredient.mapToList { it.build() },
+        producedFrom = producedFrom.buildList(),
+        ingredient = ingredient.buildList(),
         device = device?.build(),
         description = description?.build(),
-        `property` = `property`.mapToList { it.build() },
-        routeOfAdministration = routeOfAdministration.mapToList { it.build() },
+        `property` = `property`.buildList(),
+        routeOfAdministration = routeOfAdministration.buildList(),
       )
   }
 }

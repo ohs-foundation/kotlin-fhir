@@ -85,21 +85,21 @@ public data class ExtendedContactDetail(
    * If the details have multiple periods, then enter in a new ExtendedContact with the new period.
    */
   public val period: Period? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.purpose = purpose?.toBuilder()
-    builder.name = name.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.name = name.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
     builder.address = address?.toBuilder()
     builder.organization = organization?.toBuilder()
     builder.period = period?.toBuilder()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -160,13 +160,13 @@ public data class ExtendedContactDetail(
      */
     public open var period: Period.Builder? = null
 
-    public open fun build(): ExtendedContactDetail =
+    open override fun build(): ExtendedContactDetail =
       ExtendedContactDetail(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         purpose = purpose?.build(),
-        name = name.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
+        name = name.buildList(),
+        telecom = telecom.buildList(),
         address = address?.build(),
         organization = organization?.build(),
         period = period?.build(),

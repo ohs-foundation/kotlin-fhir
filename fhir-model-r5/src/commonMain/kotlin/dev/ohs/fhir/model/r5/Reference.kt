@@ -125,11 +125,11 @@ public data class Reference(
    * to identify what's being referenced, not to fully describe it.
    */
   public val display: String? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.reference = reference?.toBuilder()
     builder.type = type?.toBuilder()
     builder.identifier = identifier?.toBuilder()
@@ -137,7 +137,7 @@ public data class Reference(
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -241,10 +241,10 @@ public data class Reference(
      */
     public open var display: String.Builder? = null
 
-    public open fun build(): Reference =
+    open override fun build(): Reference =
       Reference(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         reference = reference?.build(),
         type = type?.build(),
         identifier = identifier?.build(),

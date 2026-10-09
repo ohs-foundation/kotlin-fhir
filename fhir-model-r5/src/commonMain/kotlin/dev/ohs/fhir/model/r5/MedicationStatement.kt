@@ -282,24 +282,22 @@ public data class MedicationStatement(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     builder.effective = effective
     builder.dateAsserted = dateAsserted?.toBuilder()
-    builder.informationSource = informationSource.mapToMutableList { it.toBuilder() }
-    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.relatedClinicalInformation = relatedClinicalInformation.mapToMutableList {
-      it.toBuilder()
-    }
+    builder.informationSource = informationSource.toBuilderList()
+    builder.derivedFrom = derivedFrom.toBuilderList()
+    builder.reason = reason.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.relatedClinicalInformation = relatedClinicalInformation.toBuilderList()
     builder.renderedDosageInstruction = renderedDosageInstruction?.toBuilder()
-    builder.dosage = dosage.mapToMutableList { it.toBuilder() }
+    builder.dosage = dosage.toBuilderList()
     builder.adherence = adherence?.toBuilder()
     return builder
   }
@@ -353,12 +351,12 @@ public data class MedicationStatement(
      * for performing the event at all is captured in reasonCode, not here.
      */
     public val reason: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.reason = reason?.toBuilder()
       return builder
     }
@@ -366,7 +364,7 @@ public data class MedicationStatement(
     public class Builder(
       /** Type of the adherence for the medication. */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -415,11 +413,11 @@ public data class MedicationStatement(
        */
       public var reason: CodeableConcept.Builder? = null
 
-      public fun build(): Adherence =
+      override fun build(): Adherence =
         Adherence(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           reason = reason?.build(),
         )
@@ -700,25 +698,25 @@ public data class MedicationStatement(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        partOf = partOf.buildList(),
         status = status,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         medication = medication.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
         effective = effective,
         dateAsserted = dateAsserted?.build(),
-        informationSource = informationSource.mapToList { it.build() },
-        derivedFrom = derivedFrom.mapToList { it.build() },
-        reason = reason.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        relatedClinicalInformation = relatedClinicalInformation.mapToList { it.build() },
+        informationSource = informationSource.buildList(),
+        derivedFrom = derivedFrom.buildList(),
+        reason = reason.buildList(),
+        note = note.buildList(),
+        relatedClinicalInformation = relatedClinicalInformation.buildList(),
         renderedDosageInstruction = renderedDosageInstruction?.build(),
-        dosage = dosage.mapToList { it.build() },
+        dosage = dosage.buildList(),
         adherence = adherence?.build(),
       )
   }

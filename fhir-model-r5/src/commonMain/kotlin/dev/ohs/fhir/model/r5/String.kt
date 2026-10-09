@@ -50,7 +50,7 @@ public open class String(
   open override val extension: List<Extension> = listOf(),
   /** The actual value */
   public open val `value`: kotlin.String? = null,
-) : PrimitiveType() {
+) : PrimitiveType(), FhirBuildable {
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is String) return false
@@ -68,10 +68,10 @@ public open class String(
     return result
   }
 
-  public open fun toBuilder(): Builder {
+  open override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -83,7 +83,7 @@ public open class String(
     return null
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: kotlin.String? = null
 
@@ -104,10 +104,10 @@ public open class String(
     /** The actual value */
     public open var `value`: kotlin.String? = null
 
-    public open fun build(): String =
+    open override fun build(): String =
       String(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

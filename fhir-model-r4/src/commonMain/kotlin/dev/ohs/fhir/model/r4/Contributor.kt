@@ -58,16 +58,16 @@ public data class Contributor(
   public val name: String,
   /** Contact details to assist a user in finding and communicating with the contributor. */
   public val contact: List<ContactDetail> = listOf(),
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder =
       Builder(
         type,
         name.toBuilder(),
       )
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.contact = contact.toBuilderList()
     return builder
   }
 
@@ -76,7 +76,7 @@ public data class Contributor(
     public open var type: Enumeration<ContributorType>,
     /** The name of the individual or organization responsible for the contribution. */
     public open var name: String.Builder,
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -100,13 +100,13 @@ public data class Contributor(
     /** Contact details to assist a user in finding and communicating with the contributor. */
     public open var contact: MutableList<ContactDetail.Builder> = mutableListOf()
 
-    public open fun build(): Contributor =
+    open override fun build(): Contributor =
       Contributor(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         type = type,
         name = name.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
       )
   }
 }

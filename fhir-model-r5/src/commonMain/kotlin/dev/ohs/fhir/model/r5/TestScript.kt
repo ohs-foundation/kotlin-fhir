@@ -404,33 +404,33 @@ public data class TestScript(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
-    builder.origin = origin.mapToMutableList { it.toBuilder() }
-    builder.destination = destination.mapToMutableList { it.toBuilder() }
+    builder.origin = origin.toBuilderList()
+    builder.destination = destination.toBuilderList()
     builder.metadata = metadata?.toBuilder()
-    builder.scope = scope.mapToMutableList { it.toBuilder() }
-    builder.fixture = fixture.mapToMutableList { it.toBuilder() }
-    builder.profile = profile.mapToMutableList { it.toBuilder() }
-    builder.variable = variable.mapToMutableList { it.toBuilder() }
+    builder.scope = scope.toBuilderList()
+    builder.fixture = fixture.toBuilderList()
+    builder.profile = profile.toBuilderList()
+    builder.variable = variable.toBuilderList()
     builder.setup = setup?.toBuilder()
-    builder.test = test.mapToMutableList { it.toBuilder() }
+    builder.test = test.toBuilderList()
     builder.teardown = teardown?.toBuilder()
     return builder
   }
@@ -502,12 +502,12 @@ public data class TestScript(
      * value.
      */
     public val url: Url? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(index.toBuilder(), profile.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.url = url?.toBuilder()
       return builder
     }
@@ -534,7 +534,7 @@ public data class TestScript(
        * Must be a "sender"/"client" profile.
        */
       public var profile: Coding.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -583,11 +583,11 @@ public data class TestScript(
        */
       public var url: Url.Builder? = null
 
-      public fun build(): Origin =
+      override fun build(): Origin =
         Origin(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           index = index.build(),
           profile = profile.build(),
           url = url?.build(),
@@ -663,12 +663,12 @@ public data class TestScript(
      * value.
      */
     public val url: Url? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(index.toBuilder(), profile.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.url = url?.toBuilder()
       return builder
     }
@@ -695,7 +695,7 @@ public data class TestScript(
        * Must be a "receiver"/"server" profile.
        */
       public var profile: Coding.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -744,11 +744,11 @@ public data class TestScript(
        */
       public var url: Url.Builder? = null
 
-      public fun build(): Destination =
+      override fun build(): Destination =
         Destination(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           index = index.build(),
           profile = profile.build(),
           url = url?.build(),
@@ -817,13 +817,13 @@ public data class TestScript(
      * script.
      */
     public val capability: List<Capability>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(capability.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(capability.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.link = link.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.link = link.toBuilderList()
       return builder
     }
 
@@ -871,12 +871,12 @@ public data class TestScript(
       public val url: Uri,
       /** Short description of the link. */
       public val description: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(url.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.description = description?.toBuilder()
         return builder
       }
@@ -884,7 +884,7 @@ public data class TestScript(
       public class Builder(
         /** URL to a particular requirement or feature within the FHIR specification. */
         public var url: Uri.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -928,11 +928,11 @@ public data class TestScript(
         /** Short description of the link. */
         public var description: String.Builder? = null
 
-        public fun build(): Link =
+        override fun build(): Link =
           Link(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             url = url.build(),
             description = description?.build(),
           )
@@ -1014,16 +1014,16 @@ public data class TestScript(
        * reference pointed to by this element.
        */
       public val capabilities: Canonical,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(required.toBuilder(), validated.toBuilder(), capabilities.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.description = description?.toBuilder()
-        builder.origin = origin.mapToMutableList { it.toBuilder() }
+        builder.origin = origin.toBuilderList()
         builder.destination = destination?.toBuilder()
-        builder.link = link.mapToMutableList { it.toBuilder() }
+        builder.link = link.toBuilderList()
         return builder
       }
 
@@ -1047,7 +1047,7 @@ public data class TestScript(
          * reference pointed to by this element.
          */
         public var capabilities: Canonical.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1105,17 +1105,17 @@ public data class TestScript(
          */
         public var link: MutableList<Uri.Builder> = mutableListOf()
 
-        public fun build(): Capability =
+        override fun build(): Capability =
           Capability(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             required = required.build(),
             validated = validated.build(),
             description = description?.build(),
-            origin = origin.mapToList { it.build() },
+            origin = origin.buildList(),
             destination = destination?.build(),
-            link = link.mapToList { it.build() },
+            link = link.buildList(),
             capabilities = capabilities.build(),
           )
       }
@@ -1138,7 +1138,7 @@ public data class TestScript(
        * the test script.
        */
       public var capability: MutableList<Capability.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1182,13 +1182,13 @@ public data class TestScript(
       /** A link to the FHIR specification that this test is covering. */
       public var link: MutableList<Link.Builder> = mutableListOf()
 
-      public fun build(): Metadata =
+      override fun build(): Metadata =
         Metadata(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          link = link.mapToList { it.build() },
-          capability = capability.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          link = link.buildList(),
+          capability = capability.buildList(),
         )
     }
   }
@@ -1254,12 +1254,12 @@ public data class TestScript(
      * (Note, this may involve pii/phi data).
      */
     public val phase: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(artifact.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.conformance = conformance?.toBuilder()
       builder.phase = phase?.toBuilder()
       return builder
@@ -1271,7 +1271,7 @@ public data class TestScript(
        * version-specific.
        */
       public var artifact: Canonical.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1327,11 +1327,11 @@ public data class TestScript(
        */
       public var phase: CodeableConcept.Builder? = null
 
-      public fun build(): Scope =
+      override fun build(): Scope =
         Scope(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           artifact = artifact.build(),
           conformance = conformance?.build(),
           phase = phase?.build(),
@@ -1401,12 +1401,12 @@ public data class TestScript(
      * See the [Resource List](resourcelist.html) for complete list of resource types.
      */
     public val resource: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(autocreate.toBuilder(), autodelete.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.resource = resource?.toBuilder()
       return builder
     }
@@ -1424,7 +1424,7 @@ public data class TestScript(
        * operation is required for this fixture in the TestScript.teardown section.
        */
       public var autodelete: Boolean.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1473,11 +1473,11 @@ public data class TestScript(
        */
       public var resource: Reference.Builder? = null
 
-      public fun build(): Fixture =
+      override fun build(): Fixture =
         Fixture(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           autocreate = autocreate.build(),
           autodelete = autodelete.build(),
           resource = resource?.build(),
@@ -1588,12 +1588,12 @@ public data class TestScript(
      * fixture created by responseId of the `action.operation` element.
      */
     public val sourceId: Id? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(name.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.defaultValue = defaultValue?.toBuilder()
       builder.description = description?.toBuilder()
       builder.expression = expression?.toBuilder()
@@ -1613,7 +1613,7 @@ public data class TestScript(
        * need to be replaced by the variable value before the operation is executed.
        */
       public var name: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1715,11 +1715,11 @@ public data class TestScript(
        */
       public var sourceId: Id.Builder? = null
 
-      public fun build(): Variable =
+      override fun build(): Variable =
         Variable(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name.build(),
           defaultValue = defaultValue?.build(),
           description = description?.build(),
@@ -1779,12 +1779,12 @@ public data class TestScript(
      * number of variables.
      */
     public val action: List<Action>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(action.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(action.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -1838,12 +1838,12 @@ public data class TestScript(
        * executed operation must always be maintained by the test engine.
        */
       public val assert: Assert? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.operation = operation?.toBuilder()
         builder.assert = assert?.toBuilder()
         return builder
@@ -2048,12 +2048,12 @@ public data class TestScript(
          * with the variable values at runtime before sending the request.
          */
         public val url: String? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(encodeRequestUrl.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.type = type?.toBuilder()
           builder.resource = resource?.toBuilder()
           builder.label = label?.toBuilder()
@@ -2064,7 +2064,7 @@ public data class TestScript(
           builder.method = method
           builder.origin = origin?.toBuilder()
           builder.params = params?.toBuilder()
-          builder.requestHeader = requestHeader.mapToMutableList { it.toBuilder() }
+          builder.requestHeader = requestHeader.toBuilderList()
           builder.requestId = requestId?.toBuilder()
           builder.responseId = responseId?.toBuilder()
           builder.sourceId = sourceId?.toBuilder()
@@ -2128,12 +2128,12 @@ public data class TestScript(
            * variable placeholders with the variable values at runtime before sending the request.
            */
           public val `value`: String,
-        ) : BackboneElement() {
-          public fun toBuilder(): Builder {
+        ) : BackboneElement(), FhirBuildable {
+          override fun toBuilder(): Builder {
             val builder = Builder(`field`.toBuilder(), `value`.toBuilder())
             builder.id = id
-            builder.extension = extension.mapToMutableList { it.toBuilder() }
-            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.extension = extension.toBuilderList()
+            builder.modifierExtension = modifierExtension.toBuilderList()
             return builder
           }
 
@@ -2154,7 +2154,7 @@ public data class TestScript(
              * request.
              */
             public var `value`: String.Builder,
-          ) {
+          ) : FhirBuilder {
             /**
              * Unique id for the element within a resource (for internal references). This may be
              * any string value that does not contain spaces.
@@ -2196,11 +2196,11 @@ public data class TestScript(
              */
             public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-            public fun build(): RequestHeader =
+            override fun build(): RequestHeader =
               RequestHeader(
                 id = id,
-                extension = extension.mapToList { it.build() },
-                modifierExtension = modifierExtension.mapToList { it.build() },
+                extension = extension.buildList(),
+                modifierExtension = modifierExtension.buildList(),
                 `field` = `field`.build(),
                 `value` = `value`.build(),
               )
@@ -2214,7 +2214,7 @@ public data class TestScript(
            * with a server that does not support encoded url paths.
            */
           public var encodeRequestUrl: Boolean.Builder
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -2426,11 +2426,11 @@ public data class TestScript(
            */
           public var url: String.Builder? = null
 
-          public fun build(): Operation =
+          override fun build(): Operation =
             Operation(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               type = type?.build(),
               resource = resource?.build(),
               label = label?.build(),
@@ -2442,7 +2442,7 @@ public data class TestScript(
               method = method,
               origin = origin?.build(),
               params = params?.build(),
-              requestHeader = requestHeader.mapToList { it.build() },
+              requestHeader = requestHeader.buildList(),
               requestId = requestId?.build(),
               responseId = responseId?.build(),
               sourceId = sourceId?.build(),
@@ -2717,12 +2717,12 @@ public data class TestScript(
          * executable/executed TestScript and TestReport tests to these requirements.
          */
         public val requirement: List<Requirement> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(stopTestOnFail.toBuilder(), warningOnly.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.label = label?.toBuilder()
           builder.description = description?.toBuilder()
           builder.direction = direction
@@ -2745,7 +2745,7 @@ public data class TestScript(
           builder.sourceId = sourceId?.toBuilder()
           builder.validateProfileId = validateProfileId?.toBuilder()
           builder.`value` = `value`?.toBuilder()
-          builder.requirement = requirement.mapToMutableList { it.toBuilder() }
+          builder.requirement = requirement.toBuilderList()
           return builder
         }
 
@@ -2793,12 +2793,12 @@ public data class TestScript(
           override val modifierExtension: List<Extension> = listOf(),
           /** Link or reference providing traceability to the testing requirement for this test. */
           public val link: Link? = null,
-        ) : BackboneElement() {
-          public fun toBuilder(): Builder {
+        ) : BackboneElement(), FhirBuildable {
+          override fun toBuilder(): Builder {
             val builder = Builder()
             builder.id = id
-            builder.extension = extension.mapToMutableList { it.toBuilder() }
-            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.extension = extension.toBuilderList()
+            builder.modifierExtension = modifierExtension.toBuilderList()
             builder.link = link
             return builder
           }
@@ -2825,7 +2825,7 @@ public data class TestScript(
             }
           }
 
-          public class Builder() {
+          public class Builder() : FhirBuilder {
             /**
              * Unique id for the element within a resource (for internal references). This may be
              * any string value that does not contain spaces.
@@ -2872,11 +2872,11 @@ public data class TestScript(
              */
             public var link: Link? = null
 
-            public fun build(): Requirement =
+            override fun build(): Requirement =
               Requirement(
                 id = id,
-                extension = extension.mapToList { it.build() },
-                modifierExtension = modifierExtension.mapToList { it.build() },
+                extension = extension.buildList(),
+                modifierExtension = modifierExtension.buildList(),
                 link = link,
               )
           }
@@ -2900,7 +2900,7 @@ public data class TestScript(
            * it, we could choose to issue a warning.
            */
           public var warningOnly: Boolean.Builder,
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -3170,11 +3170,11 @@ public data class TestScript(
            */
           public var requirement: MutableList<Requirement.Builder> = mutableListOf()
 
-          public fun build(): Assert =
+          override fun build(): Assert =
             Assert(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               label = label?.build(),
               description = description?.build(),
               direction = direction,
@@ -3199,12 +3199,12 @@ public data class TestScript(
               validateProfileId = validateProfileId?.build(),
               `value` = `value`?.build(),
               warningOnly = warningOnly.build(),
-              requirement = requirement.mapToList { it.build() },
+              requirement = requirement.buildList(),
             )
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -3257,11 +3257,11 @@ public data class TestScript(
          */
         public var assert: Assert.Builder? = null
 
-        public fun build(): Action =
+        override fun build(): Action =
           Action(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             operation = operation?.build(),
             assert = assert?.build(),
           )
@@ -3276,7 +3276,7 @@ public data class TestScript(
        * any number of variables.
        */
       public var action: MutableList<Action.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -3317,12 +3317,12 @@ public data class TestScript(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Setup =
+      override fun build(): Setup =
         Setup(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          action = action.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          action = action.buildList(),
         )
     }
   }
@@ -3378,12 +3378,12 @@ public data class TestScript(
      * number of variables.
      */
     public val action: List<Action>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(action.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(action.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       builder.description = description?.toBuilder()
       return builder
@@ -3439,18 +3439,18 @@ public data class TestScript(
        * executed operation must always be maintained by the test engine.
        */
       public val assert: Setup.Action.Assert? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.operation = operation?.toBuilder()
         builder.assert = assert?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -3503,11 +3503,11 @@ public data class TestScript(
          */
         public var assert: Setup.Action.Assert.Builder? = null
 
-        public fun build(): Action =
+        override fun build(): Action =
           Action(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             operation = operation?.build(),
             assert = assert?.build(),
           )
@@ -3522,7 +3522,7 @@ public data class TestScript(
        * any number of variables.
        */
       public var action: MutableList<Action.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -3571,14 +3571,14 @@ public data class TestScript(
        */
       public var description: String.Builder? = null
 
-      public fun build(): Test =
+      override fun build(): Test =
         Test(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name?.build(),
           description = description?.build(),
-          action = action.mapToList { it.build() },
+          action = action.buildList(),
         )
     }
   }
@@ -3633,12 +3633,12 @@ public data class TestScript(
      * number of variables.
      */
     public val action: List<Action>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(action.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(action.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -3684,19 +3684,19 @@ public data class TestScript(
       override val modifierExtension: List<Extension> = listOf(),
       /** An operation would involve a REST request to a server. */
       public val operation: Setup.Action.Operation,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(operation.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
       public class Builder(
         /** An operation would involve a REST request to a server. */
         public var operation: Setup.Action.Operation.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -3737,11 +3737,11 @@ public data class TestScript(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Action =
+        override fun build(): Action =
           Action(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             operation = operation.build(),
           )
       }
@@ -3755,7 +3755,7 @@ public data class TestScript(
        * any number of variables.
        */
       public var action: MutableList<Action.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -3796,12 +3796,12 @@ public data class TestScript(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Teardown =
+      override fun build(): Teardown =
         Teardown(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          action = action.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          action = action.buildList(),
         )
     }
   }
@@ -4205,11 +4205,11 @@ public data class TestScript(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name.build(),
@@ -4218,22 +4218,22 @@ public data class TestScript(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
-        origin = origin.mapToList { it.build() },
-        destination = destination.mapToList { it.build() },
+        origin = origin.buildList(),
+        destination = destination.buildList(),
         metadata = metadata?.build(),
-        scope = scope.mapToList { it.build() },
-        fixture = fixture.mapToList { it.build() },
-        profile = profile.mapToList { it.build() },
-        variable = variable.mapToList { it.build() },
+        scope = scope.buildList(),
+        fixture = fixture.buildList(),
+        profile = profile.buildList(),
+        variable = variable.buildList(),
         setup = setup?.build(),
-        test = test.mapToList { it.build() },
+        test = test.buildList(),
         teardown = teardown?.build(),
       )
   }

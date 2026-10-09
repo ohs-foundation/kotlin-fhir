@@ -67,17 +67,17 @@ public data class Period(
    * has an end value of 2012-02-03.
    */
   public val end: DateTime? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.start = start?.toBuilder()
     builder.end = end?.toBuilder()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -115,10 +115,10 @@ public data class Period(
      */
     public open var end: DateTime.Builder? = null
 
-    public open fun build(): Period =
+    open override fun build(): Period =
       Period(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         start = start?.build(),
         end = end?.build(),
       )

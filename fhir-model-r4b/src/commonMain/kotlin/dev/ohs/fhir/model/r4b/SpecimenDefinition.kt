@@ -153,15 +153,15 @@ public data class SpecimenDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.identifier = identifier?.toBuilder()
     builder.typeCollected = typeCollected?.toBuilder()
-    builder.patientPreparation = patientPreparation.mapToMutableList { it.toBuilder() }
+    builder.patientPreparation = patientPreparation.toBuilderList()
     builder.timeAspect = timeAspect?.toBuilder()
-    builder.collection = collection.mapToMutableList { it.toBuilder() }
-    builder.typeTested = typeTested.mapToMutableList { it.toBuilder() }
+    builder.collection = collection.toBuilderList()
+    builder.typeTested = typeTested.toBuilderList()
     return builder
   }
 
@@ -227,19 +227,19 @@ public data class SpecimenDefinition(
      * interval, prior the testing process.
      */
     public val handling: List<Handling> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(preference)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.isDerived = isDerived?.toBuilder()
       builder.type = type?.toBuilder()
       builder.container = container?.toBuilder()
       builder.requirement = requirement?.toBuilder()
       builder.retentionTime = retentionTime?.toBuilder()
-      builder.rejectionCriterion = rejectionCriterion.mapToMutableList { it.toBuilder() }
-      builder.handling = handling.mapToMutableList { it.toBuilder() }
+      builder.rejectionCriterion = rejectionCriterion.toBuilderList()
+      builder.handling = handling.toBuilderList()
       return builder
     }
 
@@ -302,19 +302,19 @@ public data class SpecimenDefinition(
       public val additive: List<Additive> = listOf(),
       /** Special processing that should be applied to the container for this kind of specimen. */
       public val preparation: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.material = material?.toBuilder()
         builder.type = type?.toBuilder()
         builder.cap = cap?.toBuilder()
         builder.description = description?.toBuilder()
         builder.capacity = capacity?.toBuilder()
         builder.minimumVolume = minimumVolume
-        builder.additive = additive.mapToMutableList { it.toBuilder() }
+        builder.additive = additive.toBuilderList()
         builder.preparation = preparation?.toBuilder()
         return builder
       }
@@ -367,12 +367,12 @@ public data class SpecimenDefinition(
          * specimen. Examples: Formalin, Citrate, EDTA.
          */
         public val additive: Additive,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(additive)
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           return builder
         }
 
@@ -406,7 +406,7 @@ public data class SpecimenDefinition(
            * specimen. Examples: Formalin, Citrate, EDTA.
            */
           public var additive: Additive
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -447,11 +447,11 @@ public data class SpecimenDefinition(
            */
           public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-          public fun build(): Container.Additive =
+          override fun build(): Container.Additive =
             Container.Additive(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               additive = additive,
             )
         }
@@ -480,7 +480,7 @@ public data class SpecimenDefinition(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -548,18 +548,18 @@ public data class SpecimenDefinition(
         /** Special processing that should be applied to the container for this kind of specimen. */
         public var preparation: String.Builder? = null
 
-        public fun build(): Container =
+        override fun build(): Container =
           Container(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             material = material?.build(),
             type = type?.build(),
             cap = cap?.build(),
             description = description?.build(),
             capacity = capacity?.build(),
             minimumVolume = minimumVolume,
-            additive = additive.mapToList { it.build() },
+            additive = additive.buildList(),
             preparation = preparation?.build(),
           )
       }
@@ -622,12 +622,12 @@ public data class SpecimenDefinition(
        * instance, 'Protect from light exposure'.
        */
       public val instruction: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.temperatureQualifier = temperatureQualifier?.toBuilder()
         builder.temperatureRange = temperatureRange?.toBuilder()
         builder.maxDuration = maxDuration?.toBuilder()
@@ -635,7 +635,7 @@ public data class SpecimenDefinition(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -694,11 +694,11 @@ public data class SpecimenDefinition(
          */
         public var instruction: String.Builder? = null
 
-        public fun build(): Handling =
+        override fun build(): Handling =
           Handling(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             temperatureQualifier = temperatureQualifier?.build(),
             temperatureRange = temperatureRange?.build(),
             maxDuration = maxDuration?.build(),
@@ -710,7 +710,7 @@ public data class SpecimenDefinition(
     public class Builder(
       /** The preference for this type of conditioned specimen. */
       public var preference: Enumeration<SpecimenContainedPreference>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -778,19 +778,19 @@ public data class SpecimenDefinition(
        */
       public var handling: MutableList<Handling.Builder> = mutableListOf()
 
-      public fun build(): TypeTested =
+      override fun build(): TypeTested =
         TypeTested(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           isDerived = isDerived?.build(),
           type = type?.build(),
           preference = preference,
           container = container?.build(),
           requirement = requirement?.build(),
           retentionTime = retentionTime?.build(),
-          rejectionCriterion = rejectionCriterion.mapToList { it.build() },
-          handling = handling.mapToList { it.build() },
+          rejectionCriterion = rejectionCriterion.buildList(),
+          handling = handling.buildList(),
         )
     }
   }
@@ -926,15 +926,15 @@ public data class SpecimenDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         identifier = identifier?.build(),
         typeCollected = typeCollected?.build(),
-        patientPreparation = patientPreparation.mapToList { it.build() },
+        patientPreparation = patientPreparation.buildList(),
         timeAspect = timeAspect?.build(),
-        collection = collection.mapToList { it.build() },
-        typeTested = typeTested.mapToList { it.build() },
+        collection = collection.buildList(),
+        typeTested = typeTested.buildList(),
       )
   }
 }

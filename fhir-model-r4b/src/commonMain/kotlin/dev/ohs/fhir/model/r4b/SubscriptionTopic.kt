@@ -313,29 +313,29 @@ public data class SubscriptionTopic(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.title = title?.toBuilder()
-    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.toBuilderList()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.resourceTrigger = resourceTrigger.mapToMutableList { it.toBuilder() }
-    builder.eventTrigger = eventTrigger.mapToMutableList { it.toBuilder() }
-    builder.canFilterBy = canFilterBy.mapToMutableList { it.toBuilder() }
-    builder.notificationShape = notificationShape.mapToMutableList { it.toBuilder() }
+    builder.resourceTrigger = resourceTrigger.toBuilderList()
+    builder.eventTrigger = eventTrigger.toBuilderList()
+    builder.canFilterBy = canFilterBy.toBuilderList()
+    builder.notificationShape = notificationShape.toBuilderList()
     return builder
   }
 
@@ -417,12 +417,12 @@ public data class SubscriptionTopic(
      * FHIRPath expression with %previous and %current vars.
      */
     public val fhirPathCriteria: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(resource.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.supportedInteraction = supportedInteraction.toMutableList()
       builder.queryCriteria = queryCriteria?.toBuilder()
@@ -505,12 +505,12 @@ public data class SubscriptionTopic(
        * either one evaluates to true.
        */
       public val requireBoth: Boolean? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.previous = previous?.toBuilder()
         builder.resultForCreate = resultForCreate
         builder.current = current?.toBuilder()
@@ -519,7 +519,7 @@ public data class SubscriptionTopic(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -597,11 +597,11 @@ public data class SubscriptionTopic(
          */
         public var requireBoth: Boolean.Builder? = null
 
-        public fun build(): QueryCriteria =
+        override fun build(): QueryCriteria =
           QueryCriteria(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             previous = previous?.build(),
             resultForCreate = resultForCreate,
             current = current?.build(),
@@ -620,7 +620,7 @@ public data class SubscriptionTopic(
        * href="elementdefinition-definitions.html#ElementDefinition.type.code">ElementDefinition.type.code</a>.
        */
       public var resource: Uri.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -691,11 +691,11 @@ public data class SubscriptionTopic(
        */
       public var fhirPathCriteria: String.Builder? = null
 
-      public fun build(): ResourceTrigger =
+      override fun build(): ResourceTrigger =
         ResourceTrigger(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           resource = resource.build(),
           supportedInteraction = supportedInteraction,
@@ -766,12 +766,12 @@ public data class SubscriptionTopic(
      * href="elementdefinition-definitions.html#ElementDefinition.type.code">ElementDefinition.type.code</a>.
      */
     public val resource: Uri,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(event.toBuilder(), resource.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       return builder
     }
@@ -789,7 +789,7 @@ public data class SubscriptionTopic(
        * href="elementdefinition-definitions.html#ElementDefinition.type.code">ElementDefinition.type.code</a>.
        */
       public var resource: Uri.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -841,11 +841,11 @@ public data class SubscriptionTopic(
        */
       public var description: Markdown.Builder? = null
 
-      public fun build(): EventTrigger =
+      override fun build(): EventTrigger =
         EventTrigger(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           event = event.build(),
           resource = resource.build(),
@@ -934,12 +934,12 @@ public data class SubscriptionTopic(
      * modifiers defined on that SearchParameter.
      */
     public val modifier: List<Enumeration<SubscriptionSearchModifier>> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(filterParameter.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.resource = resource?.toBuilder()
       builder.filterDefinition = filterDefinition?.toBuilder()
@@ -957,7 +957,7 @@ public data class SubscriptionTopic(
        * modifiers.
        */
       public var filterParameter: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1032,11 +1032,11 @@ public data class SubscriptionTopic(
        */
       public var modifier: MutableList<Enumeration<SubscriptionSearchModifier>> = mutableListOf()
 
-      public fun build(): CanFilterBy =
+      override fun build(): CanFilterBy =
         CanFilterBy(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           resource = resource?.build(),
           filterParameter = filterParameter.build(),
@@ -1117,14 +1117,14 @@ public data class SubscriptionTopic(
      * without them.
      */
     public val revInclude: List<String> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(resource.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.include = include.mapToMutableList { it.toBuilder() }
-      builder.revInclude = revInclude.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.include = include.toBuilderList()
+      builder.revInclude = revInclude.toBuilderList()
       return builder
     }
 
@@ -1143,7 +1143,7 @@ public data class SubscriptionTopic(
        * href="elementdefinition-definitions.html#ElementDefinition.type.code">ElementDefinition.type.code</a>.
        */
       public var resource: Uri.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1200,14 +1200,14 @@ public data class SubscriptionTopic(
        */
       public var revInclude: MutableList<String.Builder> = mutableListOf()
 
-      public fun build(): NotificationShape =
+      override fun build(): NotificationShape =
         NotificationShape(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           resource = resource.build(),
-          include = include.mapToList { it.build() },
-          revInclude = revInclude.mapToList { it.build() },
+          include = include.buildList(),
+          revInclude = revInclude.buildList(),
         )
     }
   }
@@ -1511,31 +1511,31 @@ public data class SubscriptionTopic(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         title = title?.build(),
-        derivedFrom = derivedFrom.mapToList { it.build() },
+        derivedFrom = derivedFrom.buildList(),
         status = status,
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        resourceTrigger = resourceTrigger.mapToList { it.build() },
-        eventTrigger = eventTrigger.mapToList { it.build() },
-        canFilterBy = canFilterBy.mapToList { it.build() },
-        notificationShape = notificationShape.mapToList { it.build() },
+        resourceTrigger = resourceTrigger.buildList(),
+        eventTrigger = eventTrigger.buildList(),
+        canFilterBy = canFilterBy.buildList(),
+        notificationShape = notificationShape.buildList(),
       )
   }
 }

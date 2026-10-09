@@ -459,11 +459,11 @@ public data class ActivityDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
@@ -472,23 +472,23 @@ public data class ActivityDefinition(
     builder.subject = subject
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.usage = usage?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.topic = topic.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
-    builder.library = library.mapToMutableList { it.toBuilder() }
+    builder.topic = topic.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
+    builder.library = library.toBuilderList()
     builder.kind = kind
     builder.profile = profile?.toBuilder()
     builder.code = code?.toBuilder()
@@ -497,18 +497,16 @@ public data class ActivityDefinition(
     builder.doNotPerform = doNotPerform?.toBuilder()
     builder.timing = timing
     builder.location = location?.toBuilder()
-    builder.participant = participant.mapToMutableList { it.toBuilder() }
+    builder.participant = participant.toBuilderList()
     builder.product = product
     builder.quantity = quantity?.toBuilder()
-    builder.dosage = dosage.mapToMutableList { it.toBuilder() }
-    builder.bodySite = bodySite.mapToMutableList { it.toBuilder() }
-    builder.specimenRequirement = specimenRequirement.mapToMutableList { it.toBuilder() }
-    builder.observationRequirement = observationRequirement.mapToMutableList { it.toBuilder() }
-    builder.observationResultRequirement = observationResultRequirement.mapToMutableList {
-      it.toBuilder()
-    }
+    builder.dosage = dosage.toBuilderList()
+    builder.bodySite = bodySite.toBuilderList()
+    builder.specimenRequirement = specimenRequirement.toBuilderList()
+    builder.observationRequirement = observationRequirement.toBuilderList()
+    builder.observationResultRequirement = observationResultRequirement.toBuilderList()
     builder.transform = transform?.toBuilder()
-    builder.dynamicValue = dynamicValue.mapToMutableList { it.toBuilder() }
+    builder.dynamicValue = dynamicValue.toBuilderList()
     return builder
   }
 
@@ -556,12 +554,12 @@ public data class ActivityDefinition(
     public val type: Enumeration<ActionParticipantType>,
     /** The role the participant should play in performing the described action. */
     public val role: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.role = role?.toBuilder()
       return builder
     }
@@ -569,7 +567,7 @@ public data class ActivityDefinition(
     public class Builder(
       /** The type of participant in the action. */
       public var type: Enumeration<ActionParticipantType>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -613,11 +611,11 @@ public data class ActivityDefinition(
       /** The role the participant should play in performing the described action. */
       public var role: CodeableConcept.Builder? = null
 
-      public fun build(): Participant =
+      override fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
           role = role?.build(),
         )
@@ -689,12 +687,12 @@ public data class ActivityDefinition(
      * library referenced by the library element.
      */
     public val expression: Expression,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(path.toBuilder(), expression.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -719,7 +717,7 @@ public data class ActivityDefinition(
        * library referenced by the library element.
        */
       public var expression: Expression.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -760,11 +758,11 @@ public data class ActivityDefinition(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): DynamicValue =
+      override fun build(): DynamicValue =
         DynamicValue(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           path = path.build(),
           expression = expression.build(),
         )
@@ -1356,11 +1354,11 @@ public data class ActivityDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -1370,23 +1368,23 @@ public data class ActivityDefinition(
         subject = subject,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         usage = usage?.build(),
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
-        library = library.mapToList { it.build() },
+        topic = topic.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
+        library = library.buildList(),
         kind = kind,
         profile = profile?.build(),
         code = code?.build(),
@@ -1395,16 +1393,16 @@ public data class ActivityDefinition(
         doNotPerform = doNotPerform?.build(),
         timing = timing,
         location = location?.build(),
-        participant = participant.mapToList { it.build() },
+        participant = participant.buildList(),
         product = product,
         quantity = quantity?.build(),
-        dosage = dosage.mapToList { it.build() },
-        bodySite = bodySite.mapToList { it.build() },
-        specimenRequirement = specimenRequirement.mapToList { it.build() },
-        observationRequirement = observationRequirement.mapToList { it.build() },
-        observationResultRequirement = observationResultRequirement.mapToList { it.build() },
+        dosage = dosage.buildList(),
+        bodySite = bodySite.buildList(),
+        specimenRequirement = specimenRequirement.buildList(),
+        observationRequirement = observationRequirement.buildList(),
+        observationResultRequirement = observationResultRequirement.buildList(),
         transform = transform?.build(),
-        dynamicValue = dynamicValue.mapToList { it.build() },
+        dynamicValue = dynamicValue.buildList(),
       )
   }
 }

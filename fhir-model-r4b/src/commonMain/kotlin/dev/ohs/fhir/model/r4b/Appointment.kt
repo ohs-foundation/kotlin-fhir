@@ -270,36 +270,36 @@ public data class Appointment(
     val builder =
       Builder(
         status,
-        participant.mapToMutableList { it.toBuilder() },
+        participant.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.cancelationReason = cancelationReason?.toBuilder()
-    builder.serviceCategory = serviceCategory.mapToMutableList { it.toBuilder() }
-    builder.serviceType = serviceType.mapToMutableList { it.toBuilder() }
-    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.serviceCategory = serviceCategory.toBuilderList()
+    builder.serviceType = serviceType.toBuilderList()
+    builder.specialty = specialty.toBuilderList()
     builder.appointmentType = appointmentType?.toBuilder()
-    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
-    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
+    builder.reasonCode = reasonCode.toBuilderList()
+    builder.reasonReference = reasonReference.toBuilderList()
     builder.priority = priority?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
+    builder.supportingInformation = supportingInformation.toBuilderList()
     builder.start = start?.toBuilder()
     builder.end = end?.toBuilder()
     builder.minutesDuration = minutesDuration?.toBuilder()
-    builder.slot = slot.mapToMutableList { it.toBuilder() }
+    builder.slot = slot.toBuilderList()
     builder.created = created?.toBuilder()
     builder.comment = comment?.toBuilder()
     builder.patientInstruction = patientInstruction?.toBuilder()
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.requestedPeriod = requestedPeriod.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.toBuilderList()
+    builder.requestedPeriod = requestedPeriod.toBuilderList()
     return builder
   }
 
@@ -368,13 +368,13 @@ public data class Appointment(
     public val status: Enumeration<ParticipationStatus>,
     /** Participation period of the actor. */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(status)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.type = type.toBuilderList()
       builder.actor = actor?.toBuilder()
       builder.required = required
       builder.period = period?.toBuilder()
@@ -384,7 +384,7 @@ public data class Appointment(
     public class Builder(
       /** Participation status of the actor. */
       public var status: Enumeration<ParticipationStatus>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -454,12 +454,12 @@ public data class Appointment(
       /** Participation period of the actor. */
       public var period: Period.Builder? = null
 
-      public fun build(): Participant =
+      override fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          type = type.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          type = type.buildList(),
           actor = actor?.build(),
           required = required,
           status = status,
@@ -732,31 +732,31 @@ public data class Appointment(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         cancelationReason = cancelationReason?.build(),
-        serviceCategory = serviceCategory.mapToList { it.build() },
-        serviceType = serviceType.mapToList { it.build() },
-        specialty = specialty.mapToList { it.build() },
+        serviceCategory = serviceCategory.buildList(),
+        serviceType = serviceType.buildList(),
+        specialty = specialty.buildList(),
         appointmentType = appointmentType?.build(),
-        reasonCode = reasonCode.mapToList { it.build() },
-        reasonReference = reasonReference.mapToList { it.build() },
+        reasonCode = reasonCode.buildList(),
+        reasonReference = reasonReference.buildList(),
         priority = priority?.build(),
         description = description?.build(),
-        supportingInformation = supportingInformation.mapToList { it.build() },
+        supportingInformation = supportingInformation.buildList(),
         start = start?.build(),
         end = end?.build(),
         minutesDuration = minutesDuration?.build(),
-        slot = slot.mapToList { it.build() },
+        slot = slot.buildList(),
         created = created?.build(),
         comment = comment?.build(),
         patientInstruction = patientInstruction?.build(),
-        basedOn = basedOn.mapToList { it.build() },
-        participant = participant.mapToList { it.build() },
-        requestedPeriod = requestedPeriod.mapToList { it.build() },
+        basedOn = basedOn.buildList(),
+        participant = participant.buildList(),
+        requestedPeriod = requestedPeriod.buildList(),
       )
   }
 }

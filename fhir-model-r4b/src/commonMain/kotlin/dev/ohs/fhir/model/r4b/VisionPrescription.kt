@@ -174,17 +174,17 @@ public data class VisionPrescription(
         patient.toBuilder(),
         dateWritten.toBuilder(),
         prescriber.toBuilder(),
-        lensSpecification.mapToMutableList { it.toBuilder() },
+        lensSpecification.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     return builder
   }
@@ -274,20 +274,20 @@ public data class VisionPrescription(
     public val brand: String? = null,
     /** Notes for special requirements such as coatings and lens materials. */
     public val note: List<Annotation> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           product.toBuilder(),
           eye,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.sphere = sphere?.toBuilder()
       builder.cylinder = cylinder?.toBuilder()
       builder.axis = axis?.toBuilder()
-      builder.prism = prism.mapToMutableList { it.toBuilder() }
+      builder.prism = prism.toBuilderList()
       builder.add = add?.toBuilder()
       builder.power = power?.toBuilder()
       builder.backCurve = backCurve?.toBuilder()
@@ -295,7 +295,7 @@ public data class VisionPrescription(
       builder.duration = duration?.toBuilder()
       builder.color = color?.toBuilder()
       builder.brand = brand?.toBuilder()
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.note = note.toBuilderList()
       return builder
     }
 
@@ -343,16 +343,16 @@ public data class VisionPrescription(
       public val amount: Decimal,
       /** The relative base, or reference lens edge, for the prism. */
       public val base: Enumeration<VisionBase>,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             amount.toBuilder(),
             base,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -361,7 +361,7 @@ public data class VisionPrescription(
         public var amount: Decimal.Builder,
         /** The relative base, or reference lens edge, for the prism. */
         public var base: Enumeration<VisionBase>,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -402,11 +402,11 @@ public data class VisionPrescription(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Prism =
+        override fun build(): Prism =
           Prism(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             amount = amount.build(),
             base = base,
           )
@@ -423,7 +423,7 @@ public data class VisionPrescription(
        * left eye.
        */
       public var eye: Enumeration<VisionEyes>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -509,17 +509,17 @@ public data class VisionPrescription(
       /** Notes for special requirements such as coatings and lens materials. */
       public var note: MutableList<Annotation.Builder> = mutableListOf()
 
-      public fun build(): LensSpecification =
+      override fun build(): LensSpecification =
         LensSpecification(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           product = product.build(),
           eye = eye,
           sphere = sphere?.build(),
           cylinder = cylinder?.build(),
           axis = axis?.build(),
-          prism = prism.mapToList { it.build() },
+          prism = prism.buildList(),
           add = add?.build(),
           power = power?.build(),
           backCurve = backCurve?.build(),
@@ -527,7 +527,7 @@ public data class VisionPrescription(
           duration = duration?.build(),
           color = color?.build(),
           brand = brand?.build(),
-          note = note.mapToList { it.build() },
+          note = note.buildList(),
         )
     }
   }
@@ -680,17 +680,17 @@ public data class VisionPrescription(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         created = created.build(),
         patient = patient.build(),
         encounter = encounter?.build(),
         dateWritten = dateWritten.build(),
         prescriber = prescriber.build(),
-        lensSpecification = lensSpecification.mapToList { it.build() },
+        lensSpecification = lensSpecification.buildList(),
       )
   }
 }

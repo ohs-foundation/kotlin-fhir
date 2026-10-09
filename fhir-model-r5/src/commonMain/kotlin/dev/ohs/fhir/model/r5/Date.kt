@@ -52,11 +52,11 @@ public data class Date(
   override val extension: List<Extension> = listOf(),
   /** The actual value */
   @Serializable(with = FhirDateSerializer::class) public val `value`: FhirDate? = null,
-) : PrimitiveType() {
-  public fun toBuilder(): Builder {
+) : PrimitiveType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -68,7 +68,7 @@ public data class Date(
     return null
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: String? = null
 
@@ -89,10 +89,10 @@ public data class Date(
     /** The actual value */
     public open var `value`: FhirDate? = null
 
-    public open fun build(): Date =
+    open override fun build(): Date =
       Date(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

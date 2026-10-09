@@ -265,26 +265,26 @@ public data class MedicationAdministration(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
-    builder.statusReason = statusReason.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
+    builder.statusReason = statusReason.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.encounter = encounter?.toBuilder()
-    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
+    builder.supportingInformation = supportingInformation.toBuilderList()
     builder.recorded = recorded?.toBuilder()
     builder.isSubPotent = isSubPotent?.toBuilder()
-    builder.subPotentReason = subPotentReason.mapToMutableList { it.toBuilder() }
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
+    builder.subPotentReason = subPotentReason.toBuilderList()
+    builder.performer = performer.toBuilderList()
+    builder.reason = reason.toBuilderList()
     builder.request = request?.toBuilder()
-    builder.device = device.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.device = device.toBuilderList()
+    builder.note = note.toBuilderList()
     builder.dosage = dosage?.toBuilder()
-    builder.eventHistory = eventHistory.mapToMutableList { it.toBuilder() }
+    builder.eventHistory = eventHistory.toBuilderList()
     return builder
   }
 
@@ -337,12 +337,12 @@ public data class MedicationAdministration(
     public val function: CodeableConcept? = null,
     /** Indicates who or what performed the medication administration. */
     public val actor: CodeableReference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -350,7 +350,7 @@ public data class MedicationAdministration(
     public class Builder(
       /** Indicates who or what performed the medication administration. */
       public var actor: CodeableReference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -396,11 +396,11 @@ public data class MedicationAdministration(
        */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -506,12 +506,12 @@ public data class MedicationAdministration(
      * rate.
      */
     public val rate: Rate? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.text = text?.toBuilder()
       builder.site = site?.toBuilder()
       builder.route = route?.toBuilder()
@@ -542,7 +542,7 @@ public data class MedicationAdministration(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -649,11 +649,11 @@ public data class MedicationAdministration(
        */
       public var rate: Rate? = null
 
-      public fun build(): Dosage =
+      override fun build(): Dosage =
         Dosage(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           text = text?.build(),
           site = site?.build(),
           route = route?.build(),
@@ -939,30 +939,30 @@ public data class MedicationAdministration(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        basedOn = basedOn.buildList(),
+        partOf = partOf.buildList(),
         status = status,
-        statusReason = statusReason.mapToList { it.build() },
-        category = category.mapToList { it.build() },
+        statusReason = statusReason.buildList(),
+        category = category.buildList(),
         medication = medication.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
-        supportingInformation = supportingInformation.mapToList { it.build() },
+        supportingInformation = supportingInformation.buildList(),
         occurence = occurence,
         recorded = recorded?.build(),
         isSubPotent = isSubPotent?.build(),
-        subPotentReason = subPotentReason.mapToList { it.build() },
-        performer = performer.mapToList { it.build() },
-        reason = reason.mapToList { it.build() },
+        subPotentReason = subPotentReason.buildList(),
+        performer = performer.buildList(),
+        reason = reason.buildList(),
         request = request?.build(),
-        device = device.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        device = device.buildList(),
+        note = note.buildList(),
         dosage = dosage?.build(),
-        eventHistory = eventHistory.mapToList { it.build() },
+        eventHistory = eventHistory.buildList(),
       )
   }
 }

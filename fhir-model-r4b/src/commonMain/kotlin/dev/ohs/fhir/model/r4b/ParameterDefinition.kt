@@ -75,15 +75,15 @@ public data class ParameterDefinition(
    * data will conform to.
    */
   public val profile: Canonical? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder =
       Builder(
         use,
         type,
       )
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.name = name?.toBuilder()
     builder.min = min?.toBuilder()
     builder.max = max?.toBuilder()
@@ -97,7 +97,7 @@ public data class ParameterDefinition(
     public open var use: Enumeration<OperationParameterUse>,
     /** The type of the parameter. */
     public open var type: Enumeration<FHIRAllTypes>,
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -141,10 +141,10 @@ public data class ParameterDefinition(
      */
     public open var profile: Canonical.Builder? = null
 
-    public open fun build(): ParameterDefinition =
+    open override fun build(): ParameterDefinition =
       ParameterDefinition(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         name = name?.build(),
         use = use,
         min = min?.build(),

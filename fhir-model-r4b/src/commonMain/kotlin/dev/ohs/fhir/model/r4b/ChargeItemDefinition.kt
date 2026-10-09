@@ -338,30 +338,30 @@ public data class ChargeItemDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.title = title?.toBuilder()
-    builder.derivedFromUri = derivedFromUri.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
-    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.derivedFromUri = derivedFromUri.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
+    builder.replaces = replaces.toBuilderList()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.copyright = copyright?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
     builder.code = code?.toBuilder()
-    builder.instance = instance.mapToMutableList { it.toBuilder() }
-    builder.applicability = applicability.mapToMutableList { it.toBuilder() }
-    builder.propertyGroup = propertyGroup.mapToMutableList { it.toBuilder() }
+    builder.instance = instance.toBuilderList()
+    builder.applicability = applicability.toBuilderList()
+    builder.propertyGroup = propertyGroup.toBuilderList()
     return builder
   }
 
@@ -427,19 +427,19 @@ public data class ChargeItemDefinition(
      * scenarios, CQL may be the appropriate choice.
      */
     public val expression: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.language = language?.toBuilder()
       builder.expression = expression?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -505,11 +505,11 @@ public data class ChargeItemDefinition(
        */
       public var expression: String.Builder? = null
 
-      public fun build(): Applicability =
+      override fun build(): Applicability =
         Applicability(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           language = language?.build(),
           expression = expression?.build(),
@@ -576,14 +576,14 @@ public data class ChargeItemDefinition(
      * how the prices have been calculated.
      */
     public val priceComponent: List<PriceComponent> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.applicability = applicability.mapToMutableList { it.toBuilder() }
-      builder.priceComponent = priceComponent.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.applicability = applicability.toBuilderList()
+      builder.priceComponent = priceComponent.toBuilderList()
       return builder
     }
 
@@ -644,12 +644,12 @@ public data class ChargeItemDefinition(
       public val factor: Decimal? = null,
       /** The amount calculated for this component. */
       public val amount: Money? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(type)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.code = code?.toBuilder()
         builder.factor = factor?.toBuilder()
         builder.amount = amount?.toBuilder()
@@ -659,7 +659,7 @@ public data class ChargeItemDefinition(
       public class Builder(
         /** This code identifies the type of the component. */
         public var type: Enumeration<InvoicePriceComponentType>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -712,11 +712,11 @@ public data class ChargeItemDefinition(
         /** The amount calculated for this component. */
         public var amount: Money.Builder? = null
 
-        public fun build(): PriceComponent =
+        override fun build(): PriceComponent =
           PriceComponent(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type,
             code = code?.build(),
             factor = factor?.build(),
@@ -725,7 +725,7 @@ public data class ChargeItemDefinition(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -784,13 +784,13 @@ public data class ChargeItemDefinition(
        */
       public var priceComponent: MutableList<PriceComponent.Builder> = mutableListOf()
 
-      public fun build(): PropertyGroup =
+      override fun build(): PropertyGroup =
         PropertyGroup(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          applicability = applicability.mapToList { it.build() },
-          priceComponent = priceComponent.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          applicability = applicability.buildList(),
+          priceComponent = priceComponent.buildList(),
         )
     }
   }
@@ -1120,32 +1120,32 @@ public data class ChargeItemDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         title = title?.build(),
-        derivedFromUri = derivedFromUri.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
-        replaces = replaces.mapToList { it.build() },
+        derivedFromUri = derivedFromUri.buildList(),
+        partOf = partOf.buildList(),
+        replaces = replaces.buildList(),
         status = status,
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
         code = code?.build(),
-        instance = instance.mapToList { it.build() },
-        applicability = applicability.mapToList { it.build() },
-        propertyGroup = propertyGroup.mapToList { it.build() },
+        instance = instance.buildList(),
+        applicability = applicability.buildList(),
+        propertyGroup = propertyGroup.buildList(),
       )
   }
 }

@@ -150,23 +150,23 @@ public data class MedicinalProductPackaged(
   public val packageItem: List<PackageItem>,
 ) : DomainResource() {
   override fun toBuilder(): Builder {
-    val builder = Builder(packageItem.mapToMutableList { it.toBuilder() })
+    val builder = Builder(packageItem.toBuilderList())
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.subject = subject.toBuilderList()
     builder.description = description?.toBuilder()
     builder.legalStatusOfSupply = legalStatusOfSupply?.toBuilder()
-    builder.marketingStatus = marketingStatus.mapToMutableList { it.toBuilder() }
+    builder.marketingStatus = marketingStatus.toBuilderList()
     builder.marketingAuthorization = marketingAuthorization?.toBuilder()
-    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
-    builder.batchIdentifier = batchIdentifier.mapToMutableList { it.toBuilder() }
+    builder.manufacturer = manufacturer.toBuilderList()
+    builder.batchIdentifier = batchIdentifier.toBuilderList()
     return builder
   }
 
@@ -214,12 +214,12 @@ public data class MedicinalProductPackaged(
     public val outerPackaging: Identifier,
     /** A number appearing on the immediate packaging (and not the outer packaging). */
     public val immediatePackaging: Identifier? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(outerPackaging.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.immediatePackaging = immediatePackaging?.toBuilder()
       return builder
     }
@@ -227,7 +227,7 @@ public data class MedicinalProductPackaged(
     public class Builder(
       /** A number appearing on the outer packaging of a specific batch. */
       public var outerPackaging: Identifier.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -271,11 +271,11 @@ public data class MedicinalProductPackaged(
       /** A number appearing on the immediate packaging (and not the outer packaging). */
       public var immediatePackaging: Identifier.Builder? = null
 
-      public fun build(): BatchIdentifier =
+      override fun build(): BatchIdentifier =
         BatchIdentifier(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           outerPackaging = outerPackaging.build(),
           immediatePackaging = immediatePackaging?.build(),
         )
@@ -349,22 +349,22 @@ public data class MedicinalProductPackaged(
     public val shelfLifeStorage: List<ProductShelfLife> = listOf(),
     /** Manufacturer of this Package Item. */
     public val manufacturer: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder(), quantity.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-      builder.material = material.mapToMutableList { it.toBuilder() }
-      builder.alternateMaterial = alternateMaterial.mapToMutableList { it.toBuilder() }
-      builder.device = device.mapToMutableList { it.toBuilder() }
-      builder.manufacturedItem = manufacturedItem.mapToMutableList { it.toBuilder() }
-      builder.packageItem = packageItem.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.identifier = identifier.toBuilderList()
+      builder.material = material.toBuilderList()
+      builder.alternateMaterial = alternateMaterial.toBuilderList()
+      builder.device = device.toBuilderList()
+      builder.manufacturedItem = manufacturedItem.toBuilderList()
+      builder.packageItem = packageItem.toBuilderList()
       builder.physicalCharacteristics = physicalCharacteristics?.toBuilder()
-      builder.otherCharacteristics = otherCharacteristics.mapToMutableList { it.toBuilder() }
-      builder.shelfLifeStorage = shelfLifeStorage.mapToMutableList { it.toBuilder() }
-      builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+      builder.otherCharacteristics = otherCharacteristics.toBuilderList()
+      builder.shelfLifeStorage = shelfLifeStorage.toBuilderList()
+      builder.manufacturer = manufacturer.toBuilderList()
       return builder
     }
 
@@ -376,7 +376,7 @@ public data class MedicinalProductPackaged(
        * The outermost is always 1.
        */
       public var quantity: Quantity.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -447,23 +447,23 @@ public data class MedicinalProductPackaged(
       /** Manufacturer of this Package Item. */
       public var manufacturer: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): PackageItem =
+      override fun build(): PackageItem =
         PackageItem(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          identifier = identifier.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          identifier = identifier.buildList(),
           type = type.build(),
           quantity = quantity.build(),
-          material = material.mapToList { it.build() },
-          alternateMaterial = alternateMaterial.mapToList { it.build() },
-          device = device.mapToList { it.build() },
-          manufacturedItem = manufacturedItem.mapToList { it.build() },
-          packageItem = packageItem.mapToList { it.build() },
+          material = material.buildList(),
+          alternateMaterial = alternateMaterial.buildList(),
+          device = device.buildList(),
+          manufacturedItem = manufacturedItem.buildList(),
+          packageItem = packageItem.buildList(),
           physicalCharacteristics = physicalCharacteristics?.build(),
-          otherCharacteristics = otherCharacteristics.mapToList { it.build() },
-          shelfLifeStorage = shelfLifeStorage.mapToList { it.build() },
-          manufacturer = manufacturer.mapToList { it.build() },
+          otherCharacteristics = otherCharacteristics.buildList(),
+          shelfLifeStorage = shelfLifeStorage.buildList(),
+          manufacturer = manufacturer.buildList(),
         )
     }
   }
@@ -610,18 +610,18 @@ public data class MedicinalProductPackaged(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        subject = subject.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        subject = subject.buildList(),
         description = description?.build(),
         legalStatusOfSupply = legalStatusOfSupply?.build(),
-        marketingStatus = marketingStatus.mapToList { it.build() },
+        marketingStatus = marketingStatus.buildList(),
         marketingAuthorization = marketingAuthorization?.build(),
-        manufacturer = manufacturer.mapToList { it.build() },
-        batchIdentifier = batchIdentifier.mapToList { it.build() },
-        packageItem = packageItem.mapToList { it.build() },
+        manufacturer = manufacturer.buildList(),
+        batchIdentifier = batchIdentifier.buildList(),
+        packageItem = packageItem.buildList(),
       )
   }
 }

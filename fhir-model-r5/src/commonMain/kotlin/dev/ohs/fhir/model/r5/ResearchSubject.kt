@@ -183,15 +183,15 @@ public data class ResearchSubject(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.progress = progress.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.progress = progress.toBuilderList()
     builder.period = period?.toBuilder()
     builder.assignedComparisonGroup = assignedComparisonGroup?.toBuilder()
     builder.actualComparisonGroup = actualComparisonGroup?.toBuilder()
-    builder.consent = consent.mapToMutableList { it.toBuilder() }
+    builder.consent = consent.toBuilderList()
     return builder
   }
 
@@ -258,12 +258,12 @@ public data class ResearchSubject(
     public val startDate: DateTime? = null,
     /** The date when the state ended. */
     public val endDate: DateTime? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.subjectState = subjectState?.toBuilder()
       builder.milestone = milestone?.toBuilder()
@@ -273,7 +273,7 @@ public data class ResearchSubject(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -343,11 +343,11 @@ public data class ResearchSubject(
       /** The date when the state ended. */
       public var endDate: DateTime.Builder? = null
 
-      public fun build(): Progress =
+      override fun build(): Progress =
         Progress(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
           subjectState = subjectState?.build(),
           milestone = milestone?.build(),
@@ -514,18 +514,18 @@ public data class ResearchSubject(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        progress = progress.mapToList { it.build() },
+        progress = progress.buildList(),
         period = period?.build(),
         study = study.build(),
         subject = subject.build(),
         assignedComparisonGroup = assignedComparisonGroup?.build(),
         actualComparisonGroup = actualComparisonGroup?.build(),
-        consent = consent.mapToList { it.build() },
+        consent = consent.buildList(),
       )
   }
 }

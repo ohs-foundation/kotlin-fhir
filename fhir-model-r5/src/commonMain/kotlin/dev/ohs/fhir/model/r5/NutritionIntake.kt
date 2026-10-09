@@ -240,33 +240,33 @@ public data class NutritionIntake(
       Builder(
         status,
         subject.toBuilder(),
-        consumedItem.mapToMutableList { it.toBuilder() },
+        consumedItem.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
-    builder.statusReason = statusReason.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+    builder.instantiatesUri = instantiatesUri.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
+    builder.statusReason = statusReason.toBuilderList()
     builder.code = code?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.occurrence = occurrence
     builder.recorded = recorded?.toBuilder()
     builder.reported = reported
-    builder.ingredientLabel = ingredientLabel.mapToMutableList { it.toBuilder() }
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.ingredientLabel = ingredientLabel.toBuilderList()
+    builder.performer = performer.toBuilderList()
     builder.location = location?.toBuilder()
-    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.toBuilderList()
+    builder.reason = reason.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -336,12 +336,12 @@ public data class NutritionIntake(
     public val notConsumed: Boolean? = null,
     /** Document the reason the food or fluid was not consumed, such as refused, held, etc. */
     public val notConsumedReason: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder(), nutritionProduct.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.schedule = schedule?.toBuilder()
       builder.amount = amount?.toBuilder()
       builder.rate = rate?.toBuilder()
@@ -362,7 +362,7 @@ public data class NutritionIntake(
        * information is required, then the use of a new nutritionProduct resource is recommended.
        */
       public var nutritionProduct: CodeableReference.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -423,11 +423,11 @@ public data class NutritionIntake(
       /** Document the reason the food or fluid was not consumed, such as refused, held, etc. */
       public var notConsumedReason: CodeableConcept.Builder? = null
 
-      public fun build(): ConsumedItem =
+      override fun build(): ConsumedItem =
         ConsumedItem(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           nutritionProduct = nutritionProduct.build(),
           schedule = schedule?.build(),
@@ -486,12 +486,12 @@ public data class NutritionIntake(
     public val nutrient: CodeableReference,
     /** Total amount of nutrient consumed. */
     public val amount: Quantity,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(nutrient.toBuilder(), amount.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -503,7 +503,7 @@ public data class NutritionIntake(
       public var nutrient: CodeableReference.Builder,
       /** Total amount of nutrient consumed. */
       public var amount: Quantity.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -544,11 +544,11 @@ public data class NutritionIntake(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): IngredientLabel =
+      override fun build(): IngredientLabel =
         IngredientLabel(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           nutrient = nutrient.build(),
           amount = amount.build(),
         )
@@ -599,12 +599,12 @@ public data class NutritionIntake(
     public val function: CodeableConcept? = null,
     /** Who performed the intake. */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -612,7 +612,7 @@ public data class NutritionIntake(
     public class Builder(
       /** Who performed the intake. */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -656,11 +656,11 @@ public data class NutritionIntake(
       /** Type of performer. */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -934,29 +934,29 @@ public data class NutritionIntake(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-        instantiatesUri = instantiatesUri.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        instantiatesCanonical = instantiatesCanonical.buildList(),
+        instantiatesUri = instantiatesUri.buildList(),
+        basedOn = basedOn.buildList(),
+        partOf = partOf.buildList(),
         status = status,
-        statusReason = statusReason.mapToList { it.build() },
+        statusReason = statusReason.buildList(),
         code = code?.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
         occurrence = occurrence,
         recorded = recorded?.build(),
         reported = reported,
-        consumedItem = consumedItem.mapToList { it.build() },
-        ingredientLabel = ingredientLabel.mapToList { it.build() },
-        performer = performer.mapToList { it.build() },
+        consumedItem = consumedItem.buildList(),
+        ingredientLabel = ingredientLabel.buildList(),
+        performer = performer.buildList(),
         location = location?.build(),
-        derivedFrom = derivedFrom.mapToList { it.build() },
-        reason = reason.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        derivedFrom = derivedFrom.buildList(),
+        reason = reason.buildList(),
+        note = note.buildList(),
       )
   }
 }

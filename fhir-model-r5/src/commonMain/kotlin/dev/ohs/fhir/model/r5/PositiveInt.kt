@@ -53,7 +53,7 @@ public data class PositiveInt(
   override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -89,7 +89,7 @@ public data class PositiveInt(
     open override fun build(): PositiveInt =
       PositiveInt(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

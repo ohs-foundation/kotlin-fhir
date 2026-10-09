@@ -236,7 +236,7 @@ public data class AuditEvent(
       Builder(
         code.toBuilder(),
         recorded.toBuilder(),
-        agent.mapToMutableList { it.toBuilder() },
+        agent.toBuilderList(),
         source.toBuilder(),
       )
     builder.id = id
@@ -244,19 +244,19 @@ public data class AuditEvent(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.action = action
     builder.severity = severity
     builder.occurred = occurred
     builder.outcome = outcome?.toBuilder()
-    builder.authorization = authorization.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.authorization = authorization.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
     builder.patient = patient?.toBuilder()
     builder.encounter = encounter?.toBuilder()
-    builder.entity = entity.mapToMutableList { it.toBuilder() }
+    builder.entity = entity.toBuilderList()
     return builder
   }
 
@@ -318,13 +318,13 @@ public data class AuditEvent(
      * A human readable description of the error issue SHOULD be placed in details.text.
      */
     public val detail: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.detail = detail.toBuilderList()
       return builder
     }
 
@@ -337,7 +337,7 @@ public data class AuditEvent(
        * distinctions are not relevant.
        */
       public var code: Coding.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -386,13 +386,13 @@ public data class AuditEvent(
        */
       public var detail: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): Outcome =
+      override fun build(): Outcome =
         Outcome(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
-          detail = detail.mapToList { it.build() },
+          detail = detail.buildList(),
         )
     }
   }
@@ -496,19 +496,19 @@ public data class AuditEvent(
      * obvious to the audit system who caused the event, but it does know why.
      */
     public val authorization: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(who.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
-      builder.role = role.mapToMutableList { it.toBuilder() }
+      builder.role = role.toBuilderList()
       builder.requestor = requestor?.toBuilder()
       builder.location = location?.toBuilder()
-      builder.policy = policy.mapToMutableList { it.toBuilder() }
+      builder.policy = policy.toBuilderList()
       builder.network = network
-      builder.authorization = authorization.mapToMutableList { it.toBuilder() }
+      builder.authorization = authorization.toBuilderList()
       return builder
     }
 
@@ -547,7 +547,7 @@ public data class AuditEvent(
        * (human readable) it will go into who.display.
        */
       public var who: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -647,19 +647,19 @@ public data class AuditEvent(
        */
       public var authorization: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): Agent =
+      override fun build(): Agent =
         Agent(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
-          role = role.mapToList { it.build() },
+          role = role.buildList(),
           who = who.build(),
           requestor = requestor?.build(),
           location = location?.build(),
-          policy = policy.mapToList { it.build() },
+          policy = policy.buildList(),
           network = network,
-          authorization = authorization.mapToList { it.build() },
+          authorization = authorization.buildList(),
         )
     }
   }
@@ -713,21 +713,21 @@ public data class AuditEvent(
     public val observer: Reference,
     /** Code specifying the type of source where event originated. */
     public val type: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(observer.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.site = site?.toBuilder()
-      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.type = type.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** Identifier of the source where the event was detected. */
       public var observer: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -777,14 +777,14 @@ public data class AuditEvent(
       /** Code specifying the type of source where event originated. */
       public var type: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): Source =
+      override fun build(): Source =
         Source(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           site = site?.build(),
           observer = observer.build(),
-          type = type.mapToList { it.build() },
+          type = type.buildList(),
         )
     }
   }
@@ -876,18 +876,18 @@ public data class AuditEvent(
      * AuditEvent activity.
      */
     public val agent: List<Agent> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.what = what?.toBuilder()
       builder.role = role?.toBuilder()
-      builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
+      builder.securityLabel = securityLabel.toBuilderList()
       builder.query = query?.toBuilder()
-      builder.detail = detail.mapToMutableList { it.toBuilder() }
-      builder.agent = agent.mapToMutableList { it.toBuilder() }
+      builder.detail = detail.toBuilderList()
+      builder.agent = agent.toBuilderList()
       return builder
     }
 
@@ -935,16 +935,16 @@ public data class AuditEvent(
       public val type: CodeableConcept,
       /** The value of the extra detail. */
       public val `value`: Value,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             type.toBuilder(),
             `value`,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -1031,7 +1031,7 @@ public data class AuditEvent(
         public var type: CodeableConcept.Builder,
         /** The value of the extra detail. */
         public var `value`: Value,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1072,18 +1072,18 @@ public data class AuditEvent(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Detail =
+        override fun build(): Detail =
           Detail(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type.build(),
             `value` = `value`,
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1178,17 +1178,17 @@ public data class AuditEvent(
        */
       public var agent: MutableList<Agent.Builder> = mutableListOf()
 
-      public fun build(): Entity =
+      override fun build(): Entity =
         Entity(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           what = what?.build(),
           role = role?.build(),
-          securityLabel = securityLabel.mapToList { it.build() },
+          securityLabel = securityLabel.buildList(),
           query = query?.build(),
-          detail = detail.mapToList { it.build() },
-          agent = agent.mapToList { it.build() },
+          detail = detail.buildList(),
+          agent = agent.buildList(),
         )
     }
   }
@@ -1429,23 +1429,23 @@ public data class AuditEvent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        category = category.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        category = category.buildList(),
         code = code.build(),
         action = action,
         severity = severity,
         occurred = occurred,
         recorded = recorded.build(),
         outcome = outcome?.build(),
-        authorization = authorization.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
+        authorization = authorization.buildList(),
+        basedOn = basedOn.buildList(),
         patient = patient?.build(),
         encounter = encounter?.build(),
-        agent = agent.mapToList { it.build() },
+        agent = agent.buildList(),
         source = source.build(),
-        entity = entity.mapToList { it.build() },
+        entity = entity.buildList(),
       )
   }
 }

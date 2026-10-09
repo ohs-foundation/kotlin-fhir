@@ -105,12 +105,12 @@ public data class MarketingStatus(
    * Product into the distribution chain.
    */
   public val restoreDate: DateTime? = null,
-) : BackboneElement() {
-  public fun toBuilder(): Builder {
+) : BackboneElement(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(country.toBuilder(), status.toBuilder(), dateRange.toBuilder())
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.jurisdiction = jurisdiction?.toBuilder()
     builder.restoreDate = restoreDate?.toBuilder()
     return builder
@@ -135,7 +135,7 @@ public data class MarketingStatus(
      * Product into the distribution chain.
      */
     public open var dateRange: Period.Builder,
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -193,11 +193,11 @@ public data class MarketingStatus(
      */
     public open var restoreDate: DateTime.Builder? = null
 
-    public open fun build(): MarketingStatus =
+    open override fun build(): MarketingStatus =
       MarketingStatus(
         id = id,
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         country = country.build(),
         jurisdiction = jurisdiction?.build(),
         status = status.build(),

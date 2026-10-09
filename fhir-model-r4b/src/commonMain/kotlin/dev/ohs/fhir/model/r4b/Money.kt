@@ -62,17 +62,17 @@ public data class Money(
   public val `value`: Decimal? = null,
   /** ISO 4217 Currency Code. */
   public val currency: Enumeration<Currencies>? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`?.toBuilder()
     builder.currency = currency
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -104,10 +104,10 @@ public data class Money(
     /** ISO 4217 Currency Code. */
     public open var currency: Enumeration<Currencies>? = null
 
-    public open fun build(): Money =
+    open override fun build(): Money =
       Money(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`?.build(),
         currency = currency,
       )

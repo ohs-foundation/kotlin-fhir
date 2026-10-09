@@ -232,24 +232,24 @@ public data class Invoice(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.cancelledReason = cancelledReason?.toBuilder()
     builder.type = type?.toBuilder()
     builder.subject = subject?.toBuilder()
     builder.recipient = recipient?.toBuilder()
     builder.date = date?.toBuilder()
-    builder.participant = participant.mapToMutableList { it.toBuilder() }
+    builder.participant = participant.toBuilderList()
     builder.issuer = issuer?.toBuilder()
     builder.account = account?.toBuilder()
-    builder.lineItem = lineItem.mapToMutableList { it.toBuilder() }
-    builder.totalPriceComponent = totalPriceComponent.mapToMutableList { it.toBuilder() }
+    builder.lineItem = lineItem.toBuilderList()
+    builder.totalPriceComponent = totalPriceComponent.toBuilderList()
     builder.totalNet = totalNet?.toBuilder()
     builder.totalGross = totalGross?.toBuilder()
     builder.paymentTerms = paymentTerms?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -301,12 +301,12 @@ public data class Invoice(
     public val role: CodeableConcept? = null,
     /** The device, practitioner, etc. who performed or participated in the service. */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.role = role?.toBuilder()
       return builder
     }
@@ -314,7 +314,7 @@ public data class Invoice(
     public class Builder(
       /** The device, practitioner, etc. who performed or participated in the service. */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -362,11 +362,11 @@ public data class Invoice(
        */
       public var role: CodeableConcept.Builder? = null
 
-      public fun build(): Participant =
+      override fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           role = role?.build(),
           actor = actor.build(),
         )
@@ -432,14 +432,14 @@ public data class Invoice(
      * to how the prices have been calculated.
      */
     public val priceComponent: List<PriceComponent> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(chargeItem)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.sequence = sequence?.toBuilder()
-      builder.priceComponent = priceComponent.mapToMutableList { it.toBuilder() }
+      builder.priceComponent = priceComponent.toBuilderList()
       return builder
     }
 
@@ -514,12 +514,12 @@ public data class Invoice(
        * ChargeItem.overrideReason to be provided if either factor or price are manually overridden.
        */
       public val amount: Money? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(type)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.code = code?.toBuilder()
         builder.factor = factor?.toBuilder()
         builder.amount = amount?.toBuilder()
@@ -529,7 +529,7 @@ public data class Invoice(
       public class Builder(
         /** This code identifies the type of the component. */
         public var type: Enumeration<InvoicePriceComponentType>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -598,11 +598,11 @@ public data class Invoice(
          */
         public var amount: Money.Builder? = null
 
-        public fun build(): PriceComponent =
+        override fun build(): PriceComponent =
           PriceComponent(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type,
             code = code?.build(),
             factor = factor?.build(),
@@ -642,7 +642,7 @@ public data class Invoice(
        * CodeableConcept data type instead of the Reference.
        */
       public var chargeItem: ChargeItem
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -695,14 +695,14 @@ public data class Invoice(
        */
       public var priceComponent: MutableList<PriceComponent.Builder> = mutableListOf()
 
-      public fun build(): LineItem =
+      override fun build(): LineItem =
         LineItem(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           sequence = sequence?.build(),
           chargeItem = chargeItem,
-          priceComponent = priceComponent.mapToList { it.build() },
+          priceComponent = priceComponent.buildList(),
         )
     }
   }
@@ -925,25 +925,25 @@ public data class Invoice(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         cancelledReason = cancelledReason?.build(),
         type = type?.build(),
         subject = subject?.build(),
         recipient = recipient?.build(),
         date = date?.build(),
-        participant = participant.mapToList { it.build() },
+        participant = participant.buildList(),
         issuer = issuer?.build(),
         account = account?.build(),
-        lineItem = lineItem.mapToList { it.build() },
-        totalPriceComponent = totalPriceComponent.mapToList { it.build() },
+        lineItem = lineItem.buildList(),
+        totalPriceComponent = totalPriceComponent.buildList(),
         totalNet = totalNet?.build(),
         totalGross = totalGross?.build(),
         paymentTerms = paymentTerms?.build(),
-        note = note.mapToList { it.build() },
+        note = note.buildList(),
       )
   }
 }

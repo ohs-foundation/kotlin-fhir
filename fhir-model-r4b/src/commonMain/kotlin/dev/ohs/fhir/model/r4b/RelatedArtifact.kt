@@ -90,11 +90,11 @@ public data class RelatedArtifact(
    * type is successor, this is a reference to the prior knowledge resource.
    */
   public val resource: Canonical? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(type)
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.label = label?.toBuilder()
     builder.display = display?.toBuilder()
     builder.citation = citation?.toBuilder()
@@ -107,7 +107,7 @@ public data class RelatedArtifact(
   public open class Builder(
     /** The type of relationship to the related artifact. */
     public open var type: Enumeration<RelatedArtifactType>
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -170,10 +170,10 @@ public data class RelatedArtifact(
      */
     public open var resource: Canonical.Builder? = null
 
-    public open fun build(): RelatedArtifact =
+    open override fun build(): RelatedArtifact =
       RelatedArtifact(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         type = type,
         label = label?.build(),
         display = display?.build(),

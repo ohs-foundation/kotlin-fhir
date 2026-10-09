@@ -180,20 +180,20 @@ public data class Schedule(
   public val comment: Markdown? = null,
 ) : DomainResource() {
   override fun toBuilder(): Builder {
-    val builder = Builder(actor.mapToMutableList { it.toBuilder() })
+    val builder = Builder(actor.toBuilderList())
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
-    builder.serviceCategory = serviceCategory.mapToMutableList { it.toBuilder() }
-    builder.serviceType = serviceType.mapToMutableList { it.toBuilder() }
-    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
+    builder.serviceCategory = serviceCategory.toBuilderList()
+    builder.serviceType = serviceType.toBuilderList()
+    builder.specialty = specialty.toBuilderList()
     builder.name = name?.toBuilder()
     builder.planningHorizon = planningHorizon?.toBuilder()
     builder.comment = comment?.toBuilder()
@@ -372,16 +372,16 @@ public data class Schedule(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
-        serviceCategory = serviceCategory.mapToList { it.build() },
-        serviceType = serviceType.mapToList { it.build() },
-        specialty = specialty.mapToList { it.build() },
+        serviceCategory = serviceCategory.buildList(),
+        serviceType = serviceType.buildList(),
+        specialty = specialty.buildList(),
         name = name?.build(),
-        actor = actor.mapToList { it.build() },
+        actor = actor.buildList(),
         planningHorizon = planningHorizon?.build(),
         comment = comment?.build(),
       )

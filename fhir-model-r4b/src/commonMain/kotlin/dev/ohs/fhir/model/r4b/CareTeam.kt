@@ -206,22 +206,22 @@ public data class CareTeam(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.status = status
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.name = name?.toBuilder()
     builder.subject = subject?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.period = period?.toBuilder()
-    builder.participant = participant.mapToMutableList { it.toBuilder() }
-    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
-    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
-    builder.managingOrganization = managingOrganization.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.participant = participant.toBuilderList()
+    builder.reasonCode = reasonCode.toBuilderList()
+    builder.reasonReference = reasonReference.toBuilderList()
+    builder.managingOrganization = managingOrganization.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -291,20 +291,20 @@ public data class CareTeam(
      * and end.
      */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.role = role.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.role = role.toBuilderList()
       builder.member = member?.toBuilder()
       builder.onBehalfOf = onBehalfOf?.toBuilder()
       builder.period = period?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -375,12 +375,12 @@ public data class CareTeam(
        */
       public var period: Period.Builder? = null
 
-      public fun build(): Participant =
+      override fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          role = role.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          role = role.buildList(),
           member = member?.build(),
           onBehalfOf = onBehalfOf?.build(),
           period = period?.build(),
@@ -580,22 +580,22 @@ public data class CareTeam(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         name = name?.build(),
         subject = subject?.build(),
         encounter = encounter?.build(),
         period = period?.build(),
-        participant = participant.mapToList { it.build() },
-        reasonCode = reasonCode.mapToList { it.build() },
-        reasonReference = reasonReference.mapToList { it.build() },
-        managingOrganization = managingOrganization.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        participant = participant.buildList(),
+        reasonCode = reasonCode.buildList(),
+        reasonReference = reasonReference.buildList(),
+        managingOrganization = managingOrganization.buildList(),
+        telecom = telecom.buildList(),
+        note = note.buildList(),
       )
   }
 }

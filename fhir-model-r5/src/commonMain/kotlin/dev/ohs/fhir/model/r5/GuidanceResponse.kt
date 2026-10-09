@@ -225,21 +225,21 @@ public data class GuidanceResponse(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.requestIdentifier = requestIdentifier?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.subject = subject?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.occurrenceDateTime = occurrenceDateTime?.toBuilder()
     builder.performer = performer?.toBuilder()
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.toBuilderList()
+    builder.note = note.toBuilderList()
     builder.evaluationMessage = evaluationMessage?.toBuilder()
     builder.outputParameters = outputParameters?.toBuilder()
-    builder.result = result.mapToMutableList { it.toBuilder() }
-    builder.dataRequirement = dataRequirement.mapToMutableList { it.toBuilder() }
+    builder.result = result.toBuilderList()
+    builder.dataRequirement = dataRequirement.toBuilderList()
     return builder
   }
 
@@ -478,23 +478,23 @@ public data class GuidanceResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         requestIdentifier = requestIdentifier?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         module = module,
         status = status,
         subject = subject?.build(),
         encounter = encounter?.build(),
         occurrenceDateTime = occurrenceDateTime?.build(),
         performer = performer?.build(),
-        reason = reason.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        reason = reason.buildList(),
+        note = note.buildList(),
         evaluationMessage = evaluationMessage?.build(),
         outputParameters = outputParameters?.build(),
-        result = result.mapToList { it.build() },
-        dataRequirement = dataRequirement.mapToList { it.build() },
+        result = result.buildList(),
+        dataRequirement = dataRequirement.buildList(),
       )
   }
 }

@@ -173,13 +173,13 @@ public data class SubstanceProtein(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.sequenceType = sequenceType?.toBuilder()
     builder.numberOfSubunits = numberOfSubunits?.toBuilder()
-    builder.disulfideLinkage = disulfideLinkage.mapToMutableList { it.toBuilder() }
-    builder.subunit = subunit.mapToMutableList { it.toBuilder() }
+    builder.disulfideLinkage = disulfideLinkage.toBuilderList()
+    builder.subunit = subunit.toBuilderList()
     return builder
   }
 
@@ -272,12 +272,12 @@ public data class SubstanceProtein(
     public val cTerminalModificationId: Identifier? = null,
     /** The modification at the C-terminal shall be specified. */
     public val cTerminalModification: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.subunit = subunit?.toBuilder()
       builder.sequence = sequence?.toBuilder()
       builder.length = length?.toBuilder()
@@ -289,7 +289,7 @@ public data class SubstanceProtein(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -379,11 +379,11 @@ public data class SubstanceProtein(
       /** The modification at the C-terminal shall be specified. */
       public var cTerminalModification: String.Builder? = null
 
-      public fun build(): Subunit =
+      override fun build(): Subunit =
         Subunit(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           subunit = subunit?.build(),
           sequence = sequence?.build(),
           length = length?.build(),
@@ -542,13 +542,13 @@ public data class SubstanceProtein(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         sequenceType = sequenceType?.build(),
         numberOfSubunits = numberOfSubunits?.build(),
-        disulfideLinkage = disulfideLinkage.mapToList { it.build() },
-        subunit = subunit.mapToList { it.build() },
+        disulfideLinkage = disulfideLinkage.buildList(),
+        subunit = subunit.buildList(),
       )
   }
 }

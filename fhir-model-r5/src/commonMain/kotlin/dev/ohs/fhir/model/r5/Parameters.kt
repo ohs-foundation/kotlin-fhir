@@ -86,7 +86,7 @@ public data class Parameters(
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
-    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    builder.parameter = parameter.toBuilderList()
     return builder
   }
 
@@ -144,15 +144,15 @@ public data class Parameters(
     public val resource: Resource? = null,
     /** A named part of a multi-part parameter. */
     public val part: List<Parameter> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(name.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.`value` = `value`
       builder.resource = resource?.toBuilder()
-      builder.part = part.mapToMutableList { it.toBuilder() }
+      builder.part = part.toBuilderList()
       return builder
     }
 
@@ -512,7 +512,7 @@ public data class Parameters(
     public class Builder(
       /** The name of the parameter (reference to the operation definition). */
       public var name: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -568,15 +568,15 @@ public data class Parameters(
       /** A named part of a multi-part parameter. */
       public var part: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Parameter =
+      override fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name.build(),
           `value` = `value`,
           resource = resource?.build(),
-          part = part.mapToList { it.build() },
+          part = part.buildList(),
         )
     }
   }
@@ -636,7 +636,7 @@ public data class Parameters(
         meta = meta?.build(),
         implicitRules = implicitRules?.build(),
         language = language?.build(),
-        parameter = parameter.mapToList { it.build() },
+        parameter = parameter.buildList(),
       )
   }
 }

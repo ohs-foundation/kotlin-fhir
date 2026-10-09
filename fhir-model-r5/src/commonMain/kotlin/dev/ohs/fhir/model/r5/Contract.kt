@@ -360,10 +360,10 @@ public data class Contract(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.url = url?.toBuilder()
     builder.version = version?.toBuilder()
     builder.status = status
@@ -374,27 +374,27 @@ public data class Contract(
     builder.issued = issued?.toBuilder()
     builder.applies = applies?.toBuilder()
     builder.expirationType = expirationType?.toBuilder()
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
-    builder.authority = authority.mapToMutableList { it.toBuilder() }
-    builder.domain = domain.mapToMutableList { it.toBuilder() }
-    builder.site = site.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.toBuilderList()
+    builder.authority = authority.toBuilderList()
+    builder.domain = domain.toBuilderList()
+    builder.site = site.toBuilderList()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
     builder.subtitle = subtitle?.toBuilder()
-    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.alias = alias.toBuilderList()
     builder.author = author?.toBuilder()
     builder.scope = scope?.toBuilder()
     builder.topic = topic
     builder.type = type?.toBuilder()
-    builder.subType = subType.mapToMutableList { it.toBuilder() }
+    builder.subType = subType.toBuilderList()
     builder.contentDefinition = contentDefinition?.toBuilder()
-    builder.term = term.mapToMutableList { it.toBuilder() }
-    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
-    builder.relevantHistory = relevantHistory.mapToMutableList { it.toBuilder() }
-    builder.signer = signer.mapToMutableList { it.toBuilder() }
-    builder.friendly = friendly.mapToMutableList { it.toBuilder() }
-    builder.legal = legal.mapToMutableList { it.toBuilder() }
-    builder.rule = rule.mapToMutableList { it.toBuilder() }
+    builder.term = term.toBuilderList()
+    builder.supportingInfo = supportingInfo.toBuilderList()
+    builder.relevantHistory = relevantHistory.toBuilderList()
+    builder.signer = signer.toBuilderList()
+    builder.friendly = friendly.toBuilderList()
+    builder.legal = legal.toBuilderList()
+    builder.rule = rule.toBuilderList()
     builder.legallyBinding = legallyBinding
     return builder
   }
@@ -464,16 +464,16 @@ public data class Contract(
      * generally legal restrictions on the use and publishing of the Contract precursor content.
      */
     public val copyright: Markdown? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type.toBuilder(),
           publicationStatus,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.subType = subType?.toBuilder()
       builder.publisher = publisher?.toBuilder()
       builder.publicationDate = publicationDate?.toBuilder()
@@ -490,7 +490,7 @@ public data class Contract(
       public var type: CodeableConcept.Builder,
       /** amended | appended | cancelled | disputed | entered-in-error | executable +. */
       public var publicationStatus: Enumeration<ContractResourcePublicationStatusCodes>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -551,11 +551,11 @@ public data class Contract(
        */
       public var copyright: Markdown.Builder? = null
 
-      public fun build(): ContentDefinition =
+      override fun build(): ContentDefinition =
         ContentDefinition(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           subType = subType?.build(),
           publisher = publisher?.build(),
@@ -666,12 +666,12 @@ public data class Contract(
     public val action: List<Action> = listOf(),
     /** Nested group of Contract Provisions. */
     public val group: List<Term> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(offer.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.identifier = identifier?.toBuilder()
       builder.issued = issued?.toBuilder()
       builder.applies = applies?.toBuilder()
@@ -679,10 +679,10 @@ public data class Contract(
       builder.type = type?.toBuilder()
       builder.subType = subType?.toBuilder()
       builder.text = text?.toBuilder()
-      builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
-      builder.asset = asset.mapToMutableList { it.toBuilder() }
-      builder.action = action.mapToMutableList { it.toBuilder() }
-      builder.group = group.mapToMutableList { it.toBuilder() }
+      builder.securityLabel = securityLabel.toBuilderList()
+      builder.asset = asset.toBuilderList()
+      builder.action = action.toBuilderList()
+      builder.group = group.toBuilderList()
       return builder
     }
 
@@ -746,15 +746,15 @@ public data class Contract(
        * to be protected.
        */
       public val control: List<Coding> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(classification.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.number = number.mapToMutableList { it.toBuilder() }
-        builder.category = category.mapToMutableList { it.toBuilder() }
-        builder.control = control.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.number = number.toBuilderList()
+        builder.category = category.toBuilderList()
+        builder.control = control.toBuilderList()
         return builder
       }
 
@@ -764,7 +764,7 @@ public data class Contract(
          * required for this term and/or term elements.
          */
         public var classification: Coding.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -820,15 +820,15 @@ public data class Contract(
          */
         public var control: MutableList<Coding.Builder> = mutableListOf()
 
-        public fun build(): SecurityLabel =
+        override fun build(): SecurityLabel =
           SecurityLabel(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
-            number = number.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
+            number = number.buildList(),
             classification = classification.build(),
-            category = category.mapToList { it.build() },
-            control = control.mapToList { it.build() },
+            category = category.buildList(),
+            control = control.buildList(),
           )
       }
     }
@@ -926,22 +926,22 @@ public data class Contract(
       public val linkId: List<String> = listOf(),
       /** Security labels that protects the offer. */
       public val securityLabelNumber: List<UnsignedInt> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-        builder.party = party.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.identifier = identifier.toBuilderList()
+        builder.party = party.toBuilderList()
         builder.topic = topic?.toBuilder()
         builder.type = type?.toBuilder()
         builder.decision = decision?.toBuilder()
-        builder.decisionMode = decisionMode.mapToMutableList { it.toBuilder() }
-        builder.answer = answer.mapToMutableList { it.toBuilder() }
+        builder.decisionMode = decisionMode.toBuilderList()
+        builder.answer = answer.toBuilderList()
         builder.text = text?.toBuilder()
-        builder.linkId = linkId.mapToMutableList { it.toBuilder() }
-        builder.securityLabelNumber = securityLabelNumber.mapToMutableList { it.toBuilder() }
+        builder.linkId = linkId.toBuilderList()
+        builder.securityLabelNumber = securityLabelNumber.toBuilderList()
         return builder
       }
 
@@ -989,16 +989,16 @@ public data class Contract(
         public val reference: List<Reference>,
         /** How the party participates in the offer. */
         public val role: CodeableConcept,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder =
             Builder(
-              reference.mapToMutableList { it.toBuilder() },
+              reference.toBuilderList(),
               role.toBuilder(),
             )
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           return builder
         }
 
@@ -1007,7 +1007,7 @@ public data class Contract(
           public var reference: MutableList<Reference.Builder>,
           /** How the party participates in the offer. */
           public var role: CodeableConcept.Builder,
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1048,12 +1048,12 @@ public data class Contract(
            */
           public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-          public fun build(): Party =
+          override fun build(): Party =
             Party(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
-              reference = reference.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
+              reference = reference.buildList(),
               role = role.build(),
             )
         }
@@ -1105,12 +1105,12 @@ public data class Contract(
          * duration, or whether biospecimen may be used for further research.
          */
         public val `value`: Value,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(`value`)
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           return builder
         }
 
@@ -1203,7 +1203,7 @@ public data class Contract(
            * warranty duration, or whether biospecimen may be used for further research.
            */
           public var `value`: Value
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1244,17 +1244,17 @@ public data class Contract(
            */
           public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-          public fun build(): Answer =
+          override fun build(): Answer =
             Answer(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               `value` = `value`,
             )
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1358,21 +1358,21 @@ public data class Contract(
         /** Security labels that protects the offer. */
         public var securityLabelNumber: MutableList<UnsignedInt.Builder> = mutableListOf()
 
-        public fun build(): Offer =
+        override fun build(): Offer =
           Offer(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
-            identifier = identifier.mapToList { it.build() },
-            party = party.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
+            identifier = identifier.buildList(),
+            party = party.buildList(),
             topic = topic?.build(),
             type = type?.build(),
             decision = decision?.build(),
-            decisionMode = decisionMode.mapToList { it.build() },
-            answer = answer.mapToList { it.build() },
+            decisionMode = decisionMode.buildList(),
+            answer = answer.buildList(),
             text = text?.build(),
-            linkId = linkId.mapToList { it.build() },
-            securityLabelNumber = securityLabelNumber.mapToList { it.build() },
+            linkId = linkId.buildList(),
+            securityLabelNumber = securityLabelNumber.buildList(),
           )
       }
     }
@@ -1459,27 +1459,27 @@ public data class Contract(
       public val securityLabelNumber: List<UnsignedInt> = listOf(),
       /** Contract Valued Item List. */
       public val valuedItem: List<ValuedItem> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.scope = scope?.toBuilder()
-        builder.type = type.mapToMutableList { it.toBuilder() }
-        builder.typeReference = typeReference.mapToMutableList { it.toBuilder() }
-        builder.subtype = subtype.mapToMutableList { it.toBuilder() }
+        builder.type = type.toBuilderList()
+        builder.typeReference = typeReference.toBuilderList()
+        builder.subtype = subtype.toBuilderList()
         builder.relationship = relationship?.toBuilder()
-        builder.context = context.mapToMutableList { it.toBuilder() }
+        builder.context = context.toBuilderList()
         builder.condition = condition?.toBuilder()
-        builder.periodType = periodType.mapToMutableList { it.toBuilder() }
-        builder.period = period.mapToMutableList { it.toBuilder() }
-        builder.usePeriod = usePeriod.mapToMutableList { it.toBuilder() }
+        builder.periodType = periodType.toBuilderList()
+        builder.period = period.toBuilderList()
+        builder.usePeriod = usePeriod.toBuilderList()
         builder.text = text?.toBuilder()
-        builder.linkId = linkId.mapToMutableList { it.toBuilder() }
-        builder.answer = answer.mapToMutableList { it.toBuilder() }
-        builder.securityLabelNumber = securityLabelNumber.mapToMutableList { it.toBuilder() }
-        builder.valuedItem = valuedItem.mapToMutableList { it.toBuilder() }
+        builder.linkId = linkId.toBuilderList()
+        builder.answer = answer.toBuilderList()
+        builder.securityLabelNumber = securityLabelNumber.toBuilderList()
+        builder.valuedItem = valuedItem.toBuilderList()
         return builder
       }
 
@@ -1535,19 +1535,19 @@ public data class Contract(
         public val code: List<CodeableConcept> = listOf(),
         /** Context description. */
         public val text: String? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.reference = reference?.toBuilder()
-          builder.code = code.mapToMutableList { it.toBuilder() }
+          builder.code = code.toBuilderList()
           builder.text = text?.toBuilder()
           return builder
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1603,13 +1603,13 @@ public data class Contract(
           /** Context description. */
           public var text: String.Builder? = null
 
-          public fun build(): Context =
+          override fun build(): Context =
             Context(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               reference = reference?.build(),
-              code = code.mapToList { it.build() },
+              code = code.buildList(),
               text = text?.build(),
             )
         }
@@ -1702,12 +1702,12 @@ public data class Contract(
         public val linkId: List<String> = listOf(),
         /** A set of security labels that define which terms are controlled by this condition. */
         public val securityLabelNumber: List<UnsignedInt> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.entity = entity
           builder.identifier = identifier?.toBuilder()
           builder.effectiveTime = effectiveTime?.toBuilder()
@@ -1720,8 +1720,8 @@ public data class Contract(
           builder.paymentDate = paymentDate?.toBuilder()
           builder.responsible = responsible?.toBuilder()
           builder.recipient = recipient?.toBuilder()
-          builder.linkId = linkId.mapToMutableList { it.toBuilder() }
-          builder.securityLabelNumber = securityLabelNumber.mapToMutableList { it.toBuilder() }
+          builder.linkId = linkId.toBuilderList()
+          builder.securityLabelNumber = securityLabelNumber.toBuilderList()
           return builder
         }
 
@@ -1749,7 +1749,7 @@ public data class Contract(
           }
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1851,11 +1851,11 @@ public data class Contract(
           /** A set of security labels that define which terms are controlled by this condition. */
           public var securityLabelNumber: MutableList<UnsignedInt.Builder> = mutableListOf()
 
-          public fun build(): ValuedItem =
+          override fun build(): ValuedItem =
             ValuedItem(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               entity = entity,
               identifier = identifier?.build(),
               effectiveTime = effectiveTime?.build(),
@@ -1868,13 +1868,13 @@ public data class Contract(
               paymentDate = paymentDate?.build(),
               responsible = responsible?.build(),
               recipient = recipient?.build(),
-              linkId = linkId.mapToList { it.build() },
-              securityLabelNumber = securityLabelNumber.mapToList { it.build() },
+              linkId = linkId.buildList(),
+              securityLabelNumber = securityLabelNumber.buildList(),
             )
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1972,26 +1972,26 @@ public data class Contract(
         /** Contract Valued Item List. */
         public var valuedItem: MutableList<ValuedItem.Builder> = mutableListOf()
 
-        public fun build(): Asset =
+        override fun build(): Asset =
           Asset(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             scope = scope?.build(),
-            type = type.mapToList { it.build() },
-            typeReference = typeReference.mapToList { it.build() },
-            subtype = subtype.mapToList { it.build() },
+            type = type.buildList(),
+            typeReference = typeReference.buildList(),
+            subtype = subtype.buildList(),
             relationship = relationship?.build(),
-            context = context.mapToList { it.build() },
+            context = context.buildList(),
             condition = condition?.build(),
-            periodType = periodType.mapToList { it.build() },
-            period = period.mapToList { it.build() },
-            usePeriod = usePeriod.mapToList { it.build() },
+            periodType = periodType.buildList(),
+            period = period.buildList(),
+            usePeriod = usePeriod.buildList(),
             text = text?.build(),
-            linkId = linkId.mapToList { it.build() },
-            answer = answer.mapToList { it.build() },
-            securityLabelNumber = securityLabelNumber.mapToList { it.build() },
-            valuedItem = valuedItem.mapToList { it.build() },
+            linkId = linkId.buildList(),
+            answer = answer.buildList(),
+            securityLabelNumber = securityLabelNumber.buildList(),
+            valuedItem = valuedItem.buildList(),
           )
       }
     }
@@ -2107,28 +2107,28 @@ public data class Contract(
       public val note: List<Annotation> = listOf(),
       /** Security labels that protects the action. */
       public val securityLabelNumber: List<UnsignedInt> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(type.toBuilder(), intent.toBuilder(), status.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.doNotPerform = doNotPerform?.toBuilder()
-        builder.subject = subject.mapToMutableList { it.toBuilder() }
-        builder.linkId = linkId.mapToMutableList { it.toBuilder() }
+        builder.subject = subject.toBuilderList()
+        builder.linkId = linkId.toBuilderList()
         builder.context = context?.toBuilder()
-        builder.contextLinkId = contextLinkId.mapToMutableList { it.toBuilder() }
+        builder.contextLinkId = contextLinkId.toBuilderList()
         builder.occurrence = occurrence
-        builder.requester = requester.mapToMutableList { it.toBuilder() }
-        builder.requesterLinkId = requesterLinkId.mapToMutableList { it.toBuilder() }
-        builder.performerType = performerType.mapToMutableList { it.toBuilder() }
+        builder.requester = requester.toBuilderList()
+        builder.requesterLinkId = requesterLinkId.toBuilderList()
+        builder.performerType = performerType.toBuilderList()
         builder.performerRole = performerRole?.toBuilder()
         builder.performer = performer?.toBuilder()
-        builder.performerLinkId = performerLinkId.mapToMutableList { it.toBuilder() }
-        builder.reason = reason.mapToMutableList { it.toBuilder() }
-        builder.reasonLinkId = reasonLinkId.mapToMutableList { it.toBuilder() }
-        builder.note = note.mapToMutableList { it.toBuilder() }
-        builder.securityLabelNumber = securityLabelNumber.mapToMutableList { it.toBuilder() }
+        builder.performerLinkId = performerLinkId.toBuilderList()
+        builder.reason = reason.toBuilderList()
+        builder.reasonLinkId = reasonLinkId.toBuilderList()
+        builder.note = note.toBuilderList()
+        builder.securityLabelNumber = securityLabelNumber.toBuilderList()
         return builder
       }
 
@@ -2176,12 +2176,12 @@ public data class Contract(
         public val reference: List<Reference>,
         /** Role type of agent assigned roles in this Contract. */
         public val role: CodeableConcept? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
-          val builder = Builder(reference.mapToMutableList { it.toBuilder() })
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
+          val builder = Builder(reference.toBuilderList())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.role = role?.toBuilder()
           return builder
         }
@@ -2189,7 +2189,7 @@ public data class Contract(
         public class Builder(
           /** The entity the action is performed or not performed on or for. */
           public var reference: MutableList<Reference.Builder>
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -2233,12 +2233,12 @@ public data class Contract(
           /** Role type of agent assigned roles in this Contract. */
           public var role: CodeableConcept.Builder? = null
 
-          public fun build(): Subject =
+          override fun build(): Subject =
             Subject(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
-              reference = reference.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
+              reference = reference.buildList(),
               role = role?.build(),
             )
         }
@@ -2282,7 +2282,7 @@ public data class Contract(
         public var intent: CodeableConcept.Builder,
         /** Current state of the term action. */
         public var status: CodeableConcept.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -2398,30 +2398,30 @@ public data class Contract(
         /** Security labels that protects the action. */
         public var securityLabelNumber: MutableList<UnsignedInt.Builder> = mutableListOf()
 
-        public fun build(): Action =
+        override fun build(): Action =
           Action(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             doNotPerform = doNotPerform?.build(),
             type = type.build(),
-            subject = subject.mapToList { it.build() },
+            subject = subject.buildList(),
             intent = intent.build(),
-            linkId = linkId.mapToList { it.build() },
+            linkId = linkId.buildList(),
             status = status.build(),
             context = context?.build(),
-            contextLinkId = contextLinkId.mapToList { it.build() },
+            contextLinkId = contextLinkId.buildList(),
             occurrence = occurrence,
-            requester = requester.mapToList { it.build() },
-            requesterLinkId = requesterLinkId.mapToList { it.build() },
-            performerType = performerType.mapToList { it.build() },
+            requester = requester.buildList(),
+            requesterLinkId = requesterLinkId.buildList(),
+            performerType = performerType.buildList(),
             performerRole = performerRole?.build(),
             performer = performer?.build(),
-            performerLinkId = performerLinkId.mapToList { it.build() },
-            reason = reason.mapToList { it.build() },
-            reasonLinkId = reasonLinkId.mapToList { it.build() },
-            note = note.mapToList { it.build() },
-            securityLabelNumber = securityLabelNumber.mapToList { it.build() },
+            performerLinkId = performerLinkId.buildList(),
+            reason = reason.buildList(),
+            reasonLinkId = reasonLinkId.buildList(),
+            note = note.buildList(),
+            securityLabelNumber = securityLabelNumber.buildList(),
           )
       }
     }
@@ -2452,7 +2452,7 @@ public data class Contract(
     public class Builder(
       /** The matter of concern in the context of this provision of the agrement. */
       public var offer: Offer.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2559,11 +2559,11 @@ public data class Contract(
       /** Nested group of Contract Provisions. */
       public var group: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Term =
+      override fun build(): Term =
         Term(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identifier = identifier?.build(),
           issued = issued?.build(),
           applies = applies?.build(),
@@ -2571,11 +2571,11 @@ public data class Contract(
           type = type?.build(),
           subType = subType?.build(),
           text = text?.build(),
-          securityLabel = securityLabel.mapToList { it.build() },
+          securityLabel = securityLabel.buildList(),
           offer = offer.build(),
-          asset = asset.mapToList { it.build() },
-          action = action.mapToList { it.build() },
-          group = group.mapToList { it.build() },
+          asset = asset.buildList(),
+          action = action.buildList(),
+          group = group.buildList(),
         )
     }
   }
@@ -2630,17 +2630,17 @@ public data class Contract(
     public val party: Reference,
     /** Legally binding Contract DSIG signature contents in Base64. */
     public val signature: List<Signature>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type.toBuilder(),
           party.toBuilder(),
-          signature.mapToMutableList { it.toBuilder() },
+          signature.toBuilderList(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -2651,7 +2651,7 @@ public data class Contract(
       public var party: Reference.Builder,
       /** Legally binding Contract DSIG signature contents in Base64. */
       public var signature: MutableList<Signature.Builder>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2692,14 +2692,14 @@ public data class Contract(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Signer =
+      override fun build(): Signer =
         Signer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           party = party.build(),
-          signature = signature.mapToList { it.build() },
+          signature = signature.buildList(),
         )
     }
   }
@@ -2755,12 +2755,12 @@ public data class Contract(
      * comprehension and ensure understandability.
      */
     public val content: Content,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(content)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -2791,7 +2791,7 @@ public data class Contract(
        * enhance comprehension and ensure understandability.
        */
       public var content: Content
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2832,11 +2832,11 @@ public data class Contract(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Friendly =
+      override fun build(): Friendly =
         Friendly(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           content = content,
         )
     }
@@ -2884,12 +2884,12 @@ public data class Contract(
     override val modifierExtension: List<Extension> = listOf(),
     /** Contract legal text in human renderable form. */
     public val content: Content,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(content)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -2917,7 +2917,7 @@ public data class Contract(
     public class Builder(
       /** Contract legal text in human renderable form. */
       public var content: Content
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2958,11 +2958,11 @@ public data class Contract(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Legal =
+      override fun build(): Legal =
         Legal(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           content = content,
         )
     }
@@ -3010,12 +3010,12 @@ public data class Contract(
     override val modifierExtension: List<Extension> = listOf(),
     /** Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal). */
     public val content: Content,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(content)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -3043,7 +3043,7 @@ public data class Contract(
     public class Builder(
       /** Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL, SecPal). */
       public var content: Content
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -3084,11 +3084,11 @@ public data class Contract(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Rule =
+      override fun build(): Rule =
         Rule(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           content = content,
         )
     }
@@ -3490,10 +3490,10 @@ public data class Contract(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         url = url?.build(),
         version = version?.build(),
         status = status,
@@ -3504,27 +3504,27 @@ public data class Contract(
         issued = issued?.build(),
         applies = applies?.build(),
         expirationType = expirationType?.build(),
-        subject = subject.mapToList { it.build() },
-        authority = authority.mapToList { it.build() },
-        domain = domain.mapToList { it.build() },
-        site = site.mapToList { it.build() },
+        subject = subject.buildList(),
+        authority = authority.buildList(),
+        domain = domain.buildList(),
+        site = site.buildList(),
         name = name?.build(),
         title = title?.build(),
         subtitle = subtitle?.build(),
-        alias = alias.mapToList { it.build() },
+        alias = alias.buildList(),
         author = author?.build(),
         scope = scope?.build(),
         topic = topic,
         type = type?.build(),
-        subType = subType.mapToList { it.build() },
+        subType = subType.buildList(),
         contentDefinition = contentDefinition?.build(),
-        term = term.mapToList { it.build() },
-        supportingInfo = supportingInfo.mapToList { it.build() },
-        relevantHistory = relevantHistory.mapToList { it.build() },
-        signer = signer.mapToList { it.build() },
-        friendly = friendly.mapToList { it.build() },
-        legal = legal.mapToList { it.build() },
-        rule = rule.mapToList { it.build() },
+        term = term.buildList(),
+        supportingInfo = supportingInfo.buildList(),
+        relevantHistory = relevantHistory.buildList(),
+        signer = signer.buildList(),
+        friendly = friendly.buildList(),
+        legal = legal.buildList(),
+        rule = rule.buildList(),
         legallyBinding = legallyBinding,
       )
   }

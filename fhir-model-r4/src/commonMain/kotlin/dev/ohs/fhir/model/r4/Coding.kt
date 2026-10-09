@@ -89,11 +89,11 @@ public data class Coding(
    * more completely.
    */
   public val userSelected: Boolean? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.system = system?.toBuilder()
     builder.version = version?.toBuilder()
     builder.code = code?.toBuilder()
@@ -102,7 +102,7 @@ public data class Coding(
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -167,10 +167,10 @@ public data class Coding(
      */
     public open var userSelected: Boolean.Builder? = null
 
-    public open fun build(): Coding =
+    open override fun build(): Coding =
       Coding(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         system = system?.build(),
         version = version?.build(),
         code = code?.build(),

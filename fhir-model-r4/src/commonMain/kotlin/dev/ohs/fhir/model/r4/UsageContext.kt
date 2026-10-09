@@ -61,15 +61,15 @@ public data class UsageContext(
    * value is defined by the code.
    */
   public val `value`: Value,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder =
       Builder(
         code.toBuilder(),
         `value`,
       )
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     return builder
   }
 
@@ -115,7 +115,7 @@ public data class UsageContext(
      * value is defined by the code.
      */
     public open var `value`: Value,
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -136,10 +136,10 @@ public data class UsageContext(
      */
     public open var extension: MutableList<Extension.Builder> = mutableListOf()
 
-    public open fun build(): UsageContext =
+    open override fun build(): UsageContext =
       UsageContext(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         code = code.build(),
         `value` = `value`,
       )

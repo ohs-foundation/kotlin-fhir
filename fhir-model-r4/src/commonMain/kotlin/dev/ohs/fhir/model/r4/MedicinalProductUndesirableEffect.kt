@@ -147,14 +147,14 @@ public data class MedicinalProductUndesirableEffect(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.subject = subject.toBuilderList()
     builder.symptomConditionEffect = symptomConditionEffect?.toBuilder()
     builder.classification = classification?.toBuilder()
     builder.frequencyOfOccurrence = frequencyOfOccurrence?.toBuilder()
-    builder.population = population.mapToMutableList { it.toBuilder() }
+    builder.population = population.toBuilderList()
     return builder
   }
 
@@ -286,14 +286,14 @@ public data class MedicinalProductUndesirableEffect(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        subject = subject.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        subject = subject.buildList(),
         symptomConditionEffect = symptomConditionEffect?.build(),
         classification = classification?.build(),
         frequencyOfOccurrence = frequencyOfOccurrence?.build(),
-        population = population.mapToList { it.build() },
+        population = population.buildList(),
       )
   }
 }

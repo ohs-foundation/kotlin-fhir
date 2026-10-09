@@ -220,19 +220,19 @@ public data class Organization(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
-    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.type = type.toBuilderList()
     builder.name = name?.toBuilder()
-    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.alias = alias.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.partOf = partOf?.toBuilder()
-    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
-    builder.qualification = qualification.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.toBuilderList()
+    builder.qualification = qualification.toBuilderList()
     return builder
   }
 
@@ -290,13 +290,13 @@ public data class Organization(
     public val period: Period? = null,
     /** Organization that regulates and issues the qualification. */
     public val issuer: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.identifier = identifier.toBuilderList()
       builder.period = period?.toBuilder()
       builder.issuer = issuer?.toBuilder()
       return builder
@@ -305,7 +305,7 @@ public data class Organization(
     public class Builder(
       /** Coded representation of the qualification. */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -355,12 +355,12 @@ public data class Organization(
       /** Organization that regulates and issues the qualification. */
       public var issuer: Reference.Builder? = null
 
-      public fun build(): Qualification =
+      override fun build(): Qualification =
         Qualification(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          identifier = identifier.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          identifier = identifier.buildList(),
           code = code.build(),
           period = period?.build(),
           issuer = issuer?.build(),
@@ -570,19 +570,19 @@ public data class Organization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
-        type = type.mapToList { it.build() },
+        type = type.buildList(),
         name = name?.build(),
-        alias = alias.mapToList { it.build() },
+        alias = alias.buildList(),
         description = description?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         partOf = partOf?.build(),
-        endpoint = endpoint.mapToList { it.build() },
-        qualification = qualification.mapToList { it.build() },
+        endpoint = endpoint.buildList(),
+        qualification = qualification.buildList(),
       )
   }
 }

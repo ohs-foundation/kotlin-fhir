@@ -135,15 +135,15 @@ public data class OperationOutcome(
   public val issue: List<Issue>,
 ) : DomainResource() {
   override fun toBuilder(): Builder {
-    val builder = Builder(issue.mapToMutableList { it.toBuilder() })
+    val builder = Builder(issue.toBuilderList())
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     return builder
   }
 
@@ -236,20 +236,20 @@ public data class OperationOutcome(
      * FHIRPath SHALL resolve to a single node.
      */
     public val expression: List<String> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           severity,
           code,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.details = details?.toBuilder()
       builder.diagnostics = diagnostics?.toBuilder()
-      builder.location = location.mapToMutableList { it.toBuilder() }
-      builder.expression = expression.mapToMutableList { it.toBuilder() }
+      builder.location = location.toBuilderList()
+      builder.expression = expression.toBuilderList()
       return builder
     }
 
@@ -267,7 +267,7 @@ public data class OperationOutcome(
        * code for the error in the details element.
        */
       public var code: Enumeration<IssueType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -349,17 +349,17 @@ public data class OperationOutcome(
        */
       public var expression: MutableList<String.Builder> = mutableListOf()
 
-      public fun build(): Issue =
+      override fun build(): Issue =
         Issue(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           severity = severity,
           code = code,
           details = details?.build(),
           diagnostics = diagnostics?.build(),
-          location = location.mapToList { it.build() },
-          expression = expression.mapToList { it.build() },
+          location = location.buildList(),
+          expression = expression.buildList(),
         )
     }
   }
@@ -480,10 +480,10 @@ public data class OperationOutcome(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        issue = issue.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        issue = issue.buildList(),
       )
   }
 }

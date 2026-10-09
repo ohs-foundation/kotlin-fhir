@@ -234,27 +234,27 @@ public data class DeviceDispense(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
     builder.statusReason = statusReason?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.`receiver` = `receiver`?.toBuilder()
     builder.encounter = encounter?.toBuilder()
-    builder.supportingInformation = supportingInformation.mapToMutableList { it.toBuilder() }
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.supportingInformation = supportingInformation.toBuilderList()
+    builder.performer = performer.toBuilderList()
     builder.location = location?.toBuilder()
     builder.type = type?.toBuilder()
     builder.quantity = quantity?.toBuilder()
     builder.preparedDate = preparedDate?.toBuilder()
     builder.whenHandedOver = whenHandedOver?.toBuilder()
     builder.destination = destination?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
     builder.usageInstruction = usageInstruction?.toBuilder()
-    builder.eventHistory = eventHistory.mapToMutableList { it.toBuilder() }
+    builder.eventHistory = eventHistory.toBuilderList()
     return builder
   }
 
@@ -308,12 +308,12 @@ public data class DeviceDispense(
      * is the dispenser of the device.
      */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -324,7 +324,7 @@ public data class DeviceDispense(
        * actor is the dispenser of the device.
        */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -371,11 +371,11 @@ public data class DeviceDispense(
        */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -603,30 +603,30 @@ public data class DeviceDispense(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        basedOn = basedOn.buildList(),
+        partOf = partOf.buildList(),
         status = status,
         statusReason = statusReason?.build(),
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         device = device.build(),
         subject = subject.build(),
         `receiver` = `receiver`?.build(),
         encounter = encounter?.build(),
-        supportingInformation = supportingInformation.mapToList { it.build() },
-        performer = performer.mapToList { it.build() },
+        supportingInformation = supportingInformation.buildList(),
+        performer = performer.buildList(),
         location = location?.build(),
         type = type?.build(),
         quantity = quantity?.build(),
         preparedDate = preparedDate?.build(),
         whenHandedOver = whenHandedOver?.build(),
         destination = destination?.build(),
-        note = note.mapToList { it.build() },
+        note = note.buildList(),
         usageInstruction = usageInstruction?.build(),
-        eventHistory = eventHistory.mapToList { it.build() },
+        eventHistory = eventHistory.buildList(),
       )
   }
 }

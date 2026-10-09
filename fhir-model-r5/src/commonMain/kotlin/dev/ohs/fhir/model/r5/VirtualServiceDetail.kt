@@ -89,14 +89,14 @@ public data class VirtualServiceDetail(
    * private line, or to identify the participant in a call.
    */
   public val sessionKey: String? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.channelType = channelType?.toBuilder()
     builder.address = address
-    builder.additionalInfo = additionalInfo.mapToMutableList { it.toBuilder() }
+    builder.additionalInfo = additionalInfo.toBuilderList()
     builder.maxParticipants = maxParticipants?.toBuilder()
     builder.sessionKey = sessionKey?.toBuilder()
     return builder
@@ -139,7 +139,7 @@ public data class VirtualServiceDetail(
     }
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -208,13 +208,13 @@ public data class VirtualServiceDetail(
      */
     public open var sessionKey: String.Builder? = null
 
-    public open fun build(): VirtualServiceDetail =
+    open override fun build(): VirtualServiceDetail =
       VirtualServiceDetail(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         channelType = channelType?.build(),
         address = address,
-        additionalInfo = additionalInfo.mapToList { it.build() },
+        additionalInfo = additionalInfo.buildList(),
         maxParticipants = maxParticipants?.build(),
         sessionKey = sessionKey?.build(),
       )

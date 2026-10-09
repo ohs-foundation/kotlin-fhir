@@ -51,7 +51,7 @@ public open class Uri(
   open override val extension: List<Extension> = listOf(),
   /** The actual value */
   public open val `value`: String? = null,
-) : PrimitiveType() {
+) : PrimitiveType(), FhirBuildable {
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is Uri) return false
@@ -69,10 +69,10 @@ public open class Uri(
     return result
   }
 
-  public open fun toBuilder(): Builder {
+  open override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -84,7 +84,7 @@ public open class Uri(
     return null
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: String? = null
 
@@ -105,10 +105,10 @@ public open class Uri(
     /** The actual value */
     public open var `value`: String? = null
 
-    public open fun build(): Uri =
+    open override fun build(): Uri =
       Uri(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

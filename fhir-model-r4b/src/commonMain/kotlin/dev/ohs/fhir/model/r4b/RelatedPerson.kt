@@ -190,20 +190,20 @@ public data class RelatedPerson(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
-    builder.relationship = relationship.mapToMutableList { it.toBuilder() }
-    builder.name = name.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.relationship = relationship.toBuilderList()
+    builder.name = name.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
     builder.gender = gender
     builder.birthDate = birthDate?.toBuilder()
-    builder.address = address.mapToMutableList { it.toBuilder() }
-    builder.photo = photo.mapToMutableList { it.toBuilder() }
+    builder.address = address.toBuilderList()
+    builder.photo = photo.toBuilderList()
     builder.period = period?.toBuilder()
-    builder.communication = communication.mapToMutableList { it.toBuilder() }
+    builder.communication = communication.toBuilderList()
     return builder
   }
 
@@ -264,12 +264,12 @@ public data class RelatedPerson(
      * This language is specifically identified for communicating healthcare information.
      */
     public val preferred: Boolean? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(language.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.preferred = preferred?.toBuilder()
       return builder
     }
@@ -285,7 +285,7 @@ public data class RelatedPerson(
        * CodeableConcept instead of code as the data type.
        */
       public var language: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -334,11 +334,11 @@ public data class RelatedPerson(
        */
       public var preferred: Boolean.Builder? = null
 
-      public fun build(): Communication =
+      override fun build(): Communication =
         Communication(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           language = language.build(),
           preferred = preferred?.build(),
         )
@@ -519,21 +519,21 @@ public data class RelatedPerson(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
         patient = patient.build(),
-        relationship = relationship.mapToList { it.build() },
-        name = name.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
+        relationship = relationship.buildList(),
+        name = name.buildList(),
+        telecom = telecom.buildList(),
         gender = gender,
         birthDate = birthDate?.build(),
-        address = address.mapToList { it.build() },
-        photo = photo.mapToList { it.build() },
+        address = address.buildList(),
+        photo = photo.buildList(),
         period = period?.build(),
-        communication = communication.mapToList { it.build() },
+        communication = communication.buildList(),
       )
   }
 }

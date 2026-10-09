@@ -203,17 +203,17 @@ public data class ObservationDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.category = category.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.permittedDataType = permittedDataType.toMutableList()
     builder.multipleResultsAllowed = multipleResultsAllowed?.toBuilder()
     builder.method = method?.toBuilder()
     builder.preferredReportName = preferredReportName?.toBuilder()
     builder.quantitativeDetails = quantitativeDetails?.toBuilder()
-    builder.qualifiedInterval = qualifiedInterval.mapToMutableList { it.toBuilder() }
+    builder.qualifiedInterval = qualifiedInterval.toBuilderList()
     builder.validCodedValueSet = validCodedValueSet?.toBuilder()
     builder.normalCodedValueSet = normalCodedValueSet?.toBuilder()
     builder.abnormalCodedValueSet = abnormalCodedValueSet?.toBuilder()
@@ -280,12 +280,12 @@ public data class ObservationDefinition(
      * Quantity.
      */
     public val decimalPrecision: Integer? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.customaryUnit = customaryUnit?.toBuilder()
       builder.unit = unit?.toBuilder()
       builder.conversionFactor = conversionFactor?.toBuilder()
@@ -293,7 +293,7 @@ public data class ObservationDefinition(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -357,11 +357,11 @@ public data class ObservationDefinition(
        */
       public var decimalPrecision: Integer.Builder? = null
 
-      public fun build(): QuantitativeDetails =
+      override fun build(): QuantitativeDetails =
         QuantitativeDetails(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           customaryUnit = customaryUnit?.build(),
           unit = unit?.build(),
           conversionFactor = conversionFactor?.build(),
@@ -446,16 +446,16 @@ public data class ObservationDefinition(
     public val gestationalAge: Range? = null,
     /** Text based condition for which the reference range is valid. */
     public val condition: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.category = category
       builder.range = range?.toBuilder()
       builder.context = context?.toBuilder()
-      builder.appliesTo = appliesTo.mapToMutableList { it.toBuilder() }
+      builder.appliesTo = appliesTo.toBuilderList()
       builder.gender = gender
       builder.age = age?.toBuilder()
       builder.gestationalAge = gestationalAge?.toBuilder()
@@ -463,7 +463,7 @@ public data class ObservationDefinition(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -546,15 +546,15 @@ public data class ObservationDefinition(
       /** Text based condition for which the reference range is valid. */
       public var condition: String.Builder? = null
 
-      public fun build(): QualifiedInterval =
+      override fun build(): QualifiedInterval =
         QualifiedInterval(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           category = category,
           range = range?.build(),
           context = context?.build(),
-          appliesTo = appliesTo.mapToList { it.build() },
+          appliesTo = appliesTo.buildList(),
           gender = gender,
           age = age?.build(),
           gestationalAge = gestationalAge?.build(),
@@ -751,18 +751,18 @@ public data class ObservationDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        category = category.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        category = category.buildList(),
         code = code.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         permittedDataType = permittedDataType,
         multipleResultsAllowed = multipleResultsAllowed?.build(),
         method = method?.build(),
         preferredReportName = preferredReportName?.build(),
         quantitativeDetails = quantitativeDetails?.build(),
-        qualifiedInterval = qualifiedInterval.mapToList { it.build() },
+        qualifiedInterval = qualifiedInterval.buildList(),
         validCodedValueSet = validCodedValueSet?.build(),
         normalCodedValueSet = normalCodedValueSet?.build(),
         abnormalCodedValueSet = abnormalCodedValueSet?.build(),

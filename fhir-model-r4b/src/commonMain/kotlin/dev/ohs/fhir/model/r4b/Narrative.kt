@@ -68,15 +68,15 @@ public data class Narrative(
    * frames, iframes and objects.
    */
   public val div: Xhtml,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder =
       Builder(
         status,
         div.toBuilder(),
       )
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     return builder
   }
 
@@ -96,7 +96,7 @@ public data class Narrative(
      * frames, iframes and objects.
      */
     public open var div: Xhtml.Builder,
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -117,10 +117,10 @@ public data class Narrative(
      */
     public open var extension: MutableList<Extension.Builder> = mutableListOf()
 
-    public open fun build(): Narrative =
+    open override fun build(): Narrative =
       Narrative(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         status = status,
         div = div.build(),
       )

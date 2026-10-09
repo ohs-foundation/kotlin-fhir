@@ -215,22 +215,22 @@ public data class GuidanceResponse(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.requestIdentifier = requestIdentifier?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.subject = subject?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.occurrenceDateTime = occurrenceDateTime?.toBuilder()
     builder.performer = performer?.toBuilder()
-    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
-    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.evaluationMessage = evaluationMessage.mapToMutableList { it.toBuilder() }
+    builder.reasonCode = reasonCode.toBuilderList()
+    builder.reasonReference = reasonReference.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.evaluationMessage = evaluationMessage.toBuilderList()
     builder.outputParameters = outputParameters?.toBuilder()
     builder.result = result?.toBuilder()
-    builder.dataRequirement = dataRequirement.mapToMutableList { it.toBuilder() }
+    builder.dataRequirement = dataRequirement.toBuilderList()
     return builder
   }
 
@@ -460,24 +460,24 @@ public data class GuidanceResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         requestIdentifier = requestIdentifier?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         module = module,
         status = status,
         subject = subject?.build(),
         encounter = encounter?.build(),
         occurrenceDateTime = occurrenceDateTime?.build(),
         performer = performer?.build(),
-        reasonCode = reasonCode.mapToList { it.build() },
-        reasonReference = reasonReference.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        evaluationMessage = evaluationMessage.mapToList { it.build() },
+        reasonCode = reasonCode.buildList(),
+        reasonReference = reasonReference.buildList(),
+        note = note.buildList(),
+        evaluationMessage = evaluationMessage.buildList(),
         outputParameters = outputParameters?.build(),
         result = result?.build(),
-        dataRequirement = dataRequirement.mapToList { it.build() },
+        dataRequirement = dataRequirement.buildList(),
       )
   }
 }

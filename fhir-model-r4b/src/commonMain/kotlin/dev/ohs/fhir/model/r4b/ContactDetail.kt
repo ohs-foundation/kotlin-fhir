@@ -59,17 +59,17 @@ public data class ContactDetail(
   public val name: String? = null,
   /** The contact details for the individual (if a name was provided) or the organization. */
   public val telecom: List<ContactPoint> = listOf(),
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.name = name?.toBuilder()
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.telecom = telecom.toBuilderList()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -100,12 +100,12 @@ public data class ContactDetail(
     /** The contact details for the individual (if a name was provided) or the organization. */
     public open var telecom: MutableList<ContactPoint.Builder> = mutableListOf()
 
-    public open fun build(): ContactDetail =
+    open override fun build(): ContactDetail =
       ContactDetail(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         name = name?.build(),
-        telecom = telecom.mapToList { it.build() },
+        telecom = telecom.buildList(),
       )
   }
 }

@@ -385,39 +385,39 @@ public data class ServiceRequest(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+    builder.instantiatesUri = instantiatesUri.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.replaces = replaces.toBuilderList()
     builder.requisition = requisition?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.priority = priority
     builder.doNotPerform = doNotPerform?.toBuilder()
     builder.code = code?.toBuilder()
-    builder.orderDetail = orderDetail.mapToMutableList { it.toBuilder() }
+    builder.orderDetail = orderDetail.toBuilderList()
     builder.quantity = quantity
-    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.focus = focus.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     builder.occurrence = occurrence
     builder.asNeeded = asNeeded
     builder.authoredOn = authoredOn?.toBuilder()
     builder.requester = requester?.toBuilder()
     builder.performerType = performerType?.toBuilder()
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
-    builder.location = location.mapToMutableList { it.toBuilder() }
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.insurance = insurance.mapToMutableList { it.toBuilder() }
-    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
-    builder.specimen = specimen.mapToMutableList { it.toBuilder() }
-    builder.bodySite = bodySite.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
+    builder.location = location.toBuilderList()
+    builder.reason = reason.toBuilderList()
+    builder.insurance = insurance.toBuilderList()
+    builder.supportingInfo = supportingInfo.toBuilderList()
+    builder.specimen = specimen.toBuilderList()
+    builder.bodySite = bodySite.toBuilderList()
     builder.bodyStructure = bodyStructure?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.patientInstruction = patientInstruction.mapToMutableList { it.toBuilder() }
-    builder.relevantHistory = relevantHistory.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
+    builder.patientInstruction = patientInstruction.toBuilderList()
+    builder.relevantHistory = relevantHistory.toBuilderList()
     return builder
   }
 
@@ -470,12 +470,12 @@ public data class ServiceRequest(
     public val parameterFocus: CodeableReference? = null,
     /** The parameter details for the service being requested. */
     public val parameter: List<Parameter>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(parameter.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(parameter.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.parameterFocus = parameterFocus?.toBuilder()
       return builder
     }
@@ -533,16 +533,16 @@ public data class ServiceRequest(
        * text or not a single identifiable concept, string should be used.
        */
       public val `value`: Value,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             code.toBuilder(),
             `value`,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -613,7 +613,7 @@ public data class ServiceRequest(
          * data is a text or not a single identifiable concept, string should be used.
          */
         public var `value`: Value,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -654,11 +654,11 @@ public data class ServiceRequest(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Parameter =
+        override fun build(): Parameter =
           Parameter(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code.build(),
             `value` = `value`,
           )
@@ -668,7 +668,7 @@ public data class ServiceRequest(
     public class Builder(
       /** The parameter details for the service being requested. */
       public var parameter: MutableList<Parameter.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -712,13 +712,13 @@ public data class ServiceRequest(
       /** Indicates the context of the order details by reference. */
       public var parameterFocus: CodeableReference.Builder? = null
 
-      public fun build(): OrderDetail =
+      override fun build(): OrderDetail =
         OrderDetail(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           parameterFocus = parameterFocus?.build(),
-          parameter = parameter.mapToList { it.build() },
+          parameter = parameter.buildList(),
         )
     }
   }
@@ -765,12 +765,12 @@ public data class ServiceRequest(
     override val modifierExtension: List<Extension> = listOf(),
     /** Instructions in terms that are understood by the patient or consumer. */
     public val instruction: Instruction? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.instruction = instruction
       return builder
     }
@@ -797,7 +797,7 @@ public data class ServiceRequest(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -841,11 +841,11 @@ public data class ServiceRequest(
       /** Instructions in terms that are understood by the patient or consumer. */
       public var instruction: Instruction? = null
 
-      public fun build(): PatientInstruction =
+      override fun build(): PatientInstruction =
         PatientInstruction(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           instruction = instruction,
         )
     }
@@ -1309,42 +1309,42 @@ public data class ServiceRequest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-        instantiatesUri = instantiatesUri.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        replaces = replaces.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        instantiatesCanonical = instantiatesCanonical.buildList(),
+        instantiatesUri = instantiatesUri.buildList(),
+        basedOn = basedOn.buildList(),
+        replaces = replaces.buildList(),
         requisition = requisition?.build(),
         status = status,
         intent = intent,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         priority = priority,
         doNotPerform = doNotPerform?.build(),
         code = code?.build(),
-        orderDetail = orderDetail.mapToList { it.build() },
+        orderDetail = orderDetail.buildList(),
         quantity = quantity,
         subject = subject.build(),
-        focus = focus.mapToList { it.build() },
+        focus = focus.buildList(),
         encounter = encounter?.build(),
         occurrence = occurrence,
         asNeeded = asNeeded,
         authoredOn = authoredOn?.build(),
         requester = requester?.build(),
         performerType = performerType?.build(),
-        performer = performer.mapToList { it.build() },
-        location = location.mapToList { it.build() },
-        reason = reason.mapToList { it.build() },
-        insurance = insurance.mapToList { it.build() },
-        supportingInfo = supportingInfo.mapToList { it.build() },
-        specimen = specimen.mapToList { it.build() },
-        bodySite = bodySite.mapToList { it.build() },
+        performer = performer.buildList(),
+        location = location.buildList(),
+        reason = reason.buildList(),
+        insurance = insurance.buildList(),
+        supportingInfo = supportingInfo.buildList(),
+        specimen = specimen.buildList(),
+        bodySite = bodySite.buildList(),
         bodyStructure = bodyStructure?.build(),
-        note = note.mapToList { it.build() },
-        patientInstruction = patientInstruction.mapToList { it.build() },
-        relevantHistory = relevantHistory.mapToList { it.build() },
+        note = note.buildList(),
+        patientInstruction = patientInstruction.buildList(),
+        relevantHistory = relevantHistory.buildList(),
       )
   }
 }

@@ -92,16 +92,14 @@ public data class ProductShelfLife(
    * vocabulary The controlled term and the controlled term identifier shall be specified.
    */
   public val specialPrecautionsForStorage: List<CodeableConcept> = listOf(),
-) : BackboneElement() {
-  public fun toBuilder(): Builder {
+) : BackboneElement(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(type.toBuilder(), period.toBuilder())
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.identifier = identifier?.toBuilder()
-    builder.specialPrecautionsForStorage = specialPrecautionsForStorage.mapToMutableList {
-      it.toBuilder()
-    }
+    builder.specialPrecautionsForStorage = specialPrecautionsForStorage.toBuilderList()
     return builder
   }
 
@@ -121,7 +119,7 @@ public data class ProductShelfLife(
      * used.
      */
     public open var period: Quantity.Builder,
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -172,15 +170,15 @@ public data class ProductShelfLife(
     public open var specialPrecautionsForStorage: MutableList<CodeableConcept.Builder> =
       mutableListOf()
 
-    public open fun build(): ProductShelfLife =
+    open override fun build(): ProductShelfLife =
       ProductShelfLife(
         id = id,
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         identifier = identifier?.build(),
         type = type.build(),
         period = period.build(),
-        specialPrecautionsForStorage = specialPrecautionsForStorage.mapToList { it.build() },
+        specialPrecautionsForStorage = specialPrecautionsForStorage.buildList(),
       )
   }
 }

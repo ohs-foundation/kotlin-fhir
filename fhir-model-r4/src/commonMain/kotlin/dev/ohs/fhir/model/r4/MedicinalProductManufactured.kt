@@ -154,14 +154,14 @@ public data class MedicinalProductManufactured(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.unitOfPresentation = unitOfPresentation?.toBuilder()
-    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
-    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.manufacturer = manufacturer.toBuilderList()
+    builder.ingredient = ingredient.toBuilderList()
     builder.physicalCharacteristics = physicalCharacteristics?.toBuilder()
-    builder.otherCharacteristics = otherCharacteristics.mapToMutableList { it.toBuilder() }
+    builder.otherCharacteristics = otherCharacteristics.toBuilderList()
     return builder
   }
 
@@ -301,16 +301,16 @@ public data class MedicinalProductManufactured(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         manufacturedDoseForm = manufacturedDoseForm.build(),
         unitOfPresentation = unitOfPresentation?.build(),
         quantity = quantity.build(),
-        manufacturer = manufacturer.mapToList { it.build() },
-        ingredient = ingredient.mapToList { it.build() },
+        manufacturer = manufacturer.buildList(),
+        ingredient = ingredient.buildList(),
         physicalCharacteristics = physicalCharacteristics?.build(),
-        otherCharacteristics = otherCharacteristics.mapToList { it.build() },
+        otherCharacteristics = otherCharacteristics.buildList(),
       )
   }
 }

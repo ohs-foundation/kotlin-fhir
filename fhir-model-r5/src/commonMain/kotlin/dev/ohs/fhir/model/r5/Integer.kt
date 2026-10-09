@@ -51,7 +51,7 @@ public open class Integer(
   open override val extension: List<Extension> = listOf(),
   /** The actual value */
   public open val `value`: Int? = null,
-) : PrimitiveType() {
+) : PrimitiveType(), FhirBuildable {
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is Integer) return false
@@ -69,10 +69,10 @@ public open class Integer(
     return result
   }
 
-  public open fun toBuilder(): Builder {
+  open override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -84,7 +84,7 @@ public open class Integer(
     return null
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: String? = null
 
@@ -105,10 +105,10 @@ public open class Integer(
     /** The actual value */
     public open var `value`: Int? = null
 
-    public open fun build(): Integer =
+    open override fun build(): Integer =
       Integer(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

@@ -175,15 +175,15 @@ public data class Substance(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.status = status
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.instance = instance.mapToMutableList { it.toBuilder() }
-    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.instance = instance.toBuilderList()
+    builder.ingredient = ingredient.toBuilderList()
     return builder
   }
 
@@ -239,19 +239,19 @@ public data class Substance(
     public val expiry: DateTime? = null,
     /** The amount of the substance. */
     public val quantity: Quantity? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.identifier = identifier?.toBuilder()
       builder.expiry = expiry?.toBuilder()
       builder.quantity = quantity?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -304,11 +304,11 @@ public data class Substance(
       /** The amount of the substance. */
       public var quantity: Quantity.Builder? = null
 
-      public fun build(): Instance =
+      override fun build(): Instance =
         Instance(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identifier = identifier?.build(),
           expiry = expiry?.build(),
           quantity = quantity?.build(),
@@ -360,12 +360,12 @@ public data class Substance(
     public val quantity: Ratio? = null,
     /** Another substance that is a component of this substance. */
     public val substance: Substance,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(substance)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.quantity = quantity?.toBuilder()
       return builder
     }
@@ -397,7 +397,7 @@ public data class Substance(
     public class Builder(
       /** Another substance that is a component of this substance. */
       public var substance: Substance
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -441,11 +441,11 @@ public data class Substance(
       /** The amount of the ingredient in the substance - a concentration ratio. */
       public var quantity: Ratio.Builder? = null
 
-      public fun build(): Ingredient =
+      override fun build(): Ingredient =
         Ingredient(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           quantity = quantity?.build(),
           substance = substance,
         )
@@ -609,16 +609,16 @@ public data class Substance(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         code = code.build(),
         description = description?.build(),
-        instance = instance.mapToList { it.build() },
-        ingredient = ingredient.mapToList { it.build() },
+        instance = instance.buildList(),
+        ingredient = ingredient.buildList(),
       )
   }
 }

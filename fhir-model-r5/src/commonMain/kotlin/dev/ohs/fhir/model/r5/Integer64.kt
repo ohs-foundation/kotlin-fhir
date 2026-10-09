@@ -49,11 +49,11 @@ public data class Integer64(
   override val extension: List<Extension> = listOf(),
   /** The actual value */
   public val `value`: Long? = null,
-) : PrimitiveType() {
-  public fun toBuilder(): Builder {
+) : PrimitiveType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -65,7 +65,7 @@ public data class Integer64(
     return null
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: String? = null
 
@@ -86,10 +86,10 @@ public data class Integer64(
     /** The actual value */
     public open var `value`: Long? = null
 
-    public open fun build(): Integer64 =
+    open override fun build(): Integer64 =
       Integer64(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

@@ -230,20 +230,20 @@ public data class Practitioner(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
-    builder.name = name.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.name = name.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
     builder.gender = gender
     builder.birthDate = birthDate?.toBuilder()
     builder.deceased = deceased
-    builder.address = address.mapToMutableList { it.toBuilder() }
-    builder.photo = photo.mapToMutableList { it.toBuilder() }
-    builder.qualification = qualification.mapToMutableList { it.toBuilder() }
-    builder.communication = communication.mapToMutableList { it.toBuilder() }
+    builder.address = address.toBuilderList()
+    builder.photo = photo.toBuilderList()
+    builder.qualification = qualification.toBuilderList()
+    builder.communication = communication.toBuilderList()
     return builder
   }
 
@@ -302,13 +302,13 @@ public data class Practitioner(
     public val period: Period? = null,
     /** Organization that regulates and issues the qualification. */
     public val issuer: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.identifier = identifier.toBuilderList()
       builder.period = period?.toBuilder()
       builder.issuer = issuer?.toBuilder()
       return builder
@@ -317,7 +317,7 @@ public data class Practitioner(
     public class Builder(
       /** Coded representation of the qualification. */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -367,12 +367,12 @@ public data class Practitioner(
       /** Organization that regulates and issues the qualification. */
       public var issuer: Reference.Builder? = null
 
-      public fun build(): Qualification =
+      override fun build(): Qualification =
         Qualification(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          identifier = identifier.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          identifier = identifier.buildList(),
           code = code.build(),
           period = period?.build(),
           issuer = issuer?.build(),
@@ -444,12 +444,12 @@ public data class Practitioner(
      * (typically un-related to patient communications).
      */
     public val preferred: Boolean? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(language.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.preferred = preferred?.toBuilder()
       return builder
     }
@@ -465,7 +465,7 @@ public data class Practitioner(
        * CodeableConcept instead of code as the data type.
        */
       public var language: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -515,11 +515,11 @@ public data class Practitioner(
        */
       public var preferred: Boolean.Builder? = null
 
-      public fun build(): Communication =
+      override fun build(): Communication =
         Communication(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           language = language.build(),
           preferred = preferred?.build(),
         )
@@ -758,20 +758,20 @@ public data class Practitioner(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
-        name = name.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
+        name = name.buildList(),
+        telecom = telecom.buildList(),
         gender = gender,
         birthDate = birthDate?.build(),
         deceased = deceased,
-        address = address.mapToList { it.build() },
-        photo = photo.mapToList { it.build() },
-        qualification = qualification.mapToList { it.build() },
-        communication = communication.mapToList { it.build() },
+        address = address.buildList(),
+        photo = photo.buildList(),
+        qualification = qualification.buildList(),
+        communication = communication.buildList(),
       )
   }
 }

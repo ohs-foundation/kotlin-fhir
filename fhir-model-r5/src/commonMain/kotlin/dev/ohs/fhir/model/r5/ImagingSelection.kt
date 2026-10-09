@@ -250,24 +250,24 @@ public data class ImagingSelection(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.subject = subject?.toBuilder()
     builder.issued = issued?.toBuilder()
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.studyUid = studyUid?.toBuilder()
-    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
-    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.toBuilderList()
+    builder.endpoint = endpoint.toBuilderList()
     builder.seriesUid = seriesUid?.toBuilder()
     builder.seriesNumber = seriesNumber?.toBuilder()
     builder.frameOfReferenceUid = frameOfReferenceUid?.toBuilder()
     builder.bodySite = bodySite?.toBuilder()
-    builder.focus = focus.mapToMutableList { it.toBuilder() }
-    builder.instance = instance.mapToMutableList { it.toBuilder() }
+    builder.focus = focus.toBuilderList()
+    builder.instance = instance.toBuilderList()
     return builder
   }
 
@@ -315,18 +315,18 @@ public data class ImagingSelection(
     public val function: CodeableConcept? = null,
     /** Author – human or machine. */
     public val actor: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       builder.actor = actor?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -373,11 +373,11 @@ public data class ImagingSelection(
       /** Author – human or machine. */
       public var actor: Reference.Builder? = null
 
-      public fun build(): Performer =
+      override fun build(): Performer =
         Performer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor?.build(),
         )
@@ -469,17 +469,17 @@ public data class ImagingSelection(
      * of 3D coordinates.
      */
     public val imageRegion3D: List<ImageRegion3D> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(uid.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.number = number?.toBuilder()
       builder.sopClass = sopClass?.toBuilder()
-      builder.subset = subset.mapToMutableList { it.toBuilder() }
-      builder.imageRegion2D = imageRegion2D.mapToMutableList { it.toBuilder() }
-      builder.imageRegion3D = imageRegion3D.mapToMutableList { it.toBuilder() }
+      builder.subset = subset.toBuilderList()
+      builder.imageRegion2D = imageRegion2D.toBuilderList()
+      builder.imageRegion3D = imageRegion3D.toBuilderList()
       return builder
     }
 
@@ -545,16 +545,16 @@ public data class ImagingSelection(
        * [DICOM PS3.3 C.18.6](http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.18.6.html).
        */
       public val coordinate: List<Decimal>,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             regionType,
-            coordinate.mapToMutableList { it.toBuilder() },
+            coordinate.toBuilderList(),
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -577,7 +577,7 @@ public data class ImagingSelection(
          * [DICOM PS3.3 C.18.6](http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.18.6.html).
          */
         public var coordinate: MutableList<Decimal.Builder>,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -618,13 +618,13 @@ public data class ImagingSelection(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): ImageRegion2D =
+        override fun build(): ImageRegion2D =
           ImageRegion2D(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             regionType = regionType,
-            coordinate = coordinate.mapToList { it.build() },
+            coordinate = coordinate.buildList(),
           )
       }
     }
@@ -688,16 +688,16 @@ public data class ImagingSelection(
        * [DICOM PS3.3 C.18.9](http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.18.9.html).
        */
       public val coordinate: List<Decimal>,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             regionType,
-            coordinate.mapToMutableList { it.toBuilder() },
+            coordinate.toBuilderList(),
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -719,7 +719,7 @@ public data class ImagingSelection(
          * [DICOM PS3.3 C.18.9](http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.18.9.html).
          */
         public var coordinate: MutableList<Decimal.Builder>,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -760,13 +760,13 @@ public data class ImagingSelection(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): ImageRegion3D =
+        override fun build(): ImageRegion3D =
           ImageRegion3D(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             regionType = regionType,
-            coordinate = coordinate.mapToList { it.build() },
+            coordinate = coordinate.buildList(),
           )
       }
     }
@@ -779,7 +779,7 @@ public data class ImagingSelection(
        * [DICOM PS3.3 C.12.1](http://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.12.html).
        */
       public var uid: Id.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -863,17 +863,17 @@ public data class ImagingSelection(
        */
       public var imageRegion3D: MutableList<ImageRegion3D.Builder> = mutableListOf()
 
-      public fun build(): Instance =
+      override fun build(): Instance =
         Instance(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           uid = uid.build(),
           number = number?.build(),
           sopClass = sopClass?.build(),
-          subset = subset.mapToList { it.build() },
-          imageRegion2D = imageRegion2D.mapToList { it.build() },
-          imageRegion3D = imageRegion3D.mapToList { it.build() },
+          subset = subset.buildList(),
+          imageRegion2D = imageRegion2D.buildList(),
+          imageRegion3D = imageRegion3D.buildList(),
         )
     }
   }
@@ -1109,26 +1109,26 @@ public data class ImagingSelection(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         subject = subject?.build(),
         issued = issued?.build(),
-        performer = performer.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        category = category.mapToList { it.build() },
+        performer = performer.buildList(),
+        basedOn = basedOn.buildList(),
+        category = category.buildList(),
         code = code.build(),
         studyUid = studyUid?.build(),
-        derivedFrom = derivedFrom.mapToList { it.build() },
-        endpoint = endpoint.mapToList { it.build() },
+        derivedFrom = derivedFrom.buildList(),
+        endpoint = endpoint.buildList(),
         seriesUid = seriesUid?.build(),
         seriesNumber = seriesNumber?.build(),
         frameOfReferenceUid = frameOfReferenceUid?.build(),
         bodySite = bodySite?.build(),
-        focus = focus.mapToList { it.build() },
-        instance = instance.mapToList { it.build() },
+        focus = focus.buildList(),
+        instance = instance.buildList(),
       )
   }
 }

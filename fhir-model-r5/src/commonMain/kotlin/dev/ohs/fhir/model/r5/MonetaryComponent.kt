@@ -58,11 +58,11 @@ public data class MonetaryComponent(
   public val factor: Decimal? = null,
   /** Explicit value amount to be used. */
   public val amount: Money? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(type)
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.code = code?.toBuilder()
     builder.factor = factor?.toBuilder()
     builder.amount = amount?.toBuilder()
@@ -72,7 +72,7 @@ public data class MonetaryComponent(
   public open class Builder(
     /** base | surcharge | deduction | discount | tax | informational. */
     public open var type: Enumeration<PriceComponentType>
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -102,10 +102,10 @@ public data class MonetaryComponent(
     /** Explicit value amount to be used. */
     public open var amount: Money.Builder? = null
 
-    public open fun build(): MonetaryComponent =
+    open override fun build(): MonetaryComponent =
       MonetaryComponent(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         type = type,
         code = code?.build(),
         factor = factor?.build(),

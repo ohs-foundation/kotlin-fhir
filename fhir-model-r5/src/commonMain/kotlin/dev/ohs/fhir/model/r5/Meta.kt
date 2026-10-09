@@ -113,21 +113,21 @@ public data class Meta(
    * is a set. Uniqueness is based the system/code, and version and display are ignored.
    */
   public val tag: List<Coding> = listOf(),
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.versionId = versionId?.toBuilder()
     builder.lastUpdated = lastUpdated?.toBuilder()
     builder.source = source?.toBuilder()
-    builder.profile = profile.mapToMutableList { it.toBuilder() }
-    builder.security = security.mapToMutableList { it.toBuilder() }
-    builder.tag = tag.mapToMutableList { it.toBuilder() }
+    builder.profile = profile.toBuilderList()
+    builder.security = security.toBuilderList()
+    builder.tag = tag.toBuilderList()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -215,16 +215,16 @@ public data class Meta(
      */
     public open var tag: MutableList<Coding.Builder> = mutableListOf()
 
-    public open fun build(): Meta =
+    open override fun build(): Meta =
       Meta(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         versionId = versionId?.build(),
         lastUpdated = lastUpdated?.build(),
         source = source?.build(),
-        profile = profile.mapToList { it.build() },
-        security = security.mapToList { it.build() },
-        tag = tag.mapToList { it.build() },
+        profile = profile.buildList(),
+        security = security.buildList(),
+        tag = tag.buildList(),
       )
   }
 }

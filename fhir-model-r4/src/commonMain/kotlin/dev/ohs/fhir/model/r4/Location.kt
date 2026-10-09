@@ -230,26 +230,26 @@ public data class Location(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.status = status
     builder.operationalStatus = operationalStatus?.toBuilder()
     builder.name = name?.toBuilder()
-    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.alias = alias.toBuilderList()
     builder.description = description?.toBuilder()
     builder.mode = mode
-    builder.type = type.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.type = type.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
     builder.address = address?.toBuilder()
     builder.physicalType = physicalType?.toBuilder()
     builder.position = position?.toBuilder()
     builder.managingOrganization = managingOrganization?.toBuilder()
     builder.partOf = partOf?.toBuilder()
-    builder.hoursOfOperation = hoursOfOperation.mapToMutableList { it.toBuilder() }
+    builder.hoursOfOperation = hoursOfOperation.toBuilderList()
     builder.availabilityExceptions = availabilityExceptions?.toBuilder()
-    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.endpoint = endpoint.toBuilderList()
     return builder
   }
 
@@ -311,12 +311,12 @@ public data class Location(
      * altitude element in KML (see notes below).
      */
     public val altitude: Decimal? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(longitude.toBuilder(), latitude.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.altitude = altitude?.toBuilder()
       return builder
     }
@@ -332,7 +332,7 @@ public data class Location(
        * latitude element in KML (see notes below).
        */
       public var latitude: Decimal.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -379,11 +379,11 @@ public data class Location(
        */
       public var altitude: Decimal.Builder? = null
 
-      public fun build(): Position =
+      override fun build(): Position =
         Position(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           longitude = longitude.build(),
           latitude = latitude.build(),
           altitude = altitude?.build(),
@@ -439,12 +439,12 @@ public data class Location(
     public val openingTime: Time? = null,
     /** Time that the Location closes. */
     public val closingTime: Time? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.daysOfWeek = daysOfWeek.toMutableList()
       builder.allDay = allDay?.toBuilder()
       builder.openingTime = openingTime?.toBuilder()
@@ -452,7 +452,7 @@ public data class Location(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -505,11 +505,11 @@ public data class Location(
       /** Time that the Location closes. */
       public var closingTime: Time.Builder? = null
 
-      public fun build(): HoursOfOperation =
+      override fun build(): HoursOfOperation =
         HoursOfOperation(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           daysOfWeek = daysOfWeek,
           allDay = allDay?.build(),
           openingTime = openingTime?.build(),
@@ -734,26 +734,26 @@ public data class Location(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         operationalStatus = operationalStatus?.build(),
         name = name?.build(),
-        alias = alias.mapToList { it.build() },
+        alias = alias.buildList(),
         description = description?.build(),
         mode = mode,
-        type = type.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
+        type = type.buildList(),
+        telecom = telecom.buildList(),
         address = address?.build(),
         physicalType = physicalType?.build(),
         position = position?.build(),
         managingOrganization = managingOrganization?.build(),
         partOf = partOf?.build(),
-        hoursOfOperation = hoursOfOperation.mapToList { it.build() },
+        hoursOfOperation = hoursOfOperation.buildList(),
         availabilityExceptions = availabilityExceptions?.build(),
-        endpoint = endpoint.mapToList { it.build() },
+        endpoint = endpoint.buildList(),
       )
   }
 }

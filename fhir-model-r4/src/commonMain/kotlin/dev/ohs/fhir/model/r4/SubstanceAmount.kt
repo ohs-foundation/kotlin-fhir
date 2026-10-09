@@ -94,12 +94,12 @@ public data class SubstanceAmount(
   public val amountText: String? = null,
   /** Reference range of possible or expected values. */
   public val referenceRange: ReferenceRange? = null,
-) : BackboneElement() {
-  public fun toBuilder(): Builder {
+) : BackboneElement(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.amount = amount
     builder.amountType = amountType?.toBuilder()
     builder.amountText = amountText?.toBuilder()
@@ -132,17 +132,17 @@ public data class SubstanceAmount(
     public val lowLimit: Quantity? = null,
     /** Upper limit possible or expected. */
     public val highLimit: Quantity? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.lowLimit = lowLimit?.toBuilder()
       builder.highLimit = highLimit?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -169,10 +169,10 @@ public data class SubstanceAmount(
       /** Upper limit possible or expected. */
       public var highLimit: Quantity.Builder? = null
 
-      public fun build(): ReferenceRange =
+      override fun build(): ReferenceRange =
         ReferenceRange(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           lowLimit = lowLimit?.build(),
           highLimit = highLimit?.build(),
         )
@@ -206,7 +206,7 @@ public data class SubstanceAmount(
     }
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -270,11 +270,11 @@ public data class SubstanceAmount(
     /** Reference range of possible or expected values. */
     public open var referenceRange: ReferenceRange.Builder? = null
 
-    public open fun build(): SubstanceAmount =
+    open override fun build(): SubstanceAmount =
       SubstanceAmount(
         id = id,
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         amount = amount,
         amountType = amountType?.build(),
         amountText = amountText?.build(),

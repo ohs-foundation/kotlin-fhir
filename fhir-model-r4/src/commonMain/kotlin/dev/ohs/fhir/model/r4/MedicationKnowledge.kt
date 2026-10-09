@@ -254,33 +254,31 @@ public data class MedicationKnowledge(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.code = code?.toBuilder()
     builder.status = status
     builder.manufacturer = manufacturer?.toBuilder()
     builder.doseForm = doseForm?.toBuilder()
     builder.amount = amount?.toBuilder()
-    builder.synonym = synonym.mapToMutableList { it.toBuilder() }
-    builder.relatedMedicationKnowledge = relatedMedicationKnowledge.mapToMutableList {
-      it.toBuilder()
-    }
-    builder.associatedMedication = associatedMedication.mapToMutableList { it.toBuilder() }
-    builder.productType = productType.mapToMutableList { it.toBuilder() }
-    builder.monograph = monograph.mapToMutableList { it.toBuilder() }
-    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
+    builder.synonym = synonym.toBuilderList()
+    builder.relatedMedicationKnowledge = relatedMedicationKnowledge.toBuilderList()
+    builder.associatedMedication = associatedMedication.toBuilderList()
+    builder.productType = productType.toBuilderList()
+    builder.monograph = monograph.toBuilderList()
+    builder.ingredient = ingredient.toBuilderList()
     builder.preparationInstruction = preparationInstruction?.toBuilder()
-    builder.intendedRoute = intendedRoute.mapToMutableList { it.toBuilder() }
-    builder.cost = cost.mapToMutableList { it.toBuilder() }
-    builder.monitoringProgram = monitoringProgram.mapToMutableList { it.toBuilder() }
-    builder.administrationGuidelines = administrationGuidelines.mapToMutableList { it.toBuilder() }
-    builder.medicineClassification = medicineClassification.mapToMutableList { it.toBuilder() }
+    builder.intendedRoute = intendedRoute.toBuilderList()
+    builder.cost = cost.toBuilderList()
+    builder.monitoringProgram = monitoringProgram.toBuilderList()
+    builder.administrationGuidelines = administrationGuidelines.toBuilderList()
+    builder.medicineClassification = medicineClassification.toBuilderList()
     builder.packaging = packaging?.toBuilder()
-    builder.drugCharacteristic = drugCharacteristic.mapToMutableList { it.toBuilder() }
-    builder.contraindication = contraindication.mapToMutableList { it.toBuilder() }
-    builder.regulatory = regulatory.mapToMutableList { it.toBuilder() }
-    builder.kinetics = kinetics.mapToMutableList { it.toBuilder() }
+    builder.drugCharacteristic = drugCharacteristic.toBuilderList()
+    builder.contraindication = contraindication.toBuilderList()
+    builder.regulatory = regulatory.toBuilderList()
+    builder.kinetics = kinetics.toBuilderList()
     return builder
   }
 
@@ -328,16 +326,16 @@ public data class MedicationKnowledge(
     public val type: CodeableConcept,
     /** Associated documentation about the associated medication knowledge. */
     public val reference: List<Reference>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type.toBuilder(),
-          reference.mapToMutableList { it.toBuilder() },
+          reference.toBuilderList(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -346,7 +344,7 @@ public data class MedicationKnowledge(
       public var type: CodeableConcept.Builder,
       /** Associated documentation about the associated medication knowledge. */
       public var reference: MutableList<Reference.Builder>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -387,13 +385,13 @@ public data class MedicationKnowledge(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): RelatedMedicationKnowledge =
+      override fun build(): RelatedMedicationKnowledge =
         RelatedMedicationKnowledge(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
-          reference = reference.mapToList { it.build() },
+          reference = reference.buildList(),
         )
     }
   }
@@ -445,18 +443,18 @@ public data class MedicationKnowledge(
     public val type: CodeableConcept? = null,
     /** Associated documentation about the medication. */
     public val source: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.source = source?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -506,11 +504,11 @@ public data class MedicationKnowledge(
       /** Associated documentation about the medication. */
       public var source: Reference.Builder? = null
 
-      public fun build(): Monograph =
+      override fun build(): Monograph =
         Monograph(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
           source = source?.build(),
         )
@@ -567,12 +565,12 @@ public data class MedicationKnowledge(
      * is 1 tablet.
      */
     public val strength: Ratio? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(item)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.isActive = isActive?.toBuilder()
       builder.strength = strength?.toBuilder()
       return builder
@@ -604,7 +602,7 @@ public data class MedicationKnowledge(
     public class Builder(
       /** The actual ingredient - either a substance (simple ingredient) or another medication. */
       public var item: Item
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -655,11 +653,11 @@ public data class MedicationKnowledge(
        */
       public var strength: Ratio.Builder? = null
 
-      public fun build(): Ingredient =
+      override fun build(): Ingredient =
         Ingredient(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           item = item,
           isActive = isActive?.build(),
           strength = strength?.build(),
@@ -716,12 +714,12 @@ public data class MedicationKnowledge(
     public val source: String? = null,
     /** The price of the medication. */
     public val cost: Money,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder(), cost.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.source = source?.toBuilder()
       return builder
     }
@@ -734,7 +732,7 @@ public data class MedicationKnowledge(
       public var type: CodeableConcept.Builder,
       /** The price of the medication. */
       public var cost: Money.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -778,11 +776,11 @@ public data class MedicationKnowledge(
       /** The source or owner that assigns the price to the medication. */
       public var source: String.Builder? = null
 
-      public fun build(): Cost =
+      override fun build(): Cost =
         Cost(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           source = source?.build(),
           cost = cost.build(),
@@ -834,18 +832,18 @@ public data class MedicationKnowledge(
     public val type: CodeableConcept? = null,
     /** Name of the reviewing program. */
     public val name: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.name = name?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -892,11 +890,11 @@ public data class MedicationKnowledge(
       /** Name of the reviewing program. */
       public var name: String.Builder? = null
 
-      public fun build(): MonitoringProgram =
+      override fun build(): MonitoringProgram =
         MonitoringProgram(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
           name = name?.build(),
         )
@@ -952,15 +950,15 @@ public data class MedicationKnowledge(
      * example, height, weight, gender, etc.).
      */
     public val patientCharacteristics: List<PatientCharacteristics> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.dosage = dosage.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.dosage = dosage.toBuilderList()
       builder.indication = indication
-      builder.patientCharacteristics = patientCharacteristics.mapToMutableList { it.toBuilder() }
+      builder.patientCharacteristics = patientCharacteristics.toBuilderList()
       return builder
     }
 
@@ -1008,16 +1006,16 @@ public data class MedicationKnowledge(
       public val type: CodeableConcept,
       /** Dosage for the medication for the specific guidelines. */
       public val dosage: List<dev.ohs.fhir.model.r4.Dosage>,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             type.toBuilder(),
-            dosage.mapToMutableList { it.toBuilder() },
+            dosage.toBuilderList(),
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -1026,7 +1024,7 @@ public data class MedicationKnowledge(
         public var type: CodeableConcept.Builder,
         /** Dosage for the medication for the specific guidelines. */
         public var dosage: MutableList<dev.ohs.fhir.model.r4.Dosage.Builder>,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1067,13 +1065,13 @@ public data class MedicationKnowledge(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Dosage =
+        override fun build(): Dosage =
           Dosage(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type.build(),
-            dosage = dosage.mapToList { it.build() },
+            dosage = dosage.buildList(),
           )
       }
     }
@@ -1130,13 +1128,13 @@ public data class MedicationKnowledge(
       public val characteristic: Characteristic,
       /** The specific characteristic (e.g. height, weight, gender, etc.). */
       public val `value`: List<String> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(characteristic)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.`value` = `value`.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.`value` = `value`.toBuilderList()
         return builder
       }
 
@@ -1170,7 +1168,7 @@ public data class MedicationKnowledge(
          * weight, gender).
          */
         public var characteristic: Characteristic
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1214,13 +1212,13 @@ public data class MedicationKnowledge(
         /** The specific characteristic (e.g. height, weight, gender, etc.). */
         public var `value`: MutableList<String.Builder> = mutableListOf()
 
-        public fun build(): PatientCharacteristics =
+        override fun build(): PatientCharacteristics =
           PatientCharacteristics(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             characteristic = characteristic,
-            `value` = `value`.mapToList { it.build() },
+            `value` = `value`.buildList(),
           )
       }
     }
@@ -1249,7 +1247,7 @@ public data class MedicationKnowledge(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1303,14 +1301,14 @@ public data class MedicationKnowledge(
       public var patientCharacteristics: MutableList<PatientCharacteristics.Builder> =
         mutableListOf()
 
-      public fun build(): AdministrationGuidelines =
+      override fun build(): AdministrationGuidelines =
         AdministrationGuidelines(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          dosage = dosage.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          dosage = dosage.buildList(),
           indication = indication,
-          patientCharacteristics = patientCharacteristics.mapToList { it.build() },
+          patientCharacteristics = patientCharacteristics.buildList(),
         )
     }
   }
@@ -1365,13 +1363,13 @@ public data class MedicationKnowledge(
      * antibiotic, etc.).
      */
     public val classification: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.classification = classification.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.classification = classification.toBuilderList()
       return builder
     }
 
@@ -1381,7 +1379,7 @@ public data class MedicationKnowledge(
        * therapeutic sub-classification).
        */
       public var type: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1428,13 +1426,13 @@ public data class MedicationKnowledge(
        */
       public var classification: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): MedicineClassification =
+      override fun build(): MedicineClassification =
         MedicineClassification(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
-          classification = classification.mapToList { it.build() },
+          classification = classification.buildList(),
         )
     }
   }
@@ -1486,18 +1484,18 @@ public data class MedicationKnowledge(
     public val type: CodeableConcept? = null,
     /** The number of product units the package would contain if fully loaded. */
     public val quantity: Quantity? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.quantity = quantity?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1547,11 +1545,11 @@ public data class MedicationKnowledge(
       /** The number of product units the package would contain if fully loaded. */
       public var quantity: Quantity.Builder? = null
 
-      public fun build(): Packaging =
+      override fun build(): Packaging =
         Packaging(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
           quantity = quantity?.build(),
         )
@@ -1610,12 +1608,12 @@ public data class MedicationKnowledge(
      * description can be a string only when these others are not available.
      */
     public val `value`: Value? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.`value` = `value`
       return builder
@@ -1657,7 +1655,7 @@ public data class MedicationKnowledge(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1712,11 +1710,11 @@ public data class MedicationKnowledge(
        */
       public var `value`: Value? = null
 
-      public fun build(): DrugCharacteristic =
+      override fun build(): DrugCharacteristic =
         DrugCharacteristic(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
           `value` = `value`,
         )
@@ -1773,14 +1771,14 @@ public data class MedicationKnowledge(
     public val schedule: List<Schedule> = listOf(),
     /** The maximum number of units of the medication that can be dispensed in a period. */
     public val maxDispense: MaxDispense? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(regulatoryAuthority.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.substitution = substitution.mapToMutableList { it.toBuilder() }
-      builder.schedule = schedule.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.substitution = substitution.toBuilderList()
+      builder.schedule = schedule.toBuilderList()
       builder.maxDispense = maxDispense?.toBuilder()
       return builder
     }
@@ -1831,12 +1829,12 @@ public data class MedicationKnowledge(
       public val type: CodeableConcept,
       /** Specifies if regulation allows for changes in the medication when dispensing. */
       public val allowed: Boolean,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(type.toBuilder(), allowed.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -1845,7 +1843,7 @@ public data class MedicationKnowledge(
         public var type: CodeableConcept.Builder,
         /** Specifies if regulation allows for changes in the medication when dispensing. */
         public var allowed: Boolean.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1886,11 +1884,11 @@ public data class MedicationKnowledge(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Substitution =
+        override fun build(): Substitution =
           Substitution(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type.build(),
             allowed = allowed.build(),
           )
@@ -1939,19 +1937,19 @@ public data class MedicationKnowledge(
       override val modifierExtension: List<Extension> = listOf(),
       /** Specifies the specific drug schedule. */
       public val schedule: CodeableConcept,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(schedule.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
       public class Builder(
         /** Specifies the specific drug schedule. */
         public var schedule: CodeableConcept.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1992,11 +1990,11 @@ public data class MedicationKnowledge(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Schedule =
+        override fun build(): Schedule =
           Schedule(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             schedule = schedule.build(),
           )
       }
@@ -2046,12 +2044,12 @@ public data class MedicationKnowledge(
       public val quantity: Quantity,
       /** The period that applies to the maximum number of units. */
       public val period: Duration? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(quantity.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.period = period?.toBuilder()
         return builder
       }
@@ -2059,7 +2057,7 @@ public data class MedicationKnowledge(
       public class Builder(
         /** The maximum number of units of the medication that can be dispensed. */
         public var quantity: Quantity.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -2103,11 +2101,11 @@ public data class MedicationKnowledge(
         /** The period that applies to the maximum number of units. */
         public var period: Duration.Builder? = null
 
-        public fun build(): MaxDispense =
+        override fun build(): MaxDispense =
           MaxDispense(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             quantity = quantity.build(),
             period = period?.build(),
           )
@@ -2117,7 +2115,7 @@ public data class MedicationKnowledge(
     public class Builder(
       /** The authority that is specifying the regulations. */
       public var regulatoryAuthority: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2170,14 +2168,14 @@ public data class MedicationKnowledge(
       /** The maximum number of units of the medication that can be dispensed in a period. */
       public var maxDispense: MaxDispense.Builder? = null
 
-      public fun build(): Regulatory =
+      override fun build(): Regulatory =
         Regulatory(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           regulatoryAuthority = regulatoryAuthority.build(),
-          substitution = substitution.mapToList { it.build() },
-          schedule = schedule.mapToList { it.build() },
+          substitution = substitution.buildList(),
+          schedule = schedule.buildList(),
           maxDispense = maxDispense?.build(),
         )
     }
@@ -2235,19 +2233,19 @@ public data class MedicationKnowledge(
      * body) to decrease by half.
      */
     public val halfLifePeriod: Duration? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.areaUnderCurve = areaUnderCurve.mapToMutableList { it.toBuilder() }
-      builder.lethalDose50 = lethalDose50.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.areaUnderCurve = areaUnderCurve.toBuilderList()
+      builder.lethalDose50 = lethalDose50.toBuilderList()
       builder.halfLifePeriod = halfLifePeriod?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2300,13 +2298,13 @@ public data class MedicationKnowledge(
        */
       public var halfLifePeriod: Duration.Builder? = null
 
-      public fun build(): Kinetics =
+      override fun build(): Kinetics =
         Kinetics(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          areaUnderCurve = areaUnderCurve.mapToList { it.build() },
-          lethalDose50 = lethalDose50.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          areaUnderCurve = areaUnderCurve.buildList(),
+          lethalDose50 = lethalDose50.buildList(),
           halfLifePeriod = halfLifePeriod?.build(),
         )
     }
@@ -2551,31 +2549,31 @@ public data class MedicationKnowledge(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         code = code?.build(),
         status = status,
         manufacturer = manufacturer?.build(),
         doseForm = doseForm?.build(),
         amount = amount?.build(),
-        synonym = synonym.mapToList { it.build() },
-        relatedMedicationKnowledge = relatedMedicationKnowledge.mapToList { it.build() },
-        associatedMedication = associatedMedication.mapToList { it.build() },
-        productType = productType.mapToList { it.build() },
-        monograph = monograph.mapToList { it.build() },
-        ingredient = ingredient.mapToList { it.build() },
+        synonym = synonym.buildList(),
+        relatedMedicationKnowledge = relatedMedicationKnowledge.buildList(),
+        associatedMedication = associatedMedication.buildList(),
+        productType = productType.buildList(),
+        monograph = monograph.buildList(),
+        ingredient = ingredient.buildList(),
         preparationInstruction = preparationInstruction?.build(),
-        intendedRoute = intendedRoute.mapToList { it.build() },
-        cost = cost.mapToList { it.build() },
-        monitoringProgram = monitoringProgram.mapToList { it.build() },
-        administrationGuidelines = administrationGuidelines.mapToList { it.build() },
-        medicineClassification = medicineClassification.mapToList { it.build() },
+        intendedRoute = intendedRoute.buildList(),
+        cost = cost.buildList(),
+        monitoringProgram = monitoringProgram.buildList(),
+        administrationGuidelines = administrationGuidelines.buildList(),
+        medicineClassification = medicineClassification.buildList(),
         packaging = packaging?.build(),
-        drugCharacteristic = drugCharacteristic.mapToList { it.build() },
-        contraindication = contraindication.mapToList { it.build() },
-        regulatory = regulatory.mapToList { it.build() },
-        kinetics = kinetics.mapToList { it.build() },
+        drugCharacteristic = drugCharacteristic.buildList(),
+        contraindication = contraindication.buildList(),
+        regulatory = regulatory.buildList(),
+        kinetics = kinetics.buildList(),
       )
   }
 }

@@ -152,15 +152,15 @@ public data class Linkage(
   public val item: List<Item>,
 ) : DomainResource() {
   override fun toBuilder(): Builder {
-    val builder = Builder(item.mapToMutableList { it.toBuilder() })
+    val builder = Builder(item.toBuilderList())
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.active = active?.toBuilder()
     builder.author = author?.toBuilder()
     return builder
@@ -216,16 +216,16 @@ public data class Linkage(
     public val type: Enumeration<LinkageType>,
     /** The resource instance being linked as part of the group. */
     public val resource: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type,
           resource.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -237,7 +237,7 @@ public data class Linkage(
       public var type: Enumeration<LinkageType>,
       /** The resource instance being linked as part of the group. */
       public var resource: Reference.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -278,11 +278,11 @@ public data class Linkage(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Item =
+      override fun build(): Item =
         Item(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
           resource = resource.build(),
         )
@@ -422,12 +422,12 @@ public data class Linkage(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         active = active?.build(),
         author = author?.build(),
-        item = item.mapToList { it.build() },
+        item = item.buildList(),
       )
   }
 }

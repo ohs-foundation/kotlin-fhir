@@ -220,17 +220,17 @@ public data class MessageHeader(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.destination = destination.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.destination = destination.toBuilderList()
     builder.sender = sender?.toBuilder()
     builder.enterer = enterer?.toBuilder()
     builder.author = author?.toBuilder()
     builder.responsible = responsible?.toBuilder()
     builder.reason = reason?.toBuilder()
     builder.response = response?.toBuilder()
-    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.focus = focus.toBuilderList()
     builder.definition = definition?.toBuilder()
     return builder
   }
@@ -294,12 +294,12 @@ public data class MessageHeader(
      * routing to a specific application isn't sufficient.
      */
     public val `receiver`: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(endpoint.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       builder.target = target?.toBuilder()
       builder.`receiver` = `receiver`?.toBuilder()
@@ -314,7 +314,7 @@ public data class MessageHeader(
        * addresses.
        */
       public var endpoint: Url.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -370,11 +370,11 @@ public data class MessageHeader(
        */
       public var `receiver`: Reference.Builder? = null
 
-      public fun build(): Destination =
+      override fun build(): Destination =
         Destination(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name?.build(),
           target = target?.build(),
           endpoint = endpoint.build(),
@@ -444,12 +444,12 @@ public data class MessageHeader(
      * addresses.
      */
     public val endpoint: Url,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(endpoint.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       builder.software = software?.toBuilder()
       builder.version = version?.toBuilder()
@@ -465,7 +465,7 @@ public data class MessageHeader(
        * addresses.
        */
       public var endpoint: Url.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -524,11 +524,11 @@ public data class MessageHeader(
        */
       public var contact: ContactPoint.Builder? = null
 
-      public fun build(): Source =
+      override fun build(): Source =
         Source(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name?.build(),
           software = software?.build(),
           version = version?.build(),
@@ -598,16 +598,16 @@ public data class MessageHeader(
      * SHALL be an error.
      */
     public val details: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           identifier.toBuilder(),
           code,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.details = details?.toBuilder()
       return builder
     }
@@ -623,7 +623,7 @@ public data class MessageHeader(
        * found in MessageHeader.focus.
        */
       public var code: Enumeration<ResponseType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -672,11 +672,11 @@ public data class MessageHeader(
        */
       public var details: Reference.Builder? = null
 
-      public fun build(): Response =
+      override fun build(): Response =
         Response(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identifier = identifier.build(),
           code = code,
           details = details?.build(),
@@ -900,11 +900,11 @@ public data class MessageHeader(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         event = event,
-        destination = destination.mapToList { it.build() },
+        destination = destination.buildList(),
         sender = sender?.build(),
         enterer = enterer?.build(),
         author = author?.build(),
@@ -912,7 +912,7 @@ public data class MessageHeader(
         responsible = responsible?.build(),
         reason = reason?.build(),
         response = response?.build(),
-        focus = focus.mapToList { it.build() },
+        focus = focus.buildList(),
         definition = definition?.build(),
       )
   }

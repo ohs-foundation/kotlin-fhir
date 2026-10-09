@@ -180,17 +180,17 @@ public data class ClinicalUseDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.category = category.toBuilderList()
+    builder.subject = subject.toBuilderList()
     builder.status = status?.toBuilder()
     builder.contraindication = contraindication?.toBuilder()
     builder.indication = indication?.toBuilder()
     builder.interaction = interaction?.toBuilder()
-    builder.population = population.mapToMutableList { it.toBuilder() }
+    builder.population = population.toBuilderList()
     builder.undesirableEffect = undesirableEffect?.toBuilder()
     builder.warning = warning?.toBuilder()
     return builder
@@ -252,17 +252,17 @@ public data class ClinicalUseDefinition(
      * as part of the contraindication.
      */
     public val otherTherapy: List<OtherTherapy> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.diseaseSymptomProcedure = diseaseSymptomProcedure?.toBuilder()
       builder.diseaseStatus = diseaseStatus?.toBuilder()
-      builder.comorbidity = comorbidity.mapToMutableList { it.toBuilder() }
-      builder.indication = indication.mapToMutableList { it.toBuilder() }
-      builder.otherTherapy = otherTherapy.mapToMutableList { it.toBuilder() }
+      builder.comorbidity = comorbidity.toBuilderList()
+      builder.indication = indication.toBuilderList()
+      builder.otherTherapy = otherTherapy.toBuilderList()
       return builder
     }
 
@@ -319,12 +319,12 @@ public data class ClinicalUseDefinition(
        * products) as part of an indication or contraindication.
        */
       public val therapy: CodeableReference,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(relationshipType.toBuilder(), therapy.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -339,7 +339,7 @@ public data class ClinicalUseDefinition(
          * products) as part of an indication or contraindication.
          */
         public var therapy: CodeableReference.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -380,18 +380,18 @@ public data class ClinicalUseDefinition(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): OtherTherapy =
+        override fun build(): OtherTherapy =
           OtherTherapy(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             relationshipType = relationshipType.build(),
             therapy = therapy.build(),
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -453,16 +453,16 @@ public data class ClinicalUseDefinition(
        */
       public var otherTherapy: MutableList<OtherTherapy.Builder> = mutableListOf()
 
-      public fun build(): Contraindication =
+      override fun build(): Contraindication =
         Contraindication(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           diseaseSymptomProcedure = diseaseSymptomProcedure?.build(),
           diseaseStatus = diseaseStatus?.build(),
-          comorbidity = comorbidity.mapToList { it.build() },
-          indication = indication.mapToList { it.build() },
-          otherTherapy = otherTherapy.mapToList { it.build() },
+          comorbidity = comorbidity.buildList(),
+          indication = indication.buildList(),
+          otherTherapy = otherTherapy.buildList(),
         )
     }
   }
@@ -534,19 +534,19 @@ public data class ClinicalUseDefinition(
      * as part of the indication.
      */
     public val otherTherapy: List<Contraindication.OtherTherapy> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.diseaseSymptomProcedure = diseaseSymptomProcedure?.toBuilder()
       builder.diseaseStatus = diseaseStatus?.toBuilder()
-      builder.comorbidity = comorbidity.mapToMutableList { it.toBuilder() }
+      builder.comorbidity = comorbidity.toBuilderList()
       builder.intendedEffect = intendedEffect?.toBuilder()
       builder.duration = duration
-      builder.undesirableEffect = undesirableEffect.mapToMutableList { it.toBuilder() }
-      builder.otherTherapy = otherTherapy.mapToMutableList { it.toBuilder() }
+      builder.undesirableEffect = undesirableEffect.toBuilderList()
+      builder.otherTherapy = otherTherapy.toBuilderList()
       return builder
     }
 
@@ -571,7 +571,7 @@ public data class ClinicalUseDefinition(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -646,18 +646,18 @@ public data class ClinicalUseDefinition(
        */
       public var otherTherapy: MutableList<Contraindication.OtherTherapy.Builder> = mutableListOf()
 
-      public fun build(): Indication =
+      override fun build(): Indication =
         Indication(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           diseaseSymptomProcedure = diseaseSymptomProcedure?.build(),
           diseaseStatus = diseaseStatus?.build(),
-          comorbidity = comorbidity.mapToList { it.build() },
+          comorbidity = comorbidity.buildList(),
           intendedEffect = intendedEffect?.build(),
           duration = duration,
-          undesirableEffect = undesirableEffect.mapToList { it.build() },
-          otherTherapy = otherTherapy.mapToList { it.build() },
+          undesirableEffect = undesirableEffect.buildList(),
+          otherTherapy = otherTherapy.buildList(),
         )
     }
   }
@@ -718,17 +718,17 @@ public data class ClinicalUseDefinition(
     public val incidence: CodeableConcept? = null,
     /** Actions for managing the interaction. */
     public val management: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.interactant = interactant.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.interactant = interactant.toBuilderList()
       builder.type = type?.toBuilder()
       builder.effect = effect?.toBuilder()
       builder.incidence = incidence?.toBuilder()
-      builder.management = management.mapToMutableList { it.toBuilder() }
+      builder.management = management.toBuilderList()
       return builder
     }
 
@@ -774,12 +774,12 @@ public data class ClinicalUseDefinition(
       override val modifierExtension: List<Extension> = listOf(),
       /** The specific medication, food or laboratory test that interacts. */
       public val item: Item,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(item)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -809,7 +809,7 @@ public data class ClinicalUseDefinition(
       public class Builder(
         /** The specific medication, food or laboratory test that interacts. */
         public var item: Item
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -850,17 +850,17 @@ public data class ClinicalUseDefinition(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Interactant =
+        override fun build(): Interactant =
           Interactant(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             item = item,
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -922,16 +922,16 @@ public data class ClinicalUseDefinition(
       /** Actions for managing the interaction. */
       public var management: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): Interaction =
+      override fun build(): Interaction =
         Interaction(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          interactant = interactant.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          interactant = interactant.buildList(),
           type = type?.build(),
           effect = effect?.build(),
           incidence = incidence?.build(),
-          management = management.mapToList { it.build() },
+          management = management.buildList(),
         )
     }
   }
@@ -985,19 +985,19 @@ public data class ClinicalUseDefinition(
     public val classification: CodeableConcept? = null,
     /** How often the effect is seen. */
     public val frequencyOfOccurrence: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.symptomConditionEffect = symptomConditionEffect?.toBuilder()
       builder.classification = classification?.toBuilder()
       builder.frequencyOfOccurrence = frequencyOfOccurrence?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1047,11 +1047,11 @@ public data class ClinicalUseDefinition(
       /** How often the effect is seen. */
       public var frequencyOfOccurrence: CodeableConcept.Builder? = null
 
-      public fun build(): UndesirableEffect =
+      override fun build(): UndesirableEffect =
         UndesirableEffect(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           symptomConditionEffect = symptomConditionEffect?.build(),
           classification = classification?.build(),
           frequencyOfOccurrence = frequencyOfOccurrence?.build(),
@@ -1107,18 +1107,18 @@ public data class ClinicalUseDefinition(
     public val description: Markdown? = null,
     /** A coded or unformatted textual definition of this warning. */
     public val code: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.code = code?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1165,11 +1165,11 @@ public data class ClinicalUseDefinition(
       /** A coded or unformatted textual definition of this warning. */
       public var code: CodeableConcept.Builder? = null
 
-      public fun build(): Warning =
+      override fun build(): Warning =
         Warning(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           code = code?.build(),
         )
@@ -1333,18 +1333,18 @@ public data class ClinicalUseDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         type = type,
-        category = category.mapToList { it.build() },
-        subject = subject.mapToList { it.build() },
+        category = category.buildList(),
+        subject = subject.buildList(),
         status = status?.build(),
         contraindication = contraindication?.build(),
         indication = indication?.build(),
         interaction = interaction?.build(),
-        population = population.mapToList { it.build() },
+        population = population.buildList(),
         undesirableEffect = undesirableEffect?.build(),
         warning = warning?.build(),
       )

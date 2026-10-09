@@ -312,10 +312,10 @@ public data class AllergyIntolerance(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.clinicalStatus = clinicalStatus?.toBuilder()
     builder.verificationStatus = verificationStatus?.toBuilder()
     builder.type = type?.toBuilder()
@@ -325,10 +325,10 @@ public data class AllergyIntolerance(
     builder.encounter = encounter?.toBuilder()
     builder.onset = onset
     builder.recordedDate = recordedDate?.toBuilder()
-    builder.participant = participant.mapToMutableList { it.toBuilder() }
+    builder.participant = participant.toBuilderList()
     builder.lastOccurrence = lastOccurrence?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.reaction = reaction.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
+    builder.reaction = reaction.toBuilderList()
     return builder
   }
 
@@ -384,12 +384,12 @@ public data class AllergyIntolerance(
      * Indicates who or what participated in the activities related to the allergy or intolerance.
      */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -399,7 +399,7 @@ public data class AllergyIntolerance(
        * Indicates who or what participated in the activities related to the allergy or intolerance.
        */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -446,11 +446,11 @@ public data class AllergyIntolerance(
        */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Participant =
+      override fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -565,18 +565,18 @@ public data class AllergyIntolerance(
      * based on information provided to the patient by her mother and her mother is deceased.
      */
     public val note: List<Annotation> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(manifestation.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(manifestation.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.substance = substance?.toBuilder()
       builder.description = description?.toBuilder()
       builder.onset = onset?.toBuilder()
       builder.severity = severity
       builder.exposureRoute = exposureRoute?.toBuilder()
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.note = note.toBuilderList()
       return builder
     }
 
@@ -593,7 +593,7 @@ public data class AllergyIntolerance(
        * ICD10.
        */
       public var manifestation: MutableList<CodeableReference.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -698,18 +698,18 @@ public data class AllergyIntolerance(
        */
       public var note: MutableList<Annotation.Builder> = mutableListOf()
 
-      public fun build(): Reaction =
+      override fun build(): Reaction =
         Reaction(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           substance = substance?.build(),
-          manifestation = manifestation.mapToList { it.build() },
+          manifestation = manifestation.buildList(),
           description = description?.build(),
           onset = onset?.build(),
           severity = severity,
           exposureRoute = exposureRoute?.build(),
-          note = note.mapToList { it.build() },
+          note = note.buildList(),
         )
     }
   }
@@ -1050,10 +1050,10 @@ public data class AllergyIntolerance(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         clinicalStatus = clinicalStatus?.build(),
         verificationStatus = verificationStatus?.build(),
         type = type?.build(),
@@ -1064,10 +1064,10 @@ public data class AllergyIntolerance(
         encounter = encounter?.build(),
         onset = onset,
         recordedDate = recordedDate?.build(),
-        participant = participant.mapToList { it.build() },
+        participant = participant.buildList(),
         lastOccurrence = lastOccurrence?.build(),
-        note = note.mapToList { it.build() },
-        reaction = reaction.mapToList { it.build() },
+        note = note.buildList(),
+        reaction = reaction.buildList(),
       )
   }
 }

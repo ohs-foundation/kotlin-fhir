@@ -227,19 +227,19 @@ public data class List(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.title = title?.toBuilder()
     builder.code = code?.toBuilder()
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     builder.date = date?.toBuilder()
     builder.source = source?.toBuilder()
     builder.orderedBy = orderedBy?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.entry = entry.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
+    builder.entry = entry.toBuilderList()
     builder.emptyReason = emptyReason?.toBuilder()
     return builder
   }
@@ -304,12 +304,12 @@ public data class List(
     public val date: DateTime? = null,
     /** A reference to the actual resource from which data was derived. */
     public val item: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(item.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.flag = flag?.toBuilder()
       builder.deleted = deleted?.toBuilder()
       builder.date = date?.toBuilder()
@@ -319,7 +319,7 @@ public data class List(
     public class Builder(
       /** A reference to the actual resource from which data was derived. */
       public var item: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -382,11 +382,11 @@ public data class List(
       /** When this item was added to the list. */
       public var date: DateTime.Builder? = null
 
-      public fun build(): Entry =
+      override fun build(): Entry =
         Entry(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           flag = flag?.build(),
           deleted = deleted?.build(),
           date = date?.build(),
@@ -603,21 +603,21 @@ public data class List(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         mode = mode,
         title = title?.build(),
         code = code?.build(),
-        subject = subject.mapToList { it.build() },
+        subject = subject.buildList(),
         encounter = encounter?.build(),
         date = date?.build(),
         source = source?.build(),
         orderedBy = orderedBy?.build(),
-        note = note.mapToList { it.build() },
-        entry = entry.mapToList { it.build() },
+        note = note.buildList(),
+        entry = entry.buildList(),
         emptyReason = emptyReason?.build(),
       )
   }

@@ -241,30 +241,30 @@ public data class DeviceRequest(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.priorRequest = priorRequest.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+    builder.instantiatesUri = instantiatesUri.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.priorRequest = priorRequest.toBuilderList()
     builder.groupIdentifier = groupIdentifier?.toBuilder()
     builder.status = status
     builder.priority = priority
-    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    builder.parameter = parameter.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     builder.occurrence = occurrence
     builder.authoredOn = authoredOn?.toBuilder()
     builder.requester = requester?.toBuilder()
     builder.performerType = performerType?.toBuilder()
     builder.performer = performer?.toBuilder()
-    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
-    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
-    builder.insurance = insurance.mapToMutableList { it.toBuilder() }
-    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.relevantHistory = relevantHistory.mapToMutableList { it.toBuilder() }
+    builder.reasonCode = reasonCode.toBuilderList()
+    builder.reasonReference = reasonReference.toBuilderList()
+    builder.insurance = insurance.toBuilderList()
+    builder.supportingInfo = supportingInfo.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.relevantHistory = relevantHistory.toBuilderList()
     return builder
   }
 
@@ -316,12 +316,12 @@ public data class DeviceRequest(
      * Range means device should have a value that falls somewhere within the specified range.
      */
     public val `value`: Value? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.code = code?.toBuilder()
       builder.`value` = `value`
       return builder
@@ -362,7 +362,7 @@ public data class DeviceRequest(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -413,11 +413,11 @@ public data class DeviceRequest(
        */
       public var `value`: Value? = null
 
-      public fun build(): Parameter =
+      override fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code?.build(),
           `value` = `value`,
         )
@@ -700,20 +700,20 @@ public data class DeviceRequest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-        instantiatesUri = instantiatesUri.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        priorRequest = priorRequest.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        instantiatesCanonical = instantiatesCanonical.buildList(),
+        instantiatesUri = instantiatesUri.buildList(),
+        basedOn = basedOn.buildList(),
+        priorRequest = priorRequest.buildList(),
         groupIdentifier = groupIdentifier?.build(),
         status = status,
         intent = intent,
         priority = priority,
         code = code,
-        parameter = parameter.mapToList { it.build() },
+        parameter = parameter.buildList(),
         subject = subject.build(),
         encounter = encounter?.build(),
         occurrence = occurrence,
@@ -721,12 +721,12 @@ public data class DeviceRequest(
         requester = requester?.build(),
         performerType = performerType?.build(),
         performer = performer?.build(),
-        reasonCode = reasonCode.mapToList { it.build() },
-        reasonReference = reasonReference.mapToList { it.build() },
-        insurance = insurance.mapToList { it.build() },
-        supportingInfo = supportingInfo.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        relevantHistory = relevantHistory.mapToList { it.build() },
+        reasonCode = reasonCode.buildList(),
+        reasonReference = reasonReference.buildList(),
+        insurance = insurance.buildList(),
+        supportingInfo = supportingInfo.buildList(),
+        note = note.buildList(),
+        relevantHistory = relevantHistory.buildList(),
       )
   }
 }

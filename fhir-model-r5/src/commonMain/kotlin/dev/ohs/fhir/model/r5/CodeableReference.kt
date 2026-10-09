@@ -61,17 +61,17 @@ public data class CodeableReference(
    * A reference to a resource the provides exact details about the information being referenced.
    */
   public val reference: Reference? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.concept = concept?.toBuilder()
     builder.reference = reference?.toBuilder()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -103,10 +103,10 @@ public data class CodeableReference(
      */
     public open var reference: Reference.Builder? = null
 
-    public open fun build(): CodeableReference =
+    open override fun build(): CodeableReference =
       CodeableReference(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         concept = concept?.build(),
         reference = reference?.build(),
       )

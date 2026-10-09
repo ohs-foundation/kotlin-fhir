@@ -439,9 +439,9 @@ public data class ObservationDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
     builder.identifier = identifier?.toBuilder()
     builder.version = version?.toBuilder()
@@ -451,32 +451,32 @@ public data class ObservationDefinition(
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.derivedFromCanonical = derivedFromCanonical.mapToMutableList { it.toBuilder() }
-    builder.derivedFromUri = derivedFromUri.mapToMutableList { it.toBuilder() }
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.derivedFromCanonical = derivedFromCanonical.toBuilderList()
+    builder.derivedFromUri = derivedFromUri.toBuilderList()
+    builder.subject = subject.toBuilderList()
     builder.performerType = performerType?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.permittedDataType = permittedDataType.toMutableList()
     builder.multipleResultsAllowed = multipleResultsAllowed?.toBuilder()
     builder.bodySite = bodySite?.toBuilder()
     builder.method = method?.toBuilder()
-    builder.specimen = specimen.mapToMutableList { it.toBuilder() }
-    builder.device = device.mapToMutableList { it.toBuilder() }
+    builder.specimen = specimen.toBuilderList()
+    builder.device = device.toBuilderList()
     builder.preferredReportName = preferredReportName?.toBuilder()
-    builder.permittedUnit = permittedUnit.mapToMutableList { it.toBuilder() }
-    builder.qualifiedValue = qualifiedValue.mapToMutableList { it.toBuilder() }
-    builder.hasMember = hasMember.mapToMutableList { it.toBuilder() }
-    builder.component = component.mapToMutableList { it.toBuilder() }
+    builder.permittedUnit = permittedUnit.toBuilderList()
+    builder.qualifiedValue = qualifiedValue.toBuilderList()
+    builder.hasMember = hasMember.toBuilderList()
+    builder.component = component.toBuilderList()
     return builder
   }
 
@@ -574,14 +574,14 @@ public data class ObservationDefinition(
      * this set of qualified values.
      */
     public val criticalCodedValueSet: Canonical? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.context = context?.toBuilder()
-      builder.appliesTo = appliesTo.mapToMutableList { it.toBuilder() }
+      builder.appliesTo = appliesTo.toBuilderList()
       builder.gender = gender
       builder.age = age?.toBuilder()
       builder.gestationalAge = gestationalAge?.toBuilder()
@@ -595,7 +595,7 @@ public data class ObservationDefinition(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -698,13 +698,13 @@ public data class ObservationDefinition(
        */
       public var criticalCodedValueSet: Canonical.Builder? = null
 
-      public fun build(): QualifiedValue =
+      override fun build(): QualifiedValue =
         QualifiedValue(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           context = context?.build(),
-          appliesTo = appliesTo.mapToList { it.build() },
+          appliesTo = appliesTo.buildList(),
           gender = gender,
           age = age?.build(),
           gestationalAge = gestationalAge?.build(),
@@ -778,22 +778,22 @@ public data class ObservationDefinition(
      * qualitative observations.
      */
     public val qualifiedValue: List<QualifiedValue> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.permittedDataType = permittedDataType.toMutableList()
-      builder.permittedUnit = permittedUnit.mapToMutableList { it.toBuilder() }
-      builder.qualifiedValue = qualifiedValue.mapToMutableList { it.toBuilder() }
+      builder.permittedUnit = permittedUnit.toBuilderList()
+      builder.qualifiedValue = qualifiedValue.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** Describes what will be observed. */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -853,15 +853,15 @@ public data class ObservationDefinition(
        */
       public var qualifiedValue: MutableList<QualifiedValue.Builder> = mutableListOf()
 
-      public fun build(): Component =
+      override fun build(): Component =
         Component(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           permittedDataType = permittedDataType,
-          permittedUnit = permittedUnit.mapToList { it.build() },
-          qualifiedValue = qualifiedValue.mapToList { it.build() },
+          permittedUnit = permittedUnit.buildList(),
+          qualifiedValue = qualifiedValue.buildList(),
         )
     }
   }
@@ -1328,9 +1328,9 @@ public data class ObservationDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
         identifier = identifier?.build(),
         version = version?.build(),
@@ -1341,33 +1341,33 @@ public data class ObservationDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        derivedFromCanonical = derivedFromCanonical.mapToList { it.build() },
-        derivedFromUri = derivedFromUri.mapToList { it.build() },
-        subject = subject.mapToList { it.build() },
+        derivedFromCanonical = derivedFromCanonical.buildList(),
+        derivedFromUri = derivedFromUri.buildList(),
+        subject = subject.buildList(),
         performerType = performerType?.build(),
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         code = code.build(),
         permittedDataType = permittedDataType,
         multipleResultsAllowed = multipleResultsAllowed?.build(),
         bodySite = bodySite?.build(),
         method = method?.build(),
-        specimen = specimen.mapToList { it.build() },
-        device = device.mapToList { it.build() },
+        specimen = specimen.buildList(),
+        device = device.buildList(),
         preferredReportName = preferredReportName?.build(),
-        permittedUnit = permittedUnit.mapToList { it.build() },
-        qualifiedValue = qualifiedValue.mapToList { it.build() },
-        hasMember = hasMember.mapToList { it.build() },
-        component = component.mapToList { it.build() },
+        permittedUnit = permittedUnit.buildList(),
+        qualifiedValue = qualifiedValue.buildList(),
+        hasMember = hasMember.buildList(),
+        component = component.buildList(),
       )
   }
 }

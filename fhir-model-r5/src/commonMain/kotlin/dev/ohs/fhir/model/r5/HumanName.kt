@@ -97,22 +97,22 @@ public data class HumanName(
   public val suffix: List<String> = listOf(),
   /** Indicates the period of time when this name was valid for the named person. */
   public val period: Period? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.use = use
     builder.text = text?.toBuilder()
     builder.family = family?.toBuilder()
-    builder.given = given.mapToMutableList { it.toBuilder() }
-    builder.prefix = prefix.mapToMutableList { it.toBuilder() }
-    builder.suffix = suffix.mapToMutableList { it.toBuilder() }
+    builder.given = given.toBuilderList()
+    builder.prefix = prefix.toBuilderList()
+    builder.suffix = suffix.toBuilderList()
     builder.period = period?.toBuilder()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -184,16 +184,16 @@ public data class HumanName(
     /** Indicates the period of time when this name was valid for the named person. */
     public open var period: Period.Builder? = null
 
-    public open fun build(): HumanName =
+    open override fun build(): HumanName =
       HumanName(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         use = use,
         text = text?.build(),
         family = family?.build(),
-        given = given.mapToList { it.build() },
-        prefix = prefix.mapToList { it.build() },
-        suffix = suffix.mapToList { it.build() },
+        given = given.buildList(),
+        prefix = prefix.buildList(),
+        suffix = suffix.buildList(),
         period = period?.build(),
       )
   }

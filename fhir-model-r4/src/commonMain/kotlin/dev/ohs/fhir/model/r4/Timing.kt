@@ -96,13 +96,13 @@ public data class Timing(
    * case, specifying the two event times).
    */
   public val code: CodeableConcept? = null,
-) : BackboneElement() {
-  public fun toBuilder(): Builder {
+) : BackboneElement(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.event = event.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.event = event.toBuilderList()
     builder.repeat = repeat?.toBuilder()
     builder.code = code?.toBuilder()
     return builder
@@ -219,11 +219,11 @@ public data class Timing(
      * is before or after the event, then the offset is assumed to be after the event.
      */
     public val offset: UnsignedInt? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.bounds = bounds
       builder.count = count?.toBuilder()
       builder.countMax = countMax?.toBuilder()
@@ -236,7 +236,7 @@ public data class Timing(
       builder.periodMax = periodMax?.toBuilder()
       builder.periodUnit = periodUnit
       builder.dayOfWeek = dayOfWeek.toMutableList()
-      builder.timeOfDay = timeOfDay.mapToMutableList { it.toBuilder() }
+      builder.timeOfDay = timeOfDay.toBuilderList()
       builder.`when` = `when`.toMutableList()
       builder.offset = offset?.toBuilder()
       return builder
@@ -269,7 +269,7 @@ public data class Timing(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -395,10 +395,10 @@ public data class Timing(
        */
       public var offset: UnsignedInt.Builder? = null
 
-      public fun build(): Repeat =
+      override fun build(): Repeat =
         Repeat(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           bounds = bounds,
           count = count?.build(),
           countMax = countMax?.build(),
@@ -411,14 +411,14 @@ public data class Timing(
           periodMax = periodMax?.build(),
           periodUnit = periodUnit,
           dayOfWeek = dayOfWeek,
-          timeOfDay = timeOfDay.mapToList { it.build() },
+          timeOfDay = timeOfDay.buildList(),
           `when` = `when`,
           offset = offset?.build(),
         )
     }
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -480,12 +480,12 @@ public data class Timing(
      */
     public open var code: CodeableConcept.Builder? = null
 
-    public open fun build(): Timing =
+    open override fun build(): Timing =
       Timing(
         id = id,
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        event = event.mapToList { it.build() },
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        event = event.buildList(),
         repeat = repeat?.build(),
         code = code?.build(),
       )

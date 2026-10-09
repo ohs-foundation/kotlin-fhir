@@ -188,12 +188,12 @@ public data class SupplyDelivery(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
     builder.status = status
     builder.patient = patient?.toBuilder()
     builder.type = type?.toBuilder()
@@ -201,7 +201,7 @@ public data class SupplyDelivery(
     builder.occurrence = occurrence
     builder.supplier = supplier?.toBuilder()
     builder.destination = destination?.toBuilder()
-    builder.`receiver` = `receiver`.mapToMutableList { it.toBuilder() }
+    builder.`receiver` = `receiver`.toBuilderList()
     return builder
   }
 
@@ -253,12 +253,12 @@ public data class SupplyDelivery(
      * list.
      */
     public val item: Item? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.quantity = quantity?.toBuilder()
       builder.item = item
       return builder
@@ -287,7 +287,7 @@ public data class SupplyDelivery(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -338,11 +338,11 @@ public data class SupplyDelivery(
        */
       public var item: Item? = null
 
-      public fun build(): SuppliedItem =
+      override fun build(): SuppliedItem =
         SuppliedItem(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           quantity = quantity?.build(),
           item = item,
         )
@@ -549,12 +549,12 @@ public data class SupplyDelivery(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        basedOn = basedOn.buildList(),
+        partOf = partOf.buildList(),
         status = status,
         patient = patient?.build(),
         type = type?.build(),
@@ -562,7 +562,7 @@ public data class SupplyDelivery(
         occurrence = occurrence,
         supplier = supplier?.build(),
         destination = destination?.build(),
-        `receiver` = `receiver`.mapToList { it.build() },
+        `receiver` = `receiver`.buildList(),
       )
   }
 }

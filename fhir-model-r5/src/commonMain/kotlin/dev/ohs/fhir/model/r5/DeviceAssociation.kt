@@ -158,16 +158,16 @@ public data class DeviceAssociation(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
-    builder.statusReason = statusReason.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.category = category.toBuilderList()
+    builder.statusReason = statusReason.toBuilderList()
     builder.subject = subject?.toBuilder()
     builder.bodyStructure = bodyStructure?.toBuilder()
     builder.period = period?.toBuilder()
-    builder.operation = operation.mapToMutableList { it.toBuilder() }
+    builder.operation = operation.toBuilderList()
     return builder
   }
 
@@ -217,13 +217,13 @@ public data class DeviceAssociation(
     public val `operator`: List<Reference> = listOf(),
     /** Begin and end dates and times for the device's operation. */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(status.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.`operator` = `operator`.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.`operator` = `operator`.toBuilderList()
       builder.period = period?.toBuilder()
       return builder
     }
@@ -231,7 +231,7 @@ public data class DeviceAssociation(
     public class Builder(
       /** Device operational condition corresponding to the association. */
       public var status: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -278,13 +278,13 @@ public data class DeviceAssociation(
       /** Begin and end dates and times for the device's operation. */
       public var period: Period.Builder? = null
 
-      public fun build(): Operation =
+      override fun build(): Operation =
         Operation(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           status = status.build(),
-          `operator` = `operator`.mapToList { it.build() },
+          `operator` = `operator`.buildList(),
           period = period?.build(),
         )
     }
@@ -431,18 +431,18 @@ public data class DeviceAssociation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         device = device.build(),
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         status = status.build(),
-        statusReason = statusReason.mapToList { it.build() },
+        statusReason = statusReason.buildList(),
         subject = subject?.build(),
         bodyStructure = bodyStructure?.build(),
         period = period?.build(),
-        operation = operation.mapToList { it.build() },
+        operation = operation.buildList(),
       )
   }
 }

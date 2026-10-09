@@ -267,25 +267,25 @@ public data class Coverage(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.paymentBy = paymentBy.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.paymentBy = paymentBy.toBuilderList()
     builder.type = type?.toBuilder()
     builder.policyHolder = policyHolder?.toBuilder()
     builder.subscriber = subscriber?.toBuilder()
-    builder.subscriberId = subscriberId.mapToMutableList { it.toBuilder() }
+    builder.subscriberId = subscriberId.toBuilderList()
     builder.dependent = dependent?.toBuilder()
     builder.relationship = relationship?.toBuilder()
     builder.period = period?.toBuilder()
     builder.insurer = insurer?.toBuilder()
-    builder.`class` = `class`.mapToMutableList { it.toBuilder() }
+    builder.`class` = `class`.toBuilderList()
     builder.order = order?.toBuilder()
     builder.network = network?.toBuilder()
-    builder.costToBeneficiary = costToBeneficiary.mapToMutableList { it.toBuilder() }
+    builder.costToBeneficiary = costToBeneficiary.toBuilderList()
     builder.subrogation = subrogation?.toBuilder()
-    builder.contract = contract.mapToMutableList { it.toBuilder() }
+    builder.contract = contract.toBuilderList()
     builder.insurancePlan = insurancePlan?.toBuilder()
     return builder
   }
@@ -334,12 +334,12 @@ public data class Coverage(
     public val party: Reference,
     /** Description of the financial responsibility. */
     public val responsibility: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(party.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.responsibility = responsibility?.toBuilder()
       return builder
     }
@@ -347,7 +347,7 @@ public data class Coverage(
     public class Builder(
       /** The list of parties providing non-insurance payment for the treatment costs. */
       public var party: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -391,11 +391,11 @@ public data class Coverage(
       /** Description of the financial responsibility. */
       public var responsibility: String.Builder? = null
 
-      public fun build(): PaymentBy =
+      override fun build(): PaymentBy =
         PaymentBy(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           party = party.build(),
           responsibility = responsibility?.build(),
         )
@@ -456,12 +456,12 @@ public data class Coverage(
     public val `value`: Identifier,
     /** A short description for the class. */
     public val name: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder(), `value`.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       return builder
     }
@@ -479,7 +479,7 @@ public data class Coverage(
        * For example, the Group or Plan number.
        */
       public var `value`: Identifier.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -523,11 +523,11 @@ public data class Coverage(
       /** A short description for the class. */
       public var name: String.Builder? = null
 
-      public fun build(): Class =
+      override fun build(): Class =
         Class(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           `value` = `value`.build(),
           name = name?.build(),
@@ -614,19 +614,19 @@ public data class Coverage(
      * periods.
      */
     public val exception: List<Exception> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.category = category?.toBuilder()
       builder.network = network?.toBuilder()
       builder.unit = unit?.toBuilder()
       builder.term = term?.toBuilder()
       builder.`value` = `value`
-      builder.exception = exception.mapToMutableList { it.toBuilder() }
+      builder.exception = exception.toBuilderList()
       return builder
     }
 
@@ -677,12 +677,12 @@ public data class Coverage(
       public val type: CodeableConcept,
       /** The timeframe the exception is in force. */
       public val period: Period? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(type.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.period = period?.toBuilder()
         return builder
       }
@@ -690,7 +690,7 @@ public data class Coverage(
       public class Builder(
         /** The code for the specific exception. */
         public var type: CodeableConcept.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -734,11 +734,11 @@ public data class Coverage(
         /** The timeframe the exception is in force. */
         public var period: Period.Builder? = null
 
-        public fun build(): Exception =
+        override fun build(): Exception =
           Exception(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type.build(),
             period = period?.build(),
           )
@@ -766,7 +766,7 @@ public data class Coverage(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -851,18 +851,18 @@ public data class Coverage(
        */
       public var exception: MutableList<Exception.Builder> = mutableListOf()
 
-      public fun build(): CostToBeneficiary =
+      override fun build(): CostToBeneficiary =
         CostToBeneficiary(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
           category = category?.build(),
           network = network?.build(),
           unit = unit?.build(),
           term = term?.build(),
           `value` = `value`,
-          exception = exception.mapToList { it.build() },
+          exception = exception.buildList(),
         )
     }
   }
@@ -1117,28 +1117,28 @@ public data class Coverage(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         kind = kind,
-        paymentBy = paymentBy.mapToList { it.build() },
+        paymentBy = paymentBy.buildList(),
         type = type?.build(),
         policyHolder = policyHolder?.build(),
         subscriber = subscriber?.build(),
-        subscriberId = subscriberId.mapToList { it.build() },
+        subscriberId = subscriberId.buildList(),
         beneficiary = beneficiary.build(),
         dependent = dependent?.build(),
         relationship = relationship?.build(),
         period = period?.build(),
         insurer = insurer?.build(),
-        `class` = `class`.mapToList { it.build() },
+        `class` = `class`.buildList(),
         order = order?.build(),
         network = network?.build(),
-        costToBeneficiary = costToBeneficiary.mapToList { it.build() },
+        costToBeneficiary = costToBeneficiary.buildList(),
         subrogation = subrogation?.build(),
-        contract = contract.mapToList { it.build() },
+        contract = contract.buildList(),
         insurancePlan = insurancePlan?.build(),
       )
   }

@@ -217,22 +217,22 @@ public data class SubstanceSourceMaterial(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.sourceMaterialClass = sourceMaterialClass?.toBuilder()
     builder.sourceMaterialType = sourceMaterialType?.toBuilder()
     builder.sourceMaterialState = sourceMaterialState?.toBuilder()
     builder.organismId = organismId?.toBuilder()
     builder.organismName = organismName?.toBuilder()
-    builder.parentSubstanceId = parentSubstanceId.mapToMutableList { it.toBuilder() }
-    builder.parentSubstanceName = parentSubstanceName.mapToMutableList { it.toBuilder() }
-    builder.countryOfOrigin = countryOfOrigin.mapToMutableList { it.toBuilder() }
-    builder.geographicalLocation = geographicalLocation.mapToMutableList { it.toBuilder() }
+    builder.parentSubstanceId = parentSubstanceId.toBuilderList()
+    builder.parentSubstanceName = parentSubstanceName.toBuilderList()
+    builder.countryOfOrigin = countryOfOrigin.toBuilderList()
+    builder.geographicalLocation = geographicalLocation.toBuilderList()
     builder.developmentStage = developmentStage?.toBuilder()
-    builder.fractionDescription = fractionDescription.mapToMutableList { it.toBuilder() }
+    builder.fractionDescription = fractionDescription.toBuilderList()
     builder.organism = organism?.toBuilder()
-    builder.partDescription = partDescription.mapToMutableList { it.toBuilder() }
+    builder.partDescription = partDescription.toBuilderList()
     return builder
   }
 
@@ -294,18 +294,18 @@ public data class SubstanceSourceMaterial(
      * particulars of the extracts (liquid/dry) is described in Specified Substance Group 1.
      */
     public val materialType: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.fraction = fraction?.toBuilder()
       builder.materialType = materialType?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -358,11 +358,11 @@ public data class SubstanceSourceMaterial(
        */
       public var materialType: CodeableConcept.Builder? = null
 
-      public fun build(): FractionDescription =
+      override fun build(): FractionDescription =
         FractionDescription(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           fraction = fraction?.build(),
           materialType = materialType?.build(),
         )
@@ -440,18 +440,18 @@ public data class SubstanceSourceMaterial(
     public val hybrid: Hybrid? = null,
     /** 4.9.13.7.1 Kingdom (Conditional). */
     public val organismGeneral: OrganismGeneral? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.family = family?.toBuilder()
       builder.genus = genus?.toBuilder()
       builder.species = species?.toBuilder()
       builder.intraspecificType = intraspecificType?.toBuilder()
       builder.intraspecificDescription = intraspecificDescription?.toBuilder()
-      builder.author = author.mapToMutableList { it.toBuilder() }
+      builder.author = author.toBuilderList()
       builder.hybrid = hybrid?.toBuilder()
       builder.organismGeneral = organismGeneral?.toBuilder()
       return builder
@@ -510,18 +510,18 @@ public data class SubstanceSourceMaterial(
        * published the infraspecific plant/animal name (of any rank).
        */
       public val authorDescription: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.authorType = authorType?.toBuilder()
         builder.authorDescription = authorDescription?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -577,11 +577,11 @@ public data class SubstanceSourceMaterial(
          */
         public var authorDescription: String.Builder? = null
 
-        public fun build(): Author =
+        override fun build(): Author =
           Author(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             authorType = authorType?.build(),
             authorDescription = authorDescription?.build(),
           )
@@ -649,12 +649,12 @@ public data class SubstanceSourceMaterial(
       public val paternalOrganismName: String? = null,
       /** The hybrid type of an organism shall be specified. */
       public val hybridType: CodeableConcept? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.maternalOrganismId = maternalOrganismId?.toBuilder()
         builder.maternalOrganismName = maternalOrganismName?.toBuilder()
         builder.paternalOrganismId = paternalOrganismId?.toBuilder()
@@ -663,7 +663,7 @@ public data class SubstanceSourceMaterial(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -730,11 +730,11 @@ public data class SubstanceSourceMaterial(
         /** The hybrid type of an organism shall be specified. */
         public var hybridType: CodeableConcept.Builder? = null
 
-        public fun build(): Hybrid =
+        override fun build(): Hybrid =
           Hybrid(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             maternalOrganismId = maternalOrganismId?.build(),
             maternalOrganismName = maternalOrganismName?.build(),
             paternalOrganismId = paternalOrganismId?.build(),
@@ -792,12 +792,12 @@ public data class SubstanceSourceMaterial(
       public val `class`: CodeableConcept? = null,
       /** The order of an organism shall be specified,. */
       public val order: CodeableConcept? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.kingdom = kingdom?.toBuilder()
         builder.phylum = phylum?.toBuilder()
         builder.`class` = `class`?.toBuilder()
@@ -805,7 +805,7 @@ public data class SubstanceSourceMaterial(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -858,11 +858,11 @@ public data class SubstanceSourceMaterial(
         /** The order of an organism shall be specified,. */
         public var order: CodeableConcept.Builder? = null
 
-        public fun build(): OrganismGeneral =
+        override fun build(): OrganismGeneral =
           OrganismGeneral(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             kingdom = kingdom?.build(),
             phylum = phylum?.build(),
             `class` = `class`?.build(),
@@ -871,7 +871,7 @@ public data class SubstanceSourceMaterial(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -947,17 +947,17 @@ public data class SubstanceSourceMaterial(
       /** 4.9.13.7.1 Kingdom (Conditional). */
       public var organismGeneral: OrganismGeneral.Builder? = null
 
-      public fun build(): Organism =
+      override fun build(): Organism =
         Organism(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           family = family?.build(),
           genus = genus?.build(),
           species = species?.build(),
           intraspecificType = intraspecificType?.build(),
           intraspecificDescription = intraspecificDescription?.build(),
-          author = author.mapToList { it.build() },
+          author = author.buildList(),
           hybrid = hybrid?.build(),
           organismGeneral = organismGeneral?.build(),
         )
@@ -1011,18 +1011,18 @@ public data class SubstanceSourceMaterial(
      * locations of the organism. Multiple alternative locations may apply.
      */
     public val partLocation: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.part = part?.toBuilder()
       builder.partLocation = partLocation?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1072,11 +1072,11 @@ public data class SubstanceSourceMaterial(
        */
       public var partLocation: CodeableConcept.Builder? = null
 
-      public fun build(): PartDescription =
+      override fun build(): PartDescription =
         PartDescription(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           part = part?.build(),
           partLocation = partLocation?.build(),
         )
@@ -1272,22 +1272,22 @@ public data class SubstanceSourceMaterial(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         sourceMaterialClass = sourceMaterialClass?.build(),
         sourceMaterialType = sourceMaterialType?.build(),
         sourceMaterialState = sourceMaterialState?.build(),
         organismId = organismId?.build(),
         organismName = organismName?.build(),
-        parentSubstanceId = parentSubstanceId.mapToList { it.build() },
-        parentSubstanceName = parentSubstanceName.mapToList { it.build() },
-        countryOfOrigin = countryOfOrigin.mapToList { it.build() },
-        geographicalLocation = geographicalLocation.mapToList { it.build() },
+        parentSubstanceId = parentSubstanceId.buildList(),
+        parentSubstanceName = parentSubstanceName.buildList(),
+        countryOfOrigin = countryOfOrigin.buildList(),
+        geographicalLocation = geographicalLocation.buildList(),
         developmentStage = developmentStage?.build(),
-        fractionDescription = fractionDescription.mapToList { it.build() },
+        fractionDescription = fractionDescription.buildList(),
         organism = organism?.build(),
-        partDescription = partDescription.mapToList { it.build() },
+        partDescription = partDescription.buildList(),
       )
   }
 }

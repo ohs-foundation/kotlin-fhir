@@ -281,29 +281,29 @@ public data class CommunicationRequest(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.replaces = replaces.toBuilderList()
     builder.groupIdentifier = groupIdentifier?.toBuilder()
     builder.statusReason = statusReason?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.priority = priority
     builder.doNotPerform = doNotPerform?.toBuilder()
-    builder.medium = medium.mapToMutableList { it.toBuilder() }
+    builder.medium = medium.toBuilderList()
     builder.subject = subject?.toBuilder()
-    builder.about = about.mapToMutableList { it.toBuilder() }
+    builder.about = about.toBuilderList()
     builder.encounter = encounter?.toBuilder()
-    builder.payload = payload.mapToMutableList { it.toBuilder() }
+    builder.payload = payload.toBuilderList()
     builder.occurrence = occurrence
     builder.authoredOn = authoredOn?.toBuilder()
     builder.requester = requester?.toBuilder()
-    builder.recipient = recipient.mapToMutableList { it.toBuilder() }
-    builder.informationProvider = informationProvider.mapToMutableList { it.toBuilder() }
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.recipient = recipient.toBuilderList()
+    builder.informationProvider = informationProvider.toBuilderList()
+    builder.reason = reason.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -362,12 +362,12 @@ public data class CommunicationRequest(
      * not a categorization of the content.
      */
     public val content: Content,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(content)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -416,7 +416,7 @@ public data class CommunicationRequest(
        * not a categorization of the content.
        */
       public var content: Content
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -457,11 +457,11 @@ public data class CommunicationRequest(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Payload =
+      override fun build(): Payload =
         Payload(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           content = content,
         )
     }
@@ -754,31 +754,31 @@ public data class CommunicationRequest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        replaces = replaces.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        basedOn = basedOn.buildList(),
+        replaces = replaces.buildList(),
         groupIdentifier = groupIdentifier?.build(),
         status = status,
         statusReason = statusReason?.build(),
         intent = intent,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         priority = priority,
         doNotPerform = doNotPerform?.build(),
-        medium = medium.mapToList { it.build() },
+        medium = medium.buildList(),
         subject = subject?.build(),
-        about = about.mapToList { it.build() },
+        about = about.buildList(),
         encounter = encounter?.build(),
-        payload = payload.mapToList { it.build() },
+        payload = payload.buildList(),
         occurrence = occurrence,
         authoredOn = authoredOn?.build(),
         requester = requester?.build(),
-        recipient = recipient.mapToList { it.build() },
-        informationProvider = informationProvider.mapToList { it.build() },
-        reason = reason.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        recipient = recipient.buildList(),
+        informationProvider = informationProvider.buildList(),
+        reason = reason.buildList(),
+        note = note.buildList(),
       )
   }
 }

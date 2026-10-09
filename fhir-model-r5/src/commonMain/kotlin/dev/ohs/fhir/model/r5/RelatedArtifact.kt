@@ -110,12 +110,12 @@ public data class RelatedArtifact(
   public val publicationStatus: Enumeration<PublicationStatus>? = null,
   /** The date of publication of the artifact being referred to. */
   public val publicationDate: Date? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(type)
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.classifier = classifier.toBuilderList()
     builder.label = label?.toBuilder()
     builder.display = display?.toBuilder()
     builder.citation = citation?.toBuilder()
@@ -139,7 +139,7 @@ public data class RelatedArtifact(
      * element SHALL be drawn from the fhir-related-artifact-type ValueSet.
      */
     public open var type: Enumeration<RelatedArtifactType>
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -215,12 +215,12 @@ public data class RelatedArtifact(
     /** The date of publication of the artifact being referred to. */
     public open var publicationDate: Date.Builder? = null
 
-    public open fun build(): RelatedArtifact =
+    open override fun build(): RelatedArtifact =
       RelatedArtifact(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         type = type,
-        classifier = classifier.mapToList { it.build() },
+        classifier = classifier.buildList(),
         label = label?.build(),
         display = display?.build(),
         citation = citation?.build(),

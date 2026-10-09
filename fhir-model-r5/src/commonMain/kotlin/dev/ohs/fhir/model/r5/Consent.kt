@@ -234,26 +234,26 @@ public data class Consent(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.subject = subject?.toBuilder()
     builder.date = date?.toBuilder()
     builder.period = period?.toBuilder()
-    builder.grantor = grantor.mapToMutableList { it.toBuilder() }
-    builder.grantee = grantee.mapToMutableList { it.toBuilder() }
-    builder.manager = manager.mapToMutableList { it.toBuilder() }
-    builder.controller = controller.mapToMutableList { it.toBuilder() }
-    builder.sourceAttachment = sourceAttachment.mapToMutableList { it.toBuilder() }
-    builder.sourceReference = sourceReference.mapToMutableList { it.toBuilder() }
-    builder.regulatoryBasis = regulatoryBasis.mapToMutableList { it.toBuilder() }
+    builder.grantor = grantor.toBuilderList()
+    builder.grantee = grantee.toBuilderList()
+    builder.manager = manager.toBuilderList()
+    builder.controller = controller.toBuilderList()
+    builder.sourceAttachment = sourceAttachment.toBuilderList()
+    builder.sourceReference = sourceReference.toBuilderList()
+    builder.regulatoryBasis = regulatoryBasis.toBuilderList()
     builder.policyBasis = policyBasis?.toBuilder()
-    builder.policyText = policyText.mapToMutableList { it.toBuilder() }
-    builder.verification = verification.mapToMutableList { it.toBuilder() }
+    builder.policyText = policyText.toBuilderList()
+    builder.verification = verification.toBuilderList()
     builder.decision = decision
-    builder.provision = provision.mapToMutableList { it.toBuilder() }
+    builder.provision = provision.toBuilderList()
     return builder
   }
 
@@ -312,18 +312,18 @@ public data class Consent(
      * Consent.
      */
     public val url: Url? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.reference = reference?.toBuilder()
       builder.url = url?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -377,11 +377,11 @@ public data class Consent(
        */
       public var url: Url.Builder? = null
 
-      public fun build(): PolicyBasis =
+      override fun build(): PolicyBasis =
         PolicyBasis(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           reference = reference?.build(),
           url = url?.build(),
         )
@@ -450,23 +450,23 @@ public data class Consent(
      * Allows for history of verification/validation.
      */
     public val verificationDate: List<DateTime> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(verified.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.verificationType = verificationType?.toBuilder()
       builder.verifiedBy = verifiedBy?.toBuilder()
       builder.verifiedWith = verifiedWith?.toBuilder()
-      builder.verificationDate = verificationDate.mapToMutableList { it.toBuilder() }
+      builder.verificationDate = verificationDate.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** Has the instruction been verified. */
       public var verified: Boolean.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -528,16 +528,16 @@ public data class Consent(
        */
       public var verificationDate: MutableList<DateTime.Builder> = mutableListOf()
 
-      public fun build(): Verification =
+      override fun build(): Verification =
         Verification(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           verified = verified.build(),
           verificationType = verificationType?.build(),
           verifiedBy = verifiedBy?.build(),
           verifiedWith = verifiedWith?.build(),
-          verificationDate = verificationDate.mapToList { it.build() },
+          verificationDate = verificationDate.buildList(),
         )
     }
   }
@@ -659,24 +659,24 @@ public data class Consent(
     public val expression: Expression? = null,
     /** Provisions which provide exceptions to the base provision or subprovisions. */
     public val provision: List<Provision> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.period = period?.toBuilder()
-      builder.actor = actor.mapToMutableList { it.toBuilder() }
-      builder.action = action.mapToMutableList { it.toBuilder() }
-      builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
-      builder.purpose = purpose.mapToMutableList { it.toBuilder() }
-      builder.documentType = documentType.mapToMutableList { it.toBuilder() }
-      builder.resourceType = resourceType.mapToMutableList { it.toBuilder() }
-      builder.code = code.mapToMutableList { it.toBuilder() }
+      builder.actor = actor.toBuilderList()
+      builder.action = action.toBuilderList()
+      builder.securityLabel = securityLabel.toBuilderList()
+      builder.purpose = purpose.toBuilderList()
+      builder.documentType = documentType.toBuilderList()
+      builder.resourceType = resourceType.toBuilderList()
+      builder.code = code.toBuilderList()
       builder.dataPeriod = dataPeriod?.toBuilder()
-      builder.`data` = `data`.mapToMutableList { it.toBuilder() }
+      builder.`data` = `data`.toBuilderList()
       builder.expression = expression?.toBuilder()
-      builder.provision = provision.mapToMutableList { it.toBuilder() }
+      builder.provision = provision.toBuilderList()
       return builder
     }
 
@@ -732,18 +732,18 @@ public data class Consent(
        * set of actors by some property they share (e.g. 'admitting officers').
        */
       public val reference: Reference? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.role = role?.toBuilder()
         builder.reference = reference?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -796,11 +796,11 @@ public data class Consent(
          */
         public var reference: Reference.Builder? = null
 
-        public fun build(): Actor =
+        override fun build(): Actor =
           Actor(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             role = role?.build(),
             reference = reference?.build(),
           )
@@ -854,16 +854,16 @@ public data class Consent(
        * consent.
        */
       public val reference: Reference,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             meaning,
             reference.toBuilder(),
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -875,7 +875,7 @@ public data class Consent(
          * consent.
          */
         public var reference: Reference.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -916,18 +916,18 @@ public data class Consent(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Data =
+        override fun build(): Data =
           Data(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             meaning = meaning,
             reference = reference.build(),
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1055,23 +1055,23 @@ public data class Consent(
       /** Provisions which provide exceptions to the base provision or subprovisions. */
       public var provision: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Provision =
+      override fun build(): Provision =
         Provision(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           period = period?.build(),
-          actor = actor.mapToList { it.build() },
-          action = action.mapToList { it.build() },
-          securityLabel = securityLabel.mapToList { it.build() },
-          purpose = purpose.mapToList { it.build() },
-          documentType = documentType.mapToList { it.build() },
-          resourceType = resourceType.mapToList { it.build() },
-          code = code.mapToList { it.build() },
+          actor = actor.buildList(),
+          action = action.buildList(),
+          securityLabel = securityLabel.buildList(),
+          purpose = purpose.buildList(),
+          documentType = documentType.buildList(),
+          resourceType = resourceType.buildList(),
+          code = code.buildList(),
           dataPeriod = dataPeriod?.build(),
-          `data` = `data`.mapToList { it.build() },
+          `data` = `data`.buildList(),
           expression = expression?.build(),
-          provision = provision.mapToList { it.build() },
+          provision = provision.buildList(),
         )
     }
   }
@@ -1292,27 +1292,27 @@ public data class Consent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         subject = subject?.build(),
         date = date?.build(),
         period = period?.build(),
-        grantor = grantor.mapToList { it.build() },
-        grantee = grantee.mapToList { it.build() },
-        manager = manager.mapToList { it.build() },
-        controller = controller.mapToList { it.build() },
-        sourceAttachment = sourceAttachment.mapToList { it.build() },
-        sourceReference = sourceReference.mapToList { it.build() },
-        regulatoryBasis = regulatoryBasis.mapToList { it.build() },
+        grantor = grantor.buildList(),
+        grantee = grantee.buildList(),
+        manager = manager.buildList(),
+        controller = controller.buildList(),
+        sourceAttachment = sourceAttachment.buildList(),
+        sourceReference = sourceReference.buildList(),
+        regulatoryBasis = regulatoryBasis.buildList(),
         policyBasis = policyBasis?.build(),
-        policyText = policyText.mapToList { it.build() },
-        verification = verification.mapToList { it.build() },
+        policyText = policyText.buildList(),
+        verification = verification.buildList(),
         decision = decision,
-        provision = provision.mapToList { it.build() },
+        provision = provision.buildList(),
       )
   }
 }

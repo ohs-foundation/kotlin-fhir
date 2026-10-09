@@ -453,41 +453,41 @@ public data class CapabilityStatement(
         date.toBuilder(),
         kind,
         fhirVersion,
-        format.mapToMutableList { it.toBuilder() },
+        format.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
-    builder.instantiates = instantiates.mapToMutableList { it.toBuilder() }
-    builder.imports = imports.mapToMutableList { it.toBuilder() }
+    builder.instantiates = instantiates.toBuilderList()
+    builder.imports = imports.toBuilderList()
     builder.software = software?.toBuilder()
     builder.implementation = implementation?.toBuilder()
-    builder.patchFormat = patchFormat.mapToMutableList { it.toBuilder() }
-    builder.acceptLanguage = acceptLanguage.mapToMutableList { it.toBuilder() }
-    builder.implementationGuide = implementationGuide.mapToMutableList { it.toBuilder() }
-    builder.rest = rest.mapToMutableList { it.toBuilder() }
-    builder.messaging = messaging.mapToMutableList { it.toBuilder() }
-    builder.document = document.mapToMutableList { it.toBuilder() }
+    builder.patchFormat = patchFormat.toBuilderList()
+    builder.acceptLanguage = acceptLanguage.toBuilderList()
+    builder.implementationGuide = implementationGuide.toBuilderList()
+    builder.rest = rest.toBuilderList()
+    builder.messaging = messaging.toBuilderList()
+    builder.document = document.toBuilderList()
     return builder
   }
 
@@ -545,12 +545,12 @@ public data class CapabilityStatement(
     public val version: String? = null,
     /** Date this version of the software was released. */
     public val releaseDate: DateTime? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(name.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.version = version?.toBuilder()
       builder.releaseDate = releaseDate?.toBuilder()
       return builder
@@ -559,7 +559,7 @@ public data class CapabilityStatement(
     public class Builder(
       /** Name the software is known by. */
       public var name: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -611,11 +611,11 @@ public data class CapabilityStatement(
       /** Date this version of the software was released. */
       public var releaseDate: DateTime.Builder? = null
 
-      public fun build(): Software =
+      override fun build(): Software =
         Software(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name.build(),
           version = version?.build(),
           releaseDate = releaseDate?.build(),
@@ -678,12 +678,12 @@ public data class CapabilityStatement(
      * the server at the specified URL.
      */
     public val custodian: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(description.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.url = url?.toBuilder()
       builder.custodian = custodian?.toBuilder()
       return builder
@@ -692,7 +692,7 @@ public data class CapabilityStatement(
     public class Builder(
       /** Information about the specific installation that this capability statement relates to. */
       public var description: Markdown.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -745,11 +745,11 @@ public data class CapabilityStatement(
        */
       public var custodian: Reference.Builder? = null
 
-      public fun build(): Implementation =
+      override fun build(): Implementation =
         Implementation(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description.build(),
           url = url?.build(),
           custodian = custodian?.build(),
@@ -854,19 +854,19 @@ public data class CapabilityStatement(
      * [CompartmentDefinition](compartmentdefinition.html).
      */
     public val compartment: List<Canonical> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(mode)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.documentation = documentation?.toBuilder()
       builder.security = security?.toBuilder()
-      builder.resource = resource.mapToMutableList { it.toBuilder() }
-      builder.interaction = interaction.mapToMutableList { it.toBuilder() }
-      builder.searchParam = searchParam.mapToMutableList { it.toBuilder() }
-      builder.operation = operation.mapToMutableList { it.toBuilder() }
-      builder.compartment = compartment.mapToMutableList { it.toBuilder() }
+      builder.resource = resource.toBuilderList()
+      builder.interaction = interaction.toBuilderList()
+      builder.searchParam = searchParam.toBuilderList()
+      builder.operation = operation.toBuilderList()
+      builder.compartment = compartment.toBuilderList()
       return builder
     }
 
@@ -925,19 +925,19 @@ public data class CapabilityStatement(
       public val service: List<CodeableConcept> = listOf(),
       /** General description of how security works. */
       public val description: Markdown? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.cors = cors?.toBuilder()
-        builder.service = service.mapToMutableList { it.toBuilder() }
+        builder.service = service.toBuilderList()
         builder.description = description?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -993,13 +993,13 @@ public data class CapabilityStatement(
         /** General description of how security works. */
         public var description: Markdown.Builder? = null
 
-        public fun build(): Security =
+        override fun build(): Security =
           Security(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             cors = cors?.build(),
-            service = service.mapToList { it.build() },
+            service = service.buildList(),
             description = description?.build(),
           )
       }
@@ -1204,16 +1204,16 @@ public data class CapabilityStatement(
        * OperationDefinition.resource.
        */
       public val operation: List<Operation> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(type)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.profile = profile?.toBuilder()
-        builder.supportedProfile = supportedProfile.mapToMutableList { it.toBuilder() }
+        builder.supportedProfile = supportedProfile.toBuilderList()
         builder.documentation = documentation?.toBuilder()
-        builder.interaction = interaction.mapToMutableList { it.toBuilder() }
+        builder.interaction = interaction.toBuilderList()
         builder.versioning = versioning
         builder.readHistory = readHistory?.toBuilder()
         builder.updateCreate = updateCreate?.toBuilder()
@@ -1223,10 +1223,10 @@ public data class CapabilityStatement(
         builder.conditionalPatch = conditionalPatch?.toBuilder()
         builder.conditionalDelete = conditionalDelete
         builder.referencePolicy = referencePolicy.toMutableList()
-        builder.searchInclude = searchInclude.mapToMutableList { it.toBuilder() }
-        builder.searchRevInclude = searchRevInclude.mapToMutableList { it.toBuilder() }
-        builder.searchParam = searchParam.mapToMutableList { it.toBuilder() }
-        builder.operation = operation.mapToMutableList { it.toBuilder() }
+        builder.searchInclude = searchInclude.toBuilderList()
+        builder.searchRevInclude = searchRevInclude.toBuilderList()
+        builder.searchParam = searchParam.toBuilderList()
+        builder.operation = operation.toBuilderList()
         return builder
       }
 
@@ -1278,12 +1278,12 @@ public data class CapabilityStatement(
          * pre-authorized certificates only'.
          */
         public val documentation: Markdown? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(code)
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.documentation = documentation?.toBuilder()
           return builder
         }
@@ -1291,7 +1291,7 @@ public data class CapabilityStatement(
         public class Builder(
           /** Coded identifier of the operation, supported by the system resource. */
           public var code: Enumeration<TypeRestfulInteraction>
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1339,11 +1339,11 @@ public data class CapabilityStatement(
            */
           public var documentation: Markdown.Builder? = null
 
-          public fun build(): Interaction =
+          override fun build(): Interaction =
             Interaction(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               code = code,
               documentation = documentation?.build(),
             )
@@ -1433,16 +1433,16 @@ public data class CapabilityStatement(
          * used. For example, text matching algorithms.
          */
         public val documentation: Markdown? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder =
             Builder(
               name.toBuilder(),
               type,
             )
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.definition = definition?.toBuilder()
           builder.documentation = documentation?.toBuilder()
           return builder
@@ -1470,7 +1470,7 @@ public data class CapabilityStatement(
            * statement. It SHALL be the same as the type in the search parameter definition.
            */
           public var type: Enumeration<SearchParamType>,
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1532,11 +1532,11 @@ public data class CapabilityStatement(
            */
           public var documentation: Markdown.Builder? = null
 
-          public fun build(): SearchParam =
+          override fun build(): SearchParam =
             SearchParam(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               name = name.build(),
               definition = definition?.build(),
               type = type,
@@ -1623,12 +1623,12 @@ public data class CapabilityStatement(
          * operation.
          */
         public val documentation: Markdown? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(name.toBuilder(), definition.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.documentation = documentation?.toBuilder()
           return builder
         }
@@ -1664,7 +1664,7 @@ public data class CapabilityStatement(
            * This can be used to build an HTML form to invoke the operation, for instance.
            */
           public var definition: Canonical.Builder,
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1712,11 +1712,11 @@ public data class CapabilityStatement(
            */
           public var documentation: Markdown.Builder? = null
 
-          public fun build(): Operation =
+          override fun build(): Operation =
             Operation(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               name = name.build(),
               definition = definition.build(),
               documentation = documentation?.build(),
@@ -1727,7 +1727,7 @@ public data class CapabilityStatement(
       public class Builder(
         /** A type of resource exposed via the restful interface. */
         public var type: Enumeration<ResourceType>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1944,16 +1944,16 @@ public data class CapabilityStatement(
          */
         public var operation: MutableList<Operation.Builder> = mutableListOf()
 
-        public fun build(): Resource =
+        override fun build(): Resource =
           Resource(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type,
             profile = profile?.build(),
-            supportedProfile = supportedProfile.mapToList { it.build() },
+            supportedProfile = supportedProfile.buildList(),
             documentation = documentation?.build(),
-            interaction = interaction.mapToList { it.build() },
+            interaction = interaction.buildList(),
             versioning = versioning,
             readHistory = readHistory?.build(),
             updateCreate = updateCreate?.build(),
@@ -1963,10 +1963,10 @@ public data class CapabilityStatement(
             conditionalPatch = conditionalPatch?.build(),
             conditionalDelete = conditionalDelete,
             referencePolicy = referencePolicy,
-            searchInclude = searchInclude.mapToList { it.build() },
-            searchRevInclude = searchRevInclude.mapToList { it.build() },
-            searchParam = searchParam.mapToList { it.build() },
-            operation = operation.mapToList { it.build() },
+            searchInclude = searchInclude.buildList(),
+            searchRevInclude = searchRevInclude.buildList(),
+            searchParam = searchParam.buildList(),
+            operation = operation.buildList(),
           )
       }
     }
@@ -2018,12 +2018,12 @@ public data class CapabilityStatement(
        * of transactions allowed, or information about system wide search is implemented.
        */
       public val documentation: Markdown? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(code)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.documentation = documentation?.toBuilder()
         return builder
       }
@@ -2031,7 +2031,7 @@ public data class CapabilityStatement(
       public class Builder(
         /** A coded identifier of the operation, supported by the system. */
         public var code: Enumeration<SystemRestfulInteraction>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -2078,11 +2078,11 @@ public data class CapabilityStatement(
          */
         public var documentation: Markdown.Builder? = null
 
-        public fun build(): Interaction =
+        override fun build(): Interaction =
           Interaction(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code,
             documentation = documentation?.build(),
           )
@@ -2095,7 +2095,7 @@ public data class CapabilityStatement(
        * receive restful operations.
        */
       public var mode: Enumeration<RestfulCapabilityMode>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2195,19 +2195,19 @@ public data class CapabilityStatement(
        */
       public var compartment: MutableList<Canonical.Builder> = mutableListOf()
 
-      public fun build(): Rest =
+      override fun build(): Rest =
         Rest(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           mode = mode,
           documentation = documentation?.build(),
           security = security?.build(),
-          resource = resource.mapToList { it.build() },
-          interaction = interaction.mapToList { it.build() },
-          searchParam = searchParam.mapToList { it.build() },
-          operation = operation.mapToList { it.build() },
-          compartment = compartment.mapToList { it.build() },
+          resource = resource.buildList(),
+          interaction = interaction.buildList(),
+          searchParam = searchParam.buildList(),
+          operation = operation.buildList(),
+          compartment = compartment.buildList(),
         )
     }
   }
@@ -2274,16 +2274,16 @@ public data class CapabilityStatement(
      * This is a proposed alternative to the messaging.event structure.
      */
     public val supportedMessage: List<SupportedMessage> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.endpoint = endpoint.toBuilderList()
       builder.reliableCache = reliableCache?.toBuilder()
       builder.documentation = documentation?.toBuilder()
-      builder.supportedMessage = supportedMessage.mapToMutableList { it.toBuilder() }
+      builder.supportedMessage = supportedMessage.toBuilderList()
       return builder
     }
 
@@ -2334,12 +2334,12 @@ public data class CapabilityStatement(
        * routing, it can be just an identifier.
        */
       public val address: Url,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(protocol.toBuilder(), address.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -2353,7 +2353,7 @@ public data class CapabilityStatement(
          * routing, it can be just an identifier.
          */
         public var address: Url.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -2394,11 +2394,11 @@ public data class CapabilityStatement(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Endpoint =
+        override fun build(): Endpoint =
           Endpoint(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             protocol = protocol.build(),
             address = address.build(),
           )
@@ -2452,16 +2452,16 @@ public data class CapabilityStatement(
        * allowed responses, etc.
        */
       public val definition: Canonical,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             mode,
             definition.toBuilder(),
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -2473,7 +2473,7 @@ public data class CapabilityStatement(
          * allowed responses, etc.
          */
         public var definition: Canonical.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -2514,18 +2514,18 @@ public data class CapabilityStatement(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): SupportedMessage =
+        override fun build(): SupportedMessage =
           SupportedMessage(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             mode = mode,
             definition = definition.build(),
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2594,15 +2594,15 @@ public data class CapabilityStatement(
        */
       public var supportedMessage: MutableList<SupportedMessage.Builder> = mutableListOf()
 
-      public fun build(): Messaging =
+      override fun build(): Messaging =
         Messaging(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          endpoint = endpoint.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          endpoint = endpoint.buildList(),
           reliableCache = reliableCache?.build(),
           documentation = documentation?.build(),
-          supportedMessage = supportedMessage.mapToList { it.build() },
+          supportedMessage = supportedMessage.buildList(),
         )
     }
   }
@@ -2661,16 +2661,16 @@ public data class CapabilityStatement(
      * The profile is actually on the Bundle.
      */
     public val profile: Canonical,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           mode,
           profile.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.documentation = documentation?.toBuilder()
       return builder
     }
@@ -2685,7 +2685,7 @@ public data class CapabilityStatement(
        * The profile is actually on the Bundle.
        */
       public var profile: Canonical.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -2732,11 +2732,11 @@ public data class CapabilityStatement(
        */
       public var documentation: Markdown.Builder? = null
 
-      public fun build(): Document =
+      override fun build(): Document =
         Document(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           mode = mode,
           documentation = documentation?.build(),
           profile = profile.build(),
@@ -3194,11 +3194,11 @@ public data class CapabilityStatement(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -3207,26 +3207,26 @@ public data class CapabilityStatement(
         experimental = experimental?.build(),
         date = date.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         kind = kind,
-        instantiates = instantiates.mapToList { it.build() },
-        imports = imports.mapToList { it.build() },
+        instantiates = instantiates.buildList(),
+        imports = imports.buildList(),
         software = software?.build(),
         implementation = implementation?.build(),
         fhirVersion = fhirVersion,
-        format = format.mapToList { it.build() },
-        patchFormat = patchFormat.mapToList { it.build() },
-        acceptLanguage = acceptLanguage.mapToList { it.build() },
-        implementationGuide = implementationGuide.mapToList { it.build() },
-        rest = rest.mapToList { it.build() },
-        messaging = messaging.mapToList { it.build() },
-        document = document.mapToList { it.build() },
+        format = format.buildList(),
+        patchFormat = patchFormat.buildList(),
+        acceptLanguage = acceptLanguage.buildList(),
+        implementationGuide = implementationGuide.buildList(),
+        rest = rest.buildList(),
+        messaging = messaging.buildList(),
+        document = document.buildList(),
       )
   }
 }

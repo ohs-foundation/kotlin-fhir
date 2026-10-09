@@ -182,17 +182,17 @@ public data class ManufacturedItemDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.name = name?.toBuilder()
     builder.unitOfPresentation = unitOfPresentation?.toBuilder()
-    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
-    builder.marketingStatus = marketingStatus.mapToMutableList { it.toBuilder() }
-    builder.ingredient = ingredient.mapToMutableList { it.toBuilder() }
-    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
-    builder.component = component.mapToMutableList { it.toBuilder() }
+    builder.manufacturer = manufacturer.toBuilderList()
+    builder.marketingStatus = marketingStatus.toBuilderList()
+    builder.ingredient = ingredient.toBuilderList()
+    builder.`property` = `property`.toBuilderList()
+    builder.component = component.toBuilderList()
     return builder
   }
 
@@ -240,12 +240,12 @@ public data class ManufacturedItemDefinition(
     public val type: CodeableConcept,
     /** A value for the characteristic. */
     public val `value`: Value? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.`value` = `value`
       return builder
     }
@@ -306,7 +306,7 @@ public data class ManufacturedItemDefinition(
     public class Builder(
       /** A code expressing the type of characteristic. */
       public var type: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -350,11 +350,11 @@ public data class ManufacturedItemDefinition(
       /** A value for the characteristic. */
       public var `value`: Value? = null
 
-      public fun build(): Property =
+      override fun build(): Property =
         Property(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           `value` = `value`,
         )
@@ -425,17 +425,17 @@ public data class ManufacturedItemDefinition(
     public val `property`: List<Property> = listOf(),
     /** A component that this component contains or is made from. */
     public val component: List<Component> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.function = function.mapToMutableList { it.toBuilder() }
-      builder.amount = amount.mapToMutableList { it.toBuilder() }
-      builder.constituent = constituent.mapToMutableList { it.toBuilder() }
-      builder.`property` = `property`.mapToMutableList { it.toBuilder() }
-      builder.component = component.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.function = function.toBuilderList()
+      builder.amount = amount.toBuilderList()
+      builder.constituent = constituent.toBuilderList()
+      builder.`property` = `property`.toBuilderList()
+      builder.component = component.toBuilderList()
       return builder
     }
 
@@ -498,20 +498,20 @@ public data class ManufacturedItemDefinition(
       public val function: List<CodeableConcept> = listOf(),
       /** The ingredient that is the constituent of the given component. */
       public val hasIngredient: List<CodeableReference> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.amount = amount.mapToMutableList { it.toBuilder() }
-        builder.location = location.mapToMutableList { it.toBuilder() }
-        builder.function = function.mapToMutableList { it.toBuilder() }
-        builder.hasIngredient = hasIngredient.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.amount = amount.toBuilderList()
+        builder.location = location.toBuilderList()
+        builder.function = function.toBuilderList()
+        builder.hasIngredient = hasIngredient.toBuilderList()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -571,15 +571,15 @@ public data class ManufacturedItemDefinition(
         /** The ingredient that is the constituent of the given component. */
         public var hasIngredient: MutableList<CodeableReference.Builder> = mutableListOf()
 
-        public fun build(): Constituent =
+        override fun build(): Constituent =
           Constituent(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
-            amount = amount.mapToList { it.build() },
-            location = location.mapToList { it.build() },
-            function = function.mapToList { it.build() },
-            hasIngredient = hasIngredient.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
+            amount = amount.buildList(),
+            location = location.buildList(),
+            function = function.buildList(),
+            hasIngredient = hasIngredient.buildList(),
           )
       }
     }
@@ -587,7 +587,7 @@ public data class ManufacturedItemDefinition(
     public class Builder(
       /** Defining type of the component e.g. shell, layer, ink. */
       public var type: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -654,17 +654,17 @@ public data class ManufacturedItemDefinition(
       /** A component that this component contains or is made from. */
       public var component: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Component =
+      override fun build(): Component =
         Component(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
-          function = function.mapToList { it.build() },
-          amount = amount.mapToList { it.build() },
-          constituent = constituent.mapToList { it.build() },
-          `property` = `property`.mapToList { it.build() },
-          component = component.mapToList { it.build() },
+          function = function.buildList(),
+          amount = amount.buildList(),
+          constituent = constituent.buildList(),
+          `property` = `property`.buildList(),
+          component = component.buildList(),
         )
     }
   }
@@ -826,19 +826,19 @@ public data class ManufacturedItemDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         name = name?.build(),
         manufacturedDoseForm = manufacturedDoseForm.build(),
         unitOfPresentation = unitOfPresentation?.build(),
-        manufacturer = manufacturer.mapToList { it.build() },
-        marketingStatus = marketingStatus.mapToList { it.build() },
-        ingredient = ingredient.mapToList { it.build() },
-        `property` = `property`.mapToList { it.build() },
-        component = component.mapToList { it.build() },
+        manufacturer = manufacturer.buildList(),
+        marketingStatus = marketingStatus.buildList(),
+        ingredient = ingredient.buildList(),
+        `property` = `property`.buildList(),
+        component = component.buildList(),
       )
   }
 }

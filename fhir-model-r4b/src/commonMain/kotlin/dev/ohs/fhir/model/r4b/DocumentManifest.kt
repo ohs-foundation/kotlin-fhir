@@ -219,26 +219,26 @@ public data class DocumentManifest(
     val builder =
       Builder(
         status,
-        content.mapToMutableList { it.toBuilder() },
+        content.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.masterIdentifier = masterIdentifier?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.type = type?.toBuilder()
     builder.subject = subject?.toBuilder()
     builder.created = created?.toBuilder()
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.recipient = recipient.mapToMutableList { it.toBuilder() }
+    builder.author = author.toBuilderList()
+    builder.recipient = recipient.toBuilderList()
     builder.source = source?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.related = related.mapToMutableList { it.toBuilder() }
+    builder.related = related.toBuilderList()
     return builder
   }
 
@@ -296,18 +296,18 @@ public data class DocumentManifest(
      * If both identifier and ref elements are present they shall refer to the same thing.
      */
     public val ref: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.identifier = identifier?.toBuilder()
       builder.ref = ref?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -364,11 +364,11 @@ public data class DocumentManifest(
        */
       public var ref: Reference.Builder? = null
 
-      public fun build(): Related =
+      override fun build(): Related =
         Related(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identifier = identifier?.build(),
           ref = ref?.build(),
         )
@@ -583,21 +583,21 @@ public data class DocumentManifest(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         masterIdentifier = masterIdentifier?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         status = status,
         type = type?.build(),
         subject = subject?.build(),
         created = created?.build(),
-        author = author.mapToList { it.build() },
-        recipient = recipient.mapToList { it.build() },
+        author = author.buildList(),
+        recipient = recipient.buildList(),
         source = source?.build(),
         description = description?.build(),
-        content = content.mapToList { it.build() },
-        related = related.mapToList { it.build() },
+        content = content.buildList(),
+        related = related.buildList(),
       )
   }
 }

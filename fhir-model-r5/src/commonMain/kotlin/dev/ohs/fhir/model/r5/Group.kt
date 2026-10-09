@@ -220,18 +220,18 @@ public data class Group(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
     builder.code = code?.toBuilder()
     builder.name = name?.toBuilder()
     builder.description = description?.toBuilder()
     builder.quantity = quantity?.toBuilder()
     builder.managingEntity = managingEntity?.toBuilder()
-    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
-    builder.member = member.mapToMutableList { it.toBuilder() }
+    builder.characteristic = characteristic.toBuilderList()
+    builder.member = member.toBuilderList()
     return builder
   }
 
@@ -297,8 +297,8 @@ public data class Group(
      * the month of June.
      */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           code.toBuilder(),
@@ -306,8 +306,8 @@ public data class Group(
           exclude.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.period = period?.toBuilder()
       return builder
     }
@@ -371,7 +371,7 @@ public data class Group(
        * members as included or vice versa.
        */
       public var exclude: Boolean.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -418,11 +418,11 @@ public data class Group(
        */
       public var period: Period.Builder? = null
 
-      public fun build(): Characteristic =
+      override fun build(): Characteristic =
         Characteristic(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           `value` = `value`,
           exclude = exclude.build(),
@@ -483,12 +483,12 @@ public data class Group(
      * member.
      */
     public val inactive: Boolean? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(entity.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.period = period?.toBuilder()
       builder.inactive = inactive?.toBuilder()
       return builder
@@ -500,7 +500,7 @@ public data class Group(
        * Group.type. If the entity is another group, then the type must be the same.
        */
       public var entity: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -550,11 +550,11 @@ public data class Group(
        */
       public var inactive: Boolean.Builder? = null
 
-      public fun build(): Member =
+      override fun build(): Member =
         Member(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           entity = entity.build(),
           period = period?.build(),
           inactive = inactive?.build(),
@@ -757,10 +757,10 @@ public data class Group(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
         type = type,
         membership = membership,
@@ -769,8 +769,8 @@ public data class Group(
         description = description?.build(),
         quantity = quantity?.build(),
         managingEntity = managingEntity?.build(),
-        characteristic = characteristic.mapToList { it.build() },
-        member = member.mapToList { it.build() },
+        characteristic = characteristic.buildList(),
+        member = member.buildList(),
       )
   }
 }

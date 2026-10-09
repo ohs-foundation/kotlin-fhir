@@ -174,16 +174,16 @@ public data class InventoryReport(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.operationType = operationType?.toBuilder()
     builder.operationTypeReason = operationTypeReason?.toBuilder()
     builder.reporter = reporter?.toBuilder()
     builder.reportingPeriod = reportingPeriod?.toBuilder()
-    builder.inventoryListing = inventoryListing.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.inventoryListing = inventoryListing.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -235,16 +235,16 @@ public data class InventoryReport(
     public val countingDateTime: DateTime? = null,
     /** The item or items in this listing. */
     public val item: List<Item> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.location = location?.toBuilder()
       builder.itemStatus = itemStatus?.toBuilder()
       builder.countingDateTime = countingDateTime?.toBuilder()
-      builder.item = item.mapToMutableList { it.toBuilder() }
+      builder.item = item.toBuilderList()
       return builder
     }
 
@@ -297,12 +297,12 @@ public data class InventoryReport(
       public val quantity: Quantity,
       /** The code or reference to the item type. */
       public val item: CodeableReference,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(quantity.toBuilder(), item.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.category = category?.toBuilder()
         return builder
       }
@@ -312,7 +312,7 @@ public data class InventoryReport(
         public var quantity: Quantity.Builder,
         /** The code or reference to the item type. */
         public var item: CodeableReference.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -360,11 +360,11 @@ public data class InventoryReport(
          */
         public var category: CodeableConcept.Builder? = null
 
-        public fun build(): Item =
+        override fun build(): Item =
           Item(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             category = category?.build(),
             quantity = quantity.build(),
             item = item.build(),
@@ -372,7 +372,7 @@ public data class InventoryReport(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -425,15 +425,15 @@ public data class InventoryReport(
       /** The item or items in this listing. */
       public var item: MutableList<Item.Builder> = mutableListOf()
 
-      public fun build(): InventoryListing =
+      override fun build(): InventoryListing =
         InventoryListing(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           location = location?.build(),
           itemStatus = itemStatus?.build(),
           countingDateTime = countingDateTime?.build(),
-          item = item.mapToList { it.build() },
+          item = item.buildList(),
         )
     }
   }
@@ -587,10 +587,10 @@ public data class InventoryReport(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         countType = countType,
         operationType = operationType?.build(),
@@ -598,8 +598,8 @@ public data class InventoryReport(
         reportedDateTime = reportedDateTime.build(),
         reporter = reporter?.build(),
         reportingPeriod = reportingPeriod?.build(),
-        inventoryListing = inventoryListing.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        inventoryListing = inventoryListing.buildList(),
+        note = note.buildList(),
       )
   }
 }

@@ -201,20 +201,20 @@ public data class DetectedIssue(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.code = code?.toBuilder()
     builder.severity = severity
     builder.patient = patient?.toBuilder()
     builder.identified = identified
     builder.author = author?.toBuilder()
-    builder.implicated = implicated.mapToMutableList { it.toBuilder() }
-    builder.evidence = evidence.mapToMutableList { it.toBuilder() }
+    builder.implicated = implicated.toBuilderList()
+    builder.evidence = evidence.toBuilderList()
     builder.detail = detail?.toBuilder()
     builder.reference = reference?.toBuilder()
-    builder.mitigation = mitigation.mapToMutableList { it.toBuilder() }
+    builder.mitigation = mitigation.toBuilderList()
     return builder
   }
 
@@ -268,18 +268,18 @@ public data class DetectedIssue(
      * or MeasureReport.
      */
     public val detail: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.code = code.mapToMutableList { it.toBuilder() }
-      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.code = code.toBuilderList()
+      builder.detail = detail.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -329,13 +329,13 @@ public data class DetectedIssue(
        */
       public var detail: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Evidence =
+      override fun build(): Evidence =
         Evidence(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          code = code.mapToList { it.build() },
-          detail = detail.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          code = code.buildList(),
+          detail = detail.buildList(),
         )
     }
   }
@@ -402,12 +402,12 @@ public data class DetectedIssue(
      * mitigation step occurring.
      */
     public val author: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(action.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.date = date?.toBuilder()
       builder.author = author?.toBuilder()
       return builder
@@ -421,7 +421,7 @@ public data class DetectedIssue(
        * The "text" component can be used for detail or when no appropriate code exists.
        */
       public var action: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -475,11 +475,11 @@ public data class DetectedIssue(
        */
       public var author: Reference.Builder? = null
 
-      public fun build(): Mitigation =
+      override fun build(): Mitigation =
         Mitigation(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           action = action.build(),
           date = date?.build(),
           author = author?.build(),
@@ -690,21 +690,21 @@ public data class DetectedIssue(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         code = code?.build(),
         severity = severity,
         patient = patient?.build(),
         identified = identified,
         author = author?.build(),
-        implicated = implicated.mapToList { it.build() },
-        evidence = evidence.mapToList { it.build() },
+        implicated = implicated.buildList(),
+        evidence = evidence.buildList(),
         detail = detail?.build(),
         reference = reference?.build(),
-        mitigation = mitigation.mapToList { it.build() },
+        mitigation = mitigation.buildList(),
       )
   }
 }

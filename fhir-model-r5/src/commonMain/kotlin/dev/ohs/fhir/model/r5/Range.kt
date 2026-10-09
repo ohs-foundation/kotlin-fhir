@@ -61,17 +61,17 @@ public data class Range(
    * If the high element is missing, the high boundary is not known.
    */
   public val high: Quantity? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.low = low?.toBuilder()
     builder.high = high?.toBuilder()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -106,10 +106,10 @@ public data class Range(
      */
     public open var high: Quantity.Builder? = null
 
-    public open fun build(): Range =
+    open override fun build(): Range =
       Range(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         low = low?.build(),
         high = high?.build(),
       )

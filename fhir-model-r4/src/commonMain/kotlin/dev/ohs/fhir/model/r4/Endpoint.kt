@@ -221,7 +221,7 @@ public data class Endpoint(
       Builder(
         status,
         connectionType.toBuilder(),
-        payloadType.mapToMutableList { it.toBuilder() },
+        payloadType.toBuilderList(),
         address.toBuilder(),
       )
     builder.id = id
@@ -229,16 +229,16 @@ public data class Endpoint(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.name = name?.toBuilder()
     builder.managingOrganization = managingOrganization?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.period = period?.toBuilder()
-    builder.payloadMimeType = payloadMimeType.mapToMutableList { it.toBuilder() }
-    builder.`header` = `header`.mapToMutableList { it.toBuilder() }
+    builder.payloadMimeType = payloadMimeType.toBuilderList()
+    builder.`header` = `header`.toBuilderList()
     return builder
   }
 
@@ -445,20 +445,20 @@ public data class Endpoint(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         connectionType = connectionType.build(),
         name = name?.build(),
         managingOrganization = managingOrganization?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         period = period?.build(),
-        payloadType = payloadType.mapToList { it.build() },
-        payloadMimeType = payloadMimeType.mapToList { it.build() },
+        payloadType = payloadType.buildList(),
+        payloadMimeType = payloadMimeType.buildList(),
         address = address.build(),
-        `header` = `header`.mapToList { it.build() },
+        `header` = `header`.buildList(),
       )
   }
 }

@@ -348,37 +348,37 @@ public data class RiskEvidenceSynthesis(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.copyright = copyright?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.topic = topic.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.topic = topic.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
     builder.synthesisType = synthesisType?.toBuilder()
     builder.studyType = studyType?.toBuilder()
     builder.exposure = exposure?.toBuilder()
     builder.sampleSize = sampleSize?.toBuilder()
     builder.riskEstimate = riskEstimate?.toBuilder()
-    builder.certainty = certainty.mapToMutableList { it.toBuilder() }
+    builder.certainty = certainty.toBuilderList()
     return builder
   }
 
@@ -428,19 +428,19 @@ public data class RiskEvidenceSynthesis(
     public val numberOfStudies: Integer? = null,
     /** Number of participants included in this evidence synthesis. */
     public val numberOfParticipants: Integer? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.numberOfStudies = numberOfStudies?.toBuilder()
       builder.numberOfParticipants = numberOfParticipants?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -490,11 +490,11 @@ public data class RiskEvidenceSynthesis(
       /** Number of participants included in this evidence synthesis. */
       public var numberOfParticipants: Integer.Builder? = null
 
-      public fun build(): SampleSize =
+      override fun build(): SampleSize =
         SampleSize(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           numberOfStudies = numberOfStudies?.build(),
           numberOfParticipants = numberOfParticipants?.build(),
@@ -556,19 +556,19 @@ public data class RiskEvidenceSynthesis(
     public val numeratorCount: Integer? = null,
     /** A description of the precision of the estimate for the effect. */
     public val precisionEstimate: List<PrecisionEstimate> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.type = type?.toBuilder()
       builder.`value` = `value`?.toBuilder()
       builder.unitOfMeasure = unitOfMeasure?.toBuilder()
       builder.denominatorCount = denominatorCount?.toBuilder()
       builder.numeratorCount = numeratorCount?.toBuilder()
-      builder.precisionEstimate = precisionEstimate.mapToMutableList { it.toBuilder() }
+      builder.precisionEstimate = precisionEstimate.toBuilderList()
       return builder
     }
 
@@ -620,12 +620,12 @@ public data class RiskEvidenceSynthesis(
       public val from: Decimal? = null,
       /** Upper bound of confidence interval. */
       public val to: Decimal? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.type = type?.toBuilder()
         builder.level = level?.toBuilder()
         builder.from = from?.toBuilder()
@@ -633,7 +633,7 @@ public data class RiskEvidenceSynthesis(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -686,11 +686,11 @@ public data class RiskEvidenceSynthesis(
         /** Upper bound of confidence interval. */
         public var to: Decimal.Builder? = null
 
-        public fun build(): PrecisionEstimate =
+        override fun build(): PrecisionEstimate =
           PrecisionEstimate(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type?.build(),
             level = level?.build(),
             from = from?.build(),
@@ -699,7 +699,7 @@ public data class RiskEvidenceSynthesis(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -761,18 +761,18 @@ public data class RiskEvidenceSynthesis(
       /** A description of the precision of the estimate for the effect. */
       public var precisionEstimate: MutableList<PrecisionEstimate.Builder> = mutableListOf()
 
-      public fun build(): RiskEstimate =
+      override fun build(): RiskEstimate =
         RiskEstimate(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           type = type?.build(),
           `value` = `value`?.build(),
           unitOfMeasure = unitOfMeasure?.build(),
           denominatorCount = denominatorCount?.build(),
           numeratorCount = numeratorCount?.build(),
-          precisionEstimate = precisionEstimate.mapToList { it.build() },
+          precisionEstimate = precisionEstimate.buildList(),
         )
     }
   }
@@ -823,15 +823,15 @@ public data class RiskEvidenceSynthesis(
     public val note: List<Annotation> = listOf(),
     /** A description of a component of the overall certainty. */
     public val certaintySubcomponent: List<CertaintySubcomponent> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.rating = rating.mapToMutableList { it.toBuilder() }
-      builder.note = note.mapToMutableList { it.toBuilder() }
-      builder.certaintySubcomponent = certaintySubcomponent.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.rating = rating.toBuilderList()
+      builder.note = note.toBuilderList()
+      builder.certaintySubcomponent = certaintySubcomponent.toBuilderList()
       return builder
     }
 
@@ -881,19 +881,19 @@ public data class RiskEvidenceSynthesis(
       public val rating: List<CodeableConcept> = listOf(),
       /** A human-readable string to clarify or explain concepts about the resource. */
       public val note: List<Annotation> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.type = type?.toBuilder()
-        builder.rating = rating.mapToMutableList { it.toBuilder() }
-        builder.note = note.mapToMutableList { it.toBuilder() }
+        builder.rating = rating.toBuilderList()
+        builder.note = note.toBuilderList()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -943,19 +943,19 @@ public data class RiskEvidenceSynthesis(
         /** A human-readable string to clarify or explain concepts about the resource. */
         public var note: MutableList<Annotation.Builder> = mutableListOf()
 
-        public fun build(): CertaintySubcomponent =
+        override fun build(): CertaintySubcomponent =
           CertaintySubcomponent(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type?.build(),
-            rating = rating.mapToList { it.build() },
-            note = note.mapToList { it.build() },
+            rating = rating.buildList(),
+            note = note.buildList(),
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1005,14 +1005,14 @@ public data class RiskEvidenceSynthesis(
       /** A description of a component of the overall certainty. */
       public var certaintySubcomponent: MutableList<CertaintySubcomponent.Builder> = mutableListOf()
 
-      public fun build(): Certainty =
+      override fun build(): Certainty =
         Certainty(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          rating = rating.mapToList { it.build() },
-          note = note.mapToList { it.build() },
-          certaintySubcomponent = certaintySubcomponent.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          rating = rating.buildList(),
+          note = note.buildList(),
+          certaintySubcomponent = certaintySubcomponent.buildList(),
         )
     }
   }
@@ -1361,32 +1361,32 @@ public data class RiskEvidenceSynthesis(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
         status = status,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        note = note.mapToList { it.build() },
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        note = note.buildList(),
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        topic = topic.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
         synthesisType = synthesisType?.build(),
         studyType = studyType?.build(),
         population = population.build(),
@@ -1394,7 +1394,7 @@ public data class RiskEvidenceSynthesis(
         outcome = outcome.build(),
         sampleSize = sampleSize?.build(),
         riskEstimate = riskEstimate?.build(),
-        certainty = certainty.mapToList { it.build() },
+        certainty = certainty.buildList(),
       )
   }
 }

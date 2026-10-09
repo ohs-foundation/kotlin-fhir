@@ -54,11 +54,11 @@ public data class DateTime(
   override val extension: List<Extension> = listOf(),
   /** The actual value */
   @Serializable(with = FhirDateTimeSerializer::class) public val `value`: FhirDateTime? = null,
-) : Element(id, extension) {
-  public fun toBuilder(): Builder {
+) : Element(id, extension), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -70,7 +70,7 @@ public data class DateTime(
     return null
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: String? = null
 
@@ -91,10 +91,10 @@ public data class DateTime(
     /** The actual value */
     public open var `value`: FhirDateTime? = null
 
-    public open fun build(): DateTime =
+    open override fun build(): DateTime =
       DateTime(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

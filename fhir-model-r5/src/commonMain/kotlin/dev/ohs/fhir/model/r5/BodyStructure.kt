@@ -176,7 +176,7 @@ public data class BodyStructure(
   override fun toBuilder(): Builder {
     val builder =
       Builder(
-        includedStructure.mapToMutableList { it.toBuilder() },
+        includedStructure.toBuilderList(),
         patient.toBuilder(),
       )
     builder.id = id
@@ -184,15 +184,15 @@ public data class BodyStructure(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
     builder.morphology = morphology?.toBuilder()
-    builder.excludedStructure = excludedStructure.mapToMutableList { it.toBuilder() }
+    builder.excludedStructure = excludedStructure.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.image = image.mapToMutableList { it.toBuilder() }
+    builder.image = image.toBuilderList()
     return builder
   }
 
@@ -248,16 +248,16 @@ public data class BodyStructure(
     public val spatialReference: List<Reference> = listOf(),
     /** Code that represents the included structure qualifier. */
     public val qualifier: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(structure.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.laterality = laterality?.toBuilder()
-      builder.bodyLandmarkOrientation = bodyLandmarkOrientation.mapToMutableList { it.toBuilder() }
-      builder.spatialReference = spatialReference.mapToMutableList { it.toBuilder() }
-      builder.qualifier = qualifier.mapToMutableList { it.toBuilder() }
+      builder.bodyLandmarkOrientation = bodyLandmarkOrientation.toBuilderList()
+      builder.spatialReference = spatialReference.toBuilderList()
+      builder.qualifier = qualifier.toBuilderList()
       return builder
     }
 
@@ -314,16 +314,16 @@ public data class BodyStructure(
       public val distanceFromLandmark: List<DistanceFromLandmark> = listOf(),
       /** The surface area a body location is in relation to a landmark. */
       public val surfaceOrientation: List<CodeableConcept> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.landmarkDescription = landmarkDescription.mapToMutableList { it.toBuilder() }
-        builder.clockFacePosition = clockFacePosition.mapToMutableList { it.toBuilder() }
-        builder.distanceFromLandmark = distanceFromLandmark.mapToMutableList { it.toBuilder() }
-        builder.surfaceOrientation = surfaceOrientation.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.landmarkDescription = landmarkDescription.toBuilderList()
+        builder.clockFacePosition = clockFacePosition.toBuilderList()
+        builder.distanceFromLandmark = distanceFromLandmark.toBuilderList()
+        builder.surfaceOrientation = surfaceOrientation.toBuilderList()
         return builder
       }
 
@@ -374,18 +374,18 @@ public data class BodyStructure(
         public val device: List<CodeableReference> = listOf(),
         /** The measured distance (e.g., in cm) from a body landmark. */
         public val `value`: List<Quantity> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-          builder.device = device.mapToMutableList { it.toBuilder() }
-          builder.`value` = `value`.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
+          builder.device = device.toBuilderList()
+          builder.`value` = `value`.toBuilderList()
           return builder
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -432,18 +432,18 @@ public data class BodyStructure(
           /** The measured distance (e.g., in cm) from a body landmark. */
           public var `value`: MutableList<Quantity.Builder> = mutableListOf()
 
-          public fun build(): DistanceFromLandmark =
+          override fun build(): DistanceFromLandmark =
             DistanceFromLandmark(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
-              device = device.mapToList { it.build() },
-              `value` = `value`.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
+              device = device.buildList(),
+              `value` = `value`.buildList(),
             )
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -499,15 +499,15 @@ public data class BodyStructure(
         /** The surface area a body location is in relation to a landmark. */
         public var surfaceOrientation: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-        public fun build(): BodyLandmarkOrientation =
+        override fun build(): BodyLandmarkOrientation =
           BodyLandmarkOrientation(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
-            landmarkDescription = landmarkDescription.mapToList { it.build() },
-            clockFacePosition = clockFacePosition.mapToList { it.build() },
-            distanceFromLandmark = distanceFromLandmark.mapToList { it.build() },
-            surfaceOrientation = surfaceOrientation.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
+            landmarkDescription = landmarkDescription.buildList(),
+            clockFacePosition = clockFacePosition.buildList(),
+            distanceFromLandmark = distanceFromLandmark.buildList(),
+            surfaceOrientation = surfaceOrientation.buildList(),
           )
       }
     }
@@ -515,7 +515,7 @@ public data class BodyStructure(
     public class Builder(
       /** Code that represents the included structure. */
       public var structure: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -571,16 +571,16 @@ public data class BodyStructure(
       /** Code that represents the included structure qualifier. */
       public var qualifier: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): IncludedStructure =
+      override fun build(): IncludedStructure =
         IncludedStructure(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           structure = structure.build(),
           laterality = laterality?.build(),
-          bodyLandmarkOrientation = bodyLandmarkOrientation.mapToList { it.build() },
-          spatialReference = spatialReference.mapToList { it.build() },
-          qualifier = qualifier.mapToList { it.build() },
+          bodyLandmarkOrientation = bodyLandmarkOrientation.buildList(),
+          spatialReference = spatialReference.buildList(),
+          qualifier = qualifier.buildList(),
         )
     }
   }
@@ -742,16 +742,16 @@ public data class BodyStructure(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
         morphology = morphology?.build(),
-        includedStructure = includedStructure.mapToList { it.build() },
-        excludedStructure = excludedStructure.mapToList { it.build() },
+        includedStructure = includedStructure.buildList(),
+        excludedStructure = excludedStructure.buildList(),
         description = description?.build(),
-        image = image.mapToList { it.build() },
+        image = image.buildList(),
         patient = patient.build(),
       )
   }

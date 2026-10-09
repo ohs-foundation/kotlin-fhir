@@ -224,20 +224,20 @@ public data class EncounterHistory(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.encounter = encounter?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.type = type.mapToMutableList { it.toBuilder() }
-    builder.serviceType = serviceType.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
+    builder.type = type.toBuilderList()
+    builder.serviceType = serviceType.toBuilderList()
     builder.subject = subject?.toBuilder()
     builder.subjectStatus = subjectStatus?.toBuilder()
     builder.actualPeriod = actualPeriod?.toBuilder()
     builder.plannedStartDate = plannedStartDate?.toBuilder()
     builder.plannedEndDate = plannedEndDate?.toBuilder()
     builder.length = length?.toBuilder()
-    builder.location = location.mapToMutableList { it.toBuilder() }
+    builder.location = location.toBuilderList()
     return builder
   }
 
@@ -297,12 +297,12 @@ public data class EncounterHistory(
      * required for a specific usage scenario.
      */
     public val form: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(location.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.form = form?.toBuilder()
       return builder
     }
@@ -310,7 +310,7 @@ public data class EncounterHistory(
     public class Builder(
       /** The location where the encounter takes place. */
       public var location: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -363,11 +363,11 @@ public data class EncounterHistory(
        */
       public var form: CodeableConcept.Builder? = null
 
-      public fun build(): Location =
+      override fun build(): Location =
         Location(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           location = location.build(),
           form = form?.build(),
         )
@@ -581,22 +581,22 @@ public data class EncounterHistory(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         encounter = encounter?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         status = status,
         `class` = `class`.build(),
-        type = type.mapToList { it.build() },
-        serviceType = serviceType.mapToList { it.build() },
+        type = type.buildList(),
+        serviceType = serviceType.buildList(),
         subject = subject?.build(),
         subjectStatus = subjectStatus?.build(),
         actualPeriod = actualPeriod?.build(),
         plannedStartDate = plannedStartDate?.build(),
         plannedEndDate = plannedEndDate?.build(),
         length = length?.build(),
-        location = location.mapToList { it.build() },
+        location = location.buildList(),
       )
   }
 }

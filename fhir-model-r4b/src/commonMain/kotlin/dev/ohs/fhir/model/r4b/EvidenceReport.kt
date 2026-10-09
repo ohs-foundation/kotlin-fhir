@@ -274,25 +274,25 @@ public data class EvidenceReport(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.relatedIdentifier = relatedIdentifier.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.relatedIdentifier = relatedIdentifier.toBuilderList()
     builder.citeAs = citeAs
     builder.type = type?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.relatesTo = relatesTo.mapToMutableList { it.toBuilder() }
-    builder.section = section.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.relatesTo = relatesTo.toBuilderList()
+    builder.section = section.toBuilderList()
     return builder
   }
 
@@ -340,14 +340,14 @@ public data class EvidenceReport(
     public val characteristic: List<Characteristic> = listOf(),
     /** Used for general notes and annotations not coded elsewhere. */
     public val note: List<Annotation> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.characteristic = characteristic.toBuilderList()
+      builder.note = note.toBuilderList()
       return builder
     }
 
@@ -408,16 +408,16 @@ public data class EvidenceReport(
       public val exclude: Boolean? = null,
       /** Timeframe for the characteristic. */
       public val period: Period? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             code.toBuilder(),
             `value`,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.exclude = exclude?.toBuilder()
         builder.period = period?.toBuilder()
         return builder
@@ -478,7 +478,7 @@ public data class EvidenceReport(
          * mortality.
          */
         public var `value`: Value,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -525,11 +525,11 @@ public data class EvidenceReport(
         /** Timeframe for the characteristic. */
         public var period: Period.Builder? = null
 
-        public fun build(): Characteristic =
+        override fun build(): Characteristic =
           Characteristic(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code.build(),
             `value` = `value`,
             exclude = exclude?.build(),
@@ -538,7 +538,7 @@ public data class EvidenceReport(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -585,13 +585,13 @@ public data class EvidenceReport(
       /** Used for general notes and annotations not coded elsewhere. */
       public var note: MutableList<Annotation.Builder> = mutableListOf()
 
-      public fun build(): Subject =
+      override fun build(): Subject =
         Subject(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          characteristic = characteristic.mapToList { it.build() },
-          note = note.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          characteristic = characteristic.buildList(),
+          note = note.buildList(),
         )
     }
   }
@@ -648,16 +648,16 @@ public data class EvidenceReport(
     public val code: Enumeration<ReportRelationshipType>,
     /** The target composition/document of this relationship. */
     public val target: Target,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           code,
           target,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -692,7 +692,7 @@ public data class EvidenceReport(
       public var code: Enumeration<ReportRelationshipType>,
       /** The target composition/document of this relationship. */
       public var target: Target,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -733,11 +733,11 @@ public data class EvidenceReport(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): RelatesTo =
+      override fun build(): RelatesTo =
         RelatesTo(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code,
           target = target,
         )
@@ -871,28 +871,28 @@ public data class EvidenceReport(
      * the document.
      */
     public val section: List<Section> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.title = title?.toBuilder()
       builder.focus = focus?.toBuilder()
       builder.focusReference = focusReference?.toBuilder()
-      builder.author = author.mapToMutableList { it.toBuilder() }
+      builder.author = author.toBuilderList()
       builder.text = text?.toBuilder()
       builder.mode = mode
       builder.orderedBy = orderedBy?.toBuilder()
-      builder.entryClassifier = entryClassifier.mapToMutableList { it.toBuilder() }
-      builder.entryReference = entryReference.mapToMutableList { it.toBuilder() }
-      builder.entryQuantity = entryQuantity.mapToMutableList { it.toBuilder() }
+      builder.entryClassifier = entryClassifier.toBuilderList()
+      builder.entryReference = entryReference.toBuilderList()
+      builder.entryQuantity = entryQuantity.toBuilderList()
       builder.emptyReason = emptyReason?.toBuilder()
-      builder.section = section.mapToMutableList { it.toBuilder() }
+      builder.section = section.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1032,23 +1032,23 @@ public data class EvidenceReport(
        */
       public var section: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Section =
+      override fun build(): Section =
         Section(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           title = title?.build(),
           focus = focus?.build(),
           focusReference = focusReference?.build(),
-          author = author.mapToList { it.build() },
+          author = author.buildList(),
           text = text?.build(),
           mode = mode,
           orderedBy = orderedBy?.build(),
-          entryClassifier = entryClassifier.mapToList { it.build() },
-          entryReference = entryReference.mapToList { it.build() },
-          entryQuantity = entryQuantity.mapToList { it.build() },
+          entryClassifier = entryClassifier.buildList(),
+          entryReference = entryReference.buildList(),
+          entryQuantity = entryQuantity.buildList(),
           emptyReason = emptyReason?.build(),
-          section = section.mapToList { it.build() },
+          section = section.buildList(),
         )
     }
   }
@@ -1327,27 +1327,27 @@ public data class EvidenceReport(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
         status = status,
-        useContext = useContext.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        relatedIdentifier = relatedIdentifier.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        identifier = identifier.buildList(),
+        relatedIdentifier = relatedIdentifier.buildList(),
         citeAs = citeAs,
         type = type?.build(),
-        note = note.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        note = note.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
         subject = subject.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        relatesTo = relatesTo.mapToList { it.build() },
-        section = section.mapToList { it.build() },
+        contact = contact.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        relatesTo = relatesTo.buildList(),
+        section = section.buildList(),
       )
   }
 }

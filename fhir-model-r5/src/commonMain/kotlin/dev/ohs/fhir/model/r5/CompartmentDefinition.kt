@@ -308,20 +308,20 @@ public data class CompartmentDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
     builder.purpose = purpose?.toBuilder()
-    builder.resource = resource.mapToMutableList { it.toBuilder() }
+    builder.resource = resource.toBuilderList()
     return builder
   }
 
@@ -386,13 +386,13 @@ public data class CompartmentDefinition(
      * [Patient.$everything](patient-operation-everything.html)).
      */
     public val endParam: Uri? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.`param` = `param`.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.`param` = `param`.toBuilderList()
       builder.documentation = documentation?.toBuilder()
       builder.startParam = startParam?.toBuilder()
       builder.endParam = endParam?.toBuilder()
@@ -402,7 +402,7 @@ public data class CompartmentDefinition(
     public class Builder(
       /** The name of a resource supported by the server. */
       public var code: Enumeration<ResourceType>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -466,13 +466,13 @@ public data class CompartmentDefinition(
        */
       public var endParam: Uri.Builder? = null
 
-      public fun build(): Resource =
+      override fun build(): Resource =
         Resource(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code,
-          `param` = `param`.mapToList { it.build() },
+          `param` = `param`.buildList(),
           documentation = documentation?.build(),
           startParam = startParam?.build(),
           endParam = endParam?.build(),
@@ -788,9 +788,9 @@ public data class CompartmentDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url.build(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
@@ -800,13 +800,13 @@ public data class CompartmentDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
+        useContext = useContext.buildList(),
         purpose = purpose?.build(),
         code = code,
         search = search.build(),
-        resource = resource.mapToList { it.build() },
+        resource = resource.buildList(),
       )
   }
 }

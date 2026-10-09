@@ -56,7 +56,7 @@ public data class UnsignedInt(
   override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -92,7 +92,7 @@ public data class UnsignedInt(
     open override fun build(): UnsignedInt =
       UnsignedInt(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

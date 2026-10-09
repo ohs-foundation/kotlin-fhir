@@ -204,17 +204,17 @@ public data class ArtifactAssessment(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.title = title?.toBuilder()
     builder.citeAs = citeAs
     builder.date = date?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
-    builder.content = content.mapToMutableList { it.toBuilder() }
+    builder.content = content.toBuilderList()
     builder.workflowStatus = workflowStatus
     builder.disposition = disposition
     return builder
@@ -289,26 +289,26 @@ public data class ArtifactAssessment(
     public val freeToShare: Boolean? = null,
     /** If the informationType is container, the components of the content. */
     public val component: List<Content> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.informationType = informationType
       builder.summary = summary?.toBuilder()
       builder.type = type?.toBuilder()
-      builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+      builder.classifier = classifier.toBuilderList()
       builder.quantity = quantity?.toBuilder()
       builder.author = author?.toBuilder()
-      builder.path = path.mapToMutableList { it.toBuilder() }
-      builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+      builder.path = path.toBuilderList()
+      builder.relatedArtifact = relatedArtifact.toBuilderList()
       builder.freeToShare = freeToShare?.toBuilder()
-      builder.component = component.mapToMutableList { it.toBuilder() }
+      builder.component = component.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -388,21 +388,21 @@ public data class ArtifactAssessment(
       /** If the informationType is container, the components of the content. */
       public var component: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Content =
+      override fun build(): Content =
         Content(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           informationType = informationType,
           summary = summary?.build(),
           type = type?.build(),
-          classifier = classifier.mapToList { it.build() },
+          classifier = classifier.buildList(),
           quantity = quantity?.build(),
           author = author?.build(),
-          path = path.mapToList { it.build() },
-          relatedArtifact = relatedArtifact.mapToList { it.build() },
+          path = path.buildList(),
+          relatedArtifact = relatedArtifact.buildList(),
           freeToShare = freeToShare?.build(),
-          component = component.mapToList { it.build() },
+          component = component.buildList(),
         )
     }
   }
@@ -641,10 +641,10 @@ public data class ArtifactAssessment(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         title = title?.build(),
         citeAs = citeAs,
         date = date?.build(),
@@ -652,7 +652,7 @@ public data class ArtifactAssessment(
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         artifact = artifact,
-        content = content.mapToList { it.build() },
+        content = content.buildList(),
         workflowStatus = workflowStatus,
         disposition = disposition,
       )

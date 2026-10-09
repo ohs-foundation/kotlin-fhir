@@ -366,31 +366,31 @@ public data class Observation(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.subject = subject?.toBuilder()
-    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.focus = focus.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     builder.effective = effective
     builder.issued = issued?.toBuilder()
-    builder.performer = performer.mapToMutableList { it.toBuilder() }
+    builder.performer = performer.toBuilderList()
     builder.`value` = `value`
     builder.dataAbsentReason = dataAbsentReason?.toBuilder()
-    builder.interpretation = interpretation.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.interpretation = interpretation.toBuilderList()
+    builder.note = note.toBuilderList()
     builder.bodySite = bodySite?.toBuilder()
     builder.method = method?.toBuilder()
     builder.specimen = specimen?.toBuilder()
     builder.device = device?.toBuilder()
-    builder.referenceRange = referenceRange.mapToMutableList { it.toBuilder() }
-    builder.hasMember = hasMember.mapToMutableList { it.toBuilder() }
-    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
-    builder.component = component.mapToMutableList { it.toBuilder() }
+    builder.referenceRange = referenceRange.toBuilderList()
+    builder.hasMember = hasMember.toBuilderList()
+    builder.derivedFrom = derivedFrom.toBuilderList()
+    builder.component = component.toBuilderList()
     return builder
   }
 
@@ -480,22 +480,22 @@ public data class Observation(
      * list or table of "normals".
      */
     public val text: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.low = low?.toBuilder()
       builder.high = high?.toBuilder()
       builder.type = type?.toBuilder()
-      builder.appliesTo = appliesTo.mapToMutableList { it.toBuilder() }
+      builder.appliesTo = appliesTo.toBuilderList()
       builder.age = age?.toBuilder()
       builder.text = text?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -584,15 +584,15 @@ public data class Observation(
        */
       public var text: String.Builder? = null
 
-      public fun build(): ReferenceRange =
+      override fun build(): ReferenceRange =
         ReferenceRange(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           low = low?.build(),
           high = high?.build(),
           type = type?.build(),
-          appliesTo = appliesTo.mapToList { it.build() },
+          appliesTo = appliesTo.buildList(),
           age = age?.build(),
           text = text?.build(),
         )
@@ -697,16 +697,16 @@ public data class Observation(
      * between them SHOULD be provided in the reference range and/or age properties.
      */
     public val referenceRange: List<ReferenceRange> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.`value` = `value`
       builder.dataAbsentReason = dataAbsentReason?.toBuilder()
-      builder.interpretation = interpretation.mapToMutableList { it.toBuilder() }
-      builder.referenceRange = referenceRange.mapToMutableList { it.toBuilder() }
+      builder.interpretation = interpretation.toBuilderList()
+      builder.referenceRange = referenceRange.toBuilderList()
       return builder
     }
 
@@ -796,7 +796,7 @@ public data class Observation(
        * correctly understand the meaning of the observation.
        */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -889,16 +889,16 @@ public data class Observation(
        */
       public var referenceRange: MutableList<ReferenceRange.Builder> = mutableListOf()
 
-      public fun build(): Component =
+      override fun build(): Component =
         Component(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           `value` = `value`,
           dataAbsentReason = dataAbsentReason?.build(),
-          interpretation = interpretation.mapToList { it.build() },
-          referenceRange = referenceRange.mapToList { it.build() },
+          interpretation = interpretation.buildList(),
+          referenceRange = referenceRange.buildList(),
         )
     }
   }
@@ -1376,33 +1376,33 @@ public data class Observation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        basedOn = basedOn.buildList(),
+        partOf = partOf.buildList(),
         status = status,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         code = code.build(),
         subject = subject?.build(),
-        focus = focus.mapToList { it.build() },
+        focus = focus.buildList(),
         encounter = encounter?.build(),
         effective = effective,
         issued = issued?.build(),
-        performer = performer.mapToList { it.build() },
+        performer = performer.buildList(),
         `value` = `value`,
         dataAbsentReason = dataAbsentReason?.build(),
-        interpretation = interpretation.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        interpretation = interpretation.buildList(),
+        note = note.buildList(),
         bodySite = bodySite?.build(),
         method = method?.build(),
         specimen = specimen?.build(),
         device = device?.build(),
-        referenceRange = referenceRange.mapToList { it.build() },
-        hasMember = hasMember.mapToList { it.build() },
-        derivedFrom = derivedFrom.mapToList { it.build() },
-        component = component.mapToList { it.build() },
+        referenceRange = referenceRange.buildList(),
+        hasMember = hasMember.buildList(),
+        derivedFrom = derivedFrom.buildList(),
+        component = component.buildList(),
       )
   }
 }

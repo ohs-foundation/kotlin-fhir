@@ -48,11 +48,11 @@ public data class Xhtml(
   override val extension: List<Extension> = listOf(),
   /** Actual xhtml */
   public val `value`: String,
-) : Element(id, extension) {
-  public fun toBuilder(): Builder {
+) : Element(id, extension), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(`value`)
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     return builder
   }
 
@@ -66,7 +66,7 @@ public data class Xhtml(
   public open class Builder(
     /** Actual xhtml */
     public open var `value`: String
-  ) {
+  ) : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: String? = null
 
@@ -84,10 +84,10 @@ public data class Xhtml(
      */
     public open var extension: MutableList<Extension.Builder> = mutableListOf()
 
-    public open fun build(): Xhtml =
+    open override fun build(): Xhtml =
       Xhtml(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

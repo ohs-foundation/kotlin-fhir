@@ -62,11 +62,11 @@ public data class Annotation(
   public val time: DateTime? = null,
   /** The text of the annotation in markdown format. */
   public val text: Markdown,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(text.toBuilder())
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.author = author
     builder.time = time?.toBuilder()
     return builder
@@ -96,7 +96,7 @@ public data class Annotation(
   public open class Builder(
     /** The text of the annotation in markdown format. */
     public open var text: Markdown.Builder
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -128,10 +128,10 @@ public data class Annotation(
     /** Indicates when this particular annotation was made. */
     public open var time: DateTime.Builder? = null
 
-    public open fun build(): Annotation =
+    open override fun build(): Annotation =
       Annotation(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         author = author,
         time = time?.build(),
         text = text.build(),

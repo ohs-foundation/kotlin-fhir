@@ -171,14 +171,14 @@ public data class Permission(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.asserter = asserter?.toBuilder()
-    builder.date = date.mapToMutableList { it.toBuilder() }
+    builder.date = date.toBuilderList()
     builder.validity = validity?.toBuilder()
     builder.justification = justification?.toBuilder()
-    builder.rule = rule.mapToMutableList { it.toBuilder() }
+    builder.rule = rule.toBuilderList()
     return builder
   }
 
@@ -234,18 +234,18 @@ public data class Permission(
      * would be most frequent
      */
     public val evidence: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.basis = basis.mapToMutableList { it.toBuilder() }
-      builder.evidence = evidence.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.basis = basis.toBuilderList()
+      builder.evidence = evidence.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -300,13 +300,13 @@ public data class Permission(
        */
       public var evidence: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Justification =
+      override fun build(): Justification =
         Justification(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          basis = basis.mapToList { it.build() },
-          evidence = evidence.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          basis = basis.buildList(),
+          evidence = evidence.buildList(),
         )
     }
   }
@@ -359,16 +359,16 @@ public data class Permission(
     public val activity: List<Activity> = listOf(),
     /** What limits apply to the use of the data. */
     public val limit: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type
-      builder.`data` = `data`.mapToMutableList { it.toBuilder() }
-      builder.activity = activity.mapToMutableList { it.toBuilder() }
-      builder.limit = limit.mapToMutableList { it.toBuilder() }
+      builder.`data` = `data`.toBuilderList()
+      builder.activity = activity.toBuilderList()
+      builder.limit = limit.toBuilderList()
       return builder
     }
 
@@ -434,15 +434,15 @@ public data class Permission(
       public val period: List<Period> = listOf(),
       /** Used when other data selection elements are insufficient. */
       public val expression: Expression? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.resource = resource.mapToMutableList { it.toBuilder() }
-        builder.security = security.mapToMutableList { it.toBuilder() }
-        builder.period = period.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.resource = resource.toBuilderList()
+        builder.security = security.toBuilderList()
+        builder.period = period.toBuilderList()
         builder.expression = expression?.toBuilder()
         return builder
       }
@@ -494,16 +494,16 @@ public data class Permission(
          * consent.
          */
         public val reference: Reference,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder =
             Builder(
               meaning,
               reference.toBuilder(),
             )
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           return builder
         }
 
@@ -515,7 +515,7 @@ public data class Permission(
            * consent.
            */
           public var reference: Reference.Builder,
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -556,18 +556,18 @@ public data class Permission(
            */
           public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-          public fun build(): Resource =
+          override fun build(): Resource =
             Resource(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               meaning = meaning,
               reference = reference.build(),
             )
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -634,14 +634,14 @@ public data class Permission(
         /** Used when other data selection elements are insufficient. */
         public var expression: Expression.Builder? = null
 
-        public fun build(): Data =
+        override fun build(): Data =
           Data(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
-            resource = resource.mapToList { it.build() },
-            security = security.mapToList { it.build() },
-            period = period.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
+            resource = resource.buildList(),
+            security = security.buildList(),
+            period = period.buildList(),
             expression = expression?.build(),
           )
       }
@@ -699,19 +699,19 @@ public data class Permission(
       public val action: List<CodeableConcept> = listOf(),
       /** The purpose for which the permission is given. */
       public val purpose: List<CodeableConcept> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.actor = actor.mapToMutableList { it.toBuilder() }
-        builder.action = action.mapToMutableList { it.toBuilder() }
-        builder.purpose = purpose.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.actor = actor.toBuilderList()
+        builder.action = action.toBuilderList()
+        builder.purpose = purpose.toBuilderList()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -767,19 +767,19 @@ public data class Permission(
         /** The purpose for which the permission is given. */
         public var purpose: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-        public fun build(): Activity =
+        override fun build(): Activity =
           Activity(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
-            actor = actor.mapToList { it.build() },
-            action = action.mapToList { it.build() },
-            purpose = purpose.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
+            actor = actor.buildList(),
+            action = action.buildList(),
+            purpose = purpose.buildList(),
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -832,15 +832,15 @@ public data class Permission(
       /** What limits apply to the use of the data. */
       public var limit: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): Rule =
+      override fun build(): Rule =
         Rule(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
-          `data` = `data`.mapToList { it.build() },
-          activity = activity.mapToList { it.build() },
-          limit = limit.mapToList { it.build() },
+          `data` = `data`.buildList(),
+          activity = activity.buildList(),
+          limit = limit.buildList(),
         )
     }
   }
@@ -985,16 +985,16 @@ public data class Permission(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         status = status,
         asserter = asserter?.build(),
-        date = date.mapToList { it.build() },
+        date = date.buildList(),
         validity = validity?.build(),
         justification = justification?.build(),
         combining = combining,
-        rule = rule.mapToList { it.build() },
+        rule = rule.buildList(),
       )
   }
 }

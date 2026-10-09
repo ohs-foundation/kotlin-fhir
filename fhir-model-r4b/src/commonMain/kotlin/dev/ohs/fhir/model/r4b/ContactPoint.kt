@@ -83,11 +83,11 @@ public data class ContactPoint(
   public val rank: PositiveInt? = null,
   /** Time period when the contact point was/is in use. */
   public val period: Period? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.system = system
     builder.`value` = `value`?.toBuilder()
     builder.use = use
@@ -96,7 +96,7 @@ public data class ContactPoint(
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -152,10 +152,10 @@ public data class ContactPoint(
     /** Time period when the contact point was/is in use. */
     public open var period: Period.Builder? = null
 
-    public open fun build(): ContactPoint =
+    open override fun build(): ContactPoint =
       ContactPoint(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         system = system,
         `value` = `value`?.build(),
         use = use,

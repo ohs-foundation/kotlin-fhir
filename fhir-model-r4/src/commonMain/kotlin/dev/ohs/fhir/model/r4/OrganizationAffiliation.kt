@@ -178,21 +178,21 @@ public data class OrganizationAffiliation(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
     builder.period = period?.toBuilder()
     builder.organization = organization?.toBuilder()
     builder.participatingOrganization = participatingOrganization?.toBuilder()
-    builder.network = network.mapToMutableList { it.toBuilder() }
-    builder.code = code.mapToMutableList { it.toBuilder() }
-    builder.specialty = specialty.mapToMutableList { it.toBuilder() }
-    builder.location = location.mapToMutableList { it.toBuilder() }
-    builder.healthcareService = healthcareService.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
-    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.network = network.toBuilderList()
+    builder.code = code.toBuilderList()
+    builder.specialty = specialty.toBuilderList()
+    builder.location = location.toBuilderList()
+    builder.healthcareService = healthcareService.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
+    builder.endpoint = endpoint.toBuilderList()
     return builder
   }
 
@@ -359,21 +359,21 @@ public data class OrganizationAffiliation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
         period = period?.build(),
         organization = organization?.build(),
         participatingOrganization = participatingOrganization?.build(),
-        network = network.mapToList { it.build() },
-        code = code.mapToList { it.build() },
-        specialty = specialty.mapToList { it.build() },
-        location = location.mapToList { it.build() },
-        healthcareService = healthcareService.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
-        endpoint = endpoint.mapToList { it.build() },
+        network = network.buildList(),
+        code = code.buildList(),
+        specialty = specialty.buildList(),
+        location = location.buildList(),
+        healthcareService = healthcareService.buildList(),
+        telecom = telecom.buildList(),
+        endpoint = endpoint.buildList(),
       )
   }
 }

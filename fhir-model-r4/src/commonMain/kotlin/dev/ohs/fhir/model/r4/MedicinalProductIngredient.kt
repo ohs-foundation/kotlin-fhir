@@ -155,13 +155,13 @@ public data class MedicinalProductIngredient(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.identifier = identifier?.toBuilder()
     builder.allergenicIndicator = allergenicIndicator?.toBuilder()
-    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
-    builder.specifiedSubstance = specifiedSubstance.mapToMutableList { it.toBuilder() }
+    builder.manufacturer = manufacturer.toBuilderList()
+    builder.specifiedSubstance = specifiedSubstance.toBuilderList()
     builder.substance = substance?.toBuilder()
     return builder
   }
@@ -217,14 +217,14 @@ public data class MedicinalProductIngredient(
      * pharmaceutical product.
      */
     public val strength: List<Strength> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder(), group.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.confidentiality = confidentiality?.toBuilder()
-      builder.strength = strength.mapToMutableList { it.toBuilder() }
+      builder.strength = strength.toBuilderList()
       return builder
     }
 
@@ -295,18 +295,18 @@ public data class MedicinalProductIngredient(
       public val country: List<CodeableConcept> = listOf(),
       /** Strength expressed in terms of a reference substance. */
       public val referenceStrength: List<ReferenceStrength> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(presentation.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.presentationLowLimit = presentationLowLimit?.toBuilder()
         builder.concentration = concentration?.toBuilder()
         builder.concentrationLowLimit = concentrationLowLimit?.toBuilder()
         builder.measurementPoint = measurementPoint?.toBuilder()
-        builder.country = country.mapToMutableList { it.toBuilder() }
-        builder.referenceStrength = referenceStrength.mapToMutableList { it.toBuilder() }
+        builder.country = country.toBuilderList()
+        builder.referenceStrength = referenceStrength.toBuilderList()
         return builder
       }
 
@@ -363,23 +363,23 @@ public data class MedicinalProductIngredient(
         public val measurementPoint: String? = null,
         /** The country or countries for which the strength range applies. */
         public val country: List<CodeableConcept> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(strength.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.substance = substance?.toBuilder()
           builder.strengthLowLimit = strengthLowLimit?.toBuilder()
           builder.measurementPoint = measurementPoint?.toBuilder()
-          builder.country = country.mapToMutableList { it.toBuilder() }
+          builder.country = country.toBuilderList()
           return builder
         }
 
         public class Builder(
           /** Strength expressed in terms of a reference substance. */
           public var strength: Ratio.Builder
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -432,16 +432,16 @@ public data class MedicinalProductIngredient(
           /** The country or countries for which the strength range applies. */
           public var country: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-          public fun build(): ReferenceStrength =
+          override fun build(): ReferenceStrength =
             ReferenceStrength(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               substance = substance?.build(),
               strength = strength.build(),
               strengthLowLimit = strengthLowLimit?.build(),
               measurementPoint = measurementPoint?.build(),
-              country = country.mapToList { it.build() },
+              country = country.buildList(),
             )
         }
       }
@@ -452,7 +452,7 @@ public data class MedicinalProductIngredient(
          * single pharmaceutical product or manufactured item.
          */
         public var presentation: Ratio.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -518,18 +518,18 @@ public data class MedicinalProductIngredient(
         /** Strength expressed in terms of a reference substance. */
         public var referenceStrength: MutableList<ReferenceStrength.Builder> = mutableListOf()
 
-        public fun build(): Strength =
+        override fun build(): Strength =
           Strength(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             presentation = presentation.build(),
             presentationLowLimit = presentationLowLimit?.build(),
             concentration = concentration?.build(),
             concentrationLowLimit = concentrationLowLimit?.build(),
             measurementPoint = measurementPoint?.build(),
-            country = country.mapToList { it.build() },
-            referenceStrength = referenceStrength.mapToList { it.build() },
+            country = country.buildList(),
+            referenceStrength = referenceStrength.buildList(),
           )
       }
     }
@@ -539,7 +539,7 @@ public data class MedicinalProductIngredient(
       public var code: CodeableConcept.Builder,
       /** The group of specified substance, e.g. group 1 to 4. */
       public var group: CodeableConcept.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -589,15 +589,15 @@ public data class MedicinalProductIngredient(
        */
       public var strength: MutableList<Strength.Builder> = mutableListOf()
 
-      public fun build(): SpecifiedSubstance =
+      override fun build(): SpecifiedSubstance =
         SpecifiedSubstance(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           group = group.build(),
           confidentiality = confidentiality?.build(),
-          strength = strength.mapToList { it.build() },
+          strength = strength.buildList(),
         )
     }
   }
@@ -649,20 +649,20 @@ public data class MedicinalProductIngredient(
      * pharmaceutical product.
      */
     public val strength: List<SpecifiedSubstance.Strength> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.strength = strength.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.strength = strength.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** The ingredient substance. */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -709,13 +709,13 @@ public data class MedicinalProductIngredient(
        */
       public var strength: MutableList<SpecifiedSubstance.Strength.Builder> = mutableListOf()
 
-      public fun build(): Substance =
+      override fun build(): Substance =
         Substance(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
-          strength = strength.mapToList { it.build() },
+          strength = strength.buildList(),
         )
     }
   }
@@ -854,14 +854,14 @@ public data class MedicinalProductIngredient(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         identifier = identifier?.build(),
         role = role.build(),
         allergenicIndicator = allergenicIndicator?.build(),
-        manufacturer = manufacturer.mapToList { it.build() },
-        specifiedSubstance = specifiedSubstance.mapToList { it.build() },
+        manufacturer = manufacturer.buildList(),
+        specifiedSubstance = specifiedSubstance.buildList(),
         substance = substance?.build(),
       )
   }

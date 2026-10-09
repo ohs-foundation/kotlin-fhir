@@ -231,20 +231,20 @@ public data class EpisodeOfCare(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.statusHistory = statusHistory.mapToMutableList { it.toBuilder() }
-    builder.type = type.mapToMutableList { it.toBuilder() }
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.diagnosis = diagnosis.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.statusHistory = statusHistory.toBuilderList()
+    builder.type = type.toBuilderList()
+    builder.reason = reason.toBuilderList()
+    builder.diagnosis = diagnosis.toBuilderList()
     builder.managingOrganization = managingOrganization?.toBuilder()
     builder.period = period?.toBuilder()
-    builder.referralRequest = referralRequest.mapToMutableList { it.toBuilder() }
+    builder.referralRequest = referralRequest.toBuilderList()
     builder.careManager = careManager?.toBuilder()
-    builder.careTeam = careTeam.mapToMutableList { it.toBuilder() }
-    builder.account = account.mapToMutableList { it.toBuilder() }
+    builder.careTeam = careTeam.toBuilderList()
+    builder.account = account.toBuilderList()
     return builder
   }
 
@@ -295,16 +295,16 @@ public data class EpisodeOfCare(
     public val status: Enumeration<EpisodeOfCareStatus>,
     /** The period during this EpisodeOfCare that the specific status applied. */
     public val period: Period,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           status,
           period.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -313,7 +313,7 @@ public data class EpisodeOfCare(
       public var status: Enumeration<EpisodeOfCareStatus>,
       /** The period during this EpisodeOfCare that the specific status applied. */
       public var period: Period.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -354,11 +354,11 @@ public data class EpisodeOfCare(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): StatusHistory =
+      override fun build(): StatusHistory =
         StatusHistory(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           status = status,
           period = period.build(),
         )
@@ -415,18 +415,18 @@ public data class EpisodeOfCare(
      * a text, code or a reference to another resource.
      */
     public val `value`: List<CodeableReference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.use = use?.toBuilder()
-      builder.`value` = `value`.mapToMutableList { it.toBuilder() }
+      builder.`value` = `value`.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -479,13 +479,13 @@ public data class EpisodeOfCare(
        */
       public var `value`: MutableList<CodeableReference.Builder> = mutableListOf()
 
-      public fun build(): Reason =
+      override fun build(): Reason =
         Reason(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           use = use?.build(),
-          `value` = `value`.mapToList { it.build() },
+          `value` = `value`.buildList(),
         )
     }
   }
@@ -540,18 +540,18 @@ public data class EpisodeOfCare(
      * …).
      */
     public val use: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.condition = condition.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.condition = condition.toBuilderList()
       builder.use = use?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -604,12 +604,12 @@ public data class EpisodeOfCare(
        */
       public var use: CodeableConcept.Builder? = null
 
-      public fun build(): Diagnosis =
+      override fun build(): Diagnosis =
         Diagnosis(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          condition = condition.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          condition = condition.buildList(),
           use = use?.build(),
         )
     }
@@ -824,22 +824,22 @@ public data class EpisodeOfCare(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        statusHistory = statusHistory.mapToList { it.build() },
-        type = type.mapToList { it.build() },
-        reason = reason.mapToList { it.build() },
-        diagnosis = diagnosis.mapToList { it.build() },
+        statusHistory = statusHistory.buildList(),
+        type = type.buildList(),
+        reason = reason.buildList(),
+        diagnosis = diagnosis.buildList(),
         patient = patient.build(),
         managingOrganization = managingOrganization?.build(),
         period = period?.build(),
-        referralRequest = referralRequest.mapToList { it.build() },
+        referralRequest = referralRequest.buildList(),
         careManager = careManager?.build(),
-        careTeam = careTeam.mapToList { it.build() },
-        account = account.mapToList { it.build() },
+        careTeam = careTeam.buildList(),
+        account = account.buildList(),
       )
   }
 }

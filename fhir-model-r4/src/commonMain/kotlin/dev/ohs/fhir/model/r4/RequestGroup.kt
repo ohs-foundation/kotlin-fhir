@@ -224,14 +224,14 @@ public data class RequestGroup(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+    builder.instantiatesUri = instantiatesUri.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.replaces = replaces.toBuilderList()
     builder.groupIdentifier = groupIdentifier?.toBuilder()
     builder.priority = priority
     builder.code = code?.toBuilder()
@@ -239,10 +239,10 @@ public data class RequestGroup(
     builder.encounter = encounter?.toBuilder()
     builder.authoredOn = authoredOn?.toBuilder()
     builder.author = author?.toBuilder()
-    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
-    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.action = action.mapToMutableList { it.toBuilder() }
+    builder.reasonCode = reasonCode.toBuilderList()
+    builder.reasonReference = reasonReference.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.action = action.toBuilderList()
     return builder
   }
 
@@ -345,23 +345,23 @@ public data class RequestGroup(
     public val resource: Reference? = null,
     /** Sub actions. */
     public val action: List<Action> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.prefix = prefix?.toBuilder()
       builder.title = title?.toBuilder()
       builder.description = description?.toBuilder()
       builder.textEquivalent = textEquivalent?.toBuilder()
       builder.priority = priority
-      builder.code = code.mapToMutableList { it.toBuilder() }
-      builder.documentation = documentation.mapToMutableList { it.toBuilder() }
-      builder.condition = condition.mapToMutableList { it.toBuilder() }
-      builder.relatedAction = relatedAction.mapToMutableList { it.toBuilder() }
+      builder.code = code.toBuilderList()
+      builder.documentation = documentation.toBuilderList()
+      builder.condition = condition.toBuilderList()
+      builder.relatedAction = relatedAction.toBuilderList()
       builder.timing = timing
-      builder.participant = participant.mapToMutableList { it.toBuilder() }
+      builder.participant = participant.toBuilderList()
       builder.type = type?.toBuilder()
       builder.groupingBehavior = groupingBehavior
       builder.selectionBehavior = selectionBehavior
@@ -369,7 +369,7 @@ public data class RequestGroup(
       builder.precheckBehavior = precheckBehavior
       builder.cardinalityBehavior = cardinalityBehavior
       builder.resource = resource?.toBuilder()
-      builder.action = action.mapToMutableList { it.toBuilder() }
+      builder.action = action.toBuilderList()
       return builder
     }
 
@@ -431,12 +431,12 @@ public data class RequestGroup(
        * library referenced by the library element.
        */
       public val expression: Expression? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(kind)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.expression = expression?.toBuilder()
         return builder
       }
@@ -450,7 +450,7 @@ public data class RequestGroup(
          * application and used to describe enter/exit criteria for an action.
          */
         public var kind: Enumeration<ActionConditionKind>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -500,11 +500,11 @@ public data class RequestGroup(
          */
         public var expression: Expression.Builder? = null
 
-        public fun build(): Condition =
+        override fun build(): Condition =
           Condition(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             kind = kind,
             expression = expression?.build(),
           )
@@ -560,16 +560,16 @@ public data class RequestGroup(
        * before.
        */
       public val offset: Offset? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             actionId.toBuilder(),
             relationship,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.offset = offset
         return builder
       }
@@ -600,7 +600,7 @@ public data class RequestGroup(
         public var actionId: Id.Builder,
         /** The relationship of this action to the related action. */
         public var relationship: Enumeration<ActionRelationshipType>,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -647,11 +647,11 @@ public data class RequestGroup(
          */
         public var offset: Offset? = null
 
-        public fun build(): RelatedAction =
+        override fun build(): RelatedAction =
           RelatedAction(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             actionId = actionId.build(),
             relationship = relationship,
             offset = offset,
@@ -706,7 +706,7 @@ public data class RequestGroup(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -826,22 +826,22 @@ public data class RequestGroup(
       /** Sub actions. */
       public var action: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Action =
+      override fun build(): Action =
         Action(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           prefix = prefix?.build(),
           title = title?.build(),
           description = description?.build(),
           textEquivalent = textEquivalent?.build(),
           priority = priority,
-          code = code.mapToList { it.build() },
-          documentation = documentation.mapToList { it.build() },
-          condition = condition.mapToList { it.build() },
-          relatedAction = relatedAction.mapToList { it.build() },
+          code = code.buildList(),
+          documentation = documentation.buildList(),
+          condition = condition.buildList(),
+          relatedAction = relatedAction.buildList(),
           timing = timing,
-          participant = participant.mapToList { it.build() },
+          participant = participant.buildList(),
           type = type?.build(),
           groupingBehavior = groupingBehavior,
           selectionBehavior = selectionBehavior,
@@ -849,7 +849,7 @@ public data class RequestGroup(
           precheckBehavior = precheckBehavior,
           cardinalityBehavior = cardinalityBehavior,
           resource = resource?.build(),
-          action = action.mapToList { it.build() },
+          action = action.buildList(),
         )
     }
   }
@@ -1053,14 +1053,14 @@ public data class RequestGroup(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-        instantiatesUri = instantiatesUri.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        replaces = replaces.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        instantiatesCanonical = instantiatesCanonical.buildList(),
+        instantiatesUri = instantiatesUri.buildList(),
+        basedOn = basedOn.buildList(),
+        replaces = replaces.buildList(),
         groupIdentifier = groupIdentifier?.build(),
         status = status,
         intent = intent,
@@ -1070,10 +1070,10 @@ public data class RequestGroup(
         encounter = encounter?.build(),
         authoredOn = authoredOn?.build(),
         author = author?.build(),
-        reasonCode = reasonCode.mapToList { it.build() },
-        reasonReference = reasonReference.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        action = action.mapToList { it.build() },
+        reasonCode = reasonCode.buildList(),
+        reasonReference = reasonReference.buildList(),
+        note = note.buildList(),
+        action = action.buildList(),
       )
   }
 }

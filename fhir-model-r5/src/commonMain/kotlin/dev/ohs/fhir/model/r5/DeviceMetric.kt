@@ -206,15 +206,15 @@ public data class DeviceMetric(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.unit = unit?.toBuilder()
     builder.operationalStatus = operationalStatus
     builder.color = color?.toBuilder()
     builder.measurementFrequency = measurementFrequency?.toBuilder()
-    builder.calibration = calibration.mapToMutableList { it.toBuilder() }
+    builder.calibration = calibration.toBuilderList()
     return builder
   }
 
@@ -264,19 +264,19 @@ public data class DeviceMetric(
     public val state: Enumeration<DeviceMetricCalibrationState>? = null,
     /** Describes the time last calibration has been performed. */
     public val time: Instant? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type
       builder.state = state
       builder.time = time?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -326,11 +326,11 @@ public data class DeviceMetric(
       /** Describes the time last calibration has been performed. */
       public var time: Instant.Builder? = null
 
-      public fun build(): Calibration =
+      override fun build(): Calibration =
         Calibration(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
           state = state,
           time = time?.build(),
@@ -513,10 +513,10 @@ public data class DeviceMetric(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         type = type.build(),
         unit = unit?.build(),
         device = device.build(),
@@ -524,7 +524,7 @@ public data class DeviceMetric(
         color = color?.build(),
         category = category,
         measurementFrequency = measurementFrequency?.build(),
-        calibration = calibration.mapToList { it.build() },
+        calibration = calibration.buildList(),
       )
   }
 }

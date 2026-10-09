@@ -201,23 +201,23 @@ public data class RegulatedAuthorization(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.subject = subject.toBuilderList()
     builder.type = type?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.region = region.mapToMutableList { it.toBuilder() }
+    builder.region = region.toBuilderList()
     builder.status = status?.toBuilder()
     builder.statusDate = statusDate?.toBuilder()
     builder.validityPeriod = validityPeriod?.toBuilder()
-    builder.indication = indication.mapToMutableList { it.toBuilder() }
+    builder.indication = indication.toBuilderList()
     builder.intendedUse = intendedUse?.toBuilder()
-    builder.basis = basis.mapToMutableList { it.toBuilder() }
+    builder.basis = basis.toBuilderList()
     builder.holder = holder?.toBuilder()
     builder.regulator = regulator?.toBuilder()
-    builder.attachedDocument = attachedDocument.mapToMutableList { it.toBuilder() }
+    builder.attachedDocument = attachedDocument.toBuilderList()
     builder.case = case?.toBuilder()
     return builder
   }
@@ -283,17 +283,17 @@ public data class RegulatedAuthorization(
      * within the longer running case or procedure for this authorization process.
      */
     public val application: List<Case> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.identifier = identifier?.toBuilder()
       builder.type = type?.toBuilder()
       builder.status = status?.toBuilder()
       builder.date = date
-      builder.application = application.mapToMutableList { it.toBuilder() }
+      builder.application = application.toBuilderList()
       return builder
     }
 
@@ -318,7 +318,7 @@ public data class RegulatedAuthorization(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -379,16 +379,16 @@ public data class RegulatedAuthorization(
        */
       public var application: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Case =
+      override fun build(): Case =
         Case(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identifier = identifier?.build(),
           type = type?.build(),
           status = status?.build(),
           date = date,
-          application = application.mapToList { it.build() },
+          application = application.buildList(),
         )
     }
   }
@@ -580,23 +580,23 @@ public data class RegulatedAuthorization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        subject = subject.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        subject = subject.buildList(),
         type = type?.build(),
         description = description?.build(),
-        region = region.mapToList { it.build() },
+        region = region.buildList(),
         status = status?.build(),
         statusDate = statusDate?.build(),
         validityPeriod = validityPeriod?.build(),
-        indication = indication.mapToList { it.build() },
+        indication = indication.buildList(),
         intendedUse = intendedUse?.build(),
-        basis = basis.mapToList { it.build() },
+        basis = basis.buildList(),
         holder = holder?.build(),
         regulator = regulator?.build(),
-        attachedDocument = attachedDocument.mapToList { it.build() },
+        attachedDocument = attachedDocument.buildList(),
         case = case?.build(),
       )
   }

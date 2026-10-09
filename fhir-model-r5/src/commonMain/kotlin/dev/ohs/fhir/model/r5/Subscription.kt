@@ -253,18 +253,18 @@ public data class Subscription(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.name = name?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.end = end?.toBuilder()
     builder.managingEntity = managingEntity?.toBuilder()
     builder.reason = reason?.toBuilder()
-    builder.filterBy = filterBy.mapToMutableList { it.toBuilder() }
+    builder.filterBy = filterBy.toBuilderList()
     builder.endpoint = endpoint?.toBuilder()
-    builder.parameter = parameter.mapToMutableList { it.toBuilder() }
+    builder.parameter = parameter.toBuilderList()
     builder.heartbeatPeriod = heartbeatPeriod?.toBuilder()
     builder.timeout = timeout?.toBuilder()
     builder.contentType = contentType?.toBuilder()
@@ -342,12 +342,12 @@ public data class Subscription(
      * `le1950`.
      */
     public val `value`: String,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(filterParameter.toBuilder(), `value`.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.resourceType = resourceType?.toBuilder()
       builder.comparator = comparator
       builder.modifier = modifier
@@ -362,7 +362,7 @@ public data class Subscription(
        * `le1950`.
        */
       public var `value`: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -424,11 +424,11 @@ public data class Subscription(
        */
       public var modifier: Enumeration<SearchModifierCode>? = null
 
-      public fun build(): FilterBy =
+      override fun build(): FilterBy =
         FilterBy(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           resourceType = resourceType?.build(),
           filterParameter = filterParameter.build(),
           comparator = comparator,
@@ -490,12 +490,12 @@ public data class Subscription(
      * `Bearer 0193...`.
      */
     public val `value`: String,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(name.toBuilder(), `value`.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -512,7 +512,7 @@ public data class Subscription(
        * `Bearer 0193...`.
        */
       public var `value`: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -553,11 +553,11 @@ public data class Subscription(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Parameter =
+      override fun build(): Parameter =
         Parameter(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name.build(),
           `value` = `value`.build(),
         )
@@ -795,21 +795,21 @@ public data class Subscription(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         name = name?.build(),
         status = status,
         topic = topic.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         end = end?.build(),
         managingEntity = managingEntity?.build(),
         reason = reason?.build(),
-        filterBy = filterBy.mapToList { it.build() },
+        filterBy = filterBy.buildList(),
         channelType = channelType.build(),
         endpoint = endpoint?.build(),
-        parameter = parameter.mapToList { it.build() },
+        parameter = parameter.buildList(),
         heartbeatPeriod = heartbeatPeriod?.build(),
         timeout = timeout?.build(),
         contentType = contentType?.build(),

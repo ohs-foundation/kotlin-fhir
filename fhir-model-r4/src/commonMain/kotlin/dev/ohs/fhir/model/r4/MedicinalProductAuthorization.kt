@@ -181,13 +181,13 @@ public data class MedicinalProductAuthorization(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.subject = subject?.toBuilder()
-    builder.country = country.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.country = country.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.status = status?.toBuilder()
     builder.statusDate = statusDate?.toBuilder()
     builder.restoreDate = restoreDate?.toBuilder()
@@ -196,9 +196,7 @@ public data class MedicinalProductAuthorization(
     builder.dateOfFirstAuthorization = dateOfFirstAuthorization?.toBuilder()
     builder.internationalBirthDate = internationalBirthDate?.toBuilder()
     builder.legalBasis = legalBasis?.toBuilder()
-    builder.jurisdictionalAuthorization = jurisdictionalAuthorization.mapToMutableList {
-      it.toBuilder()
-    }
+    builder.jurisdictionalAuthorization = jurisdictionalAuthorization.toBuilderList()
     builder.holder = holder?.toBuilder()
     builder.regulator = regulator?.toBuilder()
     builder.procedure = procedure?.toBuilder()
@@ -255,21 +253,21 @@ public data class MedicinalProductAuthorization(
     public val legalStatusOfSupply: CodeableConcept? = null,
     /** The start and expected end date of the authorization. */
     public val validityPeriod: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.identifier = identifier.toBuilderList()
       builder.country = country?.toBuilder()
-      builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+      builder.jurisdiction = jurisdiction.toBuilderList()
       builder.legalStatusOfSupply = legalStatusOfSupply?.toBuilder()
       builder.validityPeriod = validityPeriod?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -325,14 +323,14 @@ public data class MedicinalProductAuthorization(
       /** The start and expected end date of the authorization. */
       public var validityPeriod: Period.Builder? = null
 
-      public fun build(): JurisdictionalAuthorization =
+      override fun build(): JurisdictionalAuthorization =
         JurisdictionalAuthorization(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          identifier = identifier.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          identifier = identifier.buildList(),
           country = country?.build(),
-          jurisdiction = jurisdiction.mapToList { it.build() },
+          jurisdiction = jurisdiction.buildList(),
           legalStatusOfSupply = legalStatusOfSupply?.build(),
           validityPeriod = validityPeriod?.build(),
         )
@@ -387,15 +385,15 @@ public data class MedicinalProductAuthorization(
     public val date: Date? = null,
     /** Applcations submitted to obtain a marketing authorization. */
     public val application: List<Procedure> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.identifier = identifier?.toBuilder()
       builder.date = date
-      builder.application = application.mapToMutableList { it.toBuilder() }
+      builder.application = application.toBuilderList()
       return builder
     }
 
@@ -423,7 +421,7 @@ public data class MedicinalProductAuthorization(
     public class Builder(
       /** Type of procedure. */
       public var type: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -473,15 +471,15 @@ public data class MedicinalProductAuthorization(
       /** Applcations submitted to obtain a marketing authorization. */
       public var application: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Procedure =
+      override fun build(): Procedure =
         Procedure(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identifier = identifier?.build(),
           type = type.build(),
           date = date,
-          application = application.mapToList { it.build() },
+          application = application.buildList(),
         )
     }
   }
@@ -660,13 +658,13 @@ public data class MedicinalProductAuthorization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         subject = subject?.build(),
-        country = country.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        country = country.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         status = status?.build(),
         statusDate = statusDate?.build(),
         restoreDate = restoreDate?.build(),
@@ -675,7 +673,7 @@ public data class MedicinalProductAuthorization(
         dateOfFirstAuthorization = dateOfFirstAuthorization?.build(),
         internationalBirthDate = internationalBirthDate?.build(),
         legalBasis = legalBasis?.build(),
-        jurisdictionalAuthorization = jurisdictionalAuthorization.mapToList { it.build() },
+        jurisdictionalAuthorization = jurisdictionalAuthorization.buildList(),
         holder = holder?.build(),
         regulator = regulator?.build(),
         procedure = procedure?.build(),

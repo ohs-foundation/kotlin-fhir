@@ -149,13 +149,13 @@ public data class SubstanceReferenceInformation(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.comment = comment?.toBuilder()
-    builder.gene = gene.mapToMutableList { it.toBuilder() }
-    builder.geneElement = geneElement.mapToMutableList { it.toBuilder() }
-    builder.target = target.mapToMutableList { it.toBuilder() }
+    builder.gene = gene.toBuilderList()
+    builder.geneElement = geneElement.toBuilderList()
+    builder.target = target.toBuilderList()
     return builder
   }
 
@@ -205,19 +205,19 @@ public data class SubstanceReferenceInformation(
     public val gene: CodeableConcept? = null,
     /** Todo. */
     public val source: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.geneSequenceOrigin = geneSequenceOrigin?.toBuilder()
       builder.gene = gene?.toBuilder()
-      builder.source = source.mapToMutableList { it.toBuilder() }
+      builder.source = source.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -267,14 +267,14 @@ public data class SubstanceReferenceInformation(
       /** Todo. */
       public var source: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Gene =
+      override fun build(): Gene =
         Gene(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           geneSequenceOrigin = geneSequenceOrigin?.build(),
           gene = gene?.build(),
-          source = source.mapToList { it.build() },
+          source = source.buildList(),
         )
     }
   }
@@ -325,19 +325,19 @@ public data class SubstanceReferenceInformation(
     public val element: Identifier? = null,
     /** Todo. */
     public val source: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.element = element?.toBuilder()
-      builder.source = source.mapToMutableList { it.toBuilder() }
+      builder.source = source.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -387,14 +387,14 @@ public data class SubstanceReferenceInformation(
       /** Todo. */
       public var source: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): GeneElement =
+      override fun build(): GeneElement =
         GeneElement(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
           element = element?.build(),
-          source = source.mapToList { it.build() },
+          source = source.buildList(),
         )
     }
   }
@@ -455,12 +455,12 @@ public data class SubstanceReferenceInformation(
     public val amountType: CodeableConcept? = null,
     /** Todo. */
     public val source: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.target = target?.toBuilder()
       builder.type = type?.toBuilder()
       builder.interaction = interaction?.toBuilder()
@@ -468,7 +468,7 @@ public data class SubstanceReferenceInformation(
       builder.organismType = organismType?.toBuilder()
       builder.amount = amount
       builder.amountType = amountType?.toBuilder()
-      builder.source = source.mapToMutableList { it.toBuilder() }
+      builder.source = source.toBuilderList()
       return builder
     }
 
@@ -499,7 +499,7 @@ public data class SubstanceReferenceInformation(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -564,11 +564,11 @@ public data class SubstanceReferenceInformation(
       /** Todo. */
       public var source: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Target =
+      override fun build(): Target =
         Target(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           target = target?.build(),
           type = type?.build(),
           interaction = interaction?.build(),
@@ -576,7 +576,7 @@ public data class SubstanceReferenceInformation(
           organismType = organismType?.build(),
           amount = amount,
           amountType = amountType?.build(),
-          source = source.mapToList { it.build() },
+          source = source.buildList(),
         )
     }
   }
@@ -708,13 +708,13 @@ public data class SubstanceReferenceInformation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         comment = comment?.build(),
-        gene = gene.mapToList { it.build() },
-        geneElement = geneElement.mapToList { it.build() },
-        target = target.mapToList { it.build() },
+        gene = gene.buildList(),
+        geneElement = geneElement.buildList(),
+        target = target.buildList(),
       )
   }
 }

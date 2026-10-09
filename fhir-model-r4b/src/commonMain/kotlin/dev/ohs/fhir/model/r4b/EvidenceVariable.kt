@@ -330,11 +330,11 @@ public data class EvidenceVariable(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
@@ -342,20 +342,20 @@ public data class EvidenceVariable(
     builder.subtitle = subtitle?.toBuilder()
     builder.date = date?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
+    builder.useContext = useContext.toBuilderList()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
     builder.`actual` = `actual`?.toBuilder()
     builder.characteristicCombination = characteristicCombination
-    builder.characteristic = characteristic.mapToMutableList { it.toBuilder() }
+    builder.characteristic = characteristic.toBuilderList()
     builder.handling = handling
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     return builder
   }
 
@@ -423,12 +423,12 @@ public data class EvidenceVariable(
     public val timeFromStart: TimeFromStart? = null,
     /** Indicates how elements are aggregated within the study effective period. */
     public val groupMeasure: Enumeration<GroupMeasure>? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(definition)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.method = method?.toBuilder()
       builder.device = device?.toBuilder()
@@ -486,20 +486,20 @@ public data class EvidenceVariable(
       public val range: Range? = null,
       /** A human-readable string to clarify or explain concepts about the resource. */
       public val note: List<Annotation> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.description = description?.toBuilder()
         builder.quantity = quantity?.toBuilder()
         builder.range = range?.toBuilder()
-        builder.note = note.mapToMutableList { it.toBuilder() }
+        builder.note = note.toBuilderList()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -552,15 +552,15 @@ public data class EvidenceVariable(
         /** A human-readable string to clarify or explain concepts about the resource. */
         public var note: MutableList<Annotation.Builder> = mutableListOf()
 
-        public fun build(): TimeFromStart =
+        override fun build(): TimeFromStart =
           TimeFromStart(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             description = description?.build(),
             quantity = quantity?.build(),
             range = range?.build(),
-            note = note.mapToList { it.build() },
+            note = note.buildList(),
           )
       }
     }
@@ -610,7 +610,7 @@ public data class EvidenceVariable(
        * DataRequirements (such as Diabetes diagnosis onset in the last year).
        */
       public var definition: Definition
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -672,11 +672,11 @@ public data class EvidenceVariable(
       /** Indicates how elements are aggregated within the study effective period. */
       public var groupMeasure: Enumeration<GroupMeasure>? = null
 
-      public fun build(): Characteristic =
+      override fun build(): Characteristic =
         Characteristic(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           definition = definition,
           method = method?.build(),
@@ -735,12 +735,12 @@ public data class EvidenceVariable(
     public val name: String? = null,
     /** Value or set of values that define the grouping. */
     public val `value`: Value? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       builder.`value` = `value`
       return builder
@@ -775,7 +775,7 @@ public data class EvidenceVariable(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -822,11 +822,11 @@ public data class EvidenceVariable(
       /** Value or set of values that define the grouping. */
       public var `value`: Value? = null
 
-      public fun build(): Category =
+      override fun build(): Category =
         Category(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name?.build(),
           `value` = `value`,
         )
@@ -1162,11 +1162,11 @@ public data class EvidenceVariable(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -1175,20 +1175,20 @@ public data class EvidenceVariable(
         status = status,
         date = date?.build(),
         description = description?.build(),
-        note = note.mapToList { it.build() },
-        useContext = useContext.mapToList { it.build() },
+        note = note.buildList(),
+        useContext = useContext.buildList(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        contact = contact.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
         `actual` = `actual`?.build(),
         characteristicCombination = characteristicCombination,
-        characteristic = characteristic.mapToList { it.build() },
+        characteristic = characteristic.buildList(),
         handling = handling,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
       )
   }
 }

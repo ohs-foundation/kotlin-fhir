@@ -300,29 +300,29 @@ public data class CarePlan(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.replaces = replaces.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+    builder.instantiatesUri = instantiatesUri.toBuilderList()
+    builder.basedOn = basedOn.toBuilderList()
+    builder.replaces = replaces.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.title = title?.toBuilder()
     builder.description = description?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.period = period?.toBuilder()
     builder.created = created?.toBuilder()
     builder.author = author?.toBuilder()
-    builder.contributor = contributor.mapToMutableList { it.toBuilder() }
-    builder.careTeam = careTeam.mapToMutableList { it.toBuilder() }
-    builder.addresses = addresses.mapToMutableList { it.toBuilder() }
-    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
-    builder.goal = goal.mapToMutableList { it.toBuilder() }
-    builder.activity = activity.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.contributor = contributor.toBuilderList()
+    builder.careTeam = careTeam.toBuilderList()
+    builder.addresses = addresses.toBuilderList()
+    builder.supportingInfo = supportingInfo.toBuilderList()
+    builder.goal = goal.toBuilderList()
+    builder.activity = activity.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -412,15 +412,15 @@ public data class CarePlan(
      * driven) that doesn't know about specific resources such as procedure etc.
      */
     public val detail: Detail? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.outcomeCodeableConcept = outcomeCodeableConcept.mapToMutableList { it.toBuilder() }
-      builder.outcomeReference = outcomeReference.mapToMutableList { it.toBuilder() }
-      builder.progress = progress.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.outcomeCodeableConcept = outcomeCodeableConcept.toBuilderList()
+      builder.outcomeReference = outcomeReference.toBuilderList()
+      builder.progress = progress.toBuilderList()
       builder.reference = reference?.toBuilder()
       builder.detail = detail?.toBuilder()
       return builder
@@ -572,24 +572,24 @@ public data class CarePlan(
        * method, route, etc.
        */
       public val description: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(status)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.kind = kind
-        builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-        builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+        builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+        builder.instantiatesUri = instantiatesUri.toBuilderList()
         builder.code = code?.toBuilder()
-        builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
-        builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
-        builder.goal = goal.mapToMutableList { it.toBuilder() }
+        builder.reasonCode = reasonCode.toBuilderList()
+        builder.reasonReference = reasonReference.toBuilderList()
+        builder.goal = goal.toBuilderList()
         builder.statusReason = statusReason?.toBuilder()
         builder.doNotPerform = doNotPerform?.toBuilder()
         builder.scheduled = scheduled
         builder.location = location?.toBuilder()
-        builder.performer = performer.mapToMutableList { it.toBuilder() }
+        builder.performer = performer.toBuilderList()
         builder.product = product
         builder.dailyAmount = dailyAmount?.toBuilder()
         builder.quantity = quantity?.toBuilder()
@@ -659,7 +659,7 @@ public data class CarePlan(
          * activity.
          */
         public var status: Enumeration<CarePlanActivityStatus>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -812,24 +812,24 @@ public data class CarePlan(
          */
         public var description: String.Builder? = null
 
-        public fun build(): Detail =
+        override fun build(): Detail =
           Detail(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             kind = kind,
-            instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-            instantiatesUri = instantiatesUri.mapToList { it.build() },
+            instantiatesCanonical = instantiatesCanonical.buildList(),
+            instantiatesUri = instantiatesUri.buildList(),
             code = code?.build(),
-            reasonCode = reasonCode.mapToList { it.build() },
-            reasonReference = reasonReference.mapToList { it.build() },
-            goal = goal.mapToList { it.build() },
+            reasonCode = reasonCode.buildList(),
+            reasonReference = reasonReference.buildList(),
+            goal = goal.buildList(),
             status = status,
             statusReason = statusReason?.build(),
             doNotPerform = doNotPerform?.build(),
             scheduled = scheduled,
             location = location?.build(),
-            performer = performer.mapToList { it.build() },
+            performer = performer.buildList(),
             product = product,
             dailyAmount = dailyAmount?.build(),
             quantity = quantity?.build(),
@@ -838,7 +838,7 @@ public data class CarePlan(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -928,14 +928,14 @@ public data class CarePlan(
        */
       public var detail: Detail.Builder? = null
 
-      public fun build(): Activity =
+      override fun build(): Activity =
         Activity(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          outcomeCodeableConcept = outcomeCodeableConcept.mapToList { it.build() },
-          outcomeReference = outcomeReference.mapToList { it.build() },
-          progress = progress.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          outcomeCodeableConcept = outcomeCodeableConcept.buildList(),
+          outcomeReference = outcomeReference.buildList(),
+          progress = progress.buildList(),
           reference = reference?.build(),
           detail = detail?.build(),
         )
@@ -1227,18 +1227,18 @@ public data class CarePlan(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-        instantiatesUri = instantiatesUri.mapToList { it.build() },
-        basedOn = basedOn.mapToList { it.build() },
-        replaces = replaces.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        instantiatesCanonical = instantiatesCanonical.buildList(),
+        instantiatesUri = instantiatesUri.buildList(),
+        basedOn = basedOn.buildList(),
+        replaces = replaces.buildList(),
+        partOf = partOf.buildList(),
         status = status,
         intent = intent,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         title = title?.build(),
         description = description?.build(),
         subject = subject.build(),
@@ -1246,13 +1246,13 @@ public data class CarePlan(
         period = period?.build(),
         created = created?.build(),
         author = author?.build(),
-        contributor = contributor.mapToList { it.build() },
-        careTeam = careTeam.mapToList { it.build() },
-        addresses = addresses.mapToList { it.build() },
-        supportingInfo = supportingInfo.mapToList { it.build() },
-        goal = goal.mapToList { it.build() },
-        activity = activity.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        contributor = contributor.buildList(),
+        careTeam = careTeam.buildList(),
+        addresses = addresses.buildList(),
+        supportingInfo = supportingInfo.buildList(),
+        goal = goal.buildList(),
+        activity = activity.buildList(),
+        note = note.buildList(),
       )
   }
 }

@@ -377,18 +377,18 @@ public data class Evidence(
     val builder =
       Builder(
         status,
-        variableDefinition.mapToMutableList { it.toBuilder() },
+        variableDefinition.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.name = name?.toBuilder()
@@ -399,23 +399,23 @@ public data class Evidence(
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.useContext = useContext.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
     builder.description = description?.toBuilder()
     builder.assertion = assertion?.toBuilder()
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.note = note.toBuilderList()
     builder.synthesisType = synthesisType?.toBuilder()
-    builder.studyDesign = studyDesign.mapToMutableList { it.toBuilder() }
-    builder.statistic = statistic.mapToMutableList { it.toBuilder() }
-    builder.certainty = certainty.mapToMutableList { it.toBuilder() }
+    builder.studyDesign = studyDesign.toBuilderList()
+    builder.statistic = statistic.toBuilderList()
+    builder.certainty = certainty.toBuilderList()
     return builder
   }
 
@@ -473,14 +473,14 @@ public data class Evidence(
     public val intended: Reference? = null,
     /** Indication of quality of match between intended variable to actual variable. */
     public val directnessMatch: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(variableRole.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.note = note.toBuilderList()
       builder.observed = observed?.toBuilder()
       builder.intended = intended?.toBuilder()
       builder.directnessMatch = directnessMatch?.toBuilder()
@@ -492,7 +492,7 @@ public data class Evidence(
        * population | subpopulation | exposure | referenceExposure | measuredVariable | confounder.
        */
       public var variableRole: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -548,13 +548,13 @@ public data class Evidence(
       /** Indication of quality of match between intended variable to actual variable. */
       public var directnessMatch: CodeableConcept.Builder? = null
 
-      public fun build(): VariableDefinition =
+      override fun build(): VariableDefinition =
         VariableDefinition(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
-          note = note.mapToList { it.build() },
+          note = note.buildList(),
           variableRole = variableRole.build(),
           observed = observed?.build(),
           intended = intended?.build(),
@@ -650,22 +650,22 @@ public data class Evidence(
     public val attributeEstimate: List<AttributeEstimate> = listOf(),
     /** A component of the method to generate the statistic. */
     public val modelCharacteristic: List<ModelCharacteristic> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.note = note.toBuilderList()
       builder.statisticType = statisticType?.toBuilder()
       builder.category = category?.toBuilder()
       builder.quantity = quantity?.toBuilder()
       builder.numberOfEvents = numberOfEvents?.toBuilder()
       builder.numberAffected = numberAffected?.toBuilder()
       builder.sampleSize = sampleSize?.toBuilder()
-      builder.attributeEstimate = attributeEstimate.mapToMutableList { it.toBuilder() }
-      builder.modelCharacteristic = modelCharacteristic.mapToMutableList { it.toBuilder() }
+      builder.attributeEstimate = attributeEstimate.toBuilderList()
+      builder.modelCharacteristic = modelCharacteristic.toBuilderList()
       return builder
     }
 
@@ -719,21 +719,21 @@ public data class Evidence(
       public val numberOfParticipants: UnsignedInt? = null,
       /** Number of participants with known results for measured variables. */
       public val knownDataCount: UnsignedInt? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.description = description?.toBuilder()
-        builder.note = note.mapToMutableList { it.toBuilder() }
+        builder.note = note.toBuilderList()
         builder.numberOfStudies = numberOfStudies?.toBuilder()
         builder.numberOfParticipants = numberOfParticipants?.toBuilder()
         builder.knownDataCount = knownDataCount?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -789,13 +789,13 @@ public data class Evidence(
         /** Number of participants with known results for measured variables. */
         public var knownDataCount: UnsignedInt.Builder? = null
 
-        public fun build(): SampleSize =
+        override fun build(): SampleSize =
           SampleSize(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             description = description?.build(),
-            note = note.mapToList { it.build() },
+            note = note.buildList(),
             numberOfStudies = numberOfStudies?.build(),
             numberOfParticipants = numberOfParticipants?.build(),
             knownDataCount = knownDataCount?.build(),
@@ -866,23 +866,23 @@ public data class Evidence(
        * A nested attribute estimate; which is the attribute estimate of an attribute estimate
        */
       public val attributeEstimate: List<AttributeEstimate> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.description = description?.toBuilder()
-        builder.note = note.mapToMutableList { it.toBuilder() }
+        builder.note = note.toBuilderList()
         builder.type = type?.toBuilder()
         builder.quantity = quantity?.toBuilder()
         builder.level = level?.toBuilder()
         builder.range = range?.toBuilder()
-        builder.attributeEstimate = attributeEstimate.mapToMutableList { it.toBuilder() }
+        builder.attributeEstimate = attributeEstimate.toBuilderList()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -953,18 +953,18 @@ public data class Evidence(
          */
         public var attributeEstimate: MutableList<Builder> = mutableListOf()
 
-        public fun build(): AttributeEstimate =
+        override fun build(): AttributeEstimate =
           AttributeEstimate(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             description = description?.build(),
-            note = note.mapToList { it.build() },
+            note = note.buildList(),
             type = type?.build(),
             quantity = quantity?.build(),
             level = level?.build(),
             range = range?.build(),
-            attributeEstimate = attributeEstimate.mapToList { it.build() },
+            attributeEstimate = attributeEstimate.buildList(),
           )
       }
     }
@@ -1020,15 +1020,15 @@ public data class Evidence(
       public val variable: List<Variable> = listOf(),
       /** An attribute of the statistic used as a model characteristic. */
       public val attributeEstimate: List<AttributeEstimate> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(code.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.`value` = `value`?.toBuilder()
-        builder.variable = variable.mapToMutableList { it.toBuilder() }
-        builder.attributeEstimate = attributeEstimate.mapToMutableList { it.toBuilder() }
+        builder.variable = variable.toBuilderList()
+        builder.attributeEstimate = attributeEstimate.toBuilderList()
         return builder
       }
 
@@ -1082,23 +1082,23 @@ public data class Evidence(
         public val valueQuantity: List<Quantity> = listOf(),
         /** Range of values for grouping of ordinal or polychotomous variables. */
         public val valueRange: List<Range> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(variableDefinition.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.handling = handling
-          builder.valueCategory = valueCategory.mapToMutableList { it.toBuilder() }
-          builder.valueQuantity = valueQuantity.mapToMutableList { it.toBuilder() }
-          builder.valueRange = valueRange.mapToMutableList { it.toBuilder() }
+          builder.valueCategory = valueCategory.toBuilderList()
+          builder.valueQuantity = valueQuantity.toBuilderList()
+          builder.valueRange = valueRange.toBuilderList()
           return builder
         }
 
         public class Builder(
           /** Description of the variable. */
           public var variableDefinition: Reference.Builder
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1151,16 +1151,16 @@ public data class Evidence(
           /** Range of values for grouping of ordinal or polychotomous variables. */
           public var valueRange: MutableList<Range.Builder> = mutableListOf()
 
-          public fun build(): Variable =
+          override fun build(): Variable =
             Variable(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               variableDefinition = variableDefinition.build(),
               handling = handling,
-              valueCategory = valueCategory.mapToList { it.build() },
-              valueQuantity = valueQuantity.mapToList { it.build() },
-              valueRange = valueRange.mapToList { it.build() },
+              valueCategory = valueCategory.buildList(),
+              valueQuantity = valueQuantity.buildList(),
+              valueRange = valueRange.buildList(),
             )
         }
       }
@@ -1168,7 +1168,7 @@ public data class Evidence(
       public class Builder(
         /** Description of a component of the method to generate the statistic. */
         public var code: CodeableConcept.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1221,20 +1221,20 @@ public data class Evidence(
         /** An attribute of the statistic used as a model characteristic. */
         public var attributeEstimate: MutableList<AttributeEstimate.Builder> = mutableListOf()
 
-        public fun build(): ModelCharacteristic =
+        override fun build(): ModelCharacteristic =
           ModelCharacteristic(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code.build(),
             `value` = `value`?.build(),
-            variable = variable.mapToList { it.build() },
-            attributeEstimate = attributeEstimate.mapToList { it.build() },
+            variable = variable.buildList(),
+            attributeEstimate = attributeEstimate.buildList(),
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1333,21 +1333,21 @@ public data class Evidence(
       /** A component of the method to generate the statistic. */
       public var modelCharacteristic: MutableList<ModelCharacteristic.Builder> = mutableListOf()
 
-      public fun build(): Statistic =
+      override fun build(): Statistic =
         Statistic(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
-          note = note.mapToList { it.build() },
+          note = note.buildList(),
           statisticType = statisticType?.build(),
           category = category?.build(),
           quantity = quantity?.build(),
           numberOfEvents = numberOfEvents?.build(),
           numberAffected = numberAffected?.build(),
           sampleSize = sampleSize?.build(),
-          attributeEstimate = attributeEstimate.mapToList { it.build() },
-          modelCharacteristic = modelCharacteristic.mapToList { it.build() },
+          attributeEstimate = attributeEstimate.buildList(),
+          modelCharacteristic = modelCharacteristic.buildList(),
         )
     }
   }
@@ -1404,22 +1404,22 @@ public data class Evidence(
     public val rater: String? = null,
     /** A domain or subdomain of certainty. */
     public val subcomponent: List<Certainty> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.note = note.toBuilderList()
       builder.type = type?.toBuilder()
       builder.rating = rating?.toBuilder()
       builder.rater = rater?.toBuilder()
-      builder.subcomponent = subcomponent.mapToMutableList { it.toBuilder() }
+      builder.subcomponent = subcomponent.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1478,17 +1478,17 @@ public data class Evidence(
       /** A domain or subdomain of certainty. */
       public var subcomponent: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Certainty =
+      override fun build(): Certainty =
         Certainty(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
-          note = note.mapToList { it.build() },
+          note = note.buildList(),
           type = type?.build(),
           rating = rating?.build(),
           rater = rater?.build(),
-          subcomponent = subcomponent.mapToList { it.build() },
+          subcomponent = subcomponent.buildList(),
         )
     }
   }
@@ -1910,11 +1910,11 @@ public data class Evidence(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -1926,24 +1926,24 @@ public data class Evidence(
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        useContext = useContext.mapToList { it.build() },
+        contact = contact.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        useContext = useContext.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        relatedArtifact = relatedArtifact.buildList(),
         description = description?.build(),
         assertion = assertion?.build(),
-        note = note.mapToList { it.build() },
-        variableDefinition = variableDefinition.mapToList { it.build() },
+        note = note.buildList(),
+        variableDefinition = variableDefinition.buildList(),
         synthesisType = synthesisType?.build(),
-        studyDesign = studyDesign.mapToList { it.build() },
-        statistic = statistic.mapToList { it.build() },
-        certainty = certainty.mapToList { it.build() },
+        studyDesign = studyDesign.buildList(),
+        statistic = statistic.buildList(),
+        certainty = certainty.buildList(),
       )
   }
 }

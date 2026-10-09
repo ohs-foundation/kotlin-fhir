@@ -62,11 +62,11 @@ public data class Extension(
    * [Extensibility](extensibility.html) for a list).
    */
   public val `value`: Value? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(url)
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -426,7 +426,7 @@ public data class Extension(
      * definition SHALL be a URI for the Structure Definition defining the extension.
      */
     public open var url: String
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -453,10 +453,10 @@ public data class Extension(
      */
     public open var `value`: Value? = null
 
-    public open fun build(): Extension =
+    open override fun build(): Extension =
       Extension(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         url = url,
         `value` = `value`,
       )

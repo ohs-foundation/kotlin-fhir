@@ -279,25 +279,25 @@ public data class ExampleScenario(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.copyright = copyright?.toBuilder()
     builder.purpose = purpose?.toBuilder()
-    builder.actor = actor.mapToMutableList { it.toBuilder() }
-    builder.instance = instance.mapToMutableList { it.toBuilder() }
-    builder.process = process.mapToMutableList { it.toBuilder() }
-    builder.workflow = workflow.mapToMutableList { it.toBuilder() }
+    builder.actor = actor.toBuilderList()
+    builder.instance = instance.toBuilderList()
+    builder.process = process.toBuilderList()
+    builder.workflow = workflow.toBuilderList()
     return builder
   }
 
@@ -361,16 +361,16 @@ public data class ExampleScenario(
      * Cardinality: is name and description 1..1?
      */
     public val description: Markdown? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           actorId.toBuilder(),
           type,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       builder.description = description?.toBuilder()
       return builder
@@ -385,7 +385,7 @@ public data class ExampleScenario(
       public var actorId: String.Builder,
       /** The type of actor - person or system. */
       public var type: Enumeration<ExampleScenarioActorType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -440,11 +440,11 @@ public data class ExampleScenario(
        */
       public var description: Markdown.Builder? = null
 
-      public fun build(): Actor =
+      override fun build(): Actor =
         Actor(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           actorId = actorId.build(),
           type = type,
           name = name?.build(),
@@ -505,20 +505,20 @@ public data class ExampleScenario(
     public val version: List<Version> = listOf(),
     /** Resources contained in the instance (e.g. the observations contained in a bundle). */
     public val containedInstance: List<ContainedInstance> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           resourceId.toBuilder(),
           resourceType,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       builder.description = description?.toBuilder()
-      builder.version = version.mapToMutableList { it.toBuilder() }
-      builder.containedInstance = containedInstance.mapToMutableList { it.toBuilder() }
+      builder.version = version.toBuilderList()
+      builder.containedInstance = containedInstance.toBuilderList()
       return builder
     }
 
@@ -566,12 +566,12 @@ public data class ExampleScenario(
       public val versionId: String,
       /** The description of the resource version. */
       public val description: Markdown,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(versionId.toBuilder(), description.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -580,7 +580,7 @@ public data class ExampleScenario(
         public var versionId: String.Builder,
         /** The description of the resource version. */
         public var description: Markdown.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -621,11 +621,11 @@ public data class ExampleScenario(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Version =
+        override fun build(): Version =
           Version(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             versionId = versionId.build(),
             description = description.build(),
           )
@@ -676,12 +676,12 @@ public data class ExampleScenario(
       public val resourceId: String,
       /** A specific version of a resource contained in the instance. */
       public val versionId: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(resourceId.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.versionId = versionId?.toBuilder()
         return builder
       }
@@ -689,7 +689,7 @@ public data class ExampleScenario(
       public class Builder(
         /** Each resource contained in the instance. */
         public var resourceId: String.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -733,11 +733,11 @@ public data class ExampleScenario(
         /** A specific version of a resource contained in the instance. */
         public var versionId: String.Builder? = null
 
-        public fun build(): ContainedInstance =
+        override fun build(): ContainedInstance =
           ContainedInstance(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             resourceId = resourceId.build(),
             versionId = versionId?.build(),
           )
@@ -749,7 +749,7 @@ public data class ExampleScenario(
       public var resourceId: String.Builder,
       /** The type of the resource. */
       public var resourceType: Enumeration<ResourceType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -802,17 +802,17 @@ public data class ExampleScenario(
       /** Resources contained in the instance (e.g. the observations contained in a bundle). */
       public var containedInstance: MutableList<ContainedInstance.Builder> = mutableListOf()
 
-      public fun build(): Instance =
+      override fun build(): Instance =
         Instance(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           resourceId = resourceId.build(),
           resourceType = resourceType,
           name = name?.build(),
           description = description?.build(),
-          version = version.mapToList { it.build() },
-          containedInstance = containedInstance.mapToList { it.build() },
+          version = version.buildList(),
+          containedInstance = containedInstance.buildList(),
         )
     }
   }
@@ -867,16 +867,16 @@ public data class ExampleScenario(
     public val postConditions: Markdown? = null,
     /** Each step of the process. */
     public val step: List<Step> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(title.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.preConditions = preConditions?.toBuilder()
       builder.postConditions = postConditions?.toBuilder()
-      builder.step = step.mapToMutableList { it.toBuilder() }
+      builder.step = step.toBuilderList()
       return builder
     }
 
@@ -931,16 +931,16 @@ public data class ExampleScenario(
        * in exceptional/atypical circumstances.
        */
       public val alternative: List<Alternative> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-        builder.process = process.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
+        builder.process = process.toBuilderList()
         builder.pause = pause?.toBuilder()
         builder.operation = operation?.toBuilder()
-        builder.alternative = alternative.mapToMutableList { it.toBuilder() }
+        builder.alternative = alternative.toBuilderList()
         return builder
       }
 
@@ -1004,12 +1004,12 @@ public data class ExampleScenario(
         public val request: Instance.ContainedInstance? = null,
         /** Each resource instance used by the responder. */
         public val response: Instance.ContainedInstance? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(number.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.type = type?.toBuilder()
           builder.name = name?.toBuilder()
           builder.initiator = initiator?.toBuilder()
@@ -1025,7 +1025,7 @@ public data class ExampleScenario(
         public class Builder(
           /** The sequential number of the interaction, e.g. 1.2.5. */
           public var number: String.Builder
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1093,11 +1093,11 @@ public data class ExampleScenario(
           /** Each resource instance used by the responder. */
           public var response: Instance.ContainedInstance.Builder? = null
 
-          public fun build(): Operation =
+          override fun build(): Operation =
             Operation(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               number = number.build(),
               type = type?.build(),
               name = name?.build(),
@@ -1167,14 +1167,14 @@ public data class ExampleScenario(
         public val description: Markdown? = null,
         /** What happens in each alternative option. */
         public val step: List<Step> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(title.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.description = description?.toBuilder()
-          builder.step = step.mapToMutableList { it.toBuilder() }
+          builder.step = step.toBuilderList()
           return builder
         }
 
@@ -1184,7 +1184,7 @@ public data class ExampleScenario(
            * which the alternative should be invoked.
            */
           public var title: String.Builder
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1234,19 +1234,19 @@ public data class ExampleScenario(
           /** What happens in each alternative option. */
           public var step: MutableList<Step.Builder> = mutableListOf()
 
-          public fun build(): Alternative =
+          override fun build(): Alternative =
             Alternative(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               title = title.build(),
               description = description?.build(),
-              step = step.mapToList { it.build() },
+              step = step.buildList(),
             )
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1302,15 +1302,15 @@ public data class ExampleScenario(
          */
         public var alternative: MutableList<Alternative.Builder> = mutableListOf()
 
-        public fun build(): Step =
+        override fun build(): Step =
           Step(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
-            process = process.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
+            process = process.buildList(),
             pause = pause?.build(),
             operation = operation?.build(),
-            alternative = alternative.mapToList { it.build() },
+            alternative = alternative.buildList(),
           )
       }
     }
@@ -1318,7 +1318,7 @@ public data class ExampleScenario(
     public class Builder(
       /** The diagram title of the group of operations. */
       public var title: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1371,16 +1371,16 @@ public data class ExampleScenario(
       /** Each step of the process. */
       public var step: MutableList<Step.Builder> = mutableListOf()
 
-      public fun build(): Process =
+      override fun build(): Process =
         Process(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           title = title.build(),
           description = description?.build(),
           preConditions = preConditions?.build(),
           postConditions = postConditions?.build(),
-          step = step.mapToList { it.build() },
+          step = step.buildList(),
         )
     }
   }
@@ -1650,26 +1650,26 @@ public data class ExampleScenario(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         status = status,
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        contact = contact.buildList(),
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         copyright = copyright?.build(),
         purpose = purpose?.build(),
-        actor = actor.mapToList { it.build() },
-        instance = instance.mapToList { it.build() },
-        process = process.mapToList { it.build() },
-        workflow = workflow.mapToList { it.build() },
+        actor = actor.buildList(),
+        instance = instance.buildList(),
+        process = process.buildList(),
+        workflow = workflow.buildList(),
       )
   }
 }

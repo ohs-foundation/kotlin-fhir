@@ -206,10 +206,10 @@ public data class PaymentReconciliation(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.period = period?.toBuilder()
     builder.paymentIssuer = paymentIssuer?.toBuilder()
     builder.request = request?.toBuilder()
@@ -217,9 +217,9 @@ public data class PaymentReconciliation(
     builder.outcome = outcome
     builder.disposition = disposition?.toBuilder()
     builder.paymentIdentifier = paymentIdentifier?.toBuilder()
-    builder.detail = detail.mapToMutableList { it.toBuilder() }
+    builder.detail = detail.toBuilderList()
     builder.formCode = formCode?.toBuilder()
-    builder.processNote = processNote.mapToMutableList { it.toBuilder() }
+    builder.processNote = processNote.toBuilderList()
     return builder
   }
 
@@ -290,12 +290,12 @@ public data class PaymentReconciliation(
     public val payee: Reference? = null,
     /** The monetary amount allocated from the total payment to the payable. */
     public val amount: Money? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.identifier = identifier?.toBuilder()
       builder.predecessor = predecessor?.toBuilder()
       builder.request = request?.toBuilder()
@@ -315,7 +315,7 @@ public data class PaymentReconciliation(
        * For example: payment, adjustment, funds advance, etc.
        */
       public var type: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -386,11 +386,11 @@ public data class PaymentReconciliation(
       /** The monetary amount allocated from the total payment to the payable. */
       public var amount: Money.Builder? = null
 
-      public fun build(): Detail =
+      override fun build(): Detail =
         Detail(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identifier = identifier?.build(),
           predecessor = predecessor?.build(),
           type = type.build(),
@@ -449,18 +449,18 @@ public data class PaymentReconciliation(
     public val type: Enumeration<NoteType>? = null,
     /** The explanation or description associated with the processing. */
     public val text: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type
       builder.text = text?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -507,11 +507,11 @@ public data class PaymentReconciliation(
       /** The explanation or description associated with the processing. */
       public var text: String.Builder? = null
 
-      public fun build(): ProcessNote =
+      override fun build(): ProcessNote =
         ProcessNote(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
           text = text?.build(),
         )
@@ -700,10 +700,10 @@ public data class PaymentReconciliation(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         period = period?.build(),
         created = created.build(),
@@ -715,9 +715,9 @@ public data class PaymentReconciliation(
         paymentDate = paymentDate.build(),
         paymentAmount = paymentAmount.build(),
         paymentIdentifier = paymentIdentifier?.build(),
-        detail = detail.mapToList { it.build() },
+        detail = detail.buildList(),
         formCode = formCode?.build(),
-        processNote = processNote.mapToList { it.build() },
+        processNote = processNote.buildList(),
       )
   }
 }

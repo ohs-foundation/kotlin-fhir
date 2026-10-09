@@ -285,25 +285,25 @@ public data class Patient(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
-    builder.name = name.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.name = name.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
     builder.gender = gender
     builder.birthDate = birthDate?.toBuilder()
     builder.deceased = deceased
-    builder.address = address.mapToMutableList { it.toBuilder() }
+    builder.address = address.toBuilderList()
     builder.maritalStatus = maritalStatus?.toBuilder()
     builder.multipleBirth = multipleBirth
-    builder.photo = photo.mapToMutableList { it.toBuilder() }
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
-    builder.communication = communication.mapToMutableList { it.toBuilder() }
-    builder.generalPractitioner = generalPractitioner.mapToMutableList { it.toBuilder() }
+    builder.photo = photo.toBuilderList()
+    builder.contact = contact.toBuilderList()
+    builder.communication = communication.toBuilderList()
+    builder.generalPractitioner = generalPractitioner.toBuilderList()
     builder.managingOrganization = managingOrganization?.toBuilder()
-    builder.link = link.mapToMutableList { it.toBuilder() }
+    builder.link = link.toBuilderList()
     return builder
   }
 
@@ -375,15 +375,15 @@ public data class Patient(
      * to this patient.
      */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.relationship = relationship.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.relationship = relationship.toBuilderList()
       builder.name = name?.toBuilder()
-      builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+      builder.telecom = telecom.toBuilderList()
       builder.address = address?.toBuilder()
       builder.gender = gender
       builder.organization = organization?.toBuilder()
@@ -391,7 +391,7 @@ public data class Patient(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -467,14 +467,14 @@ public data class Patient(
        */
       public var period: Period.Builder? = null
 
-      public fun build(): Contact =
+      override fun build(): Contact =
         Contact(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          relationship = relationship.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          relationship = relationship.buildList(),
           name = name?.build(),
-          telecom = telecom.mapToList { it.build() },
+          telecom = telecom.buildList(),
           address = address?.build(),
           gender = gender,
           organization = organization?.build(),
@@ -540,12 +540,12 @@ public data class Patient(
      * This language is specifically identified for communicating healthcare information.
      */
     public val preferred: Boolean? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(language.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.preferred = preferred?.toBuilder()
       return builder
     }
@@ -561,7 +561,7 @@ public data class Patient(
        * CodeableConcept instead of code as the data type.
        */
       public var language: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -610,11 +610,11 @@ public data class Patient(
        */
       public var preferred: Boolean.Builder? = null
 
-      public fun build(): Communication =
+      override fun build(): Communication =
         Communication(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           language = language.build(),
           preferred = preferred?.build(),
         )
@@ -670,16 +670,16 @@ public data class Patient(
     public val other: Reference,
     /** The type of link between this patient resource and another patient resource. */
     public val type: Enumeration<LinkType>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           other.toBuilder(),
           type,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -693,7 +693,7 @@ public data class Patient(
       public var other: Reference.Builder,
       /** The type of link between this patient resource and another patient resource. */
       public var type: Enumeration<LinkType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -734,11 +734,11 @@ public data class Patient(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Link =
+      override fun build(): Link =
         Link(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           other = other.build(),
           type = type,
         )
@@ -1057,25 +1057,25 @@ public data class Patient(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
-        name = name.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
+        name = name.buildList(),
+        telecom = telecom.buildList(),
         gender = gender,
         birthDate = birthDate?.build(),
         deceased = deceased,
-        address = address.mapToList { it.build() },
+        address = address.buildList(),
         maritalStatus = maritalStatus?.build(),
         multipleBirth = multipleBirth,
-        photo = photo.mapToList { it.build() },
-        contact = contact.mapToList { it.build() },
-        communication = communication.mapToList { it.build() },
-        generalPractitioner = generalPractitioner.mapToList { it.build() },
+        photo = photo.buildList(),
+        contact = contact.buildList(),
+        communication = communication.buildList(),
+        generalPractitioner = generalPractitioner.buildList(),
         managingOrganization = managingOrganization?.build(),
-        link = link.mapToList { it.build() },
+        link = link.buildList(),
       )
   }
 }

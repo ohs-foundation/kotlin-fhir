@@ -241,27 +241,27 @@ public data class ImagingStudy(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.modality = modality.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.modality = modality.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     builder.started = started?.toBuilder()
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.toBuilderList()
     builder.referrer = referrer?.toBuilder()
-    builder.interpreter = interpreter.mapToMutableList { it.toBuilder() }
-    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.interpreter = interpreter.toBuilderList()
+    builder.endpoint = endpoint.toBuilderList()
     builder.numberOfSeries = numberOfSeries?.toBuilder()
     builder.numberOfInstances = numberOfInstances?.toBuilder()
     builder.procedureReference = procedureReference?.toBuilder()
-    builder.procedureCode = procedureCode.mapToMutableList { it.toBuilder() }
+    builder.procedureCode = procedureCode.toBuilderList()
     builder.location = location?.toBuilder()
-    builder.reasonCode = reasonCode.mapToMutableList { it.toBuilder() }
-    builder.reasonReference = reasonReference.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.reasonCode = reasonCode.toBuilderList()
+    builder.reasonReference = reasonReference.toBuilderList()
+    builder.note = note.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.series = series.mapToMutableList { it.toBuilder() }
+    builder.series = series.toBuilderList()
     return builder
   }
 
@@ -362,22 +362,22 @@ public data class ImagingStudy(
     public val performer: List<Performer> = listOf(),
     /** A single SOP instance within the series, e.g. an image, or presentation state. */
     public val instance: List<Instance> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(uid.toBuilder(), modality.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.number = number?.toBuilder()
       builder.description = description?.toBuilder()
       builder.numberOfInstances = numberOfInstances?.toBuilder()
-      builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+      builder.endpoint = endpoint.toBuilderList()
       builder.bodySite = bodySite?.toBuilder()
       builder.laterality = laterality?.toBuilder()
-      builder.specimen = specimen.mapToMutableList { it.toBuilder() }
+      builder.specimen = specimen.toBuilderList()
       builder.started = started?.toBuilder()
-      builder.performer = performer.mapToMutableList { it.toBuilder() }
-      builder.instance = instance.mapToMutableList { it.toBuilder() }
+      builder.performer = performer.toBuilderList()
+      builder.instance = instance.toBuilderList()
       return builder
     }
 
@@ -425,12 +425,12 @@ public data class ImagingStudy(
       public val function: CodeableConcept? = null,
       /** Indicates who or what performed the series. */
       public val actor: Reference,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(actor.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.function = function?.toBuilder()
         return builder
       }
@@ -438,7 +438,7 @@ public data class ImagingStudy(
       public class Builder(
         /** Indicates who or what performed the series. */
         public var actor: Reference.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -482,11 +482,11 @@ public data class ImagingStudy(
         /** Distinguishes the type of involvement of the performer in the series. */
         public var function: CodeableConcept.Builder? = null
 
-        public fun build(): Performer =
+        override fun build(): Performer =
           Performer(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             function = function?.build(),
             actor = actor.build(),
           )
@@ -551,12 +551,12 @@ public data class ImagingStudy(
        * mapping, etc.
        */
       public val title: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(uid.toBuilder(), sopClass.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.number = number?.toBuilder()
         builder.title = title?.toBuilder()
         return builder
@@ -572,7 +572,7 @@ public data class ImagingStudy(
         public var uid: Id.Builder,
         /** DICOM instance type. */
         public var sopClass: Coding.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -624,11 +624,11 @@ public data class ImagingStudy(
          */
         public var title: String.Builder? = null
 
-        public fun build(): Instance =
+        override fun build(): Instance =
           Instance(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             uid = uid.build(),
             sopClass = sopClass.build(),
             number = number?.build(),
@@ -647,7 +647,7 @@ public data class ImagingStudy(
       public var uid: Id.Builder,
       /** The modality of this series sequence. */
       public var modality: Coding.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -747,23 +747,23 @@ public data class ImagingStudy(
       /** A single SOP instance within the series, e.g. an image, or presentation state. */
       public var instance: MutableList<Instance.Builder> = mutableListOf()
 
-      public fun build(): Series =
+      override fun build(): Series =
         Series(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           uid = uid.build(),
           number = number?.build(),
           modality = modality.build(),
           description = description?.build(),
           numberOfInstances = numberOfInstances?.build(),
-          endpoint = endpoint.mapToList { it.build() },
+          endpoint = endpoint.buildList(),
           bodySite = bodySite?.build(),
           laterality = laterality?.build(),
-          specimen = specimen.mapToList { it.build() },
+          specimen = specimen.buildList(),
           started = started?.build(),
-          performer = performer.mapToList { it.build() },
-          instance = instance.mapToList { it.build() },
+          performer = performer.buildList(),
+          instance = instance.buildList(),
         )
     }
   }
@@ -992,29 +992,29 @@ public data class ImagingStudy(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        modality = modality.mapToList { it.build() },
+        modality = modality.buildList(),
         subject = subject.build(),
         encounter = encounter?.build(),
         started = started?.build(),
-        basedOn = basedOn.mapToList { it.build() },
+        basedOn = basedOn.buildList(),
         referrer = referrer?.build(),
-        interpreter = interpreter.mapToList { it.build() },
-        endpoint = endpoint.mapToList { it.build() },
+        interpreter = interpreter.buildList(),
+        endpoint = endpoint.buildList(),
         numberOfSeries = numberOfSeries?.build(),
         numberOfInstances = numberOfInstances?.build(),
         procedureReference = procedureReference?.build(),
-        procedureCode = procedureCode.mapToList { it.build() },
+        procedureCode = procedureCode.buildList(),
         location = location?.build(),
-        reasonCode = reasonCode.mapToList { it.build() },
-        reasonReference = reasonReference.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        reasonCode = reasonCode.buildList(),
+        reasonReference = reasonReference.buildList(),
+        note = note.buildList(),
         description = description?.build(),
-        series = series.mapToList { it.build() },
+        series = series.buildList(),
       )
   }
 }

@@ -185,14 +185,14 @@ public data class Ingredient(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.identifier = identifier?.toBuilder()
-    builder.`for` = `for`.mapToMutableList { it.toBuilder() }
-    builder.function = function.mapToMutableList { it.toBuilder() }
+    builder.`for` = `for`.toBuilderList()
+    builder.function = function.toBuilderList()
     builder.allergenicIndicator = allergenicIndicator?.toBuilder()
-    builder.manufacturer = manufacturer.mapToMutableList { it.toBuilder() }
+    builder.manufacturer = manufacturer.toBuilderList()
     return builder
   }
 
@@ -249,12 +249,12 @@ public data class Ingredient(
     public val role: Enumeration<IngredientManufacturerRole>? = null,
     /** An organization that manufactures this ingredient. */
     public val manufacturer: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(manufacturer.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.role = role
       return builder
     }
@@ -262,7 +262,7 @@ public data class Ingredient(
     public class Builder(
       /** An organization that manufactures this ingredient. */
       public var manufacturer: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -310,11 +310,11 @@ public data class Ingredient(
        */
       public var role: Enumeration<IngredientManufacturerRole>? = null
 
-      public fun build(): Manufacturer =
+      override fun build(): Manufacturer =
         Manufacturer(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           role = role,
           manufacturer = manufacturer.build(),
         )
@@ -370,13 +370,13 @@ public data class Ingredient(
      * single strength.
      */
     public val strength: List<Strength> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.strength = strength.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.strength = strength.toBuilderList()
       return builder
     }
 
@@ -462,19 +462,19 @@ public data class Ingredient(
        * strength are needed.
        */
       public val referenceStrength: List<ReferenceStrength> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.presentation = presentation
         builder.textPresentation = textPresentation?.toBuilder()
         builder.concentration = concentration
         builder.textConcentration = textConcentration?.toBuilder()
         builder.measurementPoint = measurementPoint?.toBuilder()
-        builder.country = country.mapToMutableList { it.toBuilder() }
-        builder.referenceStrength = referenceStrength.mapToMutableList { it.toBuilder() }
+        builder.country = country.toBuilderList()
+        builder.referenceStrength = referenceStrength.toBuilderList()
         return builder
       }
 
@@ -533,15 +533,15 @@ public data class Ingredient(
         public val measurementPoint: String? = null,
         /** The country or countries for which the strength range applies. */
         public val country: List<CodeableConcept> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(strength)
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.substance = substance?.toBuilder()
           builder.measurementPoint = measurementPoint?.toBuilder()
-          builder.country = country.mapToMutableList { it.toBuilder() }
+          builder.country = country.toBuilderList()
           return builder
         }
 
@@ -570,7 +570,7 @@ public data class Ingredient(
         public class Builder(
           /** Strength expressed in terms of a reference substance. */
           public var strength: Strength
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -620,15 +620,15 @@ public data class Ingredient(
           /** The country or countries for which the strength range applies. */
           public var country: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-          public fun build(): ReferenceStrength =
+          override fun build(): ReferenceStrength =
             ReferenceStrength(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               substance = substance?.build(),
               strength = strength,
               measurementPoint = measurementPoint?.build(),
-              country = country.mapToList { it.build() },
+              country = country.buildList(),
             )
         }
       }
@@ -677,7 +677,7 @@ public data class Ingredient(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -763,18 +763,18 @@ public data class Ingredient(
          */
         public var referenceStrength: MutableList<ReferenceStrength.Builder> = mutableListOf()
 
-        public fun build(): Strength =
+        override fun build(): Strength =
           Strength(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             presentation = presentation,
             textPresentation = textPresentation?.build(),
             concentration = concentration,
             textConcentration = textConcentration?.build(),
             measurementPoint = measurementPoint?.build(),
-            country = country.mapToList { it.build() },
-            referenceStrength = referenceStrength.mapToList { it.build() },
+            country = country.buildList(),
+            referenceStrength = referenceStrength.buildList(),
           )
       }
     }
@@ -782,7 +782,7 @@ public data class Ingredient(
     public class Builder(
       /** A code or full resource that represents the ingredient's substance. */
       public var code: CodeableReference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -831,13 +831,13 @@ public data class Ingredient(
        */
       public var strength: MutableList<Strength.Builder> = mutableListOf()
 
-      public fun build(): Substance =
+      override fun build(): Substance =
         Substance(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
-          strength = strength.mapToList { it.build() },
+          strength = strength.buildList(),
         )
     }
   }
@@ -999,16 +999,16 @@ public data class Ingredient(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         identifier = identifier?.build(),
         status = status,
-        `for` = `for`.mapToList { it.build() },
+        `for` = `for`.buildList(),
         role = role.build(),
-        function = function.mapToList { it.build() },
+        function = function.buildList(),
         allergenicIndicator = allergenicIndicator?.build(),
-        manufacturer = manufacturer.mapToList { it.build() },
+        manufacturer = manufacturer.buildList(),
         substance = substance.build(),
       )
   }

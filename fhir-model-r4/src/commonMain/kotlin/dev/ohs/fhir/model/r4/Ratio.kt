@@ -56,17 +56,17 @@ public data class Ratio(
   public val numerator: Quantity? = null,
   /** The value of the denominator. */
   public val denominator: Quantity? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.numerator = numerator?.toBuilder()
     builder.denominator = denominator?.toBuilder()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -93,10 +93,10 @@ public data class Ratio(
     /** The value of the denominator. */
     public open var denominator: Quantity.Builder? = null
 
-    public open fun build(): Ratio =
+    open override fun build(): Ratio =
       Ratio(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         numerator = numerator?.build(),
         denominator = denominator?.build(),
       )

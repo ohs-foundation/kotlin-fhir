@@ -186,10 +186,10 @@ public data class Subscription(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.contact = contact.toBuilderList()
     builder.end = end?.toBuilder()
     builder.error = error?.toBuilder()
     return builder
@@ -264,22 +264,22 @@ public data class Subscription(
      * the outgoing notifications for rest-hook type subscriptions.
      */
     public val `header`: List<String> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(type)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.endpoint = endpoint?.toBuilder()
       builder.payload = payload?.toBuilder()
-      builder.`header` = `header`.mapToMutableList { it.toBuilder() }
+      builder.`header` = `header`.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** The type of channel to send notifications on. */
       public var type: Enumeration<SubscriptionChannelType>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -351,15 +351,15 @@ public data class Subscription(
        */
       public var `header`: MutableList<String.Builder> = mutableListOf()
 
-      public fun build(): Channel =
+      override fun build(): Channel =
         Channel(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
           endpoint = endpoint?.build(),
           payload = payload?.build(),
-          `header` = `header`.mapToList { it.build() },
+          `header` = `header`.buildList(),
         )
     }
   }
@@ -517,11 +517,11 @@ public data class Subscription(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         status = status,
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         end = end?.build(),
         reason = reason.build(),
         criteria = criteria.build(),

@@ -159,12 +159,12 @@ public data class MedicinalProductInteraction(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.subject = subject.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.interactant = interactant.mapToMutableList { it.toBuilder() }
+    builder.interactant = interactant.toBuilderList()
     builder.type = type?.toBuilder()
     builder.effect = effect?.toBuilder()
     builder.incidence = incidence?.toBuilder()
@@ -214,12 +214,12 @@ public data class MedicinalProductInteraction(
     override val modifierExtension: List<Extension> = listOf(),
     /** The specific medication, food or laboratory test that interacts. */
     public val item: Item,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(item)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -249,7 +249,7 @@ public data class MedicinalProductInteraction(
     public class Builder(
       /** The specific medication, food or laboratory test that interacts. */
       public var item: Item
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -290,11 +290,11 @@ public data class MedicinalProductInteraction(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Interactant =
+      override fun build(): Interactant =
         Interactant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           item = item,
         )
     }
@@ -440,12 +440,12 @@ public data class MedicinalProductInteraction(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        subject = subject.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        subject = subject.buildList(),
         description = description?.build(),
-        interactant = interactant.mapToList { it.build() },
+        interactant = interactant.buildList(),
         type = type?.build(),
         effect = effect?.build(),
         incidence = incidence?.build(),

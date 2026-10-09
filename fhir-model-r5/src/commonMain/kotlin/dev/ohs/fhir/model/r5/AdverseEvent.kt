@@ -286,30 +286,30 @@ public data class AdverseEvent(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.category = category.toBuilderList()
     builder.code = code?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.occurrence = occurrence
     builder.detected = detected?.toBuilder()
     builder.recordedDate = recordedDate?.toBuilder()
-    builder.resultingEffect = resultingEffect.mapToMutableList { it.toBuilder() }
+    builder.resultingEffect = resultingEffect.toBuilderList()
     builder.location = location?.toBuilder()
     builder.seriousness = seriousness?.toBuilder()
-    builder.outcome = outcome.mapToMutableList { it.toBuilder() }
+    builder.outcome = outcome.toBuilderList()
     builder.recorder = recorder?.toBuilder()
-    builder.participant = participant.mapToMutableList { it.toBuilder() }
-    builder.study = study.mapToMutableList { it.toBuilder() }
+    builder.participant = participant.toBuilderList()
+    builder.study = study.toBuilderList()
     builder.expectedInResearchStudy = expectedInResearchStudy?.toBuilder()
-    builder.suspectEntity = suspectEntity.mapToMutableList { it.toBuilder() }
-    builder.contributingFactor = contributingFactor.mapToMutableList { it.toBuilder() }
-    builder.preventiveAction = preventiveAction.mapToMutableList { it.toBuilder() }
-    builder.mitigatingAction = mitigatingAction.mapToMutableList { it.toBuilder() }
-    builder.supportingInfo = supportingInfo.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.suspectEntity = suspectEntity.toBuilderList()
+    builder.contributingFactor = contributingFactor.toBuilderList()
+    builder.preventiveAction = preventiveAction.toBuilderList()
+    builder.mitigatingAction = mitigatingAction.toBuilderList()
+    builder.supportingInfo = supportingInfo.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -365,12 +365,12 @@ public data class AdverseEvent(
      * administered the drug, a witness to the event, or an informant of clinical history.
      */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -383,7 +383,7 @@ public data class AdverseEvent(
        * that administered the drug, a witness to the event, or an informant of clinical history.
        */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -430,11 +430,11 @@ public data class AdverseEvent(
        */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Participant =
+      override fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -488,12 +488,12 @@ public data class AdverseEvent(
     public val instance: Instance,
     /** Information on the possible cause of the event. */
     public val causality: Causality? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(instance)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.causality = causality?.toBuilder()
       return builder
     }
@@ -547,19 +547,19 @@ public data class AdverseEvent(
       public val entityRelatedness: CodeableConcept? = null,
       /** The author of the information on the possible cause of the event. */
       public val author: Reference? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.assessmentMethod = assessmentMethod?.toBuilder()
         builder.entityRelatedness = entityRelatedness?.toBuilder()
         builder.author = author?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -612,11 +612,11 @@ public data class AdverseEvent(
         /** The author of the information on the possible cause of the event. */
         public var author: Reference.Builder? = null
 
-        public fun build(): Causality =
+        override fun build(): Causality =
           Causality(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             assessmentMethod = assessmentMethod?.build(),
             entityRelatedness = entityRelatedness?.build(),
             author = author?.build(),
@@ -653,7 +653,7 @@ public data class AdverseEvent(
        * medication, medication administration, medication statement or a device.
        */
       public var instance: Instance
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -697,11 +697,11 @@ public data class AdverseEvent(
       /** Information on the possible cause of the event. */
       public var causality: Causality.Builder? = null
 
-      public fun build(): SuspectEntity =
+      override fun build(): SuspectEntity =
         SuspectEntity(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           instance = instance,
           causality = causality?.build(),
         )
@@ -756,12 +756,12 @@ public data class AdverseEvent(
      * event.
      */
     public val item: Item,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(item)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -794,7 +794,7 @@ public data class AdverseEvent(
        * event.
        */
       public var item: Item
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -835,11 +835,11 @@ public data class AdverseEvent(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): ContributingFactor =
+      override fun build(): ContributingFactor =
         ContributingFactor(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           item = item,
         )
     }
@@ -887,12 +887,12 @@ public data class AdverseEvent(
     override val modifierExtension: List<Extension> = listOf(),
     /** The action that contributed to avoiding the adverse event. */
     public val item: Item,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(item)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -922,7 +922,7 @@ public data class AdverseEvent(
     public class Builder(
       /** The action that contributed to avoiding the adverse event. */
       public var item: Item
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -963,11 +963,11 @@ public data class AdverseEvent(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): PreventiveAction =
+      override fun build(): PreventiveAction =
         PreventiveAction(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           item = item,
         )
     }
@@ -1021,12 +1021,12 @@ public data class AdverseEvent(
      * of harm.
      */
     public val item: Item,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(item)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -1059,7 +1059,7 @@ public data class AdverseEvent(
        * of harm.
        */
       public var item: Item
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1100,11 +1100,11 @@ public data class AdverseEvent(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): MitigatingAction =
+      override fun build(): MitigatingAction =
         MitigatingAction(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           item = item,
         )
     }
@@ -1160,12 +1160,12 @@ public data class AdverseEvent(
      * Supporting information is not a contributing factor, preventive action, or mitigating action.
      */
     public val item: Item,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(item)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -1204,7 +1204,7 @@ public data class AdverseEvent(
        * or mitigating action.
        */
       public var item: Item
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1245,11 +1245,11 @@ public data class AdverseEvent(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): SupportingInfo =
+      override fun build(): SupportingInfo =
         SupportingInfo(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           item = item,
         )
     }
@@ -1541,33 +1541,33 @@ public data class AdverseEvent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         actuality = actuality,
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         code = code?.build(),
         subject = subject.build(),
         encounter = encounter?.build(),
         occurrence = occurrence,
         detected = detected?.build(),
         recordedDate = recordedDate?.build(),
-        resultingEffect = resultingEffect.mapToList { it.build() },
+        resultingEffect = resultingEffect.buildList(),
         location = location?.build(),
         seriousness = seriousness?.build(),
-        outcome = outcome.mapToList { it.build() },
+        outcome = outcome.buildList(),
         recorder = recorder?.build(),
-        participant = participant.mapToList { it.build() },
-        study = study.mapToList { it.build() },
+        participant = participant.buildList(),
+        study = study.buildList(),
         expectedInResearchStudy = expectedInResearchStudy?.build(),
-        suspectEntity = suspectEntity.mapToList { it.build() },
-        contributingFactor = contributingFactor.mapToList { it.build() },
-        preventiveAction = preventiveAction.mapToList { it.build() },
-        mitigatingAction = mitigatingAction.mapToList { it.build() },
-        supportingInfo = supportingInfo.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        suspectEntity = suspectEntity.buildList(),
+        contributingFactor = contributingFactor.buildList(),
+        preventiveAction = preventiveAction.buildList(),
+        mitigatingAction = mitigatingAction.buildList(),
+        supportingInfo = supportingInfo.buildList(),
+        note = note.buildList(),
       )
   }
 }

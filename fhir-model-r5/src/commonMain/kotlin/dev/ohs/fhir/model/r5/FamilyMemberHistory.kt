@@ -263,25 +263,25 @@ public data class FamilyMemberHistory(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.instantiatesCanonical = instantiatesCanonical.mapToMutableList { it.toBuilder() }
-    builder.instantiatesUri = instantiatesUri.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.instantiatesCanonical = instantiatesCanonical.toBuilderList()
+    builder.instantiatesUri = instantiatesUri.toBuilderList()
     builder.dataAbsentReason = dataAbsentReason?.toBuilder()
     builder.date = date?.toBuilder()
-    builder.participant = participant.mapToMutableList { it.toBuilder() }
+    builder.participant = participant.toBuilderList()
     builder.name = name?.toBuilder()
     builder.sex = sex?.toBuilder()
     builder.born = born
     builder.age = age
     builder.estimatedAge = estimatedAge?.toBuilder()
     builder.deceased = deceased
-    builder.reason = reason.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.condition = condition.mapToMutableList { it.toBuilder() }
-    builder.procedure = procedure.mapToMutableList { it.toBuilder() }
+    builder.reason = reason.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.condition = condition.toBuilderList()
+    builder.procedure = procedure.toBuilderList()
     return builder
   }
 
@@ -337,12 +337,12 @@ public data class FamilyMemberHistory(
      * Indicates who or what participated in the activities related to the family member history.
      */
     public val actor: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(actor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.function = function?.toBuilder()
       return builder
     }
@@ -352,7 +352,7 @@ public data class FamilyMemberHistory(
        * Indicates who or what participated in the activities related to the family member history.
        */
       public var actor: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -399,11 +399,11 @@ public data class FamilyMemberHistory(
        */
       public var function: CodeableConcept.Builder? = null
 
-      public fun build(): Participant =
+      override fun build(): Participant =
         Participant(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           function = function?.build(),
           actor = actor.build(),
         )
@@ -477,16 +477,16 @@ public data class FamilyMemberHistory(
     public val onset: Onset? = null,
     /** An area where general notes can be placed about this specific condition. */
     public val note: List<Annotation> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.outcome = outcome?.toBuilder()
       builder.contributedToDeath = contributedToDeath?.toBuilder()
       builder.onset = onset
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.note = note.toBuilderList()
       return builder
     }
 
@@ -530,7 +530,7 @@ public data class FamilyMemberHistory(
        * capabilities of the creating system.
        */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -592,16 +592,16 @@ public data class FamilyMemberHistory(
       /** An area where general notes can be placed about this specific condition. */
       public var note: MutableList<Annotation.Builder> = mutableListOf()
 
-      public fun build(): Condition =
+      override fun build(): Condition =
         Condition(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           outcome = outcome?.build(),
           contributedToDeath = contributedToDeath?.build(),
           onset = onset,
-          note = note.mapToList { it.build() },
+          note = note.buildList(),
         )
     }
   }
@@ -674,16 +674,16 @@ public data class FamilyMemberHistory(
     public val performed: Performed? = null,
     /** An area where general notes can be placed about this specific procedure. */
     public val note: List<Annotation> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.outcome = outcome?.toBuilder()
       builder.contributedToDeath = contributedToDeath?.toBuilder()
       builder.performed = performed
-      builder.note = note.mapToMutableList { it.toBuilder() }
+      builder.note = note.toBuilderList()
       return builder
     }
 
@@ -733,7 +733,7 @@ public data class FamilyMemberHistory(
        * system.
        */
       public var code: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -796,16 +796,16 @@ public data class FamilyMemberHistory(
       /** An area where general notes can be placed about this specific procedure. */
       public var note: MutableList<Annotation.Builder> = mutableListOf()
 
-      public fun build(): Procedure =
+      override fun build(): Procedure =
         Procedure(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           outcome = outcome?.build(),
           contributedToDeath = contributedToDeath?.build(),
           performed = performed,
-          note = note.mapToList { it.build() },
+          note = note.buildList(),
         )
     }
   }
@@ -1151,17 +1151,17 @@ public data class FamilyMemberHistory(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        instantiatesCanonical = instantiatesCanonical.mapToList { it.build() },
-        instantiatesUri = instantiatesUri.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        instantiatesCanonical = instantiatesCanonical.buildList(),
+        instantiatesUri = instantiatesUri.buildList(),
         status = status,
         dataAbsentReason = dataAbsentReason?.build(),
         patient = patient.build(),
         date = date?.build(),
-        participant = participant.mapToList { it.build() },
+        participant = participant.buildList(),
         name = name?.build(),
         relationship = relationship.build(),
         sex = sex?.build(),
@@ -1169,10 +1169,10 @@ public data class FamilyMemberHistory(
         age = age,
         estimatedAge = estimatedAge?.build(),
         deceased = deceased,
-        reason = reason.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        condition = condition.mapToList { it.build() },
-        procedure = procedure.mapToList { it.build() },
+        reason = reason.buildList(),
+        note = note.buildList(),
+        condition = condition.buildList(),
+        procedure = procedure.buildList(),
       )
   }
 }

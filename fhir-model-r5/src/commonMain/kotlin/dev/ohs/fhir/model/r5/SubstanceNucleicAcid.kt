@@ -168,14 +168,14 @@ public data class SubstanceNucleicAcid(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.sequenceType = sequenceType?.toBuilder()
     builder.numberOfSubunits = numberOfSubunits?.toBuilder()
     builder.areaOfHybridisation = areaOfHybridisation?.toBuilder()
     builder.oligoNucleotideType = oligoNucleotideType?.toBuilder()
-    builder.subunit = subunit.mapToMutableList { it.toBuilder() }
+    builder.subunit = subunit.toBuilderList()
     return builder
   }
 
@@ -256,20 +256,20 @@ public data class SubstanceNucleicAcid(
     public val linkage: List<Linkage> = listOf(),
     /** 5.3.6.8.1 Sugar ID (Mandatory). */
     public val sugar: List<Sugar> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.subunit = subunit?.toBuilder()
       builder.sequence = sequence?.toBuilder()
       builder.length = length?.toBuilder()
       builder.sequenceAttachment = sequenceAttachment?.toBuilder()
       builder.fivePrime = fivePrime?.toBuilder()
       builder.threePrime = threePrime?.toBuilder()
-      builder.linkage = linkage.mapToMutableList { it.toBuilder() }
-      builder.sugar = sugar.mapToMutableList { it.toBuilder() }
+      builder.linkage = linkage.toBuilderList()
+      builder.sugar = sugar.toBuilderList()
       return builder
     }
 
@@ -329,12 +329,12 @@ public data class SubstanceNucleicAcid(
       public val name: String? = null,
       /** Residues shall be captured as described in 5.3.6.8.3. */
       public val residueSite: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.connectivity = connectivity?.toBuilder()
         builder.identifier = identifier?.toBuilder()
         builder.name = name?.toBuilder()
@@ -342,7 +342,7 @@ public data class SubstanceNucleicAcid(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -403,11 +403,11 @@ public data class SubstanceNucleicAcid(
         /** Residues shall be captured as described in 5.3.6.8.3. */
         public var residueSite: String.Builder? = null
 
-        public fun build(): Linkage =
+        override fun build(): Linkage =
           Linkage(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             connectivity = connectivity?.build(),
             identifier = identifier?.build(),
             name = name?.build(),
@@ -465,19 +465,19 @@ public data class SubstanceNucleicAcid(
        * be captured in the 5‘-3‘direction consistent with the base sequences listed above.
        */
       public val residueSite: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.identifier = identifier?.toBuilder()
         builder.name = name?.toBuilder()
         builder.residueSite = residueSite?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -530,11 +530,11 @@ public data class SubstanceNucleicAcid(
          */
         public var residueSite: String.Builder? = null
 
-        public fun build(): Sugar =
+        override fun build(): Sugar =
           Sugar(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             identifier = identifier?.build(),
             name = name?.build(),
             residueSite = residueSite?.build(),
@@ -542,7 +542,7 @@ public data class SubstanceNucleicAcid(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -625,19 +625,19 @@ public data class SubstanceNucleicAcid(
       /** 5.3.6.8.1 Sugar ID (Mandatory). */
       public var sugar: MutableList<Sugar.Builder> = mutableListOf()
 
-      public fun build(): Subunit =
+      override fun build(): Subunit =
         Subunit(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           subunit = subunit?.build(),
           sequence = sequence?.build(),
           length = length?.build(),
           sequenceAttachment = sequenceAttachment?.build(),
           fivePrime = fivePrime?.build(),
           threePrime = threePrime?.build(),
-          linkage = linkage.mapToList { it.build() },
-          sugar = sugar.mapToList { it.build() },
+          linkage = linkage.buildList(),
+          sugar = sugar.buildList(),
         )
     }
   }
@@ -786,14 +786,14 @@ public data class SubstanceNucleicAcid(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         sequenceType = sequenceType?.build(),
         numberOfSubunits = numberOfSubunits?.build(),
         areaOfHybridisation = areaOfHybridisation?.build(),
         oligoNucleotideType = oligoNucleotideType?.build(),
-        subunit = subunit.mapToList { it.build() },
+        subunit = subunit.buildList(),
       )
   }
 }

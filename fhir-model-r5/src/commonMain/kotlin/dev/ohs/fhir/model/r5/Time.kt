@@ -50,11 +50,11 @@ public data class Time(
   override val extension: List<Extension> = listOf(),
   /** The actual value */
   @Serializable(with = LocalTimeSerializer::class) public val `value`: LocalTime? = null,
-) : PrimitiveType() {
-  public fun toBuilder(): Builder {
+) : PrimitiveType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -66,7 +66,7 @@ public data class Time(
     return null
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: String? = null
 
@@ -87,10 +87,10 @@ public data class Time(
     /** The actual value */
     public open var `value`: LocalTime? = null
 
-    public open fun build(): Time =
+    open override fun build(): Time =
       Time(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

@@ -455,28 +455,28 @@ public data class StructureDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
-    builder.keyword = keyword.mapToMutableList { it.toBuilder() }
+    builder.keyword = keyword.toBuilderList()
     builder.fhirVersion = fhirVersion
-    builder.mapping = mapping.mapToMutableList { it.toBuilder() }
-    builder.context = context.mapToMutableList { it.toBuilder() }
-    builder.contextInvariant = contextInvariant.mapToMutableList { it.toBuilder() }
+    builder.mapping = mapping.toBuilderList()
+    builder.context = context.toBuilderList()
+    builder.contextInvariant = contextInvariant.toBuilderList()
     builder.baseDefinition = baseDefinition?.toBuilder()
     builder.derivation = derivation
     builder.snapshot = snapshot?.toBuilder()
@@ -545,12 +545,12 @@ public data class StructureDefinition(
      * important notes for usage.
      */
     public val comment: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(identity.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.uri = uri?.toBuilder()
       builder.name = name?.toBuilder()
       builder.comment = comment?.toBuilder()
@@ -565,7 +565,7 @@ public data class StructureDefinition(
        * made that reference this declaration.
        */
       public var identity: Id.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -623,11 +623,11 @@ public data class StructureDefinition(
        */
       public var comment: String.Builder? = null
 
-      public fun build(): Mapping =
+      override fun build(): Mapping =
         Mapping(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identity = identity.build(),
           uri = uri?.build(),
           name = name?.build(),
@@ -686,16 +686,16 @@ public data class StructureDefinition(
     public val type: Enumeration<ExtensionContextType>,
     /** An expression that defines where an extension can be used in resources. */
     public val expression: String,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type,
           expression.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -706,7 +706,7 @@ public data class StructureDefinition(
       public var type: Enumeration<ExtensionContextType>,
       /** An expression that defines where an extension can be used in resources. */
       public var expression: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -747,11 +747,11 @@ public data class StructureDefinition(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Context =
+      override fun build(): Context =
         Context(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
           expression = expression.build(),
         )
@@ -803,19 +803,19 @@ public data class StructureDefinition(
     override val modifierExtension: List<Extension> = listOf(),
     /** Captures constraints on each element within the resource. */
     public val element: List<ElementDefinition>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(element.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(element.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** Captures constraints on each element within the resource. */
       public var element: MutableList<ElementDefinition.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -856,12 +856,12 @@ public data class StructureDefinition(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Snapshot =
+      override fun build(): Snapshot =
         Snapshot(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          element = element.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          element = element.buildList(),
         )
     }
   }
@@ -911,19 +911,19 @@ public data class StructureDefinition(
     override val modifierExtension: List<Extension> = listOf(),
     /** Captures constraints on each element within the resource. */
     public val element: List<ElementDefinition>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(element.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(element.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** Captures constraints on each element within the resource. */
       public var element: MutableList<ElementDefinition.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -964,12 +964,12 @@ public data class StructureDefinition(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Differential =
+      override fun build(): Differential =
         Differential(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          element = element.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          element = element.buildList(),
         )
     }
   }
@@ -1433,11 +1433,11 @@ public data class StructureDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name.build(),
@@ -1446,20 +1446,20 @@ public data class StructureDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
-        keyword = keyword.mapToList { it.build() },
+        keyword = keyword.buildList(),
         fhirVersion = fhirVersion,
-        mapping = mapping.mapToList { it.build() },
+        mapping = mapping.buildList(),
         kind = kind,
         `abstract` = `abstract`.build(),
-        context = context.mapToList { it.build() },
-        contextInvariant = contextInvariant.mapToList { it.build() },
+        context = context.buildList(),
+        contextInvariant = contextInvariant.buildList(),
         type = type.build(),
         baseDefinition = baseDefinition?.build(),
         derivation = derivation,

@@ -224,28 +224,28 @@ public data class Provenance(
   override fun toBuilder(): Builder {
     val builder =
       Builder(
-        target.mapToMutableList { it.toBuilder() },
-        agent.mapToMutableList { it.toBuilder() },
+        target.toBuilderList(),
+        agent.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.occurred = occurred
     builder.recorded = recorded?.toBuilder()
-    builder.policy = policy.mapToMutableList { it.toBuilder() }
+    builder.policy = policy.toBuilderList()
     builder.location = location?.toBuilder()
-    builder.authorization = authorization.mapToMutableList { it.toBuilder() }
+    builder.authorization = authorization.toBuilderList()
     builder.activity = activity?.toBuilder()
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.toBuilderList()
     builder.patient = patient?.toBuilder()
     builder.encounter = encounter?.toBuilder()
-    builder.entity = entity.mapToMutableList { it.toBuilder() }
-    builder.signature = signature.mapToMutableList { it.toBuilder() }
+    builder.entity = entity.toBuilderList()
+    builder.signature = signature.toBuilderList()
     return builder
   }
 
@@ -312,14 +312,14 @@ public data class Provenance(
      * element.
      */
     public val onBehalfOf: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(who.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
-      builder.role = role.mapToMutableList { it.toBuilder() }
+      builder.role = role.toBuilderList()
       builder.onBehalfOf = onBehalfOf?.toBuilder()
       return builder
     }
@@ -327,7 +327,7 @@ public data class Provenance(
     public class Builder(
       /** Indicates who or what performed in the event. */
       public var who: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -389,13 +389,13 @@ public data class Provenance(
        */
       public var onBehalfOf: Reference.Builder? = null
 
-      public fun build(): Agent =
+      override fun build(): Agent =
         Agent(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
-          role = role.mapToList { it.build() },
+          role = role.buildList(),
           who = who.build(),
           onBehalfOf = onBehalfOf?.build(),
         )
@@ -465,17 +465,17 @@ public data class Provenance(
      * Provenance activity.
      */
     public val agent: List<Agent> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           role,
           what.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.agent = agent.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.agent = agent.toBuilderList()
       return builder
     }
 
@@ -489,7 +489,7 @@ public data class Provenance(
        * whatIdentity should be used for entities that are not a Resource type.
        */
       public var what: Reference.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -546,14 +546,14 @@ public data class Provenance(
        */
       public var agent: MutableList<Agent.Builder> = mutableListOf()
 
-      public fun build(): Entity =
+      override fun build(): Entity =
         Entity(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           role = role,
           what = what.build(),
-          agent = agent.mapToList { it.build() },
+          agent = agent.buildList(),
         )
     }
   }
@@ -783,22 +783,22 @@ public data class Provenance(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        target = target.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        target = target.buildList(),
         occurred = occurred,
         recorded = recorded?.build(),
-        policy = policy.mapToList { it.build() },
+        policy = policy.buildList(),
         location = location?.build(),
-        authorization = authorization.mapToList { it.build() },
+        authorization = authorization.buildList(),
         activity = activity?.build(),
-        basedOn = basedOn.mapToList { it.build() },
+        basedOn = basedOn.buildList(),
         patient = patient?.build(),
         encounter = encounter?.build(),
-        agent = agent.mapToList { it.build() },
-        entity = entity.mapToList { it.build() },
-        signature = signature.mapToList { it.build() },
+        agent = agent.buildList(),
+        entity = entity.buildList(),
+        signature = signature.buildList(),
       )
   }
 }

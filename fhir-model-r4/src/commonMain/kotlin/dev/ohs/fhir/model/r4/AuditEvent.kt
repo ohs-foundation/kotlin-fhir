@@ -214,7 +214,7 @@ public data class AuditEvent(
       Builder(
         type.toBuilder(),
         recorded.toBuilder(),
-        agent.mapToMutableList { it.toBuilder() },
+        agent.toBuilderList(),
         source.toBuilder(),
       )
     builder.id = id
@@ -222,16 +222,16 @@ public data class AuditEvent(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.subtype = subtype.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.subtype = subtype.toBuilderList()
     builder.action = action
     builder.period = period?.toBuilder()
     builder.outcome = outcome
     builder.outcomeDesc = outcomeDesc?.toBuilder()
-    builder.purposeOfEvent = purposeOfEvent.mapToMutableList { it.toBuilder() }
-    builder.entity = entity.mapToMutableList { it.toBuilder() }
+    builder.purposeOfEvent = purposeOfEvent.toBuilderList()
+    builder.entity = entity.toBuilderList()
     return builder
   }
 
@@ -333,22 +333,22 @@ public data class AuditEvent(
      * obvious to the audit system who caused the event, but it does know why.
      */
     public val purposeOfUse: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(requestor.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
-      builder.role = role.mapToMutableList { it.toBuilder() }
+      builder.role = role.toBuilderList()
       builder.who = who?.toBuilder()
       builder.altId = altId?.toBuilder()
       builder.name = name?.toBuilder()
       builder.location = location?.toBuilder()
-      builder.policy = policy.mapToMutableList { it.toBuilder() }
+      builder.policy = policy.toBuilderList()
       builder.media = media?.toBuilder()
       builder.network = network?.toBuilder()
-      builder.purposeOfUse = purposeOfUse.mapToMutableList { it.toBuilder() }
+      builder.purposeOfUse = purposeOfUse.toBuilderList()
       return builder
     }
 
@@ -402,18 +402,18 @@ public data class AuditEvent(
       public val address: String? = null,
       /** An identifier for the type of network access point that originated the audit event. */
       public val type: Enumeration<AuditEventAgentNetworkType>? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.address = address?.toBuilder()
         builder.type = type
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -464,11 +464,11 @@ public data class AuditEvent(
         /** An identifier for the type of network access point that originated the audit event. */
         public var type: Enumeration<AuditEventAgentNetworkType>? = null
 
-        public fun build(): Network =
+        override fun build(): Network =
           Network(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             address = address?.build(),
             type = type,
           )
@@ -484,7 +484,7 @@ public data class AuditEvent(
        * agent as the initiator.
        */
       public var requestor: Boolean.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -585,22 +585,22 @@ public data class AuditEvent(
        */
       public var purposeOfUse: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): Agent =
+      override fun build(): Agent =
         Agent(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
-          role = role.mapToList { it.build() },
+          role = role.buildList(),
           who = who?.build(),
           altId = altId?.build(),
           name = name?.build(),
           requestor = requestor.build(),
           location = location?.build(),
-          policy = policy.mapToList { it.build() },
+          policy = policy.buildList(),
           media = media?.build(),
           network = network?.build(),
-          purposeOfUse = purposeOfUse.mapToList { it.build() },
+          purposeOfUse = purposeOfUse.buildList(),
         )
     }
   }
@@ -654,21 +654,21 @@ public data class AuditEvent(
     public val observer: Reference,
     /** Code specifying the type of source where event originated. */
     public val type: List<Coding> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(observer.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.site = site?.toBuilder()
-      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.type = type.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** Identifier of the source where the event was detected. */
       public var observer: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -718,14 +718,14 @@ public data class AuditEvent(
       /** Code specifying the type of source where event originated. */
       public var type: MutableList<Coding.Builder> = mutableListOf()
 
-      public fun build(): Source =
+      override fun build(): Source =
         Source(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           site = site?.build(),
           observer = observer.build(),
-          type = type.mapToList { it.build() },
+          type = type.buildList(),
         )
     }
   }
@@ -817,21 +817,21 @@ public data class AuditEvent(
     public val query: Base64Binary? = null,
     /** Tagged value pairs for conveying additional information about the entity. */
     public val detail: List<Detail> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.what = what?.toBuilder()
       builder.type = type?.toBuilder()
       builder.role = role?.toBuilder()
       builder.lifecycle = lifecycle?.toBuilder()
-      builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
+      builder.securityLabel = securityLabel.toBuilderList()
       builder.name = name?.toBuilder()
       builder.description = description?.toBuilder()
       builder.query = query?.toBuilder()
-      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      builder.detail = detail.toBuilderList()
       return builder
     }
 
@@ -891,16 +891,16 @@ public data class AuditEvent(
        * the base64binary blob.
        */
       public val `value`: Value,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             type.toBuilder(),
             `value`,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -943,7 +943,7 @@ public data class AuditEvent(
          * encoded in the base64binary blob.
          */
         public var `value`: Value,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -984,18 +984,18 @@ public data class AuditEvent(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Detail =
+        override fun build(): Detail =
           Detail(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             type = type.build(),
             `value` = `value`,
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1092,20 +1092,20 @@ public data class AuditEvent(
       /** Tagged value pairs for conveying additional information about the entity. */
       public var detail: MutableList<Detail.Builder> = mutableListOf()
 
-      public fun build(): Entity =
+      override fun build(): Entity =
         Entity(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           what = what?.build(),
           type = type?.build(),
           role = role?.build(),
           lifecycle = lifecycle?.build(),
-          securityLabel = securityLabel.mapToList { it.build() },
+          securityLabel = securityLabel.buildList(),
           name = name?.build(),
           description = description?.build(),
           query = query?.build(),
-          detail = detail.mapToList { it.build() },
+          detail = detail.buildList(),
         )
     }
   }
@@ -1301,20 +1301,20 @@ public data class AuditEvent(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         type = type.build(),
-        subtype = subtype.mapToList { it.build() },
+        subtype = subtype.buildList(),
         action = action,
         period = period?.build(),
         recorded = recorded.build(),
         outcome = outcome,
         outcomeDesc = outcomeDesc?.build(),
-        purposeOfEvent = purposeOfEvent.mapToList { it.build() },
-        agent = agent.mapToList { it.build() },
+        purposeOfEvent = purposeOfEvent.buildList(),
+        agent = agent.buildList(),
         source = source.build(),
-        entity = entity.mapToList { it.build() },
+        entity = entity.buildList(),
       )
   }
 }

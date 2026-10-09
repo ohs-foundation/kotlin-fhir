@@ -19,8 +19,8 @@ package dev.ohs.fhir.codegen
 import java.io.File
 
 /**
- * Emits `BuilderHelpers.kt` containing shared non-inline list mapping helpers used by generated
- * `toBuilder()` and `Builder.build()` implementations.
+ * Emits `BuilderHelpers.kt` containing shared builder interfaces and zero-lambda list conversion
+ * helpers used by generated `toBuilder()` and `Builder.build()` implementations.
  */
 object BuilderHelpersFileSpecGenerator {
   fun writeTo(outputDir: File, packageName: String) {
@@ -37,14 +37,28 @@ import kotlin.collections.ArrayList
 import kotlin.collections.List
 import kotlin.collections.MutableList
 
-internal fun <T, R> List<T>.mapToMutableList(transform: (T) -> R): MutableList<R> {
-  val destination = ArrayList<R>(size)
-  for (item in this) destination.add(transform(item))
+public interface FhirBuilder {
+  public fun build(): Any
+}
+
+public interface FhirBuildable {
+  public fun toBuilder(): FhirBuilder
+}
+
+@Suppress("UNCHECKED_CAST")
+internal fun <T : Any> List<FhirBuilder>.buildList(): List<T> {
+  if (isEmpty()) return emptyList()
+  val destination = ArrayList<T>(size)
+  for (item in this) destination.add(item.build() as T)
   return destination
 }
 
-internal fun <T, R> List<T>.mapToList(transform: (T) -> R): List<R> =
-  if (isEmpty()) emptyList() else mapToMutableList(transform)
+@Suppress("UNCHECKED_CAST")
+internal fun <B : FhirBuilder> List<FhirBuildable>.toBuilderList(): MutableList<B> {
+  val destination = ArrayList<B>(size)
+  for (item in this) destination.add(item.toBuilder() as B)
+  return destination
+}
 """
         .trimStart()
     )

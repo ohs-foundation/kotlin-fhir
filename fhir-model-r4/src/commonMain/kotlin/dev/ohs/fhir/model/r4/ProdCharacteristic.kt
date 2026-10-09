@@ -129,12 +129,12 @@ public data class ProdCharacteristic(
    * used The term and the term identifier shall be used.
    */
   public val scoring: CodeableConcept? = null,
-) : BackboneElement() {
-  public fun toBuilder(): Builder {
+) : BackboneElement(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.height = height?.toBuilder()
     builder.width = width?.toBuilder()
     builder.depth = depth?.toBuilder()
@@ -142,14 +142,14 @@ public data class ProdCharacteristic(
     builder.nominalVolume = nominalVolume?.toBuilder()
     builder.externalDiameter = externalDiameter?.toBuilder()
     builder.shape = shape?.toBuilder()
-    builder.color = color.mapToMutableList { it.toBuilder() }
-    builder.imprint = imprint.mapToMutableList { it.toBuilder() }
-    builder.image = image.mapToMutableList { it.toBuilder() }
+    builder.color = color.toBuilderList()
+    builder.imprint = imprint.toBuilderList()
+    builder.image = image.toBuilderList()
     builder.scoring = scoring?.toBuilder()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -259,11 +259,11 @@ public data class ProdCharacteristic(
      */
     public open var scoring: CodeableConcept.Builder? = null
 
-    public open fun build(): ProdCharacteristic =
+    open override fun build(): ProdCharacteristic =
       ProdCharacteristic(
         id = id,
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         height = height?.build(),
         width = width?.build(),
         depth = depth?.build(),
@@ -271,9 +271,9 @@ public data class ProdCharacteristic(
         nominalVolume = nominalVolume?.build(),
         externalDiameter = externalDiameter?.build(),
         shape = shape?.build(),
-        color = color.mapToList { it.build() },
-        imprint = imprint.mapToList { it.build() },
-        image = image.mapToList { it.build() },
+        color = color.buildList(),
+        imprint = imprint.buildList(),
+        image = image.buildList(),
         scoring = scoring?.build(),
       )
   }

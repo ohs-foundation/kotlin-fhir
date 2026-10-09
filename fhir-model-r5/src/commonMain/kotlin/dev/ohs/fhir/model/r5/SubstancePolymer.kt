@@ -164,16 +164,16 @@ public data class SubstancePolymer(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.identifier = identifier?.toBuilder()
     builder.`class` = `class`?.toBuilder()
     builder.geometry = geometry?.toBuilder()
-    builder.copolymerConnectivity = copolymerConnectivity.mapToMutableList { it.toBuilder() }
+    builder.copolymerConnectivity = copolymerConnectivity.toBuilderList()
     builder.modification = modification?.toBuilder()
-    builder.monomerSet = monomerSet.mapToMutableList { it.toBuilder() }
-    builder.repeat = repeat.mapToMutableList { it.toBuilder() }
+    builder.monomerSet = monomerSet.toBuilderList()
+    builder.repeat = repeat.toBuilderList()
     return builder
   }
 
@@ -224,14 +224,14 @@ public data class SubstancePolymer(
     public val ratioType: CodeableConcept? = null,
     /** The starting materials - monomer(s) used in the synthesis of the polymer. */
     public val startingMaterial: List<StartingMaterial> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.ratioType = ratioType?.toBuilder()
-      builder.startingMaterial = startingMaterial.mapToMutableList { it.toBuilder() }
+      builder.startingMaterial = startingMaterial.toBuilderList()
       return builder
     }
 
@@ -286,12 +286,12 @@ public data class SubstancePolymer(
       public val isDefining: Boolean? = null,
       /** A percentage. */
       public val amount: Quantity? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.code = code?.toBuilder()
         builder.category = category?.toBuilder()
         builder.isDefining = isDefining?.toBuilder()
@@ -299,7 +299,7 @@ public data class SubstancePolymer(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -355,11 +355,11 @@ public data class SubstancePolymer(
         /** A percentage. */
         public var amount: Quantity.Builder? = null
 
-        public fun build(): StartingMaterial =
+        override fun build(): StartingMaterial =
           StartingMaterial(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code?.build(),
             category = category?.build(),
             isDefining = isDefining?.build(),
@@ -368,7 +368,7 @@ public data class SubstancePolymer(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -418,13 +418,13 @@ public data class SubstancePolymer(
       /** The starting materials - monomer(s) used in the synthesis of the polymer. */
       public var startingMaterial: MutableList<StartingMaterial.Builder> = mutableListOf()
 
-      public fun build(): MonomerSet =
+      override fun build(): MonomerSet =
         MonomerSet(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           ratioType = ratioType?.build(),
-          startingMaterial = startingMaterial.mapToList { it.build() },
+          startingMaterial = startingMaterial.buildList(),
         )
     }
   }
@@ -478,15 +478,15 @@ public data class SubstancePolymer(
     public val repeatUnitAmountType: CodeableConcept? = null,
     /** An SRU - Structural Repeat Unit. */
     public val repeatUnit: List<RepeatUnit> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.averageMolecularFormula = averageMolecularFormula?.toBuilder()
       builder.repeatUnitAmountType = repeatUnitAmountType?.toBuilder()
-      builder.repeatUnit = repeatUnit.mapToMutableList { it.toBuilder() }
+      builder.repeatUnit = repeatUnit.toBuilderList()
       return builder
     }
 
@@ -543,19 +543,17 @@ public data class SubstancePolymer(
       public val degreeOfPolymerisation: List<DegreeOfPolymerisation> = listOf(),
       /** A graphical structure for this SRU. */
       public val structuralRepresentation: List<StructuralRepresentation> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.unit = unit?.toBuilder()
         builder.orientation = orientation?.toBuilder()
         builder.amount = amount?.toBuilder()
-        builder.degreeOfPolymerisation = degreeOfPolymerisation.mapToMutableList { it.toBuilder() }
-        builder.structuralRepresentation = structuralRepresentation.mapToMutableList {
-          it.toBuilder()
-        }
+        builder.degreeOfPolymerisation = degreeOfPolymerisation.toBuilderList()
+        builder.structuralRepresentation = structuralRepresentation.toBuilderList()
         return builder
       }
 
@@ -610,12 +608,12 @@ public data class SubstancePolymer(
         public val low: Integer? = null,
         /** A high expected limit of the amount. */
         public val high: Integer? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.type = type?.toBuilder()
           builder.average = average?.toBuilder()
           builder.low = low?.toBuilder()
@@ -623,7 +621,7 @@ public data class SubstancePolymer(
           return builder
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -678,11 +676,11 @@ public data class SubstancePolymer(
           /** A high expected limit of the amount. */
           public var high: Integer.Builder? = null
 
-          public fun build(): DegreeOfPolymerisation =
+          override fun build(): DegreeOfPolymerisation =
             DegreeOfPolymerisation(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               type = type?.build(),
               average = average?.build(),
               low = low?.build(),
@@ -744,12 +742,12 @@ public data class SubstancePolymer(
         public val format: CodeableConcept? = null,
         /** An attached file with the structural representation. */
         public val attachment: Attachment? = null,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder()
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.type = type?.toBuilder()
           builder.representation = representation?.toBuilder()
           builder.format = format?.toBuilder()
@@ -757,7 +755,7 @@ public data class SubstancePolymer(
           return builder
         }
 
-        public class Builder() {
+        public class Builder() : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -813,11 +811,11 @@ public data class SubstancePolymer(
           /** An attached file with the structural representation. */
           public var attachment: Attachment.Builder? = null
 
-          public fun build(): StructuralRepresentation =
+          override fun build(): StructuralRepresentation =
             StructuralRepresentation(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               type = type?.build(),
               representation = representation?.build(),
               format = format?.build(),
@@ -826,7 +824,7 @@ public data class SubstancePolymer(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -887,21 +885,21 @@ public data class SubstancePolymer(
         public var structuralRepresentation: MutableList<StructuralRepresentation.Builder> =
           mutableListOf()
 
-        public fun build(): RepeatUnit =
+        override fun build(): RepeatUnit =
           RepeatUnit(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             unit = unit?.build(),
             orientation = orientation?.build(),
             amount = amount?.build(),
-            degreeOfPolymerisation = degreeOfPolymerisation.mapToList { it.build() },
-            structuralRepresentation = structuralRepresentation.mapToList { it.build() },
+            degreeOfPolymerisation = degreeOfPolymerisation.buildList(),
+            structuralRepresentation = structuralRepresentation.buildList(),
           )
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -954,14 +952,14 @@ public data class SubstancePolymer(
       /** An SRU - Structural Repeat Unit. */
       public var repeatUnit: MutableList<RepeatUnit.Builder> = mutableListOf()
 
-      public fun build(): Repeat =
+      override fun build(): Repeat =
         Repeat(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           averageMolecularFormula = averageMolecularFormula?.build(),
           repeatUnitAmountType = repeatUnitAmountType?.build(),
-          repeatUnit = repeatUnit.mapToList { it.build() },
+          repeatUnit = repeatUnit.buildList(),
         )
     }
   }
@@ -1108,16 +1106,16 @@ public data class SubstancePolymer(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         identifier = identifier?.build(),
         `class` = `class`?.build(),
         geometry = geometry?.build(),
-        copolymerConnectivity = copolymerConnectivity.mapToList { it.build() },
+        copolymerConnectivity = copolymerConnectivity.buildList(),
         modification = modification?.build(),
-        monomerSet = monomerSet.mapToList { it.build() },
-        repeat = repeat.mapToList { it.build() },
+        monomerSet = monomerSet.buildList(),
+        repeat = repeat.buildList(),
       )
   }
 }

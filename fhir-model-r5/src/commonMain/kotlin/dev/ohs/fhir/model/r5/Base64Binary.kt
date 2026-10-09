@@ -48,11 +48,11 @@ public data class Base64Binary(
   override val extension: List<Extension> = listOf(),
   /** The actual value */
   public val `value`: String? = null,
-) : PrimitiveType() {
-  public fun toBuilder(): Builder {
+) : PrimitiveType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`
     return builder
   }
@@ -64,7 +64,7 @@ public data class Base64Binary(
     return null
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /** unique id for the element within a resource (for internal references) */
     public open var id: String? = null
 
@@ -85,10 +85,10 @@ public data class Base64Binary(
     /** The actual value */
     public open var `value`: String? = null
 
-    public open fun build(): Base64Binary =
+    open override fun build(): Base64Binary =
       Base64Binary(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`,
       )
   }

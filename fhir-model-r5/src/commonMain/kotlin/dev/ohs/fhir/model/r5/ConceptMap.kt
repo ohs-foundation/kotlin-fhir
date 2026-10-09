@@ -448,11 +448,11 @@ public data class ConceptMap(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.name = name?.toBuilder()
@@ -460,27 +460,27 @@ public data class ConceptMap(
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.copyrightLabel = copyrightLabel?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.topic = topic.mapToMutableList { it.toBuilder() }
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.editor = editor.mapToMutableList { it.toBuilder() }
-    builder.reviewer = reviewer.mapToMutableList { it.toBuilder() }
-    builder.endorser = endorser.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
-    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
-    builder.additionalAttribute = additionalAttribute.mapToMutableList { it.toBuilder() }
+    builder.topic = topic.toBuilderList()
+    builder.author = author.toBuilderList()
+    builder.editor = editor.toBuilderList()
+    builder.reviewer = reviewer.toBuilderList()
+    builder.endorser = endorser.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
+    builder.`property` = `property`.toBuilderList()
+    builder.additionalAttribute = additionalAttribute.toBuilderList()
     builder.sourceScope = sourceScope
     builder.targetScope = targetScope
-    builder.group = group.mapToMutableList { it.toBuilder() }
+    builder.group = group.toBuilderList()
     return builder
   }
 
@@ -543,16 +543,16 @@ public data class ConceptMap(
      * values.
      */
     public val system: Canonical? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           code.toBuilder(),
           type,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.uri = uri?.toBuilder()
       builder.description = description?.toBuilder()
       builder.system = system?.toBuilder()
@@ -567,7 +567,7 @@ public data class ConceptMap(
       public var code: Code.Builder,
       /** The type of the property value. */
       public var type: Enumeration<ConceptMapPropertyType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -620,11 +620,11 @@ public data class ConceptMap(
        */
       public var system: Canonical.Builder? = null
 
-      public fun build(): Property =
+      override fun build(): Property =
         Property(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           uri = uri?.build(),
           description = description?.build(),
@@ -704,16 +704,16 @@ public data class ConceptMap(
      * might be required to map from the FHIR Datatype to the externally defined content
      */
     public val type: Enumeration<ConceptMapAttributeType>,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           code.toBuilder(),
           type,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.uri = uri?.toBuilder()
       builder.description = description?.toBuilder()
       return builder
@@ -733,7 +733,7 @@ public data class ConceptMap(
        * might be required to map from the FHIR Datatype to the externally defined content
        */
       public var type: Enumeration<ConceptMapAttributeType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -788,11 +788,11 @@ public data class ConceptMap(
        */
       public var description: String.Builder? = null
 
-      public fun build(): AdditionalAttribute =
+      override fun build(): AdditionalAttribute =
         AdditionalAttribute(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           uri = uri?.build(),
           description = description?.build(),
@@ -875,12 +875,12 @@ public data class ConceptMap(
      * not-related-to or if ConceptMap.group.element.noMap = true.
      */
     public val unmapped: Unmapped? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(element.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(element.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.source = source?.toBuilder()
       builder.target = target?.toBuilder()
       builder.unmapped = unmapped?.toBuilder()
@@ -959,17 +959,17 @@ public data class ConceptMap(
        * that other concepts are not related.
        */
       public val target: List<Target> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.code = code?.toBuilder()
         builder.display = display?.toBuilder()
         builder.valueSet = valueSet?.toBuilder()
         builder.noMap = noMap?.toBuilder()
-        builder.target = target.mapToMutableList { it.toBuilder() }
+        builder.target = target.toBuilderList()
         return builder
       }
 
@@ -1057,19 +1057,19 @@ public data class ConceptMap(
          * attributes / data elemnts of the target data.
          */
         public val product: List<DependsOn> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(relationship)
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.code = code?.toBuilder()
           builder.display = display?.toBuilder()
           builder.valueSet = valueSet?.toBuilder()
           builder.comment = comment?.toBuilder()
-          builder.`property` = `property`.mapToMutableList { it.toBuilder() }
-          builder.dependsOn = dependsOn.mapToMutableList { it.toBuilder() }
-          builder.product = product.mapToMutableList { it.toBuilder() }
+          builder.`property` = `property`.toBuilderList()
+          builder.dependsOn = dependsOn.toBuilderList()
+          builder.product = product.toBuilderList()
           return builder
         }
 
@@ -1120,16 +1120,16 @@ public data class ConceptMap(
            * property SHALL be defined in a ConceptMap.property element.
            */
           public val `value`: Value,
-        ) : BackboneElement() {
-          public fun toBuilder(): Builder {
+        ) : BackboneElement(), FhirBuildable {
+          override fun toBuilder(): Builder {
             val builder =
               Builder(
                 code.toBuilder(),
                 `value`,
               )
             builder.id = id
-            builder.extension = extension.mapToMutableList { it.toBuilder() }
-            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.extension = extension.toBuilderList()
+            builder.modifierExtension = modifierExtension.toBuilderList()
             return builder
           }
 
@@ -1192,7 +1192,7 @@ public data class ConceptMap(
              * property SHALL be defined in a ConceptMap.property element.
              */
             public var `value`: Value,
-          ) {
+          ) : FhirBuilder {
             /**
              * Unique id for the element within a resource (for internal references). This may be
              * any string value that does not contain spaces.
@@ -1234,11 +1234,11 @@ public data class ConceptMap(
              */
             public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-            public fun build(): Property =
+            override fun build(): Property =
               Property(
                 id = id,
-                extension = extension.mapToList { it.build() },
-                modifierExtension = modifierExtension.mapToList { it.build() },
+                extension = extension.buildList(),
+                modifierExtension = modifierExtension.buildList(),
                 code = code.build(),
                 `value` = `value`,
               )
@@ -1300,12 +1300,12 @@ public data class ConceptMap(
           public val `value`: Value? = null,
           /** This mapping applies if the data element value is a code from this value set. */
           public val valueSet: Canonical? = null,
-        ) : BackboneElement() {
-          public fun toBuilder(): Builder {
+        ) : BackboneElement(), FhirBuildable {
+          override fun toBuilder(): Builder {
             val builder = Builder(attribute.toBuilder())
             builder.id = id
-            builder.extension = extension.mapToMutableList { it.toBuilder() }
-            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.extension = extension.toBuilderList()
+            builder.modifierExtension = modifierExtension.toBuilderList()
             builder.`value` = `value`
             builder.valueSet = valueSet?.toBuilder()
             return builder
@@ -1353,7 +1353,7 @@ public data class ConceptMap(
           public class Builder(
             /** A reference to the additional attribute that holds a value the map depends on. */
             public var attribute: Code.Builder
-          ) {
+          ) : FhirBuilder {
             /**
              * Unique id for the element within a resource (for internal references). This may be
              * any string value that does not contain spaces.
@@ -1406,11 +1406,11 @@ public data class ConceptMap(
             /** This mapping applies if the data element value is a code from this value set. */
             public var valueSet: Canonical.Builder? = null
 
-            public fun build(): DependsOn =
+            override fun build(): DependsOn =
               DependsOn(
                 id = id,
-                extension = extension.mapToList { it.build() },
-                modifierExtension = modifierExtension.mapToList { it.build() },
+                extension = extension.buildList(),
+                modifierExtension = modifierExtension.buildList(),
                 attribute = attribute.build(),
                 `value` = `value`,
                 valueSet = valueSet?.build(),
@@ -1426,7 +1426,7 @@ public data class ConceptMap(
            * This element is labeled as a modifier because it may indicate that there is no mapping.
            */
           public var relationship: Enumeration<ConceptMapRelationship>
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1511,24 +1511,24 @@ public data class ConceptMap(
            */
           public var product: MutableList<DependsOn.Builder> = mutableListOf()
 
-          public fun build(): Target =
+          override fun build(): Target =
             Target(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               code = code?.build(),
               display = display?.build(),
               valueSet = valueSet?.build(),
               relationship = relationship,
               comment = comment?.build(),
-              `property` = `property`.mapToList { it.build() },
-              dependsOn = dependsOn.mapToList { it.build() },
-              product = product.mapToList { it.build() },
+              `property` = `property`.buildList(),
+              dependsOn = dependsOn.buildList(),
+              product = product.buildList(),
             )
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1607,16 +1607,16 @@ public data class ConceptMap(
          */
         public var target: MutableList<Target.Builder> = mutableListOf()
 
-        public fun build(): Element =
+        override fun build(): Element =
           Element(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             code = code?.build(),
             display = display?.build(),
             valueSet = valueSet?.build(),
             noMap = noMap?.build(),
-            target = target.mapToList { it.build() },
+            target = target.buildList(),
           )
       }
     }
@@ -1703,12 +1703,12 @@ public data class ConceptMap(
        * this ConceptMap resource contains no matching mapping for the source concept.
        */
       public val otherMap: Canonical? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(mode)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.code = code?.toBuilder()
         builder.display = display?.toBuilder()
         builder.valueSet = valueSet?.toBuilder()
@@ -1726,7 +1726,7 @@ public data class ConceptMap(
          * concept map can be provided (by canonical URL).
          */
         public var mode: Enumeration<ConceptMapGroupUnmappedMode>
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1801,11 +1801,11 @@ public data class ConceptMap(
          */
         public var otherMap: Canonical.Builder? = null
 
-        public fun build(): Unmapped =
+        override fun build(): Unmapped =
           Unmapped(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             mode = mode,
             code = code?.build(),
             display = display?.build(),
@@ -1825,7 +1825,7 @@ public data class ConceptMap(
        * dependencies.
        */
       public var element: MutableList<Element.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1895,14 +1895,14 @@ public data class ConceptMap(
        */
       public var unmapped: Unmapped.Builder? = null
 
-      public fun build(): Group =
+      override fun build(): Group =
         Group(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           source = source?.build(),
           target = target?.build(),
-          element = element.mapToList { it.build() },
+          element = element.buildList(),
           unmapped = unmapped?.build(),
         )
     }
@@ -2414,11 +2414,11 @@ public data class ConceptMap(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -2427,27 +2427,27 @@ public data class ConceptMap(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         copyrightLabel = copyrightLabel?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        topic = topic.mapToList { it.build() },
-        author = author.mapToList { it.build() },
-        editor = editor.mapToList { it.build() },
-        reviewer = reviewer.mapToList { it.build() },
-        endorser = endorser.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
-        `property` = `property`.mapToList { it.build() },
-        additionalAttribute = additionalAttribute.mapToList { it.build() },
+        topic = topic.buildList(),
+        author = author.buildList(),
+        editor = editor.buildList(),
+        reviewer = reviewer.buildList(),
+        endorser = endorser.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
+        `property` = `property`.buildList(),
+        additionalAttribute = additionalAttribute.buildList(),
         sourceScope = sourceScope,
         targetScope = targetScope,
-        group = group.mapToList { it.build() },
+        group = group.buildList(),
       )
   }
 }

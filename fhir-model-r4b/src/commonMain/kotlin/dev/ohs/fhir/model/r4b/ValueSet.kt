@@ -334,21 +334,21 @@ public data class ValueSet(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.immutable = immutable?.toBuilder()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
@@ -447,15 +447,15 @@ public data class ValueSet(
      * inclusions. Any display names specified for the codes are ignored.
      */
     public val exclude: List<Include> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
-      val builder = Builder(include.mapToMutableList { it.toBuilder() })
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
+      val builder = Builder(include.toBuilderList())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.lockedDate = lockedDate?.toBuilder()
       builder.inactive = inactive?.toBuilder()
-      builder.exclude = exclude.mapToMutableList { it.toBuilder() }
+      builder.exclude = exclude.toBuilderList()
       return builder
     }
 
@@ -549,17 +549,17 @@ public data class ValueSet(
        * that needs to be clear about how versions are resolved.
        */
       public val valueSet: List<Canonical> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.system = system?.toBuilder()
         builder.version = version?.toBuilder()
-        builder.concept = concept.mapToMutableList { it.toBuilder() }
-        builder.filter = filter.mapToMutableList { it.toBuilder() }
-        builder.valueSet = valueSet.mapToMutableList { it.toBuilder() }
+        builder.concept = concept.toBuilderList()
+        builder.filter = filter.toBuilderList()
+        builder.valueSet = valueSet.toBuilderList()
         return builder
       }
 
@@ -628,14 +628,14 @@ public data class ValueSet(
          * code" and a language equal to the [Resource Language](resource.html#language).
          */
         public val designation: List<Designation> = listOf(),
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder = Builder(code.toBuilder())
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           builder.display = display?.toBuilder()
-          builder.designation = designation.mapToMutableList { it.toBuilder() }
+          builder.designation = designation.toBuilderList()
           return builder
         }
 
@@ -697,12 +697,12 @@ public data class ValueSet(
           public val use: Coding? = null,
           /** The text value for this designation. */
           public val `value`: String,
-        ) : BackboneElement() {
-          public fun toBuilder(): Builder {
+        ) : BackboneElement(), FhirBuildable {
+          override fun toBuilder(): Builder {
             val builder = Builder(`value`.toBuilder())
             builder.id = id
-            builder.extension = extension.mapToMutableList { it.toBuilder() }
-            builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+            builder.extension = extension.toBuilderList()
+            builder.modifierExtension = modifierExtension.toBuilderList()
             builder.language = language
             builder.use = use?.toBuilder()
             return builder
@@ -711,7 +711,7 @@ public data class ValueSet(
           public class Builder(
             /** The text value for this designation. */
             public var `value`: String.Builder
-          ) {
+          ) : FhirBuilder {
             /**
              * Unique id for the element within a resource (for internal references). This may be
              * any string value that does not contain spaces.
@@ -768,11 +768,11 @@ public data class ValueSet(
              */
             public var use: Coding.Builder? = null
 
-            public fun build(): Designation =
+            override fun build(): Designation =
               Designation(
                 id = id,
-                extension = extension.mapToList { it.build() },
-                modifierExtension = modifierExtension.mapToList { it.build() },
+                extension = extension.buildList(),
+                modifierExtension = modifierExtension.buildList(),
                 language = language,
                 use = use?.build(),
                 `value` = `value`.build(),
@@ -787,7 +787,7 @@ public data class ValueSet(
            * Expressions are allowed if defined by the underlying code system.
            */
           public var code: Code.Builder
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -849,14 +849,14 @@ public data class ValueSet(
            */
           public var designation: MutableList<Designation.Builder> = mutableListOf()
 
-          public fun build(): Concept =
+          override fun build(): Concept =
             Concept(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               code = code.build(),
               display = display?.build(),
-              designation = designation.mapToList { it.build() },
+              designation = designation.buildList(),
             )
         }
       }
@@ -926,8 +926,8 @@ public data class ValueSet(
          * prohibitive, for example.
          */
         public val `value`: String,
-      ) : BackboneElement() {
-        public fun toBuilder(): Builder {
+      ) : BackboneElement(), FhirBuildable {
+        override fun toBuilder(): Builder {
           val builder =
             Builder(
               `property`.toBuilder(),
@@ -935,8 +935,8 @@ public data class ValueSet(
               `value`.toBuilder(),
             )
           builder.id = id
-          builder.extension = extension.mapToMutableList { it.toBuilder() }
-          builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+          builder.extension = extension.toBuilderList()
+          builder.modifierExtension = modifierExtension.toBuilderList()
           return builder
         }
 
@@ -962,7 +962,7 @@ public data class ValueSet(
            * prohibitive, for example.
            */
           public var `value`: String.Builder,
-        ) {
+        ) : FhirBuilder {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
            * string value that does not contain spaces.
@@ -1003,11 +1003,11 @@ public data class ValueSet(
            */
           public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-          public fun build(): Filter =
+          override fun build(): Filter =
             Filter(
               id = id,
-              extension = extension.mapToList { it.build() },
-              modifierExtension = modifierExtension.mapToList { it.build() },
+              extension = extension.buildList(),
+              modifierExtension = modifierExtension.buildList(),
               `property` = `property`.build(),
               op = op,
               `value` = `value`.build(),
@@ -1015,7 +1015,7 @@ public data class ValueSet(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1111,16 +1111,16 @@ public data class ValueSet(
          */
         public var valueSet: MutableList<Canonical.Builder> = mutableListOf()
 
-        public fun build(): Include =
+        override fun build(): Include =
           Include(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             system = system?.build(),
             version = version?.build(),
-            concept = concept.mapToList { it.build() },
-            filter = filter.mapToList { it.build() },
-            valueSet = valueSet.mapToList { it.build() },
+            concept = concept.buildList(),
+            filter = filter.buildList(),
+            valueSet = valueSet.buildList(),
           )
       }
     }
@@ -1135,7 +1135,7 @@ public data class ValueSet(
        * include is 'include all the codes that meet all these conditions'.
        */
       public var include: MutableList<Include.Builder>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1218,15 +1218,15 @@ public data class ValueSet(
        */
       public var exclude: MutableList<Include.Builder> = mutableListOf()
 
-      public fun build(): Compose =
+      override fun build(): Compose =
         Compose(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           lockedDate = lockedDate?.build(),
           inactive = inactive?.build(),
-          include = include.mapToList { it.build() },
-          exclude = exclude.mapToList { it.build() },
+          include = include.buildList(),
+          exclude = exclude.buildList(),
         )
     }
   }
@@ -1323,17 +1323,17 @@ public data class ValueSet(
     public val parameter: List<Parameter> = listOf(),
     /** The codes that are contained in the value set expansion. */
     public val contains: List<Contains> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(timestamp.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.identifier = identifier?.toBuilder()
       builder.total = total?.toBuilder()
       builder.offset = offset?.toBuilder()
-      builder.parameter = parameter.mapToMutableList { it.toBuilder() }
-      builder.contains = contains.mapToMutableList { it.toBuilder() }
+      builder.parameter = parameter.toBuilderList()
+      builder.contains = contains.toBuilderList()
       return builder
     }
 
@@ -1391,12 +1391,12 @@ public data class ValueSet(
       public val name: String,
       /** The value of the parameter. */
       public val `value`: Value? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(name.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.`value` = `value`
         return builder
       }
@@ -1461,7 +1461,7 @@ public data class ValueSet(
          * The names are assigned at the discretion of the server.
          */
         public var name: String.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1505,11 +1505,11 @@ public data class ValueSet(
         /** The value of the parameter. */
         public var `value`: Value? = null
 
-        public fun build(): Parameter =
+        override fun build(): Parameter =
           Parameter(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             name = name.build(),
             `value` = `value`,
           )
@@ -1614,24 +1614,24 @@ public data class ValueSet(
        * expansion.
        */
       public val contains: List<Contains> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.system = system?.toBuilder()
         builder.`abstract` = `abstract`?.toBuilder()
         builder.inactive = inactive?.toBuilder()
         builder.version = version?.toBuilder()
         builder.code = code?.toBuilder()
         builder.display = display?.toBuilder()
-        builder.designation = designation.mapToMutableList { it.toBuilder() }
-        builder.contains = contains.mapToMutableList { it.toBuilder() }
+        builder.designation = designation.toBuilderList()
+        builder.contains = contains.toBuilderList()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1739,19 +1739,19 @@ public data class ValueSet(
          */
         public var contains: MutableList<Builder> = mutableListOf()
 
-        public fun build(): Contains =
+        override fun build(): Contains =
           Contains(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             system = system?.build(),
             `abstract` = `abstract`?.build(),
             inactive = inactive?.build(),
             version = version?.build(),
             code = code?.build(),
             display = display?.build(),
-            designation = designation.mapToList { it.build() },
-            contains = contains.mapToList { it.build() },
+            designation = designation.buildList(),
+            contains = contains.buildList(),
           )
       }
     }
@@ -1764,7 +1764,7 @@ public data class ValueSet(
        * expanded by hand, and the expansion is published without that precision.
        */
       public var timestamp: DateTime.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1852,17 +1852,17 @@ public data class ValueSet(
       /** The codes that are contained in the value set expansion. */
       public var contains: MutableList<Contains.Builder> = mutableListOf()
 
-      public fun build(): Expansion =
+      override fun build(): Expansion =
         Expansion(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           identifier = identifier?.build(),
           timestamp = timestamp.build(),
           total = total?.build(),
           offset = offset?.build(),
-          parameter = parameter.mapToList { it.build() },
-          contains = contains.mapToList { it.build() },
+          parameter = parameter.buildList(),
+          contains = contains.buildList(),
         )
     }
   }
@@ -2183,11 +2183,11 @@ public data class ValueSet(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
@@ -2195,10 +2195,10 @@ public data class ValueSet(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         immutable = immutable?.build(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),

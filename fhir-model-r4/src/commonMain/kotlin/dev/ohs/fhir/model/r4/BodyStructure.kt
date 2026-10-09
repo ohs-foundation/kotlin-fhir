@@ -174,16 +174,16 @@ public data class BodyStructure(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
     builder.morphology = morphology?.toBuilder()
     builder.location = location?.toBuilder()
-    builder.locationQualifier = locationQualifier.mapToMutableList { it.toBuilder() }
+    builder.locationQualifier = locationQualifier.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.image = image.mapToMutableList { it.toBuilder() }
+    builder.image = image.toBuilderList()
     return builder
   }
 
@@ -343,16 +343,16 @@ public data class BodyStructure(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
         morphology = morphology?.build(),
         location = location?.build(),
-        locationQualifier = locationQualifier.mapToList { it.build() },
+        locationQualifier = locationQualifier.buildList(),
         description = description?.build(),
-        image = image.mapToList { it.build() },
+        image = image.buildList(),
         patient = patient.build(),
       )
   }

@@ -27,7 +27,7 @@ import kotlinx.serialization.Serializable
 
 /** This is the base resource type for everything. */
 @Serializable(with = ResourcePolymorphicSerializer::class)
-public abstract class Resource : Base() {
+public abstract class Resource : Base(), FhirBuildable {
   /**
    * The logical id of the resource, as used in the URL for the resource. Once assigned, this value
    * never changes.
@@ -72,11 +72,11 @@ public abstract class Resource : Base() {
    */
   public abstract val language: Code?
 
-  public abstract fun toBuilder(): Builder
+  abstract override fun toBuilder(): Builder
 
-  public abstract class Builder {
+  public abstract class Builder : FhirBuilder {
     public abstract var id: String?
 
-    public abstract fun build(): Resource
+    abstract override fun build(): Resource
   }
 }

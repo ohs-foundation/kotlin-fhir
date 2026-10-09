@@ -280,40 +280,40 @@ public data class ResearchStudy(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
-    builder.label = label.mapToMutableList { it.toBuilder() }
-    builder.protocol = protocol.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
-    builder.relatedArtifact = relatedArtifact.mapToMutableList { it.toBuilder() }
+    builder.label = label.toBuilderList()
+    builder.protocol = protocol.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
+    builder.relatedArtifact = relatedArtifact.toBuilderList()
     builder.date = date?.toBuilder()
     builder.primaryPurposeType = primaryPurposeType?.toBuilder()
     builder.phase = phase?.toBuilder()
-    builder.studyDesign = studyDesign.mapToMutableList { it.toBuilder() }
-    builder.focus = focus.mapToMutableList { it.toBuilder() }
-    builder.condition = condition.mapToMutableList { it.toBuilder() }
-    builder.keyword = keyword.mapToMutableList { it.toBuilder() }
-    builder.region = region.mapToMutableList { it.toBuilder() }
+    builder.studyDesign = studyDesign.toBuilderList()
+    builder.focus = focus.toBuilderList()
+    builder.condition = condition.toBuilderList()
+    builder.keyword = keyword.toBuilderList()
+    builder.region = region.toBuilderList()
     builder.descriptionSummary = descriptionSummary?.toBuilder()
     builder.description = description?.toBuilder()
     builder.period = period?.toBuilder()
-    builder.site = site.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
-    builder.classifier = classifier.mapToMutableList { it.toBuilder() }
-    builder.associatedParty = associatedParty.mapToMutableList { it.toBuilder() }
-    builder.progressStatus = progressStatus.mapToMutableList { it.toBuilder() }
+    builder.site = site.toBuilderList()
+    builder.note = note.toBuilderList()
+    builder.classifier = classifier.toBuilderList()
+    builder.associatedParty = associatedParty.toBuilderList()
+    builder.progressStatus = progressStatus.toBuilderList()
     builder.whyStopped = whyStopped?.toBuilder()
     builder.recruitment = recruitment?.toBuilder()
-    builder.comparisonGroup = comparisonGroup.mapToMutableList { it.toBuilder() }
-    builder.objective = objective.mapToMutableList { it.toBuilder() }
-    builder.outcomeMeasure = outcomeMeasure.mapToMutableList { it.toBuilder() }
-    builder.result = result.mapToMutableList { it.toBuilder() }
+    builder.comparisonGroup = comparisonGroup.toBuilderList()
+    builder.objective = objective.toBuilderList()
+    builder.outcomeMeasure = outcomeMeasure.toBuilderList()
+    builder.result = result.toBuilderList()
     return builder
   }
 
@@ -361,18 +361,18 @@ public data class ResearchStudy(
     public val type: CodeableConcept? = null,
     /** The name. */
     public val `value`: String? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.type = type?.toBuilder()
       builder.`value` = `value`?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -419,11 +419,11 @@ public data class ResearchStudy(
       /** The name. */
       public var `value`: String.Builder? = null
 
-      public fun build(): Label =
+      override fun build(): Label =
         Label(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type?.build(),
           `value` = `value`?.build(),
         )
@@ -490,15 +490,15 @@ public data class ResearchStudy(
      * Suggestions of a better attribute name are appreciated
      */
     public val party: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(role.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
-      builder.period = period.mapToMutableList { it.toBuilder() }
-      builder.classifier = classifier.mapToMutableList { it.toBuilder() }
+      builder.period = period.toBuilderList()
+      builder.classifier = classifier.toBuilderList()
       builder.party = party?.toBuilder()
       return builder
     }
@@ -506,7 +506,7 @@ public data class ResearchStudy(
     public class Builder(
       /** Type of association. */
       public var role: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -569,15 +569,15 @@ public data class ResearchStudy(
        */
       public var party: Reference.Builder? = null
 
-      public fun build(): AssociatedParty =
+      override fun build(): AssociatedParty =
         AssociatedParty(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name?.build(),
           role = role.build(),
-          period = period.mapToList { it.build() },
-          classifier = classifier.mapToList { it.build() },
+          period = period.buildList(),
+          classifier = classifier.buildList(),
           party = party?.build(),
         )
     }
@@ -632,12 +632,12 @@ public data class ResearchStudy(
     public val `actual`: Boolean? = null,
     /** Date range. */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(state.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.`actual` = `actual`?.toBuilder()
       builder.period = period?.toBuilder()
       return builder
@@ -646,7 +646,7 @@ public data class ResearchStudy(
     public class Builder(
       /** Label for status or state (e.g. recruitment status). */
       public var state: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -697,11 +697,11 @@ public data class ResearchStudy(
       /** Date range. */
       public var period: Period.Builder? = null
 
-      public fun build(): ProgressStatus =
+      override fun build(): ProgressStatus =
         ProgressStatus(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           state = state.build(),
           `actual` = `actual`?.build(),
           period = period?.build(),
@@ -757,12 +757,12 @@ public data class ResearchStudy(
     public val eligibility: Reference? = null,
     /** Group of participants who were enrolled in study. */
     public val actualGroup: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.targetNumber = targetNumber?.toBuilder()
       builder.actualNumber = actualNumber?.toBuilder()
       builder.eligibility = eligibility?.toBuilder()
@@ -770,7 +770,7 @@ public data class ResearchStudy(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -823,11 +823,11 @@ public data class ResearchStudy(
       /** Group of participants who were enrolled in study. */
       public var actualGroup: Reference.Builder? = null
 
-      public fun build(): Recruitment =
+      override fun build(): Recruitment =
         Recruitment(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           targetNumber = targetNumber?.build(),
           actualNumber = actualNumber?.build(),
           eligibility = eligibility?.build(),
@@ -902,16 +902,16 @@ public data class ResearchStudy(
     public val intendedExposure: List<Reference> = listOf(),
     /** Group of participants who were enrolled in study comparisonGroup. */
     public val observedGroup: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(name.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.linkId = linkId?.toBuilder()
       builder.type = type?.toBuilder()
       builder.description = description?.toBuilder()
-      builder.intendedExposure = intendedExposure.mapToMutableList { it.toBuilder() }
+      builder.intendedExposure = intendedExposure.toBuilderList()
       builder.observedGroup = observedGroup?.toBuilder()
       return builder
     }
@@ -919,7 +919,7 @@ public data class ResearchStudy(
     public class Builder(
       /** Unique, human-readable label for this comparisonGroup of the study. */
       public var name: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -984,16 +984,16 @@ public data class ResearchStudy(
       /** Group of participants who were enrolled in study comparisonGroup. */
       public var observedGroup: Reference.Builder? = null
 
-      public fun build(): ComparisonGroup =
+      override fun build(): ComparisonGroup =
         ComparisonGroup(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           linkId = linkId?.build(),
           name = name.build(),
           type = type?.build(),
           description = description?.build(),
-          intendedExposure = intendedExposure.mapToList { it.build() },
+          intendedExposure = intendedExposure.buildList(),
           observedGroup = observedGroup?.build(),
         )
     }
@@ -1051,19 +1051,19 @@ public data class ResearchStudy(
      * achieve rather than how it is going to achieve it (see ResearchStudy.description).
      */
     public val description: Markdown? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
       builder.type = type?.toBuilder()
       builder.description = description?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1116,11 +1116,11 @@ public data class ResearchStudy(
        */
       public var description: Markdown.Builder? = null
 
-      public fun build(): Objective =
+      override fun build(): Objective =
         Objective(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name?.build(),
           type = type?.build(),
           description = description?.build(),
@@ -1184,20 +1184,20 @@ public data class ResearchStudy(
     public val description: Markdown? = null,
     /** Structured outcome definition. */
     public val reference: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.name = name?.toBuilder()
-      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.type = type.toBuilderList()
       builder.description = description?.toBuilder()
       builder.reference = reference?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1253,13 +1253,13 @@ public data class ResearchStudy(
       /** Structured outcome definition. */
       public var reference: Reference.Builder? = null
 
-      public fun build(): OutcomeMeasure =
+      override fun build(): OutcomeMeasure =
         OutcomeMeasure(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           name = name?.build(),
-          type = type.mapToList { it.build() },
+          type = type.buildList(),
           description = description?.build(),
           reference = reference?.build(),
         )
@@ -1542,41 +1542,41 @@ public data class ResearchStudy(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
-        label = label.mapToList { it.build() },
-        protocol = protocol.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
-        relatedArtifact = relatedArtifact.mapToList { it.build() },
+        label = label.buildList(),
+        protocol = protocol.buildList(),
+        partOf = partOf.buildList(),
+        relatedArtifact = relatedArtifact.buildList(),
         date = date?.build(),
         status = status,
         primaryPurposeType = primaryPurposeType?.build(),
         phase = phase?.build(),
-        studyDesign = studyDesign.mapToList { it.build() },
-        focus = focus.mapToList { it.build() },
-        condition = condition.mapToList { it.build() },
-        keyword = keyword.mapToList { it.build() },
-        region = region.mapToList { it.build() },
+        studyDesign = studyDesign.buildList(),
+        focus = focus.buildList(),
+        condition = condition.buildList(),
+        keyword = keyword.buildList(),
+        region = region.buildList(),
         descriptionSummary = descriptionSummary?.build(),
         description = description?.build(),
         period = period?.build(),
-        site = site.mapToList { it.build() },
-        note = note.mapToList { it.build() },
-        classifier = classifier.mapToList { it.build() },
-        associatedParty = associatedParty.mapToList { it.build() },
-        progressStatus = progressStatus.mapToList { it.build() },
+        site = site.buildList(),
+        note = note.buildList(),
+        classifier = classifier.buildList(),
+        associatedParty = associatedParty.buildList(),
+        progressStatus = progressStatus.buildList(),
         whyStopped = whyStopped?.build(),
         recruitment = recruitment?.build(),
-        comparisonGroup = comparisonGroup.mapToList { it.build() },
-        objective = objective.mapToList { it.build() },
-        outcomeMeasure = outcomeMeasure.mapToList { it.build() },
-        result = result.mapToList { it.build() },
+        comparisonGroup = comparisonGroup.buildList(),
+        objective = objective.buildList(),
+        outcomeMeasure = outcomeMeasure.buildList(),
+        result = result.buildList(),
       )
   }
 }

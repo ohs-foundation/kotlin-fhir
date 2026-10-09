@@ -120,11 +120,11 @@ public data class Attachment(
   public val duration: Decimal? = null,
   /** The number of pages when printed. */
   public val pages: PositiveInt? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.contentType = contentType?.toBuilder()
     builder.language = language?.toBuilder()
     builder.`data` = `data`?.toBuilder()
@@ -141,7 +141,7 @@ public data class Attachment(
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -248,10 +248,10 @@ public data class Attachment(
     /** The number of pages when printed. */
     public open var pages: PositiveInt.Builder? = null
 
-    public open fun build(): Attachment =
+    open override fun build(): Attachment =
       Attachment(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         contentType = contentType?.build(),
         language = language?.build(),
         `data` = `data`?.build(),

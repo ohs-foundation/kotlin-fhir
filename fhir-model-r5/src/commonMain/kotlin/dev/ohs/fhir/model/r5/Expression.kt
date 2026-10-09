@@ -79,11 +79,11 @@ public data class Expression(
    * expression.
    */
   public val reference: Uri? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.description = description?.toBuilder()
     builder.name = name?.toBuilder()
     builder.language = language
@@ -92,7 +92,7 @@ public data class Expression(
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -144,10 +144,10 @@ public data class Expression(
      */
     public open var reference: Uri.Builder? = null
 
-    public open fun build(): Expression =
+    open override fun build(): Expression =
       Expression(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         description = description?.build(),
         name = name?.build(),
         language = language,

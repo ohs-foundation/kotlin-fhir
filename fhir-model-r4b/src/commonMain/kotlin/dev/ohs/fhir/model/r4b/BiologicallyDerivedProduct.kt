@@ -187,20 +187,20 @@ public data class BiologicallyDerivedProduct(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.productCategory = productCategory
     builder.productCode = productCode?.toBuilder()
     builder.status = status
-    builder.request = request.mapToMutableList { it.toBuilder() }
+    builder.request = request.toBuilderList()
     builder.quantity = quantity?.toBuilder()
-    builder.parent = parent.mapToMutableList { it.toBuilder() }
+    builder.parent = parent.toBuilderList()
     builder.collection = collection?.toBuilder()
-    builder.processing = processing.mapToMutableList { it.toBuilder() }
+    builder.processing = processing.toBuilderList()
     builder.manipulation = manipulation?.toBuilder()
-    builder.storage = storage.mapToMutableList { it.toBuilder() }
+    builder.storage = storage.toBuilderList()
     return builder
   }
 
@@ -253,12 +253,12 @@ public data class BiologicallyDerivedProduct(
     public val source: Reference? = null,
     /** Time of product collection. */
     public val collected: Collected? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.collector = collector?.toBuilder()
       builder.source = source?.toBuilder()
       builder.collected = collected
@@ -286,7 +286,7 @@ public data class BiologicallyDerivedProduct(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -339,11 +339,11 @@ public data class BiologicallyDerivedProduct(
       /** Time of product collection. */
       public var collected: Collected? = null
 
-      public fun build(): Collection =
+      override fun build(): Collection =
         Collection(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           collector = collector?.build(),
           source = source?.build(),
           collected = collected,
@@ -403,12 +403,12 @@ public data class BiologicallyDerivedProduct(
     public val additive: Reference? = null,
     /** Time of processing. */
     public val time: Time? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.procedure = procedure?.toBuilder()
       builder.additive = additive?.toBuilder()
@@ -437,7 +437,7 @@ public data class BiologicallyDerivedProduct(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -490,11 +490,11 @@ public data class BiologicallyDerivedProduct(
       /** Time of processing. */
       public var time: Time? = null
 
-      public fun build(): Processing =
+      override fun build(): Processing =
         Processing(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           procedure = procedure?.build(),
           additive = additive?.build(),
@@ -551,12 +551,12 @@ public data class BiologicallyDerivedProduct(
     public val description: String? = null,
     /** Time of manipulation. */
     public val time: Time? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.time = time
       return builder
@@ -583,7 +583,7 @@ public data class BiologicallyDerivedProduct(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -630,11 +630,11 @@ public data class BiologicallyDerivedProduct(
       /** Time of manipulation. */
       public var time: Time? = null
 
-      public fun build(): Manipulation =
+      override fun build(): Manipulation =
         Manipulation(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           time = time,
         )
@@ -689,12 +689,12 @@ public data class BiologicallyDerivedProduct(
     public val scale: Enumeration<BiologicallyDerivedProductStorageScale>? = null,
     /** Storage timeperiod. */
     public val duration: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.temperature = temperature?.toBuilder()
       builder.scale = scale
@@ -702,7 +702,7 @@ public data class BiologicallyDerivedProduct(
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -755,11 +755,11 @@ public data class BiologicallyDerivedProduct(
       /** Storage timeperiod. */
       public var duration: Period.Builder? = null
 
-      public fun build(): Storage =
+      override fun build(): Storage =
         Storage(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           temperature = temperature?.build(),
           scale = scale,
@@ -933,20 +933,20 @@ public data class BiologicallyDerivedProduct(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         productCategory = productCategory,
         productCode = productCode?.build(),
         status = status,
-        request = request.mapToList { it.build() },
+        request = request.buildList(),
         quantity = quantity?.build(),
-        parent = parent.mapToList { it.build() },
+        parent = parent.buildList(),
         collection = collection?.build(),
-        processing = processing.mapToList { it.build() },
+        processing = processing.buildList(),
         manipulation = manipulation?.build(),
-        storage = storage.mapToList { it.build() },
+        storage = storage.buildList(),
       )
   }
 }

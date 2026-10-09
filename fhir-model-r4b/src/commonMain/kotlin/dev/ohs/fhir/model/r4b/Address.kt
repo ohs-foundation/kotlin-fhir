@@ -111,15 +111,15 @@ public data class Address(
   public val country: String? = null,
   /** Time period when address was/is in use. */
   public val period: Period? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.use = use
     builder.type = type
     builder.text = text?.toBuilder()
-    builder.line = line.mapToMutableList { it.toBuilder() }
+    builder.line = line.toBuilderList()
     builder.city = city?.toBuilder()
     builder.district = district?.toBuilder()
     builder.state = state?.toBuilder()
@@ -129,7 +129,7 @@ public data class Address(
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -216,14 +216,14 @@ public data class Address(
     /** Time period when address was/is in use. */
     public open var period: Period.Builder? = null
 
-    public open fun build(): Address =
+    open override fun build(): Address =
       Address(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         use = use,
         type = type,
         text = text?.build(),
-        line = line.mapToList { it.build() },
+        line = line.buildList(),
         city = city?.build(),
         district = district?.build(),
         state = state?.build(),

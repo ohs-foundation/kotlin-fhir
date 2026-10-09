@@ -79,12 +79,12 @@ public data class Population(
   public val race: CodeableConcept? = null,
   /** The existing physiological conditions of the specific population to which this applies. */
   public val physiologicalCondition: CodeableConcept? = null,
-) : BackboneElement() {
-  public fun toBuilder(): Builder {
+) : BackboneElement(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.age = age
     builder.gender = gender?.toBuilder()
     builder.race = race?.toBuilder()
@@ -114,7 +114,7 @@ public data class Population(
     }
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -167,11 +167,11 @@ public data class Population(
     /** The existing physiological conditions of the specific population to which this applies. */
     public open var physiologicalCondition: CodeableConcept.Builder? = null
 
-    public open fun build(): Population =
+    open override fun build(): Population =
       Population(
         id = id,
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         age = age,
         gender = gender?.build(),
         race = race?.build(),

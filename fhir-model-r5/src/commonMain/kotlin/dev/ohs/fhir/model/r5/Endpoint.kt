@@ -228,7 +228,7 @@ public data class Endpoint(
     val builder =
       Builder(
         status,
-        connectionType.mapToMutableList { it.toBuilder() },
+        connectionType.toBuilderList(),
         address.toBuilder(),
       )
     builder.id = id
@@ -236,18 +236,18 @@ public data class Endpoint(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.name = name?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.environmentType = environmentType.mapToMutableList { it.toBuilder() }
+    builder.environmentType = environmentType.toBuilderList()
     builder.managingOrganization = managingOrganization?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.period = period?.toBuilder()
-    builder.payload = payload.mapToMutableList { it.toBuilder() }
-    builder.`header` = `header`.mapToMutableList { it.toBuilder() }
+    builder.payload = payload.toBuilderList()
+    builder.`header` = `header`.toBuilderList()
     return builder
   }
 
@@ -307,18 +307,18 @@ public data class Endpoint(
      * that the content is appropriately secured.
      */
     public val mimeType: List<Code> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.type = type.mapToMutableList { it.toBuilder() }
-      builder.mimeType = mimeType.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.type = type.toBuilderList()
+      builder.mimeType = mimeType.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -378,13 +378,13 @@ public data class Endpoint(
        */
       public var mimeType: MutableList<Code.Builder> = mutableListOf()
 
-      public fun build(): Payload =
+      override fun build(): Payload =
         Payload(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          type = type.mapToList { it.build() },
-          mimeType = mimeType.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          type = type.buildList(),
+          mimeType = mimeType.buildList(),
         )
     }
   }
@@ -601,21 +601,21 @@ public data class Endpoint(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
-        connectionType = connectionType.mapToList { it.build() },
+        connectionType = connectionType.buildList(),
         name = name?.build(),
         description = description?.build(),
-        environmentType = environmentType.mapToList { it.build() },
+        environmentType = environmentType.buildList(),
         managingOrganization = managingOrganization?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         period = period?.build(),
-        payload = payload.mapToList { it.build() },
+        payload = payload.buildList(),
         address = address.build(),
-        `header` = `header`.mapToList { it.build() },
+        `header` = `header`.buildList(),
       )
   }
 }

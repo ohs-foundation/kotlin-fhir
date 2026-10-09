@@ -205,22 +205,22 @@ public data class Specimen(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.accessionIdentifier = accessionIdentifier?.toBuilder()
     builder.status = status
     builder.type = type?.toBuilder()
     builder.subject = subject?.toBuilder()
     builder.receivedTime = receivedTime?.toBuilder()
-    builder.parent = parent.mapToMutableList { it.toBuilder() }
-    builder.request = request.mapToMutableList { it.toBuilder() }
+    builder.parent = parent.toBuilderList()
+    builder.request = request.toBuilderList()
     builder.collection = collection?.toBuilder()
-    builder.processing = processing.mapToMutableList { it.toBuilder() }
-    builder.container = container.mapToMutableList { it.toBuilder() }
-    builder.condition = condition.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.processing = processing.toBuilderList()
+    builder.container = container.toBuilderList()
+    builder.condition = condition.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -296,12 +296,12 @@ public data class Specimen(
      * `Observation.component code` = LOINC 49541-6 (Fasting status - Reported).
      */
     public val fastingStatus: FastingStatus? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.collector = collector?.toBuilder()
       builder.collected = collected
       builder.duration = duration?.toBuilder()
@@ -357,7 +357,7 @@ public data class Specimen(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -437,11 +437,11 @@ public data class Specimen(
        */
       public var fastingStatus: FastingStatus? = null
 
-      public fun build(): Collection =
+      override fun build(): Collection =
         Collection(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           collector = collector?.build(),
           collected = collected,
           duration = duration?.build(),
@@ -504,15 +504,15 @@ public data class Specimen(
      * sample fixation or the period of time the sample was in formalin.
      */
     public val time: Time? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.procedure = procedure?.toBuilder()
-      builder.additive = additive.mapToMutableList { it.toBuilder() }
+      builder.additive = additive.toBuilderList()
       builder.time = time
       return builder
     }
@@ -538,7 +538,7 @@ public data class Specimen(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -594,14 +594,14 @@ public data class Specimen(
        */
       public var time: Time? = null
 
-      public fun build(): Processing =
+      override fun build(): Processing =
         Processing(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           description = description?.build(),
           procedure = procedure?.build(),
-          additive = additive.mapToList { it.build() },
+          additive = additive.buildList(),
           time = time,
         )
     }
@@ -671,13 +671,13 @@ public data class Specimen(
      * Citrate, EDTA.
      */
     public val additive: Additive? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.identifier = identifier.toBuilderList()
       builder.description = description?.toBuilder()
       builder.type = type?.toBuilder()
       builder.capacity = capacity?.toBuilder()
@@ -709,7 +709,7 @@ public data class Specimen(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -777,12 +777,12 @@ public data class Specimen(
        */
       public var additive: Additive? = null
 
-      public fun build(): Container =
+      override fun build(): Container =
         Container(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          identifier = identifier.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          identifier = identifier.buildList(),
           description = description?.build(),
           type = type?.build(),
           capacity = capacity?.build(),
@@ -983,22 +983,22 @@ public data class Specimen(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         accessionIdentifier = accessionIdentifier?.build(),
         status = status,
         type = type?.build(),
         subject = subject?.build(),
         receivedTime = receivedTime?.build(),
-        parent = parent.mapToList { it.build() },
-        request = request.mapToList { it.build() },
+        parent = parent.buildList(),
+        request = request.buildList(),
         collection = collection?.build(),
-        processing = processing.mapToList { it.build() },
-        container = container.mapToList { it.build() },
-        condition = condition.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        processing = processing.buildList(),
+        container = container.buildList(),
+        condition = condition.buildList(),
+        note = note.buildList(),
       )
   }
 }

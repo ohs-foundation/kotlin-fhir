@@ -197,18 +197,18 @@ public data class Account(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.type = type?.toBuilder()
     builder.name = name?.toBuilder()
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.toBuilderList()
     builder.servicePeriod = servicePeriod?.toBuilder()
-    builder.coverage = coverage.mapToMutableList { it.toBuilder() }
+    builder.coverage = coverage.toBuilderList()
     builder.owner = owner?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.guarantor = guarantor.mapToMutableList { it.toBuilder() }
+    builder.guarantor = guarantor.toBuilderList()
     builder.partOf = partOf?.toBuilder()
     return builder
   }
@@ -272,12 +272,12 @@ public data class Account(
      * insurance claiming).
      */
     public val priority: PositiveInt? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(coverage.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.priority = priority?.toBuilder()
       return builder
     }
@@ -291,7 +291,7 @@ public data class Account(
        * coverages in the account could be important when processing billing.
        */
       public var coverage: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -341,11 +341,11 @@ public data class Account(
        */
       public var priority: PositiveInt.Builder? = null
 
-      public fun build(): Coverage =
+      override fun build(): Coverage =
         Coverage(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           coverage = coverage.build(),
           priority = priority?.build(),
         )
@@ -400,12 +400,12 @@ public data class Account(
     public val onHold: Boolean? = null,
     /** The timeframe during which the guarantor accepts responsibility for the account. */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(party.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.onHold = onHold?.toBuilder()
       builder.period = period?.toBuilder()
       return builder
@@ -414,7 +414,7 @@ public data class Account(
     public class Builder(
       /** The entity who is responsible. */
       public var party: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -464,11 +464,11 @@ public data class Account(
       /** The timeframe during which the guarantor accepts responsibility for the account. */
       public var period: Period.Builder? = null
 
-      public fun build(): Guarantor =
+      override fun build(): Guarantor =
         Guarantor(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           party = party.build(),
           onHold = onHold?.build(),
           period = period?.build(),
@@ -655,19 +655,19 @@ public data class Account(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         type = type?.build(),
         name = name?.build(),
-        subject = subject.mapToList { it.build() },
+        subject = subject.buildList(),
         servicePeriod = servicePeriod?.build(),
-        coverage = coverage.mapToList { it.build() },
+        coverage = coverage.buildList(),
         owner = owner?.build(),
         description = description?.build(),
-        guarantor = guarantor.mapToList { it.build() },
+        guarantor = guarantor.buildList(),
         partOf = partOf?.build(),
       )
   }

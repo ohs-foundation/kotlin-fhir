@@ -231,19 +231,19 @@ public data class QuestionnaireResponse(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.identifier = identifier?.toBuilder()
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
-    builder.partOf = partOf.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.toBuilderList()
+    builder.partOf = partOf.toBuilderList()
     builder.questionnaire = questionnaire?.toBuilder()
     builder.subject = subject?.toBuilder()
     builder.encounter = encounter?.toBuilder()
     builder.authored = authored?.toBuilder()
     builder.author = author?.toBuilder()
     builder.source = source?.toBuilder()
-    builder.item = item.mapToMutableList { it.toBuilder() }
+    builder.item = item.toBuilderList()
     return builder
   }
 
@@ -317,16 +317,16 @@ public data class QuestionnaireResponse(
     public val answer: List<Answer> = listOf(),
     /** Questions or sub-groups nested beneath a question or group. */
     public val item: List<Item> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(linkId.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.definition = definition?.toBuilder()
       builder.text = text?.toBuilder()
-      builder.answer = answer.mapToMutableList { it.toBuilder() }
-      builder.item = item.mapToMutableList { it.toBuilder() }
+      builder.answer = answer.toBuilderList()
+      builder.item = item.toBuilderList()
       return builder
     }
 
@@ -382,14 +382,14 @@ public data class QuestionnaireResponse(
       public val `value`: Value? = null,
       /** Nested groups and/or questions found within this particular answer. */
       public val item: List<Item> = listOf(),
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.`value` = `value`
-        builder.item = item.mapToMutableList { it.toBuilder() }
+        builder.item = item.toBuilderList()
         return builder
       }
 
@@ -475,7 +475,7 @@ public data class QuestionnaireResponse(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -530,13 +530,13 @@ public data class QuestionnaireResponse(
         /** Nested groups and/or questions found within this particular answer. */
         public var item: MutableList<Item.Builder> = mutableListOf()
 
-        public fun build(): Answer =
+        override fun build(): Answer =
           Answer(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             `value` = `value`,
-            item = item.mapToList { it.build() },
+            item = item.buildList(),
           )
       }
     }
@@ -547,7 +547,7 @@ public data class QuestionnaireResponse(
        * resource.
        */
       public var linkId: String.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -618,16 +618,16 @@ public data class QuestionnaireResponse(
       /** Questions or sub-groups nested beneath a question or group. */
       public var item: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Item =
+      override fun build(): Item =
         Item(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           linkId = linkId.build(),
           definition = definition?.build(),
           text = text?.build(),
-          answer = answer.mapToList { it.build() },
-          item = item.mapToList { it.build() },
+          answer = answer.buildList(),
+          item = item.buildList(),
         )
     }
   }
@@ -844,12 +844,12 @@ public data class QuestionnaireResponse(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         identifier = identifier?.build(),
-        basedOn = basedOn.mapToList { it.build() },
-        partOf = partOf.mapToList { it.build() },
+        basedOn = basedOn.buildList(),
+        partOf = partOf.buildList(),
         questionnaire = questionnaire?.build(),
         status = status,
         subject = subject?.build(),
@@ -857,7 +857,7 @@ public data class QuestionnaireResponse(
         authored = authored?.build(),
         author = author?.build(),
         source = source?.build(),
-        item = item.mapToList { it.build() },
+        item = item.buildList(),
       )
   }
 }

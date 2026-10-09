@@ -190,19 +190,19 @@ public data class Person(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
-    builder.name = name.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
+    builder.name = name.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
     builder.gender = gender
     builder.birthDate = birthDate?.toBuilder()
-    builder.address = address.mapToMutableList { it.toBuilder() }
+    builder.address = address.toBuilderList()
     builder.photo = photo?.toBuilder()
     builder.managingOrganization = managingOrganization?.toBuilder()
     builder.active = active?.toBuilder()
-    builder.link = link.mapToMutableList { it.toBuilder() }
+    builder.link = link.toBuilderList()
     return builder
   }
 
@@ -250,12 +250,12 @@ public data class Person(
     public val target: Reference,
     /** Level of assurance that this link is associated with the target resource. */
     public val assurance: Enumeration<IdentityAssuranceLevel>? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(target.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.assurance = assurance
       return builder
     }
@@ -263,7 +263,7 @@ public data class Person(
     public class Builder(
       /** The resource to which this actual person is associated. */
       public var target: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -307,11 +307,11 @@ public data class Person(
       /** Level of assurance that this link is associated with the target resource. */
       public var assurance: Enumeration<IdentityAssuranceLevel>? = null
 
-      public fun build(): Link =
+      override fun build(): Link =
         Link(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           target = target.build(),
           assurance = assurance,
         )
@@ -488,19 +488,19 @@ public data class Person(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
-        name = name.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
+        name = name.buildList(),
+        telecom = telecom.buildList(),
         gender = gender,
         birthDate = birthDate?.build(),
-        address = address.mapToList { it.build() },
+        address = address.buildList(),
         photo = photo?.build(),
         managingOrganization = managingOrganization?.build(),
         active = active?.build(),
-        link = link.mapToList { it.build() },
+        link = link.buildList(),
       )
   }
 }

@@ -90,14 +90,14 @@ public data class TriggerDefinition(
    * always have the same type.
    */
   public val condition: Expression? = null,
-) : Element() {
-  public fun toBuilder(): Builder {
+) : Element(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(type)
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.name = name?.toBuilder()
     builder.timing = timing
-    builder.`data` = `data`.mapToMutableList { it.toBuilder() }
+    builder.`data` = `data`.toBuilderList()
     builder.condition = condition?.toBuilder()
     return builder
   }
@@ -142,7 +142,7 @@ public data class TriggerDefinition(
   public open class Builder(
     /** The type of triggering event. */
     public open var type: Enumeration<TriggerType>
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -202,14 +202,14 @@ public data class TriggerDefinition(
      */
     public open var condition: Expression.Builder? = null
 
-    public open fun build(): TriggerDefinition =
+    open override fun build(): TriggerDefinition =
       TriggerDefinition(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         type = type,
         name = name?.build(),
         timing = timing,
-        `data` = `data`.mapToList { it.build() },
+        `data` = `data`.buildList(),
         condition = condition?.build(),
       )
   }

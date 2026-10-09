@@ -215,19 +215,19 @@ public data class Organization(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.active = active?.toBuilder()
-    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.type = type.toBuilderList()
     builder.name = name?.toBuilder()
-    builder.alias = alias.mapToMutableList { it.toBuilder() }
-    builder.telecom = telecom.mapToMutableList { it.toBuilder() }
-    builder.address = address.mapToMutableList { it.toBuilder() }
+    builder.alias = alias.toBuilderList()
+    builder.telecom = telecom.toBuilderList()
+    builder.address = address.toBuilderList()
     builder.partOf = partOf?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
-    builder.endpoint = endpoint.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
+    builder.endpoint = endpoint.toBuilderList()
     return builder
   }
 
@@ -282,20 +282,20 @@ public data class Organization(
     public val telecom: List<ContactPoint> = listOf(),
     /** Visiting or postal addresses for the contact. */
     public val address: Address? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.purpose = purpose?.toBuilder()
       builder.name = name?.toBuilder()
-      builder.telecom = telecom.mapToMutableList { it.toBuilder() }
+      builder.telecom = telecom.toBuilderList()
       builder.address = address?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -351,14 +351,14 @@ public data class Organization(
       /** Visiting or postal addresses for the contact. */
       public var address: Address.Builder? = null
 
-      public fun build(): Contact =
+      override fun build(): Contact =
         Contact(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           purpose = purpose?.build(),
           name = name?.build(),
-          telecom = telecom.mapToList { it.build() },
+          telecom = telecom.buildList(),
           address = address?.build(),
         )
     }
@@ -561,19 +561,19 @@ public data class Organization(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         active = active?.build(),
-        type = type.mapToList { it.build() },
+        type = type.buildList(),
         name = name?.build(),
-        alias = alias.mapToList { it.build() },
-        telecom = telecom.mapToList { it.build() },
-        address = address.mapToList { it.build() },
+        alias = alias.buildList(),
+        telecom = telecom.buildList(),
+        address = address.buildList(),
         partOf = partOf?.build(),
-        contact = contact.mapToList { it.build() },
-        endpoint = endpoint.mapToList { it.build() },
+        contact = contact.buildList(),
+        endpoint = endpoint.buildList(),
       )
   }
 }

@@ -351,11 +351,11 @@ public data class ConditionDefinition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.versionAlgorithm = versionAlgorithm
     builder.name = name?.toBuilder()
@@ -364,23 +364,23 @@ public data class ConditionDefinition(
     builder.experimental = experimental?.toBuilder()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.severity = severity?.toBuilder()
     builder.bodySite = bodySite?.toBuilder()
     builder.stage = stage?.toBuilder()
     builder.hasSeverity = hasSeverity?.toBuilder()
     builder.hasBodySite = hasBodySite?.toBuilder()
     builder.hasStage = hasStage?.toBuilder()
-    builder.definition = definition.mapToMutableList { it.toBuilder() }
-    builder.observation = observation.mapToMutableList { it.toBuilder() }
-    builder.medication = medication.mapToMutableList { it.toBuilder() }
-    builder.precondition = precondition.mapToMutableList { it.toBuilder() }
-    builder.team = team.mapToMutableList { it.toBuilder() }
-    builder.questionnaire = questionnaire.mapToMutableList { it.toBuilder() }
-    builder.plan = plan.mapToMutableList { it.toBuilder() }
+    builder.definition = definition.toBuilderList()
+    builder.observation = observation.toBuilderList()
+    builder.medication = medication.toBuilderList()
+    builder.precondition = precondition.toBuilderList()
+    builder.team = team.toBuilderList()
+    builder.questionnaire = questionnaire.toBuilderList()
+    builder.plan = plan.toBuilderList()
     return builder
   }
 
@@ -428,18 +428,18 @@ public data class ConditionDefinition(
     public val category: CodeableConcept? = null,
     /** Code for relevant Observation. */
     public val code: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.category = category?.toBuilder()
       builder.code = code?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -486,11 +486,11 @@ public data class ConditionDefinition(
       /** Code for relevant Observation. */
       public var code: CodeableConcept.Builder? = null
 
-      public fun build(): Observation =
+      override fun build(): Observation =
         Observation(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           category = category?.build(),
           code = code?.build(),
         )
@@ -541,18 +541,18 @@ public data class ConditionDefinition(
     public val category: CodeableConcept? = null,
     /** Code for relevant Medication. */
     public val code: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.category = category?.toBuilder()
       builder.code = code?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -599,11 +599,11 @@ public data class ConditionDefinition(
       /** Code for relevant Medication. */
       public var code: CodeableConcept.Builder? = null
 
-      public fun build(): Medication =
+      override fun build(): Medication =
         Medication(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           category = category?.build(),
           code = code?.build(),
         )
@@ -656,16 +656,16 @@ public data class ConditionDefinition(
     public val code: CodeableConcept,
     /** Value of Observation. */
     public val `value`: Value? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type,
           code.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.`value` = `value`
       return builder
     }
@@ -698,7 +698,7 @@ public data class ConditionDefinition(
       public var type: Enumeration<ConditionPreconditionType>,
       /** Code for relevant Observation. */
       public var code: CodeableConcept.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -742,11 +742,11 @@ public data class ConditionDefinition(
       /** Value of Observation. */
       public var `value`: Value? = null
 
-      public fun build(): Precondition =
+      override fun build(): Precondition =
         Precondition(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type,
           code = code.build(),
           `value` = `value`,
@@ -798,16 +798,16 @@ public data class ConditionDefinition(
     public val purpose: Enumeration<ConditionQuestionnairePurpose>,
     /** Specific Questionnaire. */
     public val reference: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           purpose,
           reference.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -816,7 +816,7 @@ public data class ConditionDefinition(
       public var purpose: Enumeration<ConditionQuestionnairePurpose>,
       /** Specific Questionnaire. */
       public var reference: Reference.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -857,11 +857,11 @@ public data class ConditionDefinition(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Questionnaire =
+      override fun build(): Questionnaire =
         Questionnaire(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           purpose = purpose,
           reference = reference.build(),
         )
@@ -912,12 +912,12 @@ public data class ConditionDefinition(
     public val role: CodeableConcept? = null,
     /** The actual plan. */
     public val reference: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(reference.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.role = role?.toBuilder()
       return builder
     }
@@ -925,7 +925,7 @@ public data class ConditionDefinition(
     public class Builder(
       /** The actual plan. */
       public var reference: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -969,11 +969,11 @@ public data class ConditionDefinition(
       /** Use for the plan. */
       public var role: CodeableConcept.Builder? = null
 
-      public fun build(): Plan =
+      override fun build(): Plan =
         Plan(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           role = role?.build(),
           reference = reference.build(),
         )
@@ -1346,11 +1346,11 @@ public data class ConditionDefinition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         versionAlgorithm = versionAlgorithm,
         name = name?.build(),
@@ -1360,10 +1360,10 @@ public data class ConditionDefinition(
         experimental = experimental?.build(),
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         code = code.build(),
         severity = severity?.build(),
         bodySite = bodySite?.build(),
@@ -1371,13 +1371,13 @@ public data class ConditionDefinition(
         hasSeverity = hasSeverity?.build(),
         hasBodySite = hasBodySite?.build(),
         hasStage = hasStage?.build(),
-        definition = definition.mapToList { it.build() },
-        observation = observation.mapToList { it.build() },
-        medication = medication.mapToList { it.build() },
-        precondition = precondition.mapToList { it.build() },
-        team = team.mapToList { it.build() },
-        questionnaire = questionnaire.mapToList { it.build() },
-        plan = plan.mapToList { it.build() },
+        definition = definition.buildList(),
+        observation = observation.buildList(),
+        medication = medication.buildList(),
+        precondition = precondition.buildList(),
+        team = team.buildList(),
+        questionnaire = questionnaire.buildList(),
+        plan = plan.buildList(),
       )
   }
 }

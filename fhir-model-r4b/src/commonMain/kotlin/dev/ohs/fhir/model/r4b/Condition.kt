@@ -252,25 +252,25 @@ public data class Condition(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.clinicalStatus = clinicalStatus?.toBuilder()
     builder.verificationStatus = verificationStatus?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.severity = severity?.toBuilder()
     builder.code = code?.toBuilder()
-    builder.bodySite = bodySite.mapToMutableList { it.toBuilder() }
+    builder.bodySite = bodySite.toBuilderList()
     builder.encounter = encounter?.toBuilder()
     builder.onset = onset
     builder.abatement = abatement
     builder.recordedDate = recordedDate?.toBuilder()
     builder.recorder = recorder?.toBuilder()
     builder.asserter = asserter?.toBuilder()
-    builder.stage = stage.mapToMutableList { it.toBuilder() }
-    builder.evidence = evidence.mapToMutableList { it.toBuilder() }
-    builder.note = note.mapToMutableList { it.toBuilder() }
+    builder.stage = stage.toBuilderList()
+    builder.evidence = evidence.toBuilderList()
+    builder.note = note.toBuilderList()
     return builder
   }
 
@@ -323,19 +323,19 @@ public data class Condition(
     public val assessment: List<Reference> = listOf(),
     /** The kind of staging, such as pathological or clinical staging. */
     public val type: CodeableConcept? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.summary = summary?.toBuilder()
-      builder.assessment = assessment.mapToMutableList { it.toBuilder() }
+      builder.assessment = assessment.toBuilderList()
       builder.type = type?.toBuilder()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -388,13 +388,13 @@ public data class Condition(
       /** The kind of staging, such as pathological or clinical staging. */
       public var type: CodeableConcept.Builder? = null
 
-      public fun build(): Stage =
+      override fun build(): Stage =
         Stage(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           summary = summary?.build(),
-          assessment = assessment.mapToList { it.build() },
+          assessment = assessment.buildList(),
           type = type?.build(),
         )
     }
@@ -447,18 +447,18 @@ public data class Condition(
     public val code: List<CodeableConcept> = listOf(),
     /** Links to other relevant information, including pathology reports. */
     public val detail: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.code = code.mapToMutableList { it.toBuilder() }
-      builder.detail = detail.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.code = code.toBuilderList()
+      builder.detail = detail.toBuilderList()
       return builder
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -505,13 +505,13 @@ public data class Condition(
       /** Links to other relevant information, including pathology reports. */
       public var detail: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Evidence =
+      override fun build(): Evidence =
         Evidence(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          code = code.mapToList { it.build() },
-          detail = detail.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          code = code.buildList(),
+          detail = detail.buildList(),
         )
     }
   }
@@ -834,16 +834,16 @@ public data class Condition(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         clinicalStatus = clinicalStatus?.build(),
         verificationStatus = verificationStatus?.build(),
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         severity = severity?.build(),
         code = code?.build(),
-        bodySite = bodySite.mapToList { it.build() },
+        bodySite = bodySite.buildList(),
         subject = subject.build(),
         encounter = encounter?.build(),
         onset = onset,
@@ -851,9 +851,9 @@ public data class Condition(
         recordedDate = recordedDate?.build(),
         recorder = recorder?.build(),
         asserter = asserter?.build(),
-        stage = stage.mapToList { it.build() },
-        evidence = evidence.mapToList { it.build() },
-        note = note.mapToList { it.build() },
+        stage = stage.buildList(),
+        evidence = evidence.buildList(),
+        note = note.buildList(),
       )
   }
 }

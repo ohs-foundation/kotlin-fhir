@@ -313,37 +313,37 @@ public data class DocumentReference(
     val builder =
       Builder(
         status,
-        content.mapToMutableList { it.toBuilder() },
+        content.toBuilderList(),
       )
     builder.id = id
     builder.meta = meta?.toBuilder()
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
-    builder.basedOn = basedOn.mapToMutableList { it.toBuilder() }
+    builder.basedOn = basedOn.toBuilderList()
     builder.docStatus = docStatus
-    builder.modality = modality.mapToMutableList { it.toBuilder() }
+    builder.modality = modality.toBuilderList()
     builder.type = type?.toBuilder()
-    builder.category = category.mapToMutableList { it.toBuilder() }
+    builder.category = category.toBuilderList()
     builder.subject = subject?.toBuilder()
-    builder.context = context.mapToMutableList { it.toBuilder() }
-    builder.event = event.mapToMutableList { it.toBuilder() }
-    builder.bodySite = bodySite.mapToMutableList { it.toBuilder() }
+    builder.context = context.toBuilderList()
+    builder.event = event.toBuilderList()
+    builder.bodySite = bodySite.toBuilderList()
     builder.facilityType = facilityType?.toBuilder()
     builder.practiceSetting = practiceSetting?.toBuilder()
     builder.period = period?.toBuilder()
     builder.date = date?.toBuilder()
-    builder.author = author.mapToMutableList { it.toBuilder() }
-    builder.attester = attester.mapToMutableList { it.toBuilder() }
+    builder.author = author.toBuilderList()
+    builder.attester = attester.toBuilderList()
     builder.custodian = custodian?.toBuilder()
-    builder.relatesTo = relatesTo.mapToMutableList { it.toBuilder() }
+    builder.relatesTo = relatesTo.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.securityLabel = securityLabel.mapToMutableList { it.toBuilder() }
+    builder.securityLabel = securityLabel.toBuilderList()
     return builder
   }
 
@@ -393,12 +393,12 @@ public data class DocumentReference(
     public val time: DateTime? = null,
     /** Who attested the document in the specified way. */
     public val party: Reference? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(mode.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.time = time?.toBuilder()
       builder.party = party?.toBuilder()
       return builder
@@ -407,7 +407,7 @@ public data class DocumentReference(
     public class Builder(
       /** The type of attestation the authenticator offers. */
       public var mode: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -454,11 +454,11 @@ public data class DocumentReference(
       /** Who attested the document in the specified way. */
       public var party: Reference.Builder? = null
 
-      public fun build(): Attester =
+      override fun build(): Attester =
         Attester(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           mode = mode.build(),
           time = time?.build(),
           party = party?.build(),
@@ -515,12 +515,12 @@ public data class DocumentReference(
     public val code: CodeableConcept,
     /** The target document of this relationship. */
     public val target: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder(), target.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -534,7 +534,7 @@ public data class DocumentReference(
       public var code: CodeableConcept.Builder,
       /** The target document of this relationship. */
       public var target: Reference.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -575,11 +575,11 @@ public data class DocumentReference(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): RelatesTo =
+      override fun build(): RelatesTo =
         RelatesTo(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           code = code.build(),
           target = target.build(),
         )
@@ -645,13 +645,13 @@ public data class DocumentReference(
      * that the content complies with.
      */
     public val profile: List<Profile> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(attachment.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.profile = profile.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.profile = profile.toBuilderList()
       return builder
     }
 
@@ -700,12 +700,12 @@ public data class DocumentReference(
       override val modifierExtension: List<Extension> = listOf(),
       /** Code|uri|canonical. */
       public val `value`: Value,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(`value`)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -739,7 +739,7 @@ public data class DocumentReference(
       public class Builder(
         /** Code|uri|canonical. */
         public var `value`: Value
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -780,11 +780,11 @@ public data class DocumentReference(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Profile =
+        override fun build(): Profile =
           Profile(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             `value` = `value`,
           )
       }
@@ -796,7 +796,7 @@ public data class DocumentReference(
        * integrity.
        */
       public var attachment: Attachment.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -849,13 +849,13 @@ public data class DocumentReference(
        */
       public var profile: MutableList<Profile.Builder> = mutableListOf()
 
-      public fun build(): Content =
+      override fun build(): Content =
         Content(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           attachment = attachment.build(),
-          profile = profile.mapToList { it.build() },
+          profile = profile.buildList(),
         )
     }
   }
@@ -1164,32 +1164,32 @@ public data class DocumentReference(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         version = version?.build(),
-        basedOn = basedOn.mapToList { it.build() },
+        basedOn = basedOn.buildList(),
         status = status,
         docStatus = docStatus,
-        modality = modality.mapToList { it.build() },
+        modality = modality.buildList(),
         type = type?.build(),
-        category = category.mapToList { it.build() },
+        category = category.buildList(),
         subject = subject?.build(),
-        context = context.mapToList { it.build() },
-        event = event.mapToList { it.build() },
-        bodySite = bodySite.mapToList { it.build() },
+        context = context.buildList(),
+        event = event.buildList(),
+        bodySite = bodySite.buildList(),
         facilityType = facilityType?.build(),
         practiceSetting = practiceSetting?.build(),
         period = period?.build(),
         date = date?.build(),
-        author = author.mapToList { it.build() },
-        attester = attester.mapToList { it.build() },
+        author = author.buildList(),
+        attester = attester.buildList(),
         custodian = custodian?.build(),
-        relatesTo = relatesTo.mapToList { it.build() },
+        relatesTo = relatesTo.buildList(),
         description = description?.build(),
-        securityLabel = securityLabel.mapToList { it.build() },
-        content = content.mapToList { it.build() },
+        securityLabel = securityLabel.buildList(),
+        content = content.buildList(),
       )
   }
 }

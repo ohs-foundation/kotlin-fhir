@@ -215,22 +215,22 @@ public data class BiologicallyDerivedProduct(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.productCategory = productCategory?.toBuilder()
     builder.productCode = productCode?.toBuilder()
-    builder.parent = parent.mapToMutableList { it.toBuilder() }
-    builder.request = request.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.parent = parent.toBuilderList()
+    builder.request = request.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.biologicalSourceEvent = biologicalSourceEvent?.toBuilder()
-    builder.processingFacility = processingFacility.mapToMutableList { it.toBuilder() }
+    builder.processingFacility = processingFacility.toBuilderList()
     builder.division = division?.toBuilder()
     builder.productStatus = productStatus?.toBuilder()
     builder.expirationDate = expirationDate?.toBuilder()
     builder.collection = collection?.toBuilder()
     builder.storageTempRequirements = storageTempRequirements?.toBuilder()
-    builder.`property` = `property`.mapToMutableList { it.toBuilder() }
+    builder.`property` = `property`.toBuilderList()
     return builder
   }
 
@@ -283,12 +283,12 @@ public data class BiologicallyDerivedProduct(
     public val source: Reference? = null,
     /** Time of product collection. */
     public val collected: Collected? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.collector = collector?.toBuilder()
       builder.source = source?.toBuilder()
       builder.collected = collected
@@ -316,7 +316,7 @@ public data class BiologicallyDerivedProduct(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -369,11 +369,11 @@ public data class BiologicallyDerivedProduct(
       /** Time of product collection. */
       public var collected: Collected? = null
 
-      public fun build(): Collection =
+      override fun build(): Collection =
         Collection(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           collector = collector?.build(),
           source = source?.build(),
           collected = collected,
@@ -436,16 +436,16 @@ public data class BiologicallyDerivedProduct(
      * available. The type of value will depend on the property type and is specified in ST-027.
      */
     public val `value`: Value,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           type.toBuilder(),
           `value`,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -530,7 +530,7 @@ public data class BiologicallyDerivedProduct(
        * available. The type of value will depend on the property type and is specified in ST-027.
        */
       public var `value`: Value,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -571,11 +571,11 @@ public data class BiologicallyDerivedProduct(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Property =
+      override fun build(): Property =
         Property(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           type = type.build(),
           `value` = `value`,
         )
@@ -783,22 +783,22 @@ public data class BiologicallyDerivedProduct(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         productCategory = productCategory?.build(),
         productCode = productCode?.build(),
-        parent = parent.mapToList { it.build() },
-        request = request.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        parent = parent.buildList(),
+        request = request.buildList(),
+        identifier = identifier.buildList(),
         biologicalSourceEvent = biologicalSourceEvent?.build(),
-        processingFacility = processingFacility.mapToList { it.build() },
+        processingFacility = processingFacility.buildList(),
         division = division?.build(),
         productStatus = productStatus?.build(),
         expirationDate = expirationDate?.build(),
         collection = collection?.build(),
         storageTempRequirements = storageTempRequirements?.build(),
-        `property` = `property`.mapToList { it.build() },
+        `property` = `property`.buildList(),
       )
   }
 }

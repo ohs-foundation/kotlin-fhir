@@ -321,30 +321,30 @@ public data class Questionnaire(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.url = url?.toBuilder()
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.identifier = identifier.toBuilderList()
     builder.version = version?.toBuilder()
     builder.name = name?.toBuilder()
     builder.title = title?.toBuilder()
-    builder.derivedFrom = derivedFrom.mapToMutableList { it.toBuilder() }
+    builder.derivedFrom = derivedFrom.toBuilderList()
     builder.experimental = experimental?.toBuilder()
     builder.subjectType = subjectType.toMutableList()
     builder.date = date?.toBuilder()
     builder.publisher = publisher?.toBuilder()
-    builder.contact = contact.mapToMutableList { it.toBuilder() }
+    builder.contact = contact.toBuilderList()
     builder.description = description?.toBuilder()
-    builder.useContext = useContext.mapToMutableList { it.toBuilder() }
-    builder.jurisdiction = jurisdiction.mapToMutableList { it.toBuilder() }
+    builder.useContext = useContext.toBuilderList()
+    builder.jurisdiction = jurisdiction.toBuilderList()
     builder.purpose = purpose?.toBuilder()
     builder.copyright = copyright?.toBuilder()
     builder.approvalDate = approvalDate?.toBuilder()
     builder.lastReviewDate = lastReviewDate?.toBuilder()
     builder.effectivePeriod = effectivePeriod?.toBuilder()
-    builder.code = code.mapToMutableList { it.toBuilder() }
-    builder.item = item.mapToMutableList { it.toBuilder() }
+    builder.code = code.toBuilderList()
+    builder.item = item.toBuilderList()
     return builder
   }
 
@@ -553,30 +553,30 @@ public data class Questionnaire(
      * encouraged to consider the impact on the user and user interface of overly deep nesting.
      */
     public val item: List<Item> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           linkId.toBuilder(),
           type,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.definition = definition?.toBuilder()
-      builder.code = code.mapToMutableList { it.toBuilder() }
+      builder.code = code.toBuilderList()
       builder.prefix = prefix?.toBuilder()
       builder.text = text?.toBuilder()
-      builder.enableWhen = enableWhen.mapToMutableList { it.toBuilder() }
+      builder.enableWhen = enableWhen.toBuilderList()
       builder.enableBehavior = enableBehavior
       builder.required = required?.toBuilder()
       builder.repeats = repeats?.toBuilder()
       builder.readOnly = readOnly?.toBuilder()
       builder.maxLength = maxLength?.toBuilder()
       builder.answerValueSet = answerValueSet?.toBuilder()
-      builder.answerOption = answerOption.mapToMutableList { it.toBuilder() }
-      builder.initial = initial.mapToMutableList { it.toBuilder() }
-      builder.item = item.mapToMutableList { it.toBuilder() }
+      builder.answerOption = answerOption.toBuilderList()
+      builder.initial = initial.toBuilderList()
+      builder.item = item.toBuilderList()
       return builder
     }
 
@@ -639,8 +639,8 @@ public data class Questionnaire(
        * the item to be enabled.
        */
       public val answer: Answer,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             question.toBuilder(),
@@ -648,8 +648,8 @@ public data class Questionnaire(
             answer,
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -739,7 +739,7 @@ public data class Questionnaire(
          * the item to be enabled.
          */
         public var answer: Answer,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -780,11 +780,11 @@ public data class Questionnaire(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): EnableWhen =
+        override fun build(): EnableWhen =
           EnableWhen(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             question = question.build(),
             `operator` = `operator`,
             answer = answer,
@@ -845,12 +845,12 @@ public data class Questionnaire(
        * Use this instead of initial[v] if answerValueSet is present.
        */
       public val initialSelected: Boolean? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(`value`)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.initialSelected = initialSelected?.toBuilder()
         return builder
       }
@@ -907,7 +907,7 @@ public data class Questionnaire(
          * The data type of the value must agree with the item.type.
          */
         public var `value`: Value
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -956,11 +956,11 @@ public data class Questionnaire(
          */
         public var initialSelected: Boolean.Builder? = null
 
-        public fun build(): AnswerOption =
+        override fun build(): AnswerOption =
           AnswerOption(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             `value` = `value`,
             initialSelected = initialSelected?.build(),
           )
@@ -1016,12 +1016,12 @@ public data class Questionnaire(
        * The type of the initial value must be consistent with the type of the item.
        */
       public val `value`: Value,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(`value`)
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         return builder
       }
 
@@ -1114,7 +1114,7 @@ public data class Questionnaire(
          * The type of the initial value must be consistent with the type of the item.
          */
         public var `value`: Value
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -1155,11 +1155,11 @@ public data class Questionnaire(
          */
         public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Initial =
+        override fun build(): Initial =
           Initial(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             `value` = `value`,
           )
       }
@@ -1182,7 +1182,7 @@ public data class Questionnaire(
        * come from the ElementDefinition referred to by .definition.
        */
       public var type: Enumeration<QuestionnaireItemType>,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1388,27 +1388,27 @@ public data class Questionnaire(
        */
       public var item: MutableList<Builder> = mutableListOf()
 
-      public fun build(): Item =
+      override fun build(): Item =
         Item(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           linkId = linkId.build(),
           definition = definition?.build(),
-          code = code.mapToList { it.build() },
+          code = code.buildList(),
           prefix = prefix?.build(),
           text = text?.build(),
           type = type,
-          enableWhen = enableWhen.mapToList { it.build() },
+          enableWhen = enableWhen.buildList(),
           enableBehavior = enableBehavior,
           required = required?.build(),
           repeats = repeats?.build(),
           readOnly = readOnly?.build(),
           maxLength = maxLength?.build(),
           answerValueSet = answerValueSet?.build(),
-          answerOption = answerOption.mapToList { it.build() },
-          initial = initial.mapToList { it.build() },
-          item = item.mapToList { it.build() },
+          answerOption = answerOption.buildList(),
+          initial = initial.buildList(),
+          item = item.buildList(),
         )
     }
   }
@@ -1722,31 +1722,31 @@ public data class Questionnaire(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         url = url?.build(),
-        identifier = identifier.mapToList { it.build() },
+        identifier = identifier.buildList(),
         version = version?.build(),
         name = name?.build(),
         title = title?.build(),
-        derivedFrom = derivedFrom.mapToList { it.build() },
+        derivedFrom = derivedFrom.buildList(),
         status = status,
         experimental = experimental?.build(),
         subjectType = subjectType,
         date = date?.build(),
         publisher = publisher?.build(),
-        contact = contact.mapToList { it.build() },
+        contact = contact.buildList(),
         description = description?.build(),
-        useContext = useContext.mapToList { it.build() },
-        jurisdiction = jurisdiction.mapToList { it.build() },
+        useContext = useContext.buildList(),
+        jurisdiction = jurisdiction.buildList(),
         purpose = purpose?.build(),
         copyright = copyright?.build(),
         approvalDate = approvalDate?.build(),
         lastReviewDate = lastReviewDate?.build(),
         effectivePeriod = effectivePeriod?.build(),
-        code = code.mapToList { it.build() },
-        item = item.mapToList { it.build() },
+        code = code.buildList(),
+        item = item.buildList(),
       )
   }
 }

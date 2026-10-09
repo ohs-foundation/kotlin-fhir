@@ -172,19 +172,19 @@ public data class MolecularSequence(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.type = type
     builder.subject = subject?.toBuilder()
-    builder.focus = focus.mapToMutableList { it.toBuilder() }
+    builder.focus = focus.toBuilderList()
     builder.specimen = specimen?.toBuilder()
     builder.device = device?.toBuilder()
     builder.performer = performer?.toBuilder()
     builder.literal = literal?.toBuilder()
-    builder.formatted = formatted.mapToMutableList { it.toBuilder() }
-    builder.relative = relative.mapToMutableList { it.toBuilder() }
+    builder.formatted = formatted.toBuilderList()
+    builder.relative = relative.toBuilderList()
     return builder
   }
 
@@ -251,16 +251,16 @@ public data class MolecularSequence(
     public val startingSequence: StartingSequence? = null,
     /** Changes in sequence from the starting sequence. */
     public val edit: List<Edit> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(coordinateSystem.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.ordinalPosition = ordinalPosition?.toBuilder()
       builder.sequenceRange = sequenceRange?.toBuilder()
       builder.startingSequence = startingSequence?.toBuilder()
-      builder.edit = edit.mapToMutableList { it.toBuilder() }
+      builder.edit = edit.toBuilderList()
       return builder
     }
 
@@ -346,12 +346,12 @@ public data class MolecularSequence(
        * arm.
        */
       public val strand: Enumeration<StrandType>? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.genomeAssembly = genomeAssembly?.toBuilder()
         builder.chromosome = chromosome?.toBuilder()
         builder.sequence = sequence
@@ -392,7 +392,7 @@ public data class MolecularSequence(
         }
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -479,11 +479,11 @@ public data class MolecularSequence(
          */
         public var strand: Enumeration<StrandType>? = null
 
-        public fun build(): StartingSequence =
+        override fun build(): StartingSequence =
           StartingSequence(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             genomeAssembly = genomeAssembly?.build(),
             chromosome = chromosome?.build(),
             sequence = sequence,
@@ -560,12 +560,12 @@ public data class MolecularSequence(
        * in the range between variant.start and variant.end.
        */
       public val replacedSequence: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.start = start?.toBuilder()
         builder.end = end?.toBuilder()
         builder.replacementSequence = replacementSequence?.toBuilder()
@@ -573,7 +573,7 @@ public data class MolecularSequence(
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -643,11 +643,11 @@ public data class MolecularSequence(
          */
         public var replacedSequence: String.Builder? = null
 
-        public fun build(): Edit =
+        override fun build(): Edit =
           Edit(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             start = start?.build(),
             end = end?.build(),
             replacementSequence = replacementSequence?.build(),
@@ -663,7 +663,7 @@ public data class MolecularSequence(
        * https://loinc.org/92822-6/ for more detail.
        */
       public var coordinateSystem: CodeableConcept.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -725,16 +725,16 @@ public data class MolecularSequence(
       /** Changes in sequence from the starting sequence. */
       public var edit: MutableList<Edit.Builder> = mutableListOf()
 
-      public fun build(): Relative =
+      override fun build(): Relative =
         Relative(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           coordinateSystem = coordinateSystem.build(),
           ordinalPosition = ordinalPosition?.build(),
           sequenceRange = sequenceRange?.build(),
           startingSequence = startingSequence?.build(),
-          edit = edit.mapToList { it.build() },
+          edit = edit.buildList(),
         )
     }
   }
@@ -892,19 +892,19 @@ public data class MolecularSequence(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         type = type,
         subject = subject?.build(),
-        focus = focus.mapToList { it.build() },
+        focus = focus.buildList(),
         specimen = specimen?.build(),
         device = device?.build(),
         performer = performer?.build(),
         literal = literal?.build(),
-        formatted = formatted.mapToList { it.build() },
-        relative = relative.mapToList { it.build() },
+        formatted = formatted.buildList(),
+        relative = relative.buildList(),
       )
   }
 }

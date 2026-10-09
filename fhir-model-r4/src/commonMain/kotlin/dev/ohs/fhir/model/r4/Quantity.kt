@@ -81,7 +81,7 @@ public open class Quantity(
    * for currency. The context of use may additionally require a code from a particular system.
    */
   public open val code: Code? = null,
-) : Element() {
+) : Element(), FhirBuildable {
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is Quantity) return false
@@ -107,10 +107,10 @@ public open class Quantity(
     return result
   }
 
-  public open fun toBuilder(): Builder {
+  open override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
     builder.`value` = `value`?.toBuilder()
     builder.comparator = comparator
     builder.unit = unit?.toBuilder()
@@ -119,7 +119,7 @@ public open class Quantity(
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -171,10 +171,10 @@ public open class Quantity(
      */
     public open var code: Code.Builder? = null
 
-    public open fun build(): Quantity =
+    open override fun build(): Quantity =
       Quantity(
         id = id,
-        extension = extension.mapToList { it.build() },
+        extension = extension.buildList(),
         `value` = `value`?.build(),
         comparator = comparator,
         unit = unit?.build(),

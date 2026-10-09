@@ -236,24 +236,24 @@ public data class Account(
     builder.implicitRules = implicitRules?.toBuilder()
     builder.language = language?.toBuilder()
     builder.text = text?.toBuilder()
-    builder.contained = contained.mapToMutableList { it.toBuilder() }
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-    builder.identifier = identifier.mapToMutableList { it.toBuilder() }
+    builder.contained = contained.toBuilderList()
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
+    builder.identifier = identifier.toBuilderList()
     builder.billingStatus = billingStatus?.toBuilder()
     builder.type = type?.toBuilder()
     builder.name = name?.toBuilder()
-    builder.subject = subject.mapToMutableList { it.toBuilder() }
+    builder.subject = subject.toBuilderList()
     builder.servicePeriod = servicePeriod?.toBuilder()
-    builder.coverage = coverage.mapToMutableList { it.toBuilder() }
+    builder.coverage = coverage.toBuilderList()
     builder.owner = owner?.toBuilder()
     builder.description = description?.toBuilder()
-    builder.guarantor = guarantor.mapToMutableList { it.toBuilder() }
-    builder.diagnosis = diagnosis.mapToMutableList { it.toBuilder() }
-    builder.procedure = procedure.mapToMutableList { it.toBuilder() }
-    builder.relatedAccount = relatedAccount.mapToMutableList { it.toBuilder() }
+    builder.guarantor = guarantor.toBuilderList()
+    builder.diagnosis = diagnosis.toBuilderList()
+    builder.procedure = procedure.toBuilderList()
+    builder.relatedAccount = relatedAccount.toBuilderList()
     builder.currency = currency?.toBuilder()
-    builder.balance = balance.mapToMutableList { it.toBuilder() }
+    builder.balance = balance.toBuilderList()
     builder.calculatedAt = calculatedAt?.toBuilder()
     return builder
   }
@@ -317,12 +317,12 @@ public data class Account(
      * insurance claiming).
      */
     public val priority: PositiveInt? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(coverage.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.priority = priority?.toBuilder()
       return builder
     }
@@ -336,7 +336,7 @@ public data class Account(
        * coverages in the account could be important when processing billing.
        */
       public var coverage: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -386,11 +386,11 @@ public data class Account(
        */
       public var priority: PositiveInt.Builder? = null
 
-      public fun build(): Coverage =
+      override fun build(): Coverage =
         Coverage(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           coverage = coverage.build(),
           priority = priority?.build(),
         )
@@ -445,12 +445,12 @@ public data class Account(
     public val onHold: Boolean? = null,
     /** The timeframe during which the guarantor accepts responsibility for the account. */
     public val period: Period? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(party.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.onHold = onHold?.toBuilder()
       builder.period = period?.toBuilder()
       return builder
@@ -459,7 +459,7 @@ public data class Account(
     public class Builder(
       /** The entity who is responsible. */
       public var party: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -509,11 +509,11 @@ public data class Account(
       /** The timeframe during which the guarantor accepts responsibility for the account. */
       public var period: Period.Builder? = null
 
-      public fun build(): Guarantor =
+      override fun build(): Guarantor =
         Guarantor(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           party = party.build(),
           onHold = onHold?.build(),
           period = period?.build(),
@@ -582,24 +582,24 @@ public data class Account(
      * product. Such as DRGs.
      */
     public val packageCode: List<CodeableConcept> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(condition.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.sequence = sequence?.toBuilder()
       builder.dateOfDiagnosis = dateOfDiagnosis?.toBuilder()
-      builder.type = type.mapToMutableList { it.toBuilder() }
+      builder.type = type.toBuilderList()
       builder.onAdmission = onAdmission?.toBuilder()
-      builder.packageCode = packageCode.mapToMutableList { it.toBuilder() }
+      builder.packageCode = packageCode.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** The diagnosis relevant to the account. */
       public var condition: CodeableReference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -661,17 +661,17 @@ public data class Account(
        */
       public var packageCode: MutableList<CodeableConcept.Builder> = mutableListOf()
 
-      public fun build(): Diagnosis =
+      override fun build(): Diagnosis =
         Diagnosis(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           sequence = sequence?.build(),
           condition = condition.build(),
           dateOfDiagnosis = dateOfDiagnosis?.build(),
-          type = type.mapToList { it.build() },
+          type = type.buildList(),
           onAdmission = onAdmission?.build(),
-          packageCode = packageCode.mapToList { it.build() },
+          packageCode = packageCode.buildList(),
         )
     }
   }
@@ -738,24 +738,24 @@ public data class Account(
     public val packageCode: List<CodeableConcept> = listOf(),
     /** Any devices that were associated with the procedure relevant to the account. */
     public val device: List<Reference> = listOf(),
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.sequence = sequence?.toBuilder()
       builder.dateOfService = dateOfService?.toBuilder()
-      builder.type = type.mapToMutableList { it.toBuilder() }
-      builder.packageCode = packageCode.mapToMutableList { it.toBuilder() }
-      builder.device = device.mapToMutableList { it.toBuilder() }
+      builder.type = type.toBuilderList()
+      builder.packageCode = packageCode.toBuilderList()
+      builder.device = device.toBuilderList()
       return builder
     }
 
     public class Builder(
       /** The procedure relevant to the account. */
       public var code: CodeableReference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -817,17 +817,17 @@ public data class Account(
       /** Any devices that were associated with the procedure relevant to the account. */
       public var device: MutableList<Reference.Builder> = mutableListOf()
 
-      public fun build(): Procedure =
+      override fun build(): Procedure =
         Procedure(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           sequence = sequence?.build(),
           code = code.build(),
           dateOfService = dateOfService?.build(),
-          type = type.mapToList { it.build() },
-          packageCode = packageCode.mapToList { it.build() },
-          device = device.mapToList { it.build() },
+          type = type.buildList(),
+          packageCode = packageCode.buildList(),
+          device = device.buildList(),
         )
     }
   }
@@ -876,12 +876,12 @@ public data class Account(
     public val relationship: CodeableConcept? = null,
     /** Reference to an associated Account. */
     public val account: Reference,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(account.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.relationship = relationship?.toBuilder()
       return builder
     }
@@ -889,7 +889,7 @@ public data class Account(
     public class Builder(
       /** Reference to an associated Account. */
       public var account: Reference.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -933,11 +933,11 @@ public data class Account(
       /** Relationship of the associated Account. */
       public var relationship: CodeableConcept.Builder? = null
 
-      public fun build(): RelatedAccount =
+      override fun build(): RelatedAccount =
         RelatedAccount(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           relationship = relationship?.build(),
           account = account.build(),
         )
@@ -1003,12 +1003,12 @@ public data class Account(
     public val estimate: Boolean? = null,
     /** The actual balance value calculated for the age defined in the term property. */
     public val amount: Money,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(amount.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       builder.aggregate = aggregate?.toBuilder()
       builder.term = term?.toBuilder()
       builder.estimate = estimate?.toBuilder()
@@ -1018,7 +1018,7 @@ public data class Account(
     public class Builder(
       /** The actual balance value calculated for the age defined in the term property. */
       public var amount: Money.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1074,11 +1074,11 @@ public data class Account(
        */
       public var estimate: Boolean.Builder? = null
 
-      public fun build(): Balance =
+      override fun build(): Balance =
         Balance(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           aggregate = aggregate?.build(),
           term = term?.build(),
           estimate = estimate?.build(),
@@ -1307,25 +1307,25 @@ public data class Account(
         implicitRules = implicitRules?.build(),
         language = language?.build(),
         text = text?.build(),
-        contained = contained.mapToList { it.build() },
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
-        identifier = identifier.mapToList { it.build() },
+        contained = contained.buildList(),
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
+        identifier = identifier.buildList(),
         status = status,
         billingStatus = billingStatus?.build(),
         type = type?.build(),
         name = name?.build(),
-        subject = subject.mapToList { it.build() },
+        subject = subject.buildList(),
         servicePeriod = servicePeriod?.build(),
-        coverage = coverage.mapToList { it.build() },
+        coverage = coverage.buildList(),
         owner = owner?.build(),
         description = description?.build(),
-        guarantor = guarantor.mapToList { it.build() },
-        diagnosis = diagnosis.mapToList { it.build() },
-        procedure = procedure.mapToList { it.build() },
-        relatedAccount = relatedAccount.mapToList { it.build() },
+        guarantor = guarantor.buildList(),
+        diagnosis = diagnosis.buildList(),
+        procedure = procedure.buildList(),
+        relatedAccount = relatedAccount.buildList(),
         currency = currency?.build(),
-        balance = balance.mapToList { it.build() },
+        balance = balance.buildList(),
         calculatedAt = calculatedAt?.build(),
       )
   }

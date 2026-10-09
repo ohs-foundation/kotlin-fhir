@@ -113,12 +113,19 @@ private class BuilderGenerator(
     ),
   }
 
+  private val fhirBuildableType
+    get() = ClassName(baseClassName.packageName, "FhirBuildable")
+
+  private val fhirBuilderType
+    get() = ClassName(baseClassName.packageName, "FhirBuilder")
+
   /** Generates builder support for top-level models (Resources, DataTypes, Primitives). */
   fun generateForModel() {
     when (structureDefinition.kind) {
       StructureDefinition.Kind.RESOURCE -> {
         when (structureDefinition.name) {
           "Resource" -> {
+            typeSpecBuilder.addSuperinterface(fhirBuildableType)
             addBuilderForResource()
             addToBuilderFunctionForResource()
           }
@@ -148,6 +155,9 @@ private class BuilderGenerator(
 
   /** Core generation pipeline: adds the nested `Builder` class and the `toBuilder()` method. */
   private fun generate(elements: List<Element>, kind: Kind) {
+    if (!kind.overridesBaseBuilder) {
+      typeSpecBuilder.addSuperinterface(fhirBuildableType)
+    }
     addBuilderClass(elements, kind)
     addToBuilderFunction(elements, kind)
   }
@@ -164,6 +174,7 @@ private class BuilderGenerator(
     typeSpecBuilder.addType(
       TypeSpec.classBuilder("Builder")
         .addModifiers(KModifier.ABSTRACT)
+        .addSuperinterface(fhirBuilderType)
         // Lets callers set an id on any resource without knowing its concrete type; concrete
         // builders override this property. KDoc is not generated from the element comment since
         // the generated code allows setting the id.
@@ -174,7 +185,10 @@ private class BuilderGenerator(
             .build()
         )
         .addFunction(
-          FunSpec.builder("build").returns(baseClassName).addModifiers(KModifier.ABSTRACT).build()
+          FunSpec.builder("build")
+            .returns(baseClassName)
+            .addModifiers(KModifier.ABSTRACT, KModifier.OVERRIDE)
+            .build()
         )
         .build()
     )
@@ -183,7 +197,7 @@ private class BuilderGenerator(
   private fun addToBuilderFunctionForResource() {
     typeSpecBuilder.addFunction(
       FunSpec.builder("toBuilder")
-        .addModifiers(KModifier.ABSTRACT)
+        .addModifiers(KModifier.ABSTRACT, KModifier.OVERRIDE)
         .returns(baseClassName.nestedClass("Builder"))
         .build()
     )
@@ -215,6 +229,8 @@ private class BuilderGenerator(
             structureDefinition.baseDefinition?.substringAfterLast('/')?.capitalized()?.also {
               superclass(ClassName(baseClassName.packageName, it).nestedClass("Builder"))
             }
+          } else {
+            addSuperinterface(fhirBuilderType)
           }
           if (kind.isOpen) {
             addModifiers(KModifier.OPEN)
@@ -229,13 +245,8 @@ private class BuilderGenerator(
         }
         .addFunction(
           FunSpec.builder("build")
-            .apply {
-              val modifiers = buildList {
-                if (kind.overridesBaseBuilder) add(KModifier.OVERRIDE)
-                if (kind.isOpen) add(KModifier.OPEN)
-              }
-              if (modifiers.isNotEmpty()) addModifiers(modifiers)
-            }
+            .addModifiers(KModifier.OVERRIDE)
+            .apply { if (kind.isOpen) addModifiers(KModifier.OPEN) }
             .returns(baseClassName)
             .addCode(
               CodeBlock.builder()
@@ -259,7 +270,7 @@ private class BuilderGenerator(
                       continue
                     }
                     if (element.max == "*" || element.getElementName() == "extension") {
-                      addStatement("%N = %N.mapToList { it.build() },", name, name)
+                      addStatement("%N = %N.buildList(),", name, name)
                     } else if (element.min == 0) {
                       addStatement("%N = %N?.build(),", name, name)
                     } else {
@@ -323,13 +334,8 @@ private class BuilderGenerator(
     val optionalElements = elements.filter { it.min == 0 }
     typeSpecBuilder.addFunction(
       FunSpec.builder("toBuilder")
-        .apply {
-          val modifiers = buildList {
-            if (kind.overridesBaseBuilder) add(KModifier.OVERRIDE)
-            if (kind.isOpen && isBaseClass) add(KModifier.OPEN)
-          }
-          if (modifiers.isNotEmpty()) addModifiers(modifiers)
-        }
+        .addModifiers(KModifier.OVERRIDE)
+        .apply { if (kind.isOpen && isBaseClass) addModifiers(KModifier.OPEN) }
         .returns(builderClassName)
         .addCode(
           CodeBlock.builder()
@@ -354,7 +360,7 @@ private class BuilderGenerator(
                   } else if ((it.type?.size ?: 0) > 1) {
                     addStatement("%N,", name)
                   } else if (it.max == "*" || name == "extension") {
-                    addStatement("%N.mapToMutableList { it.toBuilder() },", name)
+                    addStatement("%N.toBuilderList(),", name)
                   } else {
                     add("%N.toBuilder(),", name)
                   }
@@ -381,7 +387,7 @@ private class BuilderGenerator(
                 }
                 if (it.max == "*" || name == "extension") {
                   // Handle the extension field in XHTML
-                  addStatement("builder.%N = %N.mapToMutableList { it.toBuilder() }", name, name)
+                  addStatement("builder.%N = %N.toBuilderList()", name, name)
                 } else {
                   addStatement("builder.%N = %N?.toBuilder()", name, name)
                 }

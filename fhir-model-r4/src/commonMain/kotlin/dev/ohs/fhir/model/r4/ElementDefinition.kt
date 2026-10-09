@@ -421,45 +421,45 @@ public data class ElementDefinition(
    * Mappings are not necessarily specific enough for safe translation.
    */
   public val mapping: List<Mapping> = listOf(),
-) : BackboneElement() {
-  public fun toBuilder(): Builder {
+) : BackboneElement(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder(path.toBuilder())
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.modifierExtension = modifierExtension.toBuilderList()
     builder.representation = representation.toMutableList()
     builder.sliceName = sliceName?.toBuilder()
     builder.sliceIsConstraining = sliceIsConstraining?.toBuilder()
     builder.label = label?.toBuilder()
-    builder.code = code.mapToMutableList { it.toBuilder() }
+    builder.code = code.toBuilderList()
     builder.slicing = slicing?.toBuilder()
     builder.short = short?.toBuilder()
     builder.definition = definition?.toBuilder()
     builder.comment = comment?.toBuilder()
     builder.requirements = requirements?.toBuilder()
-    builder.alias = alias.mapToMutableList { it.toBuilder() }
+    builder.alias = alias.toBuilderList()
     builder.min = min?.toBuilder()
     builder.max = max?.toBuilder()
     builder.base = base?.toBuilder()
     builder.contentReference = contentReference?.toBuilder()
-    builder.type = type.mapToMutableList { it.toBuilder() }
+    builder.type = type.toBuilderList()
     builder.defaultValue = defaultValue
     builder.meaningWhenMissing = meaningWhenMissing?.toBuilder()
     builder.orderMeaning = orderMeaning?.toBuilder()
     builder.fixed = fixed
     builder.pattern = pattern
-    builder.example = example.mapToMutableList { it.toBuilder() }
+    builder.example = example.toBuilderList()
     builder.minValue = minValue
     builder.maxValue = maxValue
     builder.maxLength = maxLength?.toBuilder()
-    builder.condition = condition.mapToMutableList { it.toBuilder() }
-    builder.constraint = constraint.mapToMutableList { it.toBuilder() }
+    builder.condition = condition.toBuilderList()
+    builder.constraint = constraint.toBuilderList()
     builder.mustSupport = mustSupport?.toBuilder()
     builder.isModifier = isModifier?.toBuilder()
     builder.isModifierReason = isModifierReason?.toBuilder()
     builder.isSummary = isSummary?.toBuilder()
     builder.binding = binding?.toBuilder()
-    builder.mapping = mapping.mapToMutableList { it.toBuilder() }
+    builder.mapping = mapping.toBuilderList()
     return builder
   }
 
@@ -526,12 +526,12 @@ public data class ElementDefinition(
      * applications have to decide how to handle content not described by the profile.
      */
     public val rules: Enumeration<SlicingRules>,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(rules)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.discriminator = discriminator.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.discriminator = discriminator.toBuilderList()
       builder.description = description?.toBuilder()
       builder.ordered = ordered?.toBuilder()
       return builder
@@ -572,15 +572,15 @@ public data class ElementDefinition(
        * The only FHIRPath functions that are allowed are as(type), resolve(), and extension(url).
        */
       public val path: String,
-    ) : Element() {
-      public fun toBuilder(): Builder {
+    ) : Element(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             type,
             path.toBuilder(),
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
         return builder
       }
 
@@ -594,7 +594,7 @@ public data class ElementDefinition(
          * The only FHIRPath functions that are allowed are as(type), resolve(), and extension(url).
          */
         public var path: String.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -615,10 +615,10 @@ public data class ElementDefinition(
          */
         public var extension: MutableList<Extension.Builder> = mutableListOf()
 
-        public fun build(): Discriminator =
+        override fun build(): Discriminator =
           Discriminator(
             id = id,
-            extension = extension.mapToList { it.build() },
+            extension = extension.buildList(),
             type = type,
             path = path.build(),
           )
@@ -635,7 +635,7 @@ public data class ElementDefinition(
        * applications have to decide how to handle content not described by the profile.
        */
       public var rules: Enumeration<SlicingRules>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -685,11 +685,11 @@ public data class ElementDefinition(
        */
       public var ordered: Boolean.Builder? = null
 
-      public fun build(): Slicing =
+      override fun build(): Slicing =
         Slicing(
           id = id,
-          extension = extension.mapToList { it.build() },
-          discriminator = discriminator.mapToList { it.build() },
+          extension = extension.buildList(),
+          discriminator = discriminator.buildList(),
           description = description?.build(),
           ordered = ordered?.build(),
           rules = rules,
@@ -748,11 +748,11 @@ public data class ElementDefinition(
      * differ.
      */
     public val max: String,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(path.toBuilder(), min.toBuilder(), max.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       return builder
     }
 
@@ -780,7 +780,7 @@ public data class ElementDefinition(
        * differ.
        */
       public var max: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -801,10 +801,10 @@ public data class ElementDefinition(
        */
       public var extension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Base =
+      override fun build(): Base =
         Base(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           path = path.build(),
           min = min.build(),
           max = max.build(),
@@ -884,13 +884,13 @@ public data class ElementDefinition(
      * clarification.
      */
     public val versioning: Enumeration<ReferenceVersionRules>? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(code.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.profile = profile.mapToMutableList { it.toBuilder() }
-      builder.targetProfile = targetProfile.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.profile = profile.toBuilderList()
+      builder.targetProfile = targetProfile.toBuilderList()
       builder.aggregation = aggregation.toMutableList()
       builder.versioning = versioning
       return builder
@@ -909,7 +909,7 @@ public data class ElementDefinition(
        * http://hl7.org/fhir/StructureDefinition/Patient).
        */
       public var code: Uri.Builder
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -973,13 +973,13 @@ public data class ElementDefinition(
        */
       public var versioning: Enumeration<ReferenceVersionRules>? = null
 
-      public fun build(): Type =
+      override fun build(): Type =
         Type(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           code = code.build(),
-          profile = profile.mapToList { it.build() },
-          targetProfile = targetProfile.mapToList { it.build() },
+          profile = profile.buildList(),
+          targetProfile = targetProfile.buildList(),
           aggregation = aggregation,
           versioning = versioning,
         )
@@ -1016,15 +1016,15 @@ public data class ElementDefinition(
      * The actual value for the element, which must be one of the types allowed for this element.
      */
     public val `value`: Value,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           label.toBuilder(),
           `value`,
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       return builder
     }
 
@@ -1358,7 +1358,7 @@ public data class ElementDefinition(
        * The actual value for the element, which must be one of the types allowed for this element.
        */
       public var `value`: Value,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1379,10 +1379,10 @@ public data class ElementDefinition(
        */
       public var extension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Example =
+      override fun build(): Example =
         Example(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           label = label.build(),
           `value` = `value`,
         )
@@ -1461,8 +1461,8 @@ public data class ElementDefinition(
      * when rendering the snapshot.
      */
     public val source: Canonical? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder =
         Builder(
           key.toBuilder(),
@@ -1470,7 +1470,7 @@ public data class ElementDefinition(
           human.toBuilder(),
         )
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.requirements = requirements?.toBuilder()
       builder.expression = expression?.toBuilder()
       builder.xpath = xpath?.toBuilder()
@@ -1497,7 +1497,7 @@ public data class ElementDefinition(
        * Should be expressed in business terms as much as possible.
        */
       public var human: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1552,10 +1552,10 @@ public data class ElementDefinition(
        */
       public var source: Canonical.Builder? = null
 
-      public fun build(): Constraint =
+      override fun build(): Constraint =
         Constraint(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           key = key.build(),
           requirements = requirements?.build(),
           severity = severity,
@@ -1607,11 +1607,11 @@ public data class ElementDefinition(
      * canonical URL).
      */
     public val valueSet: Canonical? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(strength)
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.description = description?.toBuilder()
       builder.valueSet = valueSet?.toBuilder()
       return builder
@@ -1625,7 +1625,7 @@ public data class ElementDefinition(
        * For further discussion, see [Using Terminologies](terminologies.html).
        */
       public var strength: Enumeration<BindingStrength>
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1657,10 +1657,10 @@ public data class ElementDefinition(
        */
       public var valueSet: Canonical.Builder? = null
 
-      public fun build(): Binding =
+      override fun build(): Binding =
         Binding(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           strength = strength,
           description = description?.build(),
           valueSet = valueSet?.build(),
@@ -1709,11 +1709,11 @@ public data class ElementDefinition(
     public val map: String,
     /** Comments that provide information about the mapping or its use. */
     public val comment: String? = null,
-  ) : Element() {
-    public fun toBuilder(): Builder {
+  ) : Element(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(identity.toBuilder(), map.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
       builder.language = language?.toBuilder()
       builder.comment = comment?.toBuilder()
       return builder
@@ -1730,7 +1730,7 @@ public data class ElementDefinition(
        * elements that identify when a particular mapping applies.
        */
       public var map: String.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1762,10 +1762,10 @@ public data class ElementDefinition(
       /** Comments that provide information about the mapping or its use. */
       public var comment: String.Builder? = null
 
-      public fun build(): Mapping =
+      override fun build(): Mapping =
         Mapping(
           id = id,
-          extension = extension.mapToList { it.build() },
+          extension = extension.buildList(),
           identity = identity.build(),
           language = language?.build(),
           map = map.build(),
@@ -2879,7 +2879,7 @@ public data class ElementDefinition(
      * elements, beginning with the name of the resource or extension.
      */
     public open var path: String.Builder
-  ) {
+  ) : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -3285,45 +3285,45 @@ public data class ElementDefinition(
      */
     public open var mapping: MutableList<Mapping.Builder> = mutableListOf()
 
-    public open fun build(): ElementDefinition =
+    open override fun build(): ElementDefinition =
       ElementDefinition(
         id = id,
-        extension = extension.mapToList { it.build() },
-        modifierExtension = modifierExtension.mapToList { it.build() },
+        extension = extension.buildList(),
+        modifierExtension = modifierExtension.buildList(),
         path = path.build(),
         representation = representation,
         sliceName = sliceName?.build(),
         sliceIsConstraining = sliceIsConstraining?.build(),
         label = label?.build(),
-        code = code.mapToList { it.build() },
+        code = code.buildList(),
         slicing = slicing?.build(),
         short = short?.build(),
         definition = definition?.build(),
         comment = comment?.build(),
         requirements = requirements?.build(),
-        alias = alias.mapToList { it.build() },
+        alias = alias.buildList(),
         min = min?.build(),
         max = max?.build(),
         base = base?.build(),
         contentReference = contentReference?.build(),
-        type = type.mapToList { it.build() },
+        type = type.buildList(),
         defaultValue = defaultValue,
         meaningWhenMissing = meaningWhenMissing?.build(),
         orderMeaning = orderMeaning?.build(),
         fixed = fixed,
         pattern = pattern,
-        example = example.mapToList { it.build() },
+        example = example.buildList(),
         minValue = minValue,
         maxValue = maxValue,
         maxLength = maxLength?.build(),
-        condition = condition.mapToList { it.build() },
-        constraint = constraint.mapToList { it.build() },
+        condition = condition.buildList(),
+        constraint = constraint.buildList(),
         mustSupport = mustSupport?.build(),
         isModifier = isModifier?.build(),
         isModifierReason = isModifierReason?.build(),
         isSummary = isSummary?.build(),
         binding = binding?.build(),
-        mapping = mapping.mapToList { it.build() },
+        mapping = mapping.buildList(),
       )
   }
 }

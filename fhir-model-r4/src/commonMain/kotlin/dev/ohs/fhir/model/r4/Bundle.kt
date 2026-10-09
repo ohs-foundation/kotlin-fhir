@@ -175,8 +175,8 @@ public data class Bundle(
     builder.identifier = identifier?.toBuilder()
     builder.timestamp = timestamp?.toBuilder()
     builder.total = total?.toBuilder()
-    builder.link = link.mapToMutableList { it.toBuilder() }
-    builder.entry = entry.mapToMutableList { it.toBuilder() }
+    builder.link = link.toBuilderList()
+    builder.entry = entry.toBuilderList()
     builder.signature = signature?.toBuilder()
     return builder
   }
@@ -228,12 +228,12 @@ public data class Bundle(
     public val relation: String,
     /** The reference details for the link. */
     public val url: Uri,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder(relation.toBuilder(), url.toBuilder())
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
       return builder
     }
 
@@ -245,7 +245,7 @@ public data class Bundle(
       public var relation: String.Builder,
       /** The reference details for the link. */
       public var url: Uri.Builder,
-    ) {
+    ) : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -286,11 +286,11 @@ public data class Bundle(
        */
       public var modifierExtension: MutableList<Extension.Builder> = mutableListOf()
 
-      public fun build(): Link =
+      override fun build(): Link =
         Link(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
           relation = relation.build(),
           url = url.build(),
         )
@@ -382,13 +382,13 @@ public data class Bundle(
      * history.
      */
     public val response: Response? = null,
-  ) : BackboneElement() {
-    public fun toBuilder(): Builder {
+  ) : BackboneElement(), FhirBuildable {
+    override fun toBuilder(): Builder {
       val builder = Builder()
       builder.id = id
-      builder.extension = extension.mapToMutableList { it.toBuilder() }
-      builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
-      builder.link = link.mapToMutableList { it.toBuilder() }
+      builder.extension = extension.toBuilderList()
+      builder.modifierExtension = modifierExtension.toBuilderList()
+      builder.link = link.toBuilderList()
       builder.fullUrl = fullUrl?.toBuilder()
       builder.resource = resource?.toBuilder()
       builder.search = search?.toBuilder()
@@ -457,18 +457,18 @@ public data class Bundle(
        * element.
        */
       public val score: Decimal? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder()
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.mode = mode
         builder.score = score?.toBuilder()
         return builder
       }
 
-      public class Builder() {
+      public class Builder() : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -531,11 +531,11 @@ public data class Bundle(
          */
         public var score: Decimal.Builder? = null
 
-        public fun build(): Search =
+        override fun build(): Search =
           Search(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             mode = mode,
             score = score?.build(),
           )
@@ -620,16 +620,16 @@ public data class Bundle(
        * follows the "?" (not including the "?").
        */
       public val ifNoneExist: String? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder =
           Builder(
             method,
             url.toBuilder(),
           )
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.ifNoneMatch = ifNoneMatch?.toBuilder()
         builder.ifModifiedSince = ifModifiedSince?.toBuilder()
         builder.ifMatch = ifMatch?.toBuilder()
@@ -651,7 +651,7 @@ public data class Bundle(
          * a Patient Update, the method would be PUT and the URL would be "Patient/[id]".
          */
         public var url: Uri.Builder,
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -718,11 +718,11 @@ public data class Bundle(
          */
         public var ifNoneExist: String.Builder? = null
 
-        public fun build(): Request =
+        override fun build(): Request =
           Request(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             method = method,
             url = url.build(),
             ifNoneMatch = ifNoneMatch?.build(),
@@ -818,12 +818,12 @@ public data class Bundle(
        * error.
        */
       public val outcome: Resource? = null,
-    ) : BackboneElement() {
-      public fun toBuilder(): Builder {
+    ) : BackboneElement(), FhirBuildable {
+      override fun toBuilder(): Builder {
         val builder = Builder(status.toBuilder())
         builder.id = id
-        builder.extension = extension.mapToMutableList { it.toBuilder() }
-        builder.modifierExtension = modifierExtension.mapToMutableList { it.toBuilder() }
+        builder.extension = extension.toBuilderList()
+        builder.modifierExtension = modifierExtension.toBuilderList()
         builder.location = location?.toBuilder()
         builder.etag = etag?.toBuilder()
         builder.lastModified = lastModified?.toBuilder()
@@ -838,7 +838,7 @@ public data class Bundle(
          * status code.
          */
         public var status: String.Builder
-      ) {
+      ) : FhirBuilder {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
          * string value that does not contain spaces.
@@ -918,11 +918,11 @@ public data class Bundle(
          */
         public var outcome: Resource.Builder? = null
 
-        public fun build(): Response =
+        override fun build(): Response =
           Response(
             id = id,
-            extension = extension.mapToList { it.build() },
-            modifierExtension = modifierExtension.mapToList { it.build() },
+            extension = extension.buildList(),
+            modifierExtension = modifierExtension.buildList(),
             status = status.build(),
             location = location?.build(),
             etag = etag?.build(),
@@ -932,7 +932,7 @@ public data class Bundle(
       }
     }
 
-    public class Builder() {
+    public class Builder() : FhirBuilder {
       /**
        * Unique id for the element within a resource (for internal references). This may be any
        * string value that does not contain spaces.
@@ -1021,12 +1021,12 @@ public data class Bundle(
        */
       public var response: Response.Builder? = null
 
-      public fun build(): Entry =
+      override fun build(): Entry =
         Entry(
           id = id,
-          extension = extension.mapToList { it.build() },
-          modifierExtension = modifierExtension.mapToList { it.build() },
-          link = link.mapToList { it.build() },
+          extension = extension.buildList(),
+          modifierExtension = modifierExtension.buildList(),
+          link = link.buildList(),
           fullUrl = fullUrl?.build(),
           resource = resource?.build(),
           search = search?.build(),
@@ -1184,8 +1184,8 @@ public data class Bundle(
         type = type,
         timestamp = timestamp?.build(),
         total = total?.build(),
-        link = link.mapToList { it.build() },
-        entry = entry.mapToList { it.build() },
+        link = link.buildList(),
+        entry = entry.buildList(),
         signature = signature?.build(),
       )
   }

@@ -67,17 +67,17 @@ public data class CodeableConcept(
    * Very often the text is the same as a displayName of one of the codings.
    */
   public val text: String? = null,
-) : DataType() {
-  public fun toBuilder(): Builder {
+) : DataType(), FhirBuildable {
+  override fun toBuilder(): Builder {
     val builder = Builder()
     builder.id = id
-    builder.extension = extension.mapToMutableList { it.toBuilder() }
-    builder.coding = coding.mapToMutableList { it.toBuilder() }
+    builder.extension = extension.toBuilderList()
+    builder.coding = coding.toBuilderList()
     builder.text = text?.toBuilder()
     return builder
   }
 
-  public open class Builder() {
+  public open class Builder() : FhirBuilder {
     /**
      * Unique id for the element within a resource (for internal references). This may be any string
      * value that does not contain spaces.
@@ -116,11 +116,11 @@ public data class CodeableConcept(
      */
     public open var text: String.Builder? = null
 
-    public open fun build(): CodeableConcept =
+    open override fun build(): CodeableConcept =
       CodeableConcept(
         id = id,
-        extension = extension.mapToList { it.build() },
-        coding = coding.mapToList { it.build() },
+        extension = extension.buildList(),
+        coding = coding.buildList(),
         text = text?.build(),
       )
   }

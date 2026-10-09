@@ -52,33 +52,34 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Participant") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("role", CodeableConceptSerializer.descriptor)
-      optionalElement("actor", ReferenceSerializer.descriptor)
-    }
+internal object InvoiceParticipantSerializer : FhirSerializer<Invoice.Participant> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Participant", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Invoice.Participant>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("role", CodeableConceptSerializer.descriptor)
+    b.optionalElement("actor", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Invoice.Participant {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -121,40 +122,35 @@ internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> 
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Participant: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Invoice.Participant(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       role = role,
-      actor =
-        actor
-          ?: throw SerializationException(
-            "Missing required property 'actor' on Invoice.Participant"
-          ),
+      actor = required(actor, "Invoice.Participant", "actor"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Invoice.Participant) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -166,25 +162,26 @@ internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> 
   }
 }
 
-internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("LineItem") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("chargeItemReference", ReferenceSerializer.descriptor)
-      optionalElement("chargeItemCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "priceComponent",
-        InvoiceLineItemPriceComponentSerializer.listSerializer.descriptor,
-      )
-    }
+internal object InvoiceLineItemSerializer : FhirSerializer<Invoice.LineItem> {
+  override val descriptor: SerialDescriptor = buildDescriptor("LineItem", this)
 
-  internal val listSerializer: KSerializer<List<Invoice.LineItem>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Invoice.LineItem>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.optionalElement("chargeItemReference", ReferenceSerializer.descriptor)
+    b.optionalElement("chargeItemCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "priceComponent",
+      InvoiceLineItemPriceComponentSerializer.listSerializer.descriptor,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Invoice.LineItem {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -247,41 +244,41 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding LineItem: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Invoice.LineItem(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence = PositiveInt.of(sequence, _sequence),
       chargeItem =
-        Invoice.LineItem.ChargeItem.from(chargeItemReference, chargeItemCodeableConcept)
-          ?: throw SerializationException(
-            "Missing required property 'chargeItem' on Invoice.LineItem"
-          ),
-      priceComponent = priceComponent ?: listOf(),
+        required(
+          Invoice.LineItem.ChargeItem.from(chargeItemReference, chargeItemCodeableConcept),
+          "Invoice.LineItem",
+          "chargeItem",
+        ),
+      priceComponent = listOrEmpty(priceComponent),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Invoice.LineItem) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
     when (val choice = value.chargeItem) {
@@ -297,41 +294,41 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
         )
       }
     }
-    if (value.priceComponent.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        InvoiceLineItemPriceComponentSerializer.listSerializer,
-        value.priceComponent,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      InvoiceLineItemPriceComponentSerializer.listSerializer,
+      value.priceComponent,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object InvoiceLineItemPriceComponentSerializer :
-  KSerializer<Invoice.LineItem.PriceComponent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PriceComponent") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-    }
+  FhirSerializer<Invoice.LineItem.PriceComponent> {
+  override val descriptor: SerialDescriptor = buildDescriptor("PriceComponent", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Invoice.LineItem.PriceComponent>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("type")
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("amount", MoneySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Invoice.LineItem.PriceComponent {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: InvoicePriceComponentType? = null
     var _type: Element? = null
     var code: CodeableConcept? = null
     var factor: FhirDecimal? = null
@@ -356,7 +353,9 @@ internal object InvoiceLineItemPriceComponentSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          type =
+            InvoicePriceComponentType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -393,19 +392,15 @@ internal object InvoiceLineItemPriceComponentSerializer :
           amount =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PriceComponent: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Invoice.LineItem.PriceComponent(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(if (type != null) InvoicePriceComponentType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on Invoice.LineItem.PriceComponent"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(Enumeration.of(type, _type), "Invoice.LineItem.PriceComponent", "type"),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,
@@ -413,22 +408,21 @@ internal object InvoiceLineItemPriceComponentSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: Invoice.LineItem.PriceComponent) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.type)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -453,29 +447,24 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Invoice")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("cancelledReason", KotlinString.serializer().descriptor)
-    b.optionalElement("_cancelledReason", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("cancelledReason")
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("recipient", ReferenceSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.strPrim("date")
     b.optionalElement("participant", InvoiceParticipantSerializer.listSerializer.descriptor)
     b.optionalElement("issuer", ReferenceSerializer.descriptor)
     b.optionalElement("account", ReferenceSerializer.descriptor)
@@ -486,8 +475,7 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
     )
     b.optionalElement("totalNet", MoneySerializer.descriptor)
     b.optionalElement("totalGross", MoneySerializer.descriptor)
-    b.optionalElement("paymentTerms", KotlinString.serializer().descriptor)
-    b.optionalElement("_paymentTerms", ElementSerializer.descriptor)
+    b.strPrim("paymentTerms")
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
   }
 
@@ -507,14 +495,14 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: InvoiceStatus? = null
     var _status: Element? = null
     var cancelledReason: KotlinString? = null
     var _cancelledReason: Element? = null
     var type: CodeableConcept? = null
     var subject: Reference? = null
     var recipient: Reference? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var participant: List<Invoice.Participant>? = null
     var issuer: Reference? = null
@@ -593,7 +581,7 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 -> status = InvoiceStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -635,7 +623,7 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
               ReferenceSerializer,
               null,
             )
-        18 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        18 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -707,7 +695,7 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
               AnnotationSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Invoice: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Invoice(
@@ -716,27 +704,25 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) InvoiceStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Invoice"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "Invoice", "status"),
       cancelledReason = R4bString.of(cancelledReason, _cancelledReason),
       type = type,
       subject = subject,
       recipient = recipient,
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
-      participant = participant ?: listOf(),
+      date = DateTime.of(date, _date),
+      participant = listOrEmpty(participant),
       issuer = issuer,
       account = account,
-      lineItem = lineItem ?: listOf(),
-      totalPriceComponent = totalPriceComponent ?: listOf(),
+      lineItem = listOrEmpty(lineItem),
+      totalPriceComponent = listOrEmpty(totalPriceComponent),
       totalNet = totalNet,
       totalGross = totalGross,
       paymentTerms = Markdown.of(paymentTerms, _paymentTerms),
-      note = note ?: listOf(),
+      note = listOrEmpty(note),
     )
   }
 
@@ -767,34 +753,30 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -835,13 +817,12 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
       value.date?.value?.toString(),
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.date)
-    if (value.participant.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        InvoiceParticipantSerializer.listSerializer,
-        value.participant,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      InvoiceParticipantSerializer.listSerializer,
+      value.participant,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       21 + descriptorOffset,
@@ -854,20 +835,18 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
       ReferenceSerializer,
       value.account,
     )
-    if (value.lineItem.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        InvoiceLineItemSerializer.listSerializer,
-        value.lineItem,
-      )
-    if (value.totalPriceComponent.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        InvoiceLineItemPriceComponentSerializer.listSerializer,
-        value.totalPriceComponent,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      InvoiceLineItemSerializer.listSerializer,
+      value.lineItem,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      InvoiceLineItemPriceComponentSerializer.listSerializer,
+      value.totalPriceComponent,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       25 + descriptorOffset,
@@ -886,12 +865,11 @@ internal object InvoiceSerializer : FhirResourceSerializer<Invoice> {
       value.paymentTerms?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, value.paymentTerms)
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
   }
 }

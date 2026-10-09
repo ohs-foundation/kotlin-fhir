@@ -48,34 +48,34 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ClinicalImpressionFindingSerializer : KSerializer<ClinicalImpression.Finding> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Finding") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("item", CodeableReferenceSerializer.descriptor)
-      optionalElement("basis", KotlinString.serializer().descriptor)
-      optionalElement("_basis", ElementSerializer.descriptor)
-    }
+internal object ClinicalImpressionFindingSerializer : FhirSerializer<ClinicalImpression.Finding> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Finding", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClinicalImpression.Finding>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("item", CodeableReferenceSerializer.descriptor)
+    b.strPrim("basis")
+  }
+
   override fun deserialize(decoder: Decoder): ClinicalImpression.Finding {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -120,36 +120,35 @@ internal object ClinicalImpressionFindingSerializer : KSerializer<ClinicalImpres
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Finding: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ClinicalImpression.Finding(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       item = item,
       basis = R5String.of(basis, _basis),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClinicalImpression.Finding) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -166,40 +165,32 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ClinicalImpression")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("statusReason", CodeableConceptSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("effectiveDateTime", KotlinString.serializer().descriptor)
-    b.optionalElement("_effectiveDateTime", ElementSerializer.descriptor)
+    b.strPrim("effectiveDateTime")
     b.optionalElement("effectivePeriod", PeriodSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.strPrim("date")
     b.optionalElement("performer", ReferenceSerializer.descriptor)
     b.optionalElement("previous", ReferenceSerializer.descriptor)
     b.optionalElement("problem", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("changePattern", CodeableConceptSerializer.descriptor)
-    b.optionalElement("protocol", stringNullableListSerializer.descriptor)
-    b.optionalElement("_protocol", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("summary", KotlinString.serializer().descriptor)
-    b.optionalElement("_summary", ElementSerializer.descriptor)
+    b.strPrimList("protocol")
+    b.strPrim("summary")
     b.optionalElement("finding", ClinicalImpressionFindingSerializer.listSerializer.descriptor)
     b.optionalElement(
       "prognosisCodeableConcept",
@@ -226,17 +217,17 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: EventStatus? = null
     var _status: Element? = null
     var statusReason: CodeableConcept? = null
     var description: KotlinString? = null
     var _description: Element? = null
     var subject: Reference? = null
     var encounter: Reference? = null
-    var effectiveDateTime: KotlinString? = null
+    var effectiveDateTime: FhirDateTime? = null
     var _effectiveDateTime: Element? = null
     var effectivePeriod: Period? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var performer: Reference? = null
     var previous: Reference? = null
@@ -318,7 +309,7 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 -> status = EventStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -360,7 +351,9 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
               ReferenceSerializer,
               null,
             )
-        18 -> effectiveDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        18 ->
+          effectiveDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _effectiveDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -377,7 +370,7 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
               PeriodSerializer,
               null,
             )
-        21 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        21 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -483,58 +476,49 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
               AnnotationSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding ClinicalImpression: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val protocol_ =
+      List(maxSize(protocol, _protocol)) { index ->
+        entryRequired(
+          Uri.of(at(protocol, index), at(_protocol, index)),
+          "ClinicalImpression",
+          "protocol",
+        )
+      }
     return ClinicalImpression(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) EventStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on ClinicalImpression"
-          ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "ClinicalImpression", "status"),
       statusReason = statusReason,
       description = R5String.of(description, _description),
-      subject =
-        subject
-          ?: throw SerializationException(
-            "Missing required property 'subject' on ClinicalImpression"
-          ),
+      subject = required(subject, "ClinicalImpression", "subject"),
       encounter = encounter,
       effective =
         ClinicalImpression.Effective.from(
-          DateTime.of(
-            if (effectiveDateTime != null) FhirDateTime.fromString(effectiveDateTime) else null,
-            _effectiveDateTime,
-          ),
+          DateTime.of(effectiveDateTime, _effectiveDateTime),
           effectivePeriod,
         ),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       performer = performer,
       previous = previous,
-      problem = problem ?: listOf(),
+      problem = listOrEmpty(problem),
       changePattern = changePattern,
-      protocol =
-        (kotlin.collections.List(maxOf(protocol?.size ?: 0, _protocol?.size ?: 0)) { index ->
-          Uri.of(protocol?.getOrNull(index), _protocol?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'protocol' on ClinicalImpression has neither a value nor an id/extension"
-            )
-        }),
+      protocol = protocol_,
       summary = R5String.of(summary, _summary),
-      finding = finding ?: listOf(),
-      prognosisCodeableConcept = prognosisCodeableConcept ?: listOf(),
-      prognosisReference = prognosisReference ?: listOf(),
-      supportingInfo = supportingInfo ?: listOf(),
-      note = note ?: listOf(),
+      finding = listOrEmpty(finding),
+      prognosisCodeableConcept = listOrEmpty(prognosisCodeableConcept),
+      prognosisReference = listOrEmpty(prognosisReference),
+      supportingInfo = listOrEmpty(supportingInfo),
+      note = listOrEmpty(note),
     )
   }
 
@@ -565,34 +549,30 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -660,20 +640,19 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
       ReferenceSerializer,
       value.previous,
     )
-    if (value.problem.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.problem,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.problem,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       26 + descriptorOffset,
       CodeableConceptSerializer,
       value.changePattern,
     )
-    if (value.protocol.isNotEmpty()) {
+    if (!value.protocol.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         27 + descriptorOffset,
@@ -684,40 +663,35 @@ internal object ClinicalImpressionSerializer : FhirResourceSerializer<ClinicalIm
     }
     compositeEncoder.encodeStringIfNotNull(descriptor, 29 + descriptorOffset, value.summary?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, value.summary)
-    if (value.finding.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        ClinicalImpressionFindingSerializer.listSerializer,
-        value.finding,
-      )
-    if (value.prognosisCodeableConcept.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.prognosisCodeableConcept,
-      )
-    if (value.prognosisReference.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.prognosisReference,
-      )
-    if (value.supportingInfo.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.supportingInfo,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      ClinicalImpressionFindingSerializer.listSerializer,
+      value.finding,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.prognosisCodeableConcept,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.prognosisReference,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.supportingInfo,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
   }
 }

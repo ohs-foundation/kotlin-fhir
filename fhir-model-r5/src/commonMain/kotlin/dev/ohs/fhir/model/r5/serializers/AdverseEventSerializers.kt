@@ -50,33 +50,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object AdverseEventParticipantSerializer : KSerializer<AdverseEvent.Participant> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Participant") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("function", CodeableConceptSerializer.descriptor)
-      optionalElement("actor", ReferenceSerializer.descriptor)
-    }
+internal object AdverseEventParticipantSerializer : FhirSerializer<AdverseEvent.Participant> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Participant", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AdverseEvent.Participant>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("function", CodeableConceptSerializer.descriptor)
+    b.optionalElement("actor", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AdverseEvent.Participant {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -119,40 +120,35 @@ internal object AdverseEventParticipantSerializer : KSerializer<AdverseEvent.Par
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Participant: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdverseEvent.Participant(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       function = function,
-      actor =
-        actor
-          ?: throw SerializationException(
-            "Missing required property 'actor' on AdverseEvent.Participant"
-          ),
+      actor = required(actor, "AdverseEvent.Participant", "actor"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: AdverseEvent.Participant) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -164,20 +160,23 @@ internal object AdverseEventParticipantSerializer : KSerializer<AdverseEvent.Par
   }
 }
 
-internal object AdverseEventSuspectEntitySerializer : KSerializer<AdverseEvent.SuspectEntity> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SuspectEntity") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("instanceCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("instanceReference", ReferenceSerializer.descriptor)
-      optionalElement("causality", AdverseEventSuspectEntityCausalitySerializer.descriptor)
-    }
+internal object AdverseEventSuspectEntitySerializer : FhirSerializer<AdverseEvent.SuspectEntity> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SuspectEntity", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AdverseEvent.SuspectEntity>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("instanceCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("instanceReference", ReferenceSerializer.descriptor)
+    b.optionalElement("causality", AdverseEventSuspectEntityCausalitySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AdverseEvent.SuspectEntity {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -229,40 +228,40 @@ internal object AdverseEventSuspectEntitySerializer : KSerializer<AdverseEvent.S
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SuspectEntity: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdverseEvent.SuspectEntity(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       instance =
-        AdverseEvent.SuspectEntity.Instance.from(instanceCodeableConcept, instanceReference)
-          ?: throw SerializationException(
-            "Missing required property 'instance' on AdverseEvent.SuspectEntity"
-          ),
+        required(
+          AdverseEvent.SuspectEntity.Instance.from(instanceCodeableConcept, instanceReference),
+          "AdverseEvent.SuspectEntity",
+          "instance",
+        ),
       causality = causality,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: AdverseEvent.SuspectEntity) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.instance) {
       is AdverseEvent.SuspectEntity.Instance.CodeableConcept -> {
         compositeEncoder.encodeSerializableElement(
@@ -287,21 +286,24 @@ internal object AdverseEventSuspectEntitySerializer : KSerializer<AdverseEvent.S
 }
 
 internal object AdverseEventSuspectEntityCausalitySerializer :
-  KSerializer<AdverseEvent.SuspectEntity.Causality> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Causality") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("assessmentMethod", CodeableConceptSerializer.descriptor)
-      optionalElement("entityRelatedness", CodeableConceptSerializer.descriptor)
-      optionalElement("author", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<AdverseEvent.SuspectEntity.Causality> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Causality", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AdverseEvent.SuspectEntity.Causality>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("assessmentMethod", CodeableConceptSerializer.descriptor)
+    b.optionalElement("entityRelatedness", CodeableConceptSerializer.descriptor)
+    b.optionalElement("author", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AdverseEvent.SuspectEntity.Causality {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -353,14 +355,14 @@ internal object AdverseEventSuspectEntityCausalitySerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Causality: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdverseEvent.SuspectEntity.Causality(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       assessmentMethod = assessmentMethod,
       entityRelatedness = entityRelatedness,
       author = author,
@@ -368,22 +370,21 @@ internal object AdverseEventSuspectEntityCausalitySerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: AdverseEvent.SuspectEntity.Causality) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -402,20 +403,23 @@ internal object AdverseEventSuspectEntityCausalitySerializer :
 }
 
 internal object AdverseEventContributingFactorSerializer :
-  KSerializer<AdverseEvent.ContributingFactor> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ContributingFactor") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("itemReference", ReferenceSerializer.descriptor)
-      optionalElement("itemCodeableConcept", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<AdverseEvent.ContributingFactor> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ContributingFactor", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AdverseEvent.ContributingFactor>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("itemReference", ReferenceSerializer.descriptor)
+    b.optionalElement("itemCodeableConcept", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AdverseEvent.ContributingFactor {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -458,39 +462,39 @@ internal object AdverseEventContributingFactorSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ContributingFactor: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdverseEvent.ContributingFactor(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       item =
-        AdverseEvent.ContributingFactor.Item.from(itemReference, itemCodeableConcept)
-          ?: throw SerializationException(
-            "Missing required property 'item' on AdverseEvent.ContributingFactor"
-          ),
+        required(
+          AdverseEvent.ContributingFactor.Item.from(itemReference, itemCodeableConcept),
+          "AdverseEvent.ContributingFactor",
+          "item",
+        ),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: AdverseEvent.ContributingFactor) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.item) {
       is AdverseEvent.ContributingFactor.Item.Reference -> {
         compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, choice.value)
@@ -509,20 +513,23 @@ internal object AdverseEventContributingFactorSerializer :
 }
 
 internal object AdverseEventPreventiveActionSerializer :
-  KSerializer<AdverseEvent.PreventiveAction> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PreventiveAction") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("itemReference", ReferenceSerializer.descriptor)
-      optionalElement("itemCodeableConcept", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<AdverseEvent.PreventiveAction> {
+  override val descriptor: SerialDescriptor = buildDescriptor("PreventiveAction", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AdverseEvent.PreventiveAction>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("itemReference", ReferenceSerializer.descriptor)
+    b.optionalElement("itemCodeableConcept", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AdverseEvent.PreventiveAction {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -565,39 +572,39 @@ internal object AdverseEventPreventiveActionSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PreventiveAction: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdverseEvent.PreventiveAction(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       item =
-        AdverseEvent.PreventiveAction.Item.from(itemReference, itemCodeableConcept)
-          ?: throw SerializationException(
-            "Missing required property 'item' on AdverseEvent.PreventiveAction"
-          ),
+        required(
+          AdverseEvent.PreventiveAction.Item.from(itemReference, itemCodeableConcept),
+          "AdverseEvent.PreventiveAction",
+          "item",
+        ),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: AdverseEvent.PreventiveAction) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.item) {
       is AdverseEvent.PreventiveAction.Item.Reference -> {
         compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, choice.value)
@@ -616,20 +623,23 @@ internal object AdverseEventPreventiveActionSerializer :
 }
 
 internal object AdverseEventMitigatingActionSerializer :
-  KSerializer<AdverseEvent.MitigatingAction> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MitigatingAction") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("itemReference", ReferenceSerializer.descriptor)
-      optionalElement("itemCodeableConcept", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<AdverseEvent.MitigatingAction> {
+  override val descriptor: SerialDescriptor = buildDescriptor("MitigatingAction", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AdverseEvent.MitigatingAction>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("itemReference", ReferenceSerializer.descriptor)
+    b.optionalElement("itemCodeableConcept", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AdverseEvent.MitigatingAction {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -672,39 +682,39 @@ internal object AdverseEventMitigatingActionSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MitigatingAction: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdverseEvent.MitigatingAction(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       item =
-        AdverseEvent.MitigatingAction.Item.from(itemReference, itemCodeableConcept)
-          ?: throw SerializationException(
-            "Missing required property 'item' on AdverseEvent.MitigatingAction"
-          ),
+        required(
+          AdverseEvent.MitigatingAction.Item.from(itemReference, itemCodeableConcept),
+          "AdverseEvent.MitigatingAction",
+          "item",
+        ),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: AdverseEvent.MitigatingAction) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.item) {
       is AdverseEvent.MitigatingAction.Item.Reference -> {
         compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, choice.value)
@@ -722,19 +732,22 @@ internal object AdverseEventMitigatingActionSerializer :
   }
 }
 
-internal object AdverseEventSupportingInfoSerializer : KSerializer<AdverseEvent.SupportingInfo> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SupportingInfo") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("itemReference", ReferenceSerializer.descriptor)
-      optionalElement("itemCodeableConcept", CodeableConceptSerializer.descriptor)
-    }
+internal object AdverseEventSupportingInfoSerializer : FhirSerializer<AdverseEvent.SupportingInfo> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SupportingInfo", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AdverseEvent.SupportingInfo>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("itemReference", ReferenceSerializer.descriptor)
+    b.optionalElement("itemCodeableConcept", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AdverseEvent.SupportingInfo {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -777,39 +790,39 @@ internal object AdverseEventSupportingInfoSerializer : KSerializer<AdverseEvent.
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SupportingInfo: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdverseEvent.SupportingInfo(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       item =
-        AdverseEvent.SupportingInfo.Item.from(itemReference, itemCodeableConcept)
-          ?: throw SerializationException(
-            "Missing required property 'item' on AdverseEvent.SupportingInfo"
-          ),
+        required(
+          AdverseEvent.SupportingInfo.Item.from(itemReference, itemCodeableConcept),
+          "AdverseEvent.SupportingInfo",
+          "item",
+        ),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: AdverseEvent.SupportingInfo) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.item) {
       is AdverseEvent.SupportingInfo.Item.Reference -> {
         compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, choice.value)
@@ -831,36 +844,29 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("AdverseEvent")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", String.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("actuality", String.serializer().descriptor)
-    b.optionalElement("_actuality", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("actuality")
     b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("code", CodeableConceptSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("occurrenceDateTime", String.serializer().descriptor)
-    b.optionalElement("_occurrenceDateTime", ElementSerializer.descriptor)
+    b.strPrim("occurrenceDateTime")
     b.optionalElement("occurrencePeriod", PeriodSerializer.descriptor)
     b.optionalElement("occurrenceTiming", TimingSerializer.descriptor)
-    b.optionalElement("detected", String.serializer().descriptor)
-    b.optionalElement("_detected", ElementSerializer.descriptor)
-    b.optionalElement("recordedDate", String.serializer().descriptor)
-    b.optionalElement("_recordedDate", ElementSerializer.descriptor)
+    b.strPrim("detected")
+    b.strPrim("recordedDate")
     b.optionalElement("resultingEffect", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("location", ReferenceSerializer.descriptor)
     b.optionalElement("seriousness", CodeableConceptSerializer.descriptor)
@@ -868,8 +874,7 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
     b.optionalElement("recorder", ReferenceSerializer.descriptor)
     b.optionalElement("participant", AdverseEventParticipantSerializer.listSerializer.descriptor)
     b.optionalElement("study", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("expectedInResearchStudy", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_expectedInResearchStudy", ElementSerializer.descriptor)
+    b.boolPrim("expectedInResearchStudy")
     b.optionalElement(
       "suspectEntity",
       AdverseEventSuspectEntitySerializer.listSerializer.descriptor,
@@ -909,21 +914,21 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: String? = null
+    var status: AdverseEventStatus? = null
     var _status: Element? = null
-    var actuality: String? = null
+    var actuality: AdverseEventActuality? = null
     var _actuality: Element? = null
     var category: List<CodeableConcept>? = null
     var code: CodeableConcept? = null
     var subject: Reference? = null
     var encounter: Reference? = null
-    var occurrenceDateTime: String? = null
+    var occurrenceDateTime: FhirDateTime? = null
     var _occurrenceDateTime: Element? = null
     var occurrencePeriod: Period? = null
     var occurrenceTiming: Timing? = null
-    var detected: String? = null
+    var detected: FhirDateTime? = null
     var _detected: Element? = null
-    var recordedDate: String? = null
+    var recordedDate: FhirDateTime? = null
     var _recordedDate: Element? = null
     var resultingEffect: List<Reference>? = null
     var location: Reference? = null
@@ -1007,7 +1012,8 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status = AdverseEventStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1016,7 +1022,9 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
               ElementSerializer,
               null,
             )
-        13 -> actuality = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          actuality =
+            AdverseEventActuality.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _actuality =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1057,7 +1065,9 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
               ReferenceSerializer,
               null,
             )
-        19 -> occurrenceDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        19 ->
+          occurrenceDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _occurrenceDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1082,7 +1092,8 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
               TimingSerializer,
               null,
             )
-        23 -> detected = compositeDecoder.decodeStringElement(descriptor, i)
+        23 ->
+          detected = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _detected =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1091,7 +1102,9 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
               ElementSerializer,
               null,
             )
-        25 -> recordedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        25 ->
+          recordedDate =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         26 ->
           _recordedDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1213,7 +1226,7 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
               AnnotationSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding AdverseEvent: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return AdverseEvent(
@@ -1222,54 +1235,38 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) AdverseEventStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on AdverseEvent"),
-      actuality =
-        Enumeration.of(
-          if (actuality != null) AdverseEventActuality.fromCode(actuality) else null,
-          _actuality,
-        ) ?: throw SerializationException("Missing required property 'actuality' on AdverseEvent"),
-      category = category ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "AdverseEvent", "status"),
+      actuality = required(Enumeration.of(actuality, _actuality), "AdverseEvent", "actuality"),
+      category = listOrEmpty(category),
       code = code,
-      subject =
-        subject
-          ?: throw SerializationException("Missing required property 'subject' on AdverseEvent"),
+      subject = required(subject, "AdverseEvent", "subject"),
       encounter = encounter,
       occurrence =
         AdverseEvent.Occurrence.from(
-          DateTime.of(
-            if (occurrenceDateTime != null) FhirDateTime.fromString(occurrenceDateTime) else null,
-            _occurrenceDateTime,
-          ),
+          DateTime.of(occurrenceDateTime, _occurrenceDateTime),
           occurrencePeriod,
           occurrenceTiming,
         ),
-      detected =
-        DateTime.of(if (detected != null) FhirDateTime.fromString(detected) else null, _detected),
-      recordedDate =
-        DateTime.of(
-          if (recordedDate != null) FhirDateTime.fromString(recordedDate) else null,
-          _recordedDate,
-        ),
-      resultingEffect = resultingEffect ?: listOf(),
+      detected = DateTime.of(detected, _detected),
+      recordedDate = DateTime.of(recordedDate, _recordedDate),
+      resultingEffect = listOrEmpty(resultingEffect),
       location = location,
       seriousness = seriousness,
-      outcome = outcome ?: listOf(),
+      outcome = listOrEmpty(outcome),
       recorder = recorder,
-      participant = participant ?: listOf(),
-      study = study ?: listOf(),
+      participant = listOrEmpty(participant),
+      study = listOrEmpty(study),
       expectedInResearchStudy = R5Boolean.of(expectedInResearchStudy, _expectedInResearchStudy),
-      suspectEntity = suspectEntity ?: listOf(),
-      contributingFactor = contributingFactor ?: listOf(),
-      preventiveAction = preventiveAction ?: listOf(),
-      mitigatingAction = mitigatingAction ?: listOf(),
-      supportingInfo = supportingInfo ?: listOf(),
-      note = note ?: listOf(),
+      suspectEntity = listOrEmpty(suspectEntity),
+      contributingFactor = listOrEmpty(contributingFactor),
+      preventiveAction = listOrEmpty(preventiveAction),
+      mitigatingAction = listOrEmpty(mitigatingAction),
+      supportingInfo = listOrEmpty(supportingInfo),
+      note = listOrEmpty(note),
     )
   }
 
@@ -1300,34 +1297,30 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -1340,13 +1333,12 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
       value.actuality.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.actuality)
-    if (value.category.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.category,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.category,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       16 + descriptorOffset,
@@ -1404,13 +1396,12 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
       value.recordedDate?.value?.toString(),
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.recordedDate)
-    if (value.resultingEffect.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.resultingEffect,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.resultingEffect,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       28 + descriptorOffset,
@@ -1423,33 +1414,30 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
       CodeableConceptSerializer,
       value.seriousness,
     )
-    if (value.outcome.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.outcome,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.outcome,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       31 + descriptorOffset,
       ReferenceSerializer,
       value.recorder,
     )
-    if (value.participant.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        AdverseEventParticipantSerializer.listSerializer,
-        value.participant,
-      )
-    if (value.study.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.study,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      AdverseEventParticipantSerializer.listSerializer,
+      value.participant,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.study,
+    )
     compositeEncoder.encodeBooleanIfNotNull(
       descriptor,
       34 + descriptorOffset,
@@ -1460,47 +1448,41 @@ internal object AdverseEventSerializer : FhirResourceSerializer<AdverseEvent> {
       35 + descriptorOffset,
       value.expectedInResearchStudy,
     )
-    if (value.suspectEntity.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        36 + descriptorOffset,
-        AdverseEventSuspectEntitySerializer.listSerializer,
-        value.suspectEntity,
-      )
-    if (value.contributingFactor.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        37 + descriptorOffset,
-        AdverseEventContributingFactorSerializer.listSerializer,
-        value.contributingFactor,
-      )
-    if (value.preventiveAction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        38 + descriptorOffset,
-        AdverseEventPreventiveActionSerializer.listSerializer,
-        value.preventiveAction,
-      )
-    if (value.mitigatingAction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        39 + descriptorOffset,
-        AdverseEventMitigatingActionSerializer.listSerializer,
-        value.mitigatingAction,
-      )
-    if (value.supportingInfo.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        AdverseEventSupportingInfoSerializer.listSerializer,
-        value.supportingInfo,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        41 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      36 + descriptorOffset,
+      AdverseEventSuspectEntitySerializer.listSerializer,
+      value.suspectEntity,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      37 + descriptorOffset,
+      AdverseEventContributingFactorSerializer.listSerializer,
+      value.contributingFactor,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      38 + descriptorOffset,
+      AdverseEventPreventiveActionSerializer.listSerializer,
+      value.preventiveAction,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      39 + descriptorOffset,
+      AdverseEventMitigatingActionSerializer.listSerializer,
+      value.mitigatingAction,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      40 + descriptorOffset,
+      AdverseEventSupportingInfoSerializer.listSerializer,
+      value.supportingInfo,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      41 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
   }
 }

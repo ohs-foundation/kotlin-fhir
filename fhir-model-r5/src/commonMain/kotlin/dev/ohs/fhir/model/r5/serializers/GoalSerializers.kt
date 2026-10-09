@@ -54,45 +54,41 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object GoalTargetSerializer : KSerializer<Goal.Target> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Target") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("measure", CodeableConceptSerializer.descriptor)
-      optionalElement("detailQuantity", QuantitySerializer.descriptor)
-      optionalElement("detailRange", RangeSerializer.descriptor)
-      optionalElement("detailCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("detailString", KotlinString.serializer().descriptor)
-      optionalElement("_detailString", ElementSerializer.descriptor)
-      optionalElement("detailBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_detailBoolean", ElementSerializer.descriptor)
-      optionalElement("detailInteger", Int.serializer().descriptor)
-      optionalElement("_detailInteger", ElementSerializer.descriptor)
-      optionalElement("detailRatio", RatioSerializer.descriptor)
-      optionalElement("dueDate", KotlinString.serializer().descriptor)
-      optionalElement("_dueDate", ElementSerializer.descriptor)
-      optionalElement("dueDuration", DurationSerializer.descriptor)
-    }
+internal object GoalTargetSerializer : FhirSerializer<Goal.Target> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Target", this)
 
-  internal val listSerializer: KSerializer<List<Goal.Target>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Goal.Target>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("measure", CodeableConceptSerializer.descriptor)
+    b.optionalElement("detailQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("detailRange", RangeSerializer.descriptor)
+    b.optionalElement("detailCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.strPrim("detailString")
+    b.boolPrim("detailBoolean")
+    b.intPrim("detailInteger")
+    b.optionalElement("detailRatio", RatioSerializer.descriptor)
+    b.strPrim("dueDate")
+    b.optionalElement("dueDuration", DurationSerializer.descriptor)
+  }
 
   override fun deserialize(decoder: Decoder): Goal.Target {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -108,7 +104,7 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
     var detailInteger: Int? = null
     var _detailInteger: Element? = null
     var detailRatio: Ratio? = null
-    var dueDate: KotlinString? = null
+    var dueDate: FhirDate? = null
     var _dueDate: Element? = null
     var dueDuration: Duration? = null
     while (true) {
@@ -187,7 +183,7 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
         13 ->
           detailRatio =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, RatioSerializer, null)
-        14 -> dueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        14 -> dueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _dueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -205,14 +201,14 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Target: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Goal.Target(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       measure = measure,
       detail =
         Goal.Target.Detail.from(
@@ -224,31 +220,26 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
           Integer.of(detailInteger, _detailInteger),
           detailRatio,
         ),
-      due =
-        Goal.Target.Due.from(
-          Date.of(if (dueDate != null) FhirDate.fromString(dueDate) else null, _dueDate),
-          dueDuration,
-        ),
+      due = Goal.Target.Due.from(Date.of(dueDate, _dueDate), dueDuration),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Goal.Target) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -305,37 +296,30 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Goal")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("lifecycleStatus", KotlinString.serializer().descriptor)
-    b.optionalElement("_lifecycleStatus", ElementSerializer.descriptor)
+    b.strPrim("lifecycleStatus")
     b.optionalElement("achievementStatus", CodeableConceptSerializer.descriptor)
     b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("continuous", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_continuous", ElementSerializer.descriptor)
+    b.boolPrim("continuous")
     b.optionalElement("priority", CodeableConceptSerializer.descriptor)
     b.optionalElement("description", CodeableConceptSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
-    b.optionalElement("startDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_startDate", ElementSerializer.descriptor)
+    b.strPrim("startDate")
     b.optionalElement("startCodeableConcept", CodeableConceptSerializer.descriptor)
     b.optionalElement("target", GoalTargetSerializer.listSerializer.descriptor)
-    b.optionalElement("statusDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_statusDate", ElementSerializer.descriptor)
-    b.optionalElement("statusReason", KotlinString.serializer().descriptor)
-    b.optionalElement("_statusReason", ElementSerializer.descriptor)
+    b.strPrim("statusDate")
+    b.strPrim("statusReason")
     b.optionalElement("source", ReferenceSerializer.descriptor)
     b.optionalElement("addresses", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
@@ -358,7 +342,7 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var lifecycleStatus: KotlinString? = null
+    var lifecycleStatus: GoalLifecycleStatus? = null
     var _lifecycleStatus: Element? = null
     var achievementStatus: CodeableConcept? = null
     var category: List<CodeableConcept>? = null
@@ -367,11 +351,11 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
     var priority: CodeableConcept? = null
     var description: CodeableConcept? = null
     var subject: Reference? = null
-    var startDate: KotlinString? = null
+    var startDate: FhirDate? = null
     var _startDate: Element? = null
     var startCodeableConcept: CodeableConcept? = null
     var target: List<Goal.Target>? = null
-    var statusDate: KotlinString? = null
+    var statusDate: FhirDate? = null
     var _statusDate: Element? = null
     var statusReason: KotlinString? = null
     var _statusReason: Element? = null
@@ -446,7 +430,9 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> lifecycleStatus = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          lifecycleStatus =
+            GoalLifecycleStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _lifecycleStatus =
             compositeDecoder.decodeNullableSerializableElement(
@@ -504,7 +490,7 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
               ReferenceSerializer,
               null,
             )
-        20 -> startDate = compositeDecoder.decodeStringElement(descriptor, i)
+        20 -> startDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _startDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -529,7 +515,7 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
               GoalTargetSerializer.listSerializer,
               null,
             )
-        24 -> statusDate = compositeDecoder.decodeStringElement(descriptor, i)
+        24 -> statusDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         25 ->
           _statusDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -579,7 +565,7 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
               CodeableReferenceSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Goal: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Goal(
@@ -588,37 +574,26 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       lifecycleStatus =
-        Enumeration.of(
-          if (lifecycleStatus != null) GoalLifecycleStatus.fromCode(lifecycleStatus) else null,
-          _lifecycleStatus,
-        ) ?: throw SerializationException("Missing required property 'lifecycleStatus' on Goal"),
+        required(Enumeration.of(lifecycleStatus, _lifecycleStatus), "Goal", "lifecycleStatus"),
       achievementStatus = achievementStatus,
-      category = category ?: listOf(),
+      category = listOrEmpty(category),
       continuous = R5Boolean.of(continuous, _continuous),
       priority = priority,
-      description =
-        description
-          ?: throw SerializationException("Missing required property 'description' on Goal"),
-      subject =
-        subject ?: throw SerializationException("Missing required property 'subject' on Goal"),
-      start =
-        Goal.Start.from(
-          Date.of(if (startDate != null) FhirDate.fromString(startDate) else null, _startDate),
-          startCodeableConcept,
-        ),
-      target = target ?: listOf(),
-      statusDate =
-        Date.of(if (statusDate != null) FhirDate.fromString(statusDate) else null, _statusDate),
+      description = required(description, "Goal", "description"),
+      subject = required(subject, "Goal", "subject"),
+      start = Goal.Start.from(Date.of(startDate, _startDate), startCodeableConcept),
+      target = listOrEmpty(target),
+      statusDate = Date.of(statusDate, _statusDate),
       statusReason = R5String.of(statusReason, _statusReason),
       source = source,
-      addresses = addresses ?: listOf(),
-      note = note ?: listOf(),
-      outcome = outcome ?: listOf(),
+      addresses = listOrEmpty(addresses),
+      note = listOrEmpty(note),
+      outcome = listOrEmpty(outcome),
     )
   }
 
@@ -649,34 +624,30 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -693,13 +664,12 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
       CodeableConceptSerializer,
       value.achievementStatus,
     )
-    if (value.category.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.category,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.category,
+    )
     compositeEncoder.encodeBooleanIfNotNull(
       descriptor,
       15 + descriptorOffset,
@@ -743,13 +713,12 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
         )
       }
     }
-    if (value.target.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        GoalTargetSerializer.listSerializer,
-        value.target,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      GoalTargetSerializer.listSerializer,
+      value.target,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       24 + descriptorOffset,
@@ -768,26 +737,23 @@ internal object GoalSerializer : FhirResourceSerializer<Goal> {
       ReferenceSerializer,
       value.source,
     )
-    if (value.addresses.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.addresses,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.outcome.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        CodeableReferenceSerializer.listSerializer,
-        value.outcome,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.addresses,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      CodeableReferenceSerializer.listSerializer,
+      value.outcome,
+    )
   }
 }

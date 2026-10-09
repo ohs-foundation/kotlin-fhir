@@ -29,34 +29,35 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object RatioRangeSerializer : KSerializer<RatioRange> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RatioRange") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("lowNumerator", lazyDescriptor { QuantitySerializer.descriptor })
-      optionalElement("highNumerator", lazyDescriptor { QuantitySerializer.descriptor })
-      optionalElement("denominator", lazyDescriptor { QuantitySerializer.descriptor })
-    }
+internal object RatioRangeSerializer : FhirSerializer<RatioRange> {
+  override val descriptor: SerialDescriptor = buildDescriptor("RatioRange", this)
 
-  internal val listSerializer: KSerializer<List<RatioRange>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<RatioRange>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.optionalElement("lowNumerator", lazyDescriptor(LazyDescriptorId.QuantitySerializer))
+    b.optionalElement("highNumerator", lazyDescriptor(LazyDescriptorId.QuantitySerializer))
+    b.optionalElement("denominator", lazyDescriptor(LazyDescriptorId.QuantitySerializer))
+  }
 
   override fun deserialize(decoder: Decoder): RatioRange {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -99,13 +100,13 @@ internal object RatioRangeSerializer : KSerializer<RatioRange> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RatioRange: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RatioRange(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       lowNumerator = lowNumerator,
       highNumerator = highNumerator,
       denominator = denominator,
@@ -113,15 +114,15 @@ internal object RatioRangeSerializer : KSerializer<RatioRange> {
   }
 
   override fun serialize(encoder: Encoder, `value`: RatioRange) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       2,

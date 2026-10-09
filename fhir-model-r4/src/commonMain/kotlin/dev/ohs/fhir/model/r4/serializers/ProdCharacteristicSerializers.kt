@@ -33,42 +33,41 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ProdCharacteristic") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("height", QuantitySerializer.descriptor)
-      optionalElement("width", QuantitySerializer.descriptor)
-      optionalElement("depth", QuantitySerializer.descriptor)
-      optionalElement("weight", QuantitySerializer.descriptor)
-      optionalElement("nominalVolume", QuantitySerializer.descriptor)
-      optionalElement("externalDiameter", QuantitySerializer.descriptor)
-      optionalElement("shape", KotlinString.serializer().descriptor)
-      optionalElement("_shape", ElementSerializer.descriptor)
-      optionalElement("color", stringNullableListSerializer.descriptor)
-      optionalElement("_color", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("imprint", stringNullableListSerializer.descriptor)
-      optionalElement("_imprint", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("image", AttachmentSerializer.listSerializer.descriptor)
-      optionalElement("scoring", CodeableConceptSerializer.descriptor)
-    }
+internal object ProdCharacteristicSerializer : FhirSerializer<ProdCharacteristic> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ProdCharacteristic", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ProdCharacteristic>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("height", QuantitySerializer.descriptor)
+    b.optionalElement("width", QuantitySerializer.descriptor)
+    b.optionalElement("depth", QuantitySerializer.descriptor)
+    b.optionalElement("weight", QuantitySerializer.descriptor)
+    b.optionalElement("nominalVolume", QuantitySerializer.descriptor)
+    b.optionalElement("externalDiameter", QuantitySerializer.descriptor)
+    b.strPrim("shape")
+    b.strPrimList("color")
+    b.strPrimList("imprint")
+    b.optionalElement("image", AttachmentSerializer.listSerializer.descriptor)
+    b.optionalElement("scoring", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ProdCharacteristic {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -212,14 +211,30 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ProdCharacteristic: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val color_ =
+      List(maxSize(color, _color)) { index ->
+        entryRequired(
+          R4String.of(at(color, index), at(_color, index)),
+          "ProdCharacteristic",
+          "color",
+        )
+      }
+    val imprint_ =
+      List(maxSize(imprint, _imprint)) { index ->
+        entryRequired(
+          R4String.of(at(imprint, index), at(_imprint, index)),
+          "ProdCharacteristic",
+          "imprint",
+        )
+      }
     return ProdCharacteristic(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       height = height,
       width = width,
       depth = depth,
@@ -227,42 +242,29 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
       nominalVolume = nominalVolume,
       externalDiameter = externalDiameter,
       shape = R4String.of(shape, _shape),
-      color =
-        (kotlin.collections.List(maxOf(color?.size ?: 0, _color?.size ?: 0)) { index ->
-          R4String.of(color?.getOrNull(index), _color?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'color' on ProdCharacteristic has neither a value nor an id/extension"
-            )
-        }),
-      imprint =
-        (kotlin.collections.List(maxOf(imprint?.size ?: 0, _imprint?.size ?: 0)) { index ->
-          R4String.of(imprint?.getOrNull(index), _imprint?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'imprint' on ProdCharacteristic has neither a value nor an id/extension"
-            )
-        }),
-      image = image ?: listOf(),
+      color = color_,
+      imprint = imprint_,
+      image = listOrEmpty(image),
       scoring = scoring,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ProdCharacteristic) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.height)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 4, QuantitySerializer, value.width)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, QuantitySerializer, value.depth)
@@ -281,7 +283,7 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.shape?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.shape)
-    if (value.color.isNotEmpty()) {
+    if (!value.color.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11,
@@ -290,7 +292,7 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 12, value.color)
     }
-    if (value.imprint.isNotEmpty()) {
+    if (!value.imprint.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13,
@@ -299,13 +301,12 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 14, value.imprint)
     }
-    if (value.image.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15,
-        AttachmentSerializer.listSerializer,
-        value.image,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15,
+      AttachmentSerializer.listSerializer,
+      value.image,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       16,

@@ -52,14 +52,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -67,30 +65,30 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object AdministrableProductDefinitionPropertySerializer :
-  KSerializer<AdministrableProductDefinition.Property> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Property") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("valueQuantity", QuantitySerializer.descriptor)
-      optionalElement("valueDate", KotlinString.serializer().descriptor)
-      optionalElement("_valueDate", ElementSerializer.descriptor)
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", ElementSerializer.descriptor)
-      optionalElement("valueMarkdown", KotlinString.serializer().descriptor)
-      optionalElement("_valueMarkdown", ElementSerializer.descriptor)
-      optionalElement("valueAttachment", AttachmentSerializer.descriptor)
-      optionalElement("valueReference", ReferenceSerializer.descriptor)
-      optionalElement("status", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<AdministrableProductDefinition.Property> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Property", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AdministrableProductDefinition.Property>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("valueQuantity", QuantitySerializer.descriptor)
+    b.strPrim("valueDate")
+    b.boolPrim("valueBoolean")
+    b.strPrim("valueMarkdown")
+    b.optionalElement("valueAttachment", AttachmentSerializer.descriptor)
+    b.optionalElement("valueReference", ReferenceSerializer.descriptor)
+    b.optionalElement("status", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AdministrableProductDefinition.Property {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -98,7 +96,7 @@ internal object AdministrableProductDefinitionPropertySerializer :
     var type: CodeableConcept? = null
     var valueCodeableConcept: CodeableConcept? = null
     var valueQuantity: Quantity? = null
-    var valueDate: KotlinString? = null
+    var valueDate: FhirDate? = null
     var _valueDate: Element? = null
     var valueBoolean: KotlinBoolean? = null
     var _valueBoolean: Element? = null
@@ -150,7 +148,7 @@ internal object AdministrableProductDefinitionPropertySerializer :
               QuantitySerializer,
               null,
             )
-        6 -> valueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> valueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _valueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -202,24 +200,20 @@ internal object AdministrableProductDefinitionPropertySerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Property: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdministrableProductDefinition.Property(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on AdministrableProductDefinition.Property"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "AdministrableProductDefinition.Property", "type"),
       `value` =
         AdministrableProductDefinition.Property.Value.from(
           valueCodeableConcept,
           valueQuantity,
-          Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
+          Date.of(valueDate, _valueDate),
           R5Boolean.of(valueBoolean, _valueBoolean),
           Markdown.of(valueMarkdown, _valueMarkdown),
           valueAttachment,
@@ -230,22 +224,21 @@ internal object AdministrableProductDefinitionPropertySerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: AdministrableProductDefinition.Property) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     when (val choice = value.`value`) {
       null -> {}
@@ -300,30 +293,33 @@ internal object AdministrableProductDefinitionPropertySerializer :
 }
 
 internal object AdministrableProductDefinitionRouteOfAdministrationSerializer :
-  KSerializer<AdministrableProductDefinition.RouteOfAdministration> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RouteOfAdministration") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("firstDose", QuantitySerializer.descriptor)
-      optionalElement("maxSingleDose", QuantitySerializer.descriptor)
-      optionalElement("maxDosePerDay", QuantitySerializer.descriptor)
-      optionalElement("maxDosePerTreatmentPeriod", RatioSerializer.descriptor)
-      optionalElement("maxTreatmentPeriod", DurationSerializer.descriptor)
-      optionalElement(
-        "targetSpecies",
-        AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSerializer.listSerializer
-          .descriptor,
-      )
-    }
+  FhirSerializer<AdministrableProductDefinition.RouteOfAdministration> {
+  override val descriptor: SerialDescriptor = buildDescriptor("RouteOfAdministration", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<AdministrableProductDefinition.RouteOfAdministration>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("firstDose", QuantitySerializer.descriptor)
+    b.optionalElement("maxSingleDose", QuantitySerializer.descriptor)
+    b.optionalElement("maxDosePerDay", QuantitySerializer.descriptor)
+    b.optionalElement("maxDosePerTreatmentPeriod", RatioSerializer.descriptor)
+    b.optionalElement("maxTreatmentPeriod", DurationSerializer.descriptor)
+    b.optionalElement(
+      "targetSpecies",
+      AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSerializer.listSerializer
+        .descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): AdministrableProductDefinition.RouteOfAdministration {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -408,26 +404,21 @@ internal object AdministrableProductDefinitionRouteOfAdministrationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding RouteOfAdministration: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdministrableProductDefinition.RouteOfAdministration(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on AdministrableProductDefinition.RouteOfAdministration"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(code, "AdministrableProductDefinition.RouteOfAdministration", "code"),
       firstDose = firstDose,
       maxSingleDose = maxSingleDose,
       maxDosePerDay = maxDosePerDay,
       maxDosePerTreatmentPeriod = maxDosePerTreatmentPeriod,
       maxTreatmentPeriod = maxTreatmentPeriod,
-      targetSpecies = targetSpecies ?: listOf(),
+      targetSpecies = listOrEmpty(targetSpecies),
     )
   }
 
@@ -435,22 +426,21 @@ internal object AdministrableProductDefinitionRouteOfAdministrationSerializer :
     encoder: Encoder,
     `value`: AdministrableProductDefinition.RouteOfAdministration,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 4, QuantitySerializer, value.firstDose)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -477,40 +467,42 @@ internal object AdministrableProductDefinitionRouteOfAdministrationSerializer :
       DurationSerializer,
       value.maxTreatmentPeriod,
     )
-    if (value.targetSpecies.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSerializer.listSerializer,
-        value.targetSpecies,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSerializer.listSerializer,
+      value.targetSpecies,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSerializer :
-  KSerializer<AdministrableProductDefinition.RouteOfAdministration.TargetSpecies> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("TargetSpecies") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "withdrawalPeriod",
-        AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSerializer
-          .listSerializer
-          .descriptor,
-      )
-    }
+  FhirSerializer<AdministrableProductDefinition.RouteOfAdministration.TargetSpecies> {
+  override val descriptor: SerialDescriptor = buildDescriptor("TargetSpecies", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<AdministrableProductDefinition.RouteOfAdministration.TargetSpecies>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "withdrawalPeriod",
+      AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSerializer
+        .listSerializer
+        .descriptor,
+    )
+  }
+
   override fun deserialize(
     decoder: Decoder
   ): AdministrableProductDefinition.RouteOfAdministration.TargetSpecies {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -556,20 +548,21 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding TargetSpecies: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdministrableProductDefinition.RouteOfAdministration.TargetSpecies(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on AdministrableProductDefinition.RouteOfAdministration.TargetSpecies"
-          ),
-      withdrawalPeriod = withdrawalPeriod ?: listOf(),
+        required(
+          code,
+          "AdministrableProductDefinition.RouteOfAdministration.TargetSpecies",
+          "code",
+        ),
+      withdrawalPeriod = listOrEmpty(withdrawalPeriod),
     )
   }
 
@@ -577,57 +570,59 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
     encoder: Encoder,
     `value`: AdministrableProductDefinition.RouteOfAdministration.TargetSpecies,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
-    if (value.withdrawalPeriod.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSerializer
-          .listSerializer,
-        value.withdrawalPeriod,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSerializer
+        .listSerializer,
+      value.withdrawalPeriod,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSerializer :
-  KSerializer<AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("WithdrawalPeriod") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("tissue", CodeableConceptSerializer.descriptor)
-      optionalElement("value", QuantitySerializer.descriptor)
-      optionalElement("supportingInformation", KotlinString.serializer().descriptor)
-      optionalElement("_supportingInformation", ElementSerializer.descriptor)
-    }
+  FhirSerializer<
+    AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod
+  > {
+  override val descriptor: SerialDescriptor = buildDescriptor("WithdrawalPeriod", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<
       List<AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod>
     > =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("tissue", CodeableConceptSerializer.descriptor)
+    b.optionalElement("value", QuantitySerializer.descriptor)
+    b.strPrim("supportingInformation")
+  }
+
   override fun deserialize(
     decoder: Decoder
   ): AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -681,24 +676,26 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding WithdrawalPeriod: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       tissue =
-        tissue
-          ?: throw SerializationException(
-            "Missing required property 'tissue' on AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod"
-          ),
+        required(
+          tissue,
+          "AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod",
+          "tissue",
+        ),
       `value` =
-        `value`
-          ?: throw SerializationException(
-            "Missing required property 'value' on AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod"
-          ),
+        required(
+          `value`,
+          "AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod",
+          "value",
+        ),
       supportingInformation = R5String.of(supportingInformation, _supportingInformation),
     )
   }
@@ -707,22 +704,21 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
     encoder: Encoder,
     `value`: AdministrableProductDefinition.RouteOfAdministration.TargetSpecies.WithdrawalPeriod,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -742,30 +738,26 @@ internal object AdministrableProductDefinitionSerializer :
     buildResourceDescriptor("AdministrableProductDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("formOf", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("administrableDoseForm", CodeableConceptSerializer.descriptor)
     b.optionalElement("unitOfPresentation", CodeableConceptSerializer.descriptor)
     b.optionalElement("producedFrom", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("ingredient", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("device", ReferenceSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement(
       "property",
       AdministrableProductDefinitionPropertySerializer.listSerializer.descriptor,
@@ -792,7 +784,7 @@ internal object AdministrableProductDefinitionSerializer :
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var formOf: List<Reference>? = null
     var administrableDoseForm: CodeableConcept? = null
@@ -871,7 +863,8 @@ internal object AdministrableProductDefinitionSerializer :
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -953,10 +946,7 @@ internal object AdministrableProductDefinitionSerializer :
               AdministrableProductDefinitionRouteOfAdministrationSerializer.listSerializer,
               null,
             )
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding AdministrableProductDefinition: " + i
-          )
+        else -> unknownIndex(descriptor, i)
       }
     }
     return AdministrableProductDefinition(
@@ -965,24 +955,21 @@ internal object AdministrableProductDefinitionSerializer :
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on AdministrableProductDefinition"
-          ),
-      formOf = formOf ?: listOf(),
+        required(Enumeration.of(status, _status), "AdministrableProductDefinition", "status"),
+      formOf = listOrEmpty(formOf),
       administrableDoseForm = administrableDoseForm,
       unitOfPresentation = unitOfPresentation,
-      producedFrom = producedFrom ?: listOf(),
-      ingredient = ingredient ?: listOf(),
+      producedFrom = listOrEmpty(producedFrom),
+      ingredient = listOrEmpty(ingredient),
       device = device,
       description = Markdown.of(description, _description),
-      `property` = `property` ?: listOf(),
-      routeOfAdministration = routeOfAdministration ?: listOf(),
+      `property` = listOrEmpty(`property`),
+      routeOfAdministration = listOrEmpty(routeOfAdministration),
     )
   }
 
@@ -1013,47 +1000,42 @@ internal object AdministrableProductDefinitionSerializer :
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
       value.status.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
-    if (value.formOf.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.formOf,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.formOf,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       14 + descriptorOffset,
@@ -1066,20 +1048,18 @@ internal object AdministrableProductDefinitionSerializer :
       CodeableConceptSerializer,
       value.unitOfPresentation,
     )
-    if (value.producedFrom.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.producedFrom,
-      )
-    if (value.ingredient.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.ingredient,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.producedFrom,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      17 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.ingredient,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       18 + descriptorOffset,
@@ -1092,19 +1072,17 @@ internal object AdministrableProductDefinitionSerializer :
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.description)
-    if (value.`property`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        AdministrableProductDefinitionPropertySerializer.listSerializer,
-        value.`property`,
-      )
-    if (value.routeOfAdministration.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        AdministrableProductDefinitionRouteOfAdministrationSerializer.listSerializer,
-        value.routeOfAdministration,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      21 + descriptorOffset,
+      AdministrableProductDefinitionPropertySerializer.listSerializer,
+      value.`property`,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      AdministrableProductDefinitionRouteOfAdministrationSerializer.listSerializer,
+      value.routeOfAdministration,
+    )
   }
 }

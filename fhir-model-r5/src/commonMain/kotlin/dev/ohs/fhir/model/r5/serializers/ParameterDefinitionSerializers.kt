@@ -37,51 +37,46 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ParameterDefinition") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("min", Int.serializer().descriptor)
-      optionalElement("_min", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("max", KotlinString.serializer().descriptor)
-      optionalElement("_max", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("documentation", KotlinString.serializer().descriptor)
-      optionalElement("_documentation", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("profile", KotlinString.serializer().descriptor)
-      optionalElement("_profile", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object ParameterDefinitionSerializer : FhirSerializer<ParameterDefinition> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ParameterDefinition", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ParameterDefinition>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("name")
+    b.strPrim("use")
+    b.intPrim("min")
+    b.strPrim("max")
+    b.strPrim("documentation")
+    b.strPrim("type")
+    b.strPrim("profile")
+  }
+
   override fun deserialize(decoder: Decoder): ParameterDefinition {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var name: KotlinString? = null
     var _name: Element? = null
-    var use: KotlinString? = null
+    var use: OperationParameterUse? = null
     var _use: Element? = null
     var min: Int? = null
     var _min: Element? = null
@@ -89,7 +84,7 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
     var _max: Element? = null
     var documentation: KotlinString? = null
     var _documentation: Element? = null
-    var type: KotlinString? = null
+    var type: FHIRTypes? = null
     var _type: Element? = null
     var profile: KotlinString? = null
     var _profile: Element? = null
@@ -113,7 +108,8 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
               ElementSerializer,
               null,
             )
-        4 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          use = OperationParameterUse.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         5 ->
           _use =
             compositeDecoder.decodeNullableSerializableElement(
@@ -149,7 +145,7 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
               ElementSerializer,
               null,
             )
-        12 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        12 -> type = FHIRTypes.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         13 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -168,39 +164,33 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ParameterDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ParameterDefinition(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       name = Code.of(name, _name),
-      use =
-        Enumeration.of(if (use != null) OperationParameterUse.fromCode(use) else null, _use)
-          ?: throw SerializationException("Missing required property 'use' on ParameterDefinition"),
+      use = required(Enumeration.of(use, _use), "ParameterDefinition", "use"),
       min = Integer.of(min, _min),
       max = R5String.of(max, _max),
       documentation = R5String.of(documentation, _documentation),
-      type =
-        Enumeration.of(if (type != null) FHIRTypes.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on ParameterDefinition"
-          ),
+      type = required(Enumeration.of(type, _type), "ParameterDefinition", "type"),
       profile = Canonical.of(profile, _profile),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ParameterDefinition) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.name)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.use.value?.code)

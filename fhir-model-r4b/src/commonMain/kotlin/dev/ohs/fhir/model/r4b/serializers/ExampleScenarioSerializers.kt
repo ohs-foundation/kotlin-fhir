@@ -52,46 +52,43 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Actor> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Actor") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("actorId", KotlinString.serializer().descriptor)
-      optionalElement("_actorId", ElementSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-    }
+internal object ExampleScenarioActorSerializer : FhirSerializer<ExampleScenario.Actor> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Actor", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExampleScenario.Actor>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("actorId")
+    b.strPrim("type")
+    b.strPrim("name")
+    b.strPrim("description")
+  }
+
   override fun deserialize(decoder: Decoder): ExampleScenario.Actor {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var actorId: KotlinString? = null
     var _actorId: Element? = null
-    var type: KotlinString? = null
+    var type: ExampleScenarioActorType? = null
     var _type: Element? = null
     var name: KotlinString? = null
     var _name: Element? = null
@@ -125,7 +122,9 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
               ElementSerializer,
               null,
             )
-        5 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          type =
+            ExampleScenarioActorType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -153,46 +152,37 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Actor: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExampleScenario.Actor(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      actorId =
-        R4bString.of(actorId, _actorId)
-          ?: throw SerializationException(
-            "Missing required property 'actorId' on ExampleScenario.Actor"
-          ),
-      type =
-        Enumeration.of(if (type != null) ExampleScenarioActorType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on ExampleScenario.Actor"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      actorId = required(R4bString.of(actorId, _actorId), "ExampleScenario.Actor", "actorId"),
+      type = required(Enumeration.of(type, _type), "ExampleScenario.Actor", "type"),
       name = R4bString.of(name, _name),
       description = Markdown.of(description, _description),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Actor) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.actorId.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.actorId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.type.value?.code)
@@ -205,37 +195,36 @@ internal object ExampleScenarioActorSerializer : KSerializer<ExampleScenario.Act
   }
 }
 
-internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.Instance> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Instance") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("resourceId", KotlinString.serializer().descriptor)
-      optionalElement("_resourceId", ElementSerializer.descriptor)
-      optionalElement("resourceType", KotlinString.serializer().descriptor)
-      optionalElement("_resourceType", ElementSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("version", ExampleScenarioInstanceVersionSerializer.listSerializer.descriptor)
-      optionalElement(
-        "containedInstance",
-        ExampleScenarioInstanceContainedInstanceSerializer.listSerializer.descriptor,
-      )
-    }
+internal object ExampleScenarioInstanceSerializer : FhirSerializer<ExampleScenario.Instance> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Instance", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExampleScenario.Instance>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("resourceId")
+    b.strPrim("resourceType")
+    b.strPrim("name")
+    b.strPrim("description")
+    b.optionalElement("version", ExampleScenarioInstanceVersionSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "containedInstance",
+      ExampleScenarioInstanceContainedInstanceSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExampleScenario.Instance {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var resourceId: KotlinString? = null
     var _resourceId: Element? = null
-    var resourceType: KotlinString? = null
+    var resourceType: ResourceType? = null
     var _resourceType: Element? = null
     var name: KotlinString? = null
     var _name: Element? = null
@@ -271,7 +260,8 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
               ElementSerializer,
               null,
             )
-        5 -> resourceType = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          resourceType = ResourceType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _resourceType =
             compositeDecoder.decodeNullableSerializableElement(
@@ -315,51 +305,45 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Instance: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExampleScenario.Instance(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       resourceId =
-        R4bString.of(resourceId, _resourceId)
-          ?: throw SerializationException(
-            "Missing required property 'resourceId' on ExampleScenario.Instance"
-          ),
+        required(R4bString.of(resourceId, _resourceId), "ExampleScenario.Instance", "resourceId"),
       resourceType =
-        Enumeration.of(
-          if (resourceType != null) ResourceType.fromCode(resourceType) else null,
-          _resourceType,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'resourceType' on ExampleScenario.Instance"
-          ),
+        required(
+          Enumeration.of(resourceType, _resourceType),
+          "ExampleScenario.Instance",
+          "resourceType",
+        ),
       name = R4bString.of(name, _name),
       description = Markdown.of(description, _description),
-      version = version ?: listOf(),
-      containedInstance = containedInstance ?: listOf(),
+      version = listOrEmpty(version),
+      containedInstance = listOrEmpty(containedInstance),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Instance) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.resourceId.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.resourceId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.resourceType.value?.code)
@@ -368,41 +352,40 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.name)
     compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.description)
-    if (value.version.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11,
-        ExampleScenarioInstanceVersionSerializer.listSerializer,
-        value.version,
-      )
-    if (value.containedInstance.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        ExampleScenarioInstanceContainedInstanceSerializer.listSerializer,
-        value.containedInstance,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11,
+      ExampleScenarioInstanceVersionSerializer.listSerializer,
+      value.version,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      ExampleScenarioInstanceContainedInstanceSerializer.listSerializer,
+      value.containedInstance,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ExampleScenarioInstanceVersionSerializer :
-  KSerializer<ExampleScenario.Instance.Version> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Version") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("versionId", KotlinString.serializer().descriptor)
-      optionalElement("_versionId", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ExampleScenario.Instance.Version> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Version", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExampleScenario.Instance.Version>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("versionId")
+    b.strPrim("description")
+  }
+
   override fun deserialize(decoder: Decoder): ExampleScenario.Instance.Version {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -449,44 +432,45 @@ internal object ExampleScenarioInstanceVersionSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Version: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExampleScenario.Instance.Version(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       versionId =
-        R4bString.of(versionId, _versionId)
-          ?: throw SerializationException(
-            "Missing required property 'versionId' on ExampleScenario.Instance.Version"
-          ),
+        required(
+          R4bString.of(versionId, _versionId),
+          "ExampleScenario.Instance.Version",
+          "versionId",
+        ),
       description =
-        Markdown.of(description, _description)
-          ?: throw SerializationException(
-            "Missing required property 'description' on ExampleScenario.Instance.Version"
-          ),
+        required(
+          Markdown.of(description, _description),
+          "ExampleScenario.Instance.Version",
+          "description",
+        ),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Instance.Version) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.versionId.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.versionId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description.value)
@@ -496,22 +480,23 @@ internal object ExampleScenarioInstanceVersionSerializer :
 }
 
 internal object ExampleScenarioInstanceContainedInstanceSerializer :
-  KSerializer<ExampleScenario.Instance.ContainedInstance> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ContainedInstance") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("resourceId", KotlinString.serializer().descriptor)
-      optionalElement("_resourceId", ElementSerializer.descriptor)
-      optionalElement("versionId", KotlinString.serializer().descriptor)
-      optionalElement("_versionId", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ExampleScenario.Instance.ContainedInstance> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ContainedInstance", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExampleScenario.Instance.ContainedInstance>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("resourceId")
+    b.strPrim("versionId")
+  }
+
   override fun deserialize(decoder: Decoder): ExampleScenario.Instance.ContainedInstance {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -558,40 +543,40 @@ internal object ExampleScenarioInstanceContainedInstanceSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ContainedInstance: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExampleScenario.Instance.ContainedInstance(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       resourceId =
-        R4bString.of(resourceId, _resourceId)
-          ?: throw SerializationException(
-            "Missing required property 'resourceId' on ExampleScenario.Instance.ContainedInstance"
-          ),
+        required(
+          R4bString.of(resourceId, _resourceId),
+          "ExampleScenario.Instance.ContainedInstance",
+          "resourceId",
+        ),
       versionId = R4bString.of(versionId, _versionId),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Instance.ContainedInstance) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.resourceId.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.resourceId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.versionId?.value)
@@ -600,26 +585,25 @@ internal object ExampleScenarioInstanceContainedInstanceSerializer :
   }
 }
 
-internal object ExampleScenarioProcessSerializer : KSerializer<ExampleScenario.Process> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Process") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("title", KotlinString.serializer().descriptor)
-      optionalElement("_title", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("preConditions", KotlinString.serializer().descriptor)
-      optionalElement("_preConditions", ElementSerializer.descriptor)
-      optionalElement("postConditions", KotlinString.serializer().descriptor)
-      optionalElement("_postConditions", ElementSerializer.descriptor)
-      optionalElement("step", ExampleScenarioProcessStepSerializer.listSerializer.descriptor)
-    }
+internal object ExampleScenarioProcessSerializer : FhirSerializer<ExampleScenario.Process> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Process", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExampleScenario.Process>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("title")
+    b.strPrim("description")
+    b.strPrim("preConditions")
+    b.strPrim("postConditions")
+    b.optionalElement("step", ExampleScenarioProcessStepSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExampleScenario.Process {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -697,43 +681,38 @@ internal object ExampleScenarioProcessSerializer : KSerializer<ExampleScenario.P
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Process: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExampleScenario.Process(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      title =
-        R4bString.of(title, _title)
-          ?: throw SerializationException(
-            "Missing required property 'title' on ExampleScenario.Process"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      title = required(R4bString.of(title, _title), "ExampleScenario.Process", "title"),
       description = Markdown.of(description, _description),
       preConditions = Markdown.of(preConditions, _preConditions),
       postConditions = Markdown.of(postConditions, _postConditions),
-      step = step ?: listOf(),
+      step = listOrEmpty(step),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Process) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.title.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.title)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
@@ -742,40 +721,42 @@ internal object ExampleScenarioProcessSerializer : KSerializer<ExampleScenario.P
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.preConditions)
     compositeEncoder.encodeStringIfNotNull(descriptor, 9, value.postConditions?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.postConditions)
-    if (value.step.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11,
-        ExampleScenarioProcessStepSerializer.listSerializer,
-        value.step,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11,
+      ExampleScenarioProcessStepSerializer.listSerializer,
+      value.step,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object ExampleScenarioProcessStepSerializer : KSerializer<ExampleScenario.Process.Step> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Step") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement(
-        "process",
-        listSerialDescriptor(lazyDescriptor { ExampleScenarioProcessSerializer.descriptor }),
-      )
-      optionalElement("pause", KotlinBoolean.serializer().descriptor)
-      optionalElement("_pause", ElementSerializer.descriptor)
-      optionalElement("operation", ExampleScenarioProcessStepOperationSerializer.descriptor)
-      optionalElement(
-        "alternative",
-        ExampleScenarioProcessStepAlternativeSerializer.listSerializer.descriptor,
-      )
-    }
+internal object ExampleScenarioProcessStepSerializer :
+  FhirSerializer<ExampleScenario.Process.Step> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Step", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExampleScenario.Process.Step>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "process",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExampleScenarioProcessSerializer)),
+    )
+    b.boolPrim("pause")
+    b.optionalElement("operation", ExampleScenarioProcessStepOperationSerializer.descriptor)
+    b.optionalElement(
+      "alternative",
+      ExampleScenarioProcessStepAlternativeSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExampleScenario.Process.Step {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -838,45 +819,43 @@ internal object ExampleScenarioProcessStepSerializer : KSerializer<ExampleScenar
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Step: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExampleScenario.Process.Step(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      process = process ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      process = listOrEmpty(process),
       pause = R4bBoolean.of(pause, _pause),
       operation = operation,
-      alternative = alternative ?: listOf(),
+      alternative = listOrEmpty(alternative),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Process.Step) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.process.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        ExampleScenarioProcessSerializer.listSerializer,
-        value.process,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      ExampleScenarioProcessSerializer.listSerializer,
+      value.process,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 4, value.pause?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.pause)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -885,54 +864,48 @@ internal object ExampleScenarioProcessStepSerializer : KSerializer<ExampleScenar
       ExampleScenarioProcessStepOperationSerializer,
       value.operation,
     )
-    if (value.alternative.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        ExampleScenarioProcessStepAlternativeSerializer.listSerializer,
-        value.alternative,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      ExampleScenarioProcessStepAlternativeSerializer.listSerializer,
+      value.alternative,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ExampleScenarioProcessStepOperationSerializer :
-  KSerializer<ExampleScenario.Process.Step.Operation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Operation") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("number", KotlinString.serializer().descriptor)
-      optionalElement("_number", ElementSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("initiator", KotlinString.serializer().descriptor)
-      optionalElement("_initiator", ElementSerializer.descriptor)
-      optionalElement("receiver", KotlinString.serializer().descriptor)
-      optionalElement("_receiver", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("initiatorActive", KotlinBoolean.serializer().descriptor)
-      optionalElement("_initiatorActive", ElementSerializer.descriptor)
-      optionalElement("receiverActive", KotlinBoolean.serializer().descriptor)
-      optionalElement("_receiverActive", ElementSerializer.descriptor)
-      optionalElement(
-        "request",
-        lazyDescriptor { ExampleScenarioInstanceContainedInstanceSerializer.descriptor },
-      )
-      optionalElement(
-        "response",
-        lazyDescriptor { ExampleScenarioInstanceContainedInstanceSerializer.descriptor },
-      )
-    }
+  FhirSerializer<ExampleScenario.Process.Step.Operation> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Operation", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExampleScenario.Process.Step.Operation>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("number")
+    b.strPrim("type")
+    b.strPrim("name")
+    b.strPrim("initiator")
+    b.strPrim("receiver")
+    b.strPrim("description")
+    b.boolPrim("initiatorActive")
+    b.boolPrim("receiverActive")
+    b.optionalElement(
+      "request",
+      lazyDescriptor(LazyDescriptorId.ExampleScenarioInstanceContainedInstanceSerializer),
+    )
+    b.optionalElement(
+      "response",
+      lazyDescriptor(LazyDescriptorId.ExampleScenarioInstanceContainedInstanceSerializer),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExampleScenario.Process.Step.Operation {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1063,19 +1036,16 @@ internal object ExampleScenarioProcessStepOperationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Operation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExampleScenario.Process.Step.Operation(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       number =
-        R4bString.of(number, _number)
-          ?: throw SerializationException(
-            "Missing required property 'number' on ExampleScenario.Process.Step.Operation"
-          ),
+        required(R4bString.of(number, _number), "ExampleScenario.Process.Step.Operation", "number"),
       type = R4bString.of(type, _type),
       name = R4bString.of(name, _name),
       initiator = R4bString.of(initiator, _initiator),
@@ -1089,22 +1059,21 @@ internal object ExampleScenarioProcessStepOperationSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Process.Step.Operation) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.number.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.number)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.type?.value)
@@ -1138,26 +1107,27 @@ internal object ExampleScenarioProcessStepOperationSerializer :
 }
 
 internal object ExampleScenarioProcessStepAlternativeSerializer :
-  KSerializer<ExampleScenario.Process.Step.Alternative> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Alternative") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("title", KotlinString.serializer().descriptor)
-      optionalElement("_title", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement(
-        "step",
-        listSerialDescriptor(lazyDescriptor { ExampleScenarioProcessStepSerializer.descriptor }),
-      )
-    }
+  FhirSerializer<ExampleScenario.Process.Step.Alternative> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Alternative", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExampleScenario.Process.Step.Alternative>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("title")
+    b.strPrim("description")
+    b.optionalElement(
+      "step",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExampleScenarioProcessStepSerializer)),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExampleScenario.Process.Step.Alternative {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1213,52 +1183,47 @@ internal object ExampleScenarioProcessStepAlternativeSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Alternative: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExampleScenario.Process.Step.Alternative(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       title =
-        R4bString.of(title, _title)
-          ?: throw SerializationException(
-            "Missing required property 'title' on ExampleScenario.Process.Step.Alternative"
-          ),
+        required(R4bString.of(title, _title), "ExampleScenario.Process.Step.Alternative", "title"),
       description = Markdown.of(description, _description),
-      step = step ?: listOf(),
+      step = listOrEmpty(step),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExampleScenario.Process.Step.Alternative) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.title.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.title)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.description)
-    if (value.step.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        ExampleScenarioProcessStepSerializer.listSerializer,
-        value.step,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      ExampleScenarioProcessStepSerializer.listSerializer,
+      value.step,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -1267,46 +1232,34 @@ internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenar
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ExampleScenario")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("name")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("purpose", KotlinString.serializer().descriptor)
-    b.optionalElement("_purpose", ElementSerializer.descriptor)
+    b.strPrim("copyright")
+    b.strPrim("purpose")
     b.optionalElement("actor", ExampleScenarioActorSerializer.listSerializer.descriptor)
     b.optionalElement("instance", ExampleScenarioInstanceSerializer.listSerializer.descriptor)
     b.optionalElement("process", ExampleScenarioProcessSerializer.listSerializer.descriptor)
-    b.optionalElement("workflow", stringNullableListSerializer.descriptor)
-    b.optionalElement("_workflow", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrimList("workflow")
   }
 
   override fun deserializeInternal(
@@ -1331,11 +1284,11 @@ internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenar
     var _version: Element? = null
     var name: KotlinString? = null
     var _name: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -1445,7 +1398,8 @@ internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenar
               ElementSerializer,
               null,
             )
-        17 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        17 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         18 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1463,7 +1417,7 @@ internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenar
               ElementSerializer,
               null,
             )
-        21 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        21 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1563,43 +1517,43 @@ internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenar
               ElementSerializer.nullableListSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding ExampleScenario: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val workflow_ =
+      List(maxSize(workflow, _workflow)) { index ->
+        entryRequired(
+          Canonical.of(at(workflow, index), at(_workflow, index)),
+          "ExampleScenario",
+          "workflow",
+        )
+      }
     return ExampleScenario(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R4bString.of(version, _version),
       name = R4bString.of(name, _name),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on ExampleScenario"),
+      status = required(Enumeration.of(status, _status), "ExampleScenario", "status"),
       experimental = R4bBoolean.of(experimental, _experimental),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R4bString.of(publisher, _publisher),
-      contact = contact ?: listOf(),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      contact = listOrEmpty(contact),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       copyright = Markdown.of(copyright, _copyright),
       purpose = Markdown.of(purpose, _purpose),
-      actor = actor ?: listOf(),
-      instance = instance ?: listOf(),
-      process = process ?: listOf(),
-      workflow =
-        (kotlin.collections.List(maxOf(workflow?.size ?: 0, _workflow?.size ?: 0)) { index ->
-          Canonical.of(workflow?.getOrNull(index), _workflow?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'workflow' on ExampleScenario has neither a value nor an id/extension"
-            )
-        }),
+      actor = listOrEmpty(actor),
+      instance = listOrEmpty(instance),
+      process = listOrEmpty(process),
+      workflow = workflow_,
     )
   }
 
@@ -1630,36 +1584,32 @@ internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenar
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
@@ -1688,27 +1638,24 @@ internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenar
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       28 + descriptorOffset,
@@ -1717,28 +1664,25 @@ internal object ExampleScenarioSerializer : FhirResourceSerializer<ExampleScenar
     compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.copyright)
     compositeEncoder.encodeStringIfNotNull(descriptor, 30 + descriptorOffset, value.purpose?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.purpose)
-    if (value.actor.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        ExampleScenarioActorSerializer.listSerializer,
-        value.actor,
-      )
-    if (value.instance.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        ExampleScenarioInstanceSerializer.listSerializer,
-        value.instance,
-      )
-    if (value.process.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        ExampleScenarioProcessSerializer.listSerializer,
-        value.process,
-      )
-    if (value.workflow.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      ExampleScenarioActorSerializer.listSerializer,
+      value.actor,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      ExampleScenarioInstanceSerializer.listSerializer,
+      value.instance,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      ExampleScenarioProcessSerializer.listSerializer,
+      value.process,
+    )
+    if (!value.workflow.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         35 + descriptorOffset,

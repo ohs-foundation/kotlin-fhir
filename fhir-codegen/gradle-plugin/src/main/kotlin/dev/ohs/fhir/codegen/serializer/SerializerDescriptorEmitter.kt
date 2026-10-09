@@ -23,57 +23,39 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.CodegenContext
 
 /**
- * Builds the `descriptor` property and the shared `buildDescriptor` helper for a streaming
+ * Builds the `descriptor` property and the `buildDescriptor(b)` override for a streaming
  * serializer. The descriptor mirrors the flat FHIR JSON wire shape — one element per JSON key,
  * including `_field` Element pairs and choice-type expansions. Cross-type descriptor cycles are
- * broken via `lazyDescriptor { ... }` where [TypeGraphAnalyzer] flags an edge as cyclic.
+ * broken via `lazyDescriptor(LazyDescriptorId.X)` where [TypeGraphAnalyzer] flags an edge as
+ * cyclic.
  */
 internal class SerializerDescriptorEmitter(private val codegenContext: CodegenContext) {
 
   /**
-   * Emits `override val descriptor` as a flat `buildClassSerialDescriptor(name) { element(...) ...
-   * }` reflecting the actual JSON wire shape (one element per JSON key, including `_field` Element
-   * pairs and choice type expansions). For resource types, `resourceType` is descriptor[0].
-   *
-   * Every element is marked `isOptional = true` — FHIR JSON omits absent keys, and streaming
-   * encoders skip optional elements when we don't call `encodeXxxElement`, so this matches the wire
-   * shape cleanly.
+   * Emits `override val descriptor`. Resource serializers delegate to
+   * `FhirResourceSerializer.buildResourceDescriptor` (which registers the leading `resourceType`
+   * slot 0); everything else delegates to the shared `buildDescriptor(name, this)` helper. Both
+   * call back into [buildBuildDescriptorFun], so no generated serializer carries its own
+   * `buildClassSerialDescriptor { … }` lambda (and `invokedynamic` bootstrap entry).
    *
    * Plain `val`, not `by lazy` — the streaming encoder/decoder reads `descriptor.getElementIndex` /
    * `getElementName` on every field, so deferring construction would move cost to first use rather
-   * than eliminate it. Cross-type descriptor cycles are broken at the element level via
-   * `lazyDescriptor { … }` where [TypeGraphAnalyzer] flags an edge as cyclic.
+   * than eliminate it.
    */
-  fun buildDescriptorProperty(
-    className: ClassName,
-    wireFields: List<WireField>,
-    includeResourceType: Boolean,
-  ): PropertySpec {
+  fun buildDescriptorProperty(className: ClassName, includeResourceType: Boolean): PropertySpec {
     val body =
       if (includeResourceType) {
-        // Delegate to `FhirResourceSerializer.buildResourceDescriptor` (which adds slot-0
-        // `resourceType` and calls `buildDescriptor(this)`) to avoid emitting a per-resource
-        // `buildClassSerialDescriptor` lambda on every resource serializer class.
         CodeBlock.of("buildResourceDescriptor(%S)", className.simpleName)
       } else {
-        val optionalElement = optionalElementMemberName(className)
-        val builder = CodeBlock.builder()
-        builder.add("%M(%S) {\n", buildClassSerialDescriptorMemberName, className.simpleName)
-        builder.indent()
-        for (wireField in wireFields) {
-          builder.add(
-            "%M(%S, %L)\n",
-            optionalElement,
-            wireField.name,
-            descriptorFor(wireField.typeName, className),
-          )
-        }
-        builder.unindent()
-        builder.add("}\n")
-        builder.build()
+        CodeBlock.of(
+          "%M(%S, this)",
+          helperMemberName(className, "buildDescriptor"),
+          className.simpleName,
+        )
       }
     return PropertySpec.builder("descriptor", serialDescriptorClassName)
       .addModifiers(KModifier.OVERRIDE)
@@ -81,19 +63,57 @@ internal class SerializerDescriptorEmitter(private val codegenContext: CodegenCo
       .build()
   }
 
-  /** `override fun buildDescriptor(b)` — wire-field elements only, shared between both variants. */
+  /**
+   * `override fun buildDescriptor(b)` — registers the wire-field elements. Every element is marked
+   * `isOptional = true` — FHIR JSON omits absent keys, and streaming encoders skip optional
+   * elements when we don't call `encodeXxxElement`, so this matches the wire shape cleanly.
+   *
+   * A primitive's `x` + `_x` pair is registered with a single `prim`-style helper call so the `_x`
+   * name never appears as a string constant in the serializer class; stdlib `String` / `Boolean` /
+   * `Int` slots use the `str` / `strPrim` / … shorthands which read a cached descriptor instead of
+   * calling `String.serializer().descriptor` per slot.
+   */
   fun buildBuildDescriptorFun(className: ClassName, wireFields: List<WireField>): FunSpec {
-    val optionalElement = optionalElementMemberName(className)
     val classSerialDescriptorBuilderClassName =
       ClassName(KOTLINX_SERIALIZATION_DESCRIPTORS, "ClassSerialDescriptorBuilder")
     val codeBlock = CodeBlock.builder()
-    for (wireField in wireFields) {
-      codeBlock.add(
-        "b.%M(%S, %L)\n",
-        optionalElement,
-        wireField.name,
-        descriptorFor(wireField.typeName, className),
-      )
+    var i = 0
+    while (i < wireFields.size) {
+      val wireField = wireFields[i]
+      val next = wireFields.getOrNull(i + 1)
+      val paired = next != null && next.isElementField && next.name == "_${wireField.name}"
+      val valueClass = elementClassOf(wireField.typeName)
+      val shorthand = stdlibShorthand(valueClass)
+      if (paired) {
+        val suffix = if (wireField.isList) "PrimList" else "Prim"
+        if (shorthand != null) {
+          codeBlock.add(
+            "b.%M(%S)\n",
+            helperMemberName(className, shorthand + suffix),
+            wireField.name,
+          )
+        } else {
+          codeBlock.add(
+            "b.%M(%S, %L)\n",
+            helperMemberName(className, suffix.replaceFirstChar { it.lowercase() }),
+            wireField.name,
+            descriptorFor(wireField.typeName, className),
+          )
+        }
+        i += 2
+      } else {
+        if (shorthand == "str" && !wireField.isList) {
+          codeBlock.add("b.%M(%S)\n", helperMemberName(className, "str"), wireField.name)
+        } else {
+          codeBlock.add(
+            "b.%M(%S, %L)\n",
+            optionalElementMemberName(className),
+            wireField.name,
+            descriptorFor(wireField.typeName, className),
+          )
+        }
+        i += 1
+      }
     }
     return FunSpec.builder("buildDescriptor")
       .addModifiers(KModifier.OVERRIDE)
@@ -102,27 +122,36 @@ internal class SerializerDescriptorEmitter(private val codegenContext: CodegenCo
       .build()
   }
 
+  /** Element class of a slot: the list element type for lists, the slot type otherwise. */
+  private fun elementClassOf(typeName: TypeName): ClassName? {
+    val nonNull = typeName.copy(nullable = false)
+    return when (nonNull) {
+      is ClassName -> nonNull
+      is ParameterizedTypeName ->
+        nonNull.typeArguments.singleOrNull()?.copy(nullable = false) as? ClassName
+      else -> null
+    }
+  }
+
+  private fun stdlibShorthand(className: ClassName?): String? =
+    when (className) {
+      String::class.asClassName() -> "str"
+      Boolean::class.asClassName() -> "bool"
+      Int::class.asClassName() -> "int"
+      else -> null
+    }
+
   /**
    * Descriptor expression for a wire-field. For non-cyclic cross-type references we emit the
    * child's real descriptor directly (`XSerializer.descriptor` /
    * `XSerializer.listSerializer.descriptor`) — avoiding `X$Companion` lookups and redundant
-   * `ArrayListClassDesc` allocations. For cyclic references we fall back to `lazyDescriptor { ...
-   * }` to break recursive class-init. SCC info from [TypeGraphAnalyzer] classifies which edges are
-   * which.
+   * `ArrayListClassDesc` allocations. For cyclic references we fall back to
+   * `lazyDescriptor(LazyDescriptorId.XSerializer)` to break recursive class-init. SCC info from
+   * [TypeGraphAnalyzer] classifies which edges are which.
    */
   private fun descriptorFor(typeName: TypeName, parentClass: ClassName): CodeBlock {
     return when (val nonNull = typeName.copy(nullable = false)) {
-      is ClassName -> {
-        if (isCyclicRef(parentClass, nonNull)) {
-          CodeBlock.of(
-            "%M { %L.descriptor }",
-            lazyDescriptorMemberName(parentClass),
-            serializerRefForClass(nonNull, parentClass),
-          )
-        } else {
-          CodeBlock.of("%L.descriptor", serializerRefForClass(nonNull, parentClass))
-        }
-      }
+      is ClassName -> descriptorForClass(nonNull, parentClass)
       is ParameterizedTypeName -> {
         when (nonNull.rawType) {
           ClassName("kotlin.collections", "List"),
@@ -142,23 +171,26 @@ internal class SerializerDescriptorEmitter(private val codegenContext: CodegenCo
               )
             }
           }
-          else -> {
-            val raw = nonNull.rawType
-            if (isCyclicRef(parentClass, raw)) {
-              CodeBlock.of(
-                "%M { %L.descriptor }",
-                lazyDescriptorMemberName(parentClass),
-                serializerRefForClass(raw, parentClass),
-              )
-            } else {
-              CodeBlock.of("%L.descriptor", serializerRefForClass(raw, parentClass))
-            }
-          }
+          else -> descriptorForClass(nonNull.rawType, parentClass)
         }
       }
       else -> error("Unexpected TypeName: $nonNull")
     }
   }
+
+  private fun descriptorForClass(className: ClassName, parentClass: ClassName): CodeBlock =
+    if (isCyclicRef(parentClass, className)) {
+      val serializerObject =
+        serializerObjectForClass(className, parentClass)
+          ?: error("Cyclic reference to $className without a generated serializer")
+      CodeBlock.of(
+        "%M(%T)",
+        lazyDescriptorMemberName(parentClass),
+        codegenContext.lazyDescriptorId(serializerObject),
+      )
+    } else {
+      CodeBlock.of("%L.descriptor", serializerRefForClass(className, parentClass))
+    }
 
   private fun isCyclicRef(parent: ClassName, target: ClassName): Boolean {
     if (target.packageName != parent.packageName || customSerializerFor(target, parent) != null) {

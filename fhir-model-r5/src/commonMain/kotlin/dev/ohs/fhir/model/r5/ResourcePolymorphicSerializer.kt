@@ -83,6 +83,7 @@ import dev.ohs.fhir.model.r5.serializers.EvidenceVariableSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioSerializer
 import dev.ohs.fhir.model.r5.serializers.ExplanationOfBenefitSerializer
 import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistorySerializer
+import dev.ohs.fhir.model.r5.serializers.FhirSerializer
 import dev.ohs.fhir.model.r5.serializers.FlagSerializer
 import dev.ohs.fhir.model.r5.serializers.FormularyItemSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudySerializer
@@ -179,6 +180,7 @@ import dev.ohs.fhir.model.r5.serializers.TransportSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetSerializer
 import dev.ohs.fhir.model.r5.serializers.VerificationResultSerializer
 import dev.ohs.fhir.model.r5.serializers.VisionPrescriptionSerializer
+import dev.ohs.fhir.model.r5.serializers.stringDescriptor
 import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
@@ -186,6 +188,7 @@ import kotlin.Suppress
 import kotlin.collections.Map
 import kotlin.collections.associateBy
 import kotlin.collections.mapOf
+import kotlin.jvm.JvmField
 import kotlin.reflect.KClass
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -193,7 +196,6 @@ import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.SerialKind
@@ -208,12 +210,10 @@ import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.`internal`.AbstractPolymorphicSerializer
 import kotlinx.serialization.json.JsonClassDiscriminator
 
-internal interface FhirResourceSerializer<T : Resource> : KSerializer<T> {
-  public fun buildDescriptor(b: ClassSerialDescriptorBuilder)
-
+internal interface FhirResourceSerializer<T : Resource> : FhirSerializer<T> {
   public fun buildResourceDescriptor(serialName: String): SerialDescriptor =
     buildClassSerialDescriptor(serialName) {
-      element("resourceType", String.serializer().descriptor, isOptional = false)
+      element("resourceType", stringDescriptor, isOptional = false)
       buildDescriptor(this)
     }
 
@@ -483,6 +483,7 @@ internal object ResourcePolymorphicSerializer : AbstractPolymorphicSerializer<Re
       annotations = listOf(JsonClassDiscriminator("resourceType"))
     }
 
+  @JvmField
   internal val listSerializer: KSerializer<kotlin.collections.List<Resource>> =
     kotlinx.serialization.builtins.ListSerializer(this)
 

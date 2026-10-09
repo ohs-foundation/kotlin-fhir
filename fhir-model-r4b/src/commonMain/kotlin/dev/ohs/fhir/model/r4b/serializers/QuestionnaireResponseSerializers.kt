@@ -56,43 +56,41 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object QuestionnaireResponseItemSerializer : KSerializer<QuestionnaireResponse.Item> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Item") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("linkId", KotlinString.serializer().descriptor)
-      optionalElement("_linkId", ElementSerializer.descriptor)
-      optionalElement("definition", KotlinString.serializer().descriptor)
-      optionalElement("_definition", ElementSerializer.descriptor)
-      optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
-      optionalElement("answer", QuestionnaireResponseItemAnswerSerializer.listSerializer.descriptor)
-      optionalElement(
-        "item",
-        listSerialDescriptor(lazyDescriptor { QuestionnaireResponseItemSerializer.descriptor }),
-      )
-    }
+internal object QuestionnaireResponseItemSerializer : FhirSerializer<QuestionnaireResponse.Item> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Item", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<QuestionnaireResponse.Item>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("linkId")
+    b.strPrim("definition")
+    b.strPrim("text")
+    b.optionalElement("answer", QuestionnaireResponseItemAnswerSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "item",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.QuestionnaireResponseItemSerializer)),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): QuestionnaireResponse.Item {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -168,104 +166,92 @@ internal object QuestionnaireResponseItemSerializer : KSerializer<QuestionnaireR
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Item: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return QuestionnaireResponse.Item(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      linkId =
-        R4bString.of(linkId, _linkId)
-          ?: throw SerializationException(
-            "Missing required property 'linkId' on QuestionnaireResponse.Item"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      linkId = required(R4bString.of(linkId, _linkId), "QuestionnaireResponse.Item", "linkId"),
       definition = Uri.of(definition, _definition),
       text = R4bString.of(text, _text),
-      answer = answer ?: listOf(),
-      item = item ?: listOf(),
+      answer = listOrEmpty(answer),
+      item = listOrEmpty(item),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: QuestionnaireResponse.Item) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.linkId.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.linkId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.definition?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.definition)
     compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.text?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.text)
-    if (value.answer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        QuestionnaireResponseItemAnswerSerializer.listSerializer,
-        value.answer,
-      )
-    if (value.item.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        QuestionnaireResponseItemSerializer.listSerializer,
-        value.item,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      QuestionnaireResponseItemAnswerSerializer.listSerializer,
+      value.answer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      QuestionnaireResponseItemSerializer.listSerializer,
+      value.item,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object QuestionnaireResponseItemAnswerSerializer :
-  KSerializer<QuestionnaireResponse.Item.Answer> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Answer") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", ElementSerializer.descriptor)
-      optionalElement("valueDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_valueDecimal", ElementSerializer.descriptor)
-      optionalElement("valueInteger", Int.serializer().descriptor)
-      optionalElement("_valueInteger", ElementSerializer.descriptor)
-      optionalElement("valueDate", KotlinString.serializer().descriptor)
-      optionalElement("_valueDate", ElementSerializer.descriptor)
-      optionalElement("valueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_valueDateTime", ElementSerializer.descriptor)
-      optionalElement("valueTime", LocalTimeSerializer.descriptor)
-      optionalElement("_valueTime", ElementSerializer.descriptor)
-      optionalElement("valueString", KotlinString.serializer().descriptor)
-      optionalElement("_valueString", ElementSerializer.descriptor)
-      optionalElement("valueUri", KotlinString.serializer().descriptor)
-      optionalElement("_valueUri", ElementSerializer.descriptor)
-      optionalElement("valueAttachment", AttachmentSerializer.descriptor)
-      optionalElement("valueCoding", CodingSerializer.descriptor)
-      optionalElement("valueQuantity", QuantitySerializer.descriptor)
-      optionalElement("valueReference", ReferenceSerializer.descriptor)
-      optionalElement(
-        "item",
-        listSerialDescriptor(lazyDescriptor { QuestionnaireResponseItemSerializer.descriptor }),
-      )
-    }
+  FhirSerializer<QuestionnaireResponse.Item.Answer> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Answer", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<QuestionnaireResponse.Item.Answer>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.boolPrim("valueBoolean")
+    b.prim("valueDecimal", FhirDecimalSerializer.descriptor)
+    b.intPrim("valueInteger")
+    b.strPrim("valueDate")
+    b.strPrim("valueDateTime")
+    b.prim("valueTime", LocalTimeSerializer.descriptor)
+    b.strPrim("valueString")
+    b.strPrim("valueUri")
+    b.optionalElement("valueAttachment", AttachmentSerializer.descriptor)
+    b.optionalElement("valueCoding", CodingSerializer.descriptor)
+    b.optionalElement("valueQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("valueReference", ReferenceSerializer.descriptor)
+    b.optionalElement(
+      "item",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.QuestionnaireResponseItemSerializer)),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): QuestionnaireResponse.Item.Answer {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -276,9 +262,9 @@ internal object QuestionnaireResponseItemAnswerSerializer :
     var _valueDecimal: Element? = null
     var valueInteger: Int? = null
     var _valueInteger: Element? = null
-    var valueDate: KotlinString? = null
+    var valueDate: FhirDate? = null
     var _valueDate: Element? = null
-    var valueDateTime: KotlinString? = null
+    var valueDateTime: FhirDateTime? = null
     var _valueDateTime: Element? = null
     var valueTime: LocalTime? = null
     var _valueTime: Element? = null
@@ -344,7 +330,7 @@ internal object QuestionnaireResponseItemAnswerSerializer :
               ElementSerializer,
               null,
             )
-        9 -> valueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        9 -> valueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         10 ->
           _valueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -353,7 +339,9 @@ internal object QuestionnaireResponseItemAnswerSerializer :
               ElementSerializer,
               null,
             )
-        11 -> valueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          valueDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _valueDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -437,24 +425,21 @@ internal object QuestionnaireResponseItemAnswerSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Answer: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return QuestionnaireResponse.Item.Answer(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       `value` =
         QuestionnaireResponse.Item.Answer.Value.from(
           R4bBoolean.of(valueBoolean, _valueBoolean),
           Decimal.of(valueDecimal, _valueDecimal),
           Integer.of(valueInteger, _valueInteger),
-          Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
-          DateTime.of(
-            if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
-            _valueDateTime,
-          ),
+          Date.of(valueDate, _valueDate),
+          DateTime.of(valueDateTime, _valueDateTime),
           Time.of(valueTime, _valueTime),
           R4bString.of(valueString, _valueString),
           Uri.of(valueUri, _valueUri),
@@ -463,27 +448,26 @@ internal object QuestionnaireResponseItemAnswerSerializer :
           valueQuantity,
           valueReference,
         ),
-      item = item ?: listOf(),
+      item = listOrEmpty(item),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: QuestionnaireResponse.Item.Answer) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.`value`) {
       null -> {}
       is QuestionnaireResponse.Item.Answer.Value.Boolean -> {
@@ -551,13 +535,12 @@ internal object QuestionnaireResponseItemAnswerSerializer :
         )
       }
     }
-    if (value.item.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23,
-        QuestionnaireResponseItemSerializer.listSerializer,
-        value.item,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23,
+      QuestionnaireResponseItemSerializer.listSerializer,
+      value.item,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -566,30 +549,25 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
   override val descriptor: SerialDescriptor = buildResourceDescriptor("QuestionnaireResponse")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.descriptor)
     b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("partOf", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("questionnaire", KotlinString.serializer().descriptor)
-    b.optionalElement("_questionnaire", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("questionnaire")
+    b.strPrim("status")
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("authored", KotlinString.serializer().descriptor)
-    b.optionalElement("_authored", ElementSerializer.descriptor)
+    b.strPrim("authored")
     b.optionalElement("author", ReferenceSerializer.descriptor)
     b.optionalElement("source", ReferenceSerializer.descriptor)
     b.optionalElement("item", QuestionnaireResponseItemSerializer.listSerializer.descriptor)
@@ -615,11 +593,11 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
     var partOf: List<Reference>? = null
     var questionnaire: KotlinString? = null
     var _questionnaire: Element? = null
-    var status: KotlinString? = null
+    var status: QuestionnaireResponseStatus? = null
     var _status: Element? = null
     var subject: Reference? = null
     var encounter: Reference? = null
-    var authored: KotlinString? = null
+    var authored: FhirDateTime? = null
     var _authored: Element? = null
     var author: Reference? = null
     var source: Reference? = null
@@ -716,7 +694,11 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
               ElementSerializer,
               null,
             )
-        15 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        15 ->
+          status =
+            QuestionnaireResponseStatus.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         16 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -741,7 +723,8 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
               ReferenceSerializer,
               null,
             )
-        19 -> authored = compositeDecoder.decodeStringElement(descriptor, i)
+        19 ->
+          authored = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _authored =
             compositeDecoder.decodeNullableSerializableElement(
@@ -774,8 +757,7 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
               QuestionnaireResponseItemSerializer.listSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding QuestionnaireResponse: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return QuestionnaireResponse(
@@ -784,28 +766,20 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       identifier = identifier,
-      basedOn = basedOn ?: listOf(),
-      partOf = partOf ?: listOf(),
+      basedOn = listOrEmpty(basedOn),
+      partOf = listOrEmpty(partOf),
       questionnaire = Canonical.of(questionnaire, _questionnaire),
-      status =
-        Enumeration.of(
-          if (status != null) QuestionnaireResponseStatus.fromCode(status) else null,
-          _status,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'status' on QuestionnaireResponse"
-          ),
+      status = required(Enumeration.of(status, _status), "QuestionnaireResponse", "status"),
       subject = subject,
       encounter = encounter,
-      authored =
-        DateTime.of(if (authored != null) FhirDateTime.fromString(authored) else null, _authored),
+      authored = DateTime.of(authored, _authored),
       author = author,
       source = source,
-      item = item ?: listOf(),
+      item = listOrEmpty(item),
     )
   }
 
@@ -836,47 +810,42 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       10 + descriptorOffset,
       IdentifierSerializer,
       value.identifier,
     )
-    if (value.basedOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.basedOn,
-      )
-    if (value.partOf.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.partOf,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.basedOn,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.partOf,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       13 + descriptorOffset,
@@ -919,12 +888,11 @@ internal object QuestionnaireResponseSerializer : FhirResourceSerializer<Questio
       ReferenceSerializer,
       value.source,
     )
-    if (value.item.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        QuestionnaireResponseItemSerializer.listSerializer,
-        value.item,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      QuestionnaireResponseItemSerializer.listSerializer,
+      value.item,
+    )
   }
 }

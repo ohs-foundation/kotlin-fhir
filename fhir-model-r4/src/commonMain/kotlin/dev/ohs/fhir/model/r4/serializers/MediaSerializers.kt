@@ -53,8 +53,6 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -65,48 +63,38 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Media")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("partOf", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
     b.optionalElement("modality", CodeableConceptSerializer.descriptor)
     b.optionalElement("view", CodeableConceptSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("createdDateTime", KotlinString.serializer().descriptor)
-    b.optionalElement("_createdDateTime", ElementSerializer.descriptor)
+    b.strPrim("createdDateTime")
     b.optionalElement("createdPeriod", PeriodSerializer.descriptor)
-    b.optionalElement("issued", KotlinString.serializer().descriptor)
-    b.optionalElement("_issued", ElementSerializer.descriptor)
+    b.strPrim("issued")
     b.optionalElement("operator", ReferenceSerializer.descriptor)
     b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("bodySite", CodeableConceptSerializer.descriptor)
-    b.optionalElement("deviceName", KotlinString.serializer().descriptor)
-    b.optionalElement("_deviceName", ElementSerializer.descriptor)
+    b.strPrim("deviceName")
     b.optionalElement("device", ReferenceSerializer.descriptor)
-    b.optionalElement("height", Int.serializer().descriptor)
-    b.optionalElement("_height", ElementSerializer.descriptor)
-    b.optionalElement("width", Int.serializer().descriptor)
-    b.optionalElement("_width", ElementSerializer.descriptor)
-    b.optionalElement("frames", Int.serializer().descriptor)
-    b.optionalElement("_frames", ElementSerializer.descriptor)
-    b.optionalElement("duration", FhirDecimalSerializer.descriptor)
-    b.optionalElement("_duration", ElementSerializer.descriptor)
+    b.intPrim("height")
+    b.intPrim("width")
+    b.intPrim("frames")
+    b.prim("duration", FhirDecimalSerializer.descriptor)
     b.optionalElement("content", AttachmentSerializer.descriptor)
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
   }
@@ -129,17 +117,17 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
     var identifier: List<Identifier>? = null
     var basedOn: List<Reference>? = null
     var partOf: List<Reference>? = null
-    var status: KotlinString? = null
+    var status: EventStatus? = null
     var _status: Element? = null
     var type: CodeableConcept? = null
     var modality: CodeableConcept? = null
     var view: CodeableConcept? = null
     var subject: Reference? = null
     var encounter: Reference? = null
-    var createdDateTime: KotlinString? = null
+    var createdDateTime: FhirDateTime? = null
     var _createdDateTime: Element? = null
     var createdPeriod: Period? = null
-    var issued: KotlinString? = null
+    var issued: FhirDateTime? = null
     var _issued: Element? = null
     var `operator`: Reference? = null
     var reasonCode: List<CodeableConcept>? = null
@@ -240,7 +228,7 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
               ReferenceSerializer.listSerializer,
               null,
             )
-        13 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        13 -> status = EventStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -289,7 +277,9 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
               ReferenceSerializer,
               null,
             )
-        20 -> createdDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        20 ->
+          createdDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _createdDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -306,7 +296,7 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
               PeriodSerializer,
               null,
             )
-        23 -> issued = compositeDecoder.decodeStringElement(descriptor, i)
+        23 -> issued = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _issued =
             compositeDecoder.decodeNullableSerializableElement(
@@ -415,7 +405,7 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
               AnnotationSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Media: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Media(
@@ -424,31 +414,22 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      basedOn = basedOn ?: listOf(),
-      partOf = partOf ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) EventStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Media"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      basedOn = listOrEmpty(basedOn),
+      partOf = listOrEmpty(partOf),
+      status = required(Enumeration.of(status, _status), "Media", "status"),
       type = type,
       modality = modality,
       view = view,
       subject = subject,
       encounter = encounter,
-      created =
-        Media.Created.from(
-          DateTime.of(
-            if (createdDateTime != null) FhirDateTime.fromString(createdDateTime) else null,
-            _createdDateTime,
-          ),
-          createdPeriod,
-        ),
-      issued = Instant.of(if (issued != null) FhirDateTime.fromString(issued) else null, _issued),
+      created = Media.Created.from(DateTime.of(createdDateTime, _createdDateTime), createdPeriod),
+      issued = Instant.of(issued, _issued),
       `operator` = `operator`,
-      reasonCode = reasonCode ?: listOf(),
+      reasonCode = listOrEmpty(reasonCode),
       bodySite = bodySite,
       deviceName = R4String.of(deviceName, _deviceName),
       device = device,
@@ -456,9 +437,8 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
       width = PositiveInt.of(width, _width),
       frames = PositiveInt.of(frames, _frames),
       duration = Decimal.of(duration, _duration),
-      content =
-        content ?: throw SerializationException("Missing required property 'content' on Media"),
-      note = note ?: listOf(),
+      content = required(content, "Media", "content"),
+      note = listOrEmpty(note),
     )
   }
 
@@ -489,48 +469,42 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.basedOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.basedOn,
-      )
-    if (value.partOf.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.partOf,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.basedOn,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.partOf,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       13 + descriptorOffset,
@@ -598,13 +572,12 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
       ReferenceSerializer,
       value.`operator`,
     )
-    if (value.reasonCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.reasonCode,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.reasonCode,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       27 + descriptorOffset,
@@ -642,12 +615,11 @@ internal object MediaSerializer : FhirResourceSerializer<Media> {
       AttachmentSerializer,
       value.content,
     )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      40 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
   }
 }

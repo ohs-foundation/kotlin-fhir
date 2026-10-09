@@ -49,41 +49,42 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object MeasureReportGroupSerializer : KSerializer<MeasureReport.Group> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Group") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "population",
-        MeasureReportGroupPopulationSerializer.listSerializer.descriptor,
-      )
-      optionalElement("measureScore", QuantitySerializer.descriptor)
-      optionalElement(
-        "stratifier",
-        MeasureReportGroupStratifierSerializer.listSerializer.descriptor,
-      )
-    }
+internal object MeasureReportGroupSerializer : FhirSerializer<MeasureReport.Group> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Group", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MeasureReport.Group>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "population",
+      MeasureReportGroupPopulationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("measureScore", QuantitySerializer.descriptor)
+    b.optionalElement(
+      "stratifier",
+      MeasureReportGroupStratifierSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -144,85 +145,84 @@ internal object MeasureReportGroupSerializer : KSerializer<MeasureReport.Group> 
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Group: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MeasureReport.Group(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
-      population = population ?: listOf(),
+      population = listOrEmpty(population),
       measureScore = measureScore,
-      stratifier = stratifier ?: listOf(),
+      stratifier = listOrEmpty(stratifier),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MeasureReport.Group) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.code,
     )
-    if (value.population.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        MeasureReportGroupPopulationSerializer.listSerializer,
-        value.population,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      MeasureReportGroupPopulationSerializer.listSerializer,
+      value.population,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       5,
       QuantitySerializer,
       value.measureScore,
     )
-    if (value.stratifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        MeasureReportGroupStratifierSerializer.listSerializer,
-        value.stratifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      MeasureReportGroupStratifierSerializer.listSerializer,
+      value.stratifier,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object MeasureReportGroupPopulationSerializer :
-  KSerializer<MeasureReport.Group.Population> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Population") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("count", Int.serializer().descriptor)
-      optionalElement("_count", ElementSerializer.descriptor)
-      optionalElement("subjectResults", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<MeasureReport.Group.Population> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Population", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MeasureReport.Group.Population>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.intPrim("count")
+    b.optionalElement("subjectResults", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Population {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -276,14 +276,14 @@ internal object MeasureReportGroupPopulationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Population: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MeasureReport.Group.Population(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
       count = Integer.of(count, _count),
       subjectResults = subjectResults,
@@ -291,22 +291,21 @@ internal object MeasureReportGroupPopulationSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: MeasureReport.Group.Population) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -326,23 +325,26 @@ internal object MeasureReportGroupPopulationSerializer :
 }
 
 internal object MeasureReportGroupStratifierSerializer :
-  KSerializer<MeasureReport.Group.Stratifier> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Stratifier") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement(
-        "stratum",
-        MeasureReportGroupStratifierStratumSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<MeasureReport.Group.Stratifier> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Stratifier", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MeasureReport.Group.Stratifier>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "stratum",
+      MeasureReportGroupStratifierStratumSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Stratifier {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -385,77 +387,77 @@ internal object MeasureReportGroupStratifierSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Stratifier: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MeasureReport.Group.Stratifier(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code = code ?: listOf(),
-      stratum = stratum ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = listOrEmpty(code),
+      stratum = listOrEmpty(stratum),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MeasureReport.Group.Stratifier) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.code.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableConceptSerializer.listSerializer,
-        value.code,
-      )
-    if (value.stratum.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        MeasureReportGroupStratifierStratumSerializer.listSerializer,
-        value.stratum,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      CodeableConceptSerializer.listSerializer,
+      value.code,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      MeasureReportGroupStratifierStratumSerializer.listSerializer,
+      value.stratum,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object MeasureReportGroupStratifierStratumSerializer :
-  KSerializer<MeasureReport.Group.Stratifier.Stratum> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Stratum") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("value", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "component",
-        MeasureReportGroupStratifierStratumComponentSerializer.listSerializer.descriptor,
-      )
-      optionalElement(
-        "population",
-        MeasureReportGroupStratifierStratumPopulationSerializer.listSerializer.descriptor,
-      )
-      optionalElement("measureScore", QuantitySerializer.descriptor)
-    }
+  FhirSerializer<MeasureReport.Group.Stratifier.Stratum> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Stratum", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MeasureReport.Group.Stratifier.Stratum>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("value", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "component",
+      MeasureReportGroupStratifierStratumComponentSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement(
+      "population",
+      MeasureReportGroupStratifierStratumPopulationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("measureScore", QuantitySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Stratifier.Stratum {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -516,58 +518,55 @@ internal object MeasureReportGroupStratifierStratumSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Stratum: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MeasureReport.Group.Stratifier.Stratum(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       `value` = `value`,
-      component = component ?: listOf(),
-      population = population ?: listOf(),
+      component = listOrEmpty(component),
+      population = listOrEmpty(population),
       measureScore = measureScore,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MeasureReport.Group.Stratifier.Stratum) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.`value`,
     )
-    if (value.component.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        MeasureReportGroupStratifierStratumComponentSerializer.listSerializer,
-        value.component,
-      )
-    if (value.population.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        MeasureReportGroupStratifierStratumPopulationSerializer.listSerializer,
-        value.population,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      MeasureReportGroupStratifierStratumComponentSerializer.listSerializer,
+      value.component,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      MeasureReportGroupStratifierStratumPopulationSerializer.listSerializer,
+      value.population,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6,
@@ -579,20 +578,23 @@ internal object MeasureReportGroupStratifierStratumSerializer :
 }
 
 internal object MeasureReportGroupStratifierStratumComponentSerializer :
-  KSerializer<MeasureReport.Group.Stratifier.Stratum.Component> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Component") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("value", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<MeasureReport.Group.Stratifier.Stratum.Component> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Component", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MeasureReport.Group.Stratifier.Stratum.Component>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("value", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Stratifier.Stratum.Component {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -635,24 +637,16 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Component: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MeasureReport.Group.Stratifier.Stratum.Component(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on MeasureReport.Group.Stratifier.Stratum.Component"
-          ),
-      `value` =
-        `value`
-          ?: throw SerializationException(
-            "Missing required property 'value' on MeasureReport.Group.Stratifier.Stratum.Component"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(code, "MeasureReport.Group.Stratifier.Stratum.Component", "code"),
+      `value` = required(`value`, "MeasureReport.Group.Stratifier.Stratum.Component", "value"),
     )
   }
 
@@ -660,22 +654,21 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
     encoder: Encoder,
     `value`: MeasureReport.Group.Stratifier.Stratum.Component,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
     compositeEncoder.encodeSerializableElement(
       descriptor,
@@ -688,23 +681,25 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
 }
 
 internal object MeasureReportGroupStratifierStratumPopulationSerializer :
-  KSerializer<MeasureReport.Group.Stratifier.Stratum.Population> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Population") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("count", Int.serializer().descriptor)
-      optionalElement("_count", ElementSerializer.descriptor)
-      optionalElement("subjectResults", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<MeasureReport.Group.Stratifier.Stratum.Population> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Population", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<MeasureReport.Group.Stratifier.Stratum.Population>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.intPrim("count")
+    b.optionalElement("subjectResults", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MeasureReport.Group.Stratifier.Stratum.Population {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -758,14 +753,14 @@ internal object MeasureReportGroupStratifierStratumPopulationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Population: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MeasureReport.Group.Stratifier.Stratum.Population(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
       count = Integer.of(count, _count),
       subjectResults = subjectResults,
@@ -776,22 +771,21 @@ internal object MeasureReportGroupStratifierStratumPopulationSerializer :
     encoder: Encoder,
     `value`: MeasureReport.Group.Stratifier.Stratum.Population,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -814,29 +808,23 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
   override val descriptor: SerialDescriptor = buildResourceDescriptor("MeasureReport")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", String.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("type", String.serializer().descriptor)
-    b.optionalElement("_type", ElementSerializer.descriptor)
-    b.optionalElement("measure", String.serializer().descriptor)
-    b.optionalElement("_measure", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("type")
+    b.strPrim("measure")
     b.optionalElement("subject", ReferenceSerializer.descriptor)
-    b.optionalElement("date", String.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.strPrim("date")
     b.optionalElement("reporter", ReferenceSerializer.descriptor)
     b.optionalElement("period", PeriodSerializer.descriptor)
     b.optionalElement("improvementNotation", CodeableConceptSerializer.descriptor)
@@ -860,14 +848,14 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: String? = null
+    var status: MeasureReportStatus? = null
     var _status: Element? = null
-    var type: String? = null
+    var type: MeasureReportType? = null
     var _type: Element? = null
     var measure: String? = null
     var _measure: Element? = null
     var subject: Reference? = null
-    var date: String? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var reporter: Reference? = null
     var period: Period? = null
@@ -941,7 +929,8 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status = MeasureReportStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -950,7 +939,7 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
               ElementSerializer,
               null,
             )
-        13 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        13 -> type = MeasureReportType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -976,7 +965,7 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
               ReferenceSerializer,
               null,
             )
-        18 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        18 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1025,7 +1014,7 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
               ReferenceSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding MeasureReport: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return MeasureReport(
@@ -1034,28 +1023,20 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) MeasureReportStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on MeasureReport"),
-      type =
-        Enumeration.of(if (type != null) MeasureReportType.fromCode(type) else null, _type)
-          ?: throw SerializationException("Missing required property 'type' on MeasureReport"),
-      measure =
-        Canonical.of(measure, _measure)
-          ?: throw SerializationException("Missing required property 'measure' on MeasureReport"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "MeasureReport", "status"),
+      type = required(Enumeration.of(type, _type), "MeasureReport", "type"),
+      measure = required(Canonical.of(measure, _measure), "MeasureReport", "measure"),
       subject = subject,
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       reporter = reporter,
-      period =
-        period
-          ?: throw SerializationException("Missing required property 'period' on MeasureReport"),
+      period = required(period, "MeasureReport", "period"),
       improvementNotation = improvementNotation,
-      group = group ?: listOf(),
-      evaluatedResource = evaluatedResource ?: listOf(),
+      group = listOrEmpty(group),
+      evaluatedResource = listOrEmpty(evaluatedResource),
     )
   }
 
@@ -1086,34 +1067,30 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -1158,19 +1135,17 @@ internal object MeasureReportSerializer : FhirResourceSerializer<MeasureReport> 
       CodeableConceptSerializer,
       value.improvementNotation,
     )
-    if (value.group.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        MeasureReportGroupSerializer.listSerializer,
-        value.group,
-      )
-    if (value.evaluatedResource.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.evaluatedResource,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      MeasureReportGroupSerializer.listSerializer,
+      value.group,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.evaluatedResource,
+    )
   }
 }

@@ -16,26 +16,47 @@
 
 package dev.ohs.fhir.codegen
 
+import com.squareup.kotlinpoet.ClassName
 import java.io.File
 
 /**
- * Emits a `LazySerialDescriptor.kt` helper whose descriptor delegates to a lazily-resolved
- * delegate. Used to break construction-time cycles between types whose descriptors reference one
- * another (e.g. `Reference` ↔ `Identifier`). Requires opt-in to `ExperimentalSerializationApi`
- * *and* `SealedSerializationApi` (the latter is what gates implementing `SerialDescriptor` outside
- * of kotlinx.serialization in 1.11.x).
+ * Writes `LazySerialDescriptor.kt`: a [kotlinx.serialization.descriptors.SerialDescriptor] that
+ * resolves its delegate on first use, plus the `LazyDescriptorId` constants and the
+ * `resolveLazyDescriptor(id)` dispatch over every serializer referenced lazily by the generated
+ * code ([CodegenContext.lazyDescriptorTargets]).
+ *
+ * Generated serializers call `lazyDescriptor(LazyDescriptorId.XSerializer)` instead of
+ * `lazyDescriptor { XSerializer.descriptor }`: the int-keyed dispatch avoids one `invokedynamic`
+ * site, bootstrap-method entry and synthetic lambda method per cyclic reference, and still never
+ * touches `XSerializer` during the referencing serializer's class initialization.
  */
 object LazySerialDescriptorFileSpecGenerator {
-  fun writeTo(outputDir: File, serializersPackageName: String) {
+  fun writeTo(outputDir: File, serializersPackageName: String, targets: Collection<ClassName>) {
     val packagePath = serializersPackageName.replace('.', '/')
     val target = File(outputDir, "$packagePath/LazySerialDescriptor.kt")
     target.parentFile.mkdirs()
+    val sortedTargets = targets.sortedBy { it.canonicalName }
+    val imports =
+      sortedTargets
+        .filter { it.packageName != serializersPackageName }
+        .map { "import ${it.canonicalName}" }
+        .sorted()
+        .joinToString("\n")
+    val ids =
+      sortedTargets.withIndex().joinToString("\n") { (index, cls) ->
+        "  const val ${cls.simpleName}: Int = $index"
+      }
+    val cases =
+      sortedTargets.withIndex().joinToString("\n") { (index, cls) ->
+        "    $index -> ${cls.simpleName}.descriptor"
+      }
     target.writeText(
       """
 @file:Suppress("RedundantVisibilityModifier")
 
 package $serializersPackageName
 
+$imports
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
@@ -45,16 +66,11 @@ import kotlinx.serialization.SealedSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.SerialKind
 
-/**
- * [SerialDescriptor] that forwards all operations to a lazily-resolved delegate. Used to break
- * construction-time cycles between serializers whose descriptors reference one another (e.g.
- * `Reference` ↔ `Identifier`).
- */
 @OptIn(ExperimentalSerializationApi::class, SealedSerializationApi::class)
-internal class LazySerialDescriptor(provider: () -> SerialDescriptor) : SerialDescriptor {
+internal class LazySerialDescriptor(id: Int) : SerialDescriptor {
   // Uses PUBLICATION for lock-free thread safety, avoiding race conditions (unlike NONE)
   // and mutex locks/deadlocks during cyclic resolution (unlike SYNCHRONIZED).
-  private val delegate by lazy(LazyThreadSafetyMode.PUBLICATION, provider)
+  private val delegate by lazy(LazyThreadSafetyMode.PUBLICATION) { resolveLazyDescriptor(id) }
   override val serialName: String get() = delegate.serialName
   override val kind: SerialKind get() = delegate.kind
   override val elementsCount: Int get() = delegate.elementsCount
@@ -73,10 +89,19 @@ internal class LazySerialDescriptor(provider: () -> SerialDescriptor) : SerialDe
   override fun toString(): String = delegate.toString()
 }
 
-/** Convenience factory. */
-@OptIn(ExperimentalSerializationApi::class, SealedSerializationApi::class)
-internal fun lazyDescriptor(provider: () -> SerialDescriptor): SerialDescriptor =
-  LazySerialDescriptor(provider)
+/** Descriptor for the serializer identified by [id] (a `LazyDescriptorId`), resolved on first use. */
+internal fun lazyDescriptor(id: Int): SerialDescriptor = LazySerialDescriptor(id)
+
+/** Ids of serializers whose descriptors are referenced lazily to break descriptor cycles. */
+internal object LazyDescriptorId {
+$ids
+}
+
+internal fun resolveLazyDescriptor(id: Int): SerialDescriptor =
+  when (id) {
+$cases
+    else -> throw IllegalArgumentException("Unknown lazy descriptor id " + id)
+  }
 """
         .trimStart()
     )

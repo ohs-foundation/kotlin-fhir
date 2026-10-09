@@ -24,7 +24,6 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.StructureDefinition
 import dev.ohs.fhir.codegen.schema.backboneElements
@@ -36,7 +35,6 @@ import dev.ohs.fhir.codegen.serializer.SerializerEncodeEmitter
 import dev.ohs.fhir.codegen.serializer.WireField
 import dev.ohs.fhir.codegen.serializer.buildJsonWireFields
 import dev.ohs.fhir.codegen.serializer.buildListSerializerProperty
-import kotlinx.serialization.KSerializer
 
 /** Generates a streaming `KSerializer<X>` per FHIR type over the flat wire shape. */
 class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
@@ -80,8 +78,8 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
    * companion `from(…)` factory during `emitModelConstruction`.
    *
    * Resource types implement `FhirResourceSerializer<X>` so `FhirResourcePolymorphicSerializer` in
-   * `ResourcePolymorphicSerializer` can reuse their descriptor and encode/decode bodies without
-   * generating a separate `XPolymorphicSerializer` object per resource.
+   * `ResourcePolymorphicSerializer` can reuse their descriptor builder and encode/decode bodies
+   * without generating a separate polymorphic serializer object per resource.
    */
   private fun createModelSerializerTypeSpec(
     className: ClassName,
@@ -110,15 +108,14 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
       if (includeResourceType) {
         ClassName(className.packageName, "FhirResourceSerializer").parameterizedBy(className)
       } else {
-        KSerializer::class.asClassName().parameterizedBy(className)
+        ClassName("${className.packageName}.serializers", "FhirSerializer")
+          .parameterizedBy(className)
       }
     val builder =
       TypeSpec.objectBuilder(serializerClassName)
         .addModifiers(KModifier.INTERNAL)
         .addSuperinterface(superinterface)
-        .addProperty(
-          descriptorEmitter.buildDescriptorProperty(className, wireFields, includeResourceType)
-        )
+        .addProperty(descriptorEmitter.buildDescriptorProperty(className, includeResourceType))
     // Pre-allocate `ListSerializer(this)` on the provider serializer right after `descriptor`.
     // Because `ListSerializer(this)` only reads `this.descriptor` (already initialized above), it
     // cannot trigger cross-serializer `<clinit>` cycles and lets all consumers share a single
@@ -129,9 +126,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         builder.addProperty(buildListSerializerProperty(className, nullableElement = true))
       }
     }
-    if (includeResourceType) {
-      builder.addFunction(descriptorEmitter.buildBuildDescriptorFun(className, wireFields))
-    }
+    builder.addFunction(descriptorEmitter.buildBuildDescriptorFun(className, wireFields))
     val functions =
       buildSerializerFunctions(
         className,
@@ -157,34 +152,19 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     includeResourceType: Boolean,
   ): List<FunSpec> {
     // For resources we share `serializeInternal`/`deserializeInternal` between `XSerializer`
-    // (descriptor:
-    // resourceType@0, wireFields@1..N) and `FhirResourcePolymorphicSerializer` (descriptor:
-    // wireFields@0..N-1).
-    // The body takes the descriptor + a wire-field offset (`descriptorOffset`) at runtime; encode
-    // emits
-    // `<wireIdx> + descriptorOffset` for the descriptor index, decode rebases the dispatch via
-    // `when (i - descriptorOffset)` so case labels stay constant. Non-resource types emit
-    // `deserialize` and `serialize` directly without separate `*Internal` helper methods.
-    val parameterized = includeResourceType
-    // Case labels in the decode `when` — always wire-field index (0-based). For non-resources
-    // this also equals the absolute descriptor slot since there's no `resourceType` prefix.
-    val nameToCaseLabel =
-      wireFields.withIndex().associate { (index, wireField) -> wireField.name to index }
-    // Encode-side index expression: literal `<wireIdx>` for non-resources, `<wireIdx> +
-    // descriptorOffset`
-    // for resources. Substituted into emit calls via `%L`.
-    val nameToIdx: Map<String, CodeBlock> = nameToCaseLabel.mapValues { (_, i) ->
-      if (parameterized) CodeBlock.of("%L + descriptorOffset", i) else CodeBlock.of("%L", i)
-    }
+    // (descriptor: resourceType@0, wireFields@1..N) and `FhirResourcePolymorphicSerializer`
+    // (descriptor: wireFields@0..N-1), so the bodies take a `descriptorOffset` (1 / 0) and encode
+    // indices are emitted as `<index> + descriptorOffset`. Non-resource types emit `deserialize`
+    // and `serialize` directly with literal indices.
+    val nameToIdx: Map<String, CodeBlock> =
+      wireFields.withIndex().associate { (index, wireField) ->
+        wireField.name to
+          if (includeResourceType) CodeBlock.of("%L + descriptorOffset", index)
+          else CodeBlock.of("%L", index)
+      }
     return listOf(
-      decodeEmitter.buildDeserializeInternal(
-        className,
-        elements,
-        wireFields,
-        parameterized,
-        nameToCaseLabel,
-      ),
-      encodeEmitter.buildSerializeInternal(className, elements, parameterized, nameToIdx),
+      decodeEmitter.buildDeserializeInternal(className, elements, wireFields, includeResourceType),
+      encodeEmitter.buildSerializeInternal(className, elements, includeResourceType, nameToIdx),
     )
   }
 }

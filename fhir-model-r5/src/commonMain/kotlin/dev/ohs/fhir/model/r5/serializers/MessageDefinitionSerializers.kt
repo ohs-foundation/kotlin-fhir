@@ -55,44 +55,41 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object MessageDefinitionFocusSerializer : KSerializer<MessageDefinition.Focus> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Focus") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("profile", KotlinString.serializer().descriptor)
-      optionalElement("_profile", ElementSerializer.descriptor)
-      optionalElement("min", Int.serializer().descriptor)
-      optionalElement("_min", ElementSerializer.descriptor)
-      optionalElement("max", KotlinString.serializer().descriptor)
-      optionalElement("_max", ElementSerializer.descriptor)
-    }
+internal object MessageDefinitionFocusSerializer : FhirSerializer<MessageDefinition.Focus> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Focus", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MessageDefinition.Focus>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrim("profile")
+    b.intPrim("min")
+    b.strPrim("max")
+  }
+
   override fun deserialize(decoder: Decoder): MessageDefinition.Focus {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var code: KotlinString? = null
+    var code: ResourceType? = null
     var _code: Element? = null
     var profile: KotlinString? = null
     var _profile: Element? = null
@@ -119,7 +116,7 @@ internal object MessageDefinitionFocusSerializer : KSerializer<MessageDefinition
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> code = ResourceType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _code =
             compositeDecoder.decodeNullableSerializableElement(
@@ -156,46 +153,37 @@ internal object MessageDefinitionFocusSerializer : KSerializer<MessageDefinition
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Focus: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MessageDefinition.Focus(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        Enumeration.of(if (code != null) ResourceType.fromCode(code) else null, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on MessageDefinition.Focus"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(Enumeration.of(code, _code), "MessageDefinition.Focus", "code"),
       profile = Canonical.of(profile, _profile),
-      min =
-        UnsignedInt.of(min, _min)
-          ?: throw SerializationException(
-            "Missing required property 'min' on MessageDefinition.Focus"
-          ),
+      min = required(UnsignedInt.of(min, _min), "MessageDefinition.Focus", "min"),
       max = R5String.of(max, _max),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MessageDefinition.Focus) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.profile?.value)
@@ -209,22 +197,23 @@ internal object MessageDefinitionFocusSerializer : KSerializer<MessageDefinition
 }
 
 internal object MessageDefinitionAllowedResponseSerializer :
-  KSerializer<MessageDefinition.AllowedResponse> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AllowedResponse") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("message", KotlinString.serializer().descriptor)
-      optionalElement("_message", ElementSerializer.descriptor)
-      optionalElement("situation", KotlinString.serializer().descriptor)
-      optionalElement("_situation", ElementSerializer.descriptor)
-    }
+  FhirSerializer<MessageDefinition.AllowedResponse> {
+  override val descriptor: SerialDescriptor = buildDescriptor("AllowedResponse", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MessageDefinition.AllowedResponse>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("message")
+    b.strPrim("situation")
+  }
+
   override fun deserialize(decoder: Decoder): MessageDefinition.AllowedResponse {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -271,40 +260,36 @@ internal object MessageDefinitionAllowedResponseSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding AllowedResponse: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MessageDefinition.AllowedResponse(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       message =
-        Canonical.of(message, _message)
-          ?: throw SerializationException(
-            "Missing required property 'message' on MessageDefinition.AllowedResponse"
-          ),
+        required(Canonical.of(message, _message), "MessageDefinition.AllowedResponse", "message"),
       situation = Markdown.of(situation, _situation),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MessageDefinition.AllowedResponse) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.message.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.message)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.situation?.value)
@@ -317,70 +302,48 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
   override val descriptor: SerialDescriptor = buildResourceDescriptor("MessageDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("versionAlgorithmString", KotlinString.serializer().descriptor)
-    b.optionalElement("_versionAlgorithmString", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("versionAlgorithmString")
     b.optionalElement("versionAlgorithmCoding", CodingSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("replaces", stringNullableListSerializer.descriptor)
-    b.optionalElement("_replaces", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrimList("replaces")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("purpose", KotlinString.serializer().descriptor)
-    b.optionalElement("_purpose", ElementSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("copyrightLabel", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyrightLabel", ElementSerializer.descriptor)
-    b.optionalElement("base", KotlinString.serializer().descriptor)
-    b.optionalElement("_base", ElementSerializer.descriptor)
-    b.optionalElement("parent", stringNullableListSerializer.descriptor)
-    b.optionalElement("_parent", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrim("purpose")
+    b.strPrim("copyright")
+    b.strPrim("copyrightLabel")
+    b.strPrim("base")
+    b.strPrimList("parent")
     b.optionalElement("eventCoding", CodingSerializer.descriptor)
-    b.optionalElement("eventUri", KotlinString.serializer().descriptor)
-    b.optionalElement("_eventUri", ElementSerializer.descriptor)
-    b.optionalElement("category", KotlinString.serializer().descriptor)
-    b.optionalElement("_category", ElementSerializer.descriptor)
+    b.strPrim("eventUri")
+    b.strPrim("category")
     b.optionalElement("focus", MessageDefinitionFocusSerializer.listSerializer.descriptor)
-    b.optionalElement("responseRequired", KotlinString.serializer().descriptor)
-    b.optionalElement("_responseRequired", ElementSerializer.descriptor)
+    b.strPrim("responseRequired")
     b.optionalElement(
       "allowedResponse",
       MessageDefinitionAllowedResponseSerializer.listSerializer.descriptor,
     )
-    b.optionalElement("graph", KotlinString.serializer().descriptor)
-    b.optionalElement("_graph", ElementSerializer.descriptor)
+    b.strPrim("graph")
   }
 
   override fun deserializeInternal(
@@ -412,11 +375,11 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
     var _title: Element? = null
     var replaces: List<KotlinString?>? = null
     var _replaces: List<Element?>? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -438,10 +401,10 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
     var eventCoding: Coding? = null
     var eventUri: KotlinString? = null
     var _eventUri: Element? = null
-    var category: KotlinString? = null
+    var category: MessageSignificanceCategory? = null
     var _category: Element? = null
     var focus: List<MessageDefinition.Focus>? = null
-    var responseRequired: KotlinString? = null
+    var responseRequired: MessageheaderResponseRequest? = null
     var _responseRequired: Element? = null
     var allowedResponse: List<MessageDefinition.AllowedResponse>? = null
     var graph: KotlinString? = null
@@ -582,7 +545,8 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
               ElementSerializer.nullableListSerializer,
               null,
             )
-        24 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        24 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         25 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -600,7 +564,7 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
               ElementSerializer,
               null,
             )
-        28 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        28 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         29 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -720,7 +684,11 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
               ElementSerializer,
               null,
             )
-        50 -> category = compositeDecoder.decodeStringElement(descriptor, i)
+        50 ->
+          category =
+            MessageSignificanceCategory.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         51 ->
           _category =
             compositeDecoder.decodeNullableSerializableElement(
@@ -737,7 +705,11 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
               MessageDefinitionFocusSerializer.listSerializer,
               null,
             )
-        53 -> responseRequired = compositeDecoder.decodeStringElement(descriptor, i)
+        53 ->
+          responseRequired =
+            MessageheaderResponseRequest.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         54 ->
           _responseRequired =
             compositeDecoder.decodeNullableSerializableElement(
@@ -763,20 +735,36 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
               ElementSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding MessageDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val replaces_ =
+      List(maxSize(replaces, _replaces)) { index ->
+        entryRequired(
+          Canonical.of(at(replaces, index), at(_replaces, index)),
+          "MessageDefinition",
+          "replaces",
+        )
+      }
+    val parent_ =
+      List(maxSize(parent, _parent)) { index ->
+        entryRequired(
+          Canonical.of(at(parent, index), at(_parent, index)),
+          "MessageDefinition",
+          "parent",
+        )
+      }
     return MessageDefinition(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R5String.of(version, _version),
       versionAlgorithm =
         MessageDefinition.VersionAlgorithm.from(
@@ -785,54 +773,30 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      replaces =
-        (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { index ->
-          Canonical.of(replaces?.getOrNull(index), _replaces?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'replaces' on MessageDefinition has neither a value nor an id/extension"
-            )
-        }),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on MessageDefinition"
-          ),
+      replaces = replaces_,
+      status = required(Enumeration.of(status, _status), "MessageDefinition", "status"),
       experimental = R5Boolean.of(experimental, _experimental),
-      date =
-        DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date)
-          ?: throw SerializationException("Missing required property 'date' on MessageDefinition"),
+      date = required(DateTime.of(date, _date), "MessageDefinition", "date"),
       publisher = R5String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       base = Canonical.of(base, _base),
-      parent =
-        (kotlin.collections.List(maxOf(parent?.size ?: 0, _parent?.size ?: 0)) { index ->
-          Canonical.of(parent?.getOrNull(index), _parent?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'parent' on MessageDefinition has neither a value nor an id/extension"
-            )
-        }),
+      parent = parent_,
       event =
-        MessageDefinition.Event.from(eventCoding, Uri.of(eventUri, _eventUri))
-          ?: throw SerializationException("Missing required property 'event' on MessageDefinition"),
-      category =
-        Enumeration.of(
-          if (category != null) MessageSignificanceCategory.fromCode(category) else null,
-          _category,
+        required(
+          MessageDefinition.Event.from(eventCoding, Uri.of(eventUri, _eventUri)),
+          "MessageDefinition",
+          "event",
         ),
-      focus = focus ?: listOf(),
-      responseRequired =
-        Enumeration.of(
-          if (responseRequired != null) MessageheaderResponseRequest.fromCode(responseRequired)
-          else null,
-          _responseRequired,
-        ),
-      allowedResponse = allowedResponse ?: listOf(),
+      category = Enumeration.of(category, _category),
+      focus = listOrEmpty(focus),
+      responseRequired = Enumeration.of(responseRequired, _responseRequired),
+      allowedResponse = listOrEmpty(allowedResponse),
       graph = Canonical.of(graph, _graph),
     )
   }
@@ -864,36 +828,32 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     when (val choice = value.versionAlgorithm) {
@@ -919,7 +879,7 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
     compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.name)
     compositeEncoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.title?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.title)
-    if (value.replaces.isNotEmpty()) {
+    if (!value.replaces.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         22 + descriptorOffset,
@@ -952,33 +912,30 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       33 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 34 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        36 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      36 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 37 + descriptorOffset, value.purpose?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 38 + descriptorOffset, value.purpose)
     compositeEncoder.encodeStringIfNotNull(
@@ -995,7 +952,7 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
     compositeEncoder.encodeElementIfNotNull(descriptor, 42 + descriptorOffset, value.copyrightLabel)
     compositeEncoder.encodeStringIfNotNull(descriptor, 43 + descriptorOffset, value.base?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 44 + descriptorOffset, value.base)
-    if (value.parent.isNotEmpty()) {
+    if (!value.parent.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         45 + descriptorOffset,
@@ -1028,13 +985,12 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
       value.category?.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 51 + descriptorOffset, value.category)
-    if (value.focus.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        52 + descriptorOffset,
-        MessageDefinitionFocusSerializer.listSerializer,
-        value.focus,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      52 + descriptorOffset,
+      MessageDefinitionFocusSerializer.listSerializer,
+      value.focus,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       53 + descriptorOffset,
@@ -1045,13 +1001,12 @@ internal object MessageDefinitionSerializer : FhirResourceSerializer<MessageDefi
       54 + descriptorOffset,
       value.responseRequired,
     )
-    if (value.allowedResponse.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        55 + descriptorOffset,
-        MessageDefinitionAllowedResponseSerializer.listSerializer,
-        value.allowedResponse,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      55 + descriptorOffset,
+      MessageDefinitionAllowedResponseSerializer.listSerializer,
+      value.allowedResponse,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 56 + descriptorOffset, value.graph?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 57 + descriptorOffset, value.graph)
   }

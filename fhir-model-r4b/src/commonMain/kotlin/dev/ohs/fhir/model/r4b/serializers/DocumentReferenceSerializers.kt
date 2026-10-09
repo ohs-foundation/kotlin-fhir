@@ -50,39 +50,39 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentReference.RelatesTo> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RelatesTo") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("target", ReferenceSerializer.descriptor)
-    }
+internal object DocumentReferenceRelatesToSerializer : FhirSerializer<DocumentReference.RelatesTo> {
+  override val descriptor: SerialDescriptor = buildDescriptor("RelatesTo", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<DocumentReference.RelatesTo>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.optionalElement("target", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): DocumentReference.RelatesTo {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var code: KotlinString? = null
+    var code: DocumentRelationshipType? = null
     var _code: Element? = null
     var target: Reference? = null
     while (true) {
@@ -104,7 +104,9 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          code =
+            DocumentRelationshipType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _code =
             compositeDecoder.decodeNullableSerializableElement(
@@ -122,44 +124,35 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RelatesTo: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return DocumentReference.RelatesTo(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        Enumeration.of(if (code != null) DocumentRelationshipType.fromCode(code) else null, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on DocumentReference.RelatesTo"
-          ),
-      target =
-        target
-          ?: throw SerializationException(
-            "Missing required property 'target' on DocumentReference.RelatesTo"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(Enumeration.of(code, _code), "DocumentReference.RelatesTo", "code"),
+      target = required(target, "DocumentReference.RelatesTo", "target"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: DocumentReference.RelatesTo) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
     compositeEncoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.target)
@@ -167,19 +160,22 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
   }
 }
 
-internal object DocumentReferenceContentSerializer : KSerializer<DocumentReference.Content> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Content") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("attachment", AttachmentSerializer.descriptor)
-      optionalElement("format", CodingSerializer.descriptor)
-    }
+internal object DocumentReferenceContentSerializer : FhirSerializer<DocumentReference.Content> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Content", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<DocumentReference.Content>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("attachment", AttachmentSerializer.descriptor)
+    b.optionalElement("format", CodingSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): DocumentReference.Content {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -222,40 +218,35 @@ internal object DocumentReferenceContentSerializer : KSerializer<DocumentReferen
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Content: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return DocumentReference.Content(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      attachment =
-        attachment
-          ?: throw SerializationException(
-            "Missing required property 'attachment' on DocumentReference.Content"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      attachment = required(attachment, "DocumentReference.Content", "attachment"),
       format = format,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: DocumentReference.Content) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -267,24 +258,27 @@ internal object DocumentReferenceContentSerializer : KSerializer<DocumentReferen
   }
 }
 
-internal object DocumentReferenceContextSerializer : KSerializer<DocumentReference.Context> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Context") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("encounter", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("event", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
-      optionalElement("facilityType", CodeableConceptSerializer.descriptor)
-      optionalElement("practiceSetting", CodeableConceptSerializer.descriptor)
-      optionalElement("sourcePatientInfo", ReferenceSerializer.descriptor)
-      optionalElement("related", ReferenceSerializer.listSerializer.descriptor)
-    }
+internal object DocumentReferenceContextSerializer : FhirSerializer<DocumentReference.Context> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Context", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<DocumentReference.Context>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("event", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("period", PeriodSerializer.descriptor)
+    b.optionalElement("facilityType", CodeableConceptSerializer.descriptor)
+    b.optionalElement("practiceSetting", CodeableConceptSerializer.descriptor)
+    b.optionalElement("sourcePatientInfo", ReferenceSerializer.descriptor)
+    b.optionalElement("related", ReferenceSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): DocumentReference.Context {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -372,55 +366,52 @@ internal object DocumentReferenceContextSerializer : KSerializer<DocumentReferen
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Context: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return DocumentReference.Context(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      encounter = encounter ?: listOf(),
-      event = event ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      encounter = listOrEmpty(encounter),
+      event = listOrEmpty(event),
       period = period,
       facilityType = facilityType,
       practiceSetting = practiceSetting,
       sourcePatientInfo = sourcePatientInfo,
-      related = related ?: listOf(),
+      related = listOrEmpty(related),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: DocumentReference.Context) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.encounter.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        ReferenceSerializer.listSerializer,
-        value.encounter,
-      )
-    if (value.event.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.event,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      ReferenceSerializer.listSerializer,
+      value.encounter,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.event,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, PeriodSerializer, value.period)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
@@ -440,13 +431,12 @@ internal object DocumentReferenceContextSerializer : KSerializer<DocumentReferen
       ReferenceSerializer,
       value.sourcePatientInfo,
     )
-    if (value.related.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        ReferenceSerializer.listSerializer,
-        value.related,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      ReferenceSerializer.listSerializer,
+      value.related,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -455,36 +445,30 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
   override val descriptor: SerialDescriptor = buildResourceDescriptor("DocumentReference")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("masterIdentifier", IdentifierSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("docStatus", KotlinString.serializer().descriptor)
-    b.optionalElement("_docStatus", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("docStatus")
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
     b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.strPrim("date")
     b.optionalElement("author", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("authenticator", ReferenceSerializer.descriptor)
     b.optionalElement("custodian", ReferenceSerializer.descriptor)
     b.optionalElement("relatesTo", DocumentReferenceRelatesToSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("securityLabel", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("content", DocumentReferenceContentSerializer.listSerializer.descriptor)
     b.optionalElement("context", DocumentReferenceContextSerializer.descriptor)
@@ -507,14 +491,14 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
     var modifierExtension: List<Extension>? = null
     var masterIdentifier: Identifier? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: DocumentReferenceStatus? = null
     var _status: Element? = null
-    var docStatus: KotlinString? = null
+    var docStatus: CompositionStatus? = null
     var _docStatus: Element? = null
     var type: CodeableConcept? = null
     var category: List<CodeableConcept>? = null
     var subject: Reference? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var author: List<Reference>? = null
     var authenticator: Reference? = null
@@ -600,7 +584,9 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
               IdentifierSerializer.listSerializer,
               null,
             )
-        12 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          status =
+            DocumentReferenceStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         13 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -609,7 +595,9 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
               ElementSerializer,
               null,
             )
-        14 -> docStatus = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          docStatus =
+            CompositionStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _docStatus =
             compositeDecoder.decodeNullableSerializableElement(
@@ -642,7 +630,7 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
               ReferenceSerializer,
               null,
             )
-        19 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        19 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -716,7 +704,7 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
               DocumentReferenceContextSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding DocumentReference: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return DocumentReference(
@@ -725,35 +713,24 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       masterIdentifier = masterIdentifier,
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) DocumentReferenceStatus.fromCode(status) else null,
-          _status,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'status' on DocumentReference"
-          ),
-      docStatus =
-        Enumeration.of(
-          if (docStatus != null) CompositionStatus.fromCode(docStatus) else null,
-          _docStatus,
-        ),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "DocumentReference", "status"),
+      docStatus = Enumeration.of(docStatus, _docStatus),
       type = type,
-      category = category ?: listOf(),
+      category = listOrEmpty(category),
       subject = subject,
-      date = Instant.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
-      author = author ?: listOf(),
+      date = Instant.of(date, _date),
+      author = listOrEmpty(author),
       authenticator = authenticator,
       custodian = custodian,
-      relatesTo = relatesTo ?: listOf(),
+      relatesTo = listOrEmpty(relatesTo),
       description = R4bString.of(description, _description),
-      securityLabel = securityLabel ?: listOf(),
-      content = content ?: listOf(),
+      securityLabel = listOrEmpty(securityLabel),
+      content = listOrEmpty(content),
       context = context,
     )
   }
@@ -785,40 +762,36 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       10 + descriptorOffset,
       IdentifierSerializer,
       value.masterIdentifier,
     )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       12 + descriptorOffset,
@@ -837,13 +810,12 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
       CodeableConceptSerializer,
       value.type,
     )
-    if (value.category.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.category,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      17 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.category,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       18 + descriptorOffset,
@@ -856,13 +828,12 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
       value.date?.value?.toString(),
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 20 + descriptorOffset, value.date)
-    if (value.author.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.author,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      21 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.author,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       22 + descriptorOffset,
@@ -875,33 +846,30 @@ internal object DocumentReferenceSerializer : FhirResourceSerializer<DocumentRef
       ReferenceSerializer,
       value.custodian,
     )
-    if (value.relatesTo.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        DocumentReferenceRelatesToSerializer.listSerializer,
-        value.relatesTo,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      DocumentReferenceRelatesToSerializer.listSerializer,
+      value.relatesTo,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       25 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.description)
-    if (value.securityLabel.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.securityLabel,
-      )
-    if (value.content.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        DocumentReferenceContentSerializer.listSerializer,
-        value.content,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.securityLabel,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28 + descriptorOffset,
+      DocumentReferenceContentSerializer.listSerializer,
+      value.content,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       29 + descriptorOffset,

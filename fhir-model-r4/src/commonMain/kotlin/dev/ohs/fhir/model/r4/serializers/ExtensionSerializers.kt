@@ -83,117 +83,102 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ExtensionSerializer : KSerializer<Extension> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Extension") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("url", KotlinString.serializer().descriptor)
-      optionalElement("valueBase64Binary", KotlinString.serializer().descriptor)
-      optionalElement("_valueBase64Binary", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueCanonical", KotlinString.serializer().descriptor)
-      optionalElement("_valueCanonical", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueCode", KotlinString.serializer().descriptor)
-      optionalElement("_valueCode", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueDate", KotlinString.serializer().descriptor)
-      optionalElement("_valueDate", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_valueDateTime", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_valueDecimal", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueId", KotlinString.serializer().descriptor)
-      optionalElement("_valueId", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueInstant", KotlinString.serializer().descriptor)
-      optionalElement("_valueInstant", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueInteger", Int.serializer().descriptor)
-      optionalElement("_valueInteger", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueMarkdown", KotlinString.serializer().descriptor)
-      optionalElement("_valueMarkdown", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueOid", KotlinString.serializer().descriptor)
-      optionalElement("_valueOid", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valuePositiveInt", Int.serializer().descriptor)
-      optionalElement("_valuePositiveInt", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueString", KotlinString.serializer().descriptor)
-      optionalElement("_valueString", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueTime", LocalTimeSerializer.descriptor)
-      optionalElement("_valueTime", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_valueUnsignedInt", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueUri", KotlinString.serializer().descriptor)
-      optionalElement("_valueUri", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueUrl", KotlinString.serializer().descriptor)
-      optionalElement("_valueUrl", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueUuid", KotlinString.serializer().descriptor)
-      optionalElement("_valueUuid", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("valueAddress", lazyDescriptor { AddressSerializer.descriptor })
-      optionalElement("valueAge", lazyDescriptor { AgeSerializer.descriptor })
-      optionalElement("valueAnnotation", lazyDescriptor { AnnotationSerializer.descriptor })
-      optionalElement("valueAttachment", lazyDescriptor { AttachmentSerializer.descriptor })
-      optionalElement(
-        "valueCodeableConcept",
-        lazyDescriptor { CodeableConceptSerializer.descriptor },
-      )
-      optionalElement("valueCoding", lazyDescriptor { CodingSerializer.descriptor })
-      optionalElement("valueContactPoint", lazyDescriptor { ContactPointSerializer.descriptor })
-      optionalElement("valueCount", lazyDescriptor { CountSerializer.descriptor })
-      optionalElement("valueDistance", lazyDescriptor { DistanceSerializer.descriptor })
-      optionalElement("valueDuration", lazyDescriptor { DurationSerializer.descriptor })
-      optionalElement("valueHumanName", lazyDescriptor { HumanNameSerializer.descriptor })
-      optionalElement("valueIdentifier", lazyDescriptor { IdentifierSerializer.descriptor })
-      optionalElement("valueMoney", lazyDescriptor { MoneySerializer.descriptor })
-      optionalElement("valuePeriod", lazyDescriptor { PeriodSerializer.descriptor })
-      optionalElement("valueQuantity", lazyDescriptor { QuantitySerializer.descriptor })
-      optionalElement("valueRange", lazyDescriptor { RangeSerializer.descriptor })
-      optionalElement("valueRatio", lazyDescriptor { RatioSerializer.descriptor })
-      optionalElement("valueReference", lazyDescriptor { ReferenceSerializer.descriptor })
-      optionalElement("valueSampledData", lazyDescriptor { SampledDataSerializer.descriptor })
-      optionalElement("valueSignature", lazyDescriptor { SignatureSerializer.descriptor })
-      optionalElement("valueTiming", lazyDescriptor { TimingSerializer.descriptor })
-      optionalElement("valueContactDetail", lazyDescriptor { ContactDetailSerializer.descriptor })
-      optionalElement("valueContributor", lazyDescriptor { ContributorSerializer.descriptor })
-      optionalElement(
-        "valueDataRequirement",
-        lazyDescriptor { DataRequirementSerializer.descriptor },
-      )
-      optionalElement("valueExpression", lazyDescriptor { ExpressionSerializer.descriptor })
-      optionalElement(
-        "valueParameterDefinition",
-        lazyDescriptor { ParameterDefinitionSerializer.descriptor },
-      )
-      optionalElement(
-        "valueRelatedArtifact",
-        lazyDescriptor { RelatedArtifactSerializer.descriptor },
-      )
-      optionalElement(
-        "valueTriggerDefinition",
-        lazyDescriptor { TriggerDefinitionSerializer.descriptor },
-      )
-      optionalElement("valueUsageContext", lazyDescriptor { UsageContextSerializer.descriptor })
-      optionalElement("valueDosage", lazyDescriptor { DosageSerializer.descriptor })
-      optionalElement("valueMeta", lazyDescriptor { MetaSerializer.descriptor })
-    }
+internal object ExtensionSerializer : FhirSerializer<Extension> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Extension", this)
 
-  internal val listSerializer: KSerializer<List<Extension>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Extension>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.str("url")
+    b.strPrim("valueBase64Binary")
+    b.boolPrim("valueBoolean")
+    b.strPrim("valueCanonical")
+    b.strPrim("valueCode")
+    b.strPrim("valueDate")
+    b.strPrim("valueDateTime")
+    b.prim("valueDecimal", FhirDecimalSerializer.descriptor)
+    b.strPrim("valueId")
+    b.strPrim("valueInstant")
+    b.intPrim("valueInteger")
+    b.strPrim("valueMarkdown")
+    b.strPrim("valueOid")
+    b.intPrim("valuePositiveInt")
+    b.strPrim("valueString")
+    b.prim("valueTime", LocalTimeSerializer.descriptor)
+    b.intPrim("valueUnsignedInt")
+    b.strPrim("valueUri")
+    b.strPrim("valueUrl")
+    b.strPrim("valueUuid")
+    b.optionalElement("valueAddress", lazyDescriptor(LazyDescriptorId.AddressSerializer))
+    b.optionalElement("valueAge", lazyDescriptor(LazyDescriptorId.AgeSerializer))
+    b.optionalElement("valueAnnotation", lazyDescriptor(LazyDescriptorId.AnnotationSerializer))
+    b.optionalElement("valueAttachment", lazyDescriptor(LazyDescriptorId.AttachmentSerializer))
+    b.optionalElement(
+      "valueCodeableConcept",
+      lazyDescriptor(LazyDescriptorId.CodeableConceptSerializer),
+    )
+    b.optionalElement("valueCoding", lazyDescriptor(LazyDescriptorId.CodingSerializer))
+    b.optionalElement("valueContactPoint", lazyDescriptor(LazyDescriptorId.ContactPointSerializer))
+    b.optionalElement("valueCount", lazyDescriptor(LazyDescriptorId.CountSerializer))
+    b.optionalElement("valueDistance", lazyDescriptor(LazyDescriptorId.DistanceSerializer))
+    b.optionalElement("valueDuration", lazyDescriptor(LazyDescriptorId.DurationSerializer))
+    b.optionalElement("valueHumanName", lazyDescriptor(LazyDescriptorId.HumanNameSerializer))
+    b.optionalElement("valueIdentifier", lazyDescriptor(LazyDescriptorId.IdentifierSerializer))
+    b.optionalElement("valueMoney", lazyDescriptor(LazyDescriptorId.MoneySerializer))
+    b.optionalElement("valuePeriod", lazyDescriptor(LazyDescriptorId.PeriodSerializer))
+    b.optionalElement("valueQuantity", lazyDescriptor(LazyDescriptorId.QuantitySerializer))
+    b.optionalElement("valueRange", lazyDescriptor(LazyDescriptorId.RangeSerializer))
+    b.optionalElement("valueRatio", lazyDescriptor(LazyDescriptorId.RatioSerializer))
+    b.optionalElement("valueReference", lazyDescriptor(LazyDescriptorId.ReferenceSerializer))
+    b.optionalElement("valueSampledData", lazyDescriptor(LazyDescriptorId.SampledDataSerializer))
+    b.optionalElement("valueSignature", lazyDescriptor(LazyDescriptorId.SignatureSerializer))
+    b.optionalElement("valueTiming", lazyDescriptor(LazyDescriptorId.TimingSerializer))
+    b.optionalElement(
+      "valueContactDetail",
+      lazyDescriptor(LazyDescriptorId.ContactDetailSerializer),
+    )
+    b.optionalElement("valueContributor", lazyDescriptor(LazyDescriptorId.ContributorSerializer))
+    b.optionalElement(
+      "valueDataRequirement",
+      lazyDescriptor(LazyDescriptorId.DataRequirementSerializer),
+    )
+    b.optionalElement("valueExpression", lazyDescriptor(LazyDescriptorId.ExpressionSerializer))
+    b.optionalElement(
+      "valueParameterDefinition",
+      lazyDescriptor(LazyDescriptorId.ParameterDefinitionSerializer),
+    )
+    b.optionalElement(
+      "valueRelatedArtifact",
+      lazyDescriptor(LazyDescriptorId.RelatedArtifactSerializer),
+    )
+    b.optionalElement(
+      "valueTriggerDefinition",
+      lazyDescriptor(LazyDescriptorId.TriggerDefinitionSerializer),
+    )
+    b.optionalElement("valueUsageContext", lazyDescriptor(LazyDescriptorId.UsageContextSerializer))
+    b.optionalElement("valueDosage", lazyDescriptor(LazyDescriptorId.DosageSerializer))
+    b.optionalElement("valueMeta", lazyDescriptor(LazyDescriptorId.MetaSerializer))
+  }
 
   override fun deserialize(decoder: Decoder): Extension {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -206,15 +191,15 @@ internal object ExtensionSerializer : KSerializer<Extension> {
     var _valueCanonical: Element? = null
     var valueCode: KotlinString? = null
     var _valueCode: Element? = null
-    var valueDate: KotlinString? = null
+    var valueDate: FhirDate? = null
     var _valueDate: Element? = null
-    var valueDateTime: KotlinString? = null
+    var valueDateTime: FhirDateTime? = null
     var _valueDateTime: Element? = null
     var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueId: KotlinString? = null
     var _valueId: Element? = null
-    var valueInstant: KotlinString? = null
+    var valueInstant: FhirDateTime? = null
     var _valueInstant: Element? = null
     var valueInteger: Int? = null
     var _valueInteger: Element? = null
@@ -315,7 +300,7 @@ internal object ExtensionSerializer : KSerializer<Extension> {
               ElementSerializer,
               null,
             )
-        11 -> valueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        11 -> valueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _valueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -324,7 +309,9 @@ internal object ExtensionSerializer : KSerializer<Extension> {
               ElementSerializer,
               null,
             )
-        13 -> valueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          valueDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _valueDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -358,7 +345,9 @@ internal object ExtensionSerializer : KSerializer<Extension> {
               ElementSerializer,
               null,
             )
-        19 -> valueInstant = compositeDecoder.decodeStringElement(descriptor, i)
+        19 ->
+          valueInstant =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _valueInstant =
             compositeDecoder.decodeNullableSerializableElement(
@@ -683,31 +672,25 @@ internal object ExtensionSerializer : KSerializer<Extension> {
           valueMeta =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Extension: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Extension(
       id = id,
-      extension = extension ?: listOf(),
-      url = url ?: throw SerializationException("Missing required property 'url' on Extension"),
+      extension = listOrEmpty(extension),
+      url = required(url, "Extension", "url"),
       `value` =
         Extension.Value.from(
           Base64Binary.of(valueBase64Binary, _valueBase64Binary),
           R4Boolean.of(valueBoolean, _valueBoolean),
           Canonical.of(valueCanonical, _valueCanonical),
           Code.of(valueCode, _valueCode),
-          Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
-          DateTime.of(
-            if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
-            _valueDateTime,
-          ),
+          Date.of(valueDate, _valueDate),
+          DateTime.of(valueDateTime, _valueDateTime),
           Decimal.of(valueDecimal, _valueDecimal),
           Id.of(valueId, _valueId),
-          Instant.of(
-            if (valueInstant != null) FhirDateTime.fromString(valueInstant) else null,
-            _valueInstant,
-          ),
+          Instant.of(valueInstant, _valueInstant),
           Integer.of(valueInteger, _valueInteger),
           Markdown.of(valueMarkdown, _valueMarkdown),
           Oid.of(valueOid, _valueOid),
@@ -754,15 +737,15 @@ internal object ExtensionSerializer : KSerializer<Extension> {
   }
 
   override fun serialize(encoder: Encoder, `value`: Extension) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringElement(descriptor, 2, value.url)
     when (val choice = value.`value`) {
       null -> {}

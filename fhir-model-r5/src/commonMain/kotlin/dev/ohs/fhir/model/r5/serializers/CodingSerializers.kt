@@ -34,41 +34,37 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object CodingSerializer : KSerializer<Coding> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Coding") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("system", KotlinString.serializer().descriptor)
-      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("version", KotlinString.serializer().descriptor)
-      optionalElement("_version", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("display", KotlinString.serializer().descriptor)
-      optionalElement("_display", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("userSelected", KotlinBoolean.serializer().descriptor)
-      optionalElement("_userSelected", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object CodingSerializer : FhirSerializer<Coding> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Coding", this)
 
-  internal val listSerializer: KSerializer<List<Coding>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Coding>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("system")
+    b.strPrim("version")
+    b.strPrim("code")
+    b.strPrim("display")
+    b.boolPrim("userSelected")
+  }
 
   override fun deserialize(decoder: Decoder): Coding {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -139,13 +135,13 @@ internal object CodingSerializer : KSerializer<Coding> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Coding: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Coding(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       system = Uri.of(system, _system),
       version = R5String.of(version, _version),
       code = Code.of(code, _code),
@@ -155,15 +151,15 @@ internal object CodingSerializer : KSerializer<Coding> {
   }
 
   override fun serialize(encoder: Encoder, `value`: Coding) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.system?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.system)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.version?.value)

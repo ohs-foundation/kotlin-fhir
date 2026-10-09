@@ -60,40 +60,39 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ClaimResponseItemSerializer : KSerializer<ClaimResponse.Item> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Item") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("itemSequence", Int.serializer().descriptor)
-      optionalElement("_itemSequence", ElementSerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        ClaimResponseItemAdjudicationSerializer.listSerializer.descriptor,
-      )
-      optionalElement("detail", ClaimResponseItemDetailSerializer.listSerializer.descriptor)
-    }
+internal object ClaimResponseItemSerializer : FhirSerializer<ClaimResponse.Item> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Item", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.Item>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("itemSequence")
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      ClaimResponseItemAdjudicationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("detail", ClaimResponseItemDetailSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.Item {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -165,51 +164,49 @@ internal object ClaimResponseItemSerializer : KSerializer<ClaimResponse.Item> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Item: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ClaimResponse.Item",
+          "noteNumber",
+        )
+      }
     return ClaimResponse.Item(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       itemSequence =
-        PositiveInt.of(itemSequence, _itemSequence)
-          ?: throw SerializationException(
-            "Missing required property 'itemSequence' on ClaimResponse.Item"
-          ),
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ClaimResponse.Item has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
-      detail = detail ?: listOf(),
+        required(PositiveInt.of(itemSequence, _itemSequence), "ClaimResponse.Item", "itemSequence"),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
+      detail = listOrEmpty(detail),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.Item) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.itemSequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.itemSequence)
-    if (value.noteNumber.isNotEmpty()) {
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -218,42 +215,42 @@ internal object ClaimResponseItemSerializer : KSerializer<ClaimResponse.Item> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        ClaimResponseItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.detail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        ClaimResponseItemDetailSerializer.listSerializer,
-        value.detail,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      ClaimResponseItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      ClaimResponseItemDetailSerializer.listSerializer,
+      value.detail,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ClaimResponseItemAdjudicationSerializer :
-  KSerializer<ClaimResponse.Item.Adjudication> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Adjudication") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("reason", CodeableConceptSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-      optionalElement("value", FhirDecimalSerializer.descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ClaimResponse.Item.Adjudication> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Adjudication", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.Item.Adjudication>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement("reason", CodeableConceptSerializer.descriptor)
+    b.optionalElement("amount", MoneySerializer.descriptor)
+    b.prim("value", FhirDecimalSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.Item.Adjudication {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -318,19 +315,15 @@ internal object ClaimResponseItemAdjudicationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Adjudication: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ClaimResponse.Item.Adjudication(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      category =
-        category
-          ?: throw SerializationException(
-            "Missing required property 'category' on ClaimResponse.Item.Adjudication"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      category = required(category, "ClaimResponse.Item.Adjudication", "category"),
       reason = reason,
       amount = amount,
       `value` = Decimal.of(`value`, _value),
@@ -338,22 +331,21 @@ internal object ClaimResponseItemAdjudicationSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.Item.Adjudication) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -378,29 +370,32 @@ internal object ClaimResponseItemAdjudicationSerializer :
   }
 }
 
-internal object ClaimResponseItemDetailSerializer : KSerializer<ClaimResponse.Item.Detail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Detail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("detailSequence", Int.serializer().descriptor)
-      optionalElement("_detailSequence", ElementSerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        listSerialDescriptor(lazyDescriptor { ClaimResponseItemAdjudicationSerializer.descriptor }),
-      )
-      optionalElement(
-        "subDetail",
-        ClaimResponseItemDetailSubDetailSerializer.listSerializer.descriptor,
-      )
-    }
+internal object ClaimResponseItemDetailSerializer : FhirSerializer<ClaimResponse.Item.Detail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Detail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.Item.Detail>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("detailSequence")
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ClaimResponseItemAdjudicationSerializer)
+      ),
+    )
+    b.optionalElement(
+      "subDetail",
+      ClaimResponseItemDetailSubDetailSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.Item.Detail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -472,51 +467,53 @@ internal object ClaimResponseItemDetailSerializer : KSerializer<ClaimResponse.It
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Detail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ClaimResponse.Item.Detail",
+          "noteNumber",
+        )
+      }
     return ClaimResponse.Item.Detail(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       detailSequence =
-        PositiveInt.of(detailSequence, _detailSequence)
-          ?: throw SerializationException(
-            "Missing required property 'detailSequence' on ClaimResponse.Item.Detail"
-          ),
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ClaimResponse.Item.Detail has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
-      subDetail = subDetail ?: listOf(),
+        required(
+          PositiveInt.of(detailSequence, _detailSequence),
+          "ClaimResponse.Item.Detail",
+          "detailSequence",
+        ),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
+      subDetail = listOrEmpty(subDetail),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.Item.Detail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.detailSequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.detailSequence)
-    if (value.noteNumber.isNotEmpty()) {
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -525,45 +522,46 @@ internal object ClaimResponseItemDetailSerializer : KSerializer<ClaimResponse.It
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        ClaimResponseItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.subDetail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        ClaimResponseItemDetailSubDetailSerializer.listSerializer,
-        value.subDetail,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      ClaimResponseItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      ClaimResponseItemDetailSubDetailSerializer.listSerializer,
+      value.subDetail,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ClaimResponseItemDetailSubDetailSerializer :
-  KSerializer<ClaimResponse.Item.Detail.SubDetail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubDetail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("subDetailSequence", Int.serializer().descriptor)
-      optionalElement("_subDetailSequence", ElementSerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        listSerialDescriptor(lazyDescriptor { ClaimResponseItemAdjudicationSerializer.descriptor }),
-      )
-    }
+  FhirSerializer<ClaimResponse.Item.Detail.SubDetail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SubDetail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.Item.Detail.SubDetail>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("subDetailSequence")
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ClaimResponseItemAdjudicationSerializer)
+      ),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.Item.Detail.SubDetail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -626,50 +624,52 @@ internal object ClaimResponseItemDetailSubDetailSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SubDetail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ClaimResponse.Item.Detail.SubDetail",
+          "noteNumber",
+        )
+      }
     return ClaimResponse.Item.Detail.SubDetail(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       subDetailSequence =
-        PositiveInt.of(subDetailSequence, _subDetailSequence)
-          ?: throw SerializationException(
-            "Missing required property 'subDetailSequence' on ClaimResponse.Item.Detail.SubDetail"
-          ),
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ClaimResponse.Item.Detail.SubDetail has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
+        required(
+          PositiveInt.of(subDetailSequence, _subDetailSequence),
+          "ClaimResponse.Item.Detail.SubDetail",
+          "subDetailSequence",
+        ),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.Item.Detail.SubDetail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.subDetailSequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.subDetailSequence)
-    if (value.noteNumber.isNotEmpty()) {
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -678,58 +678,54 @@ internal object ClaimResponseItemDetailSubDetailSerializer :
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        ClaimResponseItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      ClaimResponseItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddItem> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AddItem") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("itemSequence", intNullableListSerializer.descriptor)
-      optionalElement("_itemSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("detailSequence", intNullableListSerializer.descriptor)
-      optionalElement("_detailSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("subdetailSequence", intNullableListSerializer.descriptor)
-      optionalElement("_subdetailSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("provider", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("servicedDate", KotlinString.serializer().descriptor)
-      optionalElement("_servicedDate", ElementSerializer.descriptor)
-      optionalElement("servicedPeriod", PeriodSerializer.descriptor)
-      optionalElement("locationCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("locationAddress", AddressSerializer.descriptor)
-      optionalElement("locationReference", ReferenceSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("bodySite", CodeableConceptSerializer.descriptor)
-      optionalElement("subSite", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        ClaimResponseItemAdjudicationSerializer.listSerializer.descriptor,
-      )
-      optionalElement("detail", ClaimResponseAddItemDetailSerializer.listSerializer.descriptor)
-    }
+internal object ClaimResponseAddItemSerializer : FhirSerializer<ClaimResponse.AddItem> {
+  override val descriptor: SerialDescriptor = buildDescriptor("AddItem", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.AddItem>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrimList("itemSequence")
+    b.intPrimList("detailSequence")
+    b.intPrimList("subdetailSequence")
+    b.optionalElement("provider", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.strPrim("servicedDate")
+    b.optionalElement("servicedPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("locationCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("locationAddress", AddressSerializer.descriptor)
+    b.optionalElement("locationReference", ReferenceSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.optionalElement("bodySite", CodeableConceptSerializer.descriptor)
+    b.optionalElement("subSite", CodeableConceptSerializer.listSerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      ClaimResponseItemAdjudicationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("detail", ClaimResponseAddItemDetailSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.AddItem {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -744,7 +740,7 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
     var productOrService: CodeableConcept? = null
     var modifier: List<CodeableConcept>? = null
     var programCode: List<CodeableConcept>? = null
-    var servicedDate: KotlinString? = null
+    var servicedDate: FhirDate? = null
     var _servicedDate: Element? = null
     var servicedPeriod: Period? = null
     var locationCodeableConcept: CodeableConcept? = null
@@ -860,7 +856,8 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        13 -> servicedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          servicedDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _servicedDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -980,55 +977,55 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding AddItem: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val itemSequence_ =
+      List(maxSize(itemSequence, _itemSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(itemSequence, index), at(_itemSequence, index)),
+          "ClaimResponse.AddItem",
+          "itemSequence",
+        )
+      }
+    val detailSequence_ =
+      List(maxSize(detailSequence, _detailSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(detailSequence, index), at(_detailSequence, index)),
+          "ClaimResponse.AddItem",
+          "detailSequence",
+        )
+      }
+    val subdetailSequence_ =
+      List(maxSize(subdetailSequence, _subdetailSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(subdetailSequence, index), at(_subdetailSequence, index)),
+          "ClaimResponse.AddItem",
+          "subdetailSequence",
+        )
+      }
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ClaimResponse.AddItem",
+          "noteNumber",
+        )
+      }
     return ClaimResponse.AddItem(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      itemSequence =
-        (kotlin.collections.List(maxOf(itemSequence?.size ?: 0, _itemSequence?.size ?: 0)) { index
-          ->
-          PositiveInt.of(itemSequence?.getOrNull(index), _itemSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'itemSequence' on ClaimResponse.AddItem has neither a value nor an id/extension"
-            )
-        }),
-      detailSequence =
-        (kotlin.collections.List(maxOf(detailSequence?.size ?: 0, _detailSequence?.size ?: 0)) {
-          index ->
-          PositiveInt.of(detailSequence?.getOrNull(index), _detailSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'detailSequence' on ClaimResponse.AddItem has neither a value nor an id/extension"
-            )
-        }),
-      subdetailSequence =
-        (kotlin.collections.List(
-          maxOf(subdetailSequence?.size ?: 0, _subdetailSequence?.size ?: 0)
-        ) { index ->
-          PositiveInt.of(subdetailSequence?.getOrNull(index), _subdetailSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'subdetailSequence' on ClaimResponse.AddItem has neither a value nor an id/extension"
-            )
-        }),
-      provider = provider ?: listOf(),
-      productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ClaimResponse.AddItem"
-          ),
-      modifier = modifier ?: listOf(),
-      programCode = programCode ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      itemSequence = itemSequence_,
+      detailSequence = detailSequence_,
+      subdetailSequence = subdetailSequence_,
+      provider = listOrEmpty(provider),
+      productOrService = required(productOrService, "ClaimResponse.AddItem", "productOrService"),
+      modifier = listOrEmpty(modifier),
+      programCode = listOrEmpty(programCode),
       serviced =
-        ClaimResponse.AddItem.Serviced.from(
-          Date.of(
-            if (servicedDate != null) FhirDate.fromString(servicedDate) else null,
-            _servicedDate,
-          ),
-          servicedPeriod,
-        ),
+        ClaimResponse.AddItem.Serviced.from(Date.of(servicedDate, _servicedDate), servicedPeriod),
       location =
         ClaimResponse.AddItem.Location.from(
           locationCodeableConcept,
@@ -1040,37 +1037,30 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       factor = Decimal.of(factor, _factor),
       net = net,
       bodySite = bodySite,
-      subSite = subSite ?: listOf(),
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ClaimResponse.AddItem has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
-      detail = detail ?: listOf(),
+      subSite = listOrEmpty(subSite),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
+      detail = listOrEmpty(detail),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.AddItem) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.itemSequence.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    if (!value.itemSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         3,
@@ -1079,7 +1069,7 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 4, value.itemSequence)
     }
-    if (value.detailSequence.isNotEmpty()) {
+    if (!value.detailSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -1088,7 +1078,7 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.detailSequence)
     }
-    if (value.subdetailSequence.isNotEmpty()) {
+    if (!value.subdetailSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         7,
@@ -1097,33 +1087,30 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 8, value.subdetailSequence)
     }
-    if (value.provider.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        ReferenceSerializer.listSerializer,
-        value.provider,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      ReferenceSerializer.listSerializer,
+      value.provider,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       10,
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
-    if (value.programCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        CodeableConceptSerializer.listSerializer,
-        value.programCode,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      CodeableConceptSerializer.listSerializer,
+      value.programCode,
+    )
     when (val choice = value.serviced) {
       null -> {}
       is ClaimResponse.AddItem.Serviced.Date -> {
@@ -1172,14 +1159,13 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       CodeableConceptSerializer,
       value.bodySite,
     )
-    if (value.subSite.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25,
-        CodeableConceptSerializer.listSerializer,
-        value.subSite,
-      )
-    if (value.noteNumber.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25,
+      CodeableConceptSerializer.listSerializer,
+      value.subSite,
+    )
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         26,
@@ -1188,53 +1174,55 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 27, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28,
-        ClaimResponseItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.detail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29,
-        ClaimResponseAddItemDetailSerializer.listSerializer,
-        value.detail,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28,
+      ClaimResponseItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29,
+      ClaimResponseAddItemDetailSerializer.listSerializer,
+      value.detail,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse.AddItem.Detail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Detail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        listSerialDescriptor(lazyDescriptor { ClaimResponseItemAdjudicationSerializer.descriptor }),
-      )
-      optionalElement(
-        "subDetail",
-        ClaimResponseAddItemDetailSubDetailSerializer.listSerializer.descriptor,
-      )
-    }
+internal object ClaimResponseAddItemDetailSerializer :
+  FhirSerializer<ClaimResponse.AddItem.Detail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Detail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.AddItem.Detail>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ClaimResponseItemAdjudicationSerializer)
+      ),
+    )
+    b.optionalElement(
+      "subDetail",
+      ClaimResponseAddItemDetailSubDetailSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.AddItem.Detail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1348,66 +1336,63 @@ internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Detail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ClaimResponse.AddItem.Detail",
+          "noteNumber",
+        )
+      }
     return ClaimResponse.AddItem.Detail(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ClaimResponse.AddItem.Detail"
-          ),
-      modifier = modifier ?: listOf(),
+        required(productOrService, "ClaimResponse.AddItem.Detail", "productOrService"),
+      modifier = listOrEmpty(modifier),
       quantity = quantity,
       unitPrice = unitPrice,
       factor = Decimal.of(factor, _factor),
       net = net,
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ClaimResponse.AddItem.Detail has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
-      subDetail = subDetail ?: listOf(),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
+      subDetail = listOrEmpty(subDetail),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.AddItem.Detail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, QuantitySerializer, value.quantity)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 6, MoneySerializer, value.unitPrice)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -1418,7 +1403,7 @@ internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.factor)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 9, MoneySerializer, value.net)
-    if (value.noteNumber.isNotEmpty()) {
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         10,
@@ -1427,50 +1412,51 @@ internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 11, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        ClaimResponseItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.subDetail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13,
-        ClaimResponseAddItemDetailSubDetailSerializer.listSerializer,
-        value.subDetail,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      ClaimResponseItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13,
+      ClaimResponseAddItemDetailSubDetailSerializer.listSerializer,
+      value.subDetail,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ClaimResponseAddItemDetailSubDetailSerializer :
-  KSerializer<ClaimResponse.AddItem.Detail.SubDetail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubDetail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        listSerialDescriptor(lazyDescriptor { ClaimResponseItemAdjudicationSerializer.descriptor }),
-      )
-    }
+  FhirSerializer<ClaimResponse.AddItem.Detail.SubDetail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SubDetail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.AddItem.Detail.SubDetail>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ClaimResponseItemAdjudicationSerializer)
+      ),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.AddItem.Detail.SubDetail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1575,65 +1561,62 @@ internal object ClaimResponseAddItemDetailSubDetailSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SubDetail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ClaimResponse.AddItem.Detail.SubDetail",
+          "noteNumber",
+        )
+      }
     return ClaimResponse.AddItem.Detail.SubDetail(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ClaimResponse.AddItem.Detail.SubDetail"
-          ),
-      modifier = modifier ?: listOf(),
+        required(productOrService, "ClaimResponse.AddItem.Detail.SubDetail", "productOrService"),
+      modifier = listOrEmpty(modifier),
       quantity = quantity,
       unitPrice = unitPrice,
       factor = Decimal.of(factor, _factor),
       net = net,
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ClaimResponse.AddItem.Detail.SubDetail has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.AddItem.Detail.SubDetail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, QuantitySerializer, value.quantity)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 6, MoneySerializer, value.unitPrice)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -1644,7 +1627,7 @@ internal object ClaimResponseAddItemDetailSubDetailSerializer :
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.factor)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 9, MoneySerializer, value.net)
-    if (value.noteNumber.isNotEmpty()) {
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         10,
@@ -1653,30 +1636,32 @@ internal object ClaimResponseAddItemDetailSubDetailSerializer :
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 11, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        ClaimResponseItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      ClaimResponseItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object ClaimResponseTotalSerializer : KSerializer<ClaimResponse.Total> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Total") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-    }
+internal object ClaimResponseTotalSerializer : FhirSerializer<ClaimResponse.Total> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Total", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.Total>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement("amount", MoneySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.Total {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1714,44 +1699,35 @@ internal object ClaimResponseTotalSerializer : KSerializer<ClaimResponse.Total> 
           amount =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Total: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ClaimResponse.Total(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      category =
-        category
-          ?: throw SerializationException(
-            "Missing required property 'category' on ClaimResponse.Total"
-          ),
-      amount =
-        amount
-          ?: throw SerializationException(
-            "Missing required property 'amount' on ClaimResponse.Total"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      category = required(category, "ClaimResponse.Total", "category"),
+      amount = required(amount, "ClaimResponse.Total", "amount"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.Total) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -1763,24 +1739,26 @@ internal object ClaimResponseTotalSerializer : KSerializer<ClaimResponse.Total> 
   }
 }
 
-internal object ClaimResponsePaymentSerializer : KSerializer<ClaimResponse.Payment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Payment") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("adjustment", MoneySerializer.descriptor)
-      optionalElement("adjustmentReason", CodeableConceptSerializer.descriptor)
-      optionalElement("date", KotlinString.serializer().descriptor)
-      optionalElement("_date", ElementSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.descriptor)
-    }
+internal object ClaimResponsePaymentSerializer : FhirSerializer<ClaimResponse.Payment> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Payment", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.Payment>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("adjustment", MoneySerializer.descriptor)
+    b.optionalElement("adjustmentReason", CodeableConceptSerializer.descriptor)
+    b.strPrim("date")
+    b.optionalElement("amount", MoneySerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.Payment {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1788,7 +1766,7 @@ internal object ClaimResponsePaymentSerializer : KSerializer<ClaimResponse.Payme
     var type: CodeableConcept? = null
     var adjustment: Money? = null
     var adjustmentReason: CodeableConcept? = null
-    var date: KotlinString? = null
+    var date: FhirDate? = null
     var _date: Element? = null
     var amount: Money? = null
     var identifier: Identifier? = null
@@ -1830,7 +1808,7 @@ internal object ClaimResponsePaymentSerializer : KSerializer<ClaimResponse.Payme
               CodeableConceptSerializer,
               null,
             )
-        6 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> date = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1851,48 +1829,39 @@ internal object ClaimResponsePaymentSerializer : KSerializer<ClaimResponse.Payme
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Payment: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ClaimResponse.Payment(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on ClaimResponse.Payment"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "ClaimResponse.Payment", "type"),
       adjustment = adjustment,
       adjustmentReason = adjustmentReason,
-      date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
-      amount =
-        amount
-          ?: throw SerializationException(
-            "Missing required property 'amount' on ClaimResponse.Payment"
-          ),
+      date = Date.of(date, _date),
+      amount = required(amount, "ClaimResponse.Payment", "amount"),
       identifier = identifier,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.Payment) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 4, MoneySerializer, value.adjustment)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -1914,31 +1883,31 @@ internal object ClaimResponsePaymentSerializer : KSerializer<ClaimResponse.Payme
   }
 }
 
-internal object ClaimResponseProcessNoteSerializer : KSerializer<ClaimResponse.ProcessNote> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ProcessNote") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("number", Int.serializer().descriptor)
-      optionalElement("_number", ElementSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
-      optionalElement("language", CodeableConceptSerializer.descriptor)
-    }
+internal object ClaimResponseProcessNoteSerializer : FhirSerializer<ClaimResponse.ProcessNote> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ProcessNote", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.ProcessNote>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("number")
+    b.strPrim("type")
+    b.strPrim("text")
+    b.optionalElement("language", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.ProcessNote {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var number: Int? = null
     var _number: Element? = null
-    var type: KotlinString? = null
+    var type: NoteType? = null
     var _type: Element? = null
     var text: KotlinString? = null
     var _text: Element? = null
@@ -1971,7 +1940,7 @@ internal object ClaimResponseProcessNoteSerializer : KSerializer<ClaimResponse.P
               ElementSerializer,
               null,
             )
-        5 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        5 -> type = NoteType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1998,42 +1967,37 @@ internal object ClaimResponseProcessNoteSerializer : KSerializer<ClaimResponse.P
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ProcessNote: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ClaimResponse.ProcessNote(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       number = PositiveInt.of(number, _number),
-      type = Enumeration.of(if (type != null) NoteType.fromCode(type) else null, _type),
-      text =
-        R4String.of(text, _text)
-          ?: throw SerializationException(
-            "Missing required property 'text' on ClaimResponse.ProcessNote"
-          ),
+      type = Enumeration.of(type, _type),
+      text = required(R4String.of(text, _text), "ClaimResponse.ProcessNote", "text"),
       language = language,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.ProcessNote) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.number?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.number)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.type?.value?.code)
@@ -2050,25 +2014,25 @@ internal object ClaimResponseProcessNoteSerializer : KSerializer<ClaimResponse.P
   }
 }
 
-internal object ClaimResponseInsuranceSerializer : KSerializer<ClaimResponse.Insurance> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Insurance") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("focal", KotlinBoolean.serializer().descriptor)
-      optionalElement("_focal", ElementSerializer.descriptor)
-      optionalElement("coverage", ReferenceSerializer.descriptor)
-      optionalElement("businessArrangement", KotlinString.serializer().descriptor)
-      optionalElement("_businessArrangement", ElementSerializer.descriptor)
-      optionalElement("claimResponse", ReferenceSerializer.descriptor)
-    }
+internal object ClaimResponseInsuranceSerializer : FhirSerializer<ClaimResponse.Insurance> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Insurance", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.Insurance>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.boolPrim("focal")
+    b.optionalElement("coverage", ReferenceSerializer.descriptor)
+    b.strPrim("businessArrangement")
+    b.optionalElement("claimResponse", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.Insurance {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -2144,51 +2108,39 @@ internal object ClaimResponseInsuranceSerializer : KSerializer<ClaimResponse.Ins
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Insurance: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ClaimResponse.Insurance(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence =
-        PositiveInt.of(sequence, _sequence)
-          ?: throw SerializationException(
-            "Missing required property 'sequence' on ClaimResponse.Insurance"
-          ),
-      focal =
-        R4Boolean.of(focal, _focal)
-          ?: throw SerializationException(
-            "Missing required property 'focal' on ClaimResponse.Insurance"
-          ),
-      coverage =
-        coverage
-          ?: throw SerializationException(
-            "Missing required property 'coverage' on ClaimResponse.Insurance"
-          ),
+        required(PositiveInt.of(sequence, _sequence), "ClaimResponse.Insurance", "sequence"),
+      focal = required(R4Boolean.of(focal, _focal), "ClaimResponse.Insurance", "focal"),
+      coverage = required(coverage, "ClaimResponse.Insurance", "coverage"),
       businessArrangement = R4String.of(businessArrangement, _businessArrangement),
       claimResponse = claimResponse,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.Insurance) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 5, value.focal.value)
@@ -2206,24 +2158,24 @@ internal object ClaimResponseInsuranceSerializer : KSerializer<ClaimResponse.Ins
   }
 }
 
-internal object ClaimResponseErrorSerializer : KSerializer<ClaimResponse.Error> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Error") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("itemSequence", Int.serializer().descriptor)
-      optionalElement("_itemSequence", ElementSerializer.descriptor)
-      optionalElement("detailSequence", Int.serializer().descriptor)
-      optionalElement("_detailSequence", ElementSerializer.descriptor)
-      optionalElement("subDetailSequence", Int.serializer().descriptor)
-      optionalElement("_subDetailSequence", ElementSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-    }
+internal object ClaimResponseErrorSerializer : FhirSerializer<ClaimResponse.Error> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Error", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ClaimResponse.Error>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("itemSequence")
+    b.intPrim("detailSequence")
+    b.intPrim("subDetailSequence")
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ClaimResponse.Error {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -2290,42 +2242,37 @@ internal object ClaimResponseErrorSerializer : KSerializer<ClaimResponse.Error> 
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Error: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ClaimResponse.Error(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       itemSequence = PositiveInt.of(itemSequence, _itemSequence),
       detailSequence = PositiveInt.of(detailSequence, _detailSequence),
       subDetailSequence = PositiveInt.of(subDetailSequence, _subDetailSequence),
-      code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on ClaimResponse.Error"
-          ),
+      code = required(code, "ClaimResponse.Error", "code"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ClaimResponse.Error) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.itemSequence?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.itemSequence)
     compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.detailSequence?.value)
@@ -2341,38 +2288,30 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ClaimResponse")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
     b.optionalElement("subType", CodeableConceptSerializer.descriptor)
-    b.optionalElement("use", KotlinString.serializer().descriptor)
-    b.optionalElement("_use", ElementSerializer.descriptor)
+    b.strPrim("use")
     b.optionalElement("patient", ReferenceSerializer.descriptor)
-    b.optionalElement("created", KotlinString.serializer().descriptor)
-    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.strPrim("created")
     b.optionalElement("insurer", ReferenceSerializer.descriptor)
     b.optionalElement("requestor", ReferenceSerializer.descriptor)
     b.optionalElement("request", ReferenceSerializer.descriptor)
-    b.optionalElement("outcome", KotlinString.serializer().descriptor)
-    b.optionalElement("_outcome", ElementSerializer.descriptor)
-    b.optionalElement("disposition", KotlinString.serializer().descriptor)
-    b.optionalElement("_disposition", ElementSerializer.descriptor)
-    b.optionalElement("preAuthRef", KotlinString.serializer().descriptor)
-    b.optionalElement("_preAuthRef", ElementSerializer.descriptor)
+    b.strPrim("outcome")
+    b.strPrim("disposition")
+    b.strPrim("preAuthRef")
     b.optionalElement("preAuthPeriod", PeriodSerializer.descriptor)
     b.optionalElement("payeeType", CodeableConceptSerializer.descriptor)
     b.optionalElement("item", ClaimResponseItemSerializer.listSerializer.descriptor)
@@ -2408,19 +2347,19 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: FinancialResourceStatusCodes? = null
     var _status: Element? = null
     var type: CodeableConcept? = null
     var subType: CodeableConcept? = null
-    var use: KotlinString? = null
+    var use: Use? = null
     var _use: Element? = null
     var patient: Reference? = null
-    var created: KotlinString? = null
+    var created: FhirDateTime? = null
     var _created: Element? = null
     var insurer: Reference? = null
     var requestor: Reference? = null
     var request: Reference? = null
-    var outcome: KotlinString? = null
+    var outcome: ClaimProcessingCodes? = null
     var _outcome: Element? = null
     var disposition: KotlinString? = null
     var _disposition: Element? = null
@@ -2507,7 +2446,11 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status =
+            FinancialResourceStatusCodes.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -2532,7 +2475,7 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
               CodeableConceptSerializer,
               null,
             )
-        15 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        15 -> use = Use.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         16 ->
           _use =
             compositeDecoder.decodeNullableSerializableElement(
@@ -2549,7 +2492,7 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
               ReferenceSerializer,
               null,
             )
-        18 -> created = compositeDecoder.decodeStringElement(descriptor, i)
+        18 -> created = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _created =
             compositeDecoder.decodeNullableSerializableElement(
@@ -2582,7 +2525,9 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
               ReferenceSerializer,
               null,
             )
-        23 -> outcome = compositeDecoder.decodeStringElement(descriptor, i)
+        23 ->
+          outcome =
+            ClaimProcessingCodes.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _outcome =
             compositeDecoder.decodeNullableSerializableElement(
@@ -2721,7 +2666,7 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
               ClaimResponseErrorSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding ClaimResponse: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return ClaimResponse(
@@ -2730,53 +2675,36 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on ClaimResponse"),
-      type =
-        type ?: throw SerializationException("Missing required property 'type' on ClaimResponse"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "ClaimResponse", "status"),
+      type = required(type, "ClaimResponse", "type"),
       subType = subType,
-      use =
-        Enumeration.of(if (use != null) Use.fromCode(use) else null, _use)
-          ?: throw SerializationException("Missing required property 'use' on ClaimResponse"),
-      patient =
-        patient
-          ?: throw SerializationException("Missing required property 'patient' on ClaimResponse"),
-      created =
-        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created)
-          ?: throw SerializationException("Missing required property 'created' on ClaimResponse"),
-      insurer =
-        insurer
-          ?: throw SerializationException("Missing required property 'insurer' on ClaimResponse"),
+      use = required(Enumeration.of(use, _use), "ClaimResponse", "use"),
+      patient = required(patient, "ClaimResponse", "patient"),
+      created = required(DateTime.of(created, _created), "ClaimResponse", "created"),
+      insurer = required(insurer, "ClaimResponse", "insurer"),
       requestor = requestor,
       request = request,
-      outcome =
-        Enumeration.of(
-          if (outcome != null) ClaimProcessingCodes.fromCode(outcome) else null,
-          _outcome,
-        ) ?: throw SerializationException("Missing required property 'outcome' on ClaimResponse"),
+      outcome = required(Enumeration.of(outcome, _outcome), "ClaimResponse", "outcome"),
       disposition = R4String.of(disposition, _disposition),
       preAuthRef = R4String.of(preAuthRef, _preAuthRef),
       preAuthPeriod = preAuthPeriod,
       payeeType = payeeType,
-      item = item ?: listOf(),
-      addItem = addItem ?: listOf(),
-      adjudication = adjudication ?: listOf(),
-      total = total ?: listOf(),
+      item = listOrEmpty(item),
+      addItem = listOrEmpty(addItem),
+      adjudication = listOrEmpty(adjudication),
+      total = listOrEmpty(total),
       payment = payment,
       fundsReserve = fundsReserve,
       formCode = formCode,
       form = form,
-      processNote = processNote ?: listOf(),
-      communicationRequest = communicationRequest ?: listOf(),
-      insurance = insurance ?: listOf(),
-      error = error ?: listOf(),
+      processNote = listOrEmpty(processNote),
+      communicationRequest = listOrEmpty(communicationRequest),
+      insurance = listOrEmpty(insurance),
+      error = listOrEmpty(error),
     )
   }
 
@@ -2807,34 +2735,30 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -2915,34 +2839,30 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
       CodeableConceptSerializer,
       value.payeeType,
     )
-    if (value.item.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        ClaimResponseItemSerializer.listSerializer,
-        value.item,
-      )
-    if (value.addItem.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        ClaimResponseAddItemSerializer.listSerializer,
-        value.addItem,
-      )
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        ClaimResponseItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.total.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        ClaimResponseTotalSerializer.listSerializer,
-        value.total,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      ClaimResponseItemSerializer.listSerializer,
+      value.item,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      ClaimResponseAddItemSerializer.listSerializer,
+      value.addItem,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      ClaimResponseItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      ClaimResponseTotalSerializer.listSerializer,
+      value.total,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       35 + descriptorOffset,
@@ -2967,33 +2887,29 @@ internal object ClaimResponseSerializer : FhirResourceSerializer<ClaimResponse> 
       AttachmentSerializer,
       value.form,
     )
-    if (value.processNote.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        39 + descriptorOffset,
-        ClaimResponseProcessNoteSerializer.listSerializer,
-        value.processNote,
-      )
-    if (value.communicationRequest.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.communicationRequest,
-      )
-    if (value.insurance.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        41 + descriptorOffset,
-        ClaimResponseInsuranceSerializer.listSerializer,
-        value.insurance,
-      )
-    if (value.error.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        42 + descriptorOffset,
-        ClaimResponseErrorSerializer.listSerializer,
-        value.error,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      39 + descriptorOffset,
+      ClaimResponseProcessNoteSerializer.listSerializer,
+      value.processNote,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      40 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.communicationRequest,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      41 + descriptorOffset,
+      ClaimResponseInsuranceSerializer.listSerializer,
+      value.insurance,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      42 + descriptorOffset,
+      ClaimResponseErrorSerializer.listSerializer,
+      value.error,
+    )
   }
 }

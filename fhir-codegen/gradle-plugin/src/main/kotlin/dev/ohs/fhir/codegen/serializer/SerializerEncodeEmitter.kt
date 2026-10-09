@@ -43,20 +43,22 @@ import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 internal class SerializerEncodeEmitter(private val codegenContext: CodegenContext) {
 
   /**
-   * Emits `private fun serializeInternal(encoder: CompositeEncoder, value: X)` — writes each field
-   * directly to the structure encoder via [CompositeEncoder.encodeXxxElement] /
+   * Emits `serialize(encoder, value)` (non-resources) or `serializeInternal(compositeEncoder,
+   * descriptor, value)` (resources, shared with `FhirResourcePolymorphicSerializer`) — writes each
+   * field directly to the structure encoder via [CompositeEncoder.encodeXxxElement] /
    * [CompositeEncoder.encodeSerializableElement], with no intermediate `JsonObject` tree.
    */
   fun buildSerializeInternal(
     className: ClassName,
     elements: List<Element>,
-    parameterized: Boolean,
+    isResource: Boolean,
     nameToIdx: Map<String, CodeBlock>,
   ): FunSpec {
     val codeBlock = CodeBlock.builder()
-    if (parameterized) {
+    if (isResource) {
       // `resourceType` is written by the outer `serialize` wrapper, not here — keeps this body
-      // reusable from `XPolymorphicSerializer` (polymorphic path injects the discriminator itself).
+      // reusable from `FhirResourcePolymorphicSerializer` (polymorphic path injects the
+      // discriminator itself). Indices in [nameToIdx] already carry `+ descriptorOffset`.
       elements.forEach { element ->
         emitJsonEncodeForElement(codeBlock, element, className, nameToIdx)
       }
@@ -72,6 +74,8 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         .addCode(codeBlock.build())
         .build()
     } else {
+      // Local copy: every `descriptor` read below becomes a local load instead of a getter call.
+      codeBlock.add("val descriptor = this.descriptor\n")
       codeBlock.add("val compositeEncoder = encoder.beginStructure(descriptor)\n")
       elements.forEach { element ->
         emitJsonEncodeForElement(codeBlock, element, className, nameToIdx)
@@ -116,9 +120,10 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
         val elemCls = typeForComplexElement(element, modelClassName)
         val idx = nameToIdx.getValue(propertyName)
         val listSer = listSerializerRefForClass(elemCls, modelClassName, nullableElement = false)
+        // Helper call rather than an inline `if (isNotEmpty())`: keeps the emptiness branch (and
+        // its stack-map frames) out of the generated method.
         codeBlock.add(
-          "if (value.%N.isNotEmpty()) compositeEncoder.encodeSerializableElement(descriptor, %L, %L, value.%N)\n",
-          propertyName,
+          "compositeEncoder.encodeListIfNotEmpty(descriptor, %L, %L, value.%N)\n",
           idx,
           listSer,
           propertyName,
@@ -387,7 +392,9 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
     val valueInnerType: ClassName = if (isEnum) String::class.asClassName() else wireClassName
     val valueListSer =
       listSerializerRefForClass(valueInnerType, modelClassName, nullableElement = true)
-    codeBlock.add("if (value.%N.isNotEmpty()) {\n", propertyName)
+    // `!isEmpty()` compiles to a single conditional jump; the inline `isNotEmpty()` materializes
+    // a boolean first.
+    codeBlock.add("if (!value.%N.isEmpty()) {\n", propertyName)
     codeBlock.indent()
     // values
     codeBlock.add(

@@ -44,36 +44,37 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object SubstancePolymerMonomerSetSerializer : KSerializer<SubstancePolymer.MonomerSet> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MonomerSet") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("ratioType", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "startingMaterial",
-        SubstancePolymerMonomerSetStartingMaterialSerializer.listSerializer.descriptor,
-      )
-    }
+internal object SubstancePolymerMonomerSetSerializer : FhirSerializer<SubstancePolymer.MonomerSet> {
+  override val descriptor: SerialDescriptor = buildDescriptor("MonomerSet", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstancePolymer.MonomerSet>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("ratioType", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "startingMaterial",
+      SubstancePolymerMonomerSetStartingMaterialSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): SubstancePolymer.MonomerSet {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -116,71 +117,71 @@ internal object SubstancePolymerMonomerSetSerializer : KSerializer<SubstancePoly
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MonomerSet: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstancePolymer.MonomerSet(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       ratioType = ratioType,
-      startingMaterial = startingMaterial ?: listOf(),
+      startingMaterial = listOrEmpty(startingMaterial),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.MonomerSet) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.ratioType,
     )
-    if (value.startingMaterial.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        SubstancePolymerMonomerSetStartingMaterialSerializer.listSerializer,
-        value.startingMaterial,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      SubstancePolymerMonomerSetStartingMaterialSerializer.listSerializer,
+      value.startingMaterial,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object SubstancePolymerMonomerSetStartingMaterialSerializer :
-  KSerializer<SubstancePolymer.MonomerSet.StartingMaterial> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("StartingMaterial") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("material", CodeableConceptSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("isDefining", KotlinBoolean.serializer().descriptor)
-      optionalElement("_isDefining", ElementSerializer.descriptor)
-      optionalElement("amount", SubstanceAmountSerializer.descriptor)
-    }
+  FhirSerializer<SubstancePolymer.MonomerSet.StartingMaterial> {
+  override val descriptor: SerialDescriptor = buildDescriptor("StartingMaterial", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstancePolymer.MonomerSet.StartingMaterial>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("material", CodeableConceptSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.boolPrim("isDefining")
+    b.optionalElement("amount", SubstanceAmountSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstancePolymer.MonomerSet.StartingMaterial {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -243,14 +244,14 @@ internal object SubstancePolymerMonomerSetStartingMaterialSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding StartingMaterial: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstancePolymer.MonomerSet.StartingMaterial(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       material = material,
       type = type,
       isDefining = R4Boolean.of(isDefining, _isDefining),
@@ -259,22 +260,21 @@ internal object SubstancePolymerMonomerSetStartingMaterialSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.MonomerSet.StartingMaterial) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -299,26 +299,27 @@ internal object SubstancePolymerMonomerSetStartingMaterialSerializer :
   }
 }
 
-internal object SubstancePolymerRepeatSerializer : KSerializer<SubstancePolymer.Repeat> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Repeat") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("numberOfUnits", Int.serializer().descriptor)
-      optionalElement("_numberOfUnits", ElementSerializer.descriptor)
-      optionalElement("averageMolecularFormula", KotlinString.serializer().descriptor)
-      optionalElement("_averageMolecularFormula", ElementSerializer.descriptor)
-      optionalElement("repeatUnitAmountType", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "repeatUnit",
-        SubstancePolymerRepeatRepeatUnitSerializer.listSerializer.descriptor,
-      )
-    }
+internal object SubstancePolymerRepeatSerializer : FhirSerializer<SubstancePolymer.Repeat> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Repeat", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstancePolymer.Repeat>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("numberOfUnits")
+    b.strPrim("averageMolecularFormula")
+    b.optionalElement("repeatUnitAmountType", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "repeatUnit",
+      SubstancePolymerRepeatRepeatUnitSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): SubstancePolymer.Repeat {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -383,38 +384,37 @@ internal object SubstancePolymerRepeatSerializer : KSerializer<SubstancePolymer.
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Repeat: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstancePolymer.Repeat(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       numberOfUnits = Integer.of(numberOfUnits, _numberOfUnits),
       averageMolecularFormula = R4String.of(averageMolecularFormula, _averageMolecularFormula),
       repeatUnitAmountType = repeatUnitAmountType,
-      repeatUnit = repeatUnit ?: listOf(),
+      repeatUnit = listOrEmpty(repeatUnit),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.Repeat) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.numberOfUnits?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.numberOfUnits)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.averageMolecularFormula?.value)
@@ -425,43 +425,43 @@ internal object SubstancePolymerRepeatSerializer : KSerializer<SubstancePolymer.
       CodeableConceptSerializer,
       value.repeatUnitAmountType,
     )
-    if (value.repeatUnit.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        SubstancePolymerRepeatRepeatUnitSerializer.listSerializer,
-        value.repeatUnit,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      SubstancePolymerRepeatRepeatUnitSerializer.listSerializer,
+      value.repeatUnit,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object SubstancePolymerRepeatRepeatUnitSerializer :
-  KSerializer<SubstancePolymer.Repeat.RepeatUnit> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RepeatUnit") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("orientationOfPolymerisation", CodeableConceptSerializer.descriptor)
-      optionalElement("repeatUnit", KotlinString.serializer().descriptor)
-      optionalElement("_repeatUnit", ElementSerializer.descriptor)
-      optionalElement("amount", SubstanceAmountSerializer.descriptor)
-      optionalElement(
-        "degreeOfPolymerisation",
-        SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer.listSerializer.descriptor,
-      )
-      optionalElement(
-        "structuralRepresentation",
-        SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializer.listSerializer
-          .descriptor,
-      )
-    }
+  FhirSerializer<SubstancePolymer.Repeat.RepeatUnit> {
+  override val descriptor: SerialDescriptor = buildDescriptor("RepeatUnit", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstancePolymer.Repeat.RepeatUnit>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("orientationOfPolymerisation", CodeableConceptSerializer.descriptor)
+    b.strPrim("repeatUnit")
+    b.optionalElement("amount", SubstanceAmountSerializer.descriptor)
+    b.optionalElement(
+      "degreeOfPolymerisation",
+      SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement(
+      "structuralRepresentation",
+      SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): SubstancePolymer.Repeat.RepeatUnit {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -536,39 +536,38 @@ internal object SubstancePolymerRepeatRepeatUnitSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RepeatUnit: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstancePolymer.Repeat.RepeatUnit(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       orientationOfPolymerisation = orientationOfPolymerisation,
       repeatUnit = R4String.of(repeatUnit, _repeatUnit),
       amount = amount,
-      degreeOfPolymerisation = degreeOfPolymerisation ?: listOf(),
-      structuralRepresentation = structuralRepresentation ?: listOf(),
+      degreeOfPolymerisation = listOrEmpty(degreeOfPolymerisation),
+      structuralRepresentation = listOrEmpty(structuralRepresentation),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.Repeat.RepeatUnit) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -583,42 +582,43 @@ internal object SubstancePolymerRepeatRepeatUnitSerializer :
       SubstanceAmountSerializer,
       value.amount,
     )
-    if (value.degreeOfPolymerisation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer.listSerializer,
-        value.degreeOfPolymerisation,
-      )
-    if (value.structuralRepresentation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializer.listSerializer,
-        value.structuralRepresentation,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer.listSerializer,
+      value.degreeOfPolymerisation,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializer.listSerializer,
+      value.structuralRepresentation,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer :
-  KSerializer<SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DegreeOfPolymerisation") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("degree", CodeableConceptSerializer.descriptor)
-      optionalElement("amount", SubstanceAmountSerializer.descriptor)
-    }
+  FhirSerializer<SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation> {
+  override val descriptor: SerialDescriptor = buildDescriptor("DegreeOfPolymerisation", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("degree", CodeableConceptSerializer.descriptor)
+    b.optionalElement("amount", SubstanceAmountSerializer.descriptor)
+  }
+
   override fun deserialize(
     decoder: Decoder
   ): SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -661,15 +661,14 @@ internal object SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding DegreeOfPolymerisation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       degree = degree,
       amount = amount,
     )
@@ -679,22 +678,21 @@ internal object SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
     encoder: Encoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -712,25 +710,27 @@ internal object SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
 }
 
 internal object SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializer :
-  KSerializer<SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("StructuralRepresentation") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("representation", KotlinString.serializer().descriptor)
-      optionalElement("_representation", ElementSerializer.descriptor)
-      optionalElement("attachment", AttachmentSerializer.descriptor)
-    }
+  FhirSerializer<SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation> {
+  override val descriptor: SerialDescriptor = buildDescriptor("StructuralRepresentation", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.strPrim("representation")
+    b.optionalElement("attachment", AttachmentSerializer.descriptor)
+  }
+
   override fun deserialize(
     decoder: Decoder
   ): SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -784,15 +784,14 @@ internal object SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializ
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding StructuralRepresentation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
       representation = R4String.of(representation, _representation),
       attachment = attachment,
@@ -803,22 +802,21 @@ internal object SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializ
     encoder: Encoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -841,24 +839,21 @@ internal object SubstancePolymerSerializer : FhirResourceSerializer<SubstancePol
   override val descriptor: SerialDescriptor = buildResourceDescriptor("SubstancePolymer")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("class", CodeableConceptSerializer.descriptor)
     b.optionalElement("geometry", CodeableConceptSerializer.descriptor)
     b.optionalElement("copolymerConnectivity", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("modification", stringNullableListSerializer.descriptor)
-    b.optionalElement("_modification", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrimList("modification")
     b.optionalElement("monomerSet", SubstancePolymerMonomerSetSerializer.listSerializer.descriptor)
     b.optionalElement("repeat", SubstancePolymerRepeatSerializer.listSerializer.descriptor)
   }
@@ -1000,31 +995,32 @@ internal object SubstancePolymerSerializer : FhirResourceSerializer<SubstancePol
               SubstancePolymerRepeatSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding SubstancePolymer: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val modification_ =
+      List(maxSize(modification, _modification)) { index ->
+        entryRequired(
+          R4String.of(at(modification, index), at(_modification, index)),
+          "SubstancePolymer",
+          "modification",
+        )
+      }
     return SubstancePolymer(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       `class` = `class`,
       geometry = geometry,
-      copolymerConnectivity = copolymerConnectivity ?: listOf(),
-      modification =
-        (kotlin.collections.List(maxOf(modification?.size ?: 0, _modification?.size ?: 0)) { index
-          ->
-          R4String.of(modification?.getOrNull(index), _modification?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'modification' on SubstancePolymer has neither a value nor an id/extension"
-            )
-        }),
-      monomerSet = monomerSet ?: listOf(),
-      repeat = repeat ?: listOf(),
+      copolymerConnectivity = listOrEmpty(copolymerConnectivity),
+      modification = modification_,
+      monomerSet = listOrEmpty(monomerSet),
+      repeat = listOrEmpty(repeat),
     )
   }
 
@@ -1055,27 +1051,24 @@ internal object SubstancePolymerSerializer : FhirResourceSerializer<SubstancePol
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       10 + descriptorOffset,
@@ -1088,14 +1081,13 @@ internal object SubstancePolymerSerializer : FhirResourceSerializer<SubstancePol
       CodeableConceptSerializer,
       value.geometry,
     )
-    if (value.copolymerConnectivity.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.copolymerConnectivity,
-      )
-    if (value.modification.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.copolymerConnectivity,
+    )
+    if (!value.modification.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
@@ -1108,19 +1100,17 @@ internal object SubstancePolymerSerializer : FhirResourceSerializer<SubstancePol
         value.modification,
       )
     }
-    if (value.monomerSet.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        SubstancePolymerMonomerSetSerializer.listSerializer,
-        value.monomerSet,
-      )
-    if (value.repeat.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        SubstancePolymerRepeatSerializer.listSerializer,
-        value.repeat,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      SubstancePolymerMonomerSetSerializer.listSerializer,
+      value.monomerSet,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      SubstancePolymerRepeatSerializer.listSerializer,
+      value.repeat,
+    )
   }
 }

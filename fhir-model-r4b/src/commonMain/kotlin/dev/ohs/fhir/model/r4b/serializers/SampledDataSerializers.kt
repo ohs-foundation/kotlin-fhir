@@ -35,44 +35,39 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object SampledDataSerializer : KSerializer<SampledData> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SampledData") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("origin", lazyDescriptor { QuantitySerializer.descriptor })
-      optionalElement("period", FhirDecimalSerializer.descriptor)
-      optionalElement("_period", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("lowerLimit", FhirDecimalSerializer.descriptor)
-      optionalElement("_lowerLimit", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("upperLimit", FhirDecimalSerializer.descriptor)
-      optionalElement("_upperLimit", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("dimensions", Int.serializer().descriptor)
-      optionalElement("_dimensions", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("data", KotlinString.serializer().descriptor)
-      optionalElement("_data", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object SampledDataSerializer : FhirSerializer<SampledData> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SampledData", this)
 
-  internal val listSerializer: KSerializer<List<SampledData>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<SampledData>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.optionalElement("origin", lazyDescriptor(LazyDescriptorId.QuantitySerializer))
+    b.prim("period", FhirDecimalSerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.prim("lowerLimit", FhirDecimalSerializer.descriptor)
+    b.prim("upperLimit", FhirDecimalSerializer.descriptor)
+    b.intPrim("dimensions")
+    b.strPrim("data")
+  }
 
   override fun deserialize(decoder: Decoder): SampledData {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -191,38 +186,33 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SampledData: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SampledData(
       id = id,
-      extension = extension ?: listOf(),
-      origin =
-        origin ?: throw SerializationException("Missing required property 'origin' on SampledData"),
-      period =
-        Decimal.of(period, _period)
-          ?: throw SerializationException("Missing required property 'period' on SampledData"),
+      extension = listOrEmpty(extension),
+      origin = required(origin, "SampledData", "origin"),
+      period = required(Decimal.of(period, _period), "SampledData", "period"),
       factor = Decimal.of(factor, _factor),
       lowerLimit = Decimal.of(lowerLimit, _lowerLimit),
       upperLimit = Decimal.of(upperLimit, _upperLimit),
-      dimensions =
-        PositiveInt.of(dimensions, _dimensions)
-          ?: throw SerializationException("Missing required property 'dimensions' on SampledData"),
+      dimensions = required(PositiveInt.of(dimensions, _dimensions), "SampledData", "dimensions"),
       `data` = R4bString.of(`data`, _data),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SampledData) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 2, QuantitySerializer, value.origin)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,

@@ -36,61 +36,50 @@ import dev.ohs.fhir.model.r5.PositiveInt
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Url
 import kotlin.Int
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object AttachmentSerializer : KSerializer<Attachment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Attachment") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("contentType", KotlinString.serializer().descriptor)
-      optionalElement("_contentType", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("language", KotlinString.serializer().descriptor)
-      optionalElement("_language", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("data", KotlinString.serializer().descriptor)
-      optionalElement("_data", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("url", KotlinString.serializer().descriptor)
-      optionalElement("_url", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("size", KotlinString.serializer().descriptor)
-      optionalElement("_size", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("hash", KotlinString.serializer().descriptor)
-      optionalElement("_hash", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("title", KotlinString.serializer().descriptor)
-      optionalElement("_title", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("creation", KotlinString.serializer().descriptor)
-      optionalElement("_creation", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("height", Int.serializer().descriptor)
-      optionalElement("_height", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("width", Int.serializer().descriptor)
-      optionalElement("_width", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("frames", Int.serializer().descriptor)
-      optionalElement("_frames", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("duration", FhirDecimalSerializer.descriptor)
-      optionalElement("_duration", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("pages", Int.serializer().descriptor)
-      optionalElement("_pages", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object AttachmentSerializer : FhirSerializer<Attachment> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Attachment", this)
 
-  internal val listSerializer: KSerializer<List<Attachment>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Attachment>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("contentType")
+    b.strPrim("language")
+    b.strPrim("data")
+    b.strPrim("url")
+    b.strPrim("size")
+    b.strPrim("hash")
+    b.strPrim("title")
+    b.strPrim("creation")
+    b.intPrim("height")
+    b.intPrim("width")
+    b.intPrim("frames")
+    b.prim("duration", FhirDecimalSerializer.descriptor)
+    b.intPrim("pages")
+  }
 
   override fun deserialize(decoder: Decoder): Attachment {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -102,13 +91,13 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     var _data: Element? = null
     var url: KotlinString? = null
     var _url: Element? = null
-    var size: KotlinString? = null
+    var size: Long? = null
     var _size: Element? = null
     var hash: KotlinString? = null
     var _hash: Element? = null
     var title: KotlinString? = null
     var _title: Element? = null
-    var creation: KotlinString? = null
+    var creation: FhirDateTime? = null
     var _creation: Element? = null
     var height: Int? = null
     var _height: Element? = null
@@ -167,7 +156,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
               ElementSerializer,
               null,
             )
-        10 -> size = compositeDecoder.decodeStringElement(descriptor, i)
+        10 -> size = compositeDecoder.decodeStringElement(descriptor, i).toLong()
         11 ->
           _size =
             compositeDecoder.decodeNullableSerializableElement(
@@ -194,7 +183,8 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
               ElementSerializer,
               null,
             )
-        16 -> creation = compositeDecoder.decodeStringElement(descriptor, i)
+        16 ->
+          creation = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _creation =
             compositeDecoder.decodeNullableSerializableElement(
@@ -256,22 +246,21 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Attachment: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Attachment(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       contentType = Code.of(contentType, _contentType),
       language = Code.of(language, _language),
       `data` = Base64Binary.of(`data`, _data),
       url = Url.of(url, _url),
-      size = Integer64.of(size?.toLong(), _size),
+      size = Integer64.of(size, _size),
       hash = Base64Binary.of(hash, _hash),
       title = R5String.of(title, _title),
-      creation =
-        DateTime.of(if (creation != null) FhirDateTime.fromString(creation) else null, _creation),
+      creation = DateTime.of(creation, _creation),
       height = PositiveInt.of(height, _height),
       width = PositiveInt.of(width, _width),
       frames = PositiveInt.of(frames, _frames),
@@ -281,15 +270,15 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
   }
 
   override fun serialize(encoder: Encoder, `value`: Attachment) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.contentType?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.contentType)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.language?.value)

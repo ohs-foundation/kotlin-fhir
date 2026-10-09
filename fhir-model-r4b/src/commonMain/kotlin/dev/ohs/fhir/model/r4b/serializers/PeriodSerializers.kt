@@ -31,41 +31,40 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object PeriodSerializer : KSerializer<Period> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Period") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("start", String.serializer().descriptor)
-      optionalElement("_start", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("end", String.serializer().descriptor)
-      optionalElement("_end", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object PeriodSerializer : FhirSerializer<Period> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Period", this)
 
-  internal val listSerializer: KSerializer<List<Period>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Period>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("start")
+    b.strPrim("end")
+  }
 
   override fun deserialize(decoder: Decoder): Period {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
-    var start: String? = null
+    var start: FhirDateTime? = null
     var _start: Element? = null
-    var end: String? = null
+    var end: FhirDateTime? = null
     var _end: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -78,7 +77,7 @@ internal object PeriodSerializer : KSerializer<Period> {
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> start = compositeDecoder.decodeStringElement(descriptor, i)
+        2 -> start = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _start =
             compositeDecoder.decodeNullableSerializableElement(
@@ -87,7 +86,7 @@ internal object PeriodSerializer : KSerializer<Period> {
               ElementSerializer,
               null,
             )
-        4 -> end = compositeDecoder.decodeStringElement(descriptor, i)
+        4 -> end = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         5 ->
           _end =
             compositeDecoder.decodeNullableSerializableElement(
@@ -97,28 +96,28 @@ internal object PeriodSerializer : KSerializer<Period> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Period: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Period(
       id = id,
-      extension = extension ?: listOf(),
-      start = DateTime.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
-      end = DateTime.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
+      extension = listOrEmpty(extension),
+      start = DateTime.of(start, _start),
+      end = DateTime.of(end, _end),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Period) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.start?.value?.toString())
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.start)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.end?.value?.toString())

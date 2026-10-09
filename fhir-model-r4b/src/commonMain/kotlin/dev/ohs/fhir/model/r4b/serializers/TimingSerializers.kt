@@ -45,72 +45,50 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Repeat") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("boundsDuration", lazyDescriptor { DurationSerializer.descriptor })
-      optionalElement("boundsRange", lazyDescriptor { RangeSerializer.descriptor })
-      optionalElement("boundsPeriod", lazyDescriptor { PeriodSerializer.descriptor })
-      optionalElement("count", Int.serializer().descriptor)
-      optionalElement("_count", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("countMax", Int.serializer().descriptor)
-      optionalElement("_countMax", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("duration", FhirDecimalSerializer.descriptor)
-      optionalElement("_duration", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("durationMax", FhirDecimalSerializer.descriptor)
-      optionalElement("_durationMax", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("durationUnit", String.serializer().descriptor)
-      optionalElement("_durationUnit", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("frequency", Int.serializer().descriptor)
-      optionalElement("_frequency", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("frequencyMax", Int.serializer().descriptor)
-      optionalElement("_frequencyMax", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("period", FhirDecimalSerializer.descriptor)
-      optionalElement("_period", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("periodMax", FhirDecimalSerializer.descriptor)
-      optionalElement("_periodMax", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("periodUnit", String.serializer().descriptor)
-      optionalElement("_periodUnit", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("dayOfWeek", stringNullableListSerializer.descriptor)
-      optionalElement(
-        "_dayOfWeek",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement("timeOfDay", LocalTimeSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "_timeOfDay",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement("when", stringNullableListSerializer.descriptor)
-      optionalElement(
-        "_when",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement("offset", Int.serializer().descriptor)
-      optionalElement("_offset", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object TimingRepeatSerializer : FhirSerializer<Timing.Repeat> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Repeat", this)
 
-  internal val listSerializer: KSerializer<List<Timing.Repeat>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Timing.Repeat>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.optionalElement("boundsDuration", lazyDescriptor(LazyDescriptorId.DurationSerializer))
+    b.optionalElement("boundsRange", lazyDescriptor(LazyDescriptorId.RangeSerializer))
+    b.optionalElement("boundsPeriod", lazyDescriptor(LazyDescriptorId.PeriodSerializer))
+    b.intPrim("count")
+    b.intPrim("countMax")
+    b.prim("duration", FhirDecimalSerializer.descriptor)
+    b.prim("durationMax", FhirDecimalSerializer.descriptor)
+    b.strPrim("durationUnit")
+    b.intPrim("frequency")
+    b.intPrim("frequencyMax")
+    b.prim("period", FhirDecimalSerializer.descriptor)
+    b.prim("periodMax", FhirDecimalSerializer.descriptor)
+    b.strPrim("periodUnit")
+    b.strPrimList("dayOfWeek")
+    b.primList("timeOfDay", LocalTimeSerializer.nullableListSerializer.descriptor)
+    b.strPrimList("when")
+    b.intPrim("offset")
+  }
 
   override fun deserialize(decoder: Decoder): Timing.Repeat {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -125,7 +103,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     var _duration: Element? = null
     var durationMax: FhirDecimal? = null
     var _durationMax: Element? = null
-    var durationUnit: String? = null
+    var durationUnit: UnitsOfTime? = null
     var _durationUnit: Element? = null
     var frequency: Int? = null
     var _frequency: Element? = null
@@ -135,7 +113,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     var _period: Element? = null
     var periodMax: FhirDecimal? = null
     var _periodMax: Element? = null
-    var periodUnit: String? = null
+    var periodUnit: UnitsOfTime? = null
     var _periodUnit: Element? = null
     var dayOfWeek: List<String?>? = null
     var _dayOfWeek: List<Element?>? = null
@@ -225,7 +203,8 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
               ElementSerializer,
               null,
             )
-        13 -> durationUnit = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          durationUnit = UnitsOfTime.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _durationUnit =
             compositeDecoder.decodeNullableSerializableElement(
@@ -284,7 +263,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
               ElementSerializer,
               null,
             )
-        23 -> periodUnit = compositeDecoder.decodeStringElement(descriptor, i)
+        23 -> periodUnit = UnitsOfTime.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _periodUnit =
             compositeDecoder.decodeNullableSerializableElement(
@@ -351,73 +330,68 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Repeat: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val dayOfWeek_ =
+      List(maxSize(dayOfWeek, _dayOfWeek)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(dayOfWeek, index)?.let { DaysOfWeek.fromCode(it) },
+            at(_dayOfWeek, index),
+          ),
+          "Timing.Repeat",
+          "dayOfWeek",
+        )
+      }
+    val timeOfDay_ =
+      List(maxSize(timeOfDay, _timeOfDay)) { index ->
+        entryRequired(
+          Time.of(at(timeOfDay, index), at(_timeOfDay, index)),
+          "Timing.Repeat",
+          "timeOfDay",
+        )
+      }
+    val when_ =
+      List(maxSize(`when`, _when)) { index ->
+        entryRequired(
+          Enumeration.of(at(`when`, index)?.let { EventTiming.fromCode(it) }, at(_when, index)),
+          "Timing.Repeat",
+          "when",
+        )
+      }
     return Timing.Repeat(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       bounds = Timing.Repeat.Bounds.from(boundsDuration, boundsRange, boundsPeriod),
       count = PositiveInt.of(count, _count),
       countMax = PositiveInt.of(countMax, _countMax),
       duration = Decimal.of(duration, _duration),
       durationMax = Decimal.of(durationMax, _durationMax),
-      durationUnit =
-        Enumeration.of(
-          if (durationUnit != null) UnitsOfTime.fromCode(durationUnit) else null,
-          _durationUnit,
-        ),
+      durationUnit = Enumeration.of(durationUnit, _durationUnit),
       frequency = PositiveInt.of(frequency, _frequency),
       frequencyMax = PositiveInt.of(frequencyMax, _frequencyMax),
       period = Decimal.of(period, _period),
       periodMax = Decimal.of(periodMax, _periodMax),
-      periodUnit =
-        Enumeration.of(
-          if (periodUnit != null) UnitsOfTime.fromCode(periodUnit) else null,
-          _periodUnit,
-        ),
-      dayOfWeek =
-        (kotlin.collections.List(maxOf(dayOfWeek?.size ?: 0, _dayOfWeek?.size ?: 0)) { index ->
-          Enumeration.of(
-            dayOfWeek?.getOrNull(index)?.let { DaysOfWeek.fromCode(it) },
-            _dayOfWeek?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'dayOfWeek' on Timing.Repeat has neither a value nor an id/extension"
-            )
-        }),
-      timeOfDay =
-        (kotlin.collections.List(maxOf(timeOfDay?.size ?: 0, _timeOfDay?.size ?: 0)) { index ->
-          Time.of(timeOfDay?.getOrNull(index), _timeOfDay?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'timeOfDay' on Timing.Repeat has neither a value nor an id/extension"
-            )
-        }),
-      `when` =
-        (kotlin.collections.List(maxOf(`when`?.size ?: 0, _when?.size ?: 0)) { index ->
-          Enumeration.of(
-            `when`?.getOrNull(index)?.let { EventTiming.fromCode(it) },
-            _when?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'when' on Timing.Repeat has neither a value nor an id/extension"
-            )
-        }),
+      periodUnit = Enumeration.of(periodUnit, _periodUnit),
+      dayOfWeek = dayOfWeek_,
+      timeOfDay = timeOfDay_,
+      `when` = when_,
       offset = UnsignedInt.of(offset, _offset),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Timing.Repeat) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     when (val choice = value.bounds) {
       null -> {}
       is Timing.Repeat.Bounds.Duration -> {
@@ -470,7 +444,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     compositeEncoder.encodeElementIfNotNull(descriptor, 22, value.periodMax)
     compositeEncoder.encodeStringIfNotNull(descriptor, 23, value.periodUnit?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 24, value.periodUnit)
-    if (value.dayOfWeek.isNotEmpty()) {
+    if (!value.dayOfWeek.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         25,
@@ -479,7 +453,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 26, value.dayOfWeek)
     }
-    if (value.timeOfDay.isNotEmpty()) {
+    if (!value.timeOfDay.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         27,
@@ -488,7 +462,7 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 28, value.timeOfDay)
     }
-    if (value.`when`.isNotEmpty()) {
+    if (!value.`when`.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         29,
@@ -503,30 +477,28 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
   }
 }
 
-internal object TimingSerializer : KSerializer<Timing> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Timing") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement(
-        "modifierExtension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("event", stringNullableListSerializer.descriptor)
-      optionalElement(
-        "_event",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement("repeat", TimingRepeatSerializer.descriptor)
-      optionalElement("code", lazyDescriptor { CodeableConceptSerializer.descriptor })
-    }
+internal object TimingSerializer : FhirSerializer<Timing> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Timing", this)
 
-  internal val listSerializer: KSerializer<List<Timing>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Timing>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.optionalElement(
+      "modifierExtension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrimList("event")
+    b.optionalElement("repeat", TimingRepeatSerializer.descriptor)
+    b.optionalElement("code", lazyDescriptor(LazyDescriptorId.CodeableConceptSerializer))
+  }
 
   override fun deserialize(decoder: Decoder): Timing {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -587,47 +559,45 @@ internal object TimingSerializer : KSerializer<Timing> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Timing: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val event_ =
+      List(maxSize(event, _event)) { index ->
+        entryRequired(
+          DateTime.of(at(event, index)?.let { FhirDateTime.fromString(it) }, at(_event, index)),
+          "Timing",
+          "event",
+        )
+      }
     return Timing(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      event =
-        (kotlin.collections.List(maxOf(event?.size ?: 0, _event?.size ?: 0)) { index ->
-          DateTime.of(
-            event?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
-            _event?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'event' on Timing has neither a value nor an id/extension"
-            )
-        }),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      event = event_,
       repeat = repeat,
       code = code,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Timing) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.event.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    if (!value.event.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         3,

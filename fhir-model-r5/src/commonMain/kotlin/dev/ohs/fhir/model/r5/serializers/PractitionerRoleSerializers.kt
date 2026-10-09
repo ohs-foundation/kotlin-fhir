@@ -46,8 +46,6 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -58,22 +56,19 @@ internal object PractitionerRoleSerializer : FhirResourceSerializer<Practitioner
   override val descriptor: SerialDescriptor = buildResourceDescriptor("PractitionerRole")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("active", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_active", ElementSerializer.descriptor)
+    b.boolPrim("active")
     b.optionalElement("period", PeriodSerializer.descriptor)
     b.optionalElement("practitioner", ReferenceSerializer.descriptor)
     b.optionalElement("organization", ReferenceSerializer.descriptor)
@@ -290,7 +285,7 @@ internal object PractitionerRoleSerializer : FhirResourceSerializer<Practitioner
               ReferenceSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding PractitionerRole: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return PractitionerRole(
@@ -299,23 +294,23 @@ internal object PractitionerRoleSerializer : FhirResourceSerializer<Practitioner
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       active = R5Boolean.of(active, _active),
       period = period,
       practitioner = practitioner,
       organization = organization,
-      code = code ?: listOf(),
-      specialty = specialty ?: listOf(),
-      location = location ?: listOf(),
-      healthcareService = healthcareService ?: listOf(),
-      contact = contact ?: listOf(),
-      characteristic = characteristic ?: listOf(),
-      communication = communication ?: listOf(),
-      availability = availability ?: listOf(),
-      endpoint = endpoint ?: listOf(),
+      code = listOrEmpty(code),
+      specialty = listOrEmpty(specialty),
+      location = listOrEmpty(location),
+      healthcareService = listOrEmpty(healthcareService),
+      contact = listOrEmpty(contact),
+      characteristic = listOrEmpty(characteristic),
+      communication = listOrEmpty(communication),
+      availability = listOrEmpty(availability),
+      endpoint = listOrEmpty(endpoint),
     )
   }
 
@@ -346,34 +341,30 @@ internal object PractitionerRoleSerializer : FhirResourceSerializer<Practitioner
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.active?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.active)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -394,68 +385,59 @@ internal object PractitionerRoleSerializer : FhirResourceSerializer<Practitioner
       ReferenceSerializer,
       value.organization,
     )
-    if (value.code.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.code,
-      )
-    if (value.specialty.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.specialty,
-      )
-    if (value.location.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.location,
-      )
-    if (value.healthcareService.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.healthcareService,
-      )
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        ExtendedContactDetailSerializer.listSerializer,
-        value.contact,
-      )
-    if (value.characteristic.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.characteristic,
-      )
-    if (value.communication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.communication,
-      )
-    if (value.availability.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        AvailabilitySerializer.listSerializer,
-        value.availability,
-      )
-    if (value.endpoint.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.endpoint,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.code,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      17 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.specialty,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.location,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.healthcareService,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      ExtendedContactDetailSerializer.listSerializer,
+      value.contact,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      21 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.characteristic,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.communication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      AvailabilitySerializer.listSerializer,
+      value.availability,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.endpoint,
+    )
   }
 }

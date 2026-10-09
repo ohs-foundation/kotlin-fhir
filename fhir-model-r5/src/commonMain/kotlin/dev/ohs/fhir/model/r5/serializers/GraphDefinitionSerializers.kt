@@ -57,39 +57,36 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object GraphDefinitionNodeSerializer : KSerializer<GraphDefinition.Node> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Node") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("nodeId", KotlinString.serializer().descriptor)
-      optionalElement("_nodeId", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("profile", KotlinString.serializer().descriptor)
-      optionalElement("_profile", ElementSerializer.descriptor)
-    }
+internal object GraphDefinitionNodeSerializer : FhirSerializer<GraphDefinition.Node> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Node", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<GraphDefinition.Node>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("nodeId")
+    b.strPrim("description")
+    b.strPrim("type")
+    b.strPrim("profile")
+  }
+
   override fun deserialize(decoder: Decoder): GraphDefinition.Node {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -98,7 +95,7 @@ internal object GraphDefinitionNodeSerializer : KSerializer<GraphDefinition.Node
     var _nodeId: Element? = null
     var description: KotlinString? = null
     var _description: Element? = null
-    var type: KotlinString? = null
+    var type: VersionIndependentResourceTypesAll? = null
     var _type: Element? = null
     var profile: KotlinString? = null
     var _profile: Element? = null
@@ -139,7 +136,11 @@ internal object GraphDefinitionNodeSerializer : KSerializer<GraphDefinition.Node
               ElementSerializer,
               null,
             )
-        7 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          type =
+            VersionIndependentResourceTypesAll.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         8 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -158,49 +159,37 @@ internal object GraphDefinitionNodeSerializer : KSerializer<GraphDefinition.Node
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Node: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return GraphDefinition.Node(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      nodeId =
-        Id.of(nodeId, _nodeId)
-          ?: throw SerializationException(
-            "Missing required property 'nodeId' on GraphDefinition.Node"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      nodeId = required(Id.of(nodeId, _nodeId), "GraphDefinition.Node", "nodeId"),
       description = R5String.of(description, _description),
-      type =
-        Enumeration.of(
-          if (type != null) VersionIndependentResourceTypesAll.fromCode(type) else null,
-          _type,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'type' on GraphDefinition.Node"
-          ),
+      type = required(Enumeration.of(type, _type), "GraphDefinition.Node", "type"),
       profile = Canonical.of(profile, _profile),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: GraphDefinition.Node) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.nodeId.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.nodeId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
@@ -213,37 +202,32 @@ internal object GraphDefinitionNodeSerializer : KSerializer<GraphDefinition.Node
   }
 }
 
-internal object GraphDefinitionLinkSerializer : KSerializer<GraphDefinition.Link> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Link") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("min", Int.serializer().descriptor)
-      optionalElement("_min", ElementSerializer.descriptor)
-      optionalElement("max", KotlinString.serializer().descriptor)
-      optionalElement("_max", ElementSerializer.descriptor)
-      optionalElement("sourceId", KotlinString.serializer().descriptor)
-      optionalElement("_sourceId", ElementSerializer.descriptor)
-      optionalElement("path", KotlinString.serializer().descriptor)
-      optionalElement("_path", ElementSerializer.descriptor)
-      optionalElement("sliceName", KotlinString.serializer().descriptor)
-      optionalElement("_sliceName", ElementSerializer.descriptor)
-      optionalElement("targetId", KotlinString.serializer().descriptor)
-      optionalElement("_targetId", ElementSerializer.descriptor)
-      optionalElement("params", KotlinString.serializer().descriptor)
-      optionalElement("_params", ElementSerializer.descriptor)
-      optionalElement(
-        "compartment",
-        GraphDefinitionLinkCompartmentSerializer.listSerializer.descriptor,
-      )
-    }
+internal object GraphDefinitionLinkSerializer : FhirSerializer<GraphDefinition.Link> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Link", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<GraphDefinition.Link>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.intPrim("min")
+    b.strPrim("max")
+    b.strPrim("sourceId")
+    b.strPrim("path")
+    b.strPrim("sliceName")
+    b.strPrim("targetId")
+    b.strPrim("params")
+    b.optionalElement(
+      "compartment",
+      GraphDefinitionLinkCompartmentSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): GraphDefinition.Link {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -365,51 +349,42 @@ internal object GraphDefinitionLinkSerializer : KSerializer<GraphDefinition.Link
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Link: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return GraphDefinition.Link(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       description = R5String.of(description, _description),
       min = Integer.of(min, _min),
       max = R5String.of(max, _max),
-      sourceId =
-        Id.of(sourceId, _sourceId)
-          ?: throw SerializationException(
-            "Missing required property 'sourceId' on GraphDefinition.Link"
-          ),
+      sourceId = required(Id.of(sourceId, _sourceId), "GraphDefinition.Link", "sourceId"),
       path = R5String.of(path, _path),
       sliceName = R5String.of(sliceName, _sliceName),
-      targetId =
-        Id.of(targetId, _targetId)
-          ?: throw SerializationException(
-            "Missing required property 'targetId' on GraphDefinition.Link"
-          ),
+      targetId = required(Id.of(targetId, _targetId), "GraphDefinition.Link", "targetId"),
       params = R5String.of(params, _params),
-      compartment = compartment ?: listOf(),
+      compartment = listOrEmpty(compartment),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: GraphDefinition.Link) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.description)
     compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.min?.value)
@@ -426,49 +401,46 @@ internal object GraphDefinitionLinkSerializer : KSerializer<GraphDefinition.Link
     compositeEncoder.encodeElementIfNotNull(descriptor, 16, value.targetId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 17, value.params?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 18, value.params)
-    if (value.compartment.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19,
-        GraphDefinitionLinkCompartmentSerializer.listSerializer,
-        value.compartment,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19,
+      GraphDefinitionLinkCompartmentSerializer.listSerializer,
+      value.compartment,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object GraphDefinitionLinkCompartmentSerializer :
-  KSerializer<GraphDefinition.Link.Compartment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Compartment") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", ElementSerializer.descriptor)
-      optionalElement("rule", KotlinString.serializer().descriptor)
-      optionalElement("_rule", ElementSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("expression", KotlinString.serializer().descriptor)
-      optionalElement("_expression", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-    }
+  FhirSerializer<GraphDefinition.Link.Compartment> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Compartment", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<GraphDefinition.Link.Compartment>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("use")
+    b.strPrim("rule")
+    b.strPrim("code")
+    b.strPrim("expression")
+    b.strPrim("description")
+  }
+
   override fun deserialize(decoder: Decoder): GraphDefinition.Link.Compartment {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var use: KotlinString? = null
+    var use: GraphCompartmentUse? = null
     var _use: Element? = null
-    var rule: KotlinString? = null
+    var rule: GraphCompartmentRule? = null
     var _rule: Element? = null
-    var code: KotlinString? = null
+    var code: CompartmentType? = null
     var _code: Element? = null
     var expression: KotlinString? = null
     var _expression: Element? = null
@@ -493,7 +465,7 @@ internal object GraphDefinitionLinkCompartmentSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> use = GraphCompartmentUse.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _use =
             compositeDecoder.decodeNullableSerializableElement(
@@ -502,7 +474,8 @@ internal object GraphDefinitionLinkCompartmentSerializer :
               ElementSerializer,
               null,
             )
-        5 -> rule = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          rule = GraphCompartmentRule.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _rule =
             compositeDecoder.decodeNullableSerializableElement(
@@ -511,7 +484,7 @@ internal object GraphDefinitionLinkCompartmentSerializer :
               ElementSerializer,
               null,
             )
-        7 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        7 -> code = CompartmentType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _code =
             compositeDecoder.decodeNullableSerializableElement(
@@ -539,51 +512,38 @@ internal object GraphDefinitionLinkCompartmentSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Compartment: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return GraphDefinition.Link.Compartment(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      use =
-        Enumeration.of(if (use != null) GraphCompartmentUse.fromCode(use) else null, _use)
-          ?: throw SerializationException(
-            "Missing required property 'use' on GraphDefinition.Link.Compartment"
-          ),
-      rule =
-        Enumeration.of(if (rule != null) GraphCompartmentRule.fromCode(rule) else null, _rule)
-          ?: throw SerializationException(
-            "Missing required property 'rule' on GraphDefinition.Link.Compartment"
-          ),
-      code =
-        Enumeration.of(if (code != null) CompartmentType.fromCode(code) else null, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on GraphDefinition.Link.Compartment"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      use = required(Enumeration.of(use, _use), "GraphDefinition.Link.Compartment", "use"),
+      rule = required(Enumeration.of(rule, _rule), "GraphDefinition.Link.Compartment", "rule"),
+      code = required(Enumeration.of(code, _code), "GraphDefinition.Link.Compartment", "code"),
       expression = R5String.of(expression, _expression),
       description = R5String.of(description, _description),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: GraphDefinition.Link.Compartment) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.use.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.use)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.rule.value?.code)
@@ -602,52 +562,36 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
   override val descriptor: SerialDescriptor = buildResourceDescriptor("GraphDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("versionAlgorithmString", KotlinString.serializer().descriptor)
-    b.optionalElement("_versionAlgorithmString", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("versionAlgorithmString")
     b.optionalElement("versionAlgorithmCoding", CodingSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("purpose", KotlinString.serializer().descriptor)
-    b.optionalElement("_purpose", ElementSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("copyrightLabel", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyrightLabel", ElementSerializer.descriptor)
-    b.optionalElement("start", KotlinString.serializer().descriptor)
-    b.optionalElement("_start", ElementSerializer.descriptor)
+    b.strPrim("purpose")
+    b.strPrim("copyright")
+    b.strPrim("copyrightLabel")
+    b.strPrim("start")
     b.optionalElement("node", GraphDefinitionNodeSerializer.listSerializer.descriptor)
     b.optionalElement("link", GraphDefinitionLinkSerializer.listSerializer.descriptor)
   }
@@ -679,11 +623,11 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
     var _name: Element? = null
     var title: KotlinString? = null
     var _title: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -822,7 +766,8 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
               ElementSerializer,
               null,
             )
-        22 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        22 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         23 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -840,7 +785,7 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
               ElementSerializer,
               null,
             )
-        26 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        26 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         27 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -943,7 +888,7 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
               GraphDefinitionLinkSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding GraphDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return GraphDefinition(
@@ -952,37 +897,33 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R5String.of(version, _version),
       versionAlgorithm =
         GraphDefinition.VersionAlgorithm.from(
           R5String.of(versionAlgorithmString, _versionAlgorithmString),
           versionAlgorithmCoding,
         ),
-      name =
-        R5String.of(name, _name)
-          ?: throw SerializationException("Missing required property 'name' on GraphDefinition"),
+      name = required(R5String.of(name, _name), "GraphDefinition", "name"),
       title = R5String.of(title, _title),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on GraphDefinition"),
+      status = required(Enumeration.of(status, _status), "GraphDefinition", "status"),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R5String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       start = Id.of(start, _start),
-      node = node ?: listOf(),
-      link = link ?: listOf(),
+      node = listOrEmpty(node),
+      link = listOrEmpty(link),
     )
   }
 
@@ -1013,36 +954,32 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     when (val choice = value.versionAlgorithm) {
@@ -1092,33 +1029,30 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       31 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 32 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 35 + descriptorOffset, value.purpose?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 36 + descriptorOffset, value.purpose)
     compositeEncoder.encodeStringIfNotNull(
@@ -1135,19 +1069,17 @@ internal object GraphDefinitionSerializer : FhirResourceSerializer<GraphDefiniti
     compositeEncoder.encodeElementIfNotNull(descriptor, 40 + descriptorOffset, value.copyrightLabel)
     compositeEncoder.encodeStringIfNotNull(descriptor, 41 + descriptorOffset, value.start?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 42 + descriptorOffset, value.start)
-    if (value.node.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        43 + descriptorOffset,
-        GraphDefinitionNodeSerializer.listSerializer,
-        value.node,
-      )
-    if (value.link.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        44 + descriptorOffset,
-        GraphDefinitionLinkSerializer.listSerializer,
-        value.link,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      43 + descriptorOffset,
+      GraphDefinitionNodeSerializer.listSerializer,
+      value.node,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      44 + descriptorOffset,
+      GraphDefinitionLinkSerializer.listSerializer,
+      value.link,
+    )
   }
 }

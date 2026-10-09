@@ -50,14 +50,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -65,20 +63,23 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object DiagnosticReportSupportingInfoSerializer :
-  KSerializer<DiagnosticReport.SupportingInfo> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SupportingInfo") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("reference", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<DiagnosticReport.SupportingInfo> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SupportingInfo", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<DiagnosticReport.SupportingInfo>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("reference", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): DiagnosticReport.SupportingInfo {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -121,64 +122,57 @@ internal object DiagnosticReportSupportingInfoSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SupportingInfo: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return DiagnosticReport.SupportingInfo(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on DiagnosticReport.SupportingInfo"
-          ),
-      reference =
-        reference
-          ?: throw SerializationException(
-            "Missing required property 'reference' on DiagnosticReport.SupportingInfo"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "DiagnosticReport.SupportingInfo", "type"),
+      reference = required(reference, "DiagnosticReport.SupportingInfo", "reference"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: DiagnosticReport.SupportingInfo) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     compositeEncoder.encodeSerializableElement(descriptor, 4, ReferenceSerializer, value.reference)
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object DiagnosticReportMediaSerializer : KSerializer<DiagnosticReport.Media> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Media") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("comment", KotlinString.serializer().descriptor)
-      optionalElement("_comment", ElementSerializer.descriptor)
-      optionalElement("link", ReferenceSerializer.descriptor)
-    }
+internal object DiagnosticReportMediaSerializer : FhirSerializer<DiagnosticReport.Media> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Media", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<DiagnosticReport.Media>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("comment")
+    b.optionalElement("link", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): DiagnosticReport.Media {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -223,40 +217,35 @@ internal object DiagnosticReportMediaSerializer : KSerializer<DiagnosticReport.M
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Media: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return DiagnosticReport.Media(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       comment = R5String.of(comment, _comment),
-      link =
-        link
-          ?: throw SerializationException(
-            "Missing required property 'link' on DiagnosticReport.Media"
-          ),
+      link = required(link, "DiagnosticReport.Media", "link"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: DiagnosticReport.Media) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.comment?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.comment)
     compositeEncoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.link)
@@ -268,32 +257,27 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
   override val descriptor: SerialDescriptor = buildResourceDescriptor("DiagnosticReport")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("code", CodeableConceptSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("effectiveDateTime", KotlinString.serializer().descriptor)
-    b.optionalElement("_effectiveDateTime", ElementSerializer.descriptor)
+    b.strPrim("effectiveDateTime")
     b.optionalElement("effectivePeriod", PeriodSerializer.descriptor)
-    b.optionalElement("issued", KotlinString.serializer().descriptor)
-    b.optionalElement("_issued", ElementSerializer.descriptor)
+    b.strPrim("issued")
     b.optionalElement("performer", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("resultsInterpreter", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("specimen", ReferenceSerializer.listSerializer.descriptor)
@@ -306,8 +290,7 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
     )
     b.optionalElement("media", DiagnosticReportMediaSerializer.listSerializer.descriptor)
     b.optionalElement("composition", ReferenceSerializer.descriptor)
-    b.optionalElement("conclusion", KotlinString.serializer().descriptor)
-    b.optionalElement("_conclusion", ElementSerializer.descriptor)
+    b.strPrim("conclusion")
     b.optionalElement("conclusionCode", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("presentedForm", AttachmentSerializer.listSerializer.descriptor)
   }
@@ -329,16 +312,16 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
     var basedOn: List<Reference>? = null
-    var status: KotlinString? = null
+    var status: DiagnosticReportStatus? = null
     var _status: Element? = null
     var category: List<CodeableConcept>? = null
     var code: CodeableConcept? = null
     var subject: Reference? = null
     var encounter: Reference? = null
-    var effectiveDateTime: KotlinString? = null
+    var effectiveDateTime: FhirDateTime? = null
     var _effectiveDateTime: Element? = null
     var effectivePeriod: Period? = null
-    var issued: KotlinString? = null
+    var issued: FhirDateTime? = null
     var _issued: Element? = null
     var performer: List<Reference>? = null
     var resultsInterpreter: List<Reference>? = null
@@ -428,7 +411,9 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
               ReferenceSerializer.listSerializer,
               null,
             )
-        12 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          status =
+            DiagnosticReportStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         13 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -469,7 +454,9 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
               ReferenceSerializer,
               null,
             )
-        18 -> effectiveDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        18 ->
+          effectiveDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _effectiveDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -486,7 +473,7 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
               PeriodSerializer,
               null,
             )
-        21 -> issued = compositeDecoder.decodeStringElement(descriptor, i)
+        21 -> issued = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _issued =
             compositeDecoder.decodeNullableSerializableElement(
@@ -592,7 +579,7 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
               AttachmentSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding DiagnosticReport: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return DiagnosticReport(
@@ -601,43 +588,34 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      basedOn = basedOn ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) DiagnosticReportStatus.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on DiagnosticReport"),
-      category = category ?: listOf(),
-      code =
-        code
-          ?: throw SerializationException("Missing required property 'code' on DiagnosticReport"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      basedOn = listOrEmpty(basedOn),
+      status = required(Enumeration.of(status, _status), "DiagnosticReport", "status"),
+      category = listOrEmpty(category),
+      code = required(code, "DiagnosticReport", "code"),
       subject = subject,
       encounter = encounter,
       effective =
         DiagnosticReport.Effective.from(
-          DateTime.of(
-            if (effectiveDateTime != null) FhirDateTime.fromString(effectiveDateTime) else null,
-            _effectiveDateTime,
-          ),
+          DateTime.of(effectiveDateTime, _effectiveDateTime),
           effectivePeriod,
         ),
-      issued = Instant.of(if (issued != null) FhirDateTime.fromString(issued) else null, _issued),
-      performer = performer ?: listOf(),
-      resultsInterpreter = resultsInterpreter ?: listOf(),
-      specimen = specimen ?: listOf(),
-      result = result ?: listOf(),
-      note = note ?: listOf(),
-      study = study ?: listOf(),
-      supportingInfo = supportingInfo ?: listOf(),
-      media = media ?: listOf(),
+      issued = Instant.of(issued, _issued),
+      performer = listOrEmpty(performer),
+      resultsInterpreter = listOrEmpty(resultsInterpreter),
+      specimen = listOrEmpty(specimen),
+      result = listOrEmpty(result),
+      note = listOrEmpty(note),
+      study = listOrEmpty(study),
+      supportingInfo = listOrEmpty(supportingInfo),
+      media = listOrEmpty(media),
       composition = composition,
       conclusion = Markdown.of(conclusion, _conclusion),
-      conclusionCode = conclusionCode ?: listOf(),
-      presentedForm = presentedForm ?: listOf(),
+      conclusionCode = listOrEmpty(conclusionCode),
+      presentedForm = listOrEmpty(presentedForm),
     )
   }
 
@@ -668,54 +646,48 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.basedOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.basedOn,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.basedOn,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       12 + descriptorOffset,
       value.status.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.status)
-    if (value.category.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.category,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.category,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       15 + descriptorOffset,
@@ -759,62 +731,54 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
       value.issued?.value?.toString(),
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.issued)
-    if (value.performer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.performer,
-      )
-    if (value.resultsInterpreter.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.resultsInterpreter,
-      )
-    if (value.specimen.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.specimen,
-      )
-    if (value.result.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.result,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.study.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.study,
-      )
-    if (value.supportingInfo.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        DiagnosticReportSupportingInfoSerializer.listSerializer,
-        value.supportingInfo,
-      )
-    if (value.media.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        DiagnosticReportMediaSerializer.listSerializer,
-        value.media,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.performer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.resultsInterpreter,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.specimen,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.result,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.study,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      DiagnosticReportSupportingInfoSerializer.listSerializer,
+      value.supportingInfo,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      DiagnosticReportMediaSerializer.listSerializer,
+      value.media,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       31 + descriptorOffset,
@@ -827,19 +791,17 @@ internal object DiagnosticReportSerializer : FhirResourceSerializer<DiagnosticRe
       value.conclusion?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.conclusion)
-    if (value.conclusionCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.conclusionCode,
-      )
-    if (value.presentedForm.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        AttachmentSerializer.listSerializer,
-        value.presentedForm,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.conclusionCode,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      AttachmentSerializer.listSerializer,
+      value.presentedForm,
+    )
   }
 }

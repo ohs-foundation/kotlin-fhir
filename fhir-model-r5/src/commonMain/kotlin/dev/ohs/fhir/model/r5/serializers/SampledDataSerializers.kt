@@ -37,50 +37,42 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object SampledDataSerializer : KSerializer<SampledData> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SampledData") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("origin", lazyDescriptor { QuantitySerializer.descriptor })
-      optionalElement("interval", FhirDecimalSerializer.descriptor)
-      optionalElement("_interval", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("intervalUnit", KotlinString.serializer().descriptor)
-      optionalElement("_intervalUnit", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("lowerLimit", FhirDecimalSerializer.descriptor)
-      optionalElement("_lowerLimit", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("upperLimit", FhirDecimalSerializer.descriptor)
-      optionalElement("_upperLimit", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("dimensions", Int.serializer().descriptor)
-      optionalElement("_dimensions", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("codeMap", KotlinString.serializer().descriptor)
-      optionalElement("_codeMap", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("offsets", KotlinString.serializer().descriptor)
-      optionalElement("_offsets", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("data", KotlinString.serializer().descriptor)
-      optionalElement("_data", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object SampledDataSerializer : FhirSerializer<SampledData> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SampledData", this)
 
-  internal val listSerializer: KSerializer<List<SampledData>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<SampledData>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.optionalElement("origin", lazyDescriptor(LazyDescriptorId.QuantitySerializer))
+    b.prim("interval", FhirDecimalSerializer.descriptor)
+    b.strPrim("intervalUnit")
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.prim("lowerLimit", FhirDecimalSerializer.descriptor)
+    b.prim("upperLimit", FhirDecimalSerializer.descriptor)
+    b.intPrim("dimensions")
+    b.strPrim("codeMap")
+    b.strPrim("offsets")
+    b.strPrim("data")
+  }
 
   override fun deserialize(decoder: Decoder): SampledData {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -232,27 +224,20 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SampledData: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SampledData(
       id = id,
-      extension = extension ?: listOf(),
-      origin =
-        origin ?: throw SerializationException("Missing required property 'origin' on SampledData"),
+      extension = listOrEmpty(extension),
+      origin = required(origin, "SampledData", "origin"),
       interval = Decimal.of(interval, _interval),
-      intervalUnit =
-        Code.of(intervalUnit, _intervalUnit)
-          ?: throw SerializationException(
-            "Missing required property 'intervalUnit' on SampledData"
-          ),
+      intervalUnit = required(Code.of(intervalUnit, _intervalUnit), "SampledData", "intervalUnit"),
       factor = Decimal.of(factor, _factor),
       lowerLimit = Decimal.of(lowerLimit, _lowerLimit),
       upperLimit = Decimal.of(upperLimit, _upperLimit),
-      dimensions =
-        PositiveInt.of(dimensions, _dimensions)
-          ?: throw SerializationException("Missing required property 'dimensions' on SampledData"),
+      dimensions = required(PositiveInt.of(dimensions, _dimensions), "SampledData", "dimensions"),
       codeMap = Canonical.of(codeMap, _codeMap),
       offsets = R5String.of(offsets, _offsets),
       `data` = R5String.of(`data`, _data),
@@ -260,15 +245,15 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
   }
 
   override fun serialize(encoder: Encoder, `value`: SampledData) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 2, QuantitySerializer, value.origin)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,

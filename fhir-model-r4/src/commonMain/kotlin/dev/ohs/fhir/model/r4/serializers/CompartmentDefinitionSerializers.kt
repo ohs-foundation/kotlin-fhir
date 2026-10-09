@@ -49,14 +49,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -64,29 +62,29 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object CompartmentDefinitionResourceSerializer :
-  KSerializer<CompartmentDefinition.Resource> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Resource") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("param", stringNullableListSerializer.descriptor)
-      optionalElement("_param", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("documentation", KotlinString.serializer().descriptor)
-      optionalElement("_documentation", ElementSerializer.descriptor)
-    }
+  FhirSerializer<CompartmentDefinition.Resource> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Resource", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<CompartmentDefinition.Resource>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrimList("param")
+    b.strPrim("documentation")
+  }
+
   override fun deserialize(decoder: Decoder): CompartmentDefinition.Resource {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var code: KotlinString? = null
+    var code: ResourceType? = null
     var _code: Element? = null
     var `param`: List<KotlinString?>? = null
     var _param: List<Element?>? = null
@@ -111,7 +109,7 @@ internal object CompartmentDefinitionResourceSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> code = ResourceType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _code =
             compositeDecoder.decodeNullableSerializableElement(
@@ -146,50 +144,47 @@ internal object CompartmentDefinitionResourceSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Resource: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val param_ =
+      List(maxSize(`param`, _param)) { index ->
+        entryRequired(
+          R4String.of(at(`param`, index), at(_param, index)),
+          "CompartmentDefinition.Resource",
+          "param",
+        )
+      }
     return CompartmentDefinition.Resource(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        Enumeration.of(if (code != null) ResourceType.fromCode(code) else null, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on CompartmentDefinition.Resource"
-          ),
-      `param` =
-        (kotlin.collections.List(maxOf(`param`?.size ?: 0, _param?.size ?: 0)) { index ->
-          R4String.of(`param`?.getOrNull(index), _param?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'param' on CompartmentDefinition.Resource has neither a value nor an id/extension"
-            )
-        }),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(Enumeration.of(code, _code), "CompartmentDefinition.Resource", "code"),
+      `param` = param_,
       documentation = R4String.of(documentation, _documentation),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: CompartmentDefinition.Resource) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
-    if (value.`param`.isNotEmpty()) {
+    if (!value.`param`.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -208,43 +203,30 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
   override val descriptor: SerialDescriptor = buildResourceDescriptor("CompartmentDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("url")
+    b.strPrim("version")
+    b.strPrim("name")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
-    b.optionalElement("purpose", KotlinString.serializer().descriptor)
-    b.optionalElement("_purpose", ElementSerializer.descriptor)
-    b.optionalElement("code", KotlinString.serializer().descriptor)
-    b.optionalElement("_code", ElementSerializer.descriptor)
-    b.optionalElement("search", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_search", ElementSerializer.descriptor)
+    b.strPrim("purpose")
+    b.strPrim("code")
+    b.boolPrim("search")
     b.optionalElement("resource", CompartmentDefinitionResourceSerializer.listSerializer.descriptor)
   }
 
@@ -269,11 +251,11 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
     var _version: Element? = null
     var name: KotlinString? = null
     var _name: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -283,7 +265,7 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
     var useContext: List<UsageContext>? = null
     var purpose: KotlinString? = null
     var _purpose: Element? = null
-    var code: KotlinString? = null
+    var code: CompartmentType? = null
     var _code: Element? = null
     var search: KotlinBoolean? = null
     var _search: Element? = null
@@ -374,7 +356,8 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
               ElementSerializer,
               null,
             )
-        16 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        16 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -392,7 +375,7 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
               ElementSerializer,
               null,
             )
-        20 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        20 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -444,7 +427,7 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
               ElementSerializer,
               null,
             )
-        30 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        30 -> code = CompartmentType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         31 ->
           _code =
             compositeDecoder.decodeNullableSerializableElement(
@@ -470,8 +453,7 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
               CompartmentDefinitionResourceSerializer.listSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding CompartmentDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return CompartmentDefinition(
@@ -480,43 +462,23 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      url =
-        Uri.of(url, _url)
-          ?: throw SerializationException(
-            "Missing required property 'url' on CompartmentDefinition"
-          ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      url = required(Uri.of(url, _url), "CompartmentDefinition", "url"),
       version = R4String.of(version, _version),
-      name =
-        R4String.of(name, _name)
-          ?: throw SerializationException(
-            "Missing required property 'name' on CompartmentDefinition"
-          ),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on CompartmentDefinition"
-          ),
+      name = required(R4String.of(name, _name), "CompartmentDefinition", "name"),
+      status = required(Enumeration.of(status, _status), "CompartmentDefinition", "status"),
       experimental = R4Boolean.of(experimental, _experimental),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R4String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
+      useContext = listOrEmpty(useContext),
       purpose = Markdown.of(purpose, _purpose),
-      code =
-        Enumeration.of(if (code != null) CompartmentType.fromCode(code) else null, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on CompartmentDefinition"
-          ),
-      search =
-        R4Boolean.of(search, _search)
-          ?: throw SerializationException(
-            "Missing required property 'search' on CompartmentDefinition"
-          ),
-      resource = resource ?: listOf(),
+      code = required(Enumeration.of(code, _code), "CompartmentDefinition", "code"),
+      search = required(R4Boolean.of(search, _search), "CompartmentDefinition", "search"),
+      resource = listOrEmpty(resource),
     )
   }
 
@@ -547,27 +509,24 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
     compositeEncoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, value.version?.value)
@@ -598,26 +557,24 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       25 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.purpose?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.purpose)
     compositeEncoder.encodeStringIfNotNull(
@@ -628,12 +585,11 @@ internal object CompartmentDefinitionSerializer : FhirResourceSerializer<Compart
     compositeEncoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.code)
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 32 + descriptorOffset, value.search.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.search)
-    if (value.resource.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        CompartmentDefinitionResourceSerializer.listSerializer,
-        value.resource,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      CompartmentDefinitionResourceSerializer.listSerializer,
+      value.resource,
+    )
   }
 }

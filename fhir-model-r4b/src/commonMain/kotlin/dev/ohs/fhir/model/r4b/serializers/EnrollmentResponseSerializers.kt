@@ -46,8 +46,6 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -58,29 +56,23 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
   override val descriptor: SerialDescriptor = buildResourceDescriptor("EnrollmentResponse")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("request", ReferenceSerializer.descriptor)
-    b.optionalElement("outcome", KotlinString.serializer().descriptor)
-    b.optionalElement("_outcome", ElementSerializer.descriptor)
-    b.optionalElement("disposition", KotlinString.serializer().descriptor)
-    b.optionalElement("_disposition", ElementSerializer.descriptor)
-    b.optionalElement("created", KotlinString.serializer().descriptor)
-    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.strPrim("outcome")
+    b.strPrim("disposition")
+    b.strPrim("created")
     b.optionalElement("organization", ReferenceSerializer.descriptor)
     b.optionalElement("requestProvider", ReferenceSerializer.descriptor)
   }
@@ -101,14 +93,14 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: FinancialResourceStatusCodes? = null
     var _status: Element? = null
     var request: Reference? = null
-    var outcome: KotlinString? = null
+    var outcome: RemittanceOutcome? = null
     var _outcome: Element? = null
     var disposition: KotlinString? = null
     var _disposition: Element? = null
-    var created: KotlinString? = null
+    var created: FhirDateTime? = null
     var _created: Element? = null
     var organization: Reference? = null
     var requestProvider: Reference? = null
@@ -179,7 +171,11 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status =
+            FinancialResourceStatusCodes.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -196,7 +192,8 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
               ReferenceSerializer,
               null,
             )
-        14 -> outcome = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          outcome = RemittanceOutcome.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _outcome =
             compositeDecoder.decodeNullableSerializableElement(
@@ -214,7 +211,7 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
               ElementSerializer,
               null,
             )
-        18 -> created = compositeDecoder.decodeStringElement(descriptor, i)
+        18 -> created = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _created =
             compositeDecoder.decodeNullableSerializableElement(
@@ -239,7 +236,7 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
               ReferenceSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding EnrollmentResponse: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return EnrollmentResponse(
@@ -248,24 +245,15 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
-          _status,
-        ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = Enumeration.of(status, _status),
       request = request,
-      outcome =
-        Enumeration.of(
-          if (outcome != null) RemittanceOutcome.fromCode(outcome) else null,
-          _outcome,
-        ),
+      outcome = Enumeration.of(outcome, _outcome),
       disposition = R4bString.of(disposition, _disposition),
-      created =
-        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created),
+      created = DateTime.of(created, _created),
       organization = organization,
       requestProvider = requestProvider,
     )
@@ -298,34 +286,30 @@ internal object EnrollmentResponseSerializer : FhirResourceSerializer<Enrollment
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,

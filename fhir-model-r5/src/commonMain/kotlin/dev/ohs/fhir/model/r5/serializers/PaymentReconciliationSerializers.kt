@@ -52,14 +52,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -67,36 +65,36 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object PaymentReconciliationAllocationSerializer :
-  KSerializer<PaymentReconciliation.Allocation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Allocation") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.descriptor)
-      optionalElement("predecessor", IdentifierSerializer.descriptor)
-      optionalElement("target", ReferenceSerializer.descriptor)
-      optionalElement("targetItemString", KotlinString.serializer().descriptor)
-      optionalElement("_targetItemString", ElementSerializer.descriptor)
-      optionalElement("targetItemIdentifier", IdentifierSerializer.descriptor)
-      optionalElement("targetItemPositiveInt", Int.serializer().descriptor)
-      optionalElement("_targetItemPositiveInt", ElementSerializer.descriptor)
-      optionalElement("encounter", ReferenceSerializer.descriptor)
-      optionalElement("account", ReferenceSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("submitter", ReferenceSerializer.descriptor)
-      optionalElement("response", ReferenceSerializer.descriptor)
-      optionalElement("date", KotlinString.serializer().descriptor)
-      optionalElement("_date", ElementSerializer.descriptor)
-      optionalElement("responsible", ReferenceSerializer.descriptor)
-      optionalElement("payee", ReferenceSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-    }
+  FhirSerializer<PaymentReconciliation.Allocation> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Allocation", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<PaymentReconciliation.Allocation>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.descriptor)
+    b.optionalElement("predecessor", IdentifierSerializer.descriptor)
+    b.optionalElement("target", ReferenceSerializer.descriptor)
+    b.strPrim("targetItemString")
+    b.optionalElement("targetItemIdentifier", IdentifierSerializer.descriptor)
+    b.intPrim("targetItemPositiveInt")
+    b.optionalElement("encounter", ReferenceSerializer.descriptor)
+    b.optionalElement("account", ReferenceSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("submitter", ReferenceSerializer.descriptor)
+    b.optionalElement("response", ReferenceSerializer.descriptor)
+    b.strPrim("date")
+    b.optionalElement("responsible", ReferenceSerializer.descriptor)
+    b.optionalElement("payee", ReferenceSerializer.descriptor)
+    b.optionalElement("amount", MoneySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): PaymentReconciliation.Allocation {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -114,7 +112,7 @@ internal object PaymentReconciliationAllocationSerializer :
     var type: CodeableConcept? = null
     var submitter: Reference? = null
     var response: Reference? = null
-    var date: KotlinString? = null
+    var date: FhirDate? = null
     var _date: Element? = null
     var responsible: Reference? = null
     var payee: Reference? = null
@@ -228,7 +226,7 @@ internal object PaymentReconciliationAllocationSerializer :
               ReferenceSerializer,
               null,
             )
-        16 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        16 -> date = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -257,14 +255,14 @@ internal object PaymentReconciliationAllocationSerializer :
           amount =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Allocation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return PaymentReconciliation.Allocation(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       identifier = identifier,
       predecessor = predecessor,
       target = target,
@@ -279,7 +277,7 @@ internal object PaymentReconciliationAllocationSerializer :
       type = type,
       submitter = submitter,
       response = response,
-      date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
+      date = Date.of(date, _date),
       responsible = responsible,
       payee = payee,
       amount = amount,
@@ -287,22 +285,21 @@ internal object PaymentReconciliationAllocationSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: PaymentReconciliation.Allocation) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -375,27 +372,28 @@ internal object PaymentReconciliationAllocationSerializer :
 }
 
 internal object PaymentReconciliationProcessNoteSerializer :
-  KSerializer<PaymentReconciliation.ProcessNote> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ProcessNote") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
-    }
+  FhirSerializer<PaymentReconciliation.ProcessNote> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ProcessNote", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<PaymentReconciliation.ProcessNote>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("type")
+    b.strPrim("text")
+  }
+
   override fun deserialize(decoder: Decoder): PaymentReconciliation.ProcessNote {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: NoteType? = null
     var _type: Element? = null
     var text: KotlinString? = null
     var _text: Element? = null
@@ -418,7 +416,7 @@ internal object PaymentReconciliationProcessNoteSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> type = NoteType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -437,36 +435,35 @@ internal object PaymentReconciliationProcessNoteSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ProcessNote: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return PaymentReconciliation.ProcessNote(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = Enumeration.of(if (type != null) NoteType.fromCode(type) else null, _type),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = Enumeration.of(type, _type),
       text = R5String.of(text, _text),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: PaymentReconciliation.ProcessNote) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.type?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.text?.value)
@@ -479,52 +476,39 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
   override val descriptor: SerialDescriptor = buildResourceDescriptor("PaymentReconciliation")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("kind", CodeableConceptSerializer.descriptor)
     b.optionalElement("period", PeriodSerializer.descriptor)
-    b.optionalElement("created", KotlinString.serializer().descriptor)
-    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.strPrim("created")
     b.optionalElement("enterer", ReferenceSerializer.descriptor)
     b.optionalElement("issuerType", CodeableConceptSerializer.descriptor)
     b.optionalElement("paymentIssuer", ReferenceSerializer.descriptor)
     b.optionalElement("request", ReferenceSerializer.descriptor)
     b.optionalElement("requestor", ReferenceSerializer.descriptor)
-    b.optionalElement("outcome", KotlinString.serializer().descriptor)
-    b.optionalElement("_outcome", ElementSerializer.descriptor)
-    b.optionalElement("disposition", KotlinString.serializer().descriptor)
-    b.optionalElement("_disposition", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.strPrim("outcome")
+    b.strPrim("disposition")
+    b.strPrim("date")
     b.optionalElement("location", ReferenceSerializer.descriptor)
     b.optionalElement("method", CodeableConceptSerializer.descriptor)
-    b.optionalElement("cardBrand", KotlinString.serializer().descriptor)
-    b.optionalElement("_cardBrand", ElementSerializer.descriptor)
-    b.optionalElement("accountNumber", KotlinString.serializer().descriptor)
-    b.optionalElement("_accountNumber", ElementSerializer.descriptor)
-    b.optionalElement("expirationDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_expirationDate", ElementSerializer.descriptor)
-    b.optionalElement("processor", KotlinString.serializer().descriptor)
-    b.optionalElement("_processor", ElementSerializer.descriptor)
-    b.optionalElement("referenceNumber", KotlinString.serializer().descriptor)
-    b.optionalElement("_referenceNumber", ElementSerializer.descriptor)
-    b.optionalElement("authorization", KotlinString.serializer().descriptor)
-    b.optionalElement("_authorization", ElementSerializer.descriptor)
+    b.strPrim("cardBrand")
+    b.strPrim("accountNumber")
+    b.strPrim("expirationDate")
+    b.strPrim("processor")
+    b.strPrim("referenceNumber")
+    b.strPrim("authorization")
     b.optionalElement("tenderedAmount", MoneySerializer.descriptor)
     b.optionalElement("returnedAmount", MoneySerializer.descriptor)
     b.optionalElement("amount", MoneySerializer.descriptor)
@@ -557,22 +541,22 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
     var type: CodeableConcept? = null
-    var status: KotlinString? = null
+    var status: FinancialResourceStatusCodes? = null
     var _status: Element? = null
     var kind: CodeableConcept? = null
     var period: Period? = null
-    var created: KotlinString? = null
+    var created: FhirDateTime? = null
     var _created: Element? = null
     var enterer: Reference? = null
     var issuerType: CodeableConcept? = null
     var paymentIssuer: Reference? = null
     var request: Reference? = null
     var requestor: Reference? = null
-    var outcome: KotlinString? = null
+    var outcome: PaymentOutcome? = null
     var _outcome: Element? = null
     var disposition: KotlinString? = null
     var _disposition: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDate? = null
     var _date: Element? = null
     var location: Reference? = null
     var method: CodeableConcept? = null
@@ -580,7 +564,7 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
     var _cardBrand: Element? = null
     var accountNumber: KotlinString? = null
     var _accountNumber: Element? = null
-    var expirationDate: KotlinString? = null
+    var expirationDate: FhirDate? = null
     var _expirationDate: Element? = null
     var processor: KotlinString? = null
     var _processor: Element? = null
@@ -670,7 +654,11 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
               CodeableConceptSerializer,
               null,
             )
-        12 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          status =
+            FinancialResourceStatusCodes.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         13 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -695,7 +683,7 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
               PeriodSerializer,
               null,
             )
-        16 -> created = compositeDecoder.decodeStringElement(descriptor, i)
+        16 -> created = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _created =
             compositeDecoder.decodeNullableSerializableElement(
@@ -744,7 +732,7 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
               ReferenceSerializer,
               null,
             )
-        23 -> outcome = compositeDecoder.decodeStringElement(descriptor, i)
+        23 -> outcome = PaymentOutcome.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _outcome =
             compositeDecoder.decodeNullableSerializableElement(
@@ -762,7 +750,7 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
               ElementSerializer,
               null,
             )
-        27 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        27 -> date = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         28 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -805,7 +793,8 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
               ElementSerializer,
               null,
             )
-        35 -> expirationDate = compositeDecoder.decodeStringElement(descriptor, i)
+        35 ->
+          expirationDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         36 ->
           _expirationDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -882,8 +871,7 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
               PaymentReconciliationProcessNoteSerializer.listSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding PaymentReconciliation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return PaymentReconciliation(
@@ -892,66 +880,38 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on PaymentReconciliation"
-          ),
-      status =
-        Enumeration.of(
-          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
-          _status,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'status' on PaymentReconciliation"
-          ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      type = required(type, "PaymentReconciliation", "type"),
+      status = required(Enumeration.of(status, _status), "PaymentReconciliation", "status"),
       kind = kind,
       period = period,
-      created =
-        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created)
-          ?: throw SerializationException(
-            "Missing required property 'created' on PaymentReconciliation"
-          ),
+      created = required(DateTime.of(created, _created), "PaymentReconciliation", "created"),
       enterer = enterer,
       issuerType = issuerType,
       paymentIssuer = paymentIssuer,
       request = request,
       requestor = requestor,
-      outcome =
-        Enumeration.of(if (outcome != null) PaymentOutcome.fromCode(outcome) else null, _outcome),
+      outcome = Enumeration.of(outcome, _outcome),
       disposition = R5String.of(disposition, _disposition),
-      date =
-        Date.of(if (date != null) FhirDate.fromString(date) else null, _date)
-          ?: throw SerializationException(
-            "Missing required property 'date' on PaymentReconciliation"
-          ),
+      date = required(Date.of(date, _date), "PaymentReconciliation", "date"),
       location = location,
       method = method,
       cardBrand = R5String.of(cardBrand, _cardBrand),
       accountNumber = R5String.of(accountNumber, _accountNumber),
-      expirationDate =
-        Date.of(
-          if (expirationDate != null) FhirDate.fromString(expirationDate) else null,
-          _expirationDate,
-        ),
+      expirationDate = Date.of(expirationDate, _expirationDate),
       processor = R5String.of(processor, _processor),
       referenceNumber = R5String.of(referenceNumber, _referenceNumber),
       authorization = R5String.of(authorization, _authorization),
       tenderedAmount = tenderedAmount,
       returnedAmount = returnedAmount,
-      amount =
-        amount
-          ?: throw SerializationException(
-            "Missing required property 'amount' on PaymentReconciliation"
-          ),
+      amount = required(amount, "PaymentReconciliation", "amount"),
       paymentIdentifier = paymentIdentifier,
-      allocation = allocation ?: listOf(),
+      allocation = listOrEmpty(allocation),
       formCode = formCode,
-      processNote = processNote ?: listOf(),
+      processNote = listOrEmpty(processNote),
     )
   }
 
@@ -982,34 +942,30 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       11 + descriptorOffset,
@@ -1164,25 +1120,23 @@ internal object PaymentReconciliationSerializer : FhirResourceSerializer<Payment
       IdentifierSerializer,
       value.paymentIdentifier,
     )
-    if (value.allocation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        47 + descriptorOffset,
-        PaymentReconciliationAllocationSerializer.listSerializer,
-        value.allocation,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      47 + descriptorOffset,
+      PaymentReconciliationAllocationSerializer.listSerializer,
+      value.allocation,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       48 + descriptorOffset,
       CodeableConceptSerializer,
       value.formCode,
     )
-    if (value.processNote.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        49 + descriptorOffset,
-        PaymentReconciliationProcessNoteSerializer.listSerializer,
-        value.processNote,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      49 + descriptorOffset,
+      PaymentReconciliationProcessNoteSerializer.listSerializer,
+      value.processNote,
+    )
   }
 }

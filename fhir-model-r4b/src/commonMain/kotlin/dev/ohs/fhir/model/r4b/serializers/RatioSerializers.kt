@@ -29,33 +29,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object RatioSerializer : KSerializer<Ratio> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Ratio") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("numerator", lazyDescriptor { QuantitySerializer.descriptor })
-      optionalElement("denominator", lazyDescriptor { QuantitySerializer.descriptor })
-    }
+internal object RatioSerializer : FhirSerializer<Ratio> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Ratio", this)
 
-  internal val listSerializer: KSerializer<List<Ratio>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Ratio>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.optionalElement("numerator", lazyDescriptor(LazyDescriptorId.QuantitySerializer))
+    b.optionalElement("denominator", lazyDescriptor(LazyDescriptorId.QuantitySerializer))
+  }
 
   override fun deserialize(decoder: Decoder): Ratio {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -89,28 +90,28 @@ internal object RatioSerializer : KSerializer<Ratio> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Ratio: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Ratio(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       numerator = numerator,
       denominator = denominator,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Ratio) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 2, QuantitySerializer, value.numerator)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,

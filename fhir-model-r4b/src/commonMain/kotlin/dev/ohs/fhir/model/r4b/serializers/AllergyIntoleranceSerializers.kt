@@ -52,41 +52,39 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntolerance.Reaction> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Reaction") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("substance", CodeableConceptSerializer.descriptor)
-      optionalElement("manifestation", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("onset", KotlinString.serializer().descriptor)
-      optionalElement("_onset", ElementSerializer.descriptor)
-      optionalElement("severity", KotlinString.serializer().descriptor)
-      optionalElement("_severity", ElementSerializer.descriptor)
-      optionalElement("exposureRoute", CodeableConceptSerializer.descriptor)
-      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
-    }
+internal object AllergyIntoleranceReactionSerializer : FhirSerializer<AllergyIntolerance.Reaction> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Reaction", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<AllergyIntolerance.Reaction>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("substance", CodeableConceptSerializer.descriptor)
+    b.optionalElement("manifestation", CodeableConceptSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.strPrim("onset")
+    b.strPrim("severity")
+    b.optionalElement("exposureRoute", CodeableConceptSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): AllergyIntolerance.Reaction {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -95,9 +93,9 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
     var manifestation: List<CodeableConcept>? = null
     var description: KotlinString? = null
     var _description: Element? = null
-    var onset: KotlinString? = null
+    var onset: FhirDateTime? = null
     var _onset: Element? = null
-    var severity: KotlinString? = null
+    var severity: AllergyIntoleranceSeverity? = null
     var _severity: Element? = null
     var exposureRoute: CodeableConcept? = null
     var note: List<Annotation>? = null
@@ -145,7 +143,7 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
               ElementSerializer,
               null,
             )
-        7 -> onset = compositeDecoder.decodeStringElement(descriptor, i)
+        7 -> onset = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _onset =
             compositeDecoder.decodeNullableSerializableElement(
@@ -154,7 +152,9 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
               ElementSerializer,
               null,
             )
-        9 -> severity = compositeDecoder.decodeStringElement(descriptor, i)
+        9 ->
+          severity =
+            AllergyIntoleranceSeverity.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         10 ->
           _severity =
             compositeDecoder.decodeNullableSerializableElement(
@@ -180,58 +180,52 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Reaction: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return AllergyIntolerance.Reaction(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       substance = substance,
-      manifestation = manifestation ?: listOf(),
+      manifestation = listOrEmpty(manifestation),
       description = R4bString.of(description, _description),
-      onset = DateTime.of(if (onset != null) FhirDateTime.fromString(onset) else null, _onset),
-      severity =
-        Enumeration.of(
-          if (severity != null) AllergyIntoleranceSeverity.fromCode(severity) else null,
-          _severity,
-        ),
+      onset = DateTime.of(onset, _onset),
+      severity = Enumeration.of(severity, _severity),
       exposureRoute = exposureRoute,
-      note = note ?: listOf(),
+      note = listOrEmpty(note),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: AllergyIntolerance.Reaction) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.substance,
     )
-    if (value.manifestation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.manifestation,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.manifestation,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.description)
     compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.onset?.value?.toString())
@@ -244,13 +238,12 @@ internal object AllergyIntoleranceReactionSerializer : KSerializer<AllergyIntole
       CodeableConceptSerializer,
       value.exposureRoute,
     )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -259,44 +252,35 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
   override val descriptor: SerialDescriptor = buildResourceDescriptor("AllergyIntolerance")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("clinicalStatus", CodeableConceptSerializer.descriptor)
     b.optionalElement("verificationStatus", CodeableConceptSerializer.descriptor)
-    b.optionalElement("type", KotlinString.serializer().descriptor)
-    b.optionalElement("_type", ElementSerializer.descriptor)
-    b.optionalElement("category", stringNullableListSerializer.descriptor)
-    b.optionalElement("_category", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("criticality", KotlinString.serializer().descriptor)
-    b.optionalElement("_criticality", ElementSerializer.descriptor)
+    b.strPrim("type")
+    b.strPrimList("category")
+    b.strPrim("criticality")
     b.optionalElement("code", CodeableConceptSerializer.descriptor)
     b.optionalElement("patient", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("onsetDateTime", KotlinString.serializer().descriptor)
-    b.optionalElement("_onsetDateTime", ElementSerializer.descriptor)
+    b.strPrim("onsetDateTime")
     b.optionalElement("onsetAge", AgeSerializer.descriptor)
     b.optionalElement("onsetPeriod", PeriodSerializer.descriptor)
     b.optionalElement("onsetRange", RangeSerializer.descriptor)
-    b.optionalElement("onsetString", KotlinString.serializer().descriptor)
-    b.optionalElement("_onsetString", ElementSerializer.descriptor)
-    b.optionalElement("recordedDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_recordedDate", ElementSerializer.descriptor)
+    b.strPrim("onsetString")
+    b.strPrim("recordedDate")
     b.optionalElement("recorder", ReferenceSerializer.descriptor)
     b.optionalElement("asserter", ReferenceSerializer.descriptor)
-    b.optionalElement("lastOccurrence", KotlinString.serializer().descriptor)
-    b.optionalElement("_lastOccurrence", ElementSerializer.descriptor)
+    b.strPrim("lastOccurrence")
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
     b.optionalElement("reaction", AllergyIntoleranceReactionSerializer.listSerializer.descriptor)
   }
@@ -319,27 +303,27 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
     var identifier: List<Identifier>? = null
     var clinicalStatus: CodeableConcept? = null
     var verificationStatus: CodeableConcept? = null
-    var type: KotlinString? = null
+    var type: AllergyIntoleranceType? = null
     var _type: Element? = null
     var category: List<KotlinString?>? = null
     var _category: List<Element?>? = null
-    var criticality: KotlinString? = null
+    var criticality: AllergyIntoleranceCriticality? = null
     var _criticality: Element? = null
     var code: CodeableConcept? = null
     var patient: Reference? = null
     var encounter: Reference? = null
-    var onsetDateTime: KotlinString? = null
+    var onsetDateTime: FhirDateTime? = null
     var _onsetDateTime: Element? = null
     var onsetAge: Age? = null
     var onsetPeriod: Period? = null
     var onsetRange: Range? = null
     var onsetString: KotlinString? = null
     var _onsetString: Element? = null
-    var recordedDate: KotlinString? = null
+    var recordedDate: FhirDateTime? = null
     var _recordedDate: Element? = null
     var recorder: Reference? = null
     var asserter: Reference? = null
-    var lastOccurrence: KotlinString? = null
+    var lastOccurrence: FhirDateTime? = null
     var _lastOccurrence: Element? = null
     var note: List<Annotation>? = null
     var reaction: List<AllergyIntolerance.Reaction>? = null
@@ -426,7 +410,9 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
               CodeableConceptSerializer,
               null,
             )
-        13 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          type =
+            AllergyIntoleranceType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -451,7 +437,11 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
               ElementSerializer.nullableListSerializer,
               null,
             )
-        17 -> criticality = compositeDecoder.decodeStringElement(descriptor, i)
+        17 ->
+          criticality =
+            AllergyIntoleranceCriticality.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         18 ->
           _criticality =
             compositeDecoder.decodeNullableSerializableElement(
@@ -484,7 +474,9 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
               ReferenceSerializer,
               null,
             )
-        22 -> onsetDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        22 ->
+          onsetDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         23 ->
           _onsetDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -516,7 +508,9 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
               ElementSerializer,
               null,
             )
-        29 -> recordedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        29 ->
+          recordedDate =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         30 ->
           _recordedDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -541,7 +535,9 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
               ReferenceSerializer,
               null,
             )
-        33 -> lastOccurrence = compositeDecoder.decodeStringElement(descriptor, i)
+        33 ->
+          lastOccurrence =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         34 ->
           _lastOccurrence =
             compositeDecoder.decodeNullableSerializableElement(
@@ -566,70 +562,52 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
               AllergyIntoleranceReactionSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding AllergyIntolerance: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val category_ =
+      List(maxSize(category, _category)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(category, index)?.let { AllergyIntoleranceCategory.fromCode(it) },
+            at(_category, index),
+          ),
+          "AllergyIntolerance",
+          "category",
+        )
+      }
     return AllergyIntolerance(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       clinicalStatus = clinicalStatus,
       verificationStatus = verificationStatus,
-      type =
-        Enumeration.of(if (type != null) AllergyIntoleranceType.fromCode(type) else null, _type),
-      category =
-        (kotlin.collections.List(maxOf(category?.size ?: 0, _category?.size ?: 0)) { index ->
-          Enumeration.of(
-            category?.getOrNull(index)?.let { AllergyIntoleranceCategory.fromCode(it) },
-            _category?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'category' on AllergyIntolerance has neither a value nor an id/extension"
-            )
-        }),
-      criticality =
-        Enumeration.of(
-          if (criticality != null) AllergyIntoleranceCriticality.fromCode(criticality) else null,
-          _criticality,
-        ),
+      type = Enumeration.of(type, _type),
+      category = category_,
+      criticality = Enumeration.of(criticality, _criticality),
       code = code,
-      patient =
-        patient
-          ?: throw SerializationException(
-            "Missing required property 'patient' on AllergyIntolerance"
-          ),
+      patient = required(patient, "AllergyIntolerance", "patient"),
       encounter = encounter,
       onset =
         AllergyIntolerance.Onset.from(
-          DateTime.of(
-            if (onsetDateTime != null) FhirDateTime.fromString(onsetDateTime) else null,
-            _onsetDateTime,
-          ),
+          DateTime.of(onsetDateTime, _onsetDateTime),
           onsetAge,
           onsetPeriod,
           onsetRange,
           R4bString.of(onsetString, _onsetString),
         ),
-      recordedDate =
-        DateTime.of(
-          if (recordedDate != null) FhirDateTime.fromString(recordedDate) else null,
-          _recordedDate,
-        ),
+      recordedDate = DateTime.of(recordedDate, _recordedDate),
       recorder = recorder,
       asserter = asserter,
-      lastOccurrence =
-        DateTime.of(
-          if (lastOccurrence != null) FhirDateTime.fromString(lastOccurrence) else null,
-          _lastOccurrence,
-        ),
-      note = note ?: listOf(),
-      reaction = reaction ?: listOf(),
+      lastOccurrence = DateTime.of(lastOccurrence, _lastOccurrence),
+      note = listOrEmpty(note),
+      reaction = listOrEmpty(reaction),
     )
   }
 
@@ -660,34 +638,30 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -706,7 +680,7 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
       value.type?.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.type)
-    if (value.category.isNotEmpty()) {
+    if (!value.category.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         15 + descriptorOffset,
@@ -806,19 +780,17 @@ internal object AllergyIntoleranceSerializer : FhirResourceSerializer<AllergyInt
       value.lastOccurrence?.value?.toString(),
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 34 + descriptorOffset, value.lastOccurrence)
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.reaction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        36 + descriptorOffset,
-        AllergyIntoleranceReactionSerializer.listSerializer,
-        value.reaction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      36 + descriptorOffset,
+      AllergyIntoleranceReactionSerializer.listSerializer,
+      value.reaction,
+    )
   }
 }

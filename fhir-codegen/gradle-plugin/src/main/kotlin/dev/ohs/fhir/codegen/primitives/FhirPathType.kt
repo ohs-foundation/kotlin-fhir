@@ -44,22 +44,6 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
 
     override fun getWireType(packageName: String) = Boolean::class.asClassName()
 
-    override fun addCodeToDecodeWirePropertyToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      propertyName: String,
-    ) {
-      codeBlock.add("%N", propertyName)
-    }
-
-    override fun addCodeToDecodeWireVarToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      varName: String,
-    ) {
-      codeBlock.add("%L", varName)
-    }
-
     override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
     }
@@ -72,22 +56,6 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
 
     override fun getWireType(packageName: String) = Int::class.asClassName()
 
-    override fun addCodeToDecodeWirePropertyToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      propertyName: String,
-    ) {
-      codeBlock.add("%N", propertyName)
-    }
-
-    override fun addCodeToDecodeWireVarToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      varName: String,
-    ) {
-      codeBlock.add("%L", varName)
-    }
-
     override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
     }
@@ -97,18 +65,18 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
 
     override fun getWireType(packageName: String) = String::class.asClassName()
 
-    override fun addCodeToDecodeWirePropertyToModel(
+    override fun addCodeToDecodeWireElementToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      propertyName: String,
+      wireExpression: CodeBlock,
     ) {
-      codeBlock.add("%N?.toLong()", propertyName)
+      codeBlock.add("%L.toLong()", wireExpression)
     }
 
     override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      varName: String,
+      varName: CodeBlock,
     ) {
       codeBlock.add("%L?.toLong()", varName)
     }
@@ -121,22 +89,6 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
     override fun getDataModelType(packageName: String) = ClassName(packageName, "FhirDecimal")
 
     override fun getWireType(packageName: String) = ClassName(packageName, "FhirDecimal")
-
-    override fun addCodeToDecodeWirePropertyToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      propertyName: String,
-    ) {
-      codeBlock.add("%N", propertyName)
-    }
-
-    override fun addCodeToDecodeWireVarToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      varName: String,
-    ) {
-      codeBlock.add("%L", varName)
-    }
 
     override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
@@ -163,22 +115,6 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
 
     override fun getWireType(packageName: String) = String::class.asClassName()
 
-    override fun addCodeToDecodeWirePropertyToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      propertyName: String,
-    ) {
-      codeBlock.add("%N", propertyName)
-    }
-
-    override fun addCodeToDecodeWireVarToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      varName: String,
-    ) {
-      codeBlock.add("%L", varName)
-    }
-
     override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
     }
@@ -188,23 +124,18 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
 
     override fun getWireType(packageName: String) = String::class.asClassName()
 
-    override fun addCodeToDecodeWirePropertyToModel(
+    override fun addCodeToDecodeWireElementToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      propertyName: String,
+      wireExpression: CodeBlock,
     ) {
-      codeBlock.add(
-        "if (%N != null) %T.fromString(%N) else null",
-        propertyName,
-        getDataModelType(packageName),
-        propertyName,
-      )
+      codeBlock.add("%T.fromString(%L)", getDataModelType(packageName), wireExpression)
     }
 
     override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      varName: String,
+      varName: CodeBlock,
     ) {
       codeBlock.add("%L?.let { %T.fromString(it) }", varName, getDataModelType(packageName))
     }
@@ -218,22 +149,6 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
 
     override fun getWireType(packageName: String) = LocalTime::class.asClassName()
 
-    override fun addCodeToDecodeWirePropertyToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      propertyName: String,
-    ) {
-      codeBlock.add("%N", propertyName)
-    }
-
-    override fun addCodeToDecodeWireVarToModel(
-      codeBlock: CodeBlock.Builder,
-      packageName: String,
-      varName: String,
-    ) {
-      codeBlock.add("%L", varName)
-    }
-
     override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
     }
@@ -246,23 +161,18 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
 
     override fun getWireType(packageName: String) = String::class.asClassName()
 
-    override fun addCodeToDecodeWirePropertyToModel(
+    override fun addCodeToDecodeWireElementToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      propertyName: String,
+      wireExpression: CodeBlock,
     ) {
-      codeBlock.add(
-        "if (%N != null) %T.fromString(%N) else null",
-        propertyName,
-        getDataModelType(packageName),
-        propertyName,
-      )
+      codeBlock.add("%T.fromString(%L)", getDataModelType(packageName), wireExpression)
     }
 
     override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      varName: String,
+      varName: CodeBlock,
     ) {
       codeBlock.add("%L?.let { %T.fromString(it) }", varName, getDataModelType(packageName))
     }
@@ -286,25 +196,46 @@ enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>) {
   abstract fun getWireType(packageName: String): ClassName
 
   /**
-   * Appends code to convert a decoded wire-shaped property of this [FhirPathType] to the model
-   * value type. For example, `boolean` emits `elementName`; `integer64` (string on the wire) emits
-   * `elementName?.toLong()`.
+   * Appends code to convert a single decoded wire element (e.g. the result of
+   * `decodeStringElement(...)`) to the model value type at the point where it is read. For example,
+   * `dateTime` wraps the expression in `FhirDateTime.fromString(...)` and `integer64` (string on
+   * the wire) appends `.toLong()`. Doing the conversion in the decode `when` branch keeps the
+   * per-field local already model-typed, so [addCodeToDecodeWirePropertyToModel] is branch-free.
    */
-  abstract fun addCodeToDecodeWirePropertyToModel(
+  open fun addCodeToDecodeWireElementToModel(
+    codeBlock: CodeBlock.Builder,
+    packageName: String,
+    wireExpression: CodeBlock,
+  ) {
+    codeBlock.add("%L", wireExpression)
+  }
+
+  /**
+   * Appends code to reference a decoded property local of this [FhirPathType]. The local is already
+   * model-typed (see [addCodeToDecodeWireElementToModel]), so this is always a plain `%N`
+   * reference; it is kept as a hook for wire types that would need a different conversion.
+   */
+  open fun addCodeToDecodeWirePropertyToModel(
     codeBlock: CodeBlock.Builder,
     packageName: String,
     propertyName: String,
-  )
+  ) {
+    codeBlock.add("%N", propertyName)
+  }
 
   /**
-   * Same as [addCodeToDecodeWirePropertyToModel] but takes a literal var name instead of a
-   * kotlinpoet name token — used inside generated lambdas where `%N` would re-quote.
+   * Appends code to convert a *nullable wire-typed* expression (e.g. `at(given, index)`, read from
+   * a hoisted repeating-primitive list) to the model type. Unlike
+   * [addCodeToDecodeWirePropertyToModel], the expression has not been converted yet, so wire types
+   * such as `dateTime` and `integer64` apply their conversion here via `?.let`.
    */
-  abstract fun addCodeToDecodeWireVarToModel(
+  open fun addCodeToDecodeWireVarToModel(
     codeBlock: CodeBlock.Builder,
     packageName: String,
-    varName: String,
-  )
+    varName: CodeBlock,
+  ) {
+    codeBlock.add("%L", varName)
+  }
 
   /**
    * Appends code to convert a model value of this [FhirPathType] back to its wire form. For

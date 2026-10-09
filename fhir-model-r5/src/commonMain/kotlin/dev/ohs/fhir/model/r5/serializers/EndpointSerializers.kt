@@ -46,34 +46,33 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object EndpointPayloadSerializer : KSerializer<Endpoint.Payload> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Payload") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("mimeType", stringNullableListSerializer.descriptor)
-      optionalElement("_mimeType", ElementSerializer.nullableListSerializer.descriptor)
-    }
+internal object EndpointPayloadSerializer : FhirSerializer<Endpoint.Payload> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Payload", this)
 
-  internal val listSerializer: KSerializer<List<Endpoint.Payload>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Endpoint.Payload>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.strPrimList("mimeType")
+  }
 
   override fun deserialize(decoder: Decoder): Endpoint.Payload {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -125,50 +124,50 @@ internal object EndpointPayloadSerializer : KSerializer<Endpoint.Payload> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Payload: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val mimeType_ =
+      List(maxSize(mimeType, _mimeType)) { index ->
+        entryRequired(
+          Code.of(at(mimeType, index), at(_mimeType, index)),
+          "Endpoint.Payload",
+          "mimeType",
+        )
+      }
     return Endpoint.Payload(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = type ?: listOf(),
-      mimeType =
-        (kotlin.collections.List(maxOf(mimeType?.size ?: 0, _mimeType?.size ?: 0)) { index ->
-          Code.of(mimeType?.getOrNull(index), _mimeType?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'mimeType' on Endpoint.Payload has neither a value nor an id/extension"
-            )
-        }),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = listOrEmpty(type),
+      mimeType = mimeType_,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Endpoint.Payload) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
-    if (value.mimeType.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
+    if (!value.mimeType.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         4,
@@ -185,36 +184,29 @@ internal object EndpointSerializer : FhirResourceSerializer<Endpoint> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Endpoint")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("connectionType", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("description")
     b.optionalElement("environmentType", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("managingOrganization", ReferenceSerializer.descriptor)
     b.optionalElement("contact", ContactPointSerializer.listSerializer.descriptor)
     b.optionalElement("period", PeriodSerializer.descriptor)
     b.optionalElement("payload", EndpointPayloadSerializer.listSerializer.descriptor)
-    b.optionalElement("address", KotlinString.serializer().descriptor)
-    b.optionalElement("_address", ElementSerializer.descriptor)
-    b.optionalElement("header", stringNullableListSerializer.descriptor)
-    b.optionalElement("_header", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrim("address")
+    b.strPrimList("header")
   }
 
   override fun deserializeInternal(
@@ -233,7 +225,7 @@ internal object EndpointSerializer : FhirResourceSerializer<Endpoint> {
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: EndpointStatus? = null
     var _status: Element? = null
     var connectionType: List<CodeableConcept>? = null
     var name: KotlinString? = null
@@ -316,7 +308,7 @@ internal object EndpointSerializer : FhirResourceSerializer<Endpoint> {
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 -> status = EndpointStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -416,40 +408,34 @@ internal object EndpointSerializer : FhirResourceSerializer<Endpoint> {
               ElementSerializer.nullableListSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Endpoint: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val header_ =
+      List(maxSize(`header`, _header)) { index ->
+        entryRequired(R5String.of(at(`header`, index), at(_header, index)), "Endpoint", "header")
+      }
     return Endpoint(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) EndpointStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Endpoint"),
-      connectionType = connectionType ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "Endpoint", "status"),
+      connectionType = listOrEmpty(connectionType),
       name = R5String.of(name, _name),
       description = R5String.of(description, _description),
-      environmentType = environmentType ?: listOf(),
+      environmentType = listOrEmpty(environmentType),
       managingOrganization = managingOrganization,
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       period = period,
-      payload = payload ?: listOf(),
-      address =
-        Url.of(address, _address)
-          ?: throw SerializationException("Missing required property 'address' on Endpoint"),
-      `header` =
-        (kotlin.collections.List(maxOf(`header`?.size ?: 0, _header?.size ?: 0)) { index ->
-          R5String.of(`header`?.getOrNull(index), _header?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'header' on Endpoint has neither a value nor an id/extension"
-            )
-        }),
+      payload = listOrEmpty(payload),
+      address = required(Url.of(address, _address), "Endpoint", "address"),
+      `header` = header_,
     )
   }
 
@@ -480,47 +466,42 @@ internal object EndpointSerializer : FhirResourceSerializer<Endpoint> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
       value.status.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
-    if (value.connectionType.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.connectionType,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.connectionType,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.name)
     compositeEncoder.encodeStringIfNotNull(
@@ -529,42 +510,39 @@ internal object EndpointSerializer : FhirResourceSerializer<Endpoint> {
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.description)
-    if (value.environmentType.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.environmentType,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.environmentType,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       19 + descriptorOffset,
       ReferenceSerializer,
       value.managingOrganization,
     )
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        ContactPointSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      ContactPointSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       21 + descriptorOffset,
       PeriodSerializer,
       value.period,
     )
-    if (value.payload.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        EndpointPayloadSerializer.listSerializer,
-        value.payload,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      EndpointPayloadSerializer.listSerializer,
+      value.payload,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 23 + descriptorOffset, value.address.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.address)
-    if (value.`header`.isNotEmpty()) {
+    if (!value.`header`.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         25 + descriptorOffset,

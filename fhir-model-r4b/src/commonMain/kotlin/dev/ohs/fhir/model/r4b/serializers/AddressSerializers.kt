@@ -34,59 +34,48 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object AddressSerializer : KSerializer<Address> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Address") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("line", stringNullableListSerializer.descriptor)
-      optionalElement(
-        "_line",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement("city", KotlinString.serializer().descriptor)
-      optionalElement("_city", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("district", KotlinString.serializer().descriptor)
-      optionalElement("_district", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("state", KotlinString.serializer().descriptor)
-      optionalElement("_state", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("postalCode", KotlinString.serializer().descriptor)
-      optionalElement("_postalCode", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("country", KotlinString.serializer().descriptor)
-      optionalElement("_country", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
-    }
+internal object AddressSerializer : FhirSerializer<Address> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Address", this)
 
-  internal val listSerializer: KSerializer<List<Address>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Address>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("use")
+    b.strPrim("type")
+    b.strPrim("text")
+    b.strPrimList("line")
+    b.strPrim("city")
+    b.strPrim("district")
+    b.strPrim("state")
+    b.strPrim("postalCode")
+    b.strPrim("country")
+    b.optionalElement("period", lazyDescriptor(LazyDescriptorId.PeriodSerializer))
+  }
 
   override fun deserialize(decoder: Decoder): Address {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var use: KotlinString? = null
+    var use: AddressUse? = null
     var _use: Element? = null
-    var type: KotlinString? = null
+    var type: AddressType? = null
     var _type: Element? = null
     var text: KotlinString? = null
     var _text: Element? = null
@@ -114,7 +103,7 @@ internal object AddressSerializer : KSerializer<Address> {
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        2 -> use = AddressUse.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _use =
             compositeDecoder.decodeNullableSerializableElement(
@@ -123,7 +112,7 @@ internal object AddressSerializer : KSerializer<Address> {
               ElementSerializer,
               null,
             )
-        4 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        4 -> type = AddressType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         5 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -211,23 +200,21 @@ internal object AddressSerializer : KSerializer<Address> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Address: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val line_ =
+      List(maxSize(line, _line)) { index ->
+        entryRequired(R4bString.of(at(line, index), at(_line, index)), "Address", "line")
+      }
     return Address(
       id = id,
-      extension = extension ?: listOf(),
-      use = Enumeration.of(if (use != null) AddressUse.fromCode(use) else null, _use),
-      type = Enumeration.of(if (type != null) AddressType.fromCode(type) else null, _type),
+      extension = listOrEmpty(extension),
+      use = Enumeration.of(use, _use),
+      type = Enumeration.of(type, _type),
       text = R4bString.of(text, _text),
-      line =
-        (kotlin.collections.List(maxOf(line?.size ?: 0, _line?.size ?: 0)) { index ->
-          R4bString.of(line?.getOrNull(index), _line?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'line' on Address has neither a value nor an id/extension"
-            )
-        }),
+      line = line_,
       city = R4bString.of(city, _city),
       district = R4bString.of(district, _district),
       state = R4bString.of(state, _state),
@@ -238,22 +225,22 @@ internal object AddressSerializer : KSerializer<Address> {
   }
 
   override fun serialize(encoder: Encoder, `value`: Address) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.use?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.use)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.type?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.text?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.text)
-    if (value.line.isNotEmpty()) {
+    if (!value.line.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         8,

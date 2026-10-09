@@ -49,37 +49,36 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ListEntrySerializer : KSerializer<R4List.Entry> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Entry") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("flag", CodeableConceptSerializer.descriptor)
-      optionalElement("deleted", KotlinBoolean.serializer().descriptor)
-      optionalElement("_deleted", ElementSerializer.descriptor)
-      optionalElement("date", KotlinString.serializer().descriptor)
-      optionalElement("_date", ElementSerializer.descriptor)
-      optionalElement("item", ReferenceSerializer.descriptor)
-    }
+internal object ListEntrySerializer : FhirSerializer<R4List.Entry> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Entry", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<CollectionsList<R4List.Entry>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("flag", CodeableConceptSerializer.descriptor)
+    b.boolPrim("deleted")
+    b.strPrim("date")
+    b.optionalElement("item", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): R4List.Entry {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: CollectionsList<Extension>? = null
@@ -87,7 +86,7 @@ internal object ListEntrySerializer : KSerializer<R4List.Entry> {
     var flag: CodeableConcept? = null
     var deleted: KotlinBoolean? = null
     var _deleted: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var item: Reference? = null
     while (true) {
@@ -126,7 +125,7 @@ internal object ListEntrySerializer : KSerializer<R4List.Entry> {
               ElementSerializer,
               null,
             )
-        6 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -144,38 +143,37 @@ internal object ListEntrySerializer : KSerializer<R4List.Entry> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Entry: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return R4List.Entry(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       flag = flag,
       deleted = R4Boolean.of(deleted, _deleted),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
-      item = item ?: throw SerializationException("Missing required property 'item' on List.Entry"),
+      date = DateTime.of(date, _date),
+      item = required(item, "List.Entry", "item"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: R4List.Entry) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -195,31 +193,25 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("List")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("mode", KotlinString.serializer().descriptor)
-    b.optionalElement("_mode", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("mode")
+    b.strPrim("title")
     b.optionalElement("code", CodeableConceptSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.strPrim("date")
     b.optionalElement("source", ReferenceSerializer.descriptor)
     b.optionalElement("orderedBy", CodeableConceptSerializer.descriptor)
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
@@ -243,16 +235,16 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
     var extension: CollectionsList<Extension>? = null
     var modifierExtension: CollectionsList<Extension>? = null
     var identifier: CollectionsList<Identifier>? = null
-    var status: KotlinString? = null
+    var status: ListStatus? = null
     var _status: Element? = null
-    var mode: KotlinString? = null
+    var mode: ListMode? = null
     var _mode: Element? = null
     var title: KotlinString? = null
     var _title: Element? = null
     var code: CodeableConcept? = null
     var subject: Reference? = null
     var encounter: Reference? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var source: Reference? = null
     var orderedBy: CodeableConcept? = null
@@ -326,7 +318,7 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 -> status = ListStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -335,7 +327,7 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
               ElementSerializer,
               null,
             )
-        13 -> mode = compositeDecoder.decodeStringElement(descriptor, i)
+        13 -> mode = ListMode.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _mode =
             compositeDecoder.decodeNullableSerializableElement(
@@ -377,7 +369,7 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
               ReferenceSerializer,
               null,
             )
-        20 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        20 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -426,7 +418,7 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
               CodeableConceptSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding List: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return R4List(
@@ -435,25 +427,21 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) ListStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on List"),
-      mode =
-        Enumeration.of(if (mode != null) ListMode.fromCode(mode) else null, _mode)
-          ?: throw SerializationException("Missing required property 'mode' on List"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "List", "status"),
+      mode = required(Enumeration.of(mode, _mode), "List", "mode"),
       title = R4String.of(title, _title),
       code = code,
       subject = subject,
       encounter = encounter,
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       source = source,
       orderedBy = orderedBy,
-      note = note ?: listOf(),
-      entry = entry ?: listOf(),
+      note = listOrEmpty(note),
+      entry = listOrEmpty(entry),
       emptyReason = emptyReason,
     )
   }
@@ -485,34 +473,30 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -563,20 +547,18 @@ internal object ListSerializer : FhirResourceSerializer<R4List> {
       CodeableConceptSerializer,
       value.orderedBy,
     )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.entry.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        ListEntrySerializer.listSerializer,
-        value.entry,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      ListEntrySerializer.listSerializer,
+      value.entry,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       26 + descriptorOffset,

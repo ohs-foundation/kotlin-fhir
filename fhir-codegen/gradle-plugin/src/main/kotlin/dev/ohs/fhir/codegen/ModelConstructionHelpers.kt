@@ -18,6 +18,7 @@ package dev.ohs.fhir.codegen
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.MemberName
 import dev.ohs.fhir.codegen.primitives.FhirPathType
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.Type
@@ -31,26 +32,36 @@ import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
 /**
- * Model-construction helpers shared by [SerializerFileSpecGenerator]. Emits the per-field
- * expressions that reconstruct a model-class constructor argument from decoded JSON locals.
+ * Emits the `return Model(...)` argument list of a generated `deserialize` from the per-field
+ * locals populated by the decode loop.
+ *
+ * Every argument expression is **branch-free**: null-coalescing, required-property checks and
+ * wire→model conversions go through small non-inline helpers (`listOrEmpty`, `required`,
+ * `entryRequired`, `at`, `maxSize` in the generated `SerializerHelpers.kt`) or happen earlier in
+ * the decode `when`. A branch evaluated while earlier constructor arguments already sit on the JVM
+ * operand stack forces a `full_frame` stack-map entry listing every local of the (often huge)
+ * deserialize method; with hundreds of locals those frames outweighed the bytecode itself.
+ * Repeating primitives, whose merge needs a loop, are hoisted into locals via [preamble] for the
+ * same reason.
  */
 class ModelConstructionHelpers(val codegenContext: CodegenContext) {
 
-  private val serializationExceptionClassName =
-    ClassName("kotlinx.serialization", "SerializationException")
-
-  /** Emit the model-class constructor argument for [element]. */
+  /**
+   * Emit the model-class constructor argument for [element]. Statements that must run before the
+   * constructor call (merged repeating-primitive lists) are appended to [preamble].
+   */
   internal fun CodeBlock.Builder.addParamToModelClassConstructor(
     modelClassName: ClassName,
     element: Element,
     expandPolymorphicProperties: Boolean,
+    preamble: CodeBlock.Builder,
   ) {
     val propertyName = element.getElementName()
     val elementPropertyName = "_$propertyName"
     val modelDisplayName = modelClassName.simpleNames.joinToString(".")
-    val emptyEntryMessage =
-      "An entry of '$propertyName' on $modelDisplayName has neither a value nor an id/extension"
+    val required = CodeBlock.of("%M", helperMember(modelClassName, "required"))
     if (element.type != null && element.type.size > 1) {
+      if (element.min == 1) add("%L(", required)
       if (expandPolymorphicProperties) {
         val factoryClassName =
           if (element.path.endsWith("[x]")) {
@@ -64,26 +75,29 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
           add(", ")
         }
         add(")")
-        if (element.min == 1) {
-          add(
-            " ?: throw %T(%S)",
-            serializationExceptionClassName,
-            "Missing required property '$propertyName' on $modelDisplayName",
-          )
-        }
       } else {
         add("%N", propertyName)
-        if (element.min == 1) {
-          add(
-            " ?: throw %T(%S)",
-            serializationExceptionClassName,
-            "Missing required property '$propertyName' on $modelDisplayName",
-          )
-        }
       }
+      if (element.min == 1) add(", %S, %S)", modelDisplayName, propertyName)
     } else if ((element.max == "*" || propertyName == "extension")) {
       if (FhirPathType.containsFhirTypeCode(element.type?.singleOrNull()?.code ?: "")) {
         val fhirPathType = FhirPathType.getFromFhirTypeCode(element.type?.singleOrNull()?.code!!)!!
+        // Merge the value list and the `_field` list index-by-index. Hoisted into a local so the
+        // loop (and its branches) run with an empty operand stack.
+        val mergedName = "${propertyName}_"
+        val at = CodeBlock.of("%M", helperMember(modelClassName, "at"))
+        val valueAt = CodeBlock.of("%L(%N, index)", at, propertyName)
+        val elementAt = CodeBlock.of("%L(%N, index)", at, elementPropertyName)
+        preamble.add(
+          "val %N = %T(%M(%N, %N)) { index ->\n",
+          mergedName,
+          ClassName("kotlin.collections", "List"),
+          helperMember(modelClassName, "maxSize"),
+          propertyName,
+          elementPropertyName,
+        )
+        preamble.indent()
+        preamble.add("%M(", helperMember(modelClassName, "entryRequired"))
         if (element.typeShouldBindToEnum(codegenContext.valueSetMap)) {
           val enumClass = element.getEnumClass(modelClassName, codegenContext.valueSetMap)
           val wrapperClass =
@@ -91,59 +105,35 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
               modelClassName.packageName,
               if (element.isExtensibleBinding) "ExtensibleEnumeration" else "Enumeration",
             )
-          add(
-            "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { index ->\n",
-            propertyName,
-            elementPropertyName,
-          )
           if (element.isExtensibleBinding) {
-            add(
-              "  %T.of<%T>(%N?.getOrNull(index), %N?.getOrNull(index)) ?: throw %T(%S)\n",
-              wrapperClass,
-              enumClass,
-              propertyName,
-              elementPropertyName,
-              serializationExceptionClassName,
-              emptyEntryMessage,
-            )
+            preamble.add("%T.of<%T>(%L, %L)", wrapperClass, enumClass, valueAt, elementAt)
           } else {
-            add(
-              "  %T.of(%N?.getOrNull(index)?.let·{ %T.fromCode(it) }, %N?.getOrNull(index)) ?: throw %T(%S)\n",
+            preamble.add(
+              "%T.of(%L?.let·{ %T.fromCode(it) }, %L)",
               wrapperClass,
-              propertyName,
+              valueAt,
               enumClass,
-              elementPropertyName,
-              serializationExceptionClassName,
-              emptyEntryMessage,
+              elementAt,
             )
           }
-          add("})")
         } else {
-          add(
-            "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { index ->\n",
-            propertyName,
-            elementPropertyName,
-          )
-          add(
-            "  %T.of(",
+          preamble.add(
+            "%T.of(",
             ClassName(modelClassName.packageName, element.type.single().code.capitalized()),
           )
-          val indexedElement = CodeBlock.of("%N?.getOrNull(index)", propertyName).toString()
           fhirPathType.addCodeToDecodeWireVarToModel(
-            this,
+            preamble,
             modelClassName.packageName,
-            indexedElement,
+            valueAt,
           )
-          add(
-            ", %N?.getOrNull(index)) ?: throw %T(%S)\n",
-            elementPropertyName,
-            serializationExceptionClassName,
-            emptyEntryMessage,
-          )
-          add("})")
+          preamble.add(", %L)", elementAt)
         }
+        preamble.add(", %S, %S)\n", modelDisplayName, propertyName)
+        preamble.unindent()
+        preamble.add("}\n")
+        add("%N", mergedName)
       } else {
-        add("%N ?: listOf()", propertyName)
+        add("%M(%N)", helperMember(modelClassName, "listOrEmpty"), propertyName)
       }
     } else {
       addPrimitiveOrSimpleParam(
@@ -156,6 +146,9 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     }
   }
 
+  private fun helperMember(modelClassName: ClassName, name: String) =
+    MemberName("${modelClassName.packageName}.serializers", name)
+
   private fun CodeBlock.Builder.addPrimitiveOrSimpleParam(
     modelClassName: ClassName,
     valueSetMap: Map<String, ValueSet>,
@@ -165,6 +158,8 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
   ) {
     val elementPropertyName = "_$propertyName"
     val modelDisplayName = modelClassName.simpleNames.joinToString(".")
+    val required = CodeBlock.of("%M", helperMember(modelClassName, "required"))
+    val requiredTail = CodeBlock.of(", %S, %S)", modelDisplayName, propertyName)
     if (element.typeShouldBindToEnum(valueSetMap)) {
       val enumClass = element.getEnumClass(modelClassName, valueSetMap)
       val wrapperClass =
@@ -172,100 +167,39 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
           modelClassName.packageName,
           if (element.isExtensibleBinding) "ExtensibleEnumeration" else "Enumeration",
         )
+      if (element.min == 1) add("%L(", required)
       if (element.isExtensibleBinding) {
-        if (element.min == 0) {
-          add(
-            "%T.of<%T>(%N, %N)",
-            wrapperClass,
-            enumClass,
-            propertyName,
-            elementPropertyName,
-          )
-        } else {
-          add(
-            "%T.of<%T>(%N, %N) ?: throw %T(%S)",
-            wrapperClass,
-            enumClass,
-            propertyName,
-            elementPropertyName,
-            serializationExceptionClassName,
-            "Missing required property '$propertyName' on $modelDisplayName",
-          )
-        }
+        add("%T.of<%T>(%N, %N)", wrapperClass, enumClass, propertyName, elementPropertyName)
       } else {
-        if (element.min == 0) {
-          add(
-            "%T.of(if (%N != null) %T.fromCode(%N) else null, %N)",
-            wrapperClass,
-            propertyName,
-            enumClass,
-            propertyName,
-            elementPropertyName,
-          )
-        } else {
-          add(
-            "%T.of(if (%N != null) %T.fromCode(%N) else null, %N) ?: throw %T(%S)",
-            wrapperClass,
-            propertyName,
-            enumClass,
-            propertyName,
-            elementPropertyName,
-            serializationExceptionClassName,
-            "Missing required property '$propertyName' on $modelDisplayName",
-          )
-        }
+        // The local is already decoded to the enum (`XEnum.fromCode(...)` in the decode loop).
+        add("%T.of(%N, %N)", wrapperClass, propertyName, elementPropertyName)
       }
+      if (element.min == 1) add(requiredTail)
     } else if (type != null && FhirPathType.containsFhirTypeCode(type.code)) {
       val fhirPathType = FhirPathType.getFromFhirTypeCode(type.code)!!
       // Primitives whose StructureDefinition declares `<Type>.value` with `min > 0` have a
       // non-null `.value` field on the wrapper, so the wire value must be coerced non-null at the
-      // call site. `Type.of(...)` then returns non-null, making any outer `!!` redundant.
+      // call site. `Type.of(...)` then returns non-null, making any outer check redundant.
       val wireValueIsNonNull = codegenContext.primitiveValueIsNonNull[type.code] == true
+      if (element.min == 1 && !wireValueIsNonNull) add("%L(", required)
       add("%T.of(", ClassName(modelClassName.packageName, type.code.capitalized()))
+      if (wireValueIsNonNull) add("%L(", required)
       fhirPathType.addCodeToDecodeWirePropertyToModel(
         this,
         modelClassName.packageName,
         propertyName,
       )
-      if (wireValueIsNonNull) {
-        if (element.min == 1) {
-          add(
-            " ?: throw %T(%S)",
-            serializationExceptionClassName,
-            "Missing required property '$propertyName' on $modelDisplayName",
-          )
-        } else {
-          add("!!")
-        }
-      }
+      if (wireValueIsNonNull) add(requiredTail)
       add(", %N)", elementPropertyName)
-      if (element.min == 1 && !wireValueIsNonNull) {
-        add(
-          " ?: throw %T(%S)",
-          serializationExceptionClassName,
-          "Missing required property '$propertyName' on $modelDisplayName",
-        )
-      }
+      if (element.min == 1 && !wireValueIsNonNull) add(requiredTail)
     } else {
-      add("%N", propertyName)
       if (element.min == 1 && element.max == "1") {
-        add(
-          " ?: throw %T(%S)",
-          serializationExceptionClassName,
-          "Missing required property '$propertyName' on $modelDisplayName",
-        )
+        add("%L(%N%L", required, propertyName, requiredTail)
+      } else {
+        add("%N", propertyName)
       }
     }
   }
-
-  private fun Element.getEnumClass(
-    modelClassName: ClassName,
-    valueSetMap: Map<String, ValueSet>,
-  ): ClassName =
-    ClassName(
-      "${modelClassName.packageName}.terminologies",
-      valueSetMap.getValue(getBindingValueSetUrl()!!).enumName,
-    )
 
   private fun CodeBlock.Builder.addChoiceTypeParamToModelClassConstructor(
     modelClassName: ClassName,
@@ -288,3 +222,13 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     }
   }
 }
+
+/** Enum class generated for [this] element's required/extensible value-set binding. */
+internal fun Element.getEnumClass(
+  modelClassName: ClassName,
+  valueSetMap: Map<String, ValueSet>,
+): ClassName =
+  ClassName(
+    "${modelClassName.packageName}.terminologies",
+    valueSetMap.getValue(getBindingValueSetUrl()!!).enumName,
+  )

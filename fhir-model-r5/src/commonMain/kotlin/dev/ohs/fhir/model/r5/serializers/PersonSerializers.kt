@@ -53,34 +53,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object PersonCommunicationSerializer : KSerializer<Person.Communication> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Communication") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("language", CodeableConceptSerializer.descriptor)
-      optionalElement("preferred", KotlinBoolean.serializer().descriptor)
-      optionalElement("_preferred", ElementSerializer.descriptor)
-    }
+internal object PersonCommunicationSerializer : FhirSerializer<Person.Communication> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Communication", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Person.Communication>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("language", CodeableConceptSerializer.descriptor)
+    b.boolPrim("preferred")
+  }
+
   override fun deserialize(decoder: Decoder): Person.Communication {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -125,40 +125,35 @@ internal object PersonCommunicationSerializer : KSerializer<Person.Communication
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Communication: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Person.Communication(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      language =
-        language
-          ?: throw SerializationException(
-            "Missing required property 'language' on Person.Communication"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      language = required(language, "Person.Communication", "language"),
       preferred = R5Boolean.of(preferred, _preferred),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Person.Communication) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -171,26 +166,27 @@ internal object PersonCommunicationSerializer : KSerializer<Person.Communication
   }
 }
 
-internal object PersonLinkSerializer : KSerializer<Person.Link> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Link") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("target", ReferenceSerializer.descriptor)
-      optionalElement("assurance", String.serializer().descriptor)
-      optionalElement("_assurance", ElementSerializer.descriptor)
-    }
+internal object PersonLinkSerializer : FhirSerializer<Person.Link> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Link", this)
 
-  internal val listSerializer: KSerializer<List<Person.Link>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Person.Link>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("target", ReferenceSerializer.descriptor)
+    b.strPrim("assurance")
+  }
 
   override fun deserialize(decoder: Decoder): Person.Link {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var target: Reference? = null
-    var assurance: String? = null
+    var assurance: IdentityAssuranceLevel? = null
     var _assurance: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -219,7 +215,9 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
               ReferenceSerializer,
               null,
             )
-        4 -> assurance = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          assurance =
+            IdentityAssuranceLevel.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         5 ->
           _assurance =
             compositeDecoder.decodeNullableSerializableElement(
@@ -229,41 +227,35 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Link: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Person.Link(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      target =
-        target ?: throw SerializationException("Missing required property 'target' on Person.Link"),
-      assurance =
-        Enumeration.of(
-          if (assurance != null) IdentityAssuranceLevel.fromCode(assurance) else null,
-          _assurance,
-        ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      target = required(target, "Person.Link", "target"),
+      assurance = Enumeration.of(assurance, _assurance),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Person.Link) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.target)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.assurance?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.assurance)
@@ -275,32 +267,25 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Person")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("active", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_active", ElementSerializer.descriptor)
+    b.boolPrim("active")
     b.optionalElement("name", HumanNameSerializer.listSerializer.descriptor)
     b.optionalElement("telecom", ContactPointSerializer.listSerializer.descriptor)
-    b.optionalElement("gender", String.serializer().descriptor)
-    b.optionalElement("_gender", ElementSerializer.descriptor)
-    b.optionalElement("birthDate", String.serializer().descriptor)
-    b.optionalElement("_birthDate", ElementSerializer.descriptor)
-    b.optionalElement("deceasedBoolean", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_deceasedBoolean", ElementSerializer.descriptor)
-    b.optionalElement("deceasedDateTime", String.serializer().descriptor)
-    b.optionalElement("_deceasedDateTime", ElementSerializer.descriptor)
+    b.strPrim("gender")
+    b.strPrim("birthDate")
+    b.boolPrim("deceasedBoolean")
+    b.strPrim("deceasedDateTime")
     b.optionalElement("address", AddressSerializer.listSerializer.descriptor)
     b.optionalElement("maritalStatus", CodeableConceptSerializer.descriptor)
     b.optionalElement("photo", AttachmentSerializer.listSerializer.descriptor)
@@ -329,13 +314,13 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
     var _active: Element? = null
     var name: List<HumanName>? = null
     var telecom: List<ContactPoint>? = null
-    var gender: String? = null
+    var gender: AdministrativeGender? = null
     var _gender: Element? = null
-    var birthDate: String? = null
+    var birthDate: FhirDate? = null
     var _birthDate: Element? = null
     var deceasedBoolean: KotlinBoolean? = null
     var _deceasedBoolean: Element? = null
-    var deceasedDateTime: String? = null
+    var deceasedDateTime: FhirDateTime? = null
     var _deceasedDateTime: Element? = null
     var address: List<Address>? = null
     var maritalStatus: CodeableConcept? = null
@@ -435,7 +420,9 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
               ContactPointSerializer.listSerializer,
               null,
             )
-        15 -> gender = compositeDecoder.decodeStringElement(descriptor, i)
+        15 ->
+          gender =
+            AdministrativeGender.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         16 ->
           _gender =
             compositeDecoder.decodeNullableSerializableElement(
@@ -444,7 +431,7 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
               ElementSerializer,
               null,
             )
-        17 -> birthDate = compositeDecoder.decodeStringElement(descriptor, i)
+        17 -> birthDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         18 ->
           _birthDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -462,7 +449,9 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
               ElementSerializer,
               null,
             )
-        21 -> deceasedDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        21 ->
+          deceasedDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _deceasedDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -519,7 +508,7 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
               PersonLinkSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Person: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Person(
@@ -528,34 +517,26 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       active = R5Boolean.of(active, _active),
-      name = name ?: listOf(),
-      telecom = telecom ?: listOf(),
-      gender =
-        Enumeration.of(
-          if (gender != null) AdministrativeGender.fromCode(gender) else null,
-          _gender,
-        ),
-      birthDate =
-        Date.of(if (birthDate != null) FhirDate.fromString(birthDate) else null, _birthDate),
+      name = listOrEmpty(name),
+      telecom = listOrEmpty(telecom),
+      gender = Enumeration.of(gender, _gender),
+      birthDate = Date.of(birthDate, _birthDate),
       deceased =
         Person.Deceased.from(
           R5Boolean.of(deceasedBoolean, _deceasedBoolean),
-          DateTime.of(
-            if (deceasedDateTime != null) FhirDateTime.fromString(deceasedDateTime) else null,
-            _deceasedDateTime,
-          ),
+          DateTime.of(deceasedDateTime, _deceasedDateTime),
         ),
-      address = address ?: listOf(),
+      address = listOrEmpty(address),
       maritalStatus = maritalStatus,
-      photo = photo ?: listOf(),
-      communication = communication ?: listOf(),
+      photo = listOrEmpty(photo),
+      communication = listOrEmpty(communication),
       managingOrganization = managingOrganization,
-      link = link ?: listOf(),
+      link = listOrEmpty(link),
     )
   }
 
@@ -586,50 +567,44 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.active?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.active)
-    if (value.name.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        HumanNameSerializer.listSerializer,
-        value.name,
-      )
-    if (value.telecom.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        ContactPointSerializer.listSerializer,
-        value.telecom,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13 + descriptorOffset,
+      HumanNameSerializer.listSerializer,
+      value.name,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14 + descriptorOffset,
+      ContactPointSerializer.listSerializer,
+      value.telecom,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       15 + descriptorOffset,
@@ -661,45 +636,41 @@ internal object PersonSerializer : FhirResourceSerializer<Person> {
         compositeEncoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, choice.value)
       }
     }
-    if (value.address.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        AddressSerializer.listSerializer,
-        value.address,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      AddressSerializer.listSerializer,
+      value.address,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       24 + descriptorOffset,
       CodeableConceptSerializer,
       value.maritalStatus,
     )
-    if (value.photo.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        AttachmentSerializer.listSerializer,
-        value.photo,
-      )
-    if (value.communication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        PersonCommunicationSerializer.listSerializer,
-        value.communication,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      AttachmentSerializer.listSerializer,
+      value.photo,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      PersonCommunicationSerializer.listSerializer,
+      value.communication,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       27 + descriptorOffset,
       ReferenceSerializer,
       value.managingOrganization,
     )
-    if (value.link.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        PersonLinkSerializer.listSerializer,
-        value.link,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28 + descriptorOffset,
+      PersonLinkSerializer.listSerializer,
+      value.link,
+    )
   }
 }

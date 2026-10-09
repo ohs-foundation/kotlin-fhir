@@ -47,34 +47,33 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object AccountCoverageSerializer : KSerializer<Account.Coverage> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Coverage") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("coverage", ReferenceSerializer.descriptor)
-      optionalElement("priority", Int.serializer().descriptor)
-      optionalElement("_priority", ElementSerializer.descriptor)
-    }
+internal object AccountCoverageSerializer : FhirSerializer<Account.Coverage> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Coverage", this)
 
-  internal val listSerializer: KSerializer<List<Account.Coverage>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Account.Coverage>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("coverage", ReferenceSerializer.descriptor)
+    b.intPrim("priority")
+  }
 
   override fun deserialize(decoder: Decoder): Account.Coverage {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -119,40 +118,35 @@ internal object AccountCoverageSerializer : KSerializer<Account.Coverage> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Coverage: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Account.Coverage(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      coverage =
-        coverage
-          ?: throw SerializationException(
-            "Missing required property 'coverage' on Account.Coverage"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      coverage = required(coverage, "Account.Coverage", "coverage"),
       priority = PositiveInt.of(priority, _priority),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Account.Coverage) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.coverage)
     compositeEncoder.encodeIntIfNotNull(descriptor, 4, value.priority?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.priority)
@@ -160,21 +154,22 @@ internal object AccountCoverageSerializer : KSerializer<Account.Coverage> {
   }
 }
 
-internal object AccountGuarantorSerializer : KSerializer<Account.Guarantor> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Guarantor") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("party", ReferenceSerializer.descriptor)
-      optionalElement("onHold", KotlinBoolean.serializer().descriptor)
-      optionalElement("_onHold", ElementSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
-    }
+internal object AccountGuarantorSerializer : FhirSerializer<Account.Guarantor> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Guarantor", this)
 
-  internal val listSerializer: KSerializer<List<Account.Guarantor>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Account.Guarantor>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("party", ReferenceSerializer.descriptor)
+    b.boolPrim("onHold")
+    b.optionalElement("period", PeriodSerializer.descriptor)
+  }
 
   override fun deserialize(decoder: Decoder): Account.Guarantor {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -228,39 +223,36 @@ internal object AccountGuarantorSerializer : KSerializer<Account.Guarantor> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Guarantor: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Account.Guarantor(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      party =
-        party
-          ?: throw SerializationException("Missing required property 'party' on Account.Guarantor"),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      party = required(party, "Account.Guarantor", "party"),
       onHold = R4Boolean.of(onHold, _onHold),
       period = period,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Account.Guarantor) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.party)
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 4, value.onHold?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.onHold)
@@ -273,31 +265,26 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Account")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
+    b.strPrim("name")
     b.optionalElement("subject", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("servicePeriod", PeriodSerializer.descriptor)
     b.optionalElement("coverage", AccountCoverageSerializer.listSerializer.descriptor)
     b.optionalElement("owner", ReferenceSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("guarantor", AccountGuarantorSerializer.listSerializer.descriptor)
     b.optionalElement("partOf", ReferenceSerializer.descriptor)
   }
@@ -318,7 +305,7 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: AccountStatus? = null
     var _status: Element? = null
     var type: CodeableConcept? = null
     var name: KotlinString? = null
@@ -398,7 +385,7 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 -> status = AccountStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -481,7 +468,7 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
               ReferenceSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Account: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Account(
@@ -490,21 +477,19 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) AccountStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Account"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "Account", "status"),
       type = type,
       name = R4String.of(name, _name),
-      subject = subject ?: listOf(),
+      subject = listOrEmpty(subject),
       servicePeriod = servicePeriod,
-      coverage = coverage ?: listOf(),
+      coverage = listOrEmpty(coverage),
       owner = owner,
       description = R4String.of(description, _description),
-      guarantor = guarantor ?: listOf(),
+      guarantor = listOrEmpty(guarantor),
       partOf = partOf,
     )
   }
@@ -536,34 +521,30 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -578,26 +559,24 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.name)
-    if (value.subject.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.subject,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.subject,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
       PeriodSerializer,
       value.servicePeriod,
     )
-    if (value.coverage.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        AccountCoverageSerializer.listSerializer,
-        value.coverage,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      AccountCoverageSerializer.listSerializer,
+      value.coverage,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       19 + descriptorOffset,
@@ -610,13 +589,12 @@ internal object AccountSerializer : FhirResourceSerializer<Account> {
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.description)
-    if (value.guarantor.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        AccountGuarantorSerializer.listSerializer,
-        value.guarantor,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      AccountGuarantorSerializer.listSerializer,
+      value.guarantor,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       23 + descriptorOffset,

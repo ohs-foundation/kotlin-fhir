@@ -56,35 +56,34 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object SearchParameterComponentSerializer : KSerializer<SearchParameter.Component> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Component") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("definition", KotlinString.serializer().descriptor)
-      optionalElement("_definition", ElementSerializer.descriptor)
-      optionalElement("expression", KotlinString.serializer().descriptor)
-      optionalElement("_expression", ElementSerializer.descriptor)
-    }
+internal object SearchParameterComponentSerializer : FhirSerializer<SearchParameter.Component> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Component", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SearchParameter.Component>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("definition")
+    b.strPrim("expression")
+  }
+
   override fun deserialize(decoder: Decoder): SearchParameter.Component {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -131,44 +130,37 @@ internal object SearchParameterComponentSerializer : KSerializer<SearchParameter
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Component: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SearchParameter.Component(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       definition =
-        Canonical.of(definition, _definition)
-          ?: throw SerializationException(
-            "Missing required property 'definition' on SearchParameter.Component"
-          ),
+        required(Canonical.of(definition, _definition), "SearchParameter.Component", "definition"),
       expression =
-        R5String.of(expression, _expression)
-          ?: throw SerializationException(
-            "Missing required property 'expression' on SearchParameter.Component"
-          ),
+        required(R5String.of(expression, _expression), "SearchParameter.Component", "expression"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SearchParameter.Component) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.definition.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.definition)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.expression.value)
@@ -181,76 +173,48 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
   override val descriptor: SerialDescriptor = buildResourceDescriptor("SearchParameter")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("versionAlgorithmString", KotlinString.serializer().descriptor)
-    b.optionalElement("_versionAlgorithmString", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("versionAlgorithmString")
     b.optionalElement("versionAlgorithmCoding", CodingSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("derivedFrom", KotlinString.serializer().descriptor)
-    b.optionalElement("_derivedFrom", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrim("derivedFrom")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("purpose", KotlinString.serializer().descriptor)
-    b.optionalElement("_purpose", ElementSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("copyrightLabel", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyrightLabel", ElementSerializer.descriptor)
-    b.optionalElement("code", KotlinString.serializer().descriptor)
-    b.optionalElement("_code", ElementSerializer.descriptor)
-    b.optionalElement("base", stringNullableListSerializer.descriptor)
-    b.optionalElement("_base", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("type", KotlinString.serializer().descriptor)
-    b.optionalElement("_type", ElementSerializer.descriptor)
-    b.optionalElement("expression", KotlinString.serializer().descriptor)
-    b.optionalElement("_expression", ElementSerializer.descriptor)
-    b.optionalElement("processingMode", KotlinString.serializer().descriptor)
-    b.optionalElement("_processingMode", ElementSerializer.descriptor)
-    b.optionalElement("constraint", KotlinString.serializer().descriptor)
-    b.optionalElement("_constraint", ElementSerializer.descriptor)
-    b.optionalElement("target", stringNullableListSerializer.descriptor)
-    b.optionalElement("_target", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("multipleOr", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_multipleOr", ElementSerializer.descriptor)
-    b.optionalElement("multipleAnd", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_multipleAnd", ElementSerializer.descriptor)
-    b.optionalElement("comparator", stringNullableListSerializer.descriptor)
-    b.optionalElement("_comparator", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("modifier", stringNullableListSerializer.descriptor)
-    b.optionalElement("_modifier", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("chain", stringNullableListSerializer.descriptor)
-    b.optionalElement("_chain", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrim("purpose")
+    b.strPrim("copyright")
+    b.strPrim("copyrightLabel")
+    b.strPrim("code")
+    b.strPrimList("base")
+    b.strPrim("type")
+    b.strPrim("expression")
+    b.strPrim("processingMode")
+    b.strPrim("constraint")
+    b.strPrimList("target")
+    b.boolPrim("multipleOr")
+    b.boolPrim("multipleAnd")
+    b.strPrimList("comparator")
+    b.strPrimList("modifier")
+    b.strPrimList("chain")
     b.optionalElement("component", SearchParameterComponentSerializer.listSerializer.descriptor)
   }
 
@@ -283,11 +247,11 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
     var _title: Element? = null
     var derivedFrom: KotlinString? = null
     var _derivedFrom: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -306,11 +270,11 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
     var _code: Element? = null
     var base: List<KotlinString?>? = null
     var _base: List<Element?>? = null
-    var type: KotlinString? = null
+    var type: SearchParamType? = null
     var _type: Element? = null
     var expression: KotlinString? = null
     var _expression: Element? = null
-    var processingMode: KotlinString? = null
+    var processingMode: SearchProcessingModeType? = null
     var _processingMode: Element? = null
     var constraint: KotlinString? = null
     var _constraint: Element? = null
@@ -456,7 +420,8 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
               ElementSerializer,
               null,
             )
-        24 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        24 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         25 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -474,7 +439,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
               ElementSerializer,
               null,
             )
-        28 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        28 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         29 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -577,7 +542,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
               ElementSerializer.nullableListSerializer,
               null,
             )
-        47 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        47 -> type = SearchParamType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         48 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -595,7 +560,9 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
               ElementSerializer,
               null,
             )
-        51 -> processingMode = compositeDecoder.decodeStringElement(descriptor, i)
+        51 ->
+          processingMode =
+            SearchProcessingModeType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         52 ->
           _processingMode =
             compositeDecoder.decodeNullableSerializableElement(
@@ -703,113 +670,102 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
               SearchParameterComponentSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding SearchParameter: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val base_ =
+      List(maxSize(base, _base)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(base, index)?.let { VersionIndependentResourceTypesAll.fromCode(it) },
+            at(_base, index),
+          ),
+          "SearchParameter",
+          "base",
+        )
+      }
+    val target_ =
+      List(maxSize(target, _target)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(target, index)?.let { VersionIndependentResourceTypesAll.fromCode(it) },
+            at(_target, index),
+          ),
+          "SearchParameter",
+          "target",
+        )
+      }
+    val comparator_ =
+      List(maxSize(comparator, _comparator)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(comparator, index)?.let { SearchComparator.fromCode(it) },
+            at(_comparator, index),
+          ),
+          "SearchParameter",
+          "comparator",
+        )
+      }
+    val modifier_ =
+      List(maxSize(modifier, _modifier)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(modifier, index)?.let { SearchModifierCode.fromCode(it) },
+            at(_modifier, index),
+          ),
+          "SearchParameter",
+          "modifier",
+        )
+      }
+    val chain_ =
+      List(maxSize(chain, _chain)) { index ->
+        entryRequired(R5String.of(at(chain, index), at(_chain, index)), "SearchParameter", "chain")
+      }
     return SearchParameter(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      url =
-        Uri.of(url, _url)
-          ?: throw SerializationException("Missing required property 'url' on SearchParameter"),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      url = required(Uri.of(url, _url), "SearchParameter", "url"),
+      identifier = listOrEmpty(identifier),
       version = R5String.of(version, _version),
       versionAlgorithm =
         SearchParameter.VersionAlgorithm.from(
           R5String.of(versionAlgorithmString, _versionAlgorithmString),
           versionAlgorithmCoding,
         ),
-      name =
-        R5String.of(name, _name)
-          ?: throw SerializationException("Missing required property 'name' on SearchParameter"),
+      name = required(R5String.of(name, _name), "SearchParameter", "name"),
       title = R5String.of(title, _title),
       derivedFrom = Canonical.of(derivedFrom, _derivedFrom),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on SearchParameter"),
+      status = required(Enumeration.of(status, _status), "SearchParameter", "status"),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R5String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description =
-        Markdown.of(description, _description)
-          ?: throw SerializationException(
-            "Missing required property 'description' on SearchParameter"
-          ),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+        required(Markdown.of(description, _description), "SearchParameter", "description"),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
-      code =
-        Code.of(code, _code)
-          ?: throw SerializationException("Missing required property 'code' on SearchParameter"),
-      base =
-        (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { index ->
-          Enumeration.of(
-            base?.getOrNull(index)?.let { VersionIndependentResourceTypesAll.fromCode(it) },
-            _base?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'base' on SearchParameter has neither a value nor an id/extension"
-            )
-        }),
-      type =
-        Enumeration.of(if (type != null) SearchParamType.fromCode(type) else null, _type)
-          ?: throw SerializationException("Missing required property 'type' on SearchParameter"),
+      code = required(Code.of(code, _code), "SearchParameter", "code"),
+      base = base_,
+      type = required(Enumeration.of(type, _type), "SearchParameter", "type"),
       expression = R5String.of(expression, _expression),
-      processingMode =
-        Enumeration.of(
-          if (processingMode != null) SearchProcessingModeType.fromCode(processingMode) else null,
-          _processingMode,
-        ),
+      processingMode = Enumeration.of(processingMode, _processingMode),
       constraint = R5String.of(constraint, _constraint),
-      target =
-        (kotlin.collections.List(maxOf(target?.size ?: 0, _target?.size ?: 0)) { index ->
-          Enumeration.of(
-            target?.getOrNull(index)?.let { VersionIndependentResourceTypesAll.fromCode(it) },
-            _target?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'target' on SearchParameter has neither a value nor an id/extension"
-            )
-        }),
+      target = target_,
       multipleOr = R5Boolean.of(multipleOr, _multipleOr),
       multipleAnd = R5Boolean.of(multipleAnd, _multipleAnd),
-      comparator =
-        (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { index ->
-          Enumeration.of(
-            comparator?.getOrNull(index)?.let { SearchComparator.fromCode(it) },
-            _comparator?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'comparator' on SearchParameter has neither a value nor an id/extension"
-            )
-        }),
-      modifier =
-        (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
-          Enumeration.of(
-            modifier?.getOrNull(index)?.let { SearchModifierCode.fromCode(it) },
-            _modifier?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'modifier' on SearchParameter has neither a value nor an id/extension"
-            )
-        }),
-      chain =
-        (kotlin.collections.List(maxOf(chain?.size ?: 0, _chain?.size ?: 0)) { index ->
-          R5String.of(chain?.getOrNull(index), _chain?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'chain' on SearchParameter has neither a value nor an id/extension"
-            )
-        }),
-      component = component ?: listOf(),
+      comparator = comparator_,
+      modifier = modifier_,
+      chain = chain_,
+      component = listOrEmpty(component),
     )
   }
 
@@ -840,36 +796,32 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     when (val choice = value.versionAlgorithm) {
@@ -925,33 +877,30 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       33 + descriptorOffset,
       value.description.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 34 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        36 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      36 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 37 + descriptorOffset, value.purpose?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 38 + descriptorOffset, value.purpose)
     compositeEncoder.encodeStringIfNotNull(
@@ -968,7 +917,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
     compositeEncoder.encodeElementIfNotNull(descriptor, 42 + descriptorOffset, value.copyrightLabel)
     compositeEncoder.encodeStringIfNotNull(descriptor, 43 + descriptorOffset, value.code.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 44 + descriptorOffset, value.code)
-    if (value.base.isNotEmpty()) {
+    if (!value.base.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         45 + descriptorOffset,
@@ -1001,7 +950,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       value.constraint?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 54 + descriptorOffset, value.constraint)
-    if (value.target.isNotEmpty()) {
+    if (!value.target.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         55 + descriptorOffset,
@@ -1022,7 +971,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       value.multipleAnd?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 60 + descriptorOffset, value.multipleAnd)
-    if (value.comparator.isNotEmpty()) {
+    if (!value.comparator.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         61 + descriptorOffset,
@@ -1035,7 +984,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
         value.comparator,
       )
     }
-    if (value.modifier.isNotEmpty()) {
+    if (!value.modifier.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         63 + descriptorOffset,
@@ -1044,7 +993,7 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 64 + descriptorOffset, value.modifier)
     }
-    if (value.chain.isNotEmpty()) {
+    if (!value.chain.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         65 + descriptorOffset,
@@ -1053,12 +1002,11 @@ internal object SearchParameterSerializer : FhirResourceSerializer<SearchParamet
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 66 + descriptorOffset, value.chain)
     }
-    if (value.component.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        67 + descriptorOffset,
-        SearchParameterComponentSerializer.listSerializer,
-        value.component,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      67 + descriptorOffset,
+      SearchParameterComponentSerializer.listSerializer,
+      value.component,
+    )
   }
 }

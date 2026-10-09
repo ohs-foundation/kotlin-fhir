@@ -51,45 +51,42 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.UniqueId> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("UniqueId") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-      optionalElement("preferred", KotlinBoolean.serializer().descriptor)
-      optionalElement("_preferred", ElementSerializer.descriptor)
-      optionalElement("comment", KotlinString.serializer().descriptor)
-      optionalElement("_comment", ElementSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
-    }
+internal object NamingSystemUniqueIdSerializer : FhirSerializer<NamingSystem.UniqueId> {
+  override val descriptor: SerialDescriptor = buildDescriptor("UniqueId", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<NamingSystem.UniqueId>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("type")
+    b.strPrim("value")
+    b.boolPrim("preferred")
+    b.strPrim("comment")
+    b.optionalElement("period", PeriodSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): NamingSystem.UniqueId {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: NamingSystemIdentifierType? = null
     var _type: Element? = null
     var `value`: KotlinString? = null
     var _value: Element? = null
@@ -117,7 +114,9 @@ internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.Unique
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          type =
+            NamingSystemIdentifierType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -162,24 +161,16 @@ internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.Unique
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding UniqueId: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return NamingSystem.UniqueId(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(if (type != null) NamingSystemIdentifierType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on NamingSystem.UniqueId"
-          ),
-      `value` =
-        R4bString.of(`value`, _value)
-          ?: throw SerializationException(
-            "Missing required property 'value' on NamingSystem.UniqueId"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(Enumeration.of(type, _type), "NamingSystem.UniqueId", "type"),
+      `value` = required(R4bString.of(`value`, _value), "NamingSystem.UniqueId", "value"),
       preferred = R4bBoolean.of(preferred, _preferred),
       comment = R4bString.of(comment, _comment),
       period = period,
@@ -187,22 +178,21 @@ internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.Unique
   }
 
   override fun serialize(encoder: Encoder, `value`: NamingSystem.UniqueId) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.`value`.value)
@@ -220,39 +210,29 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("NamingSystem")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("kind", KotlinString.serializer().descriptor)
-    b.optionalElement("_kind", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("status")
+    b.strPrim("kind")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("responsible", KotlinString.serializer().descriptor)
-    b.optionalElement("_responsible", ElementSerializer.descriptor)
+    b.strPrim("responsible")
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("usage", KotlinString.serializer().descriptor)
-    b.optionalElement("_usage", ElementSerializer.descriptor)
+    b.strPrim("usage")
     b.optionalElement("uniqueId", NamingSystemUniqueIdSerializer.listSerializer.descriptor)
   }
 
@@ -273,11 +253,11 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
     var modifierExtension: List<Extension>? = null
     var name: KotlinString? = null
     var _name: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
-    var kind: KotlinString? = null
+    var kind: NamingSystemType? = null
     var _kind: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -360,7 +340,8 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
               ElementSerializer,
               null,
             )
-        12 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         13 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -369,7 +350,7 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
               ElementSerializer,
               null,
             )
-        14 -> kind = compositeDecoder.decodeStringElement(descriptor, i)
+        14 -> kind = NamingSystemType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _kind =
             compositeDecoder.decodeNullableSerializableElement(
@@ -378,7 +359,7 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
               ElementSerializer,
               null,
             )
-        16 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        16 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -463,7 +444,7 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
               NamingSystemUniqueIdSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding NamingSystem: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return NamingSystem(
@@ -472,30 +453,22 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      name =
-        R4bString.of(name, _name)
-          ?: throw SerializationException("Missing required property 'name' on NamingSystem"),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on NamingSystem"),
-      kind =
-        Enumeration.of(if (kind != null) NamingSystemType.fromCode(kind) else null, _kind)
-          ?: throw SerializationException("Missing required property 'kind' on NamingSystem"),
-      date =
-        DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date)
-          ?: throw SerializationException("Missing required property 'date' on NamingSystem"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      name = required(R4bString.of(name, _name), "NamingSystem", "name"),
+      status = required(Enumeration.of(status, _status), "NamingSystem", "status"),
+      kind = required(Enumeration.of(kind, _kind), "NamingSystem", "kind"),
+      date = required(DateTime.of(date, _date), "NamingSystem", "date"),
       publisher = R4bString.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       responsible = R4bString.of(responsible, _responsible),
       type = type,
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       usage = R4bString.of(usage, _usage),
-      uniqueId = uniqueId ?: listOf(),
+      uniqueId = listOrEmpty(uniqueId),
     )
   }
 
@@ -526,27 +499,24 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.name.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.name)
     compositeEncoder.encodeStringIfNotNull(
@@ -573,13 +543,12 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       21 + descriptorOffset,
@@ -598,28 +567,25 @@ internal object NamingSystemSerializer : FhirResourceSerializer<NamingSystem> {
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 28 + descriptorOffset, value.usage?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.usage)
-    if (value.uniqueId.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        NamingSystemUniqueIdSerializer.listSerializer,
-        value.uniqueId,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      NamingSystemUniqueIdSerializer.listSerializer,
+      value.uniqueId,
+    )
   }
 }

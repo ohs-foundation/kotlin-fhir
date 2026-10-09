@@ -17,10 +17,14 @@
 package dev.ohs.fhir.codegen.serializer
 
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.TypeName
 import dev.ohs.fhir.codegen.CodegenContext
 import dev.ohs.fhir.codegen.PropertyMapper
+import dev.ohs.fhir.codegen.primitives.FhirPathType
 import dev.ohs.fhir.codegen.schema.Element
+import dev.ohs.fhir.codegen.schema.capitalized
+import dev.ohs.fhir.codegen.schema.getElementName
 
 /**
  * A single wire-level field — one slot in the streaming encode/decode descriptor.
@@ -37,13 +41,23 @@ import dev.ohs.fhir.codegen.schema.Element
  */
 internal data class WireField(
   val name: String,
+  /** Wire-shaped Kotlin type of the slot (e.g. `String?` for a `dateTime`). */
   val typeName: TypeName,
   /** Owning parent element. */
   val element: Element,
   /** Is this the `_field` element (carries id/extension for a primitive). */
   val isElementField: Boolean = false,
   val defaultValue: String? = "null",
-)
+  /**
+   * FHIR primitive type code (e.g. `boolean`, `dateTime`) when this slot is a primitive value or
+   * its `_field` companion; null for complex, backbone and list-of-complex slots.
+   */
+  val fhirTypeCode: String? = null,
+) {
+  /** Whether the slot holds a list (repeating element). */
+  val isList: Boolean
+    get() = typeName is ParameterizedTypeName
+}
 
 /**
  * Wire fields matching the FLAT FHIR JSON wire shape exactly — every top-level key that appears on
@@ -60,12 +74,22 @@ internal fun CodegenContext.buildJsonWireFields(
     PropertyMapper(PropertyMapper.MappingContext.WIRE, modelClassName, valueSetMap)
   return elements.flatMap { element ->
     propertyMapper.mapToProperties(element).map { info ->
+      val valueName = info.name.removePrefix("_")
+      val fhirTypeCode =
+        element.type
+          ?.firstOrNull { type ->
+            FhirPathType.containsFhirTypeCode(type.code) &&
+              (element.type.size == 1 ||
+                valueName == "${element.getElementName()}${type.code.capitalized()}")
+          }
+          ?.code
       WireField(
         name = info.name,
         typeName = info.typeName,
         element = element,
         isElementField = info.name.startsWith("_"),
         defaultValue = info.defaultValue,
+        fhirTypeCode = fhirTypeCode,
       )
     }
   }

@@ -58,14 +58,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -73,24 +71,24 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object ImplementationGuideDependsOnSerializer :
-  KSerializer<ImplementationGuide.DependsOn> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DependsOn") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("uri", KotlinString.serializer().descriptor)
-      optionalElement("_uri", ElementSerializer.descriptor)
-      optionalElement("packageId", KotlinString.serializer().descriptor)
-      optionalElement("_packageId", ElementSerializer.descriptor)
-      optionalElement("version", KotlinString.serializer().descriptor)
-      optionalElement("_version", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ImplementationGuide.DependsOn> {
+  override val descriptor: SerialDescriptor = buildDescriptor("DependsOn", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.DependsOn>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("uri")
+    b.strPrim("packageId")
+    b.strPrim("version")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.DependsOn {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -148,41 +146,36 @@ internal object ImplementationGuideDependsOnSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DependsOn: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ImplementationGuide.DependsOn(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      uri =
-        Canonical.of(uri, _uri)
-          ?: throw SerializationException(
-            "Missing required property 'uri' on ImplementationGuide.DependsOn"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      uri = required(Canonical.of(uri, _uri), "ImplementationGuide.DependsOn", "uri"),
       packageId = Id.of(packageId, _packageId),
       version = R4String.of(version, _version),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.DependsOn) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.uri.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.uri)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.packageId?.value)
@@ -193,26 +186,27 @@ internal object ImplementationGuideDependsOnSerializer :
   }
 }
 
-internal object ImplementationGuideGlobalSerializer : KSerializer<ImplementationGuide.Global> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Global") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("profile", KotlinString.serializer().descriptor)
-      optionalElement("_profile", ElementSerializer.descriptor)
-    }
+internal object ImplementationGuideGlobalSerializer : FhirSerializer<ImplementationGuide.Global> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Global", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Global>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("type")
+    b.strPrim("profile")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Global {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: ResourceType? = null
     var _type: Element? = null
     var profile: KotlinString? = null
     var _profile: Element? = null
@@ -235,7 +229,7 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> type = ResourceType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -254,44 +248,35 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Global: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ImplementationGuide.Global(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(if (type != null) ResourceType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on ImplementationGuide.Global"
-          ),
-      profile =
-        Canonical.of(profile, _profile)
-          ?: throw SerializationException(
-            "Missing required property 'profile' on ImplementationGuide.Global"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(Enumeration.of(type, _type), "ImplementationGuide.Global", "type"),
+      profile = required(Canonical.of(profile, _profile), "ImplementationGuide.Global", "profile"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Global) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.profile.value)
@@ -301,35 +286,38 @@ internal object ImplementationGuideGlobalSerializer : KSerializer<Implementation
 }
 
 internal object ImplementationGuideDefinitionSerializer :
-  KSerializer<ImplementationGuide.Definition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Definition") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement(
-        "grouping",
-        ImplementationGuideDefinitionGroupingSerializer.listSerializer.descriptor,
-      )
-      optionalElement(
-        "resource",
-        ImplementationGuideDefinitionResourceSerializer.listSerializer.descriptor,
-      )
-      optionalElement("page", ImplementationGuideDefinitionPageSerializer.descriptor)
-      optionalElement(
-        "parameter",
-        ImplementationGuideDefinitionParameterSerializer.listSerializer.descriptor,
-      )
-      optionalElement(
-        "template",
-        ImplementationGuideDefinitionTemplateSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<ImplementationGuide.Definition> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Definition", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Definition>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "grouping",
+      ImplementationGuideDefinitionGroupingSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement(
+      "resource",
+      ImplementationGuideDefinitionResourceSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("page", ImplementationGuideDefinitionPageSerializer.descriptor)
+    b.optionalElement(
+      "parameter",
+      ImplementationGuideDefinitionParameterSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement(
+      "template",
+      ImplementationGuideDefinitionTemplateSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -399,94 +387,90 @@ internal object ImplementationGuideDefinitionSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Definition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ImplementationGuide.Definition(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      grouping = grouping ?: listOf(),
-      resource = resource ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      grouping = listOrEmpty(grouping),
+      resource = listOrEmpty(resource),
       page = page,
-      parameter = parameter ?: listOf(),
-      template = template ?: listOf(),
+      parameter = listOrEmpty(parameter),
+      template = listOrEmpty(template),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.grouping.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        ImplementationGuideDefinitionGroupingSerializer.listSerializer,
-        value.grouping,
-      )
-    if (value.resource.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        ImplementationGuideDefinitionResourceSerializer.listSerializer,
-        value.resource,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      ImplementationGuideDefinitionGroupingSerializer.listSerializer,
+      value.grouping,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      ImplementationGuideDefinitionResourceSerializer.listSerializer,
+      value.resource,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       5,
       ImplementationGuideDefinitionPageSerializer,
       value.page,
     )
-    if (value.parameter.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ImplementationGuideDefinitionParameterSerializer.listSerializer,
-        value.parameter,
-      )
-    if (value.template.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        ImplementationGuideDefinitionTemplateSerializer.listSerializer,
-        value.template,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      ImplementationGuideDefinitionParameterSerializer.listSerializer,
+      value.parameter,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      ImplementationGuideDefinitionTemplateSerializer.listSerializer,
+      value.template,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ImplementationGuideDefinitionGroupingSerializer :
-  KSerializer<ImplementationGuide.Definition.Grouping> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Grouping") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ImplementationGuide.Definition.Grouping> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Grouping", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Definition.Grouping>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("description")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Grouping {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -533,40 +517,35 @@ internal object ImplementationGuideDefinitionGroupingSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Grouping: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ImplementationGuide.Definition.Grouping(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      name =
-        R4String.of(name, _name)
-          ?: throw SerializationException(
-            "Missing required property 'name' on ImplementationGuide.Definition.Grouping"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      name = required(R4String.of(name, _name), "ImplementationGuide.Definition.Grouping", "name"),
       description = R4String.of(description, _description),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Grouping) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
@@ -576,31 +555,28 @@ internal object ImplementationGuideDefinitionGroupingSerializer :
 }
 
 internal object ImplementationGuideDefinitionResourceSerializer :
-  KSerializer<ImplementationGuide.Definition.Resource> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Resource") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("reference", ReferenceSerializer.descriptor)
-      optionalElement("fhirVersion", stringNullableListSerializer.descriptor)
-      optionalElement("_fhirVersion", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("exampleBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_exampleBoolean", ElementSerializer.descriptor)
-      optionalElement("exampleCanonical", KotlinString.serializer().descriptor)
-      optionalElement("_exampleCanonical", ElementSerializer.descriptor)
-      optionalElement("groupingId", KotlinString.serializer().descriptor)
-      optionalElement("_groupingId", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ImplementationGuide.Definition.Resource> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Resource", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Definition.Resource>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("reference", ReferenceSerializer.descriptor)
+    b.strPrimList("fhirVersion")
+    b.strPrim("name")
+    b.strPrim("description")
+    b.boolPrim("exampleBoolean")
+    b.strPrim("exampleCanonical")
+    b.strPrim("groupingId")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Resource {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -707,29 +683,27 @@ internal object ImplementationGuideDefinitionResourceSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Resource: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val fhirVersion_ =
+      List(maxSize(fhirVersion, _fhirVersion)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(fhirVersion, index)?.let { FHIRVersion.fromCode(it) },
+            at(_fhirVersion, index),
+          ),
+          "ImplementationGuide.Definition.Resource",
+          "fhirVersion",
+        )
+      }
     return ImplementationGuide.Definition.Resource(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      reference =
-        reference
-          ?: throw SerializationException(
-            "Missing required property 'reference' on ImplementationGuide.Definition.Resource"
-          ),
-      fhirVersion =
-        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
-          Enumeration.of(
-            fhirVersion?.getOrNull(index)?.let { FHIRVersion.fromCode(it) },
-            _fhirVersion?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'fhirVersion' on ImplementationGuide.Definition.Resource has neither a value nor an id/extension"
-            )
-        }),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      reference = required(reference, "ImplementationGuide.Definition.Resource", "reference"),
+      fhirVersion = fhirVersion_,
       name = R4String.of(name, _name),
       description = R4String.of(description, _description),
       example =
@@ -742,24 +716,23 @@ internal object ImplementationGuideDefinitionResourceSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Resource) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.reference)
-    if (value.fhirVersion.isNotEmpty()) {
+    if (!value.fhirVersion.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         4,
@@ -790,31 +763,31 @@ internal object ImplementationGuideDefinitionResourceSerializer :
 }
 
 internal object ImplementationGuideDefinitionPageSerializer :
-  KSerializer<ImplementationGuide.Definition.Page> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Page") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("nameUrl", KotlinString.serializer().descriptor)
-      optionalElement("_nameUrl", ElementSerializer.descriptor)
-      optionalElement("nameReference", ReferenceSerializer.descriptor)
-      optionalElement("title", KotlinString.serializer().descriptor)
-      optionalElement("_title", ElementSerializer.descriptor)
-      optionalElement("generation", KotlinString.serializer().descriptor)
-      optionalElement("_generation", ElementSerializer.descriptor)
-      optionalElement(
-        "page",
-        listSerialDescriptor(
-          lazyDescriptor { ImplementationGuideDefinitionPageSerializer.descriptor }
-        ),
-      )
-    }
+  FhirSerializer<ImplementationGuide.Definition.Page> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Page", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Definition.Page>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("nameUrl")
+    b.optionalElement("nameReference", ReferenceSerializer.descriptor)
+    b.strPrim("title")
+    b.strPrim("generation")
+    b.optionalElement(
+      "page",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ImplementationGuideDefinitionPageSerializer)
+      ),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Page {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -824,7 +797,7 @@ internal object ImplementationGuideDefinitionPageSerializer :
     var nameReference: Reference? = null
     var title: KotlinString? = null
     var _title: Element? = null
-    var generation: KotlinString? = null
+    var generation: GuidePageGeneration? = null
     var _generation: Element? = null
     var page: List<ImplementationGuide.Definition.Page>? = null
     while (true) {
@@ -872,7 +845,9 @@ internal object ImplementationGuideDefinitionPageSerializer :
               ElementSerializer,
               null,
             )
-        8 -> generation = compositeDecoder.decodeStringElement(descriptor, i)
+        8 ->
+          generation =
+            GuidePageGeneration.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         9 ->
           _generation =
             compositeDecoder.decodeNullableSerializableElement(
@@ -890,53 +865,47 @@ internal object ImplementationGuideDefinitionPageSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Page: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ImplementationGuide.Definition.Page(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       name =
-        ImplementationGuide.Definition.Page.Name.from(Url.of(nameUrl, _nameUrl), nameReference)
-          ?: throw SerializationException(
-            "Missing required property 'name' on ImplementationGuide.Definition.Page"
-          ),
-      title =
-        R4String.of(title, _title)
-          ?: throw SerializationException(
-            "Missing required property 'title' on ImplementationGuide.Definition.Page"
-          ),
+        required(
+          ImplementationGuide.Definition.Page.Name.from(Url.of(nameUrl, _nameUrl), nameReference),
+          "ImplementationGuide.Definition.Page",
+          "name",
+        ),
+      title = required(R4String.of(title, _title), "ImplementationGuide.Definition.Page", "title"),
       generation =
-        Enumeration.of(
-          if (generation != null) GuidePageGeneration.fromCode(generation) else null,
-          _generation,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'generation' on ImplementationGuide.Definition.Page"
-          ),
-      page = page ?: listOf(),
+        required(
+          Enumeration.of(generation, _generation),
+          "ImplementationGuide.Definition.Page",
+          "generation",
+        ),
+      page = listOrEmpty(page),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Page) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.name) {
       is ImplementationGuide.Definition.Page.Name.Url -> {
         compositeEncoder.encodeStringIfNotNull(descriptor, 3, choice.value.value)
@@ -950,39 +919,39 @@ internal object ImplementationGuideDefinitionPageSerializer :
     compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.title)
     compositeEncoder.encodeStringIfNotNull(descriptor, 8, value.generation.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.generation)
-    if (value.page.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        ImplementationGuideDefinitionPageSerializer.listSerializer,
-        value.page,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      ImplementationGuideDefinitionPageSerializer.listSerializer,
+      value.page,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ImplementationGuideDefinitionParameterSerializer :
-  KSerializer<ImplementationGuide.Definition.Parameter> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Parameter") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ImplementationGuide.Definition.Parameter> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Parameter", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Definition.Parameter>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrim("value")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Parameter {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var code: KotlinString? = null
+    var code: GuideParameterCode? = null
     var _code: Element? = null
     var `value`: KotlinString? = null
     var _value: Element? = null
@@ -1005,7 +974,7 @@ internal object ImplementationGuideDefinitionParameterSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> code = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> code = GuideParameterCode.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _code =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1024,44 +993,37 @@ internal object ImplementationGuideDefinitionParameterSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Parameter: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ImplementationGuide.Definition.Parameter(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code =
-        Enumeration.of(if (code != null) GuideParameterCode.fromCode(code) else null, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on ImplementationGuide.Definition.Parameter"
-          ),
+        required(Enumeration.of(code, _code), "ImplementationGuide.Definition.Parameter", "code"),
       `value` =
-        R4String.of(`value`, _value)
-          ?: throw SerializationException(
-            "Missing required property 'value' on ImplementationGuide.Definition.Parameter"
-          ),
+        required(R4String.of(`value`, _value), "ImplementationGuide.Definition.Parameter", "value"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Parameter) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.`value`.value)
@@ -1071,24 +1033,24 @@ internal object ImplementationGuideDefinitionParameterSerializer :
 }
 
 internal object ImplementationGuideDefinitionTemplateSerializer :
-  KSerializer<ImplementationGuide.Definition.Template> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Template") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("source", KotlinString.serializer().descriptor)
-      optionalElement("_source", ElementSerializer.descriptor)
-      optionalElement("scope", KotlinString.serializer().descriptor)
-      optionalElement("_scope", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ImplementationGuide.Definition.Template> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Template", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Definition.Template>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrim("source")
+    b.strPrim("scope")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Definition.Template {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1146,45 +1108,37 @@ internal object ImplementationGuideDefinitionTemplateSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Template: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ImplementationGuide.Definition.Template(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        Code.of(code, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on ImplementationGuide.Definition.Template"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(Code.of(code, _code), "ImplementationGuide.Definition.Template", "code"),
       source =
-        R4String.of(source, _source)
-          ?: throw SerializationException(
-            "Missing required property 'source' on ImplementationGuide.Definition.Template"
-          ),
+        required(R4String.of(source, _source), "ImplementationGuide.Definition.Template", "source"),
       scope = R4String.of(scope, _scope),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Definition.Template) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.source.value)
@@ -1195,29 +1149,30 @@ internal object ImplementationGuideDefinitionTemplateSerializer :
   }
 }
 
-internal object ImplementationGuideManifestSerializer : KSerializer<ImplementationGuide.Manifest> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Manifest") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("rendering", KotlinString.serializer().descriptor)
-      optionalElement("_rendering", ElementSerializer.descriptor)
-      optionalElement(
-        "resource",
-        ImplementationGuideManifestResourceSerializer.listSerializer.descriptor,
-      )
-      optionalElement("page", ImplementationGuideManifestPageSerializer.listSerializer.descriptor)
-      optionalElement("image", stringNullableListSerializer.descriptor)
-      optionalElement("_image", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("other", stringNullableListSerializer.descriptor)
-      optionalElement("_other", ElementSerializer.nullableListSerializer.descriptor)
-    }
+internal object ImplementationGuideManifestSerializer :
+  FhirSerializer<ImplementationGuide.Manifest> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Manifest", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Manifest>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("rendering")
+    b.optionalElement(
+      "resource",
+      ImplementationGuideManifestResourceSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("page", ImplementationGuideManifestPageSerializer.listSerializer.descriptor)
+    b.strPrimList("image")
+    b.strPrimList("other")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Manifest {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1307,68 +1262,69 @@ internal object ImplementationGuideManifestSerializer : KSerializer<Implementati
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Manifest: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val image_ =
+      List(maxSize(image, _image)) { index ->
+        entryRequired(
+          R4String.of(at(image, index), at(_image, index)),
+          "ImplementationGuide.Manifest",
+          "image",
+        )
+      }
+    val other_ =
+      List(maxSize(other, _other)) { index ->
+        entryRequired(
+          R4String.of(at(other, index), at(_other, index)),
+          "ImplementationGuide.Manifest",
+          "other",
+        )
+      }
     return ImplementationGuide.Manifest(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       rendering = Url.of(rendering, _rendering),
-      resource = resource ?: listOf(),
-      page = page ?: listOf(),
-      image =
-        (kotlin.collections.List(maxOf(image?.size ?: 0, _image?.size ?: 0)) { index ->
-          R4String.of(image?.getOrNull(index), _image?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'image' on ImplementationGuide.Manifest has neither a value nor an id/extension"
-            )
-        }),
-      other =
-        (kotlin.collections.List(maxOf(other?.size ?: 0, _other?.size ?: 0)) { index ->
-          R4String.of(other?.getOrNull(index), _other?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'other' on ImplementationGuide.Manifest has neither a value nor an id/extension"
-            )
-        }),
+      resource = listOrEmpty(resource),
+      page = listOrEmpty(page),
+      image = image_,
+      other = other_,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Manifest) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.rendering?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.rendering)
-    if (value.resource.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        ImplementationGuideManifestResourceSerializer.listSerializer,
-        value.resource,
-      )
-    if (value.page.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ImplementationGuideManifestPageSerializer.listSerializer,
-        value.page,
-      )
-    if (value.image.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      ImplementationGuideManifestResourceSerializer.listSerializer,
+      value.resource,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      ImplementationGuideManifestPageSerializer.listSerializer,
+      value.page,
+    )
+    if (!value.image.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         7,
@@ -1377,7 +1333,7 @@ internal object ImplementationGuideManifestSerializer : KSerializer<Implementati
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 8, value.image)
     }
-    if (value.other.isNotEmpty()) {
+    if (!value.other.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         9,
@@ -1391,25 +1347,25 @@ internal object ImplementationGuideManifestSerializer : KSerializer<Implementati
 }
 
 internal object ImplementationGuideManifestResourceSerializer :
-  KSerializer<ImplementationGuide.Manifest.Resource> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Resource") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("reference", ReferenceSerializer.descriptor)
-      optionalElement("exampleBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_exampleBoolean", ElementSerializer.descriptor)
-      optionalElement("exampleCanonical", KotlinString.serializer().descriptor)
-      optionalElement("_exampleCanonical", ElementSerializer.descriptor)
-      optionalElement("relativePath", KotlinString.serializer().descriptor)
-      optionalElement("_relativePath", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ImplementationGuide.Manifest.Resource> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Resource", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Manifest.Resource>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("reference", ReferenceSerializer.descriptor)
+    b.boolPrim("exampleBoolean")
+    b.strPrim("exampleCanonical")
+    b.strPrim("relativePath")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Manifest.Resource {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1476,19 +1432,15 @@ internal object ImplementationGuideManifestResourceSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Resource: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ImplementationGuide.Manifest.Resource(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      reference =
-        reference
-          ?: throw SerializationException(
-            "Missing required property 'reference' on ImplementationGuide.Manifest.Resource"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      reference = required(reference, "ImplementationGuide.Manifest.Resource", "reference"),
       example =
         ImplementationGuide.Manifest.Resource.Example.from(
           R4Boolean.of(exampleBoolean, _exampleBoolean),
@@ -1499,22 +1451,21 @@ internal object ImplementationGuideManifestResourceSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Manifest.Resource) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.reference)
     when (val choice = value.example) {
       null -> {}
@@ -1534,24 +1485,24 @@ internal object ImplementationGuideManifestResourceSerializer :
 }
 
 internal object ImplementationGuideManifestPageSerializer :
-  KSerializer<ImplementationGuide.Manifest.Page> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Page") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("title", KotlinString.serializer().descriptor)
-      optionalElement("_title", ElementSerializer.descriptor)
-      optionalElement("anchor", stringNullableListSerializer.descriptor)
-      optionalElement("_anchor", ElementSerializer.nullableListSerializer.descriptor)
-    }
+  FhirSerializer<ImplementationGuide.Manifest.Page> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Page", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ImplementationGuide.Manifest.Page>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrimList("anchor")
+  }
+
   override fun deserialize(decoder: Decoder): ImplementationGuide.Manifest.Page {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1616,52 +1567,49 @@ internal object ImplementationGuideManifestPageSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Page: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val anchor_ =
+      List(maxSize(anchor, _anchor)) { index ->
+        entryRequired(
+          R4String.of(at(anchor, index), at(_anchor, index)),
+          "ImplementationGuide.Manifest.Page",
+          "anchor",
+        )
+      }
     return ImplementationGuide.Manifest.Page(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      name =
-        R4String.of(name, _name)
-          ?: throw SerializationException(
-            "Missing required property 'name' on ImplementationGuide.Manifest.Page"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      name = required(R4String.of(name, _name), "ImplementationGuide.Manifest.Page", "name"),
       title = R4String.of(title, _title),
-      anchor =
-        (kotlin.collections.List(maxOf(anchor?.size ?: 0, _anchor?.size ?: 0)) { index ->
-          R4String.of(anchor?.getOrNull(index), _anchor?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'anchor' on ImplementationGuide.Manifest.Page has neither a value nor an id/extension"
-            )
-        }),
+      anchor = anchor_,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ImplementationGuide.Manifest.Page) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.title?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.title)
-    if (value.anchor.isNotEmpty()) {
+    if (!value.anchor.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         7,
@@ -1678,48 +1626,33 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ImplementationGuide")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("url")
+    b.strPrim("version")
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("packageId", KotlinString.serializer().descriptor)
-    b.optionalElement("_packageId", ElementSerializer.descriptor)
-    b.optionalElement("license", KotlinString.serializer().descriptor)
-    b.optionalElement("_license", ElementSerializer.descriptor)
-    b.optionalElement("fhirVersion", stringNullableListSerializer.descriptor)
-    b.optionalElement("_fhirVersion", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrim("copyright")
+    b.strPrim("packageId")
+    b.strPrim("license")
+    b.strPrimList("fhirVersion")
     b.optionalElement("dependsOn", ImplementationGuideDependsOnSerializer.listSerializer.descriptor)
     b.optionalElement("global", ImplementationGuideGlobalSerializer.listSerializer.descriptor)
     b.optionalElement("definition", ImplementationGuideDefinitionSerializer.descriptor)
@@ -1749,11 +1682,11 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
     var _name: Element? = null
     var title: KotlinString? = null
     var _title: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -1869,7 +1802,8 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
               ElementSerializer,
               null,
             )
-        18 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        18 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1887,7 +1821,7 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
               ElementSerializer,
               null,
             )
-        22 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        22 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         23 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -2013,59 +1947,47 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
               ImplementationGuideManifestSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding ImplementationGuide: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val fhirVersion_ =
+      List(maxSize(fhirVersion, _fhirVersion)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(fhirVersion, index)?.let { FHIRVersion.fromCode(it) },
+            at(_fhirVersion, index),
+          ),
+          "ImplementationGuide",
+          "fhirVersion",
+        )
+      }
     return ImplementationGuide(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      url =
-        Uri.of(url, _url)
-          ?: throw SerializationException("Missing required property 'url' on ImplementationGuide"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      url = required(Uri.of(url, _url), "ImplementationGuide", "url"),
       version = R4String.of(version, _version),
-      name =
-        R4String.of(name, _name)
-          ?: throw SerializationException(
-            "Missing required property 'name' on ImplementationGuide"
-          ),
+      name = required(R4String.of(name, _name), "ImplementationGuide", "name"),
       title = R4String.of(title, _title),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on ImplementationGuide"
-          ),
+      status = required(Enumeration.of(status, _status), "ImplementationGuide", "status"),
       experimental = R4Boolean.of(experimental, _experimental),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R4String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       copyright = Markdown.of(copyright, _copyright),
-      packageId =
-        Id.of(packageId, _packageId)
-          ?: throw SerializationException(
-            "Missing required property 'packageId' on ImplementationGuide"
-          ),
+      packageId = required(Id.of(packageId, _packageId), "ImplementationGuide", "packageId"),
       license = ExtensibleEnumeration.of<SPDXLicense>(license, _license),
-      fhirVersion =
-        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
-          Enumeration.of(
-            fhirVersion?.getOrNull(index)?.let { FHIRVersion.fromCode(it) },
-            _fhirVersion?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'fhirVersion' on ImplementationGuide has neither a value nor an id/extension"
-            )
-        }),
-      dependsOn = dependsOn ?: listOf(),
-      global = global ?: listOf(),
+      fhirVersion = fhirVersion_,
+      dependsOn = listOrEmpty(dependsOn),
+      global = listOrEmpty(global),
       definition = definition,
       manifest = manifest,
     )
@@ -2098,27 +2020,24 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
     compositeEncoder.encodeStringIfNotNull(descriptor, 12 + descriptorOffset, value.version?.value)
@@ -2151,33 +2070,30 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 25 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       27 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       31 + descriptorOffset,
@@ -2188,7 +2104,7 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
     compositeEncoder.encodeElementIfNotNull(descriptor, 34 + descriptorOffset, value.packageId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 35 + descriptorOffset, value.license?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 36 + descriptorOffset, value.license)
-    if (value.fhirVersion.isNotEmpty()) {
+    if (!value.fhirVersion.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         37 + descriptorOffset,
@@ -2201,20 +2117,18 @@ internal object ImplementationGuideSerializer : FhirResourceSerializer<Implement
         value.fhirVersion,
       )
     }
-    if (value.dependsOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        39 + descriptorOffset,
-        ImplementationGuideDependsOnSerializer.listSerializer,
-        value.dependsOn,
-      )
-    if (value.global.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        ImplementationGuideGlobalSerializer.listSerializer,
-        value.global,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      39 + descriptorOffset,
+      ImplementationGuideDependsOnSerializer.listSerializer,
+      value.dependsOn,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      40 + descriptorOffset,
+      ImplementationGuideGlobalSerializer.listSerializer,
+      value.global,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       41 + descriptorOffset,

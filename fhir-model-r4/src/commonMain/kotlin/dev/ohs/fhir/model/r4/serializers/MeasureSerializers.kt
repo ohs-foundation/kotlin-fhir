@@ -56,36 +56,35 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object MeasureGroupSerializer : KSerializer<Measure.Group> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Group") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("population", MeasureGroupPopulationSerializer.listSerializer.descriptor)
-      optionalElement("stratifier", MeasureGroupStratifierSerializer.listSerializer.descriptor)
-    }
+internal object MeasureGroupSerializer : FhirSerializer<Measure.Group> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Group", this)
 
-  internal val listSerializer: KSerializer<List<Measure.Group>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Measure.Group>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("population", MeasureGroupPopulationSerializer.listSerializer.descriptor)
+    b.optionalElement("stratifier", MeasureGroupStratifierSerializer.listSerializer.descriptor)
+  }
 
   override fun deserialize(decoder: Decoder): Measure.Group {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -148,38 +147,37 @@ internal object MeasureGroupSerializer : KSerializer<Measure.Group> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Group: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Measure.Group(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
       description = R4String.of(description, _description),
-      population = population ?: listOf(),
-      stratifier = stratifier ?: listOf(),
+      population = listOrEmpty(population),
+      stratifier = listOrEmpty(stratifier),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Group) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -188,39 +186,39 @@ internal object MeasureGroupSerializer : KSerializer<Measure.Group> {
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.description)
-    if (value.population.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        MeasureGroupPopulationSerializer.listSerializer,
-        value.population,
-      )
-    if (value.stratifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        MeasureGroupStratifierSerializer.listSerializer,
-        value.stratifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      MeasureGroupPopulationSerializer.listSerializer,
+      value.population,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      MeasureGroupStratifierSerializer.listSerializer,
+      value.stratifier,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object MeasureGroupPopulationSerializer : KSerializer<Measure.Group.Population> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Population") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("criteria", ExpressionSerializer.descriptor)
-    }
+internal object MeasureGroupPopulationSerializer : FhirSerializer<Measure.Group.Population> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Population", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Measure.Group.Population>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("criteria", ExpressionSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Measure.Group.Population {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -274,41 +272,36 @@ internal object MeasureGroupPopulationSerializer : KSerializer<Measure.Group.Pop
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Population: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Measure.Group.Population(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
       description = R4String.of(description, _description),
-      criteria =
-        criteria
-          ?: throw SerializationException(
-            "Missing required property 'criteria' on Measure.Group.Population"
-          ),
+      criteria = required(criteria, "Measure.Group.Population", "criteria"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Group.Population) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -322,25 +315,27 @@ internal object MeasureGroupPopulationSerializer : KSerializer<Measure.Group.Pop
   }
 }
 
-internal object MeasureGroupStratifierSerializer : KSerializer<Measure.Group.Stratifier> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Stratifier") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("criteria", ExpressionSerializer.descriptor)
-      optionalElement(
-        "component",
-        MeasureGroupStratifierComponentSerializer.listSerializer.descriptor,
-      )
-    }
+internal object MeasureGroupStratifierSerializer : FhirSerializer<Measure.Group.Stratifier> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Stratifier", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Measure.Group.Stratifier>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("criteria", ExpressionSerializer.descriptor)
+    b.optionalElement(
+      "component",
+      MeasureGroupStratifierComponentSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): Measure.Group.Stratifier {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -403,38 +398,37 @@ internal object MeasureGroupStratifierSerializer : KSerializer<Measure.Group.Str
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Stratifier: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Measure.Group.Stratifier(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
       description = R4String.of(description, _description),
       criteria = criteria,
-      component = component ?: listOf(),
+      component = listOrEmpty(component),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Group.Stratifier) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -449,34 +443,35 @@ internal object MeasureGroupStratifierSerializer : KSerializer<Measure.Group.Str
       ExpressionSerializer,
       value.criteria,
     )
-    if (value.component.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        MeasureGroupStratifierComponentSerializer.listSerializer,
-        value.component,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      MeasureGroupStratifierComponentSerializer.listSerializer,
+      value.component,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object MeasureGroupStratifierComponentSerializer :
-  KSerializer<Measure.Group.Stratifier.Component> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Component") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("criteria", ExpressionSerializer.descriptor)
-    }
+  FhirSerializer<Measure.Group.Stratifier.Component> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Component", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Measure.Group.Stratifier.Component>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("criteria", ExpressionSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Measure.Group.Stratifier.Component {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -530,41 +525,36 @@ internal object MeasureGroupStratifierComponentSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Component: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Measure.Group.Stratifier.Component(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
       description = R4String.of(description, _description),
-      criteria =
-        criteria
-          ?: throw SerializationException(
-            "Missing required property 'criteria' on Measure.Group.Stratifier.Component"
-          ),
+      criteria = required(criteria, "Measure.Group.Stratifier.Component", "criteria"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Measure.Group.Stratifier.Component) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -578,22 +568,24 @@ internal object MeasureGroupStratifierComponentSerializer :
   }
 }
 
-internal object MeasureSupplementalDataSerializer : KSerializer<Measure.SupplementalData> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SupplementalData") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("usage", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("criteria", ExpressionSerializer.descriptor)
-    }
+internal object MeasureSupplementalDataSerializer : FhirSerializer<Measure.SupplementalData> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SupplementalData", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Measure.SupplementalData>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("usage", CodeableConceptSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("criteria", ExpressionSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Measure.SupplementalData {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -656,55 +648,49 @@ internal object MeasureSupplementalDataSerializer : KSerializer<Measure.Suppleme
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SupplementalData: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Measure.SupplementalData(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
-      usage = usage ?: listOf(),
+      usage = listOrEmpty(usage),
       description = R4String.of(description, _description),
-      criteria =
-        criteria
-          ?: throw SerializationException(
-            "Missing required property 'criteria' on Measure.SupplementalData"
-          ),
+      criteria = required(criteria, "Measure.SupplementalData", "criteria"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Measure.SupplementalData) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.code,
     )
-    if (value.usage.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.usage,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.usage,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.description)
     compositeEncoder.encodeSerializableElement(descriptor, 7, ExpressionSerializer, value.criteria)
@@ -716,55 +702,38 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Measure")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("subtitle", KotlinString.serializer().descriptor)
-    b.optionalElement("_subtitle", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrim("subtitle")
+    b.strPrim("status")
+    b.boolPrim("experimental")
     b.optionalElement("subjectCodeableConcept", CodeableConceptSerializer.descriptor)
     b.optionalElement("subjectReference", ReferenceSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("purpose", KotlinString.serializer().descriptor)
-    b.optionalElement("_purpose", ElementSerializer.descriptor)
-    b.optionalElement("usage", KotlinString.serializer().descriptor)
-    b.optionalElement("_usage", ElementSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("approvalDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_approvalDate", ElementSerializer.descriptor)
-    b.optionalElement("lastReviewDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_lastReviewDate", ElementSerializer.descriptor)
+    b.strPrim("purpose")
+    b.strPrim("usage")
+    b.strPrim("copyright")
+    b.strPrim("approvalDate")
+    b.strPrim("lastReviewDate")
     b.optionalElement("effectivePeriod", PeriodSerializer.descriptor)
     b.optionalElement("topic", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("author", ContactDetailSerializer.listSerializer.descriptor)
@@ -772,26 +741,18 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
     b.optionalElement("reviewer", ContactDetailSerializer.listSerializer.descriptor)
     b.optionalElement("endorser", ContactDetailSerializer.listSerializer.descriptor)
     b.optionalElement("relatedArtifact", RelatedArtifactSerializer.listSerializer.descriptor)
-    b.optionalElement("library", stringNullableListSerializer.descriptor)
-    b.optionalElement("_library", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("disclaimer", KotlinString.serializer().descriptor)
-    b.optionalElement("_disclaimer", ElementSerializer.descriptor)
+    b.strPrimList("library")
+    b.strPrim("disclaimer")
     b.optionalElement("scoring", CodeableConceptSerializer.descriptor)
     b.optionalElement("compositeScoring", CodeableConceptSerializer.descriptor)
     b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("riskAdjustment", KotlinString.serializer().descriptor)
-    b.optionalElement("_riskAdjustment", ElementSerializer.descriptor)
-    b.optionalElement("rateAggregation", KotlinString.serializer().descriptor)
-    b.optionalElement("_rateAggregation", ElementSerializer.descriptor)
-    b.optionalElement("rationale", KotlinString.serializer().descriptor)
-    b.optionalElement("_rationale", ElementSerializer.descriptor)
-    b.optionalElement("clinicalRecommendationStatement", KotlinString.serializer().descriptor)
-    b.optionalElement("_clinicalRecommendationStatement", ElementSerializer.descriptor)
+    b.strPrim("riskAdjustment")
+    b.strPrim("rateAggregation")
+    b.strPrim("rationale")
+    b.strPrim("clinicalRecommendationStatement")
     b.optionalElement("improvementNotation", CodeableConceptSerializer.descriptor)
-    b.optionalElement("definition", stringNullableListSerializer.descriptor)
-    b.optionalElement("_definition", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("guidance", KotlinString.serializer().descriptor)
-    b.optionalElement("_guidance", ElementSerializer.descriptor)
+    b.strPrimList("definition")
+    b.strPrim("guidance")
     b.optionalElement("group", MeasureGroupSerializer.listSerializer.descriptor)
     b.optionalElement(
       "supplementalData",
@@ -825,13 +786,13 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
     var _title: Element? = null
     var subtitle: KotlinString? = null
     var _subtitle: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
     var subjectCodeableConcept: CodeableConcept? = null
     var subjectReference: Reference? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -846,9 +807,9 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
     var _usage: Element? = null
     var copyright: KotlinString? = null
     var _copyright: Element? = null
-    var approvalDate: KotlinString? = null
+    var approvalDate: FhirDate? = null
     var _approvalDate: Element? = null
-    var lastReviewDate: KotlinString? = null
+    var lastReviewDate: FhirDate? = null
     var _lastReviewDate: Element? = null
     var effectivePeriod: Period? = null
     var topic: List<CodeableConcept>? = null
@@ -991,7 +952,8 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
               ElementSerializer,
               null,
             )
-        21 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        21 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1025,7 +987,7 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
               ReferenceSerializer,
               null,
             )
-        27 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        27 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         28 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1103,7 +1065,8 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
               ElementSerializer,
               null,
             )
-        42 -> approvalDate = compositeDecoder.decodeStringElement(descriptor, i)
+        42 ->
+          approvalDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         43 ->
           _approvalDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1112,7 +1075,8 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
               ElementSerializer,
               null,
             )
-        44 -> lastReviewDate = compositeDecoder.decodeStringElement(descriptor, i)
+        44 ->
+          lastReviewDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         45 ->
           _lastReviewDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1311,82 +1275,72 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
               MeasureSupplementalDataSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Measure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val library_ =
+      List(maxSize(library, _library)) { index ->
+        entryRequired(Canonical.of(at(library, index), at(_library, index)), "Measure", "library")
+      }
+    val definition_ =
+      List(maxSize(definition, _definition)) { index ->
+        entryRequired(
+          Markdown.of(at(definition, index), at(_definition, index)),
+          "Measure",
+          "definition",
+        )
+      }
     return Measure(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R4String.of(version, _version),
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       subtitle = R4String.of(subtitle, _subtitle),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Measure"),
+      status = required(Enumeration.of(status, _status), "Measure", "status"),
       experimental = R4Boolean.of(experimental, _experimental),
       subject = Measure.Subject.from(subjectCodeableConcept, subjectReference),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R4String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       purpose = Markdown.of(purpose, _purpose),
       usage = R4String.of(usage, _usage),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate =
-        Date.of(
-          if (approvalDate != null) FhirDate.fromString(approvalDate) else null,
-          _approvalDate,
-        ),
-      lastReviewDate =
-        Date.of(
-          if (lastReviewDate != null) FhirDate.fromString(lastReviewDate) else null,
-          _lastReviewDate,
-        ),
+      approvalDate = Date.of(approvalDate, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate, _lastReviewDate),
       effectivePeriod = effectivePeriod,
-      topic = topic ?: listOf(),
-      author = author ?: listOf(),
-      editor = editor ?: listOf(),
-      reviewer = reviewer ?: listOf(),
-      endorser = endorser ?: listOf(),
-      relatedArtifact = relatedArtifact ?: listOf(),
-      library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
-          Canonical.of(library?.getOrNull(index), _library?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'library' on Measure has neither a value nor an id/extension"
-            )
-        }),
+      topic = listOrEmpty(topic),
+      author = listOrEmpty(author),
+      editor = listOrEmpty(editor),
+      reviewer = listOrEmpty(reviewer),
+      endorser = listOrEmpty(endorser),
+      relatedArtifact = listOrEmpty(relatedArtifact),
+      library = library_,
       disclaimer = Markdown.of(disclaimer, _disclaimer),
       scoring = scoring,
       compositeScoring = compositeScoring,
-      type = type ?: listOf(),
+      type = listOrEmpty(type),
       riskAdjustment = R4String.of(riskAdjustment, _riskAdjustment),
       rateAggregation = R4String.of(rateAggregation, _rateAggregation),
       rationale = Markdown.of(rationale, _rationale),
       clinicalRecommendationStatement =
         Markdown.of(clinicalRecommendationStatement, _clinicalRecommendationStatement),
       improvementNotation = improvementNotation,
-      definition =
-        (kotlin.collections.List(maxOf(definition?.size ?: 0, _definition?.size ?: 0)) { index ->
-          Markdown.of(definition?.getOrNull(index), _definition?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'definition' on Measure has neither a value nor an id/extension"
-            )
-        }),
+      definition = definition_,
       guidance = Markdown.of(guidance, _guidance),
-      group = group ?: listOf(),
-      supplementalData = supplementalData ?: listOf(),
+      group = listOrEmpty(group),
+      supplementalData = listOrEmpty(supplementalData),
     )
   }
 
@@ -1417,36 +1371,32 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
@@ -1498,33 +1448,30 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       32 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 36 + descriptorOffset, value.purpose?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 37 + descriptorOffset, value.purpose)
     compositeEncoder.encodeStringIfNotNull(descriptor, 38 + descriptorOffset, value.usage?.value)
@@ -1553,49 +1500,43 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
       PeriodSerializer,
       value.effectivePeriod,
     )
-    if (value.topic.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        47 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.topic,
-      )
-    if (value.author.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        48 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.author,
-      )
-    if (value.editor.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        49 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.editor,
-      )
-    if (value.reviewer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        50 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.reviewer,
-      )
-    if (value.endorser.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        51 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.endorser,
-      )
-    if (value.relatedArtifact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        52 + descriptorOffset,
-        RelatedArtifactSerializer.listSerializer,
-        value.relatedArtifact,
-      )
-    if (value.library.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      47 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.topic,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      48 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.author,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      49 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.editor,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      50 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.reviewer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      51 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.endorser,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      52 + descriptorOffset,
+      RelatedArtifactSerializer.listSerializer,
+      value.relatedArtifact,
+    )
+    if (!value.library.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         53 + descriptorOffset,
@@ -1622,13 +1563,12 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
       CodeableConceptSerializer,
       value.compositeScoring,
     )
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        59 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      59 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       60 + descriptorOffset,
@@ -1667,7 +1607,7 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
       CodeableConceptSerializer,
       value.improvementNotation,
     )
-    if (value.definition.isNotEmpty()) {
+    if (!value.definition.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         69 + descriptorOffset,
@@ -1682,19 +1622,17 @@ internal object MeasureSerializer : FhirResourceSerializer<Measure> {
     }
     compositeEncoder.encodeStringIfNotNull(descriptor, 71 + descriptorOffset, value.guidance?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 72 + descriptorOffset, value.guidance)
-    if (value.group.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        73 + descriptorOffset,
-        MeasureGroupSerializer.listSerializer,
-        value.group,
-      )
-    if (value.supplementalData.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        74 + descriptorOffset,
-        MeasureSupplementalDataSerializer.listSerializer,
-        value.supplementalData,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      73 + descriptorOffset,
+      MeasureGroupSerializer.listSerializer,
+      value.group,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      74 + descriptorOffset,
+      MeasureSupplementalDataSerializer.listSerializer,
+      value.supplementalData,
+    )
   }
 }

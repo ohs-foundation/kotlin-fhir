@@ -30,33 +30,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CodeableReference") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("concept", lazyDescriptor { CodeableConceptSerializer.descriptor })
-      optionalElement("reference", lazyDescriptor { ReferenceSerializer.descriptor })
-    }
+internal object CodeableReferenceSerializer : FhirSerializer<CodeableReference> {
+  override val descriptor: SerialDescriptor = buildDescriptor("CodeableReference", this)
 
-  internal val listSerializer: KSerializer<List<CodeableReference>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<CodeableReference>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.optionalElement("concept", lazyDescriptor(LazyDescriptorId.CodeableConceptSerializer))
+    b.optionalElement("reference", lazyDescriptor(LazyDescriptorId.ReferenceSerializer))
+  }
 
   override fun deserialize(decoder: Decoder): CodeableReference {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -90,28 +91,28 @@ internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding CodeableReference: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return CodeableReference(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       concept = concept,
       reference = reference,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: CodeableReference) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       2,

@@ -30,33 +30,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object PopulationSerializer : KSerializer<Population> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Population") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("ageRange", RangeSerializer.descriptor)
-      optionalElement("ageCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("gender", CodeableConceptSerializer.descriptor)
-      optionalElement("race", CodeableConceptSerializer.descriptor)
-      optionalElement("physiologicalCondition", CodeableConceptSerializer.descriptor)
-    }
+internal object PopulationSerializer : FhirSerializer<Population> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Population", this)
 
-  internal val listSerializer: KSerializer<List<Population>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Population>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("ageRange", RangeSerializer.descriptor)
+    b.optionalElement("ageCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("gender", CodeableConceptSerializer.descriptor)
+    b.optionalElement("race", CodeableConceptSerializer.descriptor)
+    b.optionalElement("physiologicalCondition", CodeableConceptSerializer.descriptor)
+  }
 
   override fun deserialize(decoder: Decoder): Population {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -121,14 +122,14 @@ internal object PopulationSerializer : KSerializer<Population> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Population: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Population(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       age = Population.Age.from(ageRange, ageCodeableConcept),
       gender = gender,
       race = race,
@@ -137,22 +138,21 @@ internal object PopulationSerializer : KSerializer<Population> {
   }
 
   override fun serialize(encoder: Encoder, `value`: Population) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.age) {
       null -> {}
       is Population.Age.Range -> {

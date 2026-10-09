@@ -51,8 +51,6 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -63,39 +61,29 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
   override val descriptor: SerialDescriptor = buildResourceDescriptor("AppointmentResponse")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("appointment", ReferenceSerializer.descriptor)
-    b.optionalElement("proposedNewTime", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_proposedNewTime", ElementSerializer.descriptor)
-    b.optionalElement("start", String.serializer().descriptor)
-    b.optionalElement("_start", ElementSerializer.descriptor)
-    b.optionalElement("end", String.serializer().descriptor)
-    b.optionalElement("_end", ElementSerializer.descriptor)
+    b.boolPrim("proposedNewTime")
+    b.strPrim("start")
+    b.strPrim("end")
     b.optionalElement("participantType", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("actor", ReferenceSerializer.descriptor)
-    b.optionalElement("participantStatus", String.serializer().descriptor)
-    b.optionalElement("_participantStatus", ElementSerializer.descriptor)
-    b.optionalElement("comment", String.serializer().descriptor)
-    b.optionalElement("_comment", ElementSerializer.descriptor)
-    b.optionalElement("recurring", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_recurring", ElementSerializer.descriptor)
-    b.optionalElement("occurrenceDate", String.serializer().descriptor)
-    b.optionalElement("_occurrenceDate", ElementSerializer.descriptor)
-    b.optionalElement("recurrenceId", Int.serializer().descriptor)
-    b.optionalElement("_recurrenceId", ElementSerializer.descriptor)
+    b.strPrim("participantStatus")
+    b.strPrim("comment")
+    b.boolPrim("recurring")
+    b.strPrim("occurrenceDate")
+    b.intPrim("recurrenceId")
   }
 
   override fun deserializeInternal(
@@ -117,19 +105,19 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
     var appointment: Reference? = null
     var proposedNewTime: KotlinBoolean? = null
     var _proposedNewTime: Element? = null
-    var start: String? = null
+    var start: FhirDateTime? = null
     var _start: Element? = null
-    var end: String? = null
+    var end: FhirDateTime? = null
     var _end: Element? = null
     var participantType: List<CodeableConcept>? = null
     var actor: Reference? = null
-    var participantStatus: String? = null
+    var participantStatus: AppointmentResponseStatus? = null
     var _participantStatus: Element? = null
     var comment: String? = null
     var _comment: Element? = null
     var recurring: KotlinBoolean? = null
     var _recurring: Element? = null
-    var occurrenceDate: String? = null
+    var occurrenceDate: FhirDate? = null
     var _occurrenceDate: Element? = null
     var recurrenceId: Int? = null
     var _recurrenceId: Element? = null
@@ -217,7 +205,7 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
               ElementSerializer,
               null,
             )
-        14 -> start = compositeDecoder.decodeStringElement(descriptor, i)
+        14 -> start = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _start =
             compositeDecoder.decodeNullableSerializableElement(
@@ -226,7 +214,7 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
               ElementSerializer,
               null,
             )
-        16 -> end = compositeDecoder.decodeStringElement(descriptor, i)
+        16 -> end = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _end =
             compositeDecoder.decodeNullableSerializableElement(
@@ -251,7 +239,9 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
               ReferenceSerializer,
               null,
             )
-        20 -> participantStatus = compositeDecoder.decodeStringElement(descriptor, i)
+        20 ->
+          participantStatus =
+            AppointmentResponseStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _participantStatus =
             compositeDecoder.decodeNullableSerializableElement(
@@ -278,7 +268,8 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
               ElementSerializer,
               null,
             )
-        26 -> occurrenceDate = compositeDecoder.decodeStringElement(descriptor, i)
+        26 ->
+          occurrenceDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         27 ->
           _occurrenceDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -296,7 +287,7 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
               ElementSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding AppointmentResponse: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return AppointmentResponse(
@@ -305,36 +296,25 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      appointment =
-        appointment
-          ?: throw SerializationException(
-            "Missing required property 'appointment' on AppointmentResponse"
-          ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      appointment = required(appointment, "AppointmentResponse", "appointment"),
       proposedNewTime = R5Boolean.of(proposedNewTime, _proposedNewTime),
-      start = Instant.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
-      end = Instant.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
-      participantType = participantType ?: listOf(),
+      start = Instant.of(start, _start),
+      end = Instant.of(end, _end),
+      participantType = listOrEmpty(participantType),
       actor = actor,
       participantStatus =
-        Enumeration.of(
-          if (participantStatus != null) AppointmentResponseStatus.fromCode(participantStatus)
-          else null,
-          _participantStatus,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'participantStatus' on AppointmentResponse"
-          ),
+        required(
+          Enumeration.of(participantStatus, _participantStatus),
+          "AppointmentResponse",
+          "participantStatus",
+        ),
       comment = Markdown.of(comment, _comment),
       recurring = R5Boolean.of(recurring, _recurring),
-      occurrenceDate =
-        Date.of(
-          if (occurrenceDate != null) FhirDate.fromString(occurrenceDate) else null,
-          _occurrenceDate,
-        ),
+      occurrenceDate = Date.of(occurrenceDate, _occurrenceDate),
       recurrenceId = PositiveInt.of(recurrenceId, _recurrenceId),
     )
   }
@@ -366,34 +346,30 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       11 + descriptorOffset,
@@ -422,13 +398,12 @@ internal object AppointmentResponseSerializer : FhirResourceSerializer<Appointme
       value.end?.value?.toString(),
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.end)
-    if (value.participantType.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.participantType,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.participantType,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       19 + descriptorOffset,

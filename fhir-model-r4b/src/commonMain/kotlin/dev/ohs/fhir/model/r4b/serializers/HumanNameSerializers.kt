@@ -33,57 +33,43 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object HumanNameSerializer : KSerializer<HumanName> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("HumanName") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("family", KotlinString.serializer().descriptor)
-      optionalElement("_family", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("given", stringNullableListSerializer.descriptor)
-      optionalElement(
-        "_given",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement("prefix", stringNullableListSerializer.descriptor)
-      optionalElement(
-        "_prefix",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement("suffix", stringNullableListSerializer.descriptor)
-      optionalElement(
-        "_suffix",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
-    }
+internal object HumanNameSerializer : FhirSerializer<HumanName> {
+  override val descriptor: SerialDescriptor = buildDescriptor("HumanName", this)
 
-  internal val listSerializer: KSerializer<List<HumanName>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<HumanName>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("use")
+    b.strPrim("text")
+    b.strPrim("family")
+    b.strPrimList("given")
+    b.strPrimList("prefix")
+    b.strPrimList("suffix")
+    b.optionalElement("period", lazyDescriptor(LazyDescriptorId.PeriodSerializer))
+  }
 
   override fun deserialize(decoder: Decoder): HumanName {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var use: KotlinString? = null
+    var use: NameUse? = null
     var _use: Element? = null
     var text: KotlinString? = null
     var _text: Element? = null
@@ -107,7 +93,7 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        2 -> use = NameUse.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _use =
             compositeDecoder.decodeNullableSerializableElement(
@@ -191,58 +177,52 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding HumanName: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val given_ =
+      List(maxSize(given, _given)) { index ->
+        entryRequired(R4bString.of(at(given, index), at(_given, index)), "HumanName", "given")
+      }
+    val prefix_ =
+      List(maxSize(prefix, _prefix)) { index ->
+        entryRequired(R4bString.of(at(prefix, index), at(_prefix, index)), "HumanName", "prefix")
+      }
+    val suffix_ =
+      List(maxSize(suffix, _suffix)) { index ->
+        entryRequired(R4bString.of(at(suffix, index), at(_suffix, index)), "HumanName", "suffix")
+      }
     return HumanName(
       id = id,
-      extension = extension ?: listOf(),
-      use = Enumeration.of(if (use != null) NameUse.fromCode(use) else null, _use),
+      extension = listOrEmpty(extension),
+      use = Enumeration.of(use, _use),
       text = R4bString.of(text, _text),
       family = R4bString.of(family, _family),
-      given =
-        (kotlin.collections.List(maxOf(given?.size ?: 0, _given?.size ?: 0)) { index ->
-          R4bString.of(given?.getOrNull(index), _given?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'given' on HumanName has neither a value nor an id/extension"
-            )
-        }),
-      prefix =
-        (kotlin.collections.List(maxOf(prefix?.size ?: 0, _prefix?.size ?: 0)) { index ->
-          R4bString.of(prefix?.getOrNull(index), _prefix?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'prefix' on HumanName has neither a value nor an id/extension"
-            )
-        }),
-      suffix =
-        (kotlin.collections.List(maxOf(suffix?.size ?: 0, _suffix?.size ?: 0)) { index ->
-          R4bString.of(suffix?.getOrNull(index), _suffix?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'suffix' on HumanName has neither a value nor an id/extension"
-            )
-        }),
+      given = given_,
+      prefix = prefix_,
+      suffix = suffix_,
       period = period,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: HumanName) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.use?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.use)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.text?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.text)
     compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.family?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.family)
-    if (value.given.isNotEmpty()) {
+    if (!value.given.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         8,
@@ -251,7 +231,7 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 9, value.given)
     }
-    if (value.prefix.isNotEmpty()) {
+    if (!value.prefix.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         10,
@@ -260,7 +240,7 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 11, value.prefix)
     }
-    if (value.suffix.isNotEmpty()) {
+    if (!value.suffix.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         12,

@@ -43,14 +43,12 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -58,26 +56,29 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object MedicinalProductAuthorizationJurisdictionalAuthorizationSerializer :
-  KSerializer<MedicinalProductAuthorization.JurisdictionalAuthorization> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("JurisdictionalAuthorization") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-      optionalElement("country", CodeableConceptSerializer.descriptor)
-      optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("legalStatusOfSupply", CodeableConceptSerializer.descriptor)
-      optionalElement("validityPeriod", PeriodSerializer.descriptor)
-    }
+  FhirSerializer<MedicinalProductAuthorization.JurisdictionalAuthorization> {
+  override val descriptor: SerialDescriptor = buildDescriptor("JurisdictionalAuthorization", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<MedicinalProductAuthorization.JurisdictionalAuthorization>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("country", CodeableConceptSerializer.descriptor)
+    b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("legalStatusOfSupply", CodeableConceptSerializer.descriptor)
+    b.optionalElement("validityPeriod", PeriodSerializer.descriptor)
+  }
+
   override fun deserialize(
     decoder: Decoder
   ): MedicinalProductAuthorization.JurisdictionalAuthorization {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -147,20 +148,17 @@ internal object MedicinalProductAuthorizationJurisdictionalAuthorizationSerializ
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding JurisdictionalAuthorization: " + i
-          )
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MedicinalProductAuthorization.JurisdictionalAuthorization(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       country = country,
-      jurisdiction = jurisdiction ?: listOf(),
+      jurisdiction = listOrEmpty(jurisdiction),
       legalStatusOfSupply = legalStatusOfSupply,
       validityPeriod = validityPeriod,
     )
@@ -170,42 +168,39 @@ internal object MedicinalProductAuthorizationJurisdictionalAuthorizationSerializ
     encoder: Encoder,
     `value`: MedicinalProductAuthorization.JurisdictionalAuthorization,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       4,
       CodeableConceptSerializer,
       value.country,
     )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6,
@@ -223,29 +218,31 @@ internal object MedicinalProductAuthorizationJurisdictionalAuthorizationSerializ
 }
 
 internal object MedicinalProductAuthorizationProcedureSerializer :
-  KSerializer<MedicinalProductAuthorization.Procedure> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Procedure") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("datePeriod", PeriodSerializer.descriptor)
-      optionalElement("dateDateTime", String.serializer().descriptor)
-      optionalElement("_dateDateTime", ElementSerializer.descriptor)
-      optionalElement(
-        "application",
-        listSerialDescriptor(
-          lazyDescriptor { MedicinalProductAuthorizationProcedureSerializer.descriptor }
-        ),
-      )
-    }
+  FhirSerializer<MedicinalProductAuthorization.Procedure> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Procedure", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MedicinalProductAuthorization.Procedure>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("datePeriod", PeriodSerializer.descriptor)
+    b.strPrim("dateDateTime")
+    b.optionalElement(
+      "application",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.MedicinalProductAuthorizationProcedureSerializer)
+      ),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): MedicinalProductAuthorization.Procedure {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -253,7 +250,7 @@ internal object MedicinalProductAuthorizationProcedureSerializer :
     var identifier: Identifier? = null
     var type: CodeableConcept? = null
     var datePeriod: Period? = null
-    var dateDateTime: String? = null
+    var dateDateTime: FhirDateTime? = null
     var _dateDateTime: Element? = null
     var application: List<MedicinalProductAuthorization.Procedure>? = null
     while (true) {
@@ -299,7 +296,9 @@ internal object MedicinalProductAuthorizationProcedureSerializer :
               PeriodSerializer,
               null,
             )
-        6 -> dateDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          dateDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _dateDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -317,49 +316,41 @@ internal object MedicinalProductAuthorizationProcedureSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Procedure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MedicinalProductAuthorization.Procedure(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       identifier = identifier,
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on MedicinalProductAuthorization.Procedure"
-          ),
+      type = required(type, "MedicinalProductAuthorization.Procedure", "type"),
       date =
         MedicinalProductAuthorization.Procedure.Date.from(
           datePeriod,
-          DateTime.of(
-            if (dateDateTime != null) FhirDateTime.fromString(dateDateTime) else null,
-            _dateDateTime,
-          ),
+          DateTime.of(dateDateTime, _dateDateTime),
         ),
-      application = application ?: listOf(),
+      application = listOrEmpty(application),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductAuthorization.Procedure) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -377,13 +368,12 @@ internal object MedicinalProductAuthorizationProcedureSerializer :
         compositeEncoder.encodeElementIfNotNull(descriptor, 7, choice.value)
       }
     }
-    if (value.application.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        MedicinalProductAuthorizationProcedureSerializer.listSerializer,
-        value.application,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      MedicinalProductAuthorizationProcedureSerializer.listSerializer,
+      value.application,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -394,16 +384,14 @@ internal object MedicinalProductAuthorizationSerializer :
     buildResourceDescriptor("MedicinalProductAuthorization")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
@@ -412,16 +400,12 @@ internal object MedicinalProductAuthorizationSerializer :
     b.optionalElement("country", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("status", CodeableConceptSerializer.descriptor)
-    b.optionalElement("statusDate", String.serializer().descriptor)
-    b.optionalElement("_statusDate", ElementSerializer.descriptor)
-    b.optionalElement("restoreDate", String.serializer().descriptor)
-    b.optionalElement("_restoreDate", ElementSerializer.descriptor)
+    b.strPrim("statusDate")
+    b.strPrim("restoreDate")
     b.optionalElement("validityPeriod", PeriodSerializer.descriptor)
     b.optionalElement("dataExclusivityPeriod", PeriodSerializer.descriptor)
-    b.optionalElement("dateOfFirstAuthorization", String.serializer().descriptor)
-    b.optionalElement("_dateOfFirstAuthorization", ElementSerializer.descriptor)
-    b.optionalElement("internationalBirthDate", String.serializer().descriptor)
-    b.optionalElement("_internationalBirthDate", ElementSerializer.descriptor)
+    b.strPrim("dateOfFirstAuthorization")
+    b.strPrim("internationalBirthDate")
     b.optionalElement("legalBasis", CodeableConceptSerializer.descriptor)
     b.optionalElement(
       "jurisdictionalAuthorization",
@@ -452,15 +436,15 @@ internal object MedicinalProductAuthorizationSerializer :
     var country: List<CodeableConcept>? = null
     var jurisdiction: List<CodeableConcept>? = null
     var status: CodeableConcept? = null
-    var statusDate: String? = null
+    var statusDate: FhirDateTime? = null
     var _statusDate: Element? = null
-    var restoreDate: String? = null
+    var restoreDate: FhirDateTime? = null
     var _restoreDate: Element? = null
     var validityPeriod: Period? = null
     var dataExclusivityPeriod: Period? = null
-    var dateOfFirstAuthorization: String? = null
+    var dateOfFirstAuthorization: FhirDateTime? = null
     var _dateOfFirstAuthorization: Element? = null
-    var internationalBirthDate: String? = null
+    var internationalBirthDate: FhirDateTime? = null
     var _internationalBirthDate: Element? = null
     var legalBasis: CodeableConcept? = null
     var jurisdictionalAuthorization:
@@ -568,7 +552,8 @@ internal object MedicinalProductAuthorizationSerializer :
               CodeableConceptSerializer,
               null,
             )
-        15 -> statusDate = compositeDecoder.decodeStringElement(descriptor, i)
+        15 ->
+          statusDate = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         16 ->
           _statusDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -577,7 +562,8 @@ internal object MedicinalProductAuthorizationSerializer :
               ElementSerializer,
               null,
             )
-        17 -> restoreDate = compositeDecoder.decodeStringElement(descriptor, i)
+        17 ->
+          restoreDate = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         18 ->
           _restoreDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -602,7 +588,9 @@ internal object MedicinalProductAuthorizationSerializer :
               PeriodSerializer,
               null,
             )
-        21 -> dateOfFirstAuthorization = compositeDecoder.decodeStringElement(descriptor, i)
+        21 ->
+          dateOfFirstAuthorization =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _dateOfFirstAuthorization =
             compositeDecoder.decodeNullableSerializableElement(
@@ -611,7 +599,9 @@ internal object MedicinalProductAuthorizationSerializer :
               ElementSerializer,
               null,
             )
-        23 -> internationalBirthDate = compositeDecoder.decodeStringElement(descriptor, i)
+        23 ->
+          internationalBirthDate =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _internationalBirthDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -660,10 +650,7 @@ internal object MedicinalProductAuthorizationSerializer :
               MedicinalProductAuthorizationProcedureSerializer,
               null,
             )
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding MedicinalProductAuthorization: " + i
-          )
+        else -> unknownIndex(descriptor, i)
       }
     }
     return MedicinalProductAuthorization(
@@ -672,40 +659,22 @@ internal object MedicinalProductAuthorizationSerializer :
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       subject = subject,
-      country = country ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      country = listOrEmpty(country),
+      jurisdiction = listOrEmpty(jurisdiction),
       status = status,
-      statusDate =
-        DateTime.of(
-          if (statusDate != null) FhirDateTime.fromString(statusDate) else null,
-          _statusDate,
-        ),
-      restoreDate =
-        DateTime.of(
-          if (restoreDate != null) FhirDateTime.fromString(restoreDate) else null,
-          _restoreDate,
-        ),
+      statusDate = DateTime.of(statusDate, _statusDate),
+      restoreDate = DateTime.of(restoreDate, _restoreDate),
       validityPeriod = validityPeriod,
       dataExclusivityPeriod = dataExclusivityPeriod,
-      dateOfFirstAuthorization =
-        DateTime.of(
-          if (dateOfFirstAuthorization != null) FhirDateTime.fromString(dateOfFirstAuthorization)
-          else null,
-          _dateOfFirstAuthorization,
-        ),
-      internationalBirthDate =
-        DateTime.of(
-          if (internationalBirthDate != null) FhirDateTime.fromString(internationalBirthDate)
-          else null,
-          _internationalBirthDate,
-        ),
+      dateOfFirstAuthorization = DateTime.of(dateOfFirstAuthorization, _dateOfFirstAuthorization),
+      internationalBirthDate = DateTime.of(internationalBirthDate, _internationalBirthDate),
       legalBasis = legalBasis,
-      jurisdictionalAuthorization = jurisdictionalAuthorization ?: listOf(),
+      jurisdictionalAuthorization = listOrEmpty(jurisdictionalAuthorization),
       holder = holder,
       regulator = regulator,
       procedure = procedure,
@@ -739,54 +708,48 @@ internal object MedicinalProductAuthorizationSerializer :
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       11 + descriptorOffset,
       ReferenceSerializer,
       value.subject,
     )
-    if (value.country.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.country,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.country,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       14 + descriptorOffset,
@@ -843,13 +806,12 @@ internal object MedicinalProductAuthorizationSerializer :
       CodeableConceptSerializer,
       value.legalBasis,
     )
-    if (value.jurisdictionalAuthorization.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        MedicinalProductAuthorizationJurisdictionalAuthorizationSerializer.listSerializer,
-        value.jurisdictionalAuthorization,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      MedicinalProductAuthorizationJurisdictionalAuthorizationSerializer.listSerializer,
+      value.jurisdictionalAuthorization,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       27 + descriptorOffset,

@@ -58,14 +58,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -73,24 +71,24 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object ChargeItemDefinitionApplicabilitySerializer :
-  KSerializer<ChargeItemDefinition.Applicability> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Applicability") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("language", KotlinString.serializer().descriptor)
-      optionalElement("_language", ElementSerializer.descriptor)
-      optionalElement("expression", KotlinString.serializer().descriptor)
-      optionalElement("_expression", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ChargeItemDefinition.Applicability> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Applicability", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ChargeItemDefinition.Applicability>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.strPrim("language")
+    b.strPrim("expression")
+  }
+
   override fun deserialize(decoder: Decoder): ChargeItemDefinition.Applicability {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -148,14 +146,14 @@ internal object ChargeItemDefinitionApplicabilitySerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Applicability: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ChargeItemDefinition.Applicability(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       description = R4String.of(description, _description),
       language = R4String.of(language, _language),
       expression = R4String.of(expression, _expression),
@@ -163,22 +161,21 @@ internal object ChargeItemDefinitionApplicabilitySerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ChargeItemDefinition.Applicability) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.description)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.language?.value)
@@ -190,28 +187,31 @@ internal object ChargeItemDefinitionApplicabilitySerializer :
 }
 
 internal object ChargeItemDefinitionPropertyGroupSerializer :
-  KSerializer<ChargeItemDefinition.PropertyGroup> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PropertyGroup") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement(
-        "applicability",
-        listSerialDescriptor(
-          lazyDescriptor { ChargeItemDefinitionApplicabilitySerializer.descriptor }
-        ),
-      )
-      optionalElement(
-        "priceComponent",
-        ChargeItemDefinitionPropertyGroupPriceComponentSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<ChargeItemDefinition.PropertyGroup> {
+  override val descriptor: SerialDescriptor = buildDescriptor("PropertyGroup", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ChargeItemDefinition.PropertyGroup>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "applicability",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ChargeItemDefinitionApplicabilitySerializer)
+      ),
+    )
+    b.optionalElement(
+      "priceComponent",
+      ChargeItemDefinitionPropertyGroupPriceComponentSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ChargeItemDefinition.PropertyGroup {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -254,79 +254,77 @@ internal object ChargeItemDefinitionPropertyGroupSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PropertyGroup: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ChargeItemDefinition.PropertyGroup(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      applicability = applicability ?: listOf(),
-      priceComponent = priceComponent ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      applicability = listOrEmpty(applicability),
+      priceComponent = listOrEmpty(priceComponent),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ChargeItemDefinition.PropertyGroup) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.applicability.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        ChargeItemDefinitionApplicabilitySerializer.listSerializer,
-        value.applicability,
-      )
-    if (value.priceComponent.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        ChargeItemDefinitionPropertyGroupPriceComponentSerializer.listSerializer,
-        value.priceComponent,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      ChargeItemDefinitionApplicabilitySerializer.listSerializer,
+      value.applicability,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      ChargeItemDefinitionPropertyGroupPriceComponentSerializer.listSerializer,
+      value.priceComponent,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
-  KSerializer<ChargeItemDefinition.PropertyGroup.PriceComponent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PriceComponent") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-    }
+  FhirSerializer<ChargeItemDefinition.PropertyGroup.PriceComponent> {
+  override val descriptor: SerialDescriptor = buildDescriptor("PriceComponent", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<ChargeItemDefinition.PropertyGroup.PriceComponent>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("type")
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("amount", MoneySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ChargeItemDefinition.PropertyGroup.PriceComponent {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: InvoicePriceComponentType? = null
     var _type: Element? = null
     var code: CodeableConcept? = null
     var factor: FhirDecimal? = null
@@ -351,7 +349,9 @@ internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          type =
+            InvoicePriceComponentType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -388,19 +388,20 @@ internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
           amount =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PriceComponent: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ChargeItemDefinition.PropertyGroup.PriceComponent(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type =
-        Enumeration.of(if (type != null) InvoicePriceComponentType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on ChargeItemDefinition.PropertyGroup.PriceComponent"
-          ),
+        required(
+          Enumeration.of(type, _type),
+          "ChargeItemDefinition.PropertyGroup.PriceComponent",
+          "type",
+        ),
       code = code,
       factor = Decimal.of(factor, _factor),
       amount = amount,
@@ -411,22 +412,21 @@ internal object ChargeItemDefinitionPropertyGroupPriceComponentSerializer :
     encoder: Encoder,
     `value`: ChargeItemDefinition.PropertyGroup.PriceComponent,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.type)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -451,51 +451,35 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ChargeItemDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("derivedFromUri", stringNullableListSerializer.descriptor)
-    b.optionalElement("_derivedFromUri", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("partOf", stringNullableListSerializer.descriptor)
-    b.optionalElement("_partOf", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("replaces", stringNullableListSerializer.descriptor)
-    b.optionalElement("_replaces", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("title")
+    b.strPrimList("derivedFromUri")
+    b.strPrimList("partOf")
+    b.strPrimList("replaces")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("approvalDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_approvalDate", ElementSerializer.descriptor)
-    b.optionalElement("lastReviewDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_lastReviewDate", ElementSerializer.descriptor)
+    b.strPrim("copyright")
+    b.strPrim("approvalDate")
+    b.strPrim("lastReviewDate")
     b.optionalElement("effectivePeriod", PeriodSerializer.descriptor)
     b.optionalElement("code", CodeableConceptSerializer.descriptor)
     b.optionalElement("instance", ReferenceSerializer.listSerializer.descriptor)
@@ -537,11 +521,11 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
     var _partOf: List<Element?>? = null
     var replaces: List<KotlinString?>? = null
     var _replaces: List<Element?>? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -552,9 +536,9 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
     var jurisdiction: List<CodeableConcept>? = null
     var copyright: KotlinString? = null
     var _copyright: Element? = null
-    var approvalDate: KotlinString? = null
+    var approvalDate: FhirDate? = null
     var _approvalDate: Element? = null
-    var lastReviewDate: KotlinString? = null
+    var lastReviewDate: FhirDate? = null
     var _lastReviewDate: Element? = null
     var effectivePeriod: Period? = null
     var code: CodeableConcept? = null
@@ -703,7 +687,8 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
               ElementSerializer.nullableListSerializer,
               null,
             )
-        23 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        23 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -721,7 +706,7 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
               ElementSerializer,
               null,
             )
-        27 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        27 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         28 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -781,7 +766,8 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
               ElementSerializer,
               null,
             )
-        38 -> approvalDate = compositeDecoder.decodeStringElement(descriptor, i)
+        38 ->
+          approvalDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         39 ->
           _approvalDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -790,7 +776,8 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
               ElementSerializer,
               null,
             )
-        40 -> lastReviewDate = compositeDecoder.decodeStringElement(descriptor, i)
+        40 ->
+          lastReviewDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         41 ->
           _lastReviewDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -839,76 +826,65 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
               ChargeItemDefinitionPropertyGroupSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding ChargeItemDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val derivedFromUri_ =
+      List(maxSize(derivedFromUri, _derivedFromUri)) { index ->
+        entryRequired(
+          Uri.of(at(derivedFromUri, index), at(_derivedFromUri, index)),
+          "ChargeItemDefinition",
+          "derivedFromUri",
+        )
+      }
+    val partOf_ =
+      List(maxSize(partOf, _partOf)) { index ->
+        entryRequired(
+          Canonical.of(at(partOf, index), at(_partOf, index)),
+          "ChargeItemDefinition",
+          "partOf",
+        )
+      }
+    val replaces_ =
+      List(maxSize(replaces, _replaces)) { index ->
+        entryRequired(
+          Canonical.of(at(replaces, index), at(_replaces, index)),
+          "ChargeItemDefinition",
+          "replaces",
+        )
+      }
     return ChargeItemDefinition(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      url =
-        Uri.of(url, _url)
-          ?: throw SerializationException(
-            "Missing required property 'url' on ChargeItemDefinition"
-          ),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      url = required(Uri.of(url, _url), "ChargeItemDefinition", "url"),
+      identifier = listOrEmpty(identifier),
       version = R4String.of(version, _version),
       title = R4String.of(title, _title),
-      derivedFromUri =
-        (kotlin.collections.List(maxOf(derivedFromUri?.size ?: 0, _derivedFromUri?.size ?: 0)) {
-          index ->
-          Uri.of(derivedFromUri?.getOrNull(index), _derivedFromUri?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'derivedFromUri' on ChargeItemDefinition has neither a value nor an id/extension"
-            )
-        }),
-      partOf =
-        (kotlin.collections.List(maxOf(partOf?.size ?: 0, _partOf?.size ?: 0)) { index ->
-          Canonical.of(partOf?.getOrNull(index), _partOf?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'partOf' on ChargeItemDefinition has neither a value nor an id/extension"
-            )
-        }),
-      replaces =
-        (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { index ->
-          Canonical.of(replaces?.getOrNull(index), _replaces?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'replaces' on ChargeItemDefinition has neither a value nor an id/extension"
-            )
-        }),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on ChargeItemDefinition"
-          ),
+      derivedFromUri = derivedFromUri_,
+      partOf = partOf_,
+      replaces = replaces_,
+      status = required(Enumeration.of(status, _status), "ChargeItemDefinition", "status"),
       experimental = R4Boolean.of(experimental, _experimental),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R4String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate =
-        Date.of(
-          if (approvalDate != null) FhirDate.fromString(approvalDate) else null,
-          _approvalDate,
-        ),
-      lastReviewDate =
-        Date.of(
-          if (lastReviewDate != null) FhirDate.fromString(lastReviewDate) else null,
-          _lastReviewDate,
-        ),
+      approvalDate = Date.of(approvalDate, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate, _lastReviewDate),
       effectivePeriod = effectivePeriod,
       code = code,
-      instance = instance ?: listOf(),
-      applicability = applicability ?: listOf(),
-      propertyGroup = propertyGroup ?: listOf(),
+      instance = listOrEmpty(instance),
+      applicability = listOrEmpty(applicability),
+      propertyGroup = listOrEmpty(propertyGroup),
     )
   }
 
@@ -939,41 +915,37 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.title?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.title)
-    if (value.derivedFromUri.isNotEmpty()) {
+    if (!value.derivedFromUri.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         17 + descriptorOffset,
@@ -986,7 +958,7 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
         value.derivedFromUri,
       )
     }
-    if (value.partOf.isNotEmpty()) {
+    if (!value.partOf.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         19 + descriptorOffset,
@@ -995,7 +967,7 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 20 + descriptorOffset, value.partOf)
     }
-    if (value.replaces.isNotEmpty()) {
+    if (!value.replaces.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         21 + descriptorOffset,
@@ -1028,33 +1000,30 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 30 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       32 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       36 + descriptorOffset,
@@ -1085,26 +1054,23 @@ internal object ChargeItemDefinitionSerializer : FhirResourceSerializer<ChargeIt
       CodeableConceptSerializer,
       value.code,
     )
-    if (value.instance.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        44 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.instance,
-      )
-    if (value.applicability.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        45 + descriptorOffset,
-        ChargeItemDefinitionApplicabilitySerializer.listSerializer,
-        value.applicability,
-      )
-    if (value.propertyGroup.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        46 + descriptorOffset,
-        ChargeItemDefinitionPropertyGroupSerializer.listSerializer,
-        value.propertyGroup,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      44 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.instance,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      45 + descriptorOffset,
+      ChargeItemDefinitionApplicabilitySerializer.listSerializer,
+      value.applicability,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      46 + descriptorOffset,
+      ChargeItemDefinitionPropertyGroupSerializer.listSerializer,
+      value.propertyGroup,
+    )
   }
 }

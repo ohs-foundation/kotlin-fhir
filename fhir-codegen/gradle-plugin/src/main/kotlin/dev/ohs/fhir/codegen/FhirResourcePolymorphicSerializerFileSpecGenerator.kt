@@ -41,12 +41,15 @@ import dev.ohs.fhir.codegen.serializer.serialDescriptorClassName
 /**
  * Emits `ResourcePolymorphicSerializer.kt`, containing:
  * - `FhirResourceSerializer<T : Resource>`: interface implemented by each concrete resource's
- *   `XSerializer` exposing its shared descriptor builder, offset-parameterized encode/decode
- *   helpers, and default standalone `serialize` / `deserialize` implementations.
+ *   `XSerializer` exposing its shared descriptor builder, the `serializeInternal` /
+ *   `deserializeInternal` bodies (which take the descriptor to use plus a `descriptorOffset`), and
+ *   default standalone `serialize` / `deserialize` implementations. The standalone descriptor
+ *   carries `resourceType` at slot 0 (offset 1); the polymorphic wrapper's has no such slot (offset
+ *   0).
  * - `FhirResourcePolymorphicSerializer<T : Resource>`: a single wrapper `KSerializer<T>` whose
- *   descriptor omits slot-0 `resourceType` (used as the subclass serializer in
- *   `ResourcePolymorphicSerializer` instead of generating 150+ per-resource
- *   `XPolymorphicSerializer` objects).
+ *   descriptor has no `resourceType` slot (used as the subclass serializer in
+ *   `ResourcePolymorphicSerializer` instead of generating 150+ per-resource polymorphic serializer
+ *   objects).
  * - `ResourcePolymorphicSerializer`: an `AbstractPolymorphicSerializer<Resource>` with name/class
  *   dispatch maps and a manually-built descriptor.
  */
@@ -69,8 +72,6 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
     val deserializationStrategyClassName =
       ClassName("kotlinx.serialization", "DeserializationStrategy")
     val serializationStrategyClassName = ClassName("kotlinx.serialization", "SerializationStrategy")
-    val classSerialDescriptorBuilderClassName =
-      ClassName("kotlinx.serialization.descriptors", "ClassSerialDescriptorBuilder")
     val polymorphicKindClassName = ClassName("kotlinx.serialization.descriptors", "PolymorphicKind")
     val serialKindClassName = ClassName("kotlinx.serialization.descriptors", "SerialKind")
     val buildSerialDescriptorMemberName =
@@ -87,16 +88,17 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
 
     val typeVarT = TypeVariableName("T", resourceClassName)
 
+    // `resourceType` is slot 0 of the standalone descriptor so that, for formats that key on
+    // descriptor position (ProtoBuf field numbers), the discriminator is always field 1 whatever
+    // the resource. The shared `serializeInternal` / `deserializeInternal` bodies therefore take a
+    // `descriptorOffset`: 1 here, 0 in `FhirResourcePolymorphicSerializer` whose descriptor has no
+    // such slot.
     val fhirResourceSerializerSpec =
       TypeSpec.interfaceBuilder(fhirResourceSerializerClassName)
         .addModifiers(KModifier.INTERNAL)
         .addTypeVariable(typeVarT)
-        .addSuperinterface(kSerializerClassName.parameterizedBy(typeVarT))
-        .addFunction(
-          FunSpec.builder("buildDescriptor")
-            .addModifiers(KModifier.ABSTRACT)
-            .addParameter("b", classSerialDescriptorBuilderClassName)
-            .build()
+        .addSuperinterface(
+          ClassName(serializersPackage, "FhirSerializer").parameterizedBy(typeVarT)
         )
         .addFunction(
           FunSpec.builder("buildResourceDescriptor")
@@ -104,13 +106,12 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
             .returns(serialDescriptorClassName)
             .addCode(
               "return %M(serialName) {\n" +
-                "  element(%S, %T.%M().descriptor, isOptional = false)\n" +
+                "  element(%S, %M, isOptional = false)\n" +
                 "  buildDescriptor(this)\n" +
                 "}\n",
               buildClassSerialDescriptorMemberName,
               "resourceType",
-              stringClassName,
-              builtinsSerializerMemberName,
+              MemberName(serializersPackage, "stringDescriptor"),
             )
             .build()
         )

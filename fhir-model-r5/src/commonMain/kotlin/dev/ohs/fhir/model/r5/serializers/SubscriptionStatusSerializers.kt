@@ -42,18 +42,17 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SubscriptionNotificationType
 import dev.ohs.fhir.model.r5.terminologies.SubscriptionStatusCodes
 import kotlin.Int
+import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -61,31 +60,32 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object SubscriptionStatusNotificationEventSerializer :
-  KSerializer<SubscriptionStatus.NotificationEvent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("NotificationEvent") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("eventNumber", String.serializer().descriptor)
-      optionalElement("_eventNumber", ElementSerializer.descriptor)
-      optionalElement("timestamp", String.serializer().descriptor)
-      optionalElement("_timestamp", ElementSerializer.descriptor)
-      optionalElement("focus", ReferenceSerializer.descriptor)
-      optionalElement("additionalContext", ReferenceSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<SubscriptionStatus.NotificationEvent> {
+  override val descriptor: SerialDescriptor = buildDescriptor("NotificationEvent", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubscriptionStatus.NotificationEvent>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("eventNumber")
+    b.strPrim("timestamp")
+    b.optionalElement("focus", ReferenceSerializer.descriptor)
+    b.optionalElement("additionalContext", ReferenceSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubscriptionStatus.NotificationEvent {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var eventNumber: String? = null
+    var eventNumber: Long? = null
     var _eventNumber: Element? = null
-    var timestamp: String? = null
+    var timestamp: FhirDateTime? = null
     var _timestamp: Element? = null
     var focus: Reference? = null
     var additionalContext: List<Reference>? = null
@@ -108,7 +108,7 @@ internal object SubscriptionStatusNotificationEventSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> eventNumber = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> eventNumber = compositeDecoder.decodeStringElement(descriptor, i).toLong()
         4 ->
           _eventNumber =
             compositeDecoder.decodeNullableSerializableElement(
@@ -117,7 +117,8 @@ internal object SubscriptionStatusNotificationEventSerializer :
               ElementSerializer,
               null,
             )
-        5 -> timestamp = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          timestamp = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _timestamp =
             compositeDecoder.decodeNullableSerializableElement(
@@ -143,55 +144,53 @@ internal object SubscriptionStatusNotificationEventSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding NotificationEvent: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubscriptionStatus.NotificationEvent(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       eventNumber =
-        Integer64.of(eventNumber?.toLong(), _eventNumber)
-          ?: throw SerializationException(
-            "Missing required property 'eventNumber' on SubscriptionStatus.NotificationEvent"
-          ),
-      timestamp =
-        Instant.of(if (timestamp != null) FhirDateTime.fromString(timestamp) else null, _timestamp),
+        required(
+          Integer64.of(eventNumber, _eventNumber),
+          "SubscriptionStatus.NotificationEvent",
+          "eventNumber",
+        ),
+      timestamp = Instant.of(timestamp, _timestamp),
       focus = focus,
-      additionalContext = additionalContext ?: listOf(),
+      additionalContext = listOrEmpty(additionalContext),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionStatus.NotificationEvent) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.eventNumber.value?.toString())
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.eventNumber)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.timestamp?.value?.toString())
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.timestamp)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 7, ReferenceSerializer, value.focus)
-    if (value.additionalContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        ReferenceSerializer.listSerializer,
-        value.additionalContext,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      ReferenceSerializer.listSerializer,
+      value.additionalContext,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -200,32 +199,26 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
   override val descriptor: SerialDescriptor = buildResourceDescriptor("SubscriptionStatus")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("status", String.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("type", String.serializer().descriptor)
-    b.optionalElement("_type", ElementSerializer.descriptor)
-    b.optionalElement("eventsSinceSubscriptionStart", String.serializer().descriptor)
-    b.optionalElement("_eventsSinceSubscriptionStart", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("type")
+    b.strPrim("eventsSinceSubscriptionStart")
     b.optionalElement(
       "notificationEvent",
       SubscriptionStatusNotificationEventSerializer.listSerializer.descriptor,
     )
     b.optionalElement("subscription", ReferenceSerializer.descriptor)
-    b.optionalElement("topic", String.serializer().descriptor)
-    b.optionalElement("_topic", ElementSerializer.descriptor)
+    b.strPrim("topic")
     b.optionalElement("error", CodeableConceptSerializer.listSerializer.descriptor)
   }
 
@@ -244,11 +237,11 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
     var contained: List<Resource>? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var status: String? = null
+    var status: SubscriptionStatusCodes? = null
     var _status: Element? = null
-    var type: String? = null
+    var type: SubscriptionNotificationType? = null
     var _type: Element? = null
-    var eventsSinceSubscriptionStart: String? = null
+    var eventsSinceSubscriptionStart: Long? = null
     var _eventsSinceSubscriptionStart: Element? = null
     var notificationEvent: List<SubscriptionStatus.NotificationEvent>? = null
     var subscription: Reference? = null
@@ -314,7 +307,9 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
               ExtensionSerializer.listSerializer,
               null,
             )
-        10 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          status =
+            SubscriptionStatusCodes.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         11 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -323,7 +318,11 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
               ElementSerializer,
               null,
             )
-        12 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          type =
+            SubscriptionNotificationType.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         13 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -332,7 +331,9 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
               ElementSerializer,
               null,
             )
-        14 -> eventsSinceSubscriptionStart = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          eventsSinceSubscriptionStart =
+            compositeDecoder.decodeStringElement(descriptor, i).toLong()
         15 ->
           _eventsSinceSubscriptionStart =
             compositeDecoder.decodeNullableSerializableElement(
@@ -374,7 +375,7 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding SubscriptionStatus: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return SubscriptionStatus(
@@ -383,29 +384,17 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) SubscriptionStatusCodes.fromCode(status) else null,
-          _status,
-        ),
-      type =
-        Enumeration.of(
-          if (type != null) SubscriptionNotificationType.fromCode(type) else null,
-          _type,
-        ) ?: throw SerializationException("Missing required property 'type' on SubscriptionStatus"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      status = Enumeration.of(status, _status),
+      type = required(Enumeration.of(type, _type), "SubscriptionStatus", "type"),
       eventsSinceSubscriptionStart =
-        Integer64.of(eventsSinceSubscriptionStart?.toLong(), _eventsSinceSubscriptionStart),
-      notificationEvent = notificationEvent ?: listOf(),
-      subscription =
-        subscription
-          ?: throw SerializationException(
-            "Missing required property 'subscription' on SubscriptionStatus"
-          ),
+        Integer64.of(eventsSinceSubscriptionStart, _eventsSinceSubscriptionStart),
+      notificationEvent = listOrEmpty(notificationEvent),
+      subscription = required(subscription, "SubscriptionStatus", "subscription"),
       topic = Canonical.of(topic, _topic),
-      error = error ?: listOf(),
+      error = listOrEmpty(error),
     )
   }
 
@@ -436,27 +425,24 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       10 + descriptorOffset,
@@ -479,13 +465,12 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
       15 + descriptorOffset,
       value.eventsSinceSubscriptionStart,
     )
-    if (value.notificationEvent.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        SubscriptionStatusNotificationEventSerializer.listSerializer,
-        value.notificationEvent,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      SubscriptionStatusNotificationEventSerializer.listSerializer,
+      value.notificationEvent,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       17 + descriptorOffset,
@@ -494,12 +479,11 @@ internal object SubscriptionStatusSerializer : FhirResourceSerializer<Subscripti
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.topic?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.topic)
-    if (value.error.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.error,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.error,
+    )
   }
 }

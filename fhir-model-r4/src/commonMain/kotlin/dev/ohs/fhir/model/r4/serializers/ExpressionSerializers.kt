@@ -34,41 +34,37 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ExpressionSerializer : KSerializer<Expression> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Expression") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("language", KotlinString.serializer().descriptor)
-      optionalElement("_language", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("expression", KotlinString.serializer().descriptor)
-      optionalElement("_expression", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("reference", KotlinString.serializer().descriptor)
-      optionalElement("_reference", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object ExpressionSerializer : FhirSerializer<Expression> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Expression", this)
 
-  internal val listSerializer: KSerializer<List<Expression>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Expression>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("description")
+    b.strPrim("name")
+    b.strPrim("language")
+    b.strPrim("expression")
+    b.strPrim("reference")
+  }
 
   override fun deserialize(decoder: Decoder): Expression {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -139,33 +135,36 @@ internal object ExpressionSerializer : KSerializer<Expression> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Expression: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Expression(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       description = R4String.of(description, _description),
       name = Id.of(name, _name),
       language =
-        ExtensibleEnumeration.of<ExpressionLanguage>(language, _language)
-          ?: throw SerializationException("Missing required property 'language' on Expression"),
+        required(
+          ExtensibleEnumeration.of<ExpressionLanguage>(language, _language),
+          "Expression",
+          "language",
+        ),
       expression = R4String.of(expression, _expression),
       reference = Uri.of(reference, _reference),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Expression) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.description)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.name?.value)

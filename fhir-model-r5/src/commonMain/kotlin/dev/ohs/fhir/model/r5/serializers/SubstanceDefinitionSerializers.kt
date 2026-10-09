@@ -52,43 +52,41 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object SubstanceDefinitionMoietySerializer : KSerializer<SubstanceDefinition.Moiety> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Moiety") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("role", CodeableConceptSerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("stereochemistry", CodeableConceptSerializer.descriptor)
-      optionalElement("opticalActivity", CodeableConceptSerializer.descriptor)
-      optionalElement("molecularFormula", KotlinString.serializer().descriptor)
-      optionalElement("_molecularFormula", ElementSerializer.descriptor)
-      optionalElement("amountQuantity", QuantitySerializer.descriptor)
-      optionalElement("amountString", KotlinString.serializer().descriptor)
-      optionalElement("_amountString", ElementSerializer.descriptor)
-      optionalElement("measurementType", CodeableConceptSerializer.descriptor)
-    }
+internal object SubstanceDefinitionMoietySerializer : FhirSerializer<SubstanceDefinition.Moiety> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Moiety", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Moiety>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("role", CodeableConceptSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.descriptor)
+    b.strPrim("name")
+    b.optionalElement("stereochemistry", CodeableConceptSerializer.descriptor)
+    b.optionalElement("opticalActivity", CodeableConceptSerializer.descriptor)
+    b.strPrim("molecularFormula")
+    b.optionalElement("amountQuantity", QuantitySerializer.descriptor)
+    b.strPrim("amountString")
+    b.optionalElement("measurementType", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Moiety {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -200,14 +198,14 @@ internal object SubstanceDefinitionMoietySerializer : KSerializer<SubstanceDefin
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Moiety: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Moiety(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       role = role,
       identifier = identifier,
       name = R5String.of(name, _name),
@@ -224,22 +222,21 @@ internal object SubstanceDefinitionMoietySerializer : KSerializer<SubstanceDefin
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Moiety) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -289,23 +286,25 @@ internal object SubstanceDefinitionMoietySerializer : KSerializer<SubstanceDefin
 }
 
 internal object SubstanceDefinitionCharacterizationSerializer :
-  KSerializer<SubstanceDefinition.Characterization> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Characterization") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("technique", CodeableConceptSerializer.descriptor)
-      optionalElement("form", CodeableConceptSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("file", AttachmentSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<SubstanceDefinition.Characterization> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Characterization", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Characterization>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("technique", CodeableConceptSerializer.descriptor)
+    b.optionalElement("form", CodeableConceptSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("file", AttachmentSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Characterization {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -368,38 +367,37 @@ internal object SubstanceDefinitionCharacterizationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Characterization: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Characterization(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       technique = technique,
       form = form,
       description = Markdown.of(description, _description),
-      `file` = `file` ?: listOf(),
+      `file` = listOrEmpty(`file`),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Characterization) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -414,37 +412,38 @@ internal object SubstanceDefinitionCharacterizationSerializer :
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.description)
-    if (value.`file`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        AttachmentSerializer.listSerializer,
-        value.`file`,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      AttachmentSerializer.listSerializer,
+      value.`file`,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDefinition.Property> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Property") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("valueQuantity", QuantitySerializer.descriptor)
-      optionalElement("valueDate", KotlinString.serializer().descriptor)
-      optionalElement("_valueDate", ElementSerializer.descriptor)
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", ElementSerializer.descriptor)
-      optionalElement("valueAttachment", AttachmentSerializer.descriptor)
-    }
+internal object SubstanceDefinitionPropertySerializer :
+  FhirSerializer<SubstanceDefinition.Property> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Property", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Property>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("valueQuantity", QuantitySerializer.descriptor)
+    b.strPrim("valueDate")
+    b.boolPrim("valueBoolean")
+    b.optionalElement("valueAttachment", AttachmentSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Property {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -452,7 +451,7 @@ internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDef
     var type: CodeableConcept? = null
     var valueCodeableConcept: CodeableConcept? = null
     var valueQuantity: Quantity? = null
-    var valueDate: KotlinString? = null
+    var valueDate: FhirDate? = null
     var _valueDate: Element? = null
     var valueBoolean: KotlinBoolean? = null
     var _valueBoolean: Element? = null
@@ -500,7 +499,7 @@ internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDef
               QuantitySerializer,
               null,
             )
-        6 -> valueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> valueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _valueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -527,24 +526,20 @@ internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDef
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Property: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Property(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on SubstanceDefinition.Property"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "SubstanceDefinition.Property", "type"),
       `value` =
         SubstanceDefinition.Property.Value.from(
           valueCodeableConcept,
           valueQuantity,
-          Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
+          Date.of(valueDate, _valueDate),
           R5Boolean.of(valueBoolean, _valueBoolean),
           valueAttachment,
         ),
@@ -552,22 +547,21 @@ internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDef
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Property) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     when (val choice = value.`value`) {
       null -> {}
@@ -604,21 +598,24 @@ internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDef
 }
 
 internal object SubstanceDefinitionMolecularWeightSerializer :
-  KSerializer<SubstanceDefinition.MolecularWeight> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MolecularWeight") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("method", CodeableConceptSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("amount", QuantitySerializer.descriptor)
-    }
+  FhirSerializer<SubstanceDefinition.MolecularWeight> {
+  override val descriptor: SerialDescriptor = buildDescriptor("MolecularWeight", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.MolecularWeight>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("method", CodeableConceptSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("amount", QuantitySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.MolecularWeight {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -670,41 +667,36 @@ internal object SubstanceDefinitionMolecularWeightSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MolecularWeight: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.MolecularWeight(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       method = method,
       type = type,
-      amount =
-        amount
-          ?: throw SerializationException(
-            "Missing required property 'amount' on SubstanceDefinition.MolecularWeight"
-          ),
+      amount = required(amount, "SubstanceDefinition.MolecularWeight", "amount"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.MolecularWeight) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -723,34 +715,35 @@ internal object SubstanceDefinitionMolecularWeightSerializer :
 }
 
 internal object SubstanceDefinitionStructureSerializer :
-  KSerializer<SubstanceDefinition.Structure> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Structure") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("stereochemistry", CodeableConceptSerializer.descriptor)
-      optionalElement("opticalActivity", CodeableConceptSerializer.descriptor)
-      optionalElement("molecularFormula", KotlinString.serializer().descriptor)
-      optionalElement("_molecularFormula", ElementSerializer.descriptor)
-      optionalElement("molecularFormulaByMoiety", KotlinString.serializer().descriptor)
-      optionalElement("_molecularFormulaByMoiety", ElementSerializer.descriptor)
-      optionalElement(
-        "molecularWeight",
-        lazyDescriptor { SubstanceDefinitionMolecularWeightSerializer.descriptor },
-      )
-      optionalElement("technique", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("sourceDocument", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement(
-        "representation",
-        SubstanceDefinitionStructureRepresentationSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<SubstanceDefinition.Structure> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Structure", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Structure>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("stereochemistry", CodeableConceptSerializer.descriptor)
+    b.optionalElement("opticalActivity", CodeableConceptSerializer.descriptor)
+    b.strPrim("molecularFormula")
+    b.strPrim("molecularFormulaByMoiety")
+    b.optionalElement(
+      "molecularWeight",
+      lazyDescriptor(LazyDescriptorId.SubstanceDefinitionMolecularWeightSerializer),
+    )
+    b.optionalElement("technique", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("sourceDocument", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "representation",
+      SubstanceDefinitionStructureRepresentationSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Structure {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -851,42 +844,41 @@ internal object SubstanceDefinitionStructureSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Structure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Structure(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       stereochemistry = stereochemistry,
       opticalActivity = opticalActivity,
       molecularFormula = R5String.of(molecularFormula, _molecularFormula),
       molecularFormulaByMoiety = R5String.of(molecularFormulaByMoiety, _molecularFormulaByMoiety),
       molecularWeight = molecularWeight,
-      technique = technique ?: listOf(),
-      sourceDocument = sourceDocument ?: listOf(),
-      representation = representation ?: listOf(),
+      technique = listOrEmpty(technique),
+      sourceDocument = listOrEmpty(sourceDocument),
+      representation = listOrEmpty(representation),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Structure) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -909,49 +901,48 @@ internal object SubstanceDefinitionStructureSerializer :
       SubstanceDefinitionMolecularWeightSerializer,
       value.molecularWeight,
     )
-    if (value.technique.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        CodeableConceptSerializer.listSerializer,
-        value.technique,
-      )
-    if (value.sourceDocument.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11,
-        ReferenceSerializer.listSerializer,
-        value.sourceDocument,
-      )
-    if (value.representation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        SubstanceDefinitionStructureRepresentationSerializer.listSerializer,
-        value.representation,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      CodeableConceptSerializer.listSerializer,
+      value.technique,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11,
+      ReferenceSerializer.listSerializer,
+      value.sourceDocument,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      SubstanceDefinitionStructureRepresentationSerializer.listSerializer,
+      value.representation,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object SubstanceDefinitionStructureRepresentationSerializer :
-  KSerializer<SubstanceDefinition.Structure.Representation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Representation") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("representation", KotlinString.serializer().descriptor)
-      optionalElement("_representation", ElementSerializer.descriptor)
-      optionalElement("format", CodeableConceptSerializer.descriptor)
-      optionalElement("document", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<SubstanceDefinition.Structure.Representation> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Representation", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Structure.Representation>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.strPrim("representation")
+    b.optionalElement("format", CodeableConceptSerializer.descriptor)
+    b.optionalElement("document", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Structure.Representation {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1014,14 +1005,14 @@ internal object SubstanceDefinitionStructureRepresentationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Representation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Structure.Representation(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
       representation = R5String.of(representation, _representation),
       format = format,
@@ -1030,22 +1021,21 @@ internal object SubstanceDefinitionStructureRepresentationSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Structure.Representation) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -1065,30 +1055,32 @@ internal object SubstanceDefinitionStructureRepresentationSerializer :
   }
 }
 
-internal object SubstanceDefinitionCodeSerializer : KSerializer<SubstanceDefinition.Code> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Code") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("status", CodeableConceptSerializer.descriptor)
-      optionalElement("statusDate", KotlinString.serializer().descriptor)
-      optionalElement("_statusDate", ElementSerializer.descriptor)
-      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
-      optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
-    }
+internal object SubstanceDefinitionCodeSerializer : FhirSerializer<SubstanceDefinition.Code> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Code", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Code>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("status", CodeableConceptSerializer.descriptor)
+    b.strPrim("statusDate")
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Code {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var code: CodeableConcept? = null
     var status: CodeableConcept? = null
-    var statusDate: KotlinString? = null
+    var statusDate: FhirDateTime? = null
     var _statusDate: Element? = null
     var note: List<Annotation>? = null
     var source: List<Reference>? = null
@@ -1127,7 +1119,8 @@ internal object SubstanceDefinitionCodeSerializer : KSerializer<SubstanceDefinit
               CodeableConceptSerializer,
               null,
             )
-        5 -> statusDate = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          statusDate = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _statusDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1153,43 +1146,38 @@ internal object SubstanceDefinitionCodeSerializer : KSerializer<SubstanceDefinit
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Code: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Code(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
       status = status,
-      statusDate =
-        DateTime.of(
-          if (statusDate != null) FhirDateTime.fromString(statusDate) else null,
-          _statusDate,
-        ),
-      note = note ?: listOf(),
-      source = source ?: listOf(),
+      statusDate = DateTime.of(statusDate, _statusDate),
+      note = listOrEmpty(note),
+      source = listOrEmpty(source),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Code) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -1204,57 +1192,56 @@ internal object SubstanceDefinitionCodeSerializer : KSerializer<SubstanceDefinit
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.statusDate?.value?.toString())
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.statusDate)
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.source.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        ReferenceSerializer.listSerializer,
-        value.source,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      ReferenceSerializer.listSerializer,
+      value.source,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object SubstanceDefinitionNameSerializer : KSerializer<SubstanceDefinition.Name> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Name") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("status", CodeableConceptSerializer.descriptor)
-      optionalElement("preferred", KotlinBoolean.serializer().descriptor)
-      optionalElement("_preferred", ElementSerializer.descriptor)
-      optionalElement("language", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("domain", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement(
-        "synonym",
-        listSerialDescriptor(lazyDescriptor { SubstanceDefinitionNameSerializer.descriptor }),
-      )
-      optionalElement(
-        "translation",
-        listSerialDescriptor(lazyDescriptor { SubstanceDefinitionNameSerializer.descriptor }),
-      )
-      optionalElement(
-        "official",
-        SubstanceDefinitionNameOfficialSerializer.listSerializer.descriptor,
-      )
-      optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
-    }
+internal object SubstanceDefinitionNameSerializer : FhirSerializer<SubstanceDefinition.Name> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Name", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Name>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("name")
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("status", CodeableConceptSerializer.descriptor)
+    b.boolPrim("preferred")
+    b.optionalElement("language", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("domain", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "synonym",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.SubstanceDefinitionNameSerializer)),
+    )
+    b.optionalElement(
+      "translation",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.SubstanceDefinitionNameSerializer)),
+    )
+    b.optionalElement(
+      "official",
+      SubstanceDefinitionNameOfficialSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Name {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1382,49 +1369,44 @@ internal object SubstanceDefinitionNameSerializer : KSerializer<SubstanceDefinit
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Name: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Name(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      name =
-        R5String.of(name, _name)
-          ?: throw SerializationException(
-            "Missing required property 'name' on SubstanceDefinition.Name"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      name = required(R5String.of(name, _name), "SubstanceDefinition.Name", "name"),
       type = type,
       status = status,
       preferred = R5Boolean.of(preferred, _preferred),
-      language = language ?: listOf(),
-      domain = domain ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
-      synonym = synonym ?: listOf(),
-      translation = translation ?: listOf(),
-      official = official ?: listOf(),
-      source = source ?: listOf(),
+      language = listOrEmpty(language),
+      domain = listOrEmpty(domain),
+      jurisdiction = listOrEmpty(jurisdiction),
+      synonym = listOrEmpty(synonym),
+      translation = listOrEmpty(translation),
+      official = listOrEmpty(official),
+      source = listOrEmpty(source),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Name) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -1441,83 +1423,78 @@ internal object SubstanceDefinitionNameSerializer : KSerializer<SubstanceDefinit
     )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 7, value.preferred?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.preferred)
-    if (value.language.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        CodeableConceptSerializer.listSerializer,
-        value.language,
-      )
-    if (value.domain.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        CodeableConceptSerializer.listSerializer,
-        value.domain,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
-    if (value.synonym.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        SubstanceDefinitionNameSerializer.listSerializer,
-        value.synonym,
-      )
-    if (value.translation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13,
-        SubstanceDefinitionNameSerializer.listSerializer,
-        value.translation,
-      )
-    if (value.official.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14,
-        SubstanceDefinitionNameOfficialSerializer.listSerializer,
-        value.official,
-      )
-    if (value.source.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15,
-        ReferenceSerializer.listSerializer,
-        value.source,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      CodeableConceptSerializer.listSerializer,
+      value.language,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      CodeableConceptSerializer.listSerializer,
+      value.domain,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      SubstanceDefinitionNameSerializer.listSerializer,
+      value.synonym,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13,
+      SubstanceDefinitionNameSerializer.listSerializer,
+      value.translation,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14,
+      SubstanceDefinitionNameOfficialSerializer.listSerializer,
+      value.official,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15,
+      ReferenceSerializer.listSerializer,
+      value.source,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object SubstanceDefinitionNameOfficialSerializer :
-  KSerializer<SubstanceDefinition.Name.Official> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Official") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("authority", CodeableConceptSerializer.descriptor)
-      optionalElement("status", CodeableConceptSerializer.descriptor)
-      optionalElement("date", KotlinString.serializer().descriptor)
-      optionalElement("_date", ElementSerializer.descriptor)
-    }
+  FhirSerializer<SubstanceDefinition.Name.Official> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Official", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Name.Official>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("authority", CodeableConceptSerializer.descriptor)
+    b.optionalElement("status", CodeableConceptSerializer.descriptor)
+    b.strPrim("date")
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Name.Official {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var authority: CodeableConcept? = null
     var status: CodeableConcept? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -1554,7 +1531,7 @@ internal object SubstanceDefinitionNameOfficialSerializer :
               CodeableConceptSerializer,
               null,
             )
-        5 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        5 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1564,37 +1541,36 @@ internal object SubstanceDefinitionNameOfficialSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Official: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Name.Official(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       authority = authority,
       status = status,
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Name.Official) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -1614,30 +1590,31 @@ internal object SubstanceDefinitionNameOfficialSerializer :
 }
 
 internal object SubstanceDefinitionRelationshipSerializer :
-  KSerializer<SubstanceDefinition.Relationship> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Relationship") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("substanceDefinitionReference", ReferenceSerializer.descriptor)
-      optionalElement("substanceDefinitionCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("isDefining", KotlinBoolean.serializer().descriptor)
-      optionalElement("_isDefining", ElementSerializer.descriptor)
-      optionalElement("amountQuantity", QuantitySerializer.descriptor)
-      optionalElement("amountRatio", RatioSerializer.descriptor)
-      optionalElement("amountString", KotlinString.serializer().descriptor)
-      optionalElement("_amountString", ElementSerializer.descriptor)
-      optionalElement("ratioHighLimitAmount", RatioSerializer.descriptor)
-      optionalElement("comparator", CodeableConceptSerializer.descriptor)
-      optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<SubstanceDefinition.Relationship> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Relationship", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.Relationship>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("substanceDefinitionReference", ReferenceSerializer.descriptor)
+    b.optionalElement("substanceDefinitionCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.boolPrim("isDefining")
+    b.optionalElement("amountQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("amountRatio", RatioSerializer.descriptor)
+    b.strPrim("amountString")
+    b.optionalElement("ratioHighLimitAmount", RatioSerializer.descriptor)
+    b.optionalElement("comparator", CodeableConceptSerializer.descriptor)
+    b.optionalElement("source", ReferenceSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.Relationship {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1746,24 +1723,20 @@ internal object SubstanceDefinitionRelationshipSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Relationship: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.Relationship(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       substanceDefinition =
         SubstanceDefinition.Relationship.SubstanceDefinition.from(
           substanceDefinitionReference,
           substanceDefinitionCodeableConcept,
         ),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on SubstanceDefinition.Relationship"
-          ),
+      type = required(type, "SubstanceDefinition.Relationship", "type"),
       isDefining = R5Boolean.of(isDefining, _isDefining),
       amount =
         SubstanceDefinition.Relationship.Amount.from(
@@ -1773,27 +1746,26 @@ internal object SubstanceDefinitionRelationshipSerializer :
         ),
       ratioHighLimitAmount = ratioHighLimitAmount,
       comparator = comparator,
-      source = source ?: listOf(),
+      source = listOrEmpty(source),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.Relationship) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.substanceDefinition) {
       null -> {}
       is SubstanceDefinition.Relationship.SubstanceDefinition.Reference -> {
@@ -1836,35 +1808,37 @@ internal object SubstanceDefinitionRelationshipSerializer :
       CodeableConceptSerializer,
       value.comparator,
     )
-    if (value.source.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14,
-        ReferenceSerializer.listSerializer,
-        value.source,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14,
+      ReferenceSerializer.listSerializer,
+      value.source,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object SubstanceDefinitionSourceMaterialSerializer :
-  KSerializer<SubstanceDefinition.SourceMaterial> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SourceMaterial") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("genus", CodeableConceptSerializer.descriptor)
-      optionalElement("species", CodeableConceptSerializer.descriptor)
-      optionalElement("part", CodeableConceptSerializer.descriptor)
-      optionalElement("countryOfOrigin", CodeableConceptSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<SubstanceDefinition.SourceMaterial> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SourceMaterial", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceDefinition.SourceMaterial>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("genus", CodeableConceptSerializer.descriptor)
+    b.optionalElement("species", CodeableConceptSerializer.descriptor)
+    b.optionalElement("part", CodeableConceptSerializer.descriptor)
+    b.optionalElement("countryOfOrigin", CodeableConceptSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceDefinition.SourceMaterial {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1934,39 +1908,38 @@ internal object SubstanceDefinitionSourceMaterialSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SourceMaterial: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceDefinition.SourceMaterial(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
       genus = genus,
       species = species,
       part = part,
-      countryOfOrigin = countryOfOrigin ?: listOf(),
+      countryOfOrigin = listOrEmpty(countryOfOrigin),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition.SourceMaterial) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -1991,13 +1964,12 @@ internal object SubstanceDefinitionSourceMaterialSerializer :
       CodeableConceptSerializer,
       value.part,
     )
-    if (value.countryOfOrigin.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        CodeableConceptSerializer.listSerializer,
-        value.countryOfOrigin,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      CodeableConceptSerializer.listSerializer,
+      value.countryOfOrigin,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -2006,28 +1978,24 @@ internal object SubstanceDefinitionSerializer : FhirResourceSerializer<Substance
   override val descriptor: SerialDescriptor = buildResourceDescriptor("SubstanceDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
+    b.strPrim("version")
     b.optionalElement("status", CodeableConceptSerializer.descriptor)
     b.optionalElement("classification", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("domain", CodeableConceptSerializer.descriptor)
     b.optionalElement("grade", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("informationSource", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
     b.optionalElement("manufacturer", ReferenceSerializer.listSerializer.descriptor)
@@ -2350,7 +2318,7 @@ internal object SubstanceDefinitionSerializer : FhirResourceSerializer<Substance
               SubstanceDefinitionSourceMaterialSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding SubstanceDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return SubstanceDefinition(
@@ -2359,29 +2327,29 @@ internal object SubstanceDefinitionSerializer : FhirResourceSerializer<Substance
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       version = R5String.of(version, _version),
       status = status,
-      classification = classification ?: listOf(),
+      classification = listOrEmpty(classification),
       domain = domain,
-      grade = grade ?: listOf(),
+      grade = listOrEmpty(grade),
       description = Markdown.of(description, _description),
-      informationSource = informationSource ?: listOf(),
-      note = note ?: listOf(),
-      manufacturer = manufacturer ?: listOf(),
-      supplier = supplier ?: listOf(),
-      moiety = moiety ?: listOf(),
-      characterization = characterization ?: listOf(),
-      `property` = `property` ?: listOf(),
+      informationSource = listOrEmpty(informationSource),
+      note = listOrEmpty(note),
+      manufacturer = listOrEmpty(manufacturer),
+      supplier = listOrEmpty(supplier),
+      moiety = listOrEmpty(moiety),
+      characterization = listOrEmpty(characterization),
+      `property` = listOrEmpty(`property`),
       referenceInformation = referenceInformation,
-      molecularWeight = molecularWeight ?: listOf(),
+      molecularWeight = listOrEmpty(molecularWeight),
       structure = structure,
-      code = code ?: listOf(),
-      name = name ?: listOf(),
-      relationship = relationship ?: listOf(),
+      code = listOrEmpty(code),
+      name = listOrEmpty(name),
+      relationship = listOrEmpty(relationship),
       nucleicAcid = nucleicAcid,
       polymer = polymer,
       protein = protein,
@@ -2416,34 +2384,30 @@ internal object SubstanceDefinitionSerializer : FhirResourceSerializer<Substance
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.version)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -2452,121 +2416,108 @@ internal object SubstanceDefinitionSerializer : FhirResourceSerializer<Substance
       CodeableConceptSerializer,
       value.status,
     )
-    if (value.classification.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.classification,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.classification,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       15 + descriptorOffset,
       CodeableConceptSerializer,
       value.domain,
     )
-    if (value.grade.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.grade,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.grade,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       17 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.description)
-    if (value.informationSource.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.informationSource,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.manufacturer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.manufacturer,
-      )
-    if (value.supplier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.supplier,
-      )
-    if (value.moiety.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        SubstanceDefinitionMoietySerializer.listSerializer,
-        value.moiety,
-      )
-    if (value.characterization.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        SubstanceDefinitionCharacterizationSerializer.listSerializer,
-        value.characterization,
-      )
-    if (value.`property`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        SubstanceDefinitionPropertySerializer.listSerializer,
-        value.`property`,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.informationSource,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      21 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.manufacturer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.supplier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      SubstanceDefinitionMoietySerializer.listSerializer,
+      value.moiety,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      SubstanceDefinitionCharacterizationSerializer.listSerializer,
+      value.characterization,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      SubstanceDefinitionPropertySerializer.listSerializer,
+      value.`property`,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       26 + descriptorOffset,
       ReferenceSerializer,
       value.referenceInformation,
     )
-    if (value.molecularWeight.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        SubstanceDefinitionMolecularWeightSerializer.listSerializer,
-        value.molecularWeight,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      SubstanceDefinitionMolecularWeightSerializer.listSerializer,
+      value.molecularWeight,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       28 + descriptorOffset,
       SubstanceDefinitionStructureSerializer,
       value.structure,
     )
-    if (value.code.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        SubstanceDefinitionCodeSerializer.listSerializer,
-        value.code,
-      )
-    if (value.name.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        SubstanceDefinitionNameSerializer.listSerializer,
-        value.name,
-      )
-    if (value.relationship.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        SubstanceDefinitionRelationshipSerializer.listSerializer,
-        value.relationship,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      SubstanceDefinitionCodeSerializer.listSerializer,
+      value.code,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      SubstanceDefinitionNameSerializer.listSerializer,
+      value.name,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      SubstanceDefinitionRelationshipSerializer.listSerializer,
+      value.relationship,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       32 + descriptorOffset,

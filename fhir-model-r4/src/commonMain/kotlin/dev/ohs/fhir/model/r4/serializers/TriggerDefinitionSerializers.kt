@@ -40,58 +40,55 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("TriggerDefinition") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("timingTiming", lazyDescriptor { TimingSerializer.descriptor })
-      optionalElement("timingReference", lazyDescriptor { ReferenceSerializer.descriptor })
-      optionalElement("timingDate", KotlinString.serializer().descriptor)
-      optionalElement("_timingDate", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("timingDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_timingDateTime", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement(
-        "data",
-        listSerialDescriptor(lazyDescriptor { DataRequirementSerializer.descriptor }),
-      )
-      optionalElement("condition", lazyDescriptor { ExpressionSerializer.descriptor })
-    }
+internal object TriggerDefinitionSerializer : FhirSerializer<TriggerDefinition> {
+  override val descriptor: SerialDescriptor = buildDescriptor("TriggerDefinition", this)
 
-  internal val listSerializer: KSerializer<List<TriggerDefinition>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<TriggerDefinition>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("type")
+    b.strPrim("name")
+    b.optionalElement("timingTiming", lazyDescriptor(LazyDescriptorId.TimingSerializer))
+    b.optionalElement("timingReference", lazyDescriptor(LazyDescriptorId.ReferenceSerializer))
+    b.strPrim("timingDate")
+    b.strPrim("timingDateTime")
+    b.optionalElement(
+      "data",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.DataRequirementSerializer)),
+    )
+    b.optionalElement("condition", lazyDescriptor(LazyDescriptorId.ExpressionSerializer))
+  }
 
   override fun deserialize(decoder: Decoder): TriggerDefinition {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: TriggerType? = null
     var _type: Element? = null
     var name: KotlinString? = null
     var _name: Element? = null
     var timingTiming: Timing? = null
     var timingReference: Reference? = null
-    var timingDate: KotlinString? = null
+    var timingDate: FhirDate? = null
     var _timingDate: Element? = null
-    var timingDateTime: KotlinString? = null
+    var timingDateTime: FhirDateTime? = null
     var _timingDateTime: Element? = null
     var `data`: List<DataRequirement>? = null
     var condition: Expression? = null
@@ -106,7 +103,7 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        2 -> type = TriggerType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -140,7 +137,7 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
               ReferenceSerializer,
               null,
             )
-        8 -> timingDate = compositeDecoder.decodeStringElement(descriptor, i)
+        8 -> timingDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         9 ->
           _timingDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -149,7 +146,9 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
               ElementSerializer,
               null,
             )
-        10 -> timingDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          timingDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         11 ->
           _timingDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -175,42 +174,37 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding TriggerDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return TriggerDefinition(
       id = id,
-      extension = extension ?: listOf(),
-      type =
-        Enumeration.of(if (type != null) TriggerType.fromCode(type) else null, _type)
-          ?: throw SerializationException("Missing required property 'type' on TriggerDefinition"),
+      extension = listOrEmpty(extension),
+      type = required(Enumeration.of(type, _type), "TriggerDefinition", "type"),
       name = R4String.of(name, _name),
       timing =
         TriggerDefinition.Timing.from(
           timingTiming,
           timingReference,
-          Date.of(if (timingDate != null) FhirDate.fromString(timingDate) else null, _timingDate),
-          DateTime.of(
-            if (timingDateTime != null) FhirDateTime.fromString(timingDateTime) else null,
-            _timingDateTime,
-          ),
+          Date.of(timingDate, _timingDate),
+          DateTime.of(timingDateTime, _timingDateTime),
         ),
-      `data` = `data` ?: listOf(),
+      `data` = listOrEmpty(`data`),
       condition = condition,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: TriggerDefinition) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.name?.value)
@@ -232,13 +226,12 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
         compositeEncoder.encodeElementIfNotNull(descriptor, 11, choice.value)
       }
     }
-    if (value.`data`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        DataRequirementSerializer.listSerializer,
-        value.`data`,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      DataRequirementSerializer.listSerializer,
+      value.`data`,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       13,

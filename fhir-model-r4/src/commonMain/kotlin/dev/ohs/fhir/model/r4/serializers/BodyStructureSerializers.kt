@@ -45,8 +45,6 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -57,27 +55,23 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
   override val descriptor: SerialDescriptor = buildResourceDescriptor("BodyStructure")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("active", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_active", ElementSerializer.descriptor)
+    b.boolPrim("active")
     b.optionalElement("morphology", CodeableConceptSerializer.descriptor)
     b.optionalElement("location", CodeableConceptSerializer.descriptor)
     b.optionalElement("locationQualifier", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("image", AttachmentSerializer.listSerializer.descriptor)
     b.optionalElement("patient", ReferenceSerializer.descriptor)
   }
@@ -232,7 +226,7 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
               ReferenceSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding BodyStructure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return BodyStructure(
@@ -241,19 +235,17 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       active = R4Boolean.of(active, _active),
       morphology = morphology,
       location = location,
-      locationQualifier = locationQualifier ?: listOf(),
+      locationQualifier = listOrEmpty(locationQualifier),
       description = R4String.of(description, _description),
-      image = image ?: listOf(),
-      patient =
-        patient
-          ?: throw SerializationException("Missing required property 'patient' on BodyStructure"),
+      image = listOrEmpty(image),
+      patient = required(patient, "BodyStructure", "patient"),
     )
   }
 
@@ -284,34 +276,30 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.active?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.active)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -326,26 +314,24 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
       CodeableConceptSerializer,
       value.location,
     )
-    if (value.locationQualifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.locationQualifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.locationQualifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       16 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.description)
-    if (value.image.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        AttachmentSerializer.listSerializer,
-        value.image,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      AttachmentSerializer.listSerializer,
+      value.image,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       19 + descriptorOffset,

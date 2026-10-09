@@ -92,38 +92,37 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefinition.Slicing> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Slicing") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement(
-        "discriminator",
-        ElementDefinitionSlicingDiscriminatorSerializer.listSerializer.descriptor,
-      )
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("ordered", KotlinBoolean.serializer().descriptor)
-      optionalElement("_ordered", ElementSerializer.descriptor)
-      optionalElement("rules", KotlinString.serializer().descriptor)
-      optionalElement("_rules", ElementSerializer.descriptor)
-    }
+internal object ElementDefinitionSlicingSerializer : FhirSerializer<ElementDefinition.Slicing> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Slicing", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ElementDefinition.Slicing>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "discriminator",
+      ElementDefinitionSlicingDiscriminatorSerializer.listSerializer.descriptor,
+    )
+    b.strPrim("description")
+    b.boolPrim("ordered")
+    b.strPrim("rules")
+  }
+
   override fun deserialize(decoder: Decoder): ElementDefinition.Slicing {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -132,7 +131,7 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
     var _description: Element? = null
     var ordered: KotlinBoolean? = null
     var _ordered: Element? = null
-    var rules: KotlinString? = null
+    var rules: SlicingRules? = null
     var _rules: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -171,7 +170,7 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
               ElementSerializer,
               null,
             )
-        7 -> rules = compositeDecoder.decodeStringElement(descriptor, i)
+        7 -> rules = SlicingRules.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _rules =
             compositeDecoder.decodeNullableSerializableElement(
@@ -181,41 +180,36 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Slicing: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ElementDefinition.Slicing(
       id = id,
-      extension = extension ?: listOf(),
-      discriminator = discriminator ?: listOf(),
+      extension = listOrEmpty(extension),
+      discriminator = listOrEmpty(discriminator),
       description = R4String.of(description, _description),
       ordered = R4Boolean.of(ordered, _ordered),
-      rules =
-        Enumeration.of(if (rules != null) SlicingRules.fromCode(rules) else null, _rules)
-          ?: throw SerializationException(
-            "Missing required property 'rules' on ElementDefinition.Slicing"
-          ),
+      rules = required(Enumeration.of(rules, _rules), "ElementDefinition.Slicing", "rules"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Slicing) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.discriminator.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ElementDefinitionSlicingDiscriminatorSerializer.listSerializer,
-        value.discriminator,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ElementDefinitionSlicingDiscriminatorSerializer.listSerializer,
+      value.discriminator,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.description)
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 5, value.ordered?.value)
@@ -227,25 +221,26 @@ internal object ElementDefinitionSlicingSerializer : KSerializer<ElementDefiniti
 }
 
 internal object ElementDefinitionSlicingDiscriminatorSerializer :
-  KSerializer<ElementDefinition.Slicing.Discriminator> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Discriminator") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("path", KotlinString.serializer().descriptor)
-      optionalElement("_path", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ElementDefinition.Slicing.Discriminator> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Discriminator", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ElementDefinition.Slicing.Discriminator>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("type")
+    b.strPrim("path")
+  }
+
   override fun deserialize(decoder: Decoder): ElementDefinition.Slicing.Discriminator {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: DiscriminatorType? = null
     var _type: Element? = null
     var path: KotlinString? = null
     var _path: Element? = null
@@ -260,7 +255,7 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        2 -> type = DiscriminatorType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -279,36 +274,29 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Discriminator: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ElementDefinition.Slicing.Discriminator(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       type =
-        Enumeration.of(if (type != null) DiscriminatorType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on ElementDefinition.Slicing.Discriminator"
-          ),
-      path =
-        R4String.of(path, _path)
-          ?: throw SerializationException(
-            "Missing required property 'path' on ElementDefinition.Slicing.Discriminator"
-          ),
+        required(Enumeration.of(type, _type), "ElementDefinition.Slicing.Discriminator", "type"),
+      path = required(R4String.of(path, _path), "ElementDefinition.Slicing.Discriminator", "path"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Slicing.Discriminator) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.path.value)
@@ -317,22 +305,22 @@ internal object ElementDefinitionSlicingDiscriminatorSerializer :
   }
 }
 
-internal object ElementDefinitionBaseSerializer : KSerializer<ElementDefinition.Base> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Base") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("path", KotlinString.serializer().descriptor)
-      optionalElement("_path", ElementSerializer.descriptor)
-      optionalElement("min", Int.serializer().descriptor)
-      optionalElement("_min", ElementSerializer.descriptor)
-      optionalElement("max", KotlinString.serializer().descriptor)
-      optionalElement("_max", ElementSerializer.descriptor)
-    }
+internal object ElementDefinitionBaseSerializer : FhirSerializer<ElementDefinition.Base> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Base", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ElementDefinition.Base>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("path")
+    b.intPrim("min")
+    b.strPrim("max")
+  }
+
   override fun deserialize(decoder: Decoder): ElementDefinition.Base {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -381,41 +369,29 @@ internal object ElementDefinitionBaseSerializer : KSerializer<ElementDefinition.
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Base: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ElementDefinition.Base(
       id = id,
-      extension = extension ?: listOf(),
-      path =
-        R4String.of(path, _path)
-          ?: throw SerializationException(
-            "Missing required property 'path' on ElementDefinition.Base"
-          ),
-      min =
-        UnsignedInt.of(min, _min)
-          ?: throw SerializationException(
-            "Missing required property 'min' on ElementDefinition.Base"
-          ),
-      max =
-        R4String.of(max, _max)
-          ?: throw SerializationException(
-            "Missing required property 'max' on ElementDefinition.Base"
-          ),
+      extension = listOrEmpty(extension),
+      path = required(R4String.of(path, _path), "ElementDefinition.Base", "path"),
+      min = required(UnsignedInt.of(min, _min), "ElementDefinition.Base", "min"),
+      max = required(R4String.of(max, _max), "ElementDefinition.Base", "max"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Base) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.path.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.path)
     compositeEncoder.encodeIntIfNotNull(descriptor, 4, value.min.value)
@@ -426,26 +402,24 @@ internal object ElementDefinitionBaseSerializer : KSerializer<ElementDefinition.
   }
 }
 
-internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.Type> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Type") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("profile", stringNullableListSerializer.descriptor)
-      optionalElement("_profile", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("targetProfile", stringNullableListSerializer.descriptor)
-      optionalElement("_targetProfile", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("aggregation", stringNullableListSerializer.descriptor)
-      optionalElement("_aggregation", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("versioning", KotlinString.serializer().descriptor)
-      optionalElement("_versioning", ElementSerializer.descriptor)
-    }
+internal object ElementDefinitionTypeSerializer : FhirSerializer<ElementDefinition.Type> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Type", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ElementDefinition.Type>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrimList("profile")
+    b.strPrimList("targetProfile")
+    b.strPrimList("aggregation")
+    b.strPrim("versioning")
+  }
+
   override fun deserialize(decoder: Decoder): ElementDefinition.Type {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -457,7 +431,7 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
     var _targetProfile: List<Element?>? = null
     var aggregation: List<KotlinString?>? = null
     var _aggregation: List<Element?>? = null
-    var versioning: KotlinString? = null
+    var versioning: ReferenceVersionRules? = null
     var _versioning: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -527,7 +501,9 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
               ElementSerializer.nullableListSerializer,
               null,
             )
-        10 -> versioning = compositeDecoder.decodeStringElement(descriptor, i)
+        10 ->
+          versioning =
+            ReferenceVersionRules.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         11 ->
           _versioning =
             compositeDecoder.decodeNullableSerializableElement(
@@ -537,64 +513,61 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Type: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val profile_ =
+      List(maxSize(profile, _profile)) { index ->
+        entryRequired(
+          Canonical.of(at(profile, index), at(_profile, index)),
+          "ElementDefinition.Type",
+          "profile",
+        )
+      }
+    val targetProfile_ =
+      List(maxSize(targetProfile, _targetProfile)) { index ->
+        entryRequired(
+          Canonical.of(at(targetProfile, index), at(_targetProfile, index)),
+          "ElementDefinition.Type",
+          "targetProfile",
+        )
+      }
+    val aggregation_ =
+      List(maxSize(aggregation, _aggregation)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(aggregation, index)?.let { AggregationMode.fromCode(it) },
+            at(_aggregation, index),
+          ),
+          "ElementDefinition.Type",
+          "aggregation",
+        )
+      }
     return ElementDefinition.Type(
       id = id,
-      extension = extension ?: listOf(),
-      code =
-        Uri.of(code, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on ElementDefinition.Type"
-          ),
-      profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
-          Canonical.of(profile?.getOrNull(index), _profile?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'profile' on ElementDefinition.Type has neither a value nor an id/extension"
-            )
-        }),
-      targetProfile =
-        (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { index
-          ->
-          Canonical.of(targetProfile?.getOrNull(index), _targetProfile?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'targetProfile' on ElementDefinition.Type has neither a value nor an id/extension"
-            )
-        }),
-      aggregation =
-        (kotlin.collections.List(maxOf(aggregation?.size ?: 0, _aggregation?.size ?: 0)) { index ->
-          Enumeration.of(
-            aggregation?.getOrNull(index)?.let { AggregationMode.fromCode(it) },
-            _aggregation?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'aggregation' on ElementDefinition.Type has neither a value nor an id/extension"
-            )
-        }),
-      versioning =
-        Enumeration.of(
-          if (versioning != null) ReferenceVersionRules.fromCode(versioning) else null,
-          _versioning,
-        ),
+      extension = listOrEmpty(extension),
+      code = required(Uri.of(code, _code), "ElementDefinition.Type", "code"),
+      profile = profile_,
+      targetProfile = targetProfile_,
+      aggregation = aggregation_,
+      versioning = Enumeration.of(versioning, _versioning),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Type) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.code.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.code)
-    if (value.profile.isNotEmpty()) {
+    if (!value.profile.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         4,
@@ -603,7 +576,7 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 5, value.profile)
     }
-    if (value.targetProfile.isNotEmpty()) {
+    if (!value.targetProfile.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         6,
@@ -612,7 +585,7 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 7, value.targetProfile)
     }
-    if (value.aggregation.isNotEmpty()) {
+    if (!value.aggregation.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         8,
@@ -627,87 +600,70 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
   }
 }
 
-internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefinition.Example> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Example") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("label", KotlinString.serializer().descriptor)
-      optionalElement("_label", ElementSerializer.descriptor)
-      optionalElement("valueBase64Binary", KotlinString.serializer().descriptor)
-      optionalElement("_valueBase64Binary", ElementSerializer.descriptor)
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", ElementSerializer.descriptor)
-      optionalElement("valueCanonical", KotlinString.serializer().descriptor)
-      optionalElement("_valueCanonical", ElementSerializer.descriptor)
-      optionalElement("valueCode", KotlinString.serializer().descriptor)
-      optionalElement("_valueCode", ElementSerializer.descriptor)
-      optionalElement("valueDate", KotlinString.serializer().descriptor)
-      optionalElement("_valueDate", ElementSerializer.descriptor)
-      optionalElement("valueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_valueDateTime", ElementSerializer.descriptor)
-      optionalElement("valueDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_valueDecimal", ElementSerializer.descriptor)
-      optionalElement("valueId", KotlinString.serializer().descriptor)
-      optionalElement("_valueId", ElementSerializer.descriptor)
-      optionalElement("valueInstant", KotlinString.serializer().descriptor)
-      optionalElement("_valueInstant", ElementSerializer.descriptor)
-      optionalElement("valueInteger", Int.serializer().descriptor)
-      optionalElement("_valueInteger", ElementSerializer.descriptor)
-      optionalElement("valueMarkdown", KotlinString.serializer().descriptor)
-      optionalElement("_valueMarkdown", ElementSerializer.descriptor)
-      optionalElement("valueOid", KotlinString.serializer().descriptor)
-      optionalElement("_valueOid", ElementSerializer.descriptor)
-      optionalElement("valuePositiveInt", Int.serializer().descriptor)
-      optionalElement("_valuePositiveInt", ElementSerializer.descriptor)
-      optionalElement("valueString", KotlinString.serializer().descriptor)
-      optionalElement("_valueString", ElementSerializer.descriptor)
-      optionalElement("valueTime", LocalTimeSerializer.descriptor)
-      optionalElement("_valueTime", ElementSerializer.descriptor)
-      optionalElement("valueUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_valueUnsignedInt", ElementSerializer.descriptor)
-      optionalElement("valueUri", KotlinString.serializer().descriptor)
-      optionalElement("_valueUri", ElementSerializer.descriptor)
-      optionalElement("valueUrl", KotlinString.serializer().descriptor)
-      optionalElement("_valueUrl", ElementSerializer.descriptor)
-      optionalElement("valueUuid", KotlinString.serializer().descriptor)
-      optionalElement("_valueUuid", ElementSerializer.descriptor)
-      optionalElement("valueAddress", AddressSerializer.descriptor)
-      optionalElement("valueAge", AgeSerializer.descriptor)
-      optionalElement("valueAnnotation", AnnotationSerializer.descriptor)
-      optionalElement("valueAttachment", AttachmentSerializer.descriptor)
-      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("valueCoding", CodingSerializer.descriptor)
-      optionalElement("valueContactPoint", ContactPointSerializer.descriptor)
-      optionalElement("valueCount", CountSerializer.descriptor)
-      optionalElement("valueDistance", DistanceSerializer.descriptor)
-      optionalElement("valueDuration", DurationSerializer.descriptor)
-      optionalElement("valueHumanName", HumanNameSerializer.descriptor)
-      optionalElement("valueIdentifier", IdentifierSerializer.descriptor)
-      optionalElement("valueMoney", MoneySerializer.descriptor)
-      optionalElement("valuePeriod", PeriodSerializer.descriptor)
-      optionalElement("valueQuantity", QuantitySerializer.descriptor)
-      optionalElement("valueRange", RangeSerializer.descriptor)
-      optionalElement("valueRatio", RatioSerializer.descriptor)
-      optionalElement("valueReference", ReferenceSerializer.descriptor)
-      optionalElement("valueSampledData", SampledDataSerializer.descriptor)
-      optionalElement("valueSignature", SignatureSerializer.descriptor)
-      optionalElement("valueTiming", TimingSerializer.descriptor)
-      optionalElement("valueContactDetail", ContactDetailSerializer.descriptor)
-      optionalElement("valueContributor", ContributorSerializer.descriptor)
-      optionalElement("valueDataRequirement", DataRequirementSerializer.descriptor)
-      optionalElement("valueExpression", ExpressionSerializer.descriptor)
-      optionalElement("valueParameterDefinition", ParameterDefinitionSerializer.descriptor)
-      optionalElement("valueRelatedArtifact", RelatedArtifactSerializer.descriptor)
-      optionalElement("valueTriggerDefinition", TriggerDefinitionSerializer.descriptor)
-      optionalElement("valueUsageContext", UsageContextSerializer.descriptor)
-      optionalElement("valueDosage", DosageSerializer.descriptor)
-      optionalElement("valueMeta", MetaSerializer.descriptor)
-    }
+internal object ElementDefinitionExampleSerializer : FhirSerializer<ElementDefinition.Example> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Example", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ElementDefinition.Example>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("label")
+    b.strPrim("valueBase64Binary")
+    b.boolPrim("valueBoolean")
+    b.strPrim("valueCanonical")
+    b.strPrim("valueCode")
+    b.strPrim("valueDate")
+    b.strPrim("valueDateTime")
+    b.prim("valueDecimal", FhirDecimalSerializer.descriptor)
+    b.strPrim("valueId")
+    b.strPrim("valueInstant")
+    b.intPrim("valueInteger")
+    b.strPrim("valueMarkdown")
+    b.strPrim("valueOid")
+    b.intPrim("valuePositiveInt")
+    b.strPrim("valueString")
+    b.prim("valueTime", LocalTimeSerializer.descriptor)
+    b.intPrim("valueUnsignedInt")
+    b.strPrim("valueUri")
+    b.strPrim("valueUrl")
+    b.strPrim("valueUuid")
+    b.optionalElement("valueAddress", AddressSerializer.descriptor)
+    b.optionalElement("valueAge", AgeSerializer.descriptor)
+    b.optionalElement("valueAnnotation", AnnotationSerializer.descriptor)
+    b.optionalElement("valueAttachment", AttachmentSerializer.descriptor)
+    b.optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("valueCoding", CodingSerializer.descriptor)
+    b.optionalElement("valueContactPoint", ContactPointSerializer.descriptor)
+    b.optionalElement("valueCount", CountSerializer.descriptor)
+    b.optionalElement("valueDistance", DistanceSerializer.descriptor)
+    b.optionalElement("valueDuration", DurationSerializer.descriptor)
+    b.optionalElement("valueHumanName", HumanNameSerializer.descriptor)
+    b.optionalElement("valueIdentifier", IdentifierSerializer.descriptor)
+    b.optionalElement("valueMoney", MoneySerializer.descriptor)
+    b.optionalElement("valuePeriod", PeriodSerializer.descriptor)
+    b.optionalElement("valueQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("valueRange", RangeSerializer.descriptor)
+    b.optionalElement("valueRatio", RatioSerializer.descriptor)
+    b.optionalElement("valueReference", ReferenceSerializer.descriptor)
+    b.optionalElement("valueSampledData", SampledDataSerializer.descriptor)
+    b.optionalElement("valueSignature", SignatureSerializer.descriptor)
+    b.optionalElement("valueTiming", TimingSerializer.descriptor)
+    b.optionalElement("valueContactDetail", ContactDetailSerializer.descriptor)
+    b.optionalElement("valueContributor", ContributorSerializer.descriptor)
+    b.optionalElement("valueDataRequirement", DataRequirementSerializer.descriptor)
+    b.optionalElement("valueExpression", ExpressionSerializer.descriptor)
+    b.optionalElement("valueParameterDefinition", ParameterDefinitionSerializer.descriptor)
+    b.optionalElement("valueRelatedArtifact", RelatedArtifactSerializer.descriptor)
+    b.optionalElement("valueTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+    b.optionalElement("valueUsageContext", UsageContextSerializer.descriptor)
+    b.optionalElement("valueDosage", DosageSerializer.descriptor)
+    b.optionalElement("valueMeta", MetaSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ElementDefinition.Example {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -721,15 +677,15 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
     var _valueCanonical: Element? = null
     var valueCode: KotlinString? = null
     var _valueCode: Element? = null
-    var valueDate: KotlinString? = null
+    var valueDate: FhirDate? = null
     var _valueDate: Element? = null
-    var valueDateTime: KotlinString? = null
+    var valueDateTime: FhirDateTime? = null
     var _valueDateTime: Element? = null
     var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
     var valueId: KotlinString? = null
     var _valueId: Element? = null
-    var valueInstant: KotlinString? = null
+    var valueInstant: FhirDateTime? = null
     var _valueInstant: Element? = null
     var valueInteger: Int? = null
     var _valueInteger: Element? = null
@@ -838,7 +794,7 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
               ElementSerializer,
               null,
             )
-        12 -> valueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        12 -> valueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         13 ->
           _valueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -847,7 +803,9 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
               ElementSerializer,
               null,
             )
-        14 -> valueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          valueDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _valueDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -881,7 +839,9 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
               ElementSerializer,
               null,
             )
-        20 -> valueInstant = compositeDecoder.decodeStringElement(descriptor, i)
+        20 ->
+          valueInstant =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _valueInstant =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1206,93 +1166,84 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
           valueMeta =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, MetaSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Example: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ElementDefinition.Example(
       id = id,
-      extension = extension ?: listOf(),
-      label =
-        R4String.of(label, _label)
-          ?: throw SerializationException(
-            "Missing required property 'label' on ElementDefinition.Example"
-          ),
+      extension = listOrEmpty(extension),
+      label = required(R4String.of(label, _label), "ElementDefinition.Example", "label"),
       `value` =
-        ElementDefinition.Example.Value.from(
-          Base64Binary.of(valueBase64Binary, _valueBase64Binary),
-          R4Boolean.of(valueBoolean, _valueBoolean),
-          Canonical.of(valueCanonical, _valueCanonical),
-          Code.of(valueCode, _valueCode),
-          Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
-          DateTime.of(
-            if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
-            _valueDateTime,
+        required(
+          ElementDefinition.Example.Value.from(
+            Base64Binary.of(valueBase64Binary, _valueBase64Binary),
+            R4Boolean.of(valueBoolean, _valueBoolean),
+            Canonical.of(valueCanonical, _valueCanonical),
+            Code.of(valueCode, _valueCode),
+            Date.of(valueDate, _valueDate),
+            DateTime.of(valueDateTime, _valueDateTime),
+            Decimal.of(valueDecimal, _valueDecimal),
+            Id.of(valueId, _valueId),
+            Instant.of(valueInstant, _valueInstant),
+            Integer.of(valueInteger, _valueInteger),
+            Markdown.of(valueMarkdown, _valueMarkdown),
+            Oid.of(valueOid, _valueOid),
+            PositiveInt.of(valuePositiveInt, _valuePositiveInt),
+            R4String.of(valueString, _valueString),
+            Time.of(valueTime, _valueTime),
+            UnsignedInt.of(valueUnsignedInt, _valueUnsignedInt),
+            Uri.of(valueUri, _valueUri),
+            Url.of(valueUrl, _valueUrl),
+            Uuid.of(valueUuid, _valueUuid),
+            valueAddress,
+            valueAge,
+            valueAnnotation,
+            valueAttachment,
+            valueCodeableConcept,
+            valueCoding,
+            valueContactPoint,
+            valueCount,
+            valueDistance,
+            valueDuration,
+            valueHumanName,
+            valueIdentifier,
+            valueMoney,
+            valuePeriod,
+            valueQuantity,
+            valueRange,
+            valueRatio,
+            valueReference,
+            valueSampledData,
+            valueSignature,
+            valueTiming,
+            valueContactDetail,
+            valueContributor,
+            valueDataRequirement,
+            valueExpression,
+            valueParameterDefinition,
+            valueRelatedArtifact,
+            valueTriggerDefinition,
+            valueUsageContext,
+            valueDosage,
+            valueMeta,
           ),
-          Decimal.of(valueDecimal, _valueDecimal),
-          Id.of(valueId, _valueId),
-          Instant.of(
-            if (valueInstant != null) FhirDateTime.fromString(valueInstant) else null,
-            _valueInstant,
-          ),
-          Integer.of(valueInteger, _valueInteger),
-          Markdown.of(valueMarkdown, _valueMarkdown),
-          Oid.of(valueOid, _valueOid),
-          PositiveInt.of(valuePositiveInt, _valuePositiveInt),
-          R4String.of(valueString, _valueString),
-          Time.of(valueTime, _valueTime),
-          UnsignedInt.of(valueUnsignedInt, _valueUnsignedInt),
-          Uri.of(valueUri, _valueUri),
-          Url.of(valueUrl, _valueUrl),
-          Uuid.of(valueUuid, _valueUuid),
-          valueAddress,
-          valueAge,
-          valueAnnotation,
-          valueAttachment,
-          valueCodeableConcept,
-          valueCoding,
-          valueContactPoint,
-          valueCount,
-          valueDistance,
-          valueDuration,
-          valueHumanName,
-          valueIdentifier,
-          valueMoney,
-          valuePeriod,
-          valueQuantity,
-          valueRange,
-          valueRatio,
-          valueReference,
-          valueSampledData,
-          valueSignature,
-          valueTiming,
-          valueContactDetail,
-          valueContributor,
-          valueDataRequirement,
-          valueExpression,
-          valueParameterDefinition,
-          valueRelatedArtifact,
-          valueTriggerDefinition,
-          valueUsageContext,
-          valueDosage,
-          valueMeta,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'value' on ElementDefinition.Example"
-          ),
+          "ElementDefinition.Example",
+          "value",
+        ),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Example) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.label.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.label)
     when (val choice = value.`value`) {
@@ -1565,31 +1516,28 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
   }
 }
 
-internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefinition.Constraint> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Constraint") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("key", KotlinString.serializer().descriptor)
-      optionalElement("_key", ElementSerializer.descriptor)
-      optionalElement("requirements", KotlinString.serializer().descriptor)
-      optionalElement("_requirements", ElementSerializer.descriptor)
-      optionalElement("severity", KotlinString.serializer().descriptor)
-      optionalElement("_severity", ElementSerializer.descriptor)
-      optionalElement("human", KotlinString.serializer().descriptor)
-      optionalElement("_human", ElementSerializer.descriptor)
-      optionalElement("expression", KotlinString.serializer().descriptor)
-      optionalElement("_expression", ElementSerializer.descriptor)
-      optionalElement("xpath", KotlinString.serializer().descriptor)
-      optionalElement("_xpath", ElementSerializer.descriptor)
-      optionalElement("source", KotlinString.serializer().descriptor)
-      optionalElement("_source", ElementSerializer.descriptor)
-    }
+internal object ElementDefinitionConstraintSerializer :
+  FhirSerializer<ElementDefinition.Constraint> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Constraint", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ElementDefinition.Constraint>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("key")
+    b.strPrim("requirements")
+    b.strPrim("severity")
+    b.strPrim("human")
+    b.strPrim("expression")
+    b.strPrim("xpath")
+    b.strPrim("source")
+  }
+
   override fun deserialize(decoder: Decoder): ElementDefinition.Constraint {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1597,7 +1545,7 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
     var _key: Element? = null
     var requirements: KotlinString? = null
     var _requirements: Element? = null
-    var severity: KotlinString? = null
+    var severity: ConstraintSeverity? = null
     var _severity: Element? = null
     var human: KotlinString? = null
     var _human: Element? = null
@@ -1636,7 +1584,9 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
               ElementSerializer,
               null,
             )
-        6 -> severity = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          severity =
+            ConstraintSeverity.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _severity =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1682,32 +1632,18 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Constraint: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ElementDefinition.Constraint(
       id = id,
-      extension = extension ?: listOf(),
-      key =
-        Id.of(key, _key)
-          ?: throw SerializationException(
-            "Missing required property 'key' on ElementDefinition.Constraint"
-          ),
+      extension = listOrEmpty(extension),
+      key = required(Id.of(key, _key), "ElementDefinition.Constraint", "key"),
       requirements = R4String.of(requirements, _requirements),
       severity =
-        Enumeration.of(
-          if (severity != null) ConstraintSeverity.fromCode(severity) else null,
-          _severity,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'severity' on ElementDefinition.Constraint"
-          ),
-      human =
-        R4String.of(human, _human)
-          ?: throw SerializationException(
-            "Missing required property 'human' on ElementDefinition.Constraint"
-          ),
+        required(Enumeration.of(severity, _severity), "ElementDefinition.Constraint", "severity"),
+      human = required(R4String.of(human, _human), "ElementDefinition.Constraint", "human"),
       expression = R4String.of(expression, _expression),
       xpath = R4String.of(xpath, _xpath),
       source = Canonical.of(source, _source),
@@ -1715,15 +1651,15 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Constraint) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.key.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.key)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.requirements?.value)
@@ -1742,26 +1678,26 @@ internal object ElementDefinitionConstraintSerializer : KSerializer<ElementDefin
   }
 }
 
-internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefinition.Binding> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Binding") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("strength", KotlinString.serializer().descriptor)
-      optionalElement("_strength", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("valueSet", KotlinString.serializer().descriptor)
-      optionalElement("_valueSet", ElementSerializer.descriptor)
-    }
+internal object ElementDefinitionBindingSerializer : FhirSerializer<ElementDefinition.Binding> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Binding", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ElementDefinition.Binding>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("strength")
+    b.strPrim("description")
+    b.strPrim("valueSet")
+  }
+
   override fun deserialize(decoder: Decoder): ElementDefinition.Binding {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var strength: KotlinString? = null
+    var strength: BindingStrength? = null
     var _strength: Element? = null
     var description: KotlinString? = null
     var _description: Element? = null
@@ -1778,7 +1714,8 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> strength = compositeDecoder.decodeStringElement(descriptor, i)
+        2 ->
+          strength = BindingStrength.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _strength =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1806,36 +1743,30 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Binding: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ElementDefinition.Binding(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       strength =
-        Enumeration.of(
-          if (strength != null) BindingStrength.fromCode(strength) else null,
-          _strength,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'strength' on ElementDefinition.Binding"
-          ),
+        required(Enumeration.of(strength, _strength), "ElementDefinition.Binding", "strength"),
       description = R4String.of(description, _description),
       valueSet = Canonical.of(valueSet, _valueSet),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Binding) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.strength.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.strength)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.description?.value)
@@ -1846,24 +1777,23 @@ internal object ElementDefinitionBindingSerializer : KSerializer<ElementDefiniti
   }
 }
 
-internal object ElementDefinitionMappingSerializer : KSerializer<ElementDefinition.Mapping> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Mapping") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("identity", KotlinString.serializer().descriptor)
-      optionalElement("_identity", ElementSerializer.descriptor)
-      optionalElement("language", KotlinString.serializer().descriptor)
-      optionalElement("_language", ElementSerializer.descriptor)
-      optionalElement("map", KotlinString.serializer().descriptor)
-      optionalElement("_map", ElementSerializer.descriptor)
-      optionalElement("comment", KotlinString.serializer().descriptor)
-      optionalElement("_comment", ElementSerializer.descriptor)
-    }
+internal object ElementDefinitionMappingSerializer : FhirSerializer<ElementDefinition.Mapping> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Mapping", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ElementDefinition.Mapping>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("identity")
+    b.strPrim("language")
+    b.strPrim("map")
+    b.strPrim("comment")
+  }
+
   override fun deserialize(decoder: Decoder): ElementDefinition.Mapping {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1923,38 +1853,30 @@ internal object ElementDefinitionMappingSerializer : KSerializer<ElementDefiniti
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Mapping: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ElementDefinition.Mapping(
       id = id,
-      extension = extension ?: listOf(),
-      identity =
-        Id.of(identity, _identity)
-          ?: throw SerializationException(
-            "Missing required property 'identity' on ElementDefinition.Mapping"
-          ),
+      extension = listOrEmpty(extension),
+      identity = required(Id.of(identity, _identity), "ElementDefinition.Mapping", "identity"),
       language = Code.of(language, _language),
-      map =
-        R4String.of(map, _map)
-          ?: throw SerializationException(
-            "Missing required property 'map' on ElementDefinition.Mapping"
-          ),
+      map = required(R4String.of(map, _map), "ElementDefinition.Mapping", "map"),
       comment = R4String.of(comment, _comment),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition.Mapping) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.identity.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.identity)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.language?.value)
@@ -1967,308 +1889,216 @@ internal object ElementDefinitionMappingSerializer : KSerializer<ElementDefiniti
   }
 }
 
-internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ElementDefinition") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("path", KotlinString.serializer().descriptor)
-      optionalElement("_path", ElementSerializer.descriptor)
-      optionalElement("representation", stringNullableListSerializer.descriptor)
-      optionalElement("_representation", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("sliceName", KotlinString.serializer().descriptor)
-      optionalElement("_sliceName", ElementSerializer.descriptor)
-      optionalElement("sliceIsConstraining", KotlinBoolean.serializer().descriptor)
-      optionalElement("_sliceIsConstraining", ElementSerializer.descriptor)
-      optionalElement("label", KotlinString.serializer().descriptor)
-      optionalElement("_label", ElementSerializer.descriptor)
-      optionalElement("code", CodingSerializer.listSerializer.descriptor)
-      optionalElement("slicing", ElementDefinitionSlicingSerializer.descriptor)
-      optionalElement("short", KotlinString.serializer().descriptor)
-      optionalElement("_short", ElementSerializer.descriptor)
-      optionalElement("definition", KotlinString.serializer().descriptor)
-      optionalElement("_definition", ElementSerializer.descriptor)
-      optionalElement("comment", KotlinString.serializer().descriptor)
-      optionalElement("_comment", ElementSerializer.descriptor)
-      optionalElement("requirements", KotlinString.serializer().descriptor)
-      optionalElement("_requirements", ElementSerializer.descriptor)
-      optionalElement("alias", stringNullableListSerializer.descriptor)
-      optionalElement("_alias", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("min", Int.serializer().descriptor)
-      optionalElement("_min", ElementSerializer.descriptor)
-      optionalElement("max", KotlinString.serializer().descriptor)
-      optionalElement("_max", ElementSerializer.descriptor)
-      optionalElement("base", ElementDefinitionBaseSerializer.descriptor)
-      optionalElement("contentReference", KotlinString.serializer().descriptor)
-      optionalElement("_contentReference", ElementSerializer.descriptor)
-      optionalElement("type", ElementDefinitionTypeSerializer.listSerializer.descriptor)
-      optionalElement("defaultValueBase64Binary", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueBase64Binary", ElementSerializer.descriptor)
-      optionalElement("defaultValueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_defaultValueBoolean", ElementSerializer.descriptor)
-      optionalElement("defaultValueCanonical", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueCanonical", ElementSerializer.descriptor)
-      optionalElement("defaultValueCode", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueCode", ElementSerializer.descriptor)
-      optionalElement("defaultValueDate", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueDate", ElementSerializer.descriptor)
-      optionalElement("defaultValueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueDateTime", ElementSerializer.descriptor)
-      optionalElement("defaultValueDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_defaultValueDecimal", ElementSerializer.descriptor)
-      optionalElement("defaultValueId", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueId", ElementSerializer.descriptor)
-      optionalElement("defaultValueInstant", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueInstant", ElementSerializer.descriptor)
-      optionalElement("defaultValueInteger", Int.serializer().descriptor)
-      optionalElement("_defaultValueInteger", ElementSerializer.descriptor)
-      optionalElement("defaultValueMarkdown", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueMarkdown", ElementSerializer.descriptor)
-      optionalElement("defaultValueOid", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueOid", ElementSerializer.descriptor)
-      optionalElement("defaultValuePositiveInt", Int.serializer().descriptor)
-      optionalElement("_defaultValuePositiveInt", ElementSerializer.descriptor)
-      optionalElement("defaultValueString", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueString", ElementSerializer.descriptor)
-      optionalElement("defaultValueTime", LocalTimeSerializer.descriptor)
-      optionalElement("_defaultValueTime", ElementSerializer.descriptor)
-      optionalElement("defaultValueUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_defaultValueUnsignedInt", ElementSerializer.descriptor)
-      optionalElement("defaultValueUri", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueUri", ElementSerializer.descriptor)
-      optionalElement("defaultValueUrl", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueUrl", ElementSerializer.descriptor)
-      optionalElement("defaultValueUuid", KotlinString.serializer().descriptor)
-      optionalElement("_defaultValueUuid", ElementSerializer.descriptor)
-      optionalElement("defaultValueAddress", AddressSerializer.descriptor)
-      optionalElement("defaultValueAge", AgeSerializer.descriptor)
-      optionalElement("defaultValueAnnotation", AnnotationSerializer.descriptor)
-      optionalElement("defaultValueAttachment", AttachmentSerializer.descriptor)
-      optionalElement("defaultValueCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("defaultValueCoding", CodingSerializer.descriptor)
-      optionalElement("defaultValueContactPoint", ContactPointSerializer.descriptor)
-      optionalElement("defaultValueCount", CountSerializer.descriptor)
-      optionalElement("defaultValueDistance", DistanceSerializer.descriptor)
-      optionalElement("defaultValueDuration", DurationSerializer.descriptor)
-      optionalElement("defaultValueHumanName", HumanNameSerializer.descriptor)
-      optionalElement("defaultValueIdentifier", IdentifierSerializer.descriptor)
-      optionalElement("defaultValueMoney", MoneySerializer.descriptor)
-      optionalElement("defaultValuePeriod", PeriodSerializer.descriptor)
-      optionalElement("defaultValueQuantity", QuantitySerializer.descriptor)
-      optionalElement("defaultValueRange", RangeSerializer.descriptor)
-      optionalElement("defaultValueRatio", RatioSerializer.descriptor)
-      optionalElement("defaultValueReference", ReferenceSerializer.descriptor)
-      optionalElement("defaultValueSampledData", SampledDataSerializer.descriptor)
-      optionalElement("defaultValueSignature", SignatureSerializer.descriptor)
-      optionalElement("defaultValueTiming", TimingSerializer.descriptor)
-      optionalElement("defaultValueContactDetail", ContactDetailSerializer.descriptor)
-      optionalElement("defaultValueContributor", ContributorSerializer.descriptor)
-      optionalElement("defaultValueDataRequirement", DataRequirementSerializer.descriptor)
-      optionalElement("defaultValueExpression", ExpressionSerializer.descriptor)
-      optionalElement("defaultValueParameterDefinition", ParameterDefinitionSerializer.descriptor)
-      optionalElement("defaultValueRelatedArtifact", RelatedArtifactSerializer.descriptor)
-      optionalElement("defaultValueTriggerDefinition", TriggerDefinitionSerializer.descriptor)
-      optionalElement("defaultValueUsageContext", UsageContextSerializer.descriptor)
-      optionalElement("defaultValueDosage", DosageSerializer.descriptor)
-      optionalElement("defaultValueMeta", MetaSerializer.descriptor)
-      optionalElement("meaningWhenMissing", KotlinString.serializer().descriptor)
-      optionalElement("_meaningWhenMissing", ElementSerializer.descriptor)
-      optionalElement("orderMeaning", KotlinString.serializer().descriptor)
-      optionalElement("_orderMeaning", ElementSerializer.descriptor)
-      optionalElement("fixedBase64Binary", KotlinString.serializer().descriptor)
-      optionalElement("_fixedBase64Binary", ElementSerializer.descriptor)
-      optionalElement("fixedBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_fixedBoolean", ElementSerializer.descriptor)
-      optionalElement("fixedCanonical", KotlinString.serializer().descriptor)
-      optionalElement("_fixedCanonical", ElementSerializer.descriptor)
-      optionalElement("fixedCode", KotlinString.serializer().descriptor)
-      optionalElement("_fixedCode", ElementSerializer.descriptor)
-      optionalElement("fixedDate", KotlinString.serializer().descriptor)
-      optionalElement("_fixedDate", ElementSerializer.descriptor)
-      optionalElement("fixedDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_fixedDateTime", ElementSerializer.descriptor)
-      optionalElement("fixedDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_fixedDecimal", ElementSerializer.descriptor)
-      optionalElement("fixedId", KotlinString.serializer().descriptor)
-      optionalElement("_fixedId", ElementSerializer.descriptor)
-      optionalElement("fixedInstant", KotlinString.serializer().descriptor)
-      optionalElement("_fixedInstant", ElementSerializer.descriptor)
-      optionalElement("fixedInteger", Int.serializer().descriptor)
-      optionalElement("_fixedInteger", ElementSerializer.descriptor)
-      optionalElement("fixedMarkdown", KotlinString.serializer().descriptor)
-      optionalElement("_fixedMarkdown", ElementSerializer.descriptor)
-      optionalElement("fixedOid", KotlinString.serializer().descriptor)
-      optionalElement("_fixedOid", ElementSerializer.descriptor)
-      optionalElement("fixedPositiveInt", Int.serializer().descriptor)
-      optionalElement("_fixedPositiveInt", ElementSerializer.descriptor)
-      optionalElement("fixedString", KotlinString.serializer().descriptor)
-      optionalElement("_fixedString", ElementSerializer.descriptor)
-      optionalElement("fixedTime", LocalTimeSerializer.descriptor)
-      optionalElement("_fixedTime", ElementSerializer.descriptor)
-      optionalElement("fixedUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_fixedUnsignedInt", ElementSerializer.descriptor)
-      optionalElement("fixedUri", KotlinString.serializer().descriptor)
-      optionalElement("_fixedUri", ElementSerializer.descriptor)
-      optionalElement("fixedUrl", KotlinString.serializer().descriptor)
-      optionalElement("_fixedUrl", ElementSerializer.descriptor)
-      optionalElement("fixedUuid", KotlinString.serializer().descriptor)
-      optionalElement("_fixedUuid", ElementSerializer.descriptor)
-      optionalElement("fixedAddress", AddressSerializer.descriptor)
-      optionalElement("fixedAge", AgeSerializer.descriptor)
-      optionalElement("fixedAnnotation", AnnotationSerializer.descriptor)
-      optionalElement("fixedAttachment", AttachmentSerializer.descriptor)
-      optionalElement("fixedCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("fixedCoding", CodingSerializer.descriptor)
-      optionalElement("fixedContactPoint", ContactPointSerializer.descriptor)
-      optionalElement("fixedCount", CountSerializer.descriptor)
-      optionalElement("fixedDistance", DistanceSerializer.descriptor)
-      optionalElement("fixedDuration", DurationSerializer.descriptor)
-      optionalElement("fixedHumanName", HumanNameSerializer.descriptor)
-      optionalElement("fixedIdentifier", IdentifierSerializer.descriptor)
-      optionalElement("fixedMoney", MoneySerializer.descriptor)
-      optionalElement("fixedPeriod", PeriodSerializer.descriptor)
-      optionalElement("fixedQuantity", QuantitySerializer.descriptor)
-      optionalElement("fixedRange", RangeSerializer.descriptor)
-      optionalElement("fixedRatio", RatioSerializer.descriptor)
-      optionalElement("fixedReference", ReferenceSerializer.descriptor)
-      optionalElement("fixedSampledData", SampledDataSerializer.descriptor)
-      optionalElement("fixedSignature", SignatureSerializer.descriptor)
-      optionalElement("fixedTiming", TimingSerializer.descriptor)
-      optionalElement("fixedContactDetail", ContactDetailSerializer.descriptor)
-      optionalElement("fixedContributor", ContributorSerializer.descriptor)
-      optionalElement("fixedDataRequirement", DataRequirementSerializer.descriptor)
-      optionalElement("fixedExpression", ExpressionSerializer.descriptor)
-      optionalElement("fixedParameterDefinition", ParameterDefinitionSerializer.descriptor)
-      optionalElement("fixedRelatedArtifact", RelatedArtifactSerializer.descriptor)
-      optionalElement("fixedTriggerDefinition", TriggerDefinitionSerializer.descriptor)
-      optionalElement("fixedUsageContext", UsageContextSerializer.descriptor)
-      optionalElement("fixedDosage", DosageSerializer.descriptor)
-      optionalElement("fixedMeta", MetaSerializer.descriptor)
-      optionalElement("patternBase64Binary", KotlinString.serializer().descriptor)
-      optionalElement("_patternBase64Binary", ElementSerializer.descriptor)
-      optionalElement("patternBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_patternBoolean", ElementSerializer.descriptor)
-      optionalElement("patternCanonical", KotlinString.serializer().descriptor)
-      optionalElement("_patternCanonical", ElementSerializer.descriptor)
-      optionalElement("patternCode", KotlinString.serializer().descriptor)
-      optionalElement("_patternCode", ElementSerializer.descriptor)
-      optionalElement("patternDate", KotlinString.serializer().descriptor)
-      optionalElement("_patternDate", ElementSerializer.descriptor)
-      optionalElement("patternDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_patternDateTime", ElementSerializer.descriptor)
-      optionalElement("patternDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_patternDecimal", ElementSerializer.descriptor)
-      optionalElement("patternId", KotlinString.serializer().descriptor)
-      optionalElement("_patternId", ElementSerializer.descriptor)
-      optionalElement("patternInstant", KotlinString.serializer().descriptor)
-      optionalElement("_patternInstant", ElementSerializer.descriptor)
-      optionalElement("patternInteger", Int.serializer().descriptor)
-      optionalElement("_patternInteger", ElementSerializer.descriptor)
-      optionalElement("patternMarkdown", KotlinString.serializer().descriptor)
-      optionalElement("_patternMarkdown", ElementSerializer.descriptor)
-      optionalElement("patternOid", KotlinString.serializer().descriptor)
-      optionalElement("_patternOid", ElementSerializer.descriptor)
-      optionalElement("patternPositiveInt", Int.serializer().descriptor)
-      optionalElement("_patternPositiveInt", ElementSerializer.descriptor)
-      optionalElement("patternString", KotlinString.serializer().descriptor)
-      optionalElement("_patternString", ElementSerializer.descriptor)
-      optionalElement("patternTime", LocalTimeSerializer.descriptor)
-      optionalElement("_patternTime", ElementSerializer.descriptor)
-      optionalElement("patternUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_patternUnsignedInt", ElementSerializer.descriptor)
-      optionalElement("patternUri", KotlinString.serializer().descriptor)
-      optionalElement("_patternUri", ElementSerializer.descriptor)
-      optionalElement("patternUrl", KotlinString.serializer().descriptor)
-      optionalElement("_patternUrl", ElementSerializer.descriptor)
-      optionalElement("patternUuid", KotlinString.serializer().descriptor)
-      optionalElement("_patternUuid", ElementSerializer.descriptor)
-      optionalElement("patternAddress", AddressSerializer.descriptor)
-      optionalElement("patternAge", AgeSerializer.descriptor)
-      optionalElement("patternAnnotation", AnnotationSerializer.descriptor)
-      optionalElement("patternAttachment", AttachmentSerializer.descriptor)
-      optionalElement("patternCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("patternCoding", CodingSerializer.descriptor)
-      optionalElement("patternContactPoint", ContactPointSerializer.descriptor)
-      optionalElement("patternCount", CountSerializer.descriptor)
-      optionalElement("patternDistance", DistanceSerializer.descriptor)
-      optionalElement("patternDuration", DurationSerializer.descriptor)
-      optionalElement("patternHumanName", HumanNameSerializer.descriptor)
-      optionalElement("patternIdentifier", IdentifierSerializer.descriptor)
-      optionalElement("patternMoney", MoneySerializer.descriptor)
-      optionalElement("patternPeriod", PeriodSerializer.descriptor)
-      optionalElement("patternQuantity", QuantitySerializer.descriptor)
-      optionalElement("patternRange", RangeSerializer.descriptor)
-      optionalElement("patternRatio", RatioSerializer.descriptor)
-      optionalElement("patternReference", ReferenceSerializer.descriptor)
-      optionalElement("patternSampledData", SampledDataSerializer.descriptor)
-      optionalElement("patternSignature", SignatureSerializer.descriptor)
-      optionalElement("patternTiming", TimingSerializer.descriptor)
-      optionalElement("patternContactDetail", ContactDetailSerializer.descriptor)
-      optionalElement("patternContributor", ContributorSerializer.descriptor)
-      optionalElement("patternDataRequirement", DataRequirementSerializer.descriptor)
-      optionalElement("patternExpression", ExpressionSerializer.descriptor)
-      optionalElement("patternParameterDefinition", ParameterDefinitionSerializer.descriptor)
-      optionalElement("patternRelatedArtifact", RelatedArtifactSerializer.descriptor)
-      optionalElement("patternTriggerDefinition", TriggerDefinitionSerializer.descriptor)
-      optionalElement("patternUsageContext", UsageContextSerializer.descriptor)
-      optionalElement("patternDosage", DosageSerializer.descriptor)
-      optionalElement("patternMeta", MetaSerializer.descriptor)
-      optionalElement("example", ElementDefinitionExampleSerializer.listSerializer.descriptor)
-      optionalElement("minValueDate", KotlinString.serializer().descriptor)
-      optionalElement("_minValueDate", ElementSerializer.descriptor)
-      optionalElement("minValueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_minValueDateTime", ElementSerializer.descriptor)
-      optionalElement("minValueInstant", KotlinString.serializer().descriptor)
-      optionalElement("_minValueInstant", ElementSerializer.descriptor)
-      optionalElement("minValueTime", LocalTimeSerializer.descriptor)
-      optionalElement("_minValueTime", ElementSerializer.descriptor)
-      optionalElement("minValueDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_minValueDecimal", ElementSerializer.descriptor)
-      optionalElement("minValueInteger", Int.serializer().descriptor)
-      optionalElement("_minValueInteger", ElementSerializer.descriptor)
-      optionalElement("minValuePositiveInt", Int.serializer().descriptor)
-      optionalElement("_minValuePositiveInt", ElementSerializer.descriptor)
-      optionalElement("minValueUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_minValueUnsignedInt", ElementSerializer.descriptor)
-      optionalElement("minValueQuantity", QuantitySerializer.descriptor)
-      optionalElement("maxValueDate", KotlinString.serializer().descriptor)
-      optionalElement("_maxValueDate", ElementSerializer.descriptor)
-      optionalElement("maxValueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_maxValueDateTime", ElementSerializer.descriptor)
-      optionalElement("maxValueInstant", KotlinString.serializer().descriptor)
-      optionalElement("_maxValueInstant", ElementSerializer.descriptor)
-      optionalElement("maxValueTime", LocalTimeSerializer.descriptor)
-      optionalElement("_maxValueTime", ElementSerializer.descriptor)
-      optionalElement("maxValueDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_maxValueDecimal", ElementSerializer.descriptor)
-      optionalElement("maxValueInteger", Int.serializer().descriptor)
-      optionalElement("_maxValueInteger", ElementSerializer.descriptor)
-      optionalElement("maxValuePositiveInt", Int.serializer().descriptor)
-      optionalElement("_maxValuePositiveInt", ElementSerializer.descriptor)
-      optionalElement("maxValueUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_maxValueUnsignedInt", ElementSerializer.descriptor)
-      optionalElement("maxValueQuantity", QuantitySerializer.descriptor)
-      optionalElement("maxLength", Int.serializer().descriptor)
-      optionalElement("_maxLength", ElementSerializer.descriptor)
-      optionalElement("condition", stringNullableListSerializer.descriptor)
-      optionalElement("_condition", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("constraint", ElementDefinitionConstraintSerializer.listSerializer.descriptor)
-      optionalElement("mustSupport", KotlinBoolean.serializer().descriptor)
-      optionalElement("_mustSupport", ElementSerializer.descriptor)
-      optionalElement("isModifier", KotlinBoolean.serializer().descriptor)
-      optionalElement("_isModifier", ElementSerializer.descriptor)
-      optionalElement("isModifierReason", KotlinString.serializer().descriptor)
-      optionalElement("_isModifierReason", ElementSerializer.descriptor)
-      optionalElement("isSummary", KotlinBoolean.serializer().descriptor)
-      optionalElement("_isSummary", ElementSerializer.descriptor)
-      optionalElement("binding", ElementDefinitionBindingSerializer.descriptor)
-      optionalElement("mapping", ElementDefinitionMappingSerializer.listSerializer.descriptor)
-    }
+internal object ElementDefinitionSerializer : FhirSerializer<ElementDefinition> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ElementDefinition", this)
 
-  internal val listSerializer: KSerializer<List<ElementDefinition>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<ElementDefinition>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("path")
+    b.strPrimList("representation")
+    b.strPrim("sliceName")
+    b.boolPrim("sliceIsConstraining")
+    b.strPrim("label")
+    b.optionalElement("code", CodingSerializer.listSerializer.descriptor)
+    b.optionalElement("slicing", ElementDefinitionSlicingSerializer.descriptor)
+    b.strPrim("short")
+    b.strPrim("definition")
+    b.strPrim("comment")
+    b.strPrim("requirements")
+    b.strPrimList("alias")
+    b.intPrim("min")
+    b.strPrim("max")
+    b.optionalElement("base", ElementDefinitionBaseSerializer.descriptor)
+    b.strPrim("contentReference")
+    b.optionalElement("type", ElementDefinitionTypeSerializer.listSerializer.descriptor)
+    b.strPrim("defaultValueBase64Binary")
+    b.boolPrim("defaultValueBoolean")
+    b.strPrim("defaultValueCanonical")
+    b.strPrim("defaultValueCode")
+    b.strPrim("defaultValueDate")
+    b.strPrim("defaultValueDateTime")
+    b.prim("defaultValueDecimal", FhirDecimalSerializer.descriptor)
+    b.strPrim("defaultValueId")
+    b.strPrim("defaultValueInstant")
+    b.intPrim("defaultValueInteger")
+    b.strPrim("defaultValueMarkdown")
+    b.strPrim("defaultValueOid")
+    b.intPrim("defaultValuePositiveInt")
+    b.strPrim("defaultValueString")
+    b.prim("defaultValueTime", LocalTimeSerializer.descriptor)
+    b.intPrim("defaultValueUnsignedInt")
+    b.strPrim("defaultValueUri")
+    b.strPrim("defaultValueUrl")
+    b.strPrim("defaultValueUuid")
+    b.optionalElement("defaultValueAddress", AddressSerializer.descriptor)
+    b.optionalElement("defaultValueAge", AgeSerializer.descriptor)
+    b.optionalElement("defaultValueAnnotation", AnnotationSerializer.descriptor)
+    b.optionalElement("defaultValueAttachment", AttachmentSerializer.descriptor)
+    b.optionalElement("defaultValueCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("defaultValueCoding", CodingSerializer.descriptor)
+    b.optionalElement("defaultValueContactPoint", ContactPointSerializer.descriptor)
+    b.optionalElement("defaultValueCount", CountSerializer.descriptor)
+    b.optionalElement("defaultValueDistance", DistanceSerializer.descriptor)
+    b.optionalElement("defaultValueDuration", DurationSerializer.descriptor)
+    b.optionalElement("defaultValueHumanName", HumanNameSerializer.descriptor)
+    b.optionalElement("defaultValueIdentifier", IdentifierSerializer.descriptor)
+    b.optionalElement("defaultValueMoney", MoneySerializer.descriptor)
+    b.optionalElement("defaultValuePeriod", PeriodSerializer.descriptor)
+    b.optionalElement("defaultValueQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("defaultValueRange", RangeSerializer.descriptor)
+    b.optionalElement("defaultValueRatio", RatioSerializer.descriptor)
+    b.optionalElement("defaultValueReference", ReferenceSerializer.descriptor)
+    b.optionalElement("defaultValueSampledData", SampledDataSerializer.descriptor)
+    b.optionalElement("defaultValueSignature", SignatureSerializer.descriptor)
+    b.optionalElement("defaultValueTiming", TimingSerializer.descriptor)
+    b.optionalElement("defaultValueContactDetail", ContactDetailSerializer.descriptor)
+    b.optionalElement("defaultValueContributor", ContributorSerializer.descriptor)
+    b.optionalElement("defaultValueDataRequirement", DataRequirementSerializer.descriptor)
+    b.optionalElement("defaultValueExpression", ExpressionSerializer.descriptor)
+    b.optionalElement("defaultValueParameterDefinition", ParameterDefinitionSerializer.descriptor)
+    b.optionalElement("defaultValueRelatedArtifact", RelatedArtifactSerializer.descriptor)
+    b.optionalElement("defaultValueTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+    b.optionalElement("defaultValueUsageContext", UsageContextSerializer.descriptor)
+    b.optionalElement("defaultValueDosage", DosageSerializer.descriptor)
+    b.optionalElement("defaultValueMeta", MetaSerializer.descriptor)
+    b.strPrim("meaningWhenMissing")
+    b.strPrim("orderMeaning")
+    b.strPrim("fixedBase64Binary")
+    b.boolPrim("fixedBoolean")
+    b.strPrim("fixedCanonical")
+    b.strPrim("fixedCode")
+    b.strPrim("fixedDate")
+    b.strPrim("fixedDateTime")
+    b.prim("fixedDecimal", FhirDecimalSerializer.descriptor)
+    b.strPrim("fixedId")
+    b.strPrim("fixedInstant")
+    b.intPrim("fixedInteger")
+    b.strPrim("fixedMarkdown")
+    b.strPrim("fixedOid")
+    b.intPrim("fixedPositiveInt")
+    b.strPrim("fixedString")
+    b.prim("fixedTime", LocalTimeSerializer.descriptor)
+    b.intPrim("fixedUnsignedInt")
+    b.strPrim("fixedUri")
+    b.strPrim("fixedUrl")
+    b.strPrim("fixedUuid")
+    b.optionalElement("fixedAddress", AddressSerializer.descriptor)
+    b.optionalElement("fixedAge", AgeSerializer.descriptor)
+    b.optionalElement("fixedAnnotation", AnnotationSerializer.descriptor)
+    b.optionalElement("fixedAttachment", AttachmentSerializer.descriptor)
+    b.optionalElement("fixedCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("fixedCoding", CodingSerializer.descriptor)
+    b.optionalElement("fixedContactPoint", ContactPointSerializer.descriptor)
+    b.optionalElement("fixedCount", CountSerializer.descriptor)
+    b.optionalElement("fixedDistance", DistanceSerializer.descriptor)
+    b.optionalElement("fixedDuration", DurationSerializer.descriptor)
+    b.optionalElement("fixedHumanName", HumanNameSerializer.descriptor)
+    b.optionalElement("fixedIdentifier", IdentifierSerializer.descriptor)
+    b.optionalElement("fixedMoney", MoneySerializer.descriptor)
+    b.optionalElement("fixedPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("fixedQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("fixedRange", RangeSerializer.descriptor)
+    b.optionalElement("fixedRatio", RatioSerializer.descriptor)
+    b.optionalElement("fixedReference", ReferenceSerializer.descriptor)
+    b.optionalElement("fixedSampledData", SampledDataSerializer.descriptor)
+    b.optionalElement("fixedSignature", SignatureSerializer.descriptor)
+    b.optionalElement("fixedTiming", TimingSerializer.descriptor)
+    b.optionalElement("fixedContactDetail", ContactDetailSerializer.descriptor)
+    b.optionalElement("fixedContributor", ContributorSerializer.descriptor)
+    b.optionalElement("fixedDataRequirement", DataRequirementSerializer.descriptor)
+    b.optionalElement("fixedExpression", ExpressionSerializer.descriptor)
+    b.optionalElement("fixedParameterDefinition", ParameterDefinitionSerializer.descriptor)
+    b.optionalElement("fixedRelatedArtifact", RelatedArtifactSerializer.descriptor)
+    b.optionalElement("fixedTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+    b.optionalElement("fixedUsageContext", UsageContextSerializer.descriptor)
+    b.optionalElement("fixedDosage", DosageSerializer.descriptor)
+    b.optionalElement("fixedMeta", MetaSerializer.descriptor)
+    b.strPrim("patternBase64Binary")
+    b.boolPrim("patternBoolean")
+    b.strPrim("patternCanonical")
+    b.strPrim("patternCode")
+    b.strPrim("patternDate")
+    b.strPrim("patternDateTime")
+    b.prim("patternDecimal", FhirDecimalSerializer.descriptor)
+    b.strPrim("patternId")
+    b.strPrim("patternInstant")
+    b.intPrim("patternInteger")
+    b.strPrim("patternMarkdown")
+    b.strPrim("patternOid")
+    b.intPrim("patternPositiveInt")
+    b.strPrim("patternString")
+    b.prim("patternTime", LocalTimeSerializer.descriptor)
+    b.intPrim("patternUnsignedInt")
+    b.strPrim("patternUri")
+    b.strPrim("patternUrl")
+    b.strPrim("patternUuid")
+    b.optionalElement("patternAddress", AddressSerializer.descriptor)
+    b.optionalElement("patternAge", AgeSerializer.descriptor)
+    b.optionalElement("patternAnnotation", AnnotationSerializer.descriptor)
+    b.optionalElement("patternAttachment", AttachmentSerializer.descriptor)
+    b.optionalElement("patternCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("patternCoding", CodingSerializer.descriptor)
+    b.optionalElement("patternContactPoint", ContactPointSerializer.descriptor)
+    b.optionalElement("patternCount", CountSerializer.descriptor)
+    b.optionalElement("patternDistance", DistanceSerializer.descriptor)
+    b.optionalElement("patternDuration", DurationSerializer.descriptor)
+    b.optionalElement("patternHumanName", HumanNameSerializer.descriptor)
+    b.optionalElement("patternIdentifier", IdentifierSerializer.descriptor)
+    b.optionalElement("patternMoney", MoneySerializer.descriptor)
+    b.optionalElement("patternPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("patternQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("patternRange", RangeSerializer.descriptor)
+    b.optionalElement("patternRatio", RatioSerializer.descriptor)
+    b.optionalElement("patternReference", ReferenceSerializer.descriptor)
+    b.optionalElement("patternSampledData", SampledDataSerializer.descriptor)
+    b.optionalElement("patternSignature", SignatureSerializer.descriptor)
+    b.optionalElement("patternTiming", TimingSerializer.descriptor)
+    b.optionalElement("patternContactDetail", ContactDetailSerializer.descriptor)
+    b.optionalElement("patternContributor", ContributorSerializer.descriptor)
+    b.optionalElement("patternDataRequirement", DataRequirementSerializer.descriptor)
+    b.optionalElement("patternExpression", ExpressionSerializer.descriptor)
+    b.optionalElement("patternParameterDefinition", ParameterDefinitionSerializer.descriptor)
+    b.optionalElement("patternRelatedArtifact", RelatedArtifactSerializer.descriptor)
+    b.optionalElement("patternTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+    b.optionalElement("patternUsageContext", UsageContextSerializer.descriptor)
+    b.optionalElement("patternDosage", DosageSerializer.descriptor)
+    b.optionalElement("patternMeta", MetaSerializer.descriptor)
+    b.optionalElement("example", ElementDefinitionExampleSerializer.listSerializer.descriptor)
+    b.strPrim("minValueDate")
+    b.strPrim("minValueDateTime")
+    b.strPrim("minValueInstant")
+    b.prim("minValueTime", LocalTimeSerializer.descriptor)
+    b.prim("minValueDecimal", FhirDecimalSerializer.descriptor)
+    b.intPrim("minValueInteger")
+    b.intPrim("minValuePositiveInt")
+    b.intPrim("minValueUnsignedInt")
+    b.optionalElement("minValueQuantity", QuantitySerializer.descriptor)
+    b.strPrim("maxValueDate")
+    b.strPrim("maxValueDateTime")
+    b.strPrim("maxValueInstant")
+    b.prim("maxValueTime", LocalTimeSerializer.descriptor)
+    b.prim("maxValueDecimal", FhirDecimalSerializer.descriptor)
+    b.intPrim("maxValueInteger")
+    b.intPrim("maxValuePositiveInt")
+    b.intPrim("maxValueUnsignedInt")
+    b.optionalElement("maxValueQuantity", QuantitySerializer.descriptor)
+    b.intPrim("maxLength")
+    b.strPrimList("condition")
+    b.optionalElement("constraint", ElementDefinitionConstraintSerializer.listSerializer.descriptor)
+    b.boolPrim("mustSupport")
+    b.boolPrim("isModifier")
+    b.strPrim("isModifierReason")
+    b.boolPrim("isSummary")
+    b.optionalElement("binding", ElementDefinitionBindingSerializer.descriptor)
+    b.optionalElement("mapping", ElementDefinitionMappingSerializer.listSerializer.descriptor)
+  }
 
   override fun deserialize(decoder: Decoder): ElementDefinition {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -2311,15 +2141,15 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     var _defaultValueCanonical: Element? = null
     var defaultValueCode: KotlinString? = null
     var _defaultValueCode: Element? = null
-    var defaultValueDate: KotlinString? = null
+    var defaultValueDate: FhirDate? = null
     var _defaultValueDate: Element? = null
-    var defaultValueDateTime: KotlinString? = null
+    var defaultValueDateTime: FhirDateTime? = null
     var _defaultValueDateTime: Element? = null
     var defaultValueDecimal: FhirDecimal? = null
     var _defaultValueDecimal: Element? = null
     var defaultValueId: KotlinString? = null
     var _defaultValueId: Element? = null
-    var defaultValueInstant: KotlinString? = null
+    var defaultValueInstant: FhirDateTime? = null
     var _defaultValueInstant: Element? = null
     var defaultValueInteger: Int? = null
     var _defaultValueInteger: Element? = null
@@ -2384,15 +2214,15 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     var _fixedCanonical: Element? = null
     var fixedCode: KotlinString? = null
     var _fixedCode: Element? = null
-    var fixedDate: KotlinString? = null
+    var fixedDate: FhirDate? = null
     var _fixedDate: Element? = null
-    var fixedDateTime: KotlinString? = null
+    var fixedDateTime: FhirDateTime? = null
     var _fixedDateTime: Element? = null
     var fixedDecimal: FhirDecimal? = null
     var _fixedDecimal: Element? = null
     var fixedId: KotlinString? = null
     var _fixedId: Element? = null
-    var fixedInstant: KotlinString? = null
+    var fixedInstant: FhirDateTime? = null
     var _fixedInstant: Element? = null
     var fixedInteger: Int? = null
     var _fixedInteger: Element? = null
@@ -2453,15 +2283,15 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     var _patternCanonical: Element? = null
     var patternCode: KotlinString? = null
     var _patternCode: Element? = null
-    var patternDate: KotlinString? = null
+    var patternDate: FhirDate? = null
     var _patternDate: Element? = null
-    var patternDateTime: KotlinString? = null
+    var patternDateTime: FhirDateTime? = null
     var _patternDateTime: Element? = null
     var patternDecimal: FhirDecimal? = null
     var _patternDecimal: Element? = null
     var patternId: KotlinString? = null
     var _patternId: Element? = null
-    var patternInstant: KotlinString? = null
+    var patternInstant: FhirDateTime? = null
     var _patternInstant: Element? = null
     var patternInteger: Int? = null
     var _patternInteger: Element? = null
@@ -2515,11 +2345,11 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     var patternDosage: Dosage? = null
     var patternMeta: Meta? = null
     var example: List<ElementDefinition.Example>? = null
-    var minValueDate: KotlinString? = null
+    var minValueDate: FhirDate? = null
     var _minValueDate: Element? = null
-    var minValueDateTime: KotlinString? = null
+    var minValueDateTime: FhirDateTime? = null
     var _minValueDateTime: Element? = null
-    var minValueInstant: KotlinString? = null
+    var minValueInstant: FhirDateTime? = null
     var _minValueInstant: Element? = null
     var minValueTime: LocalTime? = null
     var _minValueTime: Element? = null
@@ -2532,11 +2362,11 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     var minValueUnsignedInt: Int? = null
     var _minValueUnsignedInt: Element? = null
     var minValueQuantity: Quantity? = null
-    var maxValueDate: KotlinString? = null
+    var maxValueDate: FhirDate? = null
     var _maxValueDate: Element? = null
-    var maxValueDateTime: KotlinString? = null
+    var maxValueDateTime: FhirDateTime? = null
     var _maxValueDateTime: Element? = null
-    var maxValueInstant: KotlinString? = null
+    var maxValueInstant: FhirDateTime? = null
     var _maxValueInstant: Element? = null
     var maxValueTime: LocalTime? = null
     var _maxValueTime: Element? = null
@@ -2782,7 +2612,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        41 -> defaultValueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        41 ->
+          defaultValueDate =
+            FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         42 ->
           _defaultValueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -2791,7 +2623,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        43 -> defaultValueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        43 ->
+          defaultValueDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         44 ->
           _defaultValueDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -2825,7 +2659,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        49 -> defaultValueInstant = compositeDecoder.decodeStringElement(descriptor, i)
+        49 ->
+          defaultValueInstant =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         50 ->
           _defaultValueInstant =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3203,7 +3039,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        114 -> fixedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        114 -> fixedDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         115 ->
           _fixedDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3212,7 +3048,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        116 -> fixedDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        116 ->
+          fixedDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         117 ->
           _fixedDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3246,7 +3084,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        122 -> fixedInstant = compositeDecoder.decodeStringElement(descriptor, i)
+        122 ->
+          fixedInstant =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         123 ->
           _fixedInstant =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3606,7 +3446,8 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        183 -> patternDate = compositeDecoder.decodeStringElement(descriptor, i)
+        183 ->
+          patternDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         184 ->
           _patternDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3615,7 +3456,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        185 -> patternDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        185 ->
+          patternDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         186 ->
           _patternDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3649,7 +3492,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        191 -> patternInstant = compositeDecoder.decodeStringElement(descriptor, i)
+        191 ->
+          patternInstant =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         192 ->
           _patternInstant =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3981,7 +3826,8 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementDefinitionExampleSerializer.listSerializer,
               null,
             )
-        245 -> minValueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        245 ->
+          minValueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         246 ->
           _minValueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3990,7 +3836,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        247 -> minValueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        247 ->
+          minValueDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         248 ->
           _minValueDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3999,7 +3847,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        249 -> minValueInstant = compositeDecoder.decodeStringElement(descriptor, i)
+        249 ->
+          minValueInstant =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         250 ->
           _minValueInstant =
             compositeDecoder.decodeNullableSerializableElement(
@@ -4075,7 +3925,8 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               QuantitySerializer,
               null,
             )
-        262 -> maxValueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        262 ->
+          maxValueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         263 ->
           _maxValueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -4084,7 +3935,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        264 -> maxValueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        264 ->
+          maxValueDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         265 ->
           _maxValueDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -4093,7 +3946,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               ElementSerializer,
               null,
             )
-        266 -> maxValueInstant = compositeDecoder.decodeStringElement(descriptor, i)
+        266 ->
+          maxValueInstant =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         267 ->
           _maxValueInstant =
             compositeDecoder.decodeNullableSerializableElement(
@@ -4255,70 +4110,69 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ElementDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val representation_ =
+      List(maxSize(representation, _representation)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(representation, index)?.let { PropertyRepresentation.fromCode(it) },
+            at(_representation, index),
+          ),
+          "ElementDefinition",
+          "representation",
+        )
+      }
+    val alias_ =
+      List(maxSize(alias, _alias)) { index ->
+        entryRequired(
+          R4String.of(at(alias, index), at(_alias, index)),
+          "ElementDefinition",
+          "alias",
+        )
+      }
+    val condition_ =
+      List(maxSize(condition, _condition)) { index ->
+        entryRequired(
+          Id.of(at(condition, index), at(_condition, index)),
+          "ElementDefinition",
+          "condition",
+        )
+      }
     return ElementDefinition(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      path =
-        R4String.of(path, _path)
-          ?: throw SerializationException("Missing required property 'path' on ElementDefinition"),
-      representation =
-        (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) {
-          index ->
-          Enumeration.of(
-            representation?.getOrNull(index)?.let { PropertyRepresentation.fromCode(it) },
-            _representation?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'representation' on ElementDefinition has neither a value nor an id/extension"
-            )
-        }),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      path = required(R4String.of(path, _path), "ElementDefinition", "path"),
+      representation = representation_,
       sliceName = R4String.of(sliceName, _sliceName),
       sliceIsConstraining = R4Boolean.of(sliceIsConstraining, _sliceIsConstraining),
       label = R4String.of(label, _label),
-      code = code ?: listOf(),
+      code = listOrEmpty(code),
       slicing = slicing,
       short = R4String.of(short, _short),
       definition = Markdown.of(definition, _definition),
       comment = Markdown.of(comment, _comment),
       requirements = Markdown.of(requirements, _requirements),
-      alias =
-        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
-          R4String.of(alias?.getOrNull(index), _alias?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'alias' on ElementDefinition has neither a value nor an id/extension"
-            )
-        }),
+      alias = alias_,
       min = UnsignedInt.of(min, _min),
       max = R4String.of(max, _max),
       base = base,
       contentReference = Uri.of(contentReference, _contentReference),
-      type = type ?: listOf(),
+      type = listOrEmpty(type),
       defaultValue =
         ElementDefinition.DefaultValue.from(
           Base64Binary.of(defaultValueBase64Binary, _defaultValueBase64Binary),
           R4Boolean.of(defaultValueBoolean, _defaultValueBoolean),
           Canonical.of(defaultValueCanonical, _defaultValueCanonical),
           Code.of(defaultValueCode, _defaultValueCode),
-          Date.of(
-            if (defaultValueDate != null) FhirDate.fromString(defaultValueDate) else null,
-            _defaultValueDate,
-          ),
-          DateTime.of(
-            if (defaultValueDateTime != null) FhirDateTime.fromString(defaultValueDateTime)
-            else null,
-            _defaultValueDateTime,
-          ),
+          Date.of(defaultValueDate, _defaultValueDate),
+          DateTime.of(defaultValueDateTime, _defaultValueDateTime),
           Decimal.of(defaultValueDecimal, _defaultValueDecimal),
           Id.of(defaultValueId, _defaultValueId),
-          Instant.of(
-            if (defaultValueInstant != null) FhirDateTime.fromString(defaultValueInstant) else null,
-            _defaultValueInstant,
-          ),
+          Instant.of(defaultValueInstant, _defaultValueInstant),
           Integer.of(defaultValueInteger, _defaultValueInteger),
           Markdown.of(defaultValueMarkdown, _defaultValueMarkdown),
           Oid.of(defaultValueOid, _defaultValueOid),
@@ -4369,17 +4223,11 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           R4Boolean.of(fixedBoolean, _fixedBoolean),
           Canonical.of(fixedCanonical, _fixedCanonical),
           Code.of(fixedCode, _fixedCode),
-          Date.of(if (fixedDate != null) FhirDate.fromString(fixedDate) else null, _fixedDate),
-          DateTime.of(
-            if (fixedDateTime != null) FhirDateTime.fromString(fixedDateTime) else null,
-            _fixedDateTime,
-          ),
+          Date.of(fixedDate, _fixedDate),
+          DateTime.of(fixedDateTime, _fixedDateTime),
           Decimal.of(fixedDecimal, _fixedDecimal),
           Id.of(fixedId, _fixedId),
-          Instant.of(
-            if (fixedInstant != null) FhirDateTime.fromString(fixedInstant) else null,
-            _fixedInstant,
-          ),
+          Instant.of(fixedInstant, _fixedInstant),
           Integer.of(fixedInteger, _fixedInteger),
           Markdown.of(fixedMarkdown, _fixedMarkdown),
           Oid.of(fixedOid, _fixedOid),
@@ -4428,20 +4276,11 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           R4Boolean.of(patternBoolean, _patternBoolean),
           Canonical.of(patternCanonical, _patternCanonical),
           Code.of(patternCode, _patternCode),
-          Date.of(
-            if (patternDate != null) FhirDate.fromString(patternDate) else null,
-            _patternDate,
-          ),
-          DateTime.of(
-            if (patternDateTime != null) FhirDateTime.fromString(patternDateTime) else null,
-            _patternDateTime,
-          ),
+          Date.of(patternDate, _patternDate),
+          DateTime.of(patternDateTime, _patternDateTime),
           Decimal.of(patternDecimal, _patternDecimal),
           Id.of(patternId, _patternId),
-          Instant.of(
-            if (patternInstant != null) FhirDateTime.fromString(patternInstant) else null,
-            _patternInstant,
-          ),
+          Instant.of(patternInstant, _patternInstant),
           Integer.of(patternInteger, _patternInteger),
           Markdown.of(patternMarkdown, _patternMarkdown),
           Oid.of(patternOid, _patternOid),
@@ -4484,21 +4323,12 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           patternDosage,
           patternMeta,
         ),
-      example = example ?: listOf(),
+      example = listOrEmpty(example),
       minValue =
         ElementDefinition.MinValue.from(
-          Date.of(
-            if (minValueDate != null) FhirDate.fromString(minValueDate) else null,
-            _minValueDate,
-          ),
-          DateTime.of(
-            if (minValueDateTime != null) FhirDateTime.fromString(minValueDateTime) else null,
-            _minValueDateTime,
-          ),
-          Instant.of(
-            if (minValueInstant != null) FhirDateTime.fromString(minValueInstant) else null,
-            _minValueInstant,
-          ),
+          Date.of(minValueDate, _minValueDate),
+          DateTime.of(minValueDateTime, _minValueDateTime),
+          Instant.of(minValueInstant, _minValueInstant),
           Time.of(minValueTime, _minValueTime),
           Decimal.of(minValueDecimal, _minValueDecimal),
           Integer.of(minValueInteger, _minValueInteger),
@@ -4508,18 +4338,9 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
         ),
       maxValue =
         ElementDefinition.MaxValue.from(
-          Date.of(
-            if (maxValueDate != null) FhirDate.fromString(maxValueDate) else null,
-            _maxValueDate,
-          ),
-          DateTime.of(
-            if (maxValueDateTime != null) FhirDateTime.fromString(maxValueDateTime) else null,
-            _maxValueDateTime,
-          ),
-          Instant.of(
-            if (maxValueInstant != null) FhirDateTime.fromString(maxValueInstant) else null,
-            _maxValueInstant,
-          ),
+          Date.of(maxValueDate, _maxValueDate),
+          DateTime.of(maxValueDateTime, _maxValueDateTime),
+          Instant.of(maxValueInstant, _maxValueInstant),
           Time.of(maxValueTime, _maxValueTime),
           Decimal.of(maxValueDecimal, _maxValueDecimal),
           Integer.of(maxValueInteger, _maxValueInteger),
@@ -4528,43 +4349,36 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           maxValueQuantity,
         ),
       maxLength = Integer.of(maxLength, _maxLength),
-      condition =
-        (kotlin.collections.List(maxOf(condition?.size ?: 0, _condition?.size ?: 0)) { index ->
-          Id.of(condition?.getOrNull(index), _condition?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'condition' on ElementDefinition has neither a value nor an id/extension"
-            )
-        }),
-      constraint = constraint ?: listOf(),
+      condition = condition_,
+      constraint = listOrEmpty(constraint),
       mustSupport = R4Boolean.of(mustSupport, _mustSupport),
       isModifier = R4Boolean.of(isModifier, _isModifier),
       isModifierReason = R4String.of(isModifierReason, _isModifierReason),
       isSummary = R4Boolean.of(isSummary, _isSummary),
       binding = binding,
-      mapping = mapping ?: listOf(),
+      mapping = listOrEmpty(mapping),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ElementDefinition) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.path.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.path)
-    if (value.representation.isNotEmpty()) {
+    if (!value.representation.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -4579,13 +4393,12 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.sliceIsConstraining)
     compositeEncoder.encodeStringIfNotNull(descriptor, 11, value.label?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.label)
-    if (value.code.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13,
-        CodingSerializer.listSerializer,
-        value.code,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13,
+      CodingSerializer.listSerializer,
+      value.code,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       14,
@@ -4600,7 +4413,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     compositeEncoder.encodeElementIfNotNull(descriptor, 20, value.comment)
     compositeEncoder.encodeStringIfNotNull(descriptor, 21, value.requirements?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 22, value.requirements)
-    if (value.alias.isNotEmpty()) {
+    if (!value.alias.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         23,
@@ -4621,13 +4434,12 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 30, value.contentReference?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 31, value.contentReference)
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32,
-        ElementDefinitionTypeSerializer.listSerializer,
-        value.type,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32,
+      ElementDefinitionTypeSerializer.listSerializer,
+      value.type,
+    )
     when (val choice = value.defaultValue) {
       null -> {}
       is ElementDefinition.DefaultValue.Base64Binary -> {
@@ -5463,13 +5275,12 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
         compositeEncoder.encodeSerializableElement(descriptor, 243, MetaSerializer, choice.value)
       }
     }
-    if (value.example.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        244,
-        ElementDefinitionExampleSerializer.listSerializer,
-        value.example,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      244,
+      ElementDefinitionExampleSerializer.listSerializer,
+      value.example,
+    )
     when (val choice = value.minValue) {
       null -> {}
       is ElementDefinition.MinValue.Date -> {
@@ -5578,7 +5389,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     }
     compositeEncoder.encodeIntIfNotNull(descriptor, 279, value.maxLength?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 280, value.maxLength)
-    if (value.condition.isNotEmpty()) {
+    if (!value.condition.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         281,
@@ -5587,13 +5398,12 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 282, value.condition)
     }
-    if (value.constraint.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        283,
-        ElementDefinitionConstraintSerializer.listSerializer,
-        value.constraint,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      283,
+      ElementDefinitionConstraintSerializer.listSerializer,
+      value.constraint,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 284, value.mustSupport?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 285, value.mustSupport)
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 286, value.isModifier?.value)
@@ -5608,13 +5418,12 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
       ElementDefinitionBindingSerializer,
       value.binding,
     )
-    if (value.mapping.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        293,
-        ElementDefinitionMappingSerializer.listSerializer,
-        value.mapping,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      293,
+      ElementDefinitionMappingSerializer.listSerializer,
+      value.mapping,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }

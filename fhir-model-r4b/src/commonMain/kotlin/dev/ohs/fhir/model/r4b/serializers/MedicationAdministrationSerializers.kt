@@ -49,14 +49,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -64,20 +62,23 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object MedicationAdministrationPerformerSerializer :
-  KSerializer<MedicationAdministration.Performer> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Performer") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("function", CodeableConceptSerializer.descriptor)
-      optionalElement("actor", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<MedicationAdministration.Performer> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Performer", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MedicationAdministration.Performer>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("function", CodeableConceptSerializer.descriptor)
+    b.optionalElement("actor", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MedicationAdministration.Performer {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -120,40 +121,35 @@ internal object MedicationAdministrationPerformerSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Performer: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MedicationAdministration.Performer(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       function = function,
-      actor =
-        actor
-          ?: throw SerializationException(
-            "Missing required property 'actor' on MedicationAdministration.Performer"
-          ),
+      actor = required(actor, "MedicationAdministration.Performer", "actor"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MedicationAdministration.Performer) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -166,26 +162,28 @@ internal object MedicationAdministrationPerformerSerializer :
 }
 
 internal object MedicationAdministrationDosageSerializer :
-  KSerializer<MedicationAdministration.Dosage> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Dosage") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
-      optionalElement("site", CodeableConceptSerializer.descriptor)
-      optionalElement("route", CodeableConceptSerializer.descriptor)
-      optionalElement("method", CodeableConceptSerializer.descriptor)
-      optionalElement("dose", QuantitySerializer.descriptor)
-      optionalElement("rateRatio", RatioSerializer.descriptor)
-      optionalElement("rateQuantity", QuantitySerializer.descriptor)
-    }
+  FhirSerializer<MedicationAdministration.Dosage> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Dosage", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MedicationAdministration.Dosage>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("text")
+    b.optionalElement("site", CodeableConceptSerializer.descriptor)
+    b.optionalElement("route", CodeableConceptSerializer.descriptor)
+    b.optionalElement("method", CodeableConceptSerializer.descriptor)
+    b.optionalElement("dose", QuantitySerializer.descriptor)
+    b.optionalElement("rateRatio", RatioSerializer.descriptor)
+    b.optionalElement("rateQuantity", QuantitySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MedicationAdministration.Dosage {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -270,14 +268,14 @@ internal object MedicationAdministrationDosageSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Dosage: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MedicationAdministration.Dosage(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       text = R4bString.of(text, _text),
       site = site,
       route = route,
@@ -288,22 +286,21 @@ internal object MedicationAdministrationDosageSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: MedicationAdministration.Dosage) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.text?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.text)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -343,25 +340,21 @@ internal object MedicationAdministrationSerializer :
   override val descriptor: SerialDescriptor = buildResourceDescriptor("MedicationAdministration")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("instantiates", stringNullableListSerializer.descriptor)
-    b.optionalElement("_instantiates", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrimList("instantiates")
     b.optionalElement("partOf", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("statusReason", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("category", CodeableConceptSerializer.descriptor)
     b.optionalElement("medicationCodeableConcept", CodeableConceptSerializer.descriptor)
@@ -369,8 +362,7 @@ internal object MedicationAdministrationSerializer :
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("context", ReferenceSerializer.descriptor)
     b.optionalElement("supportingInformation", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("effectiveDateTime", KotlinString.serializer().descriptor)
-    b.optionalElement("_effectiveDateTime", ElementSerializer.descriptor)
+    b.strPrim("effectiveDateTime")
     b.optionalElement("effectivePeriod", PeriodSerializer.descriptor)
     b.optionalElement(
       "performer",
@@ -404,7 +396,7 @@ internal object MedicationAdministrationSerializer :
     var instantiates: List<KotlinString?>? = null
     var _instantiates: List<Element?>? = null
     var partOf: List<Reference>? = null
-    var status: KotlinString? = null
+    var status: MedicationAdministrationStatusCodes? = null
     var _status: Element? = null
     var statusReason: List<CodeableConcept>? = null
     var category: CodeableConcept? = null
@@ -413,7 +405,7 @@ internal object MedicationAdministrationSerializer :
     var subject: Reference? = null
     var context: Reference? = null
     var supportingInformation: List<Reference>? = null
-    var effectiveDateTime: KotlinString? = null
+    var effectiveDateTime: FhirDateTime? = null
     var _effectiveDateTime: Element? = null
     var effectivePeriod: Period? = null
     var performer: List<MedicationAdministration.Performer>? = null
@@ -515,7 +507,11 @@ internal object MedicationAdministrationSerializer :
               ReferenceSerializer.listSerializer,
               null,
             )
-        14 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          status =
+            MedicationAdministrationStatusCodes.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         15 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -580,7 +576,9 @@ internal object MedicationAdministrationSerializer :
               ReferenceSerializer.listSerializer,
               null,
             )
-        23 -> effectiveDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        23 ->
+          effectiveDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _effectiveDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -661,70 +659,58 @@ internal object MedicationAdministrationSerializer :
               ReferenceSerializer.listSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding MedicationAdministration: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val instantiates_ =
+      List(maxSize(instantiates, _instantiates)) { index ->
+        entryRequired(
+          Uri.of(at(instantiates, index), at(_instantiates, index)),
+          "MedicationAdministration",
+          "instantiates",
+        )
+      }
     return MedicationAdministration(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      instantiates =
-        (kotlin.collections.List(maxOf(instantiates?.size ?: 0, _instantiates?.size ?: 0)) { index
-          ->
-          Uri.of(instantiates?.getOrNull(index), _instantiates?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'instantiates' on MedicationAdministration has neither a value nor an id/extension"
-            )
-        }),
-      partOf = partOf ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) MedicationAdministrationStatusCodes.fromCode(status) else null,
-          _status,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'status' on MedicationAdministration"
-          ),
-      statusReason = statusReason ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      instantiates = instantiates_,
+      partOf = listOrEmpty(partOf),
+      status = required(Enumeration.of(status, _status), "MedicationAdministration", "status"),
+      statusReason = listOrEmpty(statusReason),
       category = category,
       medication =
-        MedicationAdministration.Medication.from(medicationCodeableConcept, medicationReference)
-          ?: throw SerializationException(
-            "Missing required property 'medication' on MedicationAdministration"
-          ),
-      subject =
-        subject
-          ?: throw SerializationException(
-            "Missing required property 'subject' on MedicationAdministration"
-          ),
+        required(
+          MedicationAdministration.Medication.from(medicationCodeableConcept, medicationReference),
+          "MedicationAdministration",
+          "medication",
+        ),
+      subject = required(subject, "MedicationAdministration", "subject"),
       context = context,
-      supportingInformation = supportingInformation ?: listOf(),
+      supportingInformation = listOrEmpty(supportingInformation),
       effective =
-        MedicationAdministration.Effective.from(
-          DateTime.of(
-            if (effectiveDateTime != null) FhirDateTime.fromString(effectiveDateTime) else null,
-            _effectiveDateTime,
+        required(
+          MedicationAdministration.Effective.from(
+            DateTime.of(effectiveDateTime, _effectiveDateTime),
+            effectivePeriod,
           ),
-          effectivePeriod,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'effective' on MedicationAdministration"
-          ),
-      performer = performer ?: listOf(),
-      reasonCode = reasonCode ?: listOf(),
-      reasonReference = reasonReference ?: listOf(),
+          "MedicationAdministration",
+          "effective",
+        ),
+      performer = listOrEmpty(performer),
+      reasonCode = listOrEmpty(reasonCode),
+      reasonReference = listOrEmpty(reasonReference),
       request = request,
-      device = device ?: listOf(),
-      note = note ?: listOf(),
+      device = listOrEmpty(device),
+      note = listOrEmpty(note),
       dosage = dosage,
-      eventHistory = eventHistory ?: listOf(),
+      eventHistory = listOrEmpty(eventHistory),
     )
   }
 
@@ -755,35 +741,31 @@ internal object MedicationAdministrationSerializer :
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.instantiates.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    if (!value.instantiates.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
@@ -796,26 +778,24 @@ internal object MedicationAdministrationSerializer :
         value.instantiates,
       )
     }
-    if (value.partOf.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.partOf,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.partOf,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       14 + descriptorOffset,
       value.status.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.status)
-    if (value.statusReason.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.statusReason,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.statusReason,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
@@ -852,13 +832,12 @@ internal object MedicationAdministrationSerializer :
       ReferenceSerializer,
       value.context,
     )
-    if (value.supportingInformation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.supportingInformation,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.supportingInformation,
+    )
     when (val choice = value.effective) {
       is MedicationAdministration.Effective.DateTime -> {
         compositeEncoder.encodeStringIfNotNull(
@@ -877,59 +856,53 @@ internal object MedicationAdministrationSerializer :
         )
       }
     }
-    if (value.performer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        MedicationAdministrationPerformerSerializer.listSerializer,
-        value.performer,
-      )
-    if (value.reasonCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.reasonCode,
-      )
-    if (value.reasonReference.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.reasonReference,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      MedicationAdministrationPerformerSerializer.listSerializer,
+      value.performer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.reasonCode,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.reasonReference,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       29 + descriptorOffset,
       ReferenceSerializer,
       value.request,
     )
-    if (value.device.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.device,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.device,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       32 + descriptorOffset,
       MedicationAdministrationDosageSerializer,
       value.dosage,
     )
-    if (value.eventHistory.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.eventHistory,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.eventHistory,
+    )
   }
 }

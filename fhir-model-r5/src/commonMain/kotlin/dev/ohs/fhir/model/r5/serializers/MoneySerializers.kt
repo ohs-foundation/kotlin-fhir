@@ -33,41 +33,40 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object MoneySerializer : KSerializer<Money> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Money") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("value", FhirDecimalSerializer.descriptor)
-      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("currency", String.serializer().descriptor)
-      optionalElement("_currency", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object MoneySerializer : FhirSerializer<Money> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Money", this)
 
-  internal val listSerializer: KSerializer<List<Money>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Money>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.prim("value", FhirDecimalSerializer.descriptor)
+    b.strPrim("currency")
+  }
 
   override fun deserialize(decoder: Decoder): Money {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var `value`: FhirDecimal? = null
     var _value: Element? = null
-    var currency: String? = null
+    var currency: Currencies? = null
     var _currency: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -96,7 +95,7 @@ internal object MoneySerializer : KSerializer<Money> {
               ElementSerializer,
               null,
             )
-        4 -> currency = compositeDecoder.decodeStringElement(descriptor, i)
+        4 -> currency = Currencies.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         5 ->
           _currency =
             compositeDecoder.decodeNullableSerializableElement(
@@ -106,29 +105,28 @@ internal object MoneySerializer : KSerializer<Money> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Money: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Money(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       `value` = Decimal.of(`value`, _value),
-      currency =
-        Enumeration.of(if (currency != null) Currencies.fromCode(currency) else null, _currency),
+      currency = Enumeration.of(currency, _currency),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Money) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       2,

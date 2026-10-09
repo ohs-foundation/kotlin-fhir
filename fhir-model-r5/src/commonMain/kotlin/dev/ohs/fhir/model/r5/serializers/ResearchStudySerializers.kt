@@ -54,34 +54,34 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ResearchStudyLabelSerializer : KSerializer<ResearchStudy.Label> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Label") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-    }
+internal object ResearchStudyLabelSerializer : FhirSerializer<ResearchStudy.Label> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Label", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ResearchStudy.Label>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.strPrim("value")
+  }
+
   override fun deserialize(decoder: Decoder): ResearchStudy.Label {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -126,36 +126,35 @@ internal object ResearchStudyLabelSerializer : KSerializer<ResearchStudy.Label> 
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Label: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ResearchStudy.Label(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
       `value` = R5String.of(`value`, _value),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.Label) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -169,24 +168,26 @@ internal object ResearchStudyLabelSerializer : KSerializer<ResearchStudy.Label> 
 }
 
 internal object ResearchStudyAssociatedPartySerializer :
-  KSerializer<ResearchStudy.AssociatedParty> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AssociatedParty") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("role", CodeableConceptSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.listSerializer.descriptor)
-      optionalElement("classifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("party", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<ResearchStudy.AssociatedParty> {
+  override val descriptor: SerialDescriptor = buildDescriptor("AssociatedParty", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ResearchStudy.AssociatedParty>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("name")
+    b.optionalElement("role", CodeableConceptSerializer.descriptor)
+    b.optionalElement("period", PeriodSerializer.listSerializer.descriptor)
+    b.optionalElement("classifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("party", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ResearchStudy.AssociatedParty {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -258,81 +259,77 @@ internal object ResearchStudyAssociatedPartySerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding AssociatedParty: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ResearchStudy.AssociatedParty(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       name = R5String.of(name, _name),
-      role =
-        role
-          ?: throw SerializationException(
-            "Missing required property 'role' on ResearchStudy.AssociatedParty"
-          ),
-      period = period ?: listOf(),
-      classifier = classifier ?: listOf(),
+      role = required(role, "ResearchStudy.AssociatedParty", "role"),
+      period = listOrEmpty(period),
+      classifier = listOrEmpty(classifier),
       party = party,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.AssociatedParty) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
     compositeEncoder.encodeSerializableElement(descriptor, 5, CodeableConceptSerializer, value.role)
-    if (value.period.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        PeriodSerializer.listSerializer,
-        value.period,
-      )
-    if (value.classifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        CodeableConceptSerializer.listSerializer,
-        value.classifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      PeriodSerializer.listSerializer,
+      value.period,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      CodeableConceptSerializer.listSerializer,
+      value.classifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 8, ReferenceSerializer, value.party)
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object ResearchStudyProgressStatusSerializer : KSerializer<ResearchStudy.ProgressStatus> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ProgressStatus") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("state", CodeableConceptSerializer.descriptor)
-      optionalElement("actual", KotlinBoolean.serializer().descriptor)
-      optionalElement("_actual", ElementSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
-    }
+internal object ResearchStudyProgressStatusSerializer :
+  FhirSerializer<ResearchStudy.ProgressStatus> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ProgressStatus", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ResearchStudy.ProgressStatus>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("state", CodeableConceptSerializer.descriptor)
+    b.boolPrim("actual")
+    b.optionalElement("period", PeriodSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ResearchStudy.ProgressStatus {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -386,41 +383,36 @@ internal object ResearchStudyProgressStatusSerializer : KSerializer<ResearchStud
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ProgressStatus: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ResearchStudy.ProgressStatus(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      state =
-        state
-          ?: throw SerializationException(
-            "Missing required property 'state' on ResearchStudy.ProgressStatus"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      state = required(state, "ResearchStudy.ProgressStatus", "state"),
       `actual` = R5Boolean.of(`actual`, _actual),
       period = period,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.ProgressStatus) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -434,23 +426,24 @@ internal object ResearchStudyProgressStatusSerializer : KSerializer<ResearchStud
   }
 }
 
-internal object ResearchStudyRecruitmentSerializer : KSerializer<ResearchStudy.Recruitment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Recruitment") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("targetNumber", Int.serializer().descriptor)
-      optionalElement("_targetNumber", ElementSerializer.descriptor)
-      optionalElement("actualNumber", Int.serializer().descriptor)
-      optionalElement("_actualNumber", ElementSerializer.descriptor)
-      optionalElement("eligibility", ReferenceSerializer.descriptor)
-      optionalElement("actualGroup", ReferenceSerializer.descriptor)
-    }
+internal object ResearchStudyRecruitmentSerializer : FhirSerializer<ResearchStudy.Recruitment> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Recruitment", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ResearchStudy.Recruitment>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("targetNumber")
+    b.intPrim("actualNumber")
+    b.optionalElement("eligibility", ReferenceSerializer.descriptor)
+    b.optionalElement("actualGroup", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ResearchStudy.Recruitment {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -515,14 +508,14 @@ internal object ResearchStudyRecruitmentSerializer : KSerializer<ResearchStudy.R
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Recruitment: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ResearchStudy.Recruitment(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       targetNumber = UnsignedInt.of(targetNumber, _targetNumber),
       actualNumber = UnsignedInt.of(actualNumber, _actualNumber),
       eligibility = eligibility,
@@ -531,22 +524,21 @@ internal object ResearchStudyRecruitmentSerializer : KSerializer<ResearchStudy.R
   }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.Recruitment) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.targetNumber?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.targetNumber)
     compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.actualNumber?.value)
@@ -568,27 +560,27 @@ internal object ResearchStudyRecruitmentSerializer : KSerializer<ResearchStudy.R
 }
 
 internal object ResearchStudyComparisonGroupSerializer :
-  KSerializer<ResearchStudy.ComparisonGroup> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ComparisonGroup") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("linkId", KotlinString.serializer().descriptor)
-      optionalElement("_linkId", ElementSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("intendedExposure", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("observedGroup", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<ResearchStudy.ComparisonGroup> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ComparisonGroup", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ResearchStudy.ComparisonGroup>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("linkId")
+    b.strPrim("name")
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("intendedExposure", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("observedGroup", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ResearchStudy.ComparisonGroup {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -673,44 +665,39 @@ internal object ResearchStudyComparisonGroupSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ComparisonGroup: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ResearchStudy.ComparisonGroup(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       linkId = Id.of(linkId, _linkId),
-      name =
-        R5String.of(name, _name)
-          ?: throw SerializationException(
-            "Missing required property 'name' on ResearchStudy.ComparisonGroup"
-          ),
+      name = required(R5String.of(name, _name), "ResearchStudy.ComparisonGroup", "name"),
       type = type,
       description = Markdown.of(description, _description),
-      intendedExposure = intendedExposure ?: listOf(),
+      intendedExposure = listOrEmpty(intendedExposure),
       observedGroup = observedGroup,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.ComparisonGroup) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.linkId?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.linkId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.name.value)
@@ -723,13 +710,12 @@ internal object ResearchStudyComparisonGroupSerializer :
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 8, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.description)
-    if (value.intendedExposure.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        ReferenceSerializer.listSerializer,
-        value.intendedExposure,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      ReferenceSerializer.listSerializer,
+      value.intendedExposure,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       11,
@@ -740,22 +726,23 @@ internal object ResearchStudyComparisonGroupSerializer :
   }
 }
 
-internal object ResearchStudyObjectiveSerializer : KSerializer<ResearchStudy.Objective> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Objective") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-    }
+internal object ResearchStudyObjectiveSerializer : FhirSerializer<ResearchStudy.Objective> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Objective", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ResearchStudy.Objective>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("name")
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.strPrim("description")
+  }
+
   override fun deserialize(decoder: Decoder): ResearchStudy.Objective {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -811,14 +798,14 @@ internal object ResearchStudyObjectiveSerializer : KSerializer<ResearchStudy.Obj
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Objective: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ResearchStudy.Objective(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       name = R5String.of(name, _name),
       type = type,
       description = Markdown.of(description, _description),
@@ -826,22 +813,21 @@ internal object ResearchStudyObjectiveSerializer : KSerializer<ResearchStudy.Obj
   }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.Objective) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -856,24 +842,26 @@ internal object ResearchStudyObjectiveSerializer : KSerializer<ResearchStudy.Obj
   }
 }
 
-internal object ResearchStudyOutcomeMeasureSerializer : KSerializer<ResearchStudy.OutcomeMeasure> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("OutcomeMeasure") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("reference", ReferenceSerializer.descriptor)
-    }
+internal object ResearchStudyOutcomeMeasureSerializer :
+  FhirSerializer<ResearchStudy.OutcomeMeasure> {
+  override val descriptor: SerialDescriptor = buildDescriptor("OutcomeMeasure", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ResearchStudy.OutcomeMeasure>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("name")
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("reference", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ResearchStudy.OutcomeMeasure {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -938,47 +926,45 @@ internal object ResearchStudyOutcomeMeasureSerializer : KSerializer<ResearchStud
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding OutcomeMeasure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ResearchStudy.OutcomeMeasure(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       name = R5String.of(name, _name),
-      type = type ?: listOf(),
+      type = listOrEmpty(type),
       description = Markdown.of(description, _description),
       reference = reference,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ResearchStudy.OutcomeMeasure) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.description)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -995,36 +981,28 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ResearchStudy")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("name")
+    b.strPrim("title")
     b.optionalElement("label", ResearchStudyLabelSerializer.listSerializer.descriptor)
     b.optionalElement("protocol", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("partOf", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("relatedArtifact", RelatedArtifactSerializer.listSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("date")
+    b.strPrim("status")
     b.optionalElement("primaryPurposeType", CodeableConceptSerializer.descriptor)
     b.optionalElement("phase", CodeableConceptSerializer.descriptor)
     b.optionalElement("studyDesign", CodeableConceptSerializer.listSerializer.descriptor)
@@ -1032,10 +1010,8 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
     b.optionalElement("condition", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("keyword", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("region", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("descriptionSummary", KotlinString.serializer().descriptor)
-    b.optionalElement("_descriptionSummary", ElementSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("descriptionSummary")
+    b.strPrim("description")
     b.optionalElement("period", PeriodSerializer.descriptor)
     b.optionalElement("site", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
@@ -1090,9 +1066,9 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
     var protocol: List<Reference>? = null
     var partOf: List<Reference>? = null
     var relatedArtifact: List<RelatedArtifact>? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var primaryPurposeType: CodeableConcept? = null
     var phase: CodeableConcept? = null
@@ -1252,7 +1228,7 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
               RelatedArtifactSerializer.listSerializer,
               null,
             )
-        23 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        23 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1261,7 +1237,8 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
               ElementSerializer,
               null,
             )
-        25 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        25 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         26 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1440,7 +1417,7 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
               ReferenceSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding ResearchStudy: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return ResearchStudy(
@@ -1449,43 +1426,41 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R5String.of(version, _version),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      label = label ?: listOf(),
-      protocol = protocol ?: listOf(),
-      partOf = partOf ?: listOf(),
-      relatedArtifact = relatedArtifact ?: listOf(),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on ResearchStudy"),
+      label = listOrEmpty(label),
+      protocol = listOrEmpty(protocol),
+      partOf = listOrEmpty(partOf),
+      relatedArtifact = listOrEmpty(relatedArtifact),
+      date = DateTime.of(date, _date),
+      status = required(Enumeration.of(status, _status), "ResearchStudy", "status"),
       primaryPurposeType = primaryPurposeType,
       phase = phase,
-      studyDesign = studyDesign ?: listOf(),
-      focus = focus ?: listOf(),
-      condition = condition ?: listOf(),
-      keyword = keyword ?: listOf(),
-      region = region ?: listOf(),
+      studyDesign = listOrEmpty(studyDesign),
+      focus = listOrEmpty(focus),
+      condition = listOrEmpty(condition),
+      keyword = listOrEmpty(keyword),
+      region = listOrEmpty(region),
       descriptionSummary = Markdown.of(descriptionSummary, _descriptionSummary),
       description = Markdown.of(description, _description),
       period = period,
-      site = site ?: listOf(),
-      note = note ?: listOf(),
-      classifier = classifier ?: listOf(),
-      associatedParty = associatedParty ?: listOf(),
-      progressStatus = progressStatus ?: listOf(),
+      site = listOrEmpty(site),
+      note = listOrEmpty(note),
+      classifier = listOrEmpty(classifier),
+      associatedParty = listOrEmpty(associatedParty),
+      progressStatus = listOrEmpty(progressStatus),
       whyStopped = whyStopped,
       recruitment = recruitment,
-      comparisonGroup = comparisonGroup ?: listOf(),
-      objective = objective ?: listOf(),
-      outcomeMeasure = outcomeMeasure ?: listOf(),
-      result = result ?: listOf(),
+      comparisonGroup = listOrEmpty(comparisonGroup),
+      objective = listOrEmpty(objective),
+      outcomeMeasure = listOrEmpty(outcomeMeasure),
+      result = listOrEmpty(result),
     )
   }
 
@@ -1516,70 +1491,62 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.name)
     compositeEncoder.encodeStringIfNotNull(descriptor, 17 + descriptorOffset, value.title?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 18 + descriptorOffset, value.title)
-    if (value.label.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        ResearchStudyLabelSerializer.listSerializer,
-        value.label,
-      )
-    if (value.protocol.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.protocol,
-      )
-    if (value.partOf.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.partOf,
-      )
-    if (value.relatedArtifact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        RelatedArtifactSerializer.listSerializer,
-        value.relatedArtifact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19 + descriptorOffset,
+      ResearchStudyLabelSerializer.listSerializer,
+      value.label,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.protocol,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      21 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.partOf,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      RelatedArtifactSerializer.listSerializer,
+      value.relatedArtifact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       23 + descriptorOffset,
@@ -1604,41 +1571,36 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
       CodeableConceptSerializer,
       value.phase,
     )
-    if (value.studyDesign.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.studyDesign,
-      )
-    if (value.focus.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        CodeableReferenceSerializer.listSerializer,
-        value.focus,
-      )
-    if (value.condition.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.condition,
-      )
-    if (value.keyword.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.keyword,
-      )
-    if (value.region.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.region,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.studyDesign,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      CodeableReferenceSerializer.listSerializer,
+      value.focus,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.condition,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.keyword,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.region,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       34 + descriptorOffset,
@@ -1661,41 +1623,36 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
       PeriodSerializer,
       value.period,
     )
-    if (value.site.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        39 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.site,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.classifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        41 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.classifier,
-      )
-    if (value.associatedParty.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        42 + descriptorOffset,
-        ResearchStudyAssociatedPartySerializer.listSerializer,
-        value.associatedParty,
-      )
-    if (value.progressStatus.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        43 + descriptorOffset,
-        ResearchStudyProgressStatusSerializer.listSerializer,
-        value.progressStatus,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      39 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.site,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      40 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      41 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.classifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      42 + descriptorOffset,
+      ResearchStudyAssociatedPartySerializer.listSerializer,
+      value.associatedParty,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      43 + descriptorOffset,
+      ResearchStudyProgressStatusSerializer.listSerializer,
+      value.progressStatus,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       44 + descriptorOffset,
@@ -1708,33 +1665,29 @@ internal object ResearchStudySerializer : FhirResourceSerializer<ResearchStudy> 
       ResearchStudyRecruitmentSerializer,
       value.recruitment,
     )
-    if (value.comparisonGroup.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        46 + descriptorOffset,
-        ResearchStudyComparisonGroupSerializer.listSerializer,
-        value.comparisonGroup,
-      )
-    if (value.objective.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        47 + descriptorOffset,
-        ResearchStudyObjectiveSerializer.listSerializer,
-        value.objective,
-      )
-    if (value.outcomeMeasure.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        48 + descriptorOffset,
-        ResearchStudyOutcomeMeasureSerializer.listSerializer,
-        value.outcomeMeasure,
-      )
-    if (value.result.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        49 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.result,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      46 + descriptorOffset,
+      ResearchStudyComparisonGroupSerializer.listSerializer,
+      value.comparisonGroup,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      47 + descriptorOffset,
+      ResearchStudyObjectiveSerializer.listSerializer,
+      value.objective,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      48 + descriptorOffset,
+      ResearchStudyOutcomeMeasureSerializer.listSerializer,
+      value.outcomeMeasure,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      49 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.result,
+    )
   }
 }

@@ -62,35 +62,37 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ExplanationOfBenefitRelatedSerializer : KSerializer<ExplanationOfBenefit.Related> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Related") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("claim", ReferenceSerializer.descriptor)
-      optionalElement("relationship", CodeableConceptSerializer.descriptor)
-      optionalElement("reference", IdentifierSerializer.descriptor)
-    }
+internal object ExplanationOfBenefitRelatedSerializer :
+  FhirSerializer<ExplanationOfBenefit.Related> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Related", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Related>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("claim", ReferenceSerializer.descriptor)
+    b.optionalElement("relationship", CodeableConceptSerializer.descriptor)
+    b.optionalElement("reference", IdentifierSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Related {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -142,14 +144,14 @@ internal object ExplanationOfBenefitRelatedSerializer : KSerializer<ExplanationO
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Related: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.Related(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       claim = claim,
       relationship = relationship,
       reference = reference,
@@ -157,22 +159,21 @@ internal object ExplanationOfBenefitRelatedSerializer : KSerializer<ExplanationO
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Related) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.claim)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
@@ -190,19 +191,22 @@ internal object ExplanationOfBenefitRelatedSerializer : KSerializer<ExplanationO
   }
 }
 
-internal object ExplanationOfBenefitPayeeSerializer : KSerializer<ExplanationOfBenefit.Payee> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Payee") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("party", ReferenceSerializer.descriptor)
-    }
+internal object ExplanationOfBenefitPayeeSerializer : FhirSerializer<ExplanationOfBenefit.Payee> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Payee", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Payee>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("party", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Payee {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -245,36 +249,35 @@ internal object ExplanationOfBenefitPayeeSerializer : KSerializer<ExplanationOfB
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Payee: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.Payee(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
       party = party,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Payee) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -287,25 +290,26 @@ internal object ExplanationOfBenefitPayeeSerializer : KSerializer<ExplanationOfB
 }
 
 internal object ExplanationOfBenefitCareTeamSerializer :
-  KSerializer<ExplanationOfBenefit.CareTeam> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CareTeam") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("provider", ReferenceSerializer.descriptor)
-      optionalElement("responsible", KotlinBoolean.serializer().descriptor)
-      optionalElement("_responsible", ElementSerializer.descriptor)
-      optionalElement("role", CodeableConceptSerializer.descriptor)
-      optionalElement("qualification", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.CareTeam> {
+  override val descriptor: SerialDescriptor = buildDescriptor("CareTeam", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.CareTeam>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.optionalElement("provider", ReferenceSerializer.descriptor)
+    b.boolPrim("responsible")
+    b.optionalElement("role", CodeableConceptSerializer.descriptor)
+    b.optionalElement("qualification", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.CareTeam {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -379,24 +383,17 @@ internal object ExplanationOfBenefitCareTeamSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding CareTeam: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.CareTeam(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence =
-        PositiveInt.of(sequence, _sequence)
-          ?: throw SerializationException(
-            "Missing required property 'sequence' on ExplanationOfBenefit.CareTeam"
-          ),
-      provider =
-        provider
-          ?: throw SerializationException(
-            "Missing required property 'provider' on ExplanationOfBenefit.CareTeam"
-          ),
+        required(PositiveInt.of(sequence, _sequence), "ExplanationOfBenefit.CareTeam", "sequence"),
+      provider = required(provider, "ExplanationOfBenefit.CareTeam", "provider"),
       responsible = R4Boolean.of(responsible, _responsible),
       role = role,
       qualification = qualification,
@@ -404,22 +401,21 @@ internal object ExplanationOfBenefitCareTeamSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.CareTeam) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
     compositeEncoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.provider)
@@ -442,33 +438,32 @@ internal object ExplanationOfBenefitCareTeamSerializer :
 }
 
 internal object ExplanationOfBenefitSupportingInfoSerializer :
-  KSerializer<ExplanationOfBenefit.SupportingInfo> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SupportingInfo") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("timingDate", KotlinString.serializer().descriptor)
-      optionalElement("_timingDate", ElementSerializer.descriptor)
-      optionalElement("timingPeriod", PeriodSerializer.descriptor)
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", ElementSerializer.descriptor)
-      optionalElement("valueString", KotlinString.serializer().descriptor)
-      optionalElement("_valueString", ElementSerializer.descriptor)
-      optionalElement("valueQuantity", QuantitySerializer.descriptor)
-      optionalElement("valueAttachment", AttachmentSerializer.descriptor)
-      optionalElement("valueReference", ReferenceSerializer.descriptor)
-      optionalElement("reason", CodingSerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.SupportingInfo> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SupportingInfo", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.SupportingInfo>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.strPrim("timingDate")
+    b.optionalElement("timingPeriod", PeriodSerializer.descriptor)
+    b.boolPrim("valueBoolean")
+    b.strPrim("valueString")
+    b.optionalElement("valueQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("valueAttachment", AttachmentSerializer.descriptor)
+    b.optionalElement("valueReference", ReferenceSerializer.descriptor)
+    b.optionalElement("reason", CodingSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.SupportingInfo {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -477,7 +472,7 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
     var _sequence: Element? = null
     var category: CodeableConcept? = null
     var code: CodeableConcept? = null
-    var timingDate: KotlinString? = null
+    var timingDate: FhirDate? = null
     var _timingDate: Element? = null
     var timingPeriod: Period? = null
     var valueBoolean: KotlinBoolean? = null
@@ -532,7 +527,7 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
               CodeableConceptSerializer,
               null,
             )
-        7 -> timingDate = compositeDecoder.decodeStringElement(descriptor, i)
+        7 -> timingDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _timingDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -600,28 +595,25 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SupportingInfo: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.SupportingInfo(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence =
-        PositiveInt.of(sequence, _sequence)
-          ?: throw SerializationException(
-            "Missing required property 'sequence' on ExplanationOfBenefit.SupportingInfo"
-          ),
-      category =
-        category
-          ?: throw SerializationException(
-            "Missing required property 'category' on ExplanationOfBenefit.SupportingInfo"
-          ),
+        required(
+          PositiveInt.of(sequence, _sequence),
+          "ExplanationOfBenefit.SupportingInfo",
+          "sequence",
+        ),
+      category = required(category, "ExplanationOfBenefit.SupportingInfo", "category"),
       code = code,
       timing =
         ExplanationOfBenefit.SupportingInfo.Timing.from(
-          Date.of(if (timingDate != null) FhirDate.fromString(timingDate) else null, _timingDate),
+          Date.of(timingDate, _timingDate),
           timingPeriod,
         ),
       `value` =
@@ -637,22 +629,21 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.SupportingInfo) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
     compositeEncoder.encodeSerializableElement(
@@ -713,25 +704,27 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
 }
 
 internal object ExplanationOfBenefitDiagnosisSerializer :
-  KSerializer<ExplanationOfBenefit.Diagnosis> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Diagnosis") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("diagnosisCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("diagnosisReference", ReferenceSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("onAdmission", CodeableConceptSerializer.descriptor)
-      optionalElement("packageCode", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.Diagnosis> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Diagnosis", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Diagnosis>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.optionalElement("diagnosisCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("diagnosisReference", ReferenceSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("onAdmission", CodeableConceptSerializer.descriptor)
+    b.optionalElement("packageCode", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Diagnosis {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -812,47 +805,47 @@ internal object ExplanationOfBenefitDiagnosisSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Diagnosis: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.Diagnosis(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence =
-        PositiveInt.of(sequence, _sequence)
-          ?: throw SerializationException(
-            "Missing required property 'sequence' on ExplanationOfBenefit.Diagnosis"
-          ),
+        required(PositiveInt.of(sequence, _sequence), "ExplanationOfBenefit.Diagnosis", "sequence"),
       diagnosis =
-        ExplanationOfBenefit.Diagnosis.Diagnosis.from(diagnosisCodeableConcept, diagnosisReference)
-          ?: throw SerializationException(
-            "Missing required property 'diagnosis' on ExplanationOfBenefit.Diagnosis"
+        required(
+          ExplanationOfBenefit.Diagnosis.Diagnosis.from(
+            diagnosisCodeableConcept,
+            diagnosisReference,
           ),
-      type = type ?: listOf(),
+          "ExplanationOfBenefit.Diagnosis",
+          "diagnosis",
+        ),
+      type = listOrEmpty(type),
       onAdmission = onAdmission,
       packageCode = packageCode,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Diagnosis) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
     when (val choice = value.diagnosis) {
@@ -868,13 +861,12 @@ internal object ExplanationOfBenefitDiagnosisSerializer :
         compositeEncoder.encodeSerializableElement(descriptor, 6, ReferenceSerializer, choice.value)
       }
     }
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       8,
@@ -892,26 +884,27 @@ internal object ExplanationOfBenefitDiagnosisSerializer :
 }
 
 internal object ExplanationOfBenefitProcedureSerializer :
-  KSerializer<ExplanationOfBenefit.Procedure> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Procedure") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("date", KotlinString.serializer().descriptor)
-      optionalElement("_date", ElementSerializer.descriptor)
-      optionalElement("procedureCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("procedureReference", ReferenceSerializer.descriptor)
-      optionalElement("udi", ReferenceSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.Procedure> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Procedure", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Procedure>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.strPrim("date")
+    b.optionalElement("procedureCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("procedureReference", ReferenceSerializer.descriptor)
+    b.optionalElement("udi", ReferenceSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Procedure {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -919,7 +912,7 @@ internal object ExplanationOfBenefitProcedureSerializer :
     var sequence: Int? = null
     var _sequence: Element? = null
     var type: List<CodeableConcept>? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var procedureCodeableConcept: CodeableConcept? = null
     var procedureReference: Reference? = null
@@ -960,7 +953,7 @@ internal object ExplanationOfBenefitProcedureSerializer :
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        6 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -994,56 +987,55 @@ internal object ExplanationOfBenefitProcedureSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Procedure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.Procedure(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence =
-        PositiveInt.of(sequence, _sequence)
-          ?: throw SerializationException(
-            "Missing required property 'sequence' on ExplanationOfBenefit.Procedure"
-          ),
-      type = type ?: listOf(),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+        required(PositiveInt.of(sequence, _sequence), "ExplanationOfBenefit.Procedure", "sequence"),
+      type = listOrEmpty(type),
+      date = DateTime.of(date, _date),
       procedure =
-        ExplanationOfBenefit.Procedure.Procedure.from(procedureCodeableConcept, procedureReference)
-          ?: throw SerializationException(
-            "Missing required property 'procedure' on ExplanationOfBenefit.Procedure"
+        required(
+          ExplanationOfBenefit.Procedure.Procedure.from(
+            procedureCodeableConcept,
+            procedureReference,
           ),
-      udi = udi ?: listOf(),
+          "ExplanationOfBenefit.Procedure",
+          "procedure",
+        ),
+      udi = listOrEmpty(udi),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Procedure) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.date?.value?.toString())
     compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.date)
     when (val choice = value.procedure) {
@@ -1059,35 +1051,35 @@ internal object ExplanationOfBenefitProcedureSerializer :
         compositeEncoder.encodeSerializableElement(descriptor, 9, ReferenceSerializer, choice.value)
       }
     }
-    if (value.udi.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        ReferenceSerializer.listSerializer,
-        value.udi,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      ReferenceSerializer.listSerializer,
+      value.udi,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ExplanationOfBenefitInsuranceSerializer :
-  KSerializer<ExplanationOfBenefit.Insurance> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Insurance") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("focal", KotlinBoolean.serializer().descriptor)
-      optionalElement("_focal", ElementSerializer.descriptor)
-      optionalElement("coverage", ReferenceSerializer.descriptor)
-      optionalElement("preAuthRef", stringNullableListSerializer.descriptor)
-      optionalElement("_preAuthRef", ElementSerializer.nullableListSerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.Insurance> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Insurance", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Insurance>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.boolPrim("focal")
+    b.optionalElement("coverage", ReferenceSerializer.descriptor)
+    b.strPrimList("preAuthRef")
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Insurance {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1150,55 +1142,48 @@ internal object ExplanationOfBenefitInsuranceSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Insurance: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val preAuthRef_ =
+      List(maxSize(preAuthRef, _preAuthRef)) { index ->
+        entryRequired(
+          R4String.of(at(preAuthRef, index), at(_preAuthRef, index)),
+          "ExplanationOfBenefit.Insurance",
+          "preAuthRef",
+        )
+      }
     return ExplanationOfBenefit.Insurance(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      focal =
-        R4Boolean.of(focal, _focal)
-          ?: throw SerializationException(
-            "Missing required property 'focal' on ExplanationOfBenefit.Insurance"
-          ),
-      coverage =
-        coverage
-          ?: throw SerializationException(
-            "Missing required property 'coverage' on ExplanationOfBenefit.Insurance"
-          ),
-      preAuthRef =
-        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->
-          R4String.of(preAuthRef?.getOrNull(index), _preAuthRef?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'preAuthRef' on ExplanationOfBenefit.Insurance has neither a value nor an id/extension"
-            )
-        }),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      focal = required(R4Boolean.of(focal, _focal), "ExplanationOfBenefit.Insurance", "focal"),
+      coverage = required(coverage, "ExplanationOfBenefit.Insurance", "coverage"),
+      preAuthRef = preAuthRef_,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Insurance) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 3, value.focal.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.focal)
     compositeEncoder.encodeSerializableElement(descriptor, 5, ReferenceSerializer, value.coverage)
-    if (value.preAuthRef.isNotEmpty()) {
+    if (!value.preAuthRef.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         6,
@@ -1212,28 +1197,30 @@ internal object ExplanationOfBenefitInsuranceSerializer :
 }
 
 internal object ExplanationOfBenefitAccidentSerializer :
-  KSerializer<ExplanationOfBenefit.Accident> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Accident") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("date", KotlinString.serializer().descriptor)
-      optionalElement("_date", ElementSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("locationAddress", AddressSerializer.descriptor)
-      optionalElement("locationReference", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.Accident> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Accident", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Accident>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("date")
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("locationAddress", AddressSerializer.descriptor)
+    b.optionalElement("locationReference", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Accident {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var date: KotlinString? = null
+    var date: FhirDate? = null
     var _date: Element? = null
     var type: CodeableConcept? = null
     var locationAddress: Address? = null
@@ -1257,7 +1244,7 @@ internal object ExplanationOfBenefitAccidentSerializer :
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> date = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1291,37 +1278,36 @@ internal object ExplanationOfBenefitAccidentSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Accident: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.Accident(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      date = Date.of(date, _date),
       type = type,
       location = ExplanationOfBenefit.Accident.Location.from(locationAddress, locationReference),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Accident) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.date?.value?.toString())
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.date)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -1343,54 +1329,49 @@ internal object ExplanationOfBenefitAccidentSerializer :
   }
 }
 
-internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBenefit.Item> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Item") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("careTeamSequence", intNullableListSerializer.descriptor)
-      optionalElement("_careTeamSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("diagnosisSequence", intNullableListSerializer.descriptor)
-      optionalElement("_diagnosisSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("procedureSequence", intNullableListSerializer.descriptor)
-      optionalElement("_procedureSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("informationSequence", intNullableListSerializer.descriptor)
-      optionalElement("_informationSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("revenue", CodeableConceptSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("servicedDate", KotlinString.serializer().descriptor)
-      optionalElement("_servicedDate", ElementSerializer.descriptor)
-      optionalElement("servicedPeriod", PeriodSerializer.descriptor)
-      optionalElement("locationCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("locationAddress", AddressSerializer.descriptor)
-      optionalElement("locationReference", ReferenceSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("udi", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("bodySite", CodeableConceptSerializer.descriptor)
-      optionalElement("subSite", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("encounter", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer.descriptor,
-      )
-      optionalElement("detail", ExplanationOfBenefitItemDetailSerializer.listSerializer.descriptor)
-    }
+internal object ExplanationOfBenefitItemSerializer : FhirSerializer<ExplanationOfBenefit.Item> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Item", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Item>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.intPrimList("careTeamSequence")
+    b.intPrimList("diagnosisSequence")
+    b.intPrimList("procedureSequence")
+    b.intPrimList("informationSequence")
+    b.optionalElement("revenue", CodeableConceptSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.strPrim("servicedDate")
+    b.optionalElement("servicedPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("locationCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("locationAddress", AddressSerializer.descriptor)
+    b.optionalElement("locationReference", ReferenceSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.optionalElement("udi", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("bodySite", CodeableConceptSerializer.descriptor)
+    b.optionalElement("subSite", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("encounter", ReferenceSerializer.listSerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("detail", ExplanationOfBenefitItemDetailSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Item {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1410,7 +1391,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
     var productOrService: CodeableConcept? = null
     var modifier: List<CodeableConcept>? = null
     var programCode: List<CodeableConcept>? = null
-    var servicedDate: KotlinString? = null
+    var servicedDate: FhirDate? = null
     var _servicedDate: Element? = null
     var servicedPeriod: Period? = null
     var locationCodeableConcept: CodeableConcept? = null
@@ -1561,7 +1542,8 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        18 -> servicedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        18 ->
+          servicedDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _servicedDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1697,73 +1679,69 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Item: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val careTeamSequence_ =
+      List(maxSize(careTeamSequence, _careTeamSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(careTeamSequence, index), at(_careTeamSequence, index)),
+          "ExplanationOfBenefit.Item",
+          "careTeamSequence",
+        )
+      }
+    val diagnosisSequence_ =
+      List(maxSize(diagnosisSequence, _diagnosisSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(diagnosisSequence, index), at(_diagnosisSequence, index)),
+          "ExplanationOfBenefit.Item",
+          "diagnosisSequence",
+        )
+      }
+    val procedureSequence_ =
+      List(maxSize(procedureSequence, _procedureSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(procedureSequence, index), at(_procedureSequence, index)),
+          "ExplanationOfBenefit.Item",
+          "procedureSequence",
+        )
+      }
+    val informationSequence_ =
+      List(maxSize(informationSequence, _informationSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(informationSequence, index), at(_informationSequence, index)),
+          "ExplanationOfBenefit.Item",
+          "informationSequence",
+        )
+      }
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ExplanationOfBenefit.Item",
+          "noteNumber",
+        )
+      }
     return ExplanationOfBenefit.Item(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence =
-        PositiveInt.of(sequence, _sequence)
-          ?: throw SerializationException(
-            "Missing required property 'sequence' on ExplanationOfBenefit.Item"
-          ),
-      careTeamSequence =
-        (kotlin.collections.List(
-          maxOf(careTeamSequence?.size ?: 0, _careTeamSequence?.size ?: 0)
-        ) { index ->
-          PositiveInt.of(careTeamSequence?.getOrNull(index), _careTeamSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'careTeamSequence' on ExplanationOfBenefit.Item has neither a value nor an id/extension"
-            )
-        }),
-      diagnosisSequence =
-        (kotlin.collections.List(
-          maxOf(diagnosisSequence?.size ?: 0, _diagnosisSequence?.size ?: 0)
-        ) { index ->
-          PositiveInt.of(diagnosisSequence?.getOrNull(index), _diagnosisSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'diagnosisSequence' on ExplanationOfBenefit.Item has neither a value nor an id/extension"
-            )
-        }),
-      procedureSequence =
-        (kotlin.collections.List(
-          maxOf(procedureSequence?.size ?: 0, _procedureSequence?.size ?: 0)
-        ) { index ->
-          PositiveInt.of(procedureSequence?.getOrNull(index), _procedureSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'procedureSequence' on ExplanationOfBenefit.Item has neither a value nor an id/extension"
-            )
-        }),
-      informationSequence =
-        (kotlin.collections.List(
-          maxOf(informationSequence?.size ?: 0, _informationSequence?.size ?: 0)
-        ) { index ->
-          PositiveInt.of(
-            informationSequence?.getOrNull(index),
-            _informationSequence?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'informationSequence' on ExplanationOfBenefit.Item has neither a value nor an id/extension"
-            )
-        }),
+        required(PositiveInt.of(sequence, _sequence), "ExplanationOfBenefit.Item", "sequence"),
+      careTeamSequence = careTeamSequence_,
+      diagnosisSequence = diagnosisSequence_,
+      procedureSequence = procedureSequence_,
+      informationSequence = informationSequence_,
       revenue = revenue,
       category = category,
       productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ExplanationOfBenefit.Item"
-          ),
-      modifier = modifier ?: listOf(),
-      programCode = programCode ?: listOf(),
+        required(productOrService, "ExplanationOfBenefit.Item", "productOrService"),
+      modifier = listOrEmpty(modifier),
+      programCode = listOrEmpty(programCode),
       serviced =
         ExplanationOfBenefit.Item.Serviced.from(
-          Date.of(
-            if (servicedDate != null) FhirDate.fromString(servicedDate) else null,
-            _servicedDate,
-          ),
+          Date.of(servicedDate, _servicedDate),
           servicedPeriod,
         ),
       location =
@@ -1776,42 +1754,35 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       unitPrice = unitPrice,
       factor = Decimal.of(factor, _factor),
       net = net,
-      udi = udi ?: listOf(),
+      udi = listOrEmpty(udi),
       bodySite = bodySite,
-      subSite = subSite ?: listOf(),
-      encounter = encounter ?: listOf(),
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ExplanationOfBenefit.Item has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
-      detail = detail ?: listOf(),
+      subSite = listOrEmpty(subSite),
+      encounter = listOrEmpty(encounter),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
+      detail = listOrEmpty(detail),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Item) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
-    if (value.careTeamSequence.isNotEmpty()) {
+    if (!value.careTeamSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -1820,7 +1791,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.careTeamSequence)
     }
-    if (value.diagnosisSequence.isNotEmpty()) {
+    if (!value.diagnosisSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         7,
@@ -1829,7 +1800,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 8, value.diagnosisSequence)
     }
-    if (value.procedureSequence.isNotEmpty()) {
+    if (!value.procedureSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         9,
@@ -1838,7 +1809,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 10, value.procedureSequence)
     }
-    if (value.informationSequence.isNotEmpty()) {
+    if (!value.informationSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11,
@@ -1865,20 +1836,18 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
-    if (value.programCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        17,
-        CodeableConceptSerializer.listSerializer,
-        value.programCode,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      17,
+      CodeableConceptSerializer.listSerializer,
+      value.programCode,
+    )
     when (val choice = value.serviced) {
       null -> {}
       is ExplanationOfBenefit.Item.Serviced.Date -> {
@@ -1921,34 +1890,31 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 27, value.factor)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 28, MoneySerializer, value.net)
-    if (value.udi.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29,
-        ReferenceSerializer.listSerializer,
-        value.udi,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29,
+      ReferenceSerializer.listSerializer,
+      value.udi,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       30,
       CodeableConceptSerializer,
       value.bodySite,
     )
-    if (value.subSite.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31,
-        CodeableConceptSerializer.listSerializer,
-        value.subSite,
-      )
-    if (value.encounter.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32,
-        ReferenceSerializer.listSerializer,
-        value.encounter,
-      )
-    if (value.noteNumber.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31,
+      CodeableConceptSerializer.listSerializer,
+      value.subSite,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32,
+      ReferenceSerializer.listSerializer,
+      value.encounter,
+    )
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         33,
@@ -1957,42 +1923,42 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 34, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35,
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.detail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        36,
-        ExplanationOfBenefitItemDetailSerializer.listSerializer,
-        value.detail,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35,
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      36,
+      ExplanationOfBenefitItemDetailSerializer.listSerializer,
+      value.detail,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ExplanationOfBenefitItemAdjudicationSerializer :
-  KSerializer<ExplanationOfBenefit.Item.Adjudication> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Adjudication") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("reason", CodeableConceptSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-      optionalElement("value", FhirDecimalSerializer.descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.Item.Adjudication> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Adjudication", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Item.Adjudication>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement("reason", CodeableConceptSerializer.descriptor)
+    b.optionalElement("amount", MoneySerializer.descriptor)
+    b.prim("value", FhirDecimalSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Item.Adjudication {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -2057,19 +2023,15 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Adjudication: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.Item.Adjudication(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      category =
-        category
-          ?: throw SerializationException(
-            "Missing required property 'category' on ExplanationOfBenefit.Item.Adjudication"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      category = required(category, "ExplanationOfBenefit.Item.Adjudication", "category"),
       reason = reason,
       amount = amount,
       `value` = Decimal.of(`value`, _value),
@@ -2077,22 +2039,21 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Item.Adjudication) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -2118,43 +2079,43 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
 }
 
 internal object ExplanationOfBenefitItemDetailSerializer :
-  KSerializer<ExplanationOfBenefit.Item.Detail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Detail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("revenue", CodeableConceptSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("udi", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        listSerialDescriptor(
-          lazyDescriptor { ExplanationOfBenefitItemAdjudicationSerializer.descriptor }
-        ),
-      )
-      optionalElement(
-        "subDetail",
-        ExplanationOfBenefitItemDetailSubDetailSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<ExplanationOfBenefit.Item.Detail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Detail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Item.Detail>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.optionalElement("revenue", CodeableConceptSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.optionalElement("udi", ReferenceSerializer.listSerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ExplanationOfBenefitItemAdjudicationSerializer)
+      ),
+    )
+    b.optionalElement(
+      "subDetail",
+      ExplanationOfBenefitItemDetailSubDetailSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Item.Detail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -2315,62 +2276,61 @@ internal object ExplanationOfBenefitItemDetailSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Detail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ExplanationOfBenefit.Item.Detail",
+          "noteNumber",
+        )
+      }
     return ExplanationOfBenefit.Item.Detail(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence =
-        PositiveInt.of(sequence, _sequence)
-          ?: throw SerializationException(
-            "Missing required property 'sequence' on ExplanationOfBenefit.Item.Detail"
-          ),
+        required(
+          PositiveInt.of(sequence, _sequence),
+          "ExplanationOfBenefit.Item.Detail",
+          "sequence",
+        ),
       revenue = revenue,
       category = category,
       productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ExplanationOfBenefit.Item.Detail"
-          ),
-      modifier = modifier ?: listOf(),
-      programCode = programCode ?: listOf(),
+        required(productOrService, "ExplanationOfBenefit.Item.Detail", "productOrService"),
+      modifier = listOrEmpty(modifier),
+      programCode = listOrEmpty(programCode),
       quantity = quantity,
       unitPrice = unitPrice,
       factor = Decimal.of(factor, _factor),
       net = net,
-      udi = udi ?: listOf(),
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ExplanationOfBenefit.Item.Detail has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
-      subDetail = subDetail ?: listOf(),
+      udi = listOrEmpty(udi),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
+      subDetail = listOrEmpty(subDetail),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Item.Detail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -2391,20 +2351,18 @@ internal object ExplanationOfBenefitItemDetailSerializer :
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
-    if (value.programCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        CodeableConceptSerializer.listSerializer,
-        value.programCode,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      CodeableConceptSerializer.listSerializer,
+      value.programCode,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 10, QuantitySerializer, value.quantity)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 11, MoneySerializer, value.unitPrice)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -2415,14 +2373,13 @@ internal object ExplanationOfBenefitItemDetailSerializer :
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 13, value.factor)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 14, MoneySerializer, value.net)
-    if (value.udi.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15,
-        ReferenceSerializer.listSerializer,
-        value.udi,
-      )
-    if (value.noteNumber.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15,
+      ReferenceSerializer.listSerializer,
+      value.udi,
+    )
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         16,
@@ -2431,58 +2388,56 @@ internal object ExplanationOfBenefitItemDetailSerializer :
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 17, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18,
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.subDetail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19,
-        ExplanationOfBenefitItemDetailSubDetailSerializer.listSerializer,
-        value.subDetail,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18,
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19,
+      ExplanationOfBenefitItemDetailSubDetailSerializer.listSerializer,
+      value.subDetail,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
-  KSerializer<ExplanationOfBenefit.Item.Detail.SubDetail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubDetail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("sequence", Int.serializer().descriptor)
-      optionalElement("_sequence", ElementSerializer.descriptor)
-      optionalElement("revenue", CodeableConceptSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("udi", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        listSerialDescriptor(
-          lazyDescriptor { ExplanationOfBenefitItemAdjudicationSerializer.descriptor }
-        ),
-      )
-    }
+  FhirSerializer<ExplanationOfBenefit.Item.Detail.SubDetail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SubDetail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Item.Detail.SubDetail>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("sequence")
+    b.optionalElement("revenue", CodeableConceptSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.optionalElement("udi", ReferenceSerializer.listSerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ExplanationOfBenefitItemAdjudicationSerializer)
+      ),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Item.Detail.SubDetail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -2634,61 +2589,64 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SubDetail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ExplanationOfBenefit.Item.Detail.SubDetail",
+          "noteNumber",
+        )
+      }
     return ExplanationOfBenefit.Item.Detail.SubDetail(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       sequence =
-        PositiveInt.of(sequence, _sequence)
-          ?: throw SerializationException(
-            "Missing required property 'sequence' on ExplanationOfBenefit.Item.Detail.SubDetail"
-          ),
+        required(
+          PositiveInt.of(sequence, _sequence),
+          "ExplanationOfBenefit.Item.Detail.SubDetail",
+          "sequence",
+        ),
       revenue = revenue,
       category = category,
       productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ExplanationOfBenefit.Item.Detail.SubDetail"
-          ),
-      modifier = modifier ?: listOf(),
-      programCode = programCode ?: listOf(),
+        required(
+          productOrService,
+          "ExplanationOfBenefit.Item.Detail.SubDetail",
+          "productOrService",
+        ),
+      modifier = listOrEmpty(modifier),
+      programCode = listOrEmpty(programCode),
       quantity = quantity,
       unitPrice = unitPrice,
       factor = Decimal.of(factor, _factor),
       net = net,
-      udi = udi ?: listOf(),
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ExplanationOfBenefit.Item.Detail.SubDetail has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
+      udi = listOrEmpty(udi),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Item.Detail.SubDetail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.sequence.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.sequence)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -2709,20 +2667,18 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
-    if (value.programCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        CodeableConceptSerializer.listSerializer,
-        value.programCode,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      CodeableConceptSerializer.listSerializer,
+      value.programCode,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 10, QuantitySerializer, value.quantity)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 11, MoneySerializer, value.unitPrice)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -2733,14 +2689,13 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 13, value.factor)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 14, MoneySerializer, value.net)
-    if (value.udi.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15,
-        ReferenceSerializer.listSerializer,
-        value.udi,
-      )
-    if (value.noteNumber.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15,
+      ReferenceSerializer.listSerializer,
+      value.udi,
+    )
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         16,
@@ -2749,62 +2704,59 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 17, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18,
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18,
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationOfBenefit.AddItem> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AddItem") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("itemSequence", intNullableListSerializer.descriptor)
-      optionalElement("_itemSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("detailSequence", intNullableListSerializer.descriptor)
-      optionalElement("_detailSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("subDetailSequence", intNullableListSerializer.descriptor)
-      optionalElement("_subDetailSequence", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("provider", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("servicedDate", KotlinString.serializer().descriptor)
-      optionalElement("_servicedDate", ElementSerializer.descriptor)
-      optionalElement("servicedPeriod", PeriodSerializer.descriptor)
-      optionalElement("locationCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("locationAddress", AddressSerializer.descriptor)
-      optionalElement("locationReference", ReferenceSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("bodySite", CodeableConceptSerializer.descriptor)
-      optionalElement("subSite", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer.descriptor,
-      )
-      optionalElement(
-        "detail",
-        ExplanationOfBenefitAddItemDetailSerializer.listSerializer.descriptor,
-      )
-    }
+internal object ExplanationOfBenefitAddItemSerializer :
+  FhirSerializer<ExplanationOfBenefit.AddItem> {
+  override val descriptor: SerialDescriptor = buildDescriptor("AddItem", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.AddItem>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrimList("itemSequence")
+    b.intPrimList("detailSequence")
+    b.intPrimList("subDetailSequence")
+    b.optionalElement("provider", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("programCode", CodeableConceptSerializer.listSerializer.descriptor)
+    b.strPrim("servicedDate")
+    b.optionalElement("servicedPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("locationCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("locationAddress", AddressSerializer.descriptor)
+    b.optionalElement("locationReference", ReferenceSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.optionalElement("bodySite", CodeableConceptSerializer.descriptor)
+    b.optionalElement("subSite", CodeableConceptSerializer.listSerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement(
+      "detail",
+      ExplanationOfBenefitAddItemDetailSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.AddItem {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -2819,7 +2771,7 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
     var productOrService: CodeableConcept? = null
     var modifier: List<CodeableConcept>? = null
     var programCode: List<CodeableConcept>? = null
-    var servicedDate: KotlinString? = null
+    var servicedDate: FhirDate? = null
     var _servicedDate: Element? = null
     var servicedPeriod: Period? = null
     var locationCodeableConcept: CodeableConcept? = null
@@ -2935,7 +2887,8 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        13 -> servicedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          servicedDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _servicedDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3055,53 +3008,57 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding AddItem: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val itemSequence_ =
+      List(maxSize(itemSequence, _itemSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(itemSequence, index), at(_itemSequence, index)),
+          "ExplanationOfBenefit.AddItem",
+          "itemSequence",
+        )
+      }
+    val detailSequence_ =
+      List(maxSize(detailSequence, _detailSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(detailSequence, index), at(_detailSequence, index)),
+          "ExplanationOfBenefit.AddItem",
+          "detailSequence",
+        )
+      }
+    val subDetailSequence_ =
+      List(maxSize(subDetailSequence, _subDetailSequence)) { index ->
+        entryRequired(
+          PositiveInt.of(at(subDetailSequence, index), at(_subDetailSequence, index)),
+          "ExplanationOfBenefit.AddItem",
+          "subDetailSequence",
+        )
+      }
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ExplanationOfBenefit.AddItem",
+          "noteNumber",
+        )
+      }
     return ExplanationOfBenefit.AddItem(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      itemSequence =
-        (kotlin.collections.List(maxOf(itemSequence?.size ?: 0, _itemSequence?.size ?: 0)) { index
-          ->
-          PositiveInt.of(itemSequence?.getOrNull(index), _itemSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'itemSequence' on ExplanationOfBenefit.AddItem has neither a value nor an id/extension"
-            )
-        }),
-      detailSequence =
-        (kotlin.collections.List(maxOf(detailSequence?.size ?: 0, _detailSequence?.size ?: 0)) {
-          index ->
-          PositiveInt.of(detailSequence?.getOrNull(index), _detailSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'detailSequence' on ExplanationOfBenefit.AddItem has neither a value nor an id/extension"
-            )
-        }),
-      subDetailSequence =
-        (kotlin.collections.List(
-          maxOf(subDetailSequence?.size ?: 0, _subDetailSequence?.size ?: 0)
-        ) { index ->
-          PositiveInt.of(subDetailSequence?.getOrNull(index), _subDetailSequence?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'subDetailSequence' on ExplanationOfBenefit.AddItem has neither a value nor an id/extension"
-            )
-        }),
-      provider = provider ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      itemSequence = itemSequence_,
+      detailSequence = detailSequence_,
+      subDetailSequence = subDetailSequence_,
+      provider = listOrEmpty(provider),
       productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ExplanationOfBenefit.AddItem"
-          ),
-      modifier = modifier ?: listOf(),
-      programCode = programCode ?: listOf(),
+        required(productOrService, "ExplanationOfBenefit.AddItem", "productOrService"),
+      modifier = listOrEmpty(modifier),
+      programCode = listOrEmpty(programCode),
       serviced =
         ExplanationOfBenefit.AddItem.Serviced.from(
-          Date.of(
-            if (servicedDate != null) FhirDate.fromString(servicedDate) else null,
-            _servicedDate,
-          ),
+          Date.of(servicedDate, _servicedDate),
           servicedPeriod,
         ),
       location =
@@ -3115,37 +3072,30 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       factor = Decimal.of(factor, _factor),
       net = net,
       bodySite = bodySite,
-      subSite = subSite ?: listOf(),
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ExplanationOfBenefit.AddItem has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
-      detail = detail ?: listOf(),
+      subSite = listOrEmpty(subSite),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
+      detail = listOrEmpty(detail),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.AddItem) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.itemSequence.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    if (!value.itemSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         3,
@@ -3154,7 +3104,7 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 4, value.itemSequence)
     }
-    if (value.detailSequence.isNotEmpty()) {
+    if (!value.detailSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -3163,7 +3113,7 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.detailSequence)
     }
-    if (value.subDetailSequence.isNotEmpty()) {
+    if (!value.subDetailSequence.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         7,
@@ -3172,33 +3122,30 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 8, value.subDetailSequence)
     }
-    if (value.provider.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        ReferenceSerializer.listSerializer,
-        value.provider,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      ReferenceSerializer.listSerializer,
+      value.provider,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       10,
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
-    if (value.programCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        CodeableConceptSerializer.listSerializer,
-        value.programCode,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      CodeableConceptSerializer.listSerializer,
+      value.programCode,
+    )
     when (val choice = value.serviced) {
       null -> {}
       is ExplanationOfBenefit.AddItem.Serviced.Date -> {
@@ -3247,14 +3194,13 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       CodeableConceptSerializer,
       value.bodySite,
     )
-    if (value.subSite.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25,
-        CodeableConceptSerializer.listSerializer,
-        value.subSite,
-      )
-    if (value.noteNumber.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25,
+      CodeableConceptSerializer.listSerializer,
+      value.subSite,
+    )
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         26,
@@ -3263,56 +3209,55 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 27, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28,
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.detail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29,
-        ExplanationOfBenefitAddItemDetailSerializer.listSerializer,
-        value.detail,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28,
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29,
+      ExplanationOfBenefitAddItemDetailSerializer.listSerializer,
+      value.detail,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ExplanationOfBenefitAddItemDetailSerializer :
-  KSerializer<ExplanationOfBenefit.AddItem.Detail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Detail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        listSerialDescriptor(
-          lazyDescriptor { ExplanationOfBenefitItemAdjudicationSerializer.descriptor }
-        ),
-      )
-      optionalElement(
-        "subDetail",
-        ExplanationOfBenefitAddItemDetailSubDetailSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<ExplanationOfBenefit.AddItem.Detail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Detail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.AddItem.Detail>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ExplanationOfBenefitItemAdjudicationSerializer)
+      ),
+    )
+    b.optionalElement(
+      "subDetail",
+      ExplanationOfBenefitAddItemDetailSubDetailSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.AddItem.Detail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -3426,66 +3371,63 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Detail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ExplanationOfBenefit.AddItem.Detail",
+          "noteNumber",
+        )
+      }
     return ExplanationOfBenefit.AddItem.Detail(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ExplanationOfBenefit.AddItem.Detail"
-          ),
-      modifier = modifier ?: listOf(),
+        required(productOrService, "ExplanationOfBenefit.AddItem.Detail", "productOrService"),
+      modifier = listOrEmpty(modifier),
       quantity = quantity,
       unitPrice = unitPrice,
       factor = Decimal.of(factor, _factor),
       net = net,
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ExplanationOfBenefit.AddItem.Detail has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
-      subDetail = subDetail ?: listOf(),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
+      subDetail = listOrEmpty(subDetail),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.AddItem.Detail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, QuantitySerializer, value.quantity)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 6, MoneySerializer, value.unitPrice)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -3496,7 +3438,7 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.factor)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 9, MoneySerializer, value.net)
-    if (value.noteNumber.isNotEmpty()) {
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         10,
@@ -3505,52 +3447,51 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 11, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.subDetail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13,
-        ExplanationOfBenefitAddItemDetailSubDetailSerializer.listSerializer,
-        value.subDetail,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13,
+      ExplanationOfBenefitAddItemDetailSubDetailSerializer.listSerializer,
+      value.subDetail,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
-  KSerializer<ExplanationOfBenefit.AddItem.Detail.SubDetail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubDetail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("productOrService", CodeableConceptSerializer.descriptor)
-      optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("unitPrice", MoneySerializer.descriptor)
-      optionalElement("factor", FhirDecimalSerializer.descriptor)
-      optionalElement("_factor", ElementSerializer.descriptor)
-      optionalElement("net", MoneySerializer.descriptor)
-      optionalElement("noteNumber", intNullableListSerializer.descriptor)
-      optionalElement("_noteNumber", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement(
-        "adjudication",
-        listSerialDescriptor(
-          lazyDescriptor { ExplanationOfBenefitItemAdjudicationSerializer.descriptor }
-        ),
-      )
-    }
+  FhirSerializer<ExplanationOfBenefit.AddItem.Detail.SubDetail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SubDetail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.AddItem.Detail.SubDetail>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("productOrService", CodeableConceptSerializer.descriptor)
+    b.optionalElement("modifier", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("unitPrice", MoneySerializer.descriptor)
+    b.prim("factor", FhirDecimalSerializer.descriptor)
+    b.optionalElement("net", MoneySerializer.descriptor)
+    b.intPrimList("noteNumber")
+    b.optionalElement(
+      "adjudication",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ExplanationOfBenefitItemAdjudicationSerializer)
+      ),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.AddItem.Detail.SubDetail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -3655,65 +3596,66 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SubDetail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val noteNumber_ =
+      List(maxSize(noteNumber, _noteNumber)) { index ->
+        entryRequired(
+          PositiveInt.of(at(noteNumber, index), at(_noteNumber, index)),
+          "ExplanationOfBenefit.AddItem.Detail.SubDetail",
+          "noteNumber",
+        )
+      }
     return ExplanationOfBenefit.AddItem.Detail.SubDetail(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       productOrService =
-        productOrService
-          ?: throw SerializationException(
-            "Missing required property 'productOrService' on ExplanationOfBenefit.AddItem.Detail.SubDetail"
-          ),
-      modifier = modifier ?: listOf(),
+        required(
+          productOrService,
+          "ExplanationOfBenefit.AddItem.Detail.SubDetail",
+          "productOrService",
+        ),
+      modifier = listOrEmpty(modifier),
       quantity = quantity,
       unitPrice = unitPrice,
       factor = Decimal.of(factor, _factor),
       net = net,
-      noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
-          PositiveInt.of(noteNumber?.getOrNull(index), _noteNumber?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'noteNumber' on ExplanationOfBenefit.AddItem.Detail.SubDetail has neither a value nor an id/extension"
-            )
-        }),
-      adjudication = adjudication ?: listOf(),
+      noteNumber = noteNumber_,
+      adjudication = listOrEmpty(adjudication),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.AddItem.Detail.SubDetail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.productOrService,
     )
-    if (value.modifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.modifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.modifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, QuantitySerializer, value.quantity)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 6, MoneySerializer, value.unitPrice)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -3724,7 +3666,7 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.factor)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 9, MoneySerializer, value.net)
-    if (value.noteNumber.isNotEmpty()) {
+    if (!value.noteNumber.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         10,
@@ -3733,30 +3675,32 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 11, value.noteNumber)
     }
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object ExplanationOfBenefitTotalSerializer : KSerializer<ExplanationOfBenefit.Total> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Total") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-    }
+internal object ExplanationOfBenefitTotalSerializer : FhirSerializer<ExplanationOfBenefit.Total> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Total", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Total>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement("amount", MoneySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Total {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -3794,44 +3738,35 @@ internal object ExplanationOfBenefitTotalSerializer : KSerializer<ExplanationOfB
           amount =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Total: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.Total(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      category =
-        category
-          ?: throw SerializationException(
-            "Missing required property 'category' on ExplanationOfBenefit.Total"
-          ),
-      amount =
-        amount
-          ?: throw SerializationException(
-            "Missing required property 'amount' on ExplanationOfBenefit.Total"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      category = required(category, "ExplanationOfBenefit.Total", "category"),
+      amount = required(amount, "ExplanationOfBenefit.Total", "amount"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Total) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -3843,25 +3778,28 @@ internal object ExplanationOfBenefitTotalSerializer : KSerializer<ExplanationOfB
   }
 }
 
-internal object ExplanationOfBenefitPaymentSerializer : KSerializer<ExplanationOfBenefit.Payment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Payment") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("adjustment", MoneySerializer.descriptor)
-      optionalElement("adjustmentReason", CodeableConceptSerializer.descriptor)
-      optionalElement("date", KotlinString.serializer().descriptor)
-      optionalElement("_date", ElementSerializer.descriptor)
-      optionalElement("amount", MoneySerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.descriptor)
-    }
+internal object ExplanationOfBenefitPaymentSerializer :
+  FhirSerializer<ExplanationOfBenefit.Payment> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Payment", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.Payment>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("adjustment", MoneySerializer.descriptor)
+    b.optionalElement("adjustmentReason", CodeableConceptSerializer.descriptor)
+    b.strPrim("date")
+    b.optionalElement("amount", MoneySerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.Payment {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -3869,7 +3807,7 @@ internal object ExplanationOfBenefitPaymentSerializer : KSerializer<ExplanationO
     var type: CodeableConcept? = null
     var adjustment: Money? = null
     var adjustmentReason: CodeableConcept? = null
-    var date: KotlinString? = null
+    var date: FhirDate? = null
     var _date: Element? = null
     var amount: Money? = null
     var identifier: Identifier? = null
@@ -3911,7 +3849,7 @@ internal object ExplanationOfBenefitPaymentSerializer : KSerializer<ExplanationO
               CodeableConceptSerializer,
               null,
             )
-        6 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> date = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -3932,40 +3870,39 @@ internal object ExplanationOfBenefitPaymentSerializer : KSerializer<ExplanationO
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Payment: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.Payment(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
       adjustment = adjustment,
       adjustmentReason = adjustmentReason,
-      date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
+      date = Date.of(date, _date),
       amount = amount,
       identifier = identifier,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.Payment) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -3993,32 +3930,32 @@ internal object ExplanationOfBenefitPaymentSerializer : KSerializer<ExplanationO
 }
 
 internal object ExplanationOfBenefitProcessNoteSerializer :
-  KSerializer<ExplanationOfBenefit.ProcessNote> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ProcessNote") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("number", Int.serializer().descriptor)
-      optionalElement("_number", ElementSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("text", KotlinString.serializer().descriptor)
-      optionalElement("_text", ElementSerializer.descriptor)
-      optionalElement("language", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.ProcessNote> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ProcessNote", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.ProcessNote>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("number")
+    b.strPrim("type")
+    b.strPrim("text")
+    b.optionalElement("language", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.ProcessNote {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var number: Int? = null
     var _number: Element? = null
-    var type: KotlinString? = null
+    var type: NoteType? = null
     var _type: Element? = null
     var text: KotlinString? = null
     var _text: Element? = null
@@ -4051,7 +3988,7 @@ internal object ExplanationOfBenefitProcessNoteSerializer :
               ElementSerializer,
               null,
             )
-        5 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        5 -> type = NoteType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -4078,38 +4015,37 @@ internal object ExplanationOfBenefitProcessNoteSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ProcessNote: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.ProcessNote(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       number = PositiveInt.of(number, _number),
-      type = Enumeration.of(if (type != null) NoteType.fromCode(type) else null, _type),
+      type = Enumeration.of(type, _type),
       text = R4String.of(text, _text),
       language = language,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.ProcessNote) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.number?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.number)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.type?.value?.code)
@@ -4127,32 +4063,32 @@ internal object ExplanationOfBenefitProcessNoteSerializer :
 }
 
 internal object ExplanationOfBenefitBenefitBalanceSerializer :
-  KSerializer<ExplanationOfBenefit.BenefitBalance> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("BenefitBalance") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement("excluded", KotlinBoolean.serializer().descriptor)
-      optionalElement("_excluded", ElementSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("network", CodeableConceptSerializer.descriptor)
-      optionalElement("unit", CodeableConceptSerializer.descriptor)
-      optionalElement("term", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "financial",
-        ExplanationOfBenefitBenefitBalanceFinancialSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<ExplanationOfBenefit.BenefitBalance> {
+  override val descriptor: SerialDescriptor = buildDescriptor("BenefitBalance", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.BenefitBalance>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.boolPrim("excluded")
+    b.strPrim("name")
+    b.strPrim("description")
+    b.optionalElement("network", CodeableConceptSerializer.descriptor)
+    b.optionalElement("unit", CodeableConceptSerializer.descriptor)
+    b.optionalElement("term", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "financial",
+      ExplanationOfBenefitBenefitBalanceFinancialSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.BenefitBalance {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -4255,46 +4191,41 @@ internal object ExplanationOfBenefitBenefitBalanceSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding BenefitBalance: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.BenefitBalance(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      category =
-        category
-          ?: throw SerializationException(
-            "Missing required property 'category' on ExplanationOfBenefit.BenefitBalance"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      category = required(category, "ExplanationOfBenefit.BenefitBalance", "category"),
       excluded = R4Boolean.of(excluded, _excluded),
       name = R4String.of(name, _name),
       description = R4String.of(description, _description),
       network = network,
       unit = unit,
       term = term,
-      financial = financial ?: listOf(),
+      financial = listOrEmpty(financial),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.BenefitBalance) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -4325,39 +4256,38 @@ internal object ExplanationOfBenefitBenefitBalanceSerializer :
       CodeableConceptSerializer,
       value.term,
     )
-    if (value.financial.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13,
-        ExplanationOfBenefitBenefitBalanceFinancialSerializer.listSerializer,
-        value.financial,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13,
+      ExplanationOfBenefitBenefitBalanceFinancialSerializer.listSerializer,
+      value.financial,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ExplanationOfBenefitBenefitBalanceFinancialSerializer :
-  KSerializer<ExplanationOfBenefit.BenefitBalance.Financial> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Financial") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("allowedUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_allowedUnsignedInt", ElementSerializer.descriptor)
-      optionalElement("allowedString", KotlinString.serializer().descriptor)
-      optionalElement("_allowedString", ElementSerializer.descriptor)
-      optionalElement("allowedMoney", MoneySerializer.descriptor)
-      optionalElement("usedUnsignedInt", Int.serializer().descriptor)
-      optionalElement("_usedUnsignedInt", ElementSerializer.descriptor)
-      optionalElement("usedMoney", MoneySerializer.descriptor)
-    }
+  FhirSerializer<ExplanationOfBenefit.BenefitBalance.Financial> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Financial", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ExplanationOfBenefit.BenefitBalance.Financial>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.intPrim("allowedUnsignedInt")
+    b.strPrim("allowedString")
+    b.optionalElement("allowedMoney", MoneySerializer.descriptor)
+    b.intPrim("usedUnsignedInt")
+    b.optionalElement("usedMoney", MoneySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ExplanationOfBenefit.BenefitBalance.Financial {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -4432,19 +4362,15 @@ internal object ExplanationOfBenefitBenefitBalanceFinancialSerializer :
           usedMoney =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, MoneySerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Financial: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ExplanationOfBenefit.BenefitBalance.Financial(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on ExplanationOfBenefit.BenefitBalance.Financial"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "ExplanationOfBenefit.BenefitBalance.Financial", "type"),
       allowed =
         ExplanationOfBenefit.BenefitBalance.Financial.Allowed.from(
           UnsignedInt.of(allowedUnsignedInt, _allowedUnsignedInt),
@@ -4460,22 +4386,21 @@ internal object ExplanationOfBenefitBenefitBalanceFinancialSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ExplanationOfBenefit.BenefitBalance.Financial) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     when (val choice = value.allowed) {
       null -> {}
@@ -4509,30 +4434,25 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ExplanationOfBenefit")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
     b.optionalElement("subType", CodeableConceptSerializer.descriptor)
-    b.optionalElement("use", KotlinString.serializer().descriptor)
-    b.optionalElement("_use", ElementSerializer.descriptor)
+    b.strPrim("use")
     b.optionalElement("patient", ReferenceSerializer.descriptor)
     b.optionalElement("billablePeriod", PeriodSerializer.descriptor)
-    b.optionalElement("created", KotlinString.serializer().descriptor)
-    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.strPrim("created")
     b.optionalElement("enterer", ReferenceSerializer.descriptor)
     b.optionalElement("insurer", ReferenceSerializer.descriptor)
     b.optionalElement("provider", ReferenceSerializer.descriptor)
@@ -4547,12 +4467,9 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
     b.optionalElement("facility", ReferenceSerializer.descriptor)
     b.optionalElement("claim", ReferenceSerializer.descriptor)
     b.optionalElement("claimResponse", ReferenceSerializer.descriptor)
-    b.optionalElement("outcome", KotlinString.serializer().descriptor)
-    b.optionalElement("_outcome", ElementSerializer.descriptor)
-    b.optionalElement("disposition", KotlinString.serializer().descriptor)
-    b.optionalElement("_disposition", ElementSerializer.descriptor)
-    b.optionalElement("preAuthRef", stringNullableListSerializer.descriptor)
-    b.optionalElement("_preAuthRef", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrim("outcome")
+    b.strPrim("disposition")
+    b.strPrimList("preAuthRef")
     b.optionalElement("preAuthRefPeriod", PeriodSerializer.listSerializer.descriptor)
     b.optionalElement("careTeam", ExplanationOfBenefitCareTeamSerializer.listSerializer.descriptor)
     b.optionalElement(
@@ -4567,8 +4484,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       "procedure",
       ExplanationOfBenefitProcedureSerializer.listSerializer.descriptor,
     )
-    b.optionalElement("precedence", Int.serializer().descriptor)
-    b.optionalElement("_precedence", ElementSerializer.descriptor)
+    b.intPrim("precedence")
     b.optionalElement(
       "insurance",
       ExplanationOfBenefitInsuranceSerializer.listSerializer.descriptor,
@@ -4611,15 +4527,15 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: ExplanationOfBenefitStatus? = null
     var _status: Element? = null
     var type: CodeableConcept? = null
     var subType: CodeableConcept? = null
-    var use: KotlinString? = null
+    var use: Use? = null
     var _use: Element? = null
     var patient: Reference? = null
     var billablePeriod: Period? = null
-    var created: KotlinString? = null
+    var created: FhirDateTime? = null
     var _created: Element? = null
     var enterer: Reference? = null
     var insurer: Reference? = null
@@ -4635,7 +4551,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
     var facility: Reference? = null
     var claim: Reference? = null
     var claimResponse: Reference? = null
-    var outcome: KotlinString? = null
+    var outcome: ClaimProcessingCodes? = null
     var _outcome: Element? = null
     var disposition: KotlinString? = null
     var _disposition: Element? = null
@@ -4727,7 +4643,9 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status =
+            ExplanationOfBenefitStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -4752,7 +4670,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
               CodeableConceptSerializer,
               null,
             )
-        15 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        15 -> use = Use.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         16 ->
           _use =
             compositeDecoder.decodeNullableSerializableElement(
@@ -4777,7 +4695,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
               PeriodSerializer,
               null,
             )
-        19 -> created = compositeDecoder.decodeStringElement(descriptor, i)
+        19 -> created = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _created =
             compositeDecoder.decodeNullableSerializableElement(
@@ -4898,7 +4816,9 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
               ReferenceSerializer,
               null,
             )
-        35 -> outcome = compositeDecoder.decodeStringElement(descriptor, i)
+        35 ->
+          outcome =
+            ClaimProcessingCodes.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         36 ->
           _outcome =
             compositeDecoder.decodeNullableSerializableElement(
@@ -5077,64 +4997,41 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
               ExplanationOfBenefitBenefitBalanceSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding ExplanationOfBenefit: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val preAuthRef_ =
+      List(maxSize(preAuthRef, _preAuthRef)) { index ->
+        entryRequired(
+          R4String.of(at(preAuthRef, index), at(_preAuthRef, index)),
+          "ExplanationOfBenefit",
+          "preAuthRef",
+        )
+      }
     return ExplanationOfBenefit(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) ExplanationOfBenefitStatus.fromCode(status) else null,
-          _status,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'status' on ExplanationOfBenefit"
-          ),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on ExplanationOfBenefit"
-          ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "ExplanationOfBenefit", "status"),
+      type = required(type, "ExplanationOfBenefit", "type"),
       subType = subType,
-      use =
-        Enumeration.of(if (use != null) Use.fromCode(use) else null, _use)
-          ?: throw SerializationException(
-            "Missing required property 'use' on ExplanationOfBenefit"
-          ),
-      patient =
-        patient
-          ?: throw SerializationException(
-            "Missing required property 'patient' on ExplanationOfBenefit"
-          ),
+      use = required(Enumeration.of(use, _use), "ExplanationOfBenefit", "use"),
+      patient = required(patient, "ExplanationOfBenefit", "patient"),
       billablePeriod = billablePeriod,
-      created =
-        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created)
-          ?: throw SerializationException(
-            "Missing required property 'created' on ExplanationOfBenefit"
-          ),
+      created = required(DateTime.of(created, _created), "ExplanationOfBenefit", "created"),
       enterer = enterer,
-      insurer =
-        insurer
-          ?: throw SerializationException(
-            "Missing required property 'insurer' on ExplanationOfBenefit"
-          ),
-      provider =
-        provider
-          ?: throw SerializationException(
-            "Missing required property 'provider' on ExplanationOfBenefit"
-          ),
+      insurer = required(insurer, "ExplanationOfBenefit", "insurer"),
+      provider = required(provider, "ExplanationOfBenefit", "provider"),
       priority = priority,
       fundsReserveRequested = fundsReserveRequested,
       fundsReserve = fundsReserve,
-      related = related ?: listOf(),
+      related = listOrEmpty(related),
       prescription = prescription,
       originalPrescription = originalPrescription,
       payee = payee,
@@ -5142,40 +5039,27 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       facility = facility,
       claim = claim,
       claimResponse = claimResponse,
-      outcome =
-        Enumeration.of(
-          if (outcome != null) ClaimProcessingCodes.fromCode(outcome) else null,
-          _outcome,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'outcome' on ExplanationOfBenefit"
-          ),
+      outcome = required(Enumeration.of(outcome, _outcome), "ExplanationOfBenefit", "outcome"),
       disposition = R4String.of(disposition, _disposition),
-      preAuthRef =
-        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->
-          R4String.of(preAuthRef?.getOrNull(index), _preAuthRef?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'preAuthRef' on ExplanationOfBenefit has neither a value nor an id/extension"
-            )
-        }),
-      preAuthRefPeriod = preAuthRefPeriod ?: listOf(),
-      careTeam = careTeam ?: listOf(),
-      supportingInfo = supportingInfo ?: listOf(),
-      diagnosis = diagnosis ?: listOf(),
-      procedure = procedure ?: listOf(),
+      preAuthRef = preAuthRef_,
+      preAuthRefPeriod = listOrEmpty(preAuthRefPeriod),
+      careTeam = listOrEmpty(careTeam),
+      supportingInfo = listOrEmpty(supportingInfo),
+      diagnosis = listOrEmpty(diagnosis),
+      procedure = listOrEmpty(procedure),
       precedence = PositiveInt.of(precedence, _precedence),
-      insurance = insurance ?: listOf(),
+      insurance = listOrEmpty(insurance),
       accident = accident,
-      item = item ?: listOf(),
-      addItem = addItem ?: listOf(),
-      adjudication = adjudication ?: listOf(),
-      total = total ?: listOf(),
+      item = listOrEmpty(item),
+      addItem = listOrEmpty(addItem),
+      adjudication = listOrEmpty(adjudication),
+      total = listOrEmpty(total),
       payment = payment,
       formCode = formCode,
       form = form,
-      processNote = processNote ?: listOf(),
+      processNote = listOrEmpty(processNote),
       benefitPeriod = benefitPeriod,
-      benefitBalance = benefitBalance ?: listOf(),
+      benefitBalance = listOrEmpty(benefitBalance),
     )
   }
 
@@ -5206,34 +5090,30 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -5308,13 +5188,12 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       CodeableConceptSerializer,
       value.fundsReserve,
     )
-    if (value.related.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        ExplanationOfBenefitRelatedSerializer.listSerializer,
-        value.related,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      ExplanationOfBenefitRelatedSerializer.listSerializer,
+      value.related,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       28 + descriptorOffset,
@@ -5369,7 +5248,7 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       value.disposition?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 38 + descriptorOffset, value.disposition)
-    if (value.preAuthRef.isNotEmpty()) {
+    if (!value.preAuthRef.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         39 + descriptorOffset,
@@ -5382,84 +5261,74 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
         value.preAuthRef,
       )
     }
-    if (value.preAuthRefPeriod.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        41 + descriptorOffset,
-        PeriodSerializer.listSerializer,
-        value.preAuthRefPeriod,
-      )
-    if (value.careTeam.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        42 + descriptorOffset,
-        ExplanationOfBenefitCareTeamSerializer.listSerializer,
-        value.careTeam,
-      )
-    if (value.supportingInfo.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        43 + descriptorOffset,
-        ExplanationOfBenefitSupportingInfoSerializer.listSerializer,
-        value.supportingInfo,
-      )
-    if (value.diagnosis.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        44 + descriptorOffset,
-        ExplanationOfBenefitDiagnosisSerializer.listSerializer,
-        value.diagnosis,
-      )
-    if (value.procedure.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        45 + descriptorOffset,
-        ExplanationOfBenefitProcedureSerializer.listSerializer,
-        value.procedure,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      41 + descriptorOffset,
+      PeriodSerializer.listSerializer,
+      value.preAuthRefPeriod,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      42 + descriptorOffset,
+      ExplanationOfBenefitCareTeamSerializer.listSerializer,
+      value.careTeam,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      43 + descriptorOffset,
+      ExplanationOfBenefitSupportingInfoSerializer.listSerializer,
+      value.supportingInfo,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      44 + descriptorOffset,
+      ExplanationOfBenefitDiagnosisSerializer.listSerializer,
+      value.diagnosis,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      45 + descriptorOffset,
+      ExplanationOfBenefitProcedureSerializer.listSerializer,
+      value.procedure,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 46 + descriptorOffset, value.precedence?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 47 + descriptorOffset, value.precedence)
-    if (value.insurance.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        48 + descriptorOffset,
-        ExplanationOfBenefitInsuranceSerializer.listSerializer,
-        value.insurance,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      48 + descriptorOffset,
+      ExplanationOfBenefitInsuranceSerializer.listSerializer,
+      value.insurance,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       49 + descriptorOffset,
       ExplanationOfBenefitAccidentSerializer,
       value.accident,
     )
-    if (value.item.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        50 + descriptorOffset,
-        ExplanationOfBenefitItemSerializer.listSerializer,
-        value.item,
-      )
-    if (value.addItem.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        51 + descriptorOffset,
-        ExplanationOfBenefitAddItemSerializer.listSerializer,
-        value.addItem,
-      )
-    if (value.adjudication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        52 + descriptorOffset,
-        ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
-        value.adjudication,
-      )
-    if (value.total.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        53 + descriptorOffset,
-        ExplanationOfBenefitTotalSerializer.listSerializer,
-        value.total,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      50 + descriptorOffset,
+      ExplanationOfBenefitItemSerializer.listSerializer,
+      value.item,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      51 + descriptorOffset,
+      ExplanationOfBenefitAddItemSerializer.listSerializer,
+      value.addItem,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      52 + descriptorOffset,
+      ExplanationOfBenefitItemAdjudicationSerializer.listSerializer,
+      value.adjudication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      53 + descriptorOffset,
+      ExplanationOfBenefitTotalSerializer.listSerializer,
+      value.total,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       54 + descriptorOffset,
@@ -5478,25 +5347,23 @@ internal object ExplanationOfBenefitSerializer : FhirResourceSerializer<Explanat
       AttachmentSerializer,
       value.form,
     )
-    if (value.processNote.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        57 + descriptorOffset,
-        ExplanationOfBenefitProcessNoteSerializer.listSerializer,
-        value.processNote,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      57 + descriptorOffset,
+      ExplanationOfBenefitProcessNoteSerializer.listSerializer,
+      value.processNote,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       58 + descriptorOffset,
       PeriodSerializer,
       value.benefitPeriod,
     )
-    if (value.benefitBalance.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        59 + descriptorOffset,
-        ExplanationOfBenefitBenefitBalanceSerializer.listSerializer,
-        value.benefitBalance,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      59 + descriptorOffset,
+      ExplanationOfBenefitBenefitBalanceSerializer.listSerializer,
+      value.benefitBalance,
+    )
   }
 }

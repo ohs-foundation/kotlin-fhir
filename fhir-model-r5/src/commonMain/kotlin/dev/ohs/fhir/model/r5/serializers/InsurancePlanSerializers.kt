@@ -48,34 +48,35 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object InsurancePlanCoverageSerializer : KSerializer<InsurancePlan.Coverage> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Coverage") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("network", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("benefit", InsurancePlanCoverageBenefitSerializer.listSerializer.descriptor)
-    }
+internal object InsurancePlanCoverageSerializer : FhirSerializer<InsurancePlan.Coverage> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Coverage", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<InsurancePlan.Coverage>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("network", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("benefit", InsurancePlanCoverageBenefitSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): InsurancePlan.Coverage {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -127,80 +128,75 @@ internal object InsurancePlanCoverageSerializer : KSerializer<InsurancePlan.Cove
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Coverage: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return InsurancePlan.Coverage(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on InsurancePlan.Coverage"
-          ),
-      network = network ?: listOf(),
-      benefit = benefit ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "InsurancePlan.Coverage", "type"),
+      network = listOrEmpty(network),
+      benefit = listOrEmpty(benefit),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Coverage) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
-    if (value.network.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        ReferenceSerializer.listSerializer,
-        value.network,
-      )
-    if (value.benefit.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        InsurancePlanCoverageBenefitSerializer.listSerializer,
-        value.benefit,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      ReferenceSerializer.listSerializer,
+      value.network,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      InsurancePlanCoverageBenefitSerializer.listSerializer,
+      value.benefit,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object InsurancePlanCoverageBenefitSerializer :
-  KSerializer<InsurancePlan.Coverage.Benefit> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Benefit") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("requirement", KotlinString.serializer().descriptor)
-      optionalElement("_requirement", ElementSerializer.descriptor)
-      optionalElement(
-        "limit",
-        InsurancePlanCoverageBenefitLimitSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<InsurancePlan.Coverage.Benefit> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Benefit", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<InsurancePlan.Coverage.Benefit>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.strPrim("requirement")
+    b.optionalElement(
+      "limit",
+      InsurancePlanCoverageBenefitLimitSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): InsurancePlan.Coverage.Benefit {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -254,70 +250,67 @@ internal object InsurancePlanCoverageBenefitSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Benefit: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return InsurancePlan.Coverage.Benefit(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on InsurancePlan.Coverage.Benefit"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "InsurancePlan.Coverage.Benefit", "type"),
       requirement = R5String.of(requirement, _requirement),
-      limit = limit ?: listOf(),
+      limit = listOrEmpty(limit),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Coverage.Benefit) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.requirement?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.requirement)
-    if (value.limit.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        InsurancePlanCoverageBenefitLimitSerializer.listSerializer,
-        value.limit,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      InsurancePlanCoverageBenefitLimitSerializer.listSerializer,
+      value.limit,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object InsurancePlanCoverageBenefitLimitSerializer :
-  KSerializer<InsurancePlan.Coverage.Benefit.Limit> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Limit") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("value", QuantitySerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-    }
+  FhirSerializer<InsurancePlan.Coverage.Benefit.Limit> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Limit", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<InsurancePlan.Coverage.Benefit.Limit>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("value", QuantitySerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): InsurancePlan.Coverage.Benefit.Limit {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -360,36 +353,35 @@ internal object InsurancePlanCoverageBenefitLimitSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Limit: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return InsurancePlan.Coverage.Benefit.Limit(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       `value` = `value`,
       code = code,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Coverage.Benefit.Limit) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.`value`)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
@@ -401,29 +393,32 @@ internal object InsurancePlanCoverageBenefitLimitSerializer :
   }
 }
 
-internal object InsurancePlanPlanSerializer : KSerializer<InsurancePlan.Plan> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Plan") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("coverageArea", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("network", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement(
-        "generalCost",
-        InsurancePlanPlanGeneralCostSerializer.listSerializer.descriptor,
-      )
-      optionalElement(
-        "specificCost",
-        InsurancePlanPlanSpecificCostSerializer.listSerializer.descriptor,
-      )
-    }
+internal object InsurancePlanPlanSerializer : FhirSerializer<InsurancePlan.Plan> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Plan", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<InsurancePlan.Plan>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("coverageArea", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("network", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "generalCost",
+      InsurancePlanPlanGeneralCostSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement(
+      "specificCost",
+      InsurancePlanPlanSpecificCostSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -502,104 +497,99 @@ internal object InsurancePlanPlanSerializer : KSerializer<InsurancePlan.Plan> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Plan: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return InsurancePlan.Plan(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       type = type,
-      coverageArea = coverageArea ?: listOf(),
-      network = network ?: listOf(),
-      generalCost = generalCost ?: listOf(),
-      specificCost = specificCost ?: listOf(),
+      coverageArea = listOrEmpty(coverageArea),
+      network = listOrEmpty(network),
+      generalCost = listOrEmpty(generalCost),
+      specificCost = listOrEmpty(specificCost),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       4,
       CodeableConceptSerializer,
       value.type,
     )
-    if (value.coverageArea.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        ReferenceSerializer.listSerializer,
-        value.coverageArea,
-      )
-    if (value.network.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ReferenceSerializer.listSerializer,
-        value.network,
-      )
-    if (value.generalCost.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        InsurancePlanPlanGeneralCostSerializer.listSerializer,
-        value.generalCost,
-      )
-    if (value.specificCost.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        InsurancePlanPlanSpecificCostSerializer.listSerializer,
-        value.specificCost,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      ReferenceSerializer.listSerializer,
+      value.coverageArea,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      ReferenceSerializer.listSerializer,
+      value.network,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      InsurancePlanPlanGeneralCostSerializer.listSerializer,
+      value.generalCost,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      InsurancePlanPlanSpecificCostSerializer.listSerializer,
+      value.specificCost,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object InsurancePlanPlanGeneralCostSerializer :
-  KSerializer<InsurancePlan.Plan.GeneralCost> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("GeneralCost") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("groupSize", Int.serializer().descriptor)
-      optionalElement("_groupSize", ElementSerializer.descriptor)
-      optionalElement("cost", MoneySerializer.descriptor)
-      optionalElement("comment", KotlinString.serializer().descriptor)
-      optionalElement("_comment", ElementSerializer.descriptor)
-    }
+  FhirSerializer<InsurancePlan.Plan.GeneralCost> {
+  override val descriptor: SerialDescriptor = buildDescriptor("GeneralCost", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<InsurancePlan.Plan.GeneralCost>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.intPrim("groupSize")
+    b.optionalElement("cost", MoneySerializer.descriptor)
+    b.strPrim("comment")
+  }
+
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan.GeneralCost {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -659,14 +649,14 @@ internal object InsurancePlanPlanGeneralCostSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding GeneralCost: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return InsurancePlan.Plan.GeneralCost(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
       groupSize = PositiveInt.of(groupSize, _groupSize),
       cost = cost,
@@ -675,22 +665,21 @@ internal object InsurancePlanPlanGeneralCostSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan.GeneralCost) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -707,23 +696,26 @@ internal object InsurancePlanPlanGeneralCostSerializer :
 }
 
 internal object InsurancePlanPlanSpecificCostSerializer :
-  KSerializer<InsurancePlan.Plan.SpecificCost> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SpecificCost") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("category", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "benefit",
-        InsurancePlanPlanSpecificCostBenefitSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<InsurancePlan.Plan.SpecificCost> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SpecificCost", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<InsurancePlan.Plan.SpecificCost>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("category", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "benefit",
+      InsurancePlanPlanSpecificCostBenefitSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan.SpecificCost {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -766,75 +758,72 @@ internal object InsurancePlanPlanSpecificCostSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SpecificCost: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return InsurancePlan.Plan.SpecificCost(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      category =
-        category
-          ?: throw SerializationException(
-            "Missing required property 'category' on InsurancePlan.Plan.SpecificCost"
-          ),
-      benefit = benefit ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      category = required(category, "InsurancePlan.Plan.SpecificCost", "category"),
+      benefit = listOrEmpty(benefit),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan.SpecificCost) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.category,
     )
-    if (value.benefit.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        InsurancePlanPlanSpecificCostBenefitSerializer.listSerializer,
-        value.benefit,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      InsurancePlanPlanSpecificCostBenefitSerializer.listSerializer,
+      value.benefit,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object InsurancePlanPlanSpecificCostBenefitSerializer :
-  KSerializer<InsurancePlan.Plan.SpecificCost.Benefit> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Benefit") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "cost",
-        InsurancePlanPlanSpecificCostBenefitCostSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<InsurancePlan.Plan.SpecificCost.Benefit> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Benefit", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<InsurancePlan.Plan.SpecificCost.Benefit>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "cost",
+      InsurancePlanPlanSpecificCostBenefitCostSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan.SpecificCost.Benefit {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -877,69 +866,66 @@ internal object InsurancePlanPlanSpecificCostBenefitSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Benefit: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return InsurancePlan.Plan.SpecificCost.Benefit(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on InsurancePlan.Plan.SpecificCost.Benefit"
-          ),
-      cost = cost ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "InsurancePlan.Plan.SpecificCost.Benefit", "type"),
+      cost = listOrEmpty(cost),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan.SpecificCost.Benefit) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
-    if (value.cost.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        InsurancePlanPlanSpecificCostBenefitCostSerializer.listSerializer,
-        value.cost,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      InsurancePlanPlanSpecificCostBenefitCostSerializer.listSerializer,
+      value.cost,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object InsurancePlanPlanSpecificCostBenefitCostSerializer :
-  KSerializer<InsurancePlan.Plan.SpecificCost.Benefit.Cost> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Cost") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("applicability", CodeableConceptSerializer.descriptor)
-      optionalElement("qualifiers", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("value", QuantitySerializer.descriptor)
-    }
+  FhirSerializer<InsurancePlan.Plan.SpecificCost.Benefit.Cost> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Cost", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<InsurancePlan.Plan.SpecificCost.Benefit.Cost>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("applicability", CodeableConceptSerializer.descriptor)
+    b.optionalElement("qualifiers", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("value", QuantitySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): InsurancePlan.Plan.SpecificCost.Benefit.Cost {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1000,42 +986,37 @@ internal object InsurancePlanPlanSpecificCostBenefitCostSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Cost: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return InsurancePlan.Plan.SpecificCost.Benefit.Cost(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on InsurancePlan.Plan.SpecificCost.Benefit.Cost"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "InsurancePlan.Plan.SpecificCost.Benefit.Cost", "type"),
       applicability = applicability,
-      qualifiers = qualifiers ?: listOf(),
+      qualifiers = listOrEmpty(qualifiers),
       `value` = `value`,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: InsurancePlan.Plan.SpecificCost.Benefit.Cost) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
@@ -1043,13 +1024,12 @@ internal object InsurancePlanPlanSpecificCostBenefitCostSerializer :
       CodeableConceptSerializer,
       value.applicability,
     )
-    if (value.qualifiers.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.qualifiers,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      CodeableConceptSerializer.listSerializer,
+      value.qualifiers,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 6, QuantitySerializer, value.`value`)
     compositeEncoder.endStructure(descriptor)
   }
@@ -1059,27 +1039,22 @@ internal object InsurancePlanSerializer : FhirResourceSerializer<InsurancePlan> 
   override val descriptor: SerialDescriptor = buildResourceDescriptor("InsurancePlan")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("alias", stringNullableListSerializer.descriptor)
-    b.optionalElement("_alias", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrimList("alias")
     b.optionalElement("period", PeriodSerializer.descriptor)
     b.optionalElement("ownedBy", ReferenceSerializer.descriptor)
     b.optionalElement("administeredBy", ReferenceSerializer.descriptor)
@@ -1107,7 +1082,7 @@ internal object InsurancePlanSerializer : FhirResourceSerializer<InsurancePlan> 
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var type: List<CodeableConcept>? = null
     var name: KotlinString? = null
@@ -1190,7 +1165,8 @@ internal object InsurancePlanSerializer : FhirResourceSerializer<InsurancePlan> 
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1304,39 +1280,36 @@ internal object InsurancePlanSerializer : FhirResourceSerializer<InsurancePlan> 
               InsurancePlanPlanSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding InsurancePlan: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val alias_ =
+      List(maxSize(alias, _alias)) { index ->
+        entryRequired(R5String.of(at(alias, index), at(_alias, index)), "InsurancePlan", "alias")
+      }
     return InsurancePlan(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status),
-      type = type ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = Enumeration.of(status, _status),
+      type = listOrEmpty(type),
       name = R5String.of(name, _name),
-      alias =
-        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
-          R5String.of(alias?.getOrNull(index), _alias?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'alias' on InsurancePlan has neither a value nor an id/extension"
-            )
-        }),
+      alias = alias_,
       period = period,
       ownedBy = ownedBy,
       administeredBy = administeredBy,
-      coverageArea = coverageArea ?: listOf(),
-      contact = contact ?: listOf(),
-      endpoint = endpoint ?: listOf(),
-      network = network ?: listOf(),
-      coverage = coverage ?: listOf(),
-      plan = plan ?: listOf(),
+      coverageArea = listOrEmpty(coverageArea),
+      contact = listOrEmpty(contact),
+      endpoint = listOrEmpty(endpoint),
+      network = listOrEmpty(network),
+      coverage = listOrEmpty(coverage),
+      plan = listOrEmpty(plan),
     )
   }
 
@@ -1367,50 +1340,45 @@ internal object InsurancePlanSerializer : FhirResourceSerializer<InsurancePlan> 
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
       value.status?.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.status)
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 14 + descriptorOffset, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 15 + descriptorOffset, value.name)
-    if (value.alias.isNotEmpty()) {
+    if (!value.alias.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         16 + descriptorOffset,
@@ -1437,47 +1405,41 @@ internal object InsurancePlanSerializer : FhirResourceSerializer<InsurancePlan> 
       ReferenceSerializer,
       value.administeredBy,
     )
-    if (value.coverageArea.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.coverageArea,
-      )
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        ExtendedContactDetailSerializer.listSerializer,
-        value.contact,
-      )
-    if (value.endpoint.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.endpoint,
-      )
-    if (value.network.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.network,
-      )
-    if (value.coverage.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        InsurancePlanCoverageSerializer.listSerializer,
-        value.coverage,
-      )
-    if (value.plan.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        InsurancePlanPlanSerializer.listSerializer,
-        value.plan,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      21 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.coverageArea,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      ExtendedContactDetailSerializer.listSerializer,
+      value.contact,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.endpoint,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.network,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      InsurancePlanCoverageSerializer.listSerializer,
+      value.coverage,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      InsurancePlanPlanSerializer.listSerializer,
+      value.plan,
+    )
   }
 }

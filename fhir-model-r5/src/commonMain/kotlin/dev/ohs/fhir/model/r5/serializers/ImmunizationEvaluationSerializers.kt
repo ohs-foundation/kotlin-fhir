@@ -47,8 +47,6 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -59,38 +57,30 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ImmunizationEvaluation")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("patient", ReferenceSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
+    b.strPrim("date")
     b.optionalElement("authority", ReferenceSerializer.descriptor)
     b.optionalElement("targetDisease", CodeableConceptSerializer.descriptor)
     b.optionalElement("immunizationEvent", ReferenceSerializer.descriptor)
     b.optionalElement("doseStatus", CodeableConceptSerializer.descriptor)
     b.optionalElement("doseStatusReason", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
-    b.optionalElement("series", KotlinString.serializer().descriptor)
-    b.optionalElement("_series", ElementSerializer.descriptor)
-    b.optionalElement("doseNumber", KotlinString.serializer().descriptor)
-    b.optionalElement("_doseNumber", ElementSerializer.descriptor)
-    b.optionalElement("seriesDoses", KotlinString.serializer().descriptor)
-    b.optionalElement("_seriesDoses", ElementSerializer.descriptor)
+    b.strPrim("description")
+    b.strPrim("series")
+    b.strPrim("doseNumber")
+    b.strPrim("seriesDoses")
   }
 
   override fun deserializeInternal(
@@ -109,10 +99,10 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: ImmunizationEvaluationStatusCodes? = null
     var _status: Element? = null
     var patient: Reference? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var authority: Reference? = null
     var targetDisease: CodeableConcept? = null
@@ -194,7 +184,11 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status =
+            ImmunizationEvaluationStatusCodes.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -211,7 +205,7 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
               ReferenceSerializer,
               null,
             )
-        14 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        14 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -296,8 +290,7 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
               ElementSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding ImmunizationEvaluation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return ImmunizationEvaluation(
@@ -306,41 +299,19 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) ImmunizationEvaluationStatusCodes.fromCode(status) else null,
-          _status,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'status' on ImmunizationEvaluation"
-          ),
-      patient =
-        patient
-          ?: throw SerializationException(
-            "Missing required property 'patient' on ImmunizationEvaluation"
-          ),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "ImmunizationEvaluation", "status"),
+      patient = required(patient, "ImmunizationEvaluation", "patient"),
+      date = DateTime.of(date, _date),
       authority = authority,
-      targetDisease =
-        targetDisease
-          ?: throw SerializationException(
-            "Missing required property 'targetDisease' on ImmunizationEvaluation"
-          ),
+      targetDisease = required(targetDisease, "ImmunizationEvaluation", "targetDisease"),
       immunizationEvent =
-        immunizationEvent
-          ?: throw SerializationException(
-            "Missing required property 'immunizationEvent' on ImmunizationEvaluation"
-          ),
-      doseStatus =
-        doseStatus
-          ?: throw SerializationException(
-            "Missing required property 'doseStatus' on ImmunizationEvaluation"
-          ),
-      doseStatusReason = doseStatusReason ?: listOf(),
+        required(immunizationEvent, "ImmunizationEvaluation", "immunizationEvent"),
+      doseStatus = required(doseStatus, "ImmunizationEvaluation", "doseStatus"),
+      doseStatusReason = listOrEmpty(doseStatusReason),
       description = Markdown.of(description, _description),
       series = R5String.of(series, _series),
       doseNumber = R5String.of(doseNumber, _doseNumber),
@@ -375,34 +346,30 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -445,13 +412,12 @@ internal object ImmunizationEvaluationSerializer : FhirResourceSerializer<Immuni
       CodeableConceptSerializer,
       value.doseStatus,
     )
-    if (value.doseStatusReason.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.doseStatusReason,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.doseStatusReason,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       21 + descriptorOffset,

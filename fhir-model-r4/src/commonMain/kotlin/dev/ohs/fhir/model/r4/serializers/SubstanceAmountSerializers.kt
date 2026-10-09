@@ -33,31 +33,33 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object SubstanceAmountReferenceRangeSerializer :
-  KSerializer<SubstanceAmount.ReferenceRange> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ReferenceRange") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("lowLimit", QuantitySerializer.descriptor)
-      optionalElement("highLimit", QuantitySerializer.descriptor)
-    }
+  FhirSerializer<SubstanceAmount.ReferenceRange> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ReferenceRange", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<SubstanceAmount.ReferenceRange>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("lowLimit", QuantitySerializer.descriptor)
+    b.optionalElement("highLimit", QuantitySerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): SubstanceAmount.ReferenceRange {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -91,53 +93,53 @@ internal object SubstanceAmountReferenceRangeSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ReferenceRange: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceAmount.ReferenceRange(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       lowLimit = lowLimit,
       highLimit = highLimit,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceAmount.ReferenceRange) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 2, QuantitySerializer, value.lowLimit)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, QuantitySerializer, value.highLimit)
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SubstanceAmount") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("amountQuantity", QuantitySerializer.descriptor)
-      optionalElement("amountRange", RangeSerializer.descriptor)
-      optionalElement("amountString", KotlinString.serializer().descriptor)
-      optionalElement("_amountString", ElementSerializer.descriptor)
-      optionalElement("amountType", CodeableConceptSerializer.descriptor)
-      optionalElement("amountText", KotlinString.serializer().descriptor)
-      optionalElement("_amountText", ElementSerializer.descriptor)
-      optionalElement("referenceRange", SubstanceAmountReferenceRangeSerializer.descriptor)
-    }
+internal object SubstanceAmountSerializer : FhirSerializer<SubstanceAmount> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SubstanceAmount", this)
 
-  internal val listSerializer: KSerializer<List<SubstanceAmount>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<SubstanceAmount>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("amountQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("amountRange", RangeSerializer.descriptor)
+    b.strPrim("amountString")
+    b.optionalElement("amountType", CodeableConceptSerializer.descriptor)
+    b.strPrim("amountText")
+    b.optionalElement("referenceRange", SubstanceAmountReferenceRangeSerializer.descriptor)
+  }
 
   override fun deserialize(decoder: Decoder): SubstanceAmount {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -215,14 +217,14 @@ internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SubstanceAmount: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return SubstanceAmount(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       amount =
         SubstanceAmount.Amount.from(
           amountQuantity,
@@ -236,22 +238,21 @@ internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
   }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceAmount) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     when (val choice = value.amount) {
       null -> {}
       is SubstanceAmount.Amount.Quantity -> {

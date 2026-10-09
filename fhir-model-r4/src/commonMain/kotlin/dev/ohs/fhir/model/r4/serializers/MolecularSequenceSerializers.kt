@@ -53,14 +53,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -68,33 +66,30 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object MolecularSequenceReferenceSeqSerializer :
-  KSerializer<MolecularSequence.ReferenceSeq> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ReferenceSeq") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("chromosome", CodeableConceptSerializer.descriptor)
-      optionalElement("genomeBuild", KotlinString.serializer().descriptor)
-      optionalElement("_genomeBuild", ElementSerializer.descriptor)
-      optionalElement("orientation", KotlinString.serializer().descriptor)
-      optionalElement("_orientation", ElementSerializer.descriptor)
-      optionalElement("referenceSeqId", CodeableConceptSerializer.descriptor)
-      optionalElement("referenceSeqPointer", ReferenceSerializer.descriptor)
-      optionalElement("referenceSeqString", KotlinString.serializer().descriptor)
-      optionalElement("_referenceSeqString", ElementSerializer.descriptor)
-      optionalElement("strand", KotlinString.serializer().descriptor)
-      optionalElement("_strand", ElementSerializer.descriptor)
-      optionalElement("windowStart", Int.serializer().descriptor)
-      optionalElement("_windowStart", ElementSerializer.descriptor)
-      optionalElement("windowEnd", Int.serializer().descriptor)
-      optionalElement("_windowEnd", ElementSerializer.descriptor)
-    }
+  FhirSerializer<MolecularSequence.ReferenceSeq> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ReferenceSeq", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MolecularSequence.ReferenceSeq>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("chromosome", CodeableConceptSerializer.descriptor)
+    b.strPrim("genomeBuild")
+    b.strPrim("orientation")
+    b.optionalElement("referenceSeqId", CodeableConceptSerializer.descriptor)
+    b.optionalElement("referenceSeqPointer", ReferenceSerializer.descriptor)
+    b.strPrim("referenceSeqString")
+    b.strPrim("strand")
+    b.intPrim("windowStart")
+    b.intPrim("windowEnd")
+  }
+
   override fun deserialize(decoder: Decoder): MolecularSequence.ReferenceSeq {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -102,13 +97,13 @@ internal object MolecularSequenceReferenceSeqSerializer :
     var chromosome: CodeableConcept? = null
     var genomeBuild: KotlinString? = null
     var _genomeBuild: Element? = null
-    var orientation: KotlinString? = null
+    var orientation: OrientationType? = null
     var _orientation: Element? = null
     var referenceSeqId: CodeableConcept? = null
     var referenceSeqPointer: Reference? = null
     var referenceSeqString: KotlinString? = null
     var _referenceSeqString: Element? = null
-    var strand: KotlinString? = null
+    var strand: StrandType? = null
     var _strand: Element? = null
     var windowStart: Int? = null
     var _windowStart: Element? = null
@@ -150,7 +145,9 @@ internal object MolecularSequenceReferenceSeqSerializer :
               ElementSerializer,
               null,
             )
-        6 -> orientation = compositeDecoder.decodeStringElement(descriptor, i)
+        6 ->
+          orientation =
+            OrientationType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _orientation =
             compositeDecoder.decodeNullableSerializableElement(
@@ -184,7 +181,7 @@ internal object MolecularSequenceReferenceSeqSerializer :
               ElementSerializer,
               null,
             )
-        12 -> strand = compositeDecoder.decodeStringElement(descriptor, i)
+        12 -> strand = StrandType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         13 ->
           _strand =
             compositeDecoder.decodeNullableSerializableElement(
@@ -212,47 +209,42 @@ internal object MolecularSequenceReferenceSeqSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ReferenceSeq: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MolecularSequence.ReferenceSeq(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       chromosome = chromosome,
       genomeBuild = R4String.of(genomeBuild, _genomeBuild),
-      orientation =
-        Enumeration.of(
-          if (orientation != null) OrientationType.fromCode(orientation) else null,
-          _orientation,
-        ),
+      orientation = Enumeration.of(orientation, _orientation),
       referenceSeqId = referenceSeqId,
       referenceSeqPointer = referenceSeqPointer,
       referenceSeqString = R4String.of(referenceSeqString, _referenceSeqString),
-      strand = Enumeration.of(if (strand != null) StrandType.fromCode(strand) else null, _strand),
+      strand = Enumeration.of(strand, _strand),
       windowStart = Integer.of(windowStart, _windowStart),
       windowEnd = Integer.of(windowEnd, _windowEnd),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.ReferenceSeq) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -287,28 +279,26 @@ internal object MolecularSequenceReferenceSeqSerializer :
   }
 }
 
-internal object MolecularSequenceVariantSerializer : KSerializer<MolecularSequence.Variant> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Variant") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("start", Int.serializer().descriptor)
-      optionalElement("_start", ElementSerializer.descriptor)
-      optionalElement("end", Int.serializer().descriptor)
-      optionalElement("_end", ElementSerializer.descriptor)
-      optionalElement("observedAllele", KotlinString.serializer().descriptor)
-      optionalElement("_observedAllele", ElementSerializer.descriptor)
-      optionalElement("referenceAllele", KotlinString.serializer().descriptor)
-      optionalElement("_referenceAllele", ElementSerializer.descriptor)
-      optionalElement("cigar", KotlinString.serializer().descriptor)
-      optionalElement("_cigar", ElementSerializer.descriptor)
-      optionalElement("variantPointer", ReferenceSerializer.descriptor)
-    }
+internal object MolecularSequenceVariantSerializer : FhirSerializer<MolecularSequence.Variant> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Variant", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MolecularSequence.Variant>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("start")
+    b.intPrim("end")
+    b.strPrim("observedAllele")
+    b.strPrim("referenceAllele")
+    b.strPrim("cigar")
+    b.optionalElement("variantPointer", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MolecularSequence.Variant {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -397,14 +387,14 @@ internal object MolecularSequenceVariantSerializer : KSerializer<MolecularSequen
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Variant: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MolecularSequence.Variant(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       start = Integer.of(start, _start),
       end = Integer.of(end, _end),
       observedAllele = R4String.of(observedAllele, _observedAllele),
@@ -415,22 +405,21 @@ internal object MolecularSequenceVariantSerializer : KSerializer<MolecularSequen
   }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.Variant) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.start?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.start)
     compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.end?.value)
@@ -451,48 +440,40 @@ internal object MolecularSequenceVariantSerializer : KSerializer<MolecularSequen
   }
 }
 
-internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequence.Quality> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Quality") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("standardSequence", CodeableConceptSerializer.descriptor)
-      optionalElement("start", Int.serializer().descriptor)
-      optionalElement("_start", ElementSerializer.descriptor)
-      optionalElement("end", Int.serializer().descriptor)
-      optionalElement("_end", ElementSerializer.descriptor)
-      optionalElement("score", QuantitySerializer.descriptor)
-      optionalElement("method", CodeableConceptSerializer.descriptor)
-      optionalElement("truthTP", FhirDecimalSerializer.descriptor)
-      optionalElement("_truthTP", ElementSerializer.descriptor)
-      optionalElement("queryTP", FhirDecimalSerializer.descriptor)
-      optionalElement("_queryTP", ElementSerializer.descriptor)
-      optionalElement("truthFN", FhirDecimalSerializer.descriptor)
-      optionalElement("_truthFN", ElementSerializer.descriptor)
-      optionalElement("queryFP", FhirDecimalSerializer.descriptor)
-      optionalElement("_queryFP", ElementSerializer.descriptor)
-      optionalElement("gtFP", FhirDecimalSerializer.descriptor)
-      optionalElement("_gtFP", ElementSerializer.descriptor)
-      optionalElement("precision", FhirDecimalSerializer.descriptor)
-      optionalElement("_precision", ElementSerializer.descriptor)
-      optionalElement("recall", FhirDecimalSerializer.descriptor)
-      optionalElement("_recall", ElementSerializer.descriptor)
-      optionalElement("fScore", FhirDecimalSerializer.descriptor)
-      optionalElement("_fScore", ElementSerializer.descriptor)
-      optionalElement("roc", MolecularSequenceQualityRocSerializer.descriptor)
-    }
+internal object MolecularSequenceQualitySerializer : FhirSerializer<MolecularSequence.Quality> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Quality", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MolecularSequence.Quality>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("type")
+    b.optionalElement("standardSequence", CodeableConceptSerializer.descriptor)
+    b.intPrim("start")
+    b.intPrim("end")
+    b.optionalElement("score", QuantitySerializer.descriptor)
+    b.optionalElement("method", CodeableConceptSerializer.descriptor)
+    b.prim("truthTP", FhirDecimalSerializer.descriptor)
+    b.prim("queryTP", FhirDecimalSerializer.descriptor)
+    b.prim("truthFN", FhirDecimalSerializer.descriptor)
+    b.prim("queryFP", FhirDecimalSerializer.descriptor)
+    b.prim("gtFP", FhirDecimalSerializer.descriptor)
+    b.prim("precision", FhirDecimalSerializer.descriptor)
+    b.prim("recall", FhirDecimalSerializer.descriptor)
+    b.prim("fScore", FhirDecimalSerializer.descriptor)
+    b.optionalElement("roc", MolecularSequenceQualityRocSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MolecularSequence.Quality {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: QualityType? = null
     var _type: Element? = null
     var standardSequence: CodeableConcept? = null
     var start: Int? = null
@@ -537,7 +518,7 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> type = QualityType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -725,19 +706,15 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Quality: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MolecularSequence.Quality(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(if (type != null) QualityType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on MolecularSequence.Quality"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(Enumeration.of(type, _type), "MolecularSequence.Quality", "type"),
       standardSequence = standardSequence,
       start = Integer.of(start, _start),
       end = Integer.of(end, _end),
@@ -756,22 +733,21 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
   }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.Quality) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.type)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -857,32 +833,29 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
   }
 }
 
-internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSequence.Quality.Roc> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Roc") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("score", intNullableListSerializer.descriptor)
-      optionalElement("_score", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("numTP", intNullableListSerializer.descriptor)
-      optionalElement("_numTP", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("numFP", intNullableListSerializer.descriptor)
-      optionalElement("_numFP", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("numFN", intNullableListSerializer.descriptor)
-      optionalElement("_numFN", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("precision", FhirDecimalSerializer.nullableListSerializer.descriptor)
-      optionalElement("_precision", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("sensitivity", FhirDecimalSerializer.nullableListSerializer.descriptor)
-      optionalElement("_sensitivity", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("fMeasure", FhirDecimalSerializer.nullableListSerializer.descriptor)
-      optionalElement("_fMeasure", ElementSerializer.nullableListSerializer.descriptor)
-    }
+internal object MolecularSequenceQualityRocSerializer :
+  FhirSerializer<MolecularSequence.Quality.Roc> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Roc", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MolecularSequence.Quality.Roc>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrimList("score")
+    b.intPrimList("numTP")
+    b.intPrimList("numFP")
+    b.intPrimList("numFN")
+    b.primList("precision", FhirDecimalSerializer.nullableListSerializer.descriptor)
+    b.primList("sensitivity", FhirDecimalSerializer.nullableListSerializer.descriptor)
+    b.primList("fMeasure", FhirDecimalSerializer.nullableListSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MolecularSequence.Quality.Roc {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1033,84 +1006,97 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Roc: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val score_ =
+      List(maxSize(score, _score)) { index ->
+        entryRequired(
+          Integer.of(at(score, index), at(_score, index)),
+          "MolecularSequence.Quality.Roc",
+          "score",
+        )
+      }
+    val numTP_ =
+      List(maxSize(numTP, _numTP)) { index ->
+        entryRequired(
+          Integer.of(at(numTP, index), at(_numTP, index)),
+          "MolecularSequence.Quality.Roc",
+          "numTP",
+        )
+      }
+    val numFP_ =
+      List(maxSize(numFP, _numFP)) { index ->
+        entryRequired(
+          Integer.of(at(numFP, index), at(_numFP, index)),
+          "MolecularSequence.Quality.Roc",
+          "numFP",
+        )
+      }
+    val numFN_ =
+      List(maxSize(numFN, _numFN)) { index ->
+        entryRequired(
+          Integer.of(at(numFN, index), at(_numFN, index)),
+          "MolecularSequence.Quality.Roc",
+          "numFN",
+        )
+      }
+    val precision_ =
+      List(maxSize(precision, _precision)) { index ->
+        entryRequired(
+          Decimal.of(at(precision, index), at(_precision, index)),
+          "MolecularSequence.Quality.Roc",
+          "precision",
+        )
+      }
+    val sensitivity_ =
+      List(maxSize(sensitivity, _sensitivity)) { index ->
+        entryRequired(
+          Decimal.of(at(sensitivity, index), at(_sensitivity, index)),
+          "MolecularSequence.Quality.Roc",
+          "sensitivity",
+        )
+      }
+    val fMeasure_ =
+      List(maxSize(fMeasure, _fMeasure)) { index ->
+        entryRequired(
+          Decimal.of(at(fMeasure, index), at(_fMeasure, index)),
+          "MolecularSequence.Quality.Roc",
+          "fMeasure",
+        )
+      }
     return MolecularSequence.Quality.Roc(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      score =
-        (kotlin.collections.List(maxOf(score?.size ?: 0, _score?.size ?: 0)) { index ->
-          Integer.of(score?.getOrNull(index), _score?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'score' on MolecularSequence.Quality.Roc has neither a value nor an id/extension"
-            )
-        }),
-      numTP =
-        (kotlin.collections.List(maxOf(numTP?.size ?: 0, _numTP?.size ?: 0)) { index ->
-          Integer.of(numTP?.getOrNull(index), _numTP?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'numTP' on MolecularSequence.Quality.Roc has neither a value nor an id/extension"
-            )
-        }),
-      numFP =
-        (kotlin.collections.List(maxOf(numFP?.size ?: 0, _numFP?.size ?: 0)) { index ->
-          Integer.of(numFP?.getOrNull(index), _numFP?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'numFP' on MolecularSequence.Quality.Roc has neither a value nor an id/extension"
-            )
-        }),
-      numFN =
-        (kotlin.collections.List(maxOf(numFN?.size ?: 0, _numFN?.size ?: 0)) { index ->
-          Integer.of(numFN?.getOrNull(index), _numFN?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'numFN' on MolecularSequence.Quality.Roc has neither a value nor an id/extension"
-            )
-        }),
-      precision =
-        (kotlin.collections.List(maxOf(precision?.size ?: 0, _precision?.size ?: 0)) { index ->
-          Decimal.of(precision?.getOrNull(index), _precision?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'precision' on MolecularSequence.Quality.Roc has neither a value nor an id/extension"
-            )
-        }),
-      sensitivity =
-        (kotlin.collections.List(maxOf(sensitivity?.size ?: 0, _sensitivity?.size ?: 0)) { index ->
-          Decimal.of(sensitivity?.getOrNull(index), _sensitivity?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'sensitivity' on MolecularSequence.Quality.Roc has neither a value nor an id/extension"
-            )
-        }),
-      fMeasure =
-        (kotlin.collections.List(maxOf(fMeasure?.size ?: 0, _fMeasure?.size ?: 0)) { index ->
-          Decimal.of(fMeasure?.getOrNull(index), _fMeasure?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'fMeasure' on MolecularSequence.Quality.Roc has neither a value nor an id/extension"
-            )
-        }),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      score = score_,
+      numTP = numTP_,
+      numFP = numFP_,
+      numFN = numFN_,
+      precision = precision_,
+      sensitivity = sensitivity_,
+      fMeasure = fMeasure_,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.Quality.Roc) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.score.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    if (!value.score.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         3,
@@ -1119,7 +1105,7 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 4, value.score)
     }
-    if (value.numTP.isNotEmpty()) {
+    if (!value.numTP.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         5,
@@ -1128,7 +1114,7 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 6, value.numTP)
     }
-    if (value.numFP.isNotEmpty()) {
+    if (!value.numFP.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         7,
@@ -1137,7 +1123,7 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 8, value.numFP)
     }
-    if (value.numFN.isNotEmpty()) {
+    if (!value.numFN.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         9,
@@ -1146,7 +1132,7 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 10, value.numFN)
     }
-    if (value.precision.isNotEmpty()) {
+    if (!value.precision.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11,
@@ -1155,7 +1141,7 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 12, value.precision)
     }
-    if (value.sensitivity.isNotEmpty()) {
+    if (!value.sensitivity.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13,
@@ -1164,7 +1150,7 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 14, value.sensitivity)
     }
-    if (value.fMeasure.isNotEmpty()) {
+    if (!value.fMeasure.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         15,
@@ -1177,35 +1163,33 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
   }
 }
 
-internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSequence.Repository> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Repository") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-      optionalElement("url", KotlinString.serializer().descriptor)
-      optionalElement("_url", ElementSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("datasetId", KotlinString.serializer().descriptor)
-      optionalElement("_datasetId", ElementSerializer.descriptor)
-      optionalElement("variantsetId", KotlinString.serializer().descriptor)
-      optionalElement("_variantsetId", ElementSerializer.descriptor)
-      optionalElement("readsetId", KotlinString.serializer().descriptor)
-      optionalElement("_readsetId", ElementSerializer.descriptor)
-    }
+internal object MolecularSequenceRepositorySerializer :
+  FhirSerializer<MolecularSequence.Repository> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Repository", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MolecularSequence.Repository>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("type")
+    b.strPrim("url")
+    b.strPrim("name")
+    b.strPrim("datasetId")
+    b.strPrim("variantsetId")
+    b.strPrim("readsetId")
+  }
+
   override fun deserialize(decoder: Decoder): MolecularSequence.Repository {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: RepositoryType? = null
     var _type: Element? = null
     var url: KotlinString? = null
     var _url: Element? = null
@@ -1236,7 +1220,7 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        3 -> type = RepositoryType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1291,19 +1275,15 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Repository: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MolecularSequence.Repository(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        Enumeration.of(if (type != null) RepositoryType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on MolecularSequence.Repository"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(Enumeration.of(type, _type), "MolecularSequence.Repository", "type"),
       url = Uri.of(url, _url),
       name = R4String.of(name, _name),
       datasetId = R4String.of(datasetId, _datasetId),
@@ -1313,22 +1293,21 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
   }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.Repository) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.url?.value)
@@ -1346,25 +1325,26 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
 }
 
 internal object MolecularSequenceStructureVariantSerializer :
-  KSerializer<MolecularSequence.StructureVariant> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("StructureVariant") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("variantType", CodeableConceptSerializer.descriptor)
-      optionalElement("exact", KotlinBoolean.serializer().descriptor)
-      optionalElement("_exact", ElementSerializer.descriptor)
-      optionalElement("length", Int.serializer().descriptor)
-      optionalElement("_length", ElementSerializer.descriptor)
-      optionalElement("outer", MolecularSequenceStructureVariantOuterSerializer.descriptor)
-      optionalElement("inner", MolecularSequenceStructureVariantInnerSerializer.descriptor)
-    }
+  FhirSerializer<MolecularSequence.StructureVariant> {
+  override val descriptor: SerialDescriptor = buildDescriptor("StructureVariant", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MolecularSequence.StructureVariant>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("variantType", CodeableConceptSerializer.descriptor)
+    b.boolPrim("exact")
+    b.intPrim("length")
+    b.optionalElement("outer", MolecularSequenceStructureVariantOuterSerializer.descriptor)
+    b.optionalElement("inner", MolecularSequenceStructureVariantInnerSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MolecularSequence.StructureVariant {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1438,14 +1418,14 @@ internal object MolecularSequenceStructureVariantSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding StructureVariant: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MolecularSequence.StructureVariant(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       variantType = variantType,
       exact = R4Boolean.of(exact, _exact),
       length = Integer.of(length, _length),
@@ -1455,22 +1435,21 @@ internal object MolecularSequenceStructureVariantSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.StructureVariant) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -1498,22 +1477,23 @@ internal object MolecularSequenceStructureVariantSerializer :
 }
 
 internal object MolecularSequenceStructureVariantOuterSerializer :
-  KSerializer<MolecularSequence.StructureVariant.Outer> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Outer") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("start", Int.serializer().descriptor)
-      optionalElement("_start", ElementSerializer.descriptor)
-      optionalElement("end", Int.serializer().descriptor)
-      optionalElement("_end", ElementSerializer.descriptor)
-    }
+  FhirSerializer<MolecularSequence.StructureVariant.Outer> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Outer", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MolecularSequence.StructureVariant.Outer>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("start")
+    b.intPrim("end")
+  }
+
   override fun deserialize(decoder: Decoder): MolecularSequence.StructureVariant.Outer {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1560,36 +1540,35 @@ internal object MolecularSequenceStructureVariantOuterSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Outer: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MolecularSequence.StructureVariant.Outer(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       start = Integer.of(start, _start),
       end = Integer.of(end, _end),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.StructureVariant.Outer) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.start?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.start)
     compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.end?.value)
@@ -1599,22 +1578,23 @@ internal object MolecularSequenceStructureVariantOuterSerializer :
 }
 
 internal object MolecularSequenceStructureVariantInnerSerializer :
-  KSerializer<MolecularSequence.StructureVariant.Inner> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Inner") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("start", Int.serializer().descriptor)
-      optionalElement("_start", ElementSerializer.descriptor)
-      optionalElement("end", Int.serializer().descriptor)
-      optionalElement("_end", ElementSerializer.descriptor)
-    }
+  FhirSerializer<MolecularSequence.StructureVariant.Inner> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Inner", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MolecularSequence.StructureVariant.Inner>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.intPrim("start")
+    b.intPrim("end")
+  }
+
   override fun deserialize(decoder: Decoder): MolecularSequence.StructureVariant.Inner {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -1661,36 +1641,35 @@ internal object MolecularSequenceStructureVariantInnerSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Inner: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MolecularSequence.StructureVariant.Inner(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       start = Integer.of(start, _start),
       end = Integer.of(end, _end),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence.StructureVariant.Inner) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 3, value.start?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.start)
     compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.end?.value)
@@ -1703,24 +1682,20 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
   override val descriptor: SerialDescriptor = buildResourceDescriptor("MolecularSequence")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("type", KotlinString.serializer().descriptor)
-    b.optionalElement("_type", ElementSerializer.descriptor)
-    b.optionalElement("coordinateSystem", Int.serializer().descriptor)
-    b.optionalElement("_coordinateSystem", ElementSerializer.descriptor)
+    b.strPrim("type")
+    b.intPrim("coordinateSystem")
     b.optionalElement("patient", ReferenceSerializer.descriptor)
     b.optionalElement("specimen", ReferenceSerializer.descriptor)
     b.optionalElement("device", ReferenceSerializer.descriptor)
@@ -1728,11 +1703,9 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
     b.optionalElement("quantity", QuantitySerializer.descriptor)
     b.optionalElement("referenceSeq", MolecularSequenceReferenceSeqSerializer.descriptor)
     b.optionalElement("variant", MolecularSequenceVariantSerializer.listSerializer.descriptor)
-    b.optionalElement("observedSeq", KotlinString.serializer().descriptor)
-    b.optionalElement("_observedSeq", ElementSerializer.descriptor)
+    b.strPrim("observedSeq")
     b.optionalElement("quality", MolecularSequenceQualitySerializer.listSerializer.descriptor)
-    b.optionalElement("readCoverage", Int.serializer().descriptor)
-    b.optionalElement("_readCoverage", ElementSerializer.descriptor)
+    b.intPrim("readCoverage")
     b.optionalElement("repository", MolecularSequenceRepositorySerializer.listSerializer.descriptor)
     b.optionalElement("pointer", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement(
@@ -1757,7 +1730,7 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var type: KotlinString? = null
+    var type: SequenceType? = null
     var _type: Element? = null
     var coordinateSystem: Int? = null
     var _coordinateSystem: Element? = null
@@ -1843,7 +1816,7 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        11 -> type = SequenceType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1967,7 +1940,7 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
               MolecularSequenceStructureVariantSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding MolecularSequence: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return MolecularSequence(
@@ -1976,29 +1949,30 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      type = Enumeration.of(if (type != null) SequenceType.fromCode(type) else null, _type),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      type = Enumeration.of(type, _type),
       coordinateSystem =
-        Integer.of(coordinateSystem, _coordinateSystem)
-          ?: throw SerializationException(
-            "Missing required property 'coordinateSystem' on MolecularSequence"
-          ),
+        required(
+          Integer.of(coordinateSystem, _coordinateSystem),
+          "MolecularSequence",
+          "coordinateSystem",
+        ),
       patient = patient,
       specimen = specimen,
       device = device,
       performer = performer,
       quantity = quantity,
       referenceSeq = referenceSeq,
-      variant = variant ?: listOf(),
+      variant = listOrEmpty(variant),
       observedSeq = R4String.of(observedSeq, _observedSeq),
-      quality = quality ?: listOf(),
+      quality = listOrEmpty(quality),
       readCoverage = Integer.of(readCoverage, _readCoverage),
-      repository = repository ?: listOf(),
-      pointer = pointer ?: listOf(),
-      structureVariant = structureVariant ?: listOf(),
+      repository = listOrEmpty(repository),
+      pointer = listOrEmpty(pointer),
+      structureVariant = listOrEmpty(structureVariant),
     )
   }
 
@@ -2029,34 +2003,30 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -2109,52 +2079,47 @@ internal object MolecularSequenceSerializer : FhirResourceSerializer<MolecularSe
       MolecularSequenceReferenceSeqSerializer,
       value.referenceSeq,
     )
-    if (value.variant.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        MolecularSequenceVariantSerializer.listSerializer,
-        value.variant,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      21 + descriptorOffset,
+      MolecularSequenceVariantSerializer.listSerializer,
+      value.variant,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       22 + descriptorOffset,
       value.observedSeq?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.observedSeq)
-    if (value.quality.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        MolecularSequenceQualitySerializer.listSerializer,
-        value.quality,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      MolecularSequenceQualitySerializer.listSerializer,
+      value.quality,
+    )
     compositeEncoder.encodeIntIfNotNull(
       descriptor,
       25 + descriptorOffset,
       value.readCoverage?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.readCoverage)
-    if (value.repository.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        MolecularSequenceRepositorySerializer.listSerializer,
-        value.repository,
-      )
-    if (value.pointer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.pointer,
-      )
-    if (value.structureVariant.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        MolecularSequenceStructureVariantSerializer.listSerializer,
-        value.structureVariant,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      MolecularSequenceRepositorySerializer.listSerializer,
+      value.repository,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.pointer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      MolecularSequenceStructureVariantSerializer.listSerializer,
+      value.structureVariant,
+    )
   }
 }

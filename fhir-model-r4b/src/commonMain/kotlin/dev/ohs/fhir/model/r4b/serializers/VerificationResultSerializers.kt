@@ -48,14 +48,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -63,26 +61,28 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object VerificationResultPrimarySourceSerializer :
-  KSerializer<VerificationResult.PrimarySource> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PrimarySource") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("who", ReferenceSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("communicationMethod", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("validationStatus", CodeableConceptSerializer.descriptor)
-      optionalElement("validationDate", KotlinString.serializer().descriptor)
-      optionalElement("_validationDate", ElementSerializer.descriptor)
-      optionalElement("canPushUpdates", CodeableConceptSerializer.descriptor)
-      optionalElement("pushTypeAvailable", CodeableConceptSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<VerificationResult.PrimarySource> {
+  override val descriptor: SerialDescriptor = buildDescriptor("PrimarySource", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<VerificationResult.PrimarySource>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("who", ReferenceSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("communicationMethod", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("validationStatus", CodeableConceptSerializer.descriptor)
+    b.strPrim("validationDate")
+    b.optionalElement("canPushUpdates", CodeableConceptSerializer.descriptor)
+    b.optionalElement("pushTypeAvailable", CodeableConceptSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): VerificationResult.PrimarySource {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -91,7 +91,7 @@ internal object VerificationResultPrimarySourceSerializer :
     var type: List<CodeableConcept>? = null
     var communicationMethod: List<CodeableConcept>? = null
     var validationStatus: CodeableConcept? = null
-    var validationDate: KotlinString? = null
+    var validationDate: FhirDateTime? = null
     var _validationDate: Element? = null
     var canPushUpdates: CodeableConcept? = null
     var pushTypeAvailable: List<CodeableConcept>? = null
@@ -146,7 +146,9 @@ internal object VerificationResultPrimarySourceSerializer :
               CodeableConceptSerializer,
               null,
             )
-        7 -> validationDate = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          validationDate =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _validationDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -172,60 +174,53 @@ internal object VerificationResultPrimarySourceSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PrimarySource: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return VerificationResult.PrimarySource(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       who = who,
-      type = type ?: listOf(),
-      communicationMethod = communicationMethod ?: listOf(),
+      type = listOrEmpty(type),
+      communicationMethod = listOrEmpty(communicationMethod),
       validationStatus = validationStatus,
-      validationDate =
-        DateTime.of(
-          if (validationDate != null) FhirDateTime.fromString(validationDate) else null,
-          _validationDate,
-        ),
+      validationDate = DateTime.of(validationDate, _validationDate),
       canPushUpdates = canPushUpdates,
-      pushTypeAvailable = pushTypeAvailable ?: listOf(),
+      pushTypeAvailable = listOrEmpty(pushTypeAvailable),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.PrimarySource) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.who)
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
-    if (value.communicationMethod.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.communicationMethod,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      CodeableConceptSerializer.listSerializer,
+      value.communicationMethod,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       6,
@@ -240,41 +235,40 @@ internal object VerificationResultPrimarySourceSerializer :
       CodeableConceptSerializer,
       value.canPushUpdates,
     )
-    if (value.pushTypeAvailable.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        CodeableConceptSerializer.listSerializer,
-        value.pushTypeAvailable,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      CodeableConceptSerializer.listSerializer,
+      value.pushTypeAvailable,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object VerificationResultAttestationSerializer :
-  KSerializer<VerificationResult.Attestation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Attestation") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("who", ReferenceSerializer.descriptor)
-      optionalElement("onBehalfOf", ReferenceSerializer.descriptor)
-      optionalElement("communicationMethod", CodeableConceptSerializer.descriptor)
-      optionalElement("date", KotlinString.serializer().descriptor)
-      optionalElement("_date", ElementSerializer.descriptor)
-      optionalElement("sourceIdentityCertificate", KotlinString.serializer().descriptor)
-      optionalElement("_sourceIdentityCertificate", ElementSerializer.descriptor)
-      optionalElement("proxyIdentityCertificate", KotlinString.serializer().descriptor)
-      optionalElement("_proxyIdentityCertificate", ElementSerializer.descriptor)
-      optionalElement("proxySignature", SignatureSerializer.descriptor)
-      optionalElement("sourceSignature", SignatureSerializer.descriptor)
-    }
+  FhirSerializer<VerificationResult.Attestation> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Attestation", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<VerificationResult.Attestation>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("who", ReferenceSerializer.descriptor)
+    b.optionalElement("onBehalfOf", ReferenceSerializer.descriptor)
+    b.optionalElement("communicationMethod", CodeableConceptSerializer.descriptor)
+    b.strPrim("date")
+    b.strPrim("sourceIdentityCertificate")
+    b.strPrim("proxyIdentityCertificate")
+    b.optionalElement("proxySignature", SignatureSerializer.descriptor)
+    b.optionalElement("sourceSignature", SignatureSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): VerificationResult.Attestation {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -282,7 +276,7 @@ internal object VerificationResultAttestationSerializer :
     var who: Reference? = null
     var onBehalfOf: Reference? = null
     var communicationMethod: CodeableConcept? = null
-    var date: KotlinString? = null
+    var date: FhirDate? = null
     var _date: Element? = null
     var sourceIdentityCertificate: KotlinString? = null
     var _sourceIdentityCertificate: Element? = null
@@ -333,7 +327,7 @@ internal object VerificationResultAttestationSerializer :
               CodeableConceptSerializer,
               null,
             )
-        6 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> date = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -377,18 +371,18 @@ internal object VerificationResultAttestationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Attestation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return VerificationResult.Attestation(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       who = who,
       onBehalfOf = onBehalfOf,
       communicationMethod = communicationMethod,
-      date = Date.of(if (date != null) FhirDate.fromString(date) else null, _date),
+      date = Date.of(date, _date),
       sourceIdentityCertificate =
         R4bString.of(sourceIdentityCertificate, _sourceIdentityCertificate),
       proxyIdentityCertificate = R4bString.of(proxyIdentityCertificate, _proxyIdentityCertificate),
@@ -398,22 +392,21 @@ internal object VerificationResultAttestationSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.Attestation) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 3, ReferenceSerializer, value.who)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
@@ -449,22 +442,25 @@ internal object VerificationResultAttestationSerializer :
   }
 }
 
-internal object VerificationResultValidatorSerializer : KSerializer<VerificationResult.Validator> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Validator") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("organization", ReferenceSerializer.descriptor)
-      optionalElement("identityCertificate", KotlinString.serializer().descriptor)
-      optionalElement("_identityCertificate", ElementSerializer.descriptor)
-      optionalElement("attestationSignature", SignatureSerializer.descriptor)
-    }
+internal object VerificationResultValidatorSerializer :
+  FhirSerializer<VerificationResult.Validator> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Validator", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<VerificationResult.Validator>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("organization", ReferenceSerializer.descriptor)
+    b.strPrim("identityCertificate")
+    b.optionalElement("attestationSignature", SignatureSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): VerificationResult.Validator {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -518,41 +514,36 @@ internal object VerificationResultValidatorSerializer : KSerializer<Verification
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Validator: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return VerificationResult.Validator(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      organization =
-        organization
-          ?: throw SerializationException(
-            "Missing required property 'organization' on VerificationResult.Validator"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      organization = required(organization, "VerificationResult.Validator", "organization"),
       identityCertificate = R4bString.of(identityCertificate, _identityCertificate),
       attestationSignature = attestationSignature,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult.Validator) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -575,34 +566,27 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
   override val descriptor: SerialDescriptor = buildResourceDescriptor("VerificationResult")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("target", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("targetLocation", stringNullableListSerializer.descriptor)
-    b.optionalElement("_targetLocation", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrimList("targetLocation")
     b.optionalElement("need", CodeableConceptSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("statusDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_statusDate", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("statusDate")
     b.optionalElement("validationType", CodeableConceptSerializer.descriptor)
     b.optionalElement("validationProcess", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("frequency", TimingSerializer.descriptor)
-    b.optionalElement("lastPerformed", KotlinString.serializer().descriptor)
-    b.optionalElement("_lastPerformed", ElementSerializer.descriptor)
-    b.optionalElement("nextScheduled", KotlinString.serializer().descriptor)
-    b.optionalElement("_nextScheduled", ElementSerializer.descriptor)
+    b.strPrim("lastPerformed")
+    b.strPrim("nextScheduled")
     b.optionalElement("failureAction", CodeableConceptSerializer.descriptor)
     b.optionalElement(
       "primarySource",
@@ -631,16 +615,16 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
     var targetLocation: List<KotlinString?>? = null
     var _targetLocation: List<Element?>? = null
     var need: CodeableConcept? = null
-    var status: KotlinString? = null
+    var status: Status? = null
     var _status: Element? = null
-    var statusDate: KotlinString? = null
+    var statusDate: FhirDateTime? = null
     var _statusDate: Element? = null
     var validationType: CodeableConcept? = null
     var validationProcess: List<CodeableConcept>? = null
     var frequency: Timing? = null
-    var lastPerformed: KotlinString? = null
+    var lastPerformed: FhirDateTime? = null
     var _lastPerformed: Element? = null
-    var nextScheduled: KotlinString? = null
+    var nextScheduled: FhirDate? = null
     var _nextScheduled: Element? = null
     var failureAction: CodeableConcept? = null
     var primarySource: List<VerificationResult.PrimarySource>? = null
@@ -737,7 +721,7 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
               CodeableConceptSerializer,
               null,
             )
-        14 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        14 -> status = Status.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -746,7 +730,8 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
               ElementSerializer,
               null,
             )
-        16 -> statusDate = compositeDecoder.decodeStringElement(descriptor, i)
+        16 ->
+          statusDate = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _statusDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -779,7 +764,9 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
               TimingSerializer,
               null,
             )
-        21 -> lastPerformed = compositeDecoder.decodeStringElement(descriptor, i)
+        21 ->
+          lastPerformed =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _lastPerformed =
             compositeDecoder.decodeNullableSerializableElement(
@@ -788,7 +775,8 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
               ElementSerializer,
               null,
             )
-        23 -> nextScheduled = compositeDecoder.decodeStringElement(descriptor, i)
+        23 ->
+          nextScheduled = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _nextScheduled =
             compositeDecoder.decodeNullableSerializableElement(
@@ -829,55 +817,40 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
               VerificationResultValidatorSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding VerificationResult: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val targetLocation_ =
+      List(maxSize(targetLocation, _targetLocation)) { index ->
+        entryRequired(
+          R4bString.of(at(targetLocation, index), at(_targetLocation, index)),
+          "VerificationResult",
+          "targetLocation",
+        )
+      }
     return VerificationResult(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      target = target ?: listOf(),
-      targetLocation =
-        (kotlin.collections.List(maxOf(targetLocation?.size ?: 0, _targetLocation?.size ?: 0)) {
-          index ->
-          R4bString.of(targetLocation?.getOrNull(index), _targetLocation?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'targetLocation' on VerificationResult has neither a value nor an id/extension"
-            )
-        }),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      target = listOrEmpty(target),
+      targetLocation = targetLocation_,
       need = need,
-      status =
-        Enumeration.of(if (status != null) Status.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on VerificationResult"
-          ),
-      statusDate =
-        DateTime.of(
-          if (statusDate != null) FhirDateTime.fromString(statusDate) else null,
-          _statusDate,
-        ),
+      status = required(Enumeration.of(status, _status), "VerificationResult", "status"),
+      statusDate = DateTime.of(statusDate, _statusDate),
       validationType = validationType,
-      validationProcess = validationProcess ?: listOf(),
+      validationProcess = listOrEmpty(validationProcess),
       frequency = frequency,
-      lastPerformed =
-        DateTime.of(
-          if (lastPerformed != null) FhirDateTime.fromString(lastPerformed) else null,
-          _lastPerformed,
-        ),
-      nextScheduled =
-        Date.of(
-          if (nextScheduled != null) FhirDate.fromString(nextScheduled) else null,
-          _nextScheduled,
-        ),
+      lastPerformed = DateTime.of(lastPerformed, _lastPerformed),
+      nextScheduled = Date.of(nextScheduled, _nextScheduled),
       failureAction = failureAction,
-      primarySource = primarySource ?: listOf(),
+      primarySource = listOrEmpty(primarySource),
       attestation = attestation,
-      validator = validator ?: listOf(),
+      validator = listOrEmpty(validator),
     )
   }
 
@@ -908,35 +881,31 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.target.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.target,
-      )
-    if (value.targetLocation.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.target,
+    )
+    if (!value.targetLocation.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
@@ -973,13 +942,12 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
       CodeableConceptSerializer,
       value.validationType,
     )
-    if (value.validationProcess.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.validationProcess,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.validationProcess,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       20 + descriptorOffset,
@@ -1004,25 +972,23 @@ internal object VerificationResultSerializer : FhirResourceSerializer<Verificati
       CodeableConceptSerializer,
       value.failureAction,
     )
-    if (value.primarySource.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        VerificationResultPrimarySourceSerializer.listSerializer,
-        value.primarySource,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      VerificationResultPrimarySourceSerializer.listSerializer,
+      value.primarySource,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       27 + descriptorOffset,
       VerificationResultAttestationSerializer,
       value.attestation,
     )
-    if (value.validator.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        VerificationResultValidatorSerializer.listSerializer,
-        value.validator,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28 + descriptorOffset,
+      VerificationResultValidatorSerializer.listSerializer,
+      value.validator,
+    )
   }
 }

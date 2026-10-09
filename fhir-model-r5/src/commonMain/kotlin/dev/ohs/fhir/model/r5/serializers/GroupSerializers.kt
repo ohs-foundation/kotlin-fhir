@@ -51,41 +51,40 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object GroupCharacteristicSerializer : KSerializer<Group.Characteristic> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Characteristic") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", ElementSerializer.descriptor)
-      optionalElement("valueQuantity", QuantitySerializer.descriptor)
-      optionalElement("valueRange", RangeSerializer.descriptor)
-      optionalElement("valueReference", ReferenceSerializer.descriptor)
-      optionalElement("exclude", KotlinBoolean.serializer().descriptor)
-      optionalElement("_exclude", ElementSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
-    }
+internal object GroupCharacteristicSerializer : FhirSerializer<Group.Characteristic> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Characteristic", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Group.Characteristic>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.boolPrim("valueBoolean")
+    b.optionalElement("valueQuantity", QuantitySerializer.descriptor)
+    b.optionalElement("valueRange", RangeSerializer.descriptor)
+    b.optionalElement("valueReference", ReferenceSerializer.descriptor)
+    b.boolPrim("exclude")
+    b.optionalElement("period", PeriodSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Group.Characteristic {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -181,56 +180,48 @@ internal object GroupCharacteristicSerializer : KSerializer<Group.Characteristic
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Characteristic: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Group.Characteristic(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on Group.Characteristic"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(code, "Group.Characteristic", "code"),
       `value` =
-        Group.Characteristic.Value.from(
-          valueCodeableConcept,
-          R5Boolean.of(valueBoolean, _valueBoolean),
-          valueQuantity,
-          valueRange,
-          valueReference,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'value' on Group.Characteristic"
+        required(
+          Group.Characteristic.Value.from(
+            valueCodeableConcept,
+            R5Boolean.of(valueBoolean, _valueBoolean),
+            valueQuantity,
+            valueRange,
+            valueReference,
           ),
-      exclude =
-        R5Boolean.of(exclude, _exclude)
-          ?: throw SerializationException(
-            "Missing required property 'exclude' on Group.Characteristic"
-          ),
+          "Group.Characteristic",
+          "value",
+        ),
+      exclude = required(R5Boolean.of(exclude, _exclude), "Group.Characteristic", "exclude"),
       period = period,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Group.Characteristic) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
     when (val choice = value.`value`) {
       is Group.Characteristic.Value.CodeableConcept -> {
@@ -262,21 +253,22 @@ internal object GroupCharacteristicSerializer : KSerializer<Group.Characteristic
   }
 }
 
-internal object GroupMemberSerializer : KSerializer<Group.Member> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Member") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("entity", ReferenceSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
-      optionalElement("inactive", KotlinBoolean.serializer().descriptor)
-      optionalElement("_inactive", ElementSerializer.descriptor)
-    }
+internal object GroupMemberSerializer : FhirSerializer<Group.Member> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Member", this)
 
-  internal val listSerializer: KSerializer<List<Group.Member>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Group.Member>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("entity", ReferenceSerializer.descriptor)
+    b.optionalElement("period", PeriodSerializer.descriptor)
+    b.boolPrim("inactive")
+  }
 
   override fun deserialize(decoder: Decoder): Group.Member {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -330,39 +322,36 @@ internal object GroupMemberSerializer : KSerializer<Group.Member> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Member: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Group.Member(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      entity =
-        entity
-          ?: throw SerializationException("Missing required property 'entity' on Group.Member"),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      entity = required(entity, "Group.Member", "entity"),
       period = period,
       inactive = R5Boolean.of(inactive, _inactive),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Group.Member) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.entity)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 4, PeriodSerializer, value.period)
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 5, value.inactive?.value)
@@ -375,33 +364,25 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Group")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("active", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_active", ElementSerializer.descriptor)
-    b.optionalElement("type", KotlinString.serializer().descriptor)
-    b.optionalElement("_type", ElementSerializer.descriptor)
-    b.optionalElement("membership", KotlinString.serializer().descriptor)
-    b.optionalElement("_membership", ElementSerializer.descriptor)
+    b.boolPrim("active")
+    b.strPrim("type")
+    b.strPrim("membership")
     b.optionalElement("code", CodeableConceptSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
-    b.optionalElement("quantity", Int.serializer().descriptor)
-    b.optionalElement("_quantity", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("description")
+    b.intPrim("quantity")
     b.optionalElement("managingEntity", ReferenceSerializer.descriptor)
     b.optionalElement("characteristic", GroupCharacteristicSerializer.listSerializer.descriptor)
     b.optionalElement("member", GroupMemberSerializer.listSerializer.descriptor)
@@ -425,9 +406,9 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
     var identifier: List<Identifier>? = null
     var active: KotlinBoolean? = null
     var _active: Element? = null
-    var type: KotlinString? = null
+    var type: GroupType? = null
     var _type: Element? = null
-    var membership: KotlinString? = null
+    var membership: GroupMembershipBasis? = null
     var _membership: Element? = null
     var code: CodeableConcept? = null
     var name: KotlinString? = null
@@ -515,7 +496,7 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
               ElementSerializer,
               null,
             )
-        13 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        13 -> type = GroupType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -524,7 +505,9 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
               ElementSerializer,
               null,
             )
-        15 -> membership = compositeDecoder.decodeStringElement(descriptor, i)
+        15 ->
+          membership =
+            GroupMembershipBasis.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         16 ->
           _membership =
             compositeDecoder.decodeNullableSerializableElement(
@@ -592,7 +575,7 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
               GroupMemberSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Group: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Group(
@@ -601,26 +584,20 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       active = R5Boolean.of(active, _active),
-      type =
-        Enumeration.of(if (type != null) GroupType.fromCode(type) else null, _type)
-          ?: throw SerializationException("Missing required property 'type' on Group"),
-      membership =
-        Enumeration.of(
-          if (membership != null) GroupMembershipBasis.fromCode(membership) else null,
-          _membership,
-        ) ?: throw SerializationException("Missing required property 'membership' on Group"),
+      type = required(Enumeration.of(type, _type), "Group", "type"),
+      membership = required(Enumeration.of(membership, _membership), "Group", "membership"),
       code = code,
       name = R5String.of(name, _name),
       description = Markdown.of(description, _description),
       quantity = UnsignedInt.of(quantity, _quantity),
       managingEntity = managingEntity,
-      characteristic = characteristic ?: listOf(),
-      member = member ?: listOf(),
+      characteristic = listOrEmpty(characteristic),
+      member = listOrEmpty(member),
     )
   }
 
@@ -651,34 +628,30 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.active?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.active)
     compositeEncoder.encodeStringIfNotNull(
@@ -715,19 +688,17 @@ internal object GroupSerializer : FhirResourceSerializer<Group> {
       ReferenceSerializer,
       value.managingEntity,
     )
-    if (value.characteristic.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        GroupCharacteristicSerializer.listSerializer,
-        value.characteristic,
-      )
-    if (value.member.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        GroupMemberSerializer.listSerializer,
-        value.member,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      GroupCharacteristicSerializer.listSerializer,
+      value.characteristic,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      GroupMemberSerializer.listSerializer,
+      value.member,
+    )
   }
 }

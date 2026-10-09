@@ -32,35 +32,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object NarrativeSerializer : KSerializer<Narrative> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Narrative") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("status", String.serializer().descriptor)
-      optionalElement("_status", ElementSerializer.descriptor)
-      optionalElement("div", String.serializer().descriptor)
-      optionalElement("_div", ElementSerializer.descriptor)
-    }
+internal object NarrativeSerializer : FhirSerializer<Narrative> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Narrative", this)
 
-  internal val listSerializer: KSerializer<List<Narrative>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Narrative>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("div")
+  }
 
   override fun deserialize(decoder: Decoder): Narrative {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
-    var status: String? = null
+    var status: NarrativeStatus? = null
     var _status: Element? = null
     var div: String? = null
     var _div: Element? = null
@@ -75,7 +74,7 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        2 -> status = NarrativeStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -94,34 +93,28 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Narrative: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Narrative(
       id = id,
-      extension = extension ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) NarrativeStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Narrative"),
-      div =
-        Xhtml.of(
-          div ?: throw SerializationException("Missing required property 'div' on Narrative"),
-          _div,
-        ),
+      extension = listOrEmpty(extension),
+      status = required(Enumeration.of(status, _status), "Narrative", "status"),
+      div = Xhtml.of(required(div, "Narrative", "div"), _div),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Narrative) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.status.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.status)
     compositeEncoder.encodeStringElement(descriptor, 4, value.div.value)

@@ -103,9 +103,10 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             )
           } else if (structureDefinition.kind == StructureDefinition.Kind.RESOURCE) {
             // The abstract `Resource` root dispatches via `ResourcePolymorphicSerializer`: an
-            // `AbstractPolymorphicSerializer<Resource>` that maps `resourceType` to a per-subclass
-            // `XPolymorphicSerializer` (descriptor without `resourceType`, so kotlinx-json can
-            // inject the class discriminator without colliding with a same-named field).
+            // `AbstractPolymorphicSerializer<Resource>` that maps `resourceType` to a
+            // `FhirResourcePolymorphicSerializer` wrapping the subclass's `XSerializer` (descriptor
+            // without `resourceType`, so kotlinx-json can inject the class discriminator without
+            // colliding with a same-named field).
             if (structureDefinitionName == "Resource") {
               addAnnotation(
                 AnnotationSpec.builder(Serializable::class)

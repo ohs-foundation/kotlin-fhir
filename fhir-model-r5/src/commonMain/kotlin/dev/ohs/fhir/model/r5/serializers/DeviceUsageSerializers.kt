@@ -48,33 +48,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object DeviceUsageAdherenceSerializer : KSerializer<DeviceUsage.Adherence> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Adherence") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("reason", CodeableConceptSerializer.listSerializer.descriptor)
-    }
+internal object DeviceUsageAdherenceSerializer : FhirSerializer<DeviceUsage.Adherence> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Adherence", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<DeviceUsage.Adherence>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("reason", CodeableConceptSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): DeviceUsage.Adherence {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -117,48 +118,42 @@ internal object DeviceUsageAdherenceSerializer : KSerializer<DeviceUsage.Adheren
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Adherence: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return DeviceUsage.Adherence(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on DeviceUsage.Adherence"
-          ),
-      reason = reason ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(code, "DeviceUsage.Adherence", "code"),
+      reason = listOrEmpty(reason),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: DeviceUsage.Adherence) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
-    if (value.reason.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.reason,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.reason,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -167,33 +162,28 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("DeviceUsage")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("status", String.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("patient", ReferenceSerializer.descriptor)
     b.optionalElement("derivedFrom", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("context", ReferenceSerializer.descriptor)
     b.optionalElement("timingTiming", TimingSerializer.descriptor)
     b.optionalElement("timingPeriod", PeriodSerializer.descriptor)
-    b.optionalElement("timingDateTime", String.serializer().descriptor)
-    b.optionalElement("_timingDateTime", ElementSerializer.descriptor)
-    b.optionalElement("dateAsserted", String.serializer().descriptor)
-    b.optionalElement("_dateAsserted", ElementSerializer.descriptor)
+    b.strPrim("timingDateTime")
+    b.strPrim("dateAsserted")
     b.optionalElement("usageStatus", CodeableConceptSerializer.descriptor)
     b.optionalElement("usageReason", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("adherence", DeviceUsageAdherenceSerializer.descriptor)
@@ -221,7 +211,7 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
     var basedOn: List<Reference>? = null
-    var status: String? = null
+    var status: DeviceUsageStatus? = null
     var _status: Element? = null
     var category: List<CodeableConcept>? = null
     var patient: Reference? = null
@@ -229,9 +219,9 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
     var context: Reference? = null
     var timingTiming: Timing? = null
     var timingPeriod: Period? = null
-    var timingDateTime: String? = null
+    var timingDateTime: FhirDateTime? = null
     var _timingDateTime: Element? = null
-    var dateAsserted: String? = null
+    var dateAsserted: FhirDateTime? = null
     var _dateAsserted: Element? = null
     var usageStatus: CodeableConcept? = null
     var usageReason: List<CodeableConcept>? = null
@@ -316,7 +306,8 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
               ReferenceSerializer.listSerializer,
               null,
             )
-        12 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        12 ->
+          status = DeviceUsageStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         13 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -373,7 +364,9 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
               PeriodSerializer,
               null,
             )
-        20 -> timingDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        20 ->
+          timingDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _timingDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -382,7 +375,9 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
               ElementSerializer,
               null,
             )
-        22 -> dateAsserted = compositeDecoder.decodeStringElement(descriptor, i)
+        22 ->
+          dateAsserted =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         23 ->
           _dateAsserted =
             compositeDecoder.decodeNullableSerializableElement(
@@ -455,7 +450,7 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
               AnnotationSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding DeviceUsage: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return DeviceUsage(
@@ -464,43 +459,31 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      basedOn = basedOn ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) DeviceUsageStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on DeviceUsage"),
-      category = category ?: listOf(),
-      patient =
-        patient
-          ?: throw SerializationException("Missing required property 'patient' on DeviceUsage"),
-      derivedFrom = derivedFrom ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      basedOn = listOrEmpty(basedOn),
+      status = required(Enumeration.of(status, _status), "DeviceUsage", "status"),
+      category = listOrEmpty(category),
+      patient = required(patient, "DeviceUsage", "patient"),
+      derivedFrom = listOrEmpty(derivedFrom),
       context = context,
       timing =
         DeviceUsage.Timing.from(
           timingTiming,
           timingPeriod,
-          DateTime.of(
-            if (timingDateTime != null) FhirDateTime.fromString(timingDateTime) else null,
-            _timingDateTime,
-          ),
+          DateTime.of(timingDateTime, _timingDateTime),
         ),
-      dateAsserted =
-        DateTime.of(
-          if (dateAsserted != null) FhirDateTime.fromString(dateAsserted) else null,
-          _dateAsserted,
-        ),
+      dateAsserted = DateTime.of(dateAsserted, _dateAsserted),
       usageStatus = usageStatus,
-      usageReason = usageReason ?: listOf(),
+      usageReason = listOrEmpty(usageReason),
       adherence = adherence,
       informationSource = informationSource,
-      device =
-        device ?: throw SerializationException("Missing required property 'device' on DeviceUsage"),
-      reason = reason ?: listOf(),
+      device = required(device, "DeviceUsage", "device"),
+      reason = listOrEmpty(reason),
       bodySite = bodySite,
-      note = note ?: listOf(),
+      note = listOrEmpty(note),
     )
   }
 
@@ -531,67 +514,60 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.basedOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.basedOn,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.basedOn,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       12 + descriptorOffset,
       value.status.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 13 + descriptorOffset, value.status)
-    if (value.category.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.category,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.category,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       15 + descriptorOffset,
       ReferenceSerializer,
       value.patient,
     )
-    if (value.derivedFrom.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.derivedFrom,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.derivedFrom,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
@@ -637,13 +613,12 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
       CodeableConceptSerializer,
       value.usageStatus,
     )
-    if (value.usageReason.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.usageReason,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.usageReason,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       26 + descriptorOffset,
@@ -662,25 +637,23 @@ internal object DeviceUsageSerializer : FhirResourceSerializer<DeviceUsage> {
       CodeableReferenceSerializer,
       value.device,
     )
-    if (value.reason.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        CodeableReferenceSerializer.listSerializer,
-        value.reason,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      CodeableReferenceSerializer.listSerializer,
+      value.reason,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       30 + descriptorOffset,
       CodeableReferenceSerializer,
       value.bodySite,
     )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
   }
 }

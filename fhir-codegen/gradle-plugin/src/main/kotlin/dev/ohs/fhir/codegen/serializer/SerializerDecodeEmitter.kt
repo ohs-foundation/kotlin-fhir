@@ -20,83 +20,86 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.TypeName
 import dev.ohs.fhir.codegen.CodegenContext
 import dev.ohs.fhir.codegen.ModelConstructionHelpers
+import dev.ohs.fhir.codegen.getEnumClass
+import dev.ohs.fhir.codegen.primitives.FhirPathType
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.getElementName
+import dev.ohs.fhir.codegen.schema.isExtensibleBinding
+import dev.ohs.fhir.codegen.schema.typeShouldBindToEnum
 
-/**
- * Emits the streaming-decode side of a serializer object — `deserializeInternal(decoder)` and the
- * supporting per-field decode-call helper. Walks the wire shape via
- * `CompositeDecoder.decodeElementIndex` and dispatches each slot to a specialized
- * `decodeXxxElement` (stdlib primitives) or `decodeNullableSerializableElement` (everything else).
- */
+/** Emits the decode half of a generated serializer; see [buildDeserializeInternal]. */
 internal class SerializerDecodeEmitter(private val codegenContext: CodegenContext) {
 
   /**
-   * Emits `private fun deserializeInternal(decoder: CompositeDecoder): X` — a while-loop over
+   * Emits `deserialize(decoder)` (non-resources) or `deserializeInternal(compositeDecoder,
+   * descriptor)` (resources, shared with `FhirResourcePolymorphicSerializer`) — a while-loop over
    * `decodeElementIndex(descriptor)` with an index-dispatching `when`. Each case reads one flat
    * wire field via `decodeXxxElement` (specialized) or `decodeNullableSerializableElement` (for
-   * complex/list/element types), then the loop terminates on `DECODE_DONE`.
+   * complex/list/element types), converting single primitive values to their model type right there
+   * (`FhirDate.fromString(...)`, `XEnum.fromCode(...)`) so the locals are already model-typed; the
+   * loop terminates on `DECODE_DONE`.
    *
-   * After the loop, sealed-type (choice) locals are synthesized from their expansion transients;
-   * then the model is constructed from the assembled locals.
+   * After the loop, repeating primitives are merged into locals, then the model is constructed from
+   * the assembled locals with a branch-free argument list (see [ModelConstructionHelpers]).
    */
   fun buildDeserializeInternal(
     className: ClassName,
     elements: List<Element>,
     wireFields: List<WireField>,
-    parameterized: Boolean,
-    nameToCaseLabel: Map<String, Int>,
+    isResource: Boolean,
   ): FunSpec {
     val codeBlock = CodeBlock.builder()
-    if (!parameterized) {
+    if (!isResource) {
+      // Local copy: every `descriptor` read below becomes a local load instead of a getter call.
+      codeBlock.add("val descriptor = this.descriptor\n")
       codeBlock.add("val compositeDecoder = decoder.beginStructure(descriptor)\n")
     }
     // One local per flat wire field — choice types expand into per-expansion value + element
-    // (`_field`) locals
-    // (e.g. `deceasedBoolean`, `_deceasedBoolean`, `deceasedDateTime`, `_deceasedDateTime`).
+    // (`_field`) locals (e.g. `deceasedBoolean`, `_deceasedBoolean`, `deceasedDateTime`, …).
     for (wireField in wireFields) {
       codeBlock.add(
         "var %N: %T = %L\n",
         wireField.name,
-        wireField.typeName.copy(nullable = true),
+        localType(wireField, className).copy(nullable = true),
         wireField.defaultValue ?: "null",
       )
     }
-
-    if (parameterized) {
-      // Rebased dispatch: `i - descriptorOffset` makes case labels constants (wire-field index,
-      // 0-based)
-      // regardless of whether the descriptor has `resourceType` at slot 0 (off=1) or not (off=0).
-      // The `-1` branch fires only when off=1 and i=0 — i.e., the standalone path saw
-      // `resourceType` as a real field; on the polymorphic path kotlinx-json's
-      // `discriminatorHolder` consumes that key before we ever see slot 0, so the branch is dead
-      // but harmless there.
-      codeBlock.add("while (true) {\n").indent()
+    codeBlock.add("while (true) {\n").indent()
+    if (isResource) {
+      // Standalone resource descriptors carry `resourceType` at slot 0 (`descriptorOffset` = 1);
+      // the polymorphic wrapper's descriptor has no such slot (`descriptorOffset` = 0) because
+      // kotlinx-json consumes the discriminator key itself. `DECODE_DONE` must be tested before
+      // the subtraction, since `-1 - 0` would collide with the `resourceType` case.
       codeBlock.add("val i = compositeDecoder.decodeElementIndex(descriptor)\n")
       codeBlock.add("if (i == %T.DECODE_DONE) break\n", compositeDecoderClassName)
       codeBlock.add("when (i - descriptorOffset) {\n").indent()
       codeBlock.add("-1 -> compositeDecoder.decodeStringElement(descriptor, i)\n")
-      for (wireField in wireFields) {
-        val label = nameToCaseLabel.getValue(wireField.name)
-        codeBlock.add(
-          "%L -> %N = %L\n",
-          label,
-          wireField.name,
-          jsonDecodeElementCall(wireField, className),
-        )
-      }
+    } else {
+      codeBlock.add("when (val i = compositeDecoder.decodeElementIndex(descriptor)) {\n").indent()
+    }
+    wireFields.forEachIndexed { index, wireField ->
       codeBlock.add(
-        "else -> throw %T(%S + i)\n",
-        ClassName("kotlinx.serialization", "SerializationException"),
-        "Unexpected index decoding ${className.simpleName}: ",
+        "%L -> %N = %L\n",
+        index,
+        wireField.name,
+        decodeElementCall(wireField, className),
       )
-      codeBlock.unindent().add("}\n")
-      codeBlock.unindent().add("}\n")
-      codeBlock.add("return ")
-      codeBlock.add(emitModelConstruction(className, elements))
-      return FunSpec.builder("deserializeInternal")
+    }
+    if (!isResource) {
+      codeBlock.add("%T.DECODE_DONE -> break\n", compositeDecoderClassName)
+    }
+    codeBlock.add("else -> %M(descriptor, i)\n", helperMemberName(className, "unknownIndex"))
+    codeBlock.unindent().add("}\n")
+    codeBlock.unindent().add("}\n")
+    if (!isResource) {
+      codeBlock.add("compositeDecoder.endStructure(descriptor)\n")
+    }
+    codeBlock.add(emitModelConstruction(className, elements))
+    return if (isResource) {
+      FunSpec.builder("deserializeInternal")
         .addModifiers(KModifier.OVERRIDE)
         .addParameter("compositeDecoder", compositeDecoderClassName)
         .addParameter("descriptor", serialDescriptorClassName)
@@ -105,29 +108,7 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
         .addCode(codeBlock.build())
         .build()
     } else {
-      codeBlock.add("while (true) {\n").indent()
-      codeBlock.add("when (val i = compositeDecoder.decodeElementIndex(descriptor)) {\n").indent()
-      for (wireField in wireFields) {
-        val label = nameToCaseLabel.getValue(wireField.name)
-        codeBlock.add(
-          "%L -> %N = %L\n",
-          label,
-          wireField.name,
-          jsonDecodeElementCall(wireField, className),
-        )
-      }
-      codeBlock.add("%T.DECODE_DONE -> break\n", compositeDecoderClassName)
-      codeBlock.add(
-        "else -> throw %T(%S + i)\n",
-        ClassName("kotlinx.serialization", "SerializationException"),
-        "Unexpected index decoding ${className.simpleName}: ",
-      )
-      codeBlock.unindent().add("}\n")
-      codeBlock.unindent().add("}\n")
-      codeBlock.add("compositeDecoder.endStructure(descriptor)\n")
-      codeBlock.add("return ")
-      codeBlock.add(emitModelConstruction(className, elements))
-      return FunSpec.builder("deserialize")
+      FunSpec.builder("deserialize")
         .addModifiers(KModifier.OVERRIDE)
         .addParameter("decoder", decoderClassName)
         .returns(className)
@@ -137,19 +118,61 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
   }
 
   /**
+   * Enum class for a single-type primitive slot bound to a required (non-extensible) value set —
+   * such slots are decoded straight into the enum via `fromCode`. Null otherwise.
+   */
+  private fun enumClassFor(wireField: WireField, parentClass: ClassName): ClassName? {
+    val element = wireField.element
+    if (wireField.isElementField || wireField.isList || wireField.fhirTypeCode == null) return null
+    if (element.type?.size != 1) return null
+    if (!element.typeShouldBindToEnum(codegenContext.valueSetMap) || element.isExtensibleBinding) {
+      return null
+    }
+    return element.getEnumClass(parentClass, codegenContext.valueSetMap)
+  }
+
+  /**
+   * Type of the per-field local: the model-side value type for single primitive values (`FhirDate`
+   * for `date`, the enum for a required binding, `Long` for `integer64`), the wire type otherwise.
+   */
+  private fun localType(wireField: WireField, parentClass: ClassName): TypeName {
+    enumClassFor(wireField, parentClass)?.let {
+      return it
+    }
+    val fhirTypeCode = wireField.fhirTypeCode
+    if (wireField.isElementField || wireField.isList || fhirTypeCode == null)
+      return wireField.typeName
+    return FhirPathType.getFromFhirTypeCode(fhirTypeCode)!!.getDataModelType(
+      parentClass.packageName
+    )
+  }
+
+  /**
    * Decode-one-element call for [wireField] against the descriptor index just returned by
    * `decodeElementIndex` (read from the local `i`). Specialized `decodeXxxElement` for stdlib
-   * primitives, `decodeNullableSerializableElement` otherwise.
+   * primitives, `decodeNullableSerializableElement` otherwise, wrapped in the wire→model conversion
+   * for single primitive values.
    */
-  private fun jsonDecodeElementCall(
-    wireField: WireField,
-    parentClass: ClassName,
-  ): CodeBlock {
+  private fun decodeElementCall(wireField: WireField, parentClass: ClassName): CodeBlock {
+    val wireCall = wireDecodeCall(wireField, parentClass)
+    enumClassFor(wireField, parentClass)?.let {
+      return CodeBlock.of("%T.fromCode(%L)", it, wireCall)
+    }
+    val fhirTypeCode = wireField.fhirTypeCode
+    if (wireField.isElementField || wireField.isList || fhirTypeCode == null) return wireCall
+    val builder = CodeBlock.builder()
+    FhirPathType.getFromFhirTypeCode(fhirTypeCode)!!.addCodeToDecodeWireElementToModel(
+      builder,
+      parentClass.packageName,
+      wireCall,
+    )
+    return builder.build()
+  }
+
+  private fun wireDecodeCall(wireField: WireField, parentClass: ClassName): CodeBlock {
     // The descriptor index always comes from `i` — the value just returned by
-    // `decodeElementIndex`. Encoding it as a literal here (instead of `i`) would lock the
-    // generated body to the descriptor whose slot indices match those literals; threading `i`
-    // keeps the body correct whether it's called against `XSerializer.descriptor` (resourceType
-    // at slot 0, wire fields shifted by 1) or `XPolymorphicSerializer.descriptor` (no shift).
+    // `decodeElementIndex` — so the same body works against both the standalone resource
+    // descriptor and `FhirResourcePolymorphicSerializer`'s (which share wire-field indices).
     val nonNull = wireField.typeName.copy(nullable = false)
     if (nonNull is ClassName && nonNull.packageName == "kotlin") {
       when (nonNull.simpleName) {
@@ -170,11 +193,15 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
     )
   }
 
-  /** Builds the `return ModelType(...)` expression after the decode loop has populated locals. */
+  /**
+   * Builds the merged-list locals and the `return ModelType(...)` expression after the decode loop
+   * has populated locals.
+   */
   private fun emitModelConstruction(className: ClassName, elements: List<Element>): CodeBlock {
     val helpers = ModelConstructionHelpers(codegenContext)
+    val preamble = CodeBlock.builder()
     val codeBlock = CodeBlock.builder()
-    codeBlock.add("%T(\n", className)
+    codeBlock.add("return %T(\n", className)
     codeBlock.indent()
     elements.forEach { element ->
       codeBlock.add("%N = ", element.getElementName())
@@ -183,11 +210,12 @@ internal class SerializerDecodeEmitter(private val codegenContext: CodegenContex
           className,
           element,
           expandPolymorphicProperties = true,
+          preamble = preamble,
         )
       }
       codeBlock.add(",\n")
     }
     codeBlock.unindent().add(")\n")
-    return codeBlock.build()
+    return preamble.add(codeBlock.build()).build()
   }
 }

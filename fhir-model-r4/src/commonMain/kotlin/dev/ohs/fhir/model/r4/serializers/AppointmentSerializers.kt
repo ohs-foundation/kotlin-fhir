@@ -51,47 +51,46 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object AppointmentParticipantSerializer : KSerializer<Appointment.Participant> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Participant") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("actor", ReferenceSerializer.descriptor)
-      optionalElement("required", KotlinString.serializer().descriptor)
-      optionalElement("_required", ElementSerializer.descriptor)
-      optionalElement("status", KotlinString.serializer().descriptor)
-      optionalElement("_status", ElementSerializer.descriptor)
-      optionalElement("period", PeriodSerializer.descriptor)
-    }
+internal object AppointmentParticipantSerializer : FhirSerializer<Appointment.Participant> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Participant", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Appointment.Participant>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("actor", ReferenceSerializer.descriptor)
+    b.strPrim("required")
+    b.strPrim("status")
+    b.optionalElement("period", PeriodSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Appointment.Participant {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var type: List<CodeableConcept>? = null
     var actor: Reference? = null
-    var required: KotlinString? = null
+    var required: ParticipantRequired? = null
     var _required: Element? = null
-    var status: KotlinString? = null
+    var status: ParticipationStatus? = null
     var _status: Element? = null
     var period: Period? = null
     while (true) {
@@ -129,7 +128,9 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
               ReferenceSerializer,
               null,
             )
-        5 -> required = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          required =
+            ParticipantRequired.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _required =
             compositeDecoder.decodeNullableSerializableElement(
@@ -138,7 +139,8 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
               ElementSerializer,
               null,
             )
-        7 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          status = ParticipationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -156,54 +158,44 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Participant: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Appointment.Participant(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type = type ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = listOrEmpty(type),
       actor = actor,
-      required =
-        Enumeration.of(
-          if (required != null) ParticipantRequired.fromCode(required) else null,
-          _required,
-        ),
-      status =
-        Enumeration.of(if (status != null) ParticipationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on Appointment.Participant"
-          ),
+      required = Enumeration.of(required, _required),
+      status = required(Enumeration.of(status, _status), "Appointment.Participant", "status"),
       period = period,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.Participant) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 4, ReferenceSerializer, value.actor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.required?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.required)
@@ -218,22 +210,19 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Appointment")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("cancelationReason", CodeableConceptSerializer.descriptor)
     b.optionalElement("serviceCategory", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("serviceType", CodeableConceptSerializer.listSerializer.descriptor)
@@ -241,24 +230,16 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
     b.optionalElement("appointmentType", CodeableConceptSerializer.descriptor)
     b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("priority", Int.serializer().descriptor)
-    b.optionalElement("_priority", ElementSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.intPrim("priority")
+    b.strPrim("description")
     b.optionalElement("supportingInformation", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("start", KotlinString.serializer().descriptor)
-    b.optionalElement("_start", ElementSerializer.descriptor)
-    b.optionalElement("end", KotlinString.serializer().descriptor)
-    b.optionalElement("_end", ElementSerializer.descriptor)
-    b.optionalElement("minutesDuration", Int.serializer().descriptor)
-    b.optionalElement("_minutesDuration", ElementSerializer.descriptor)
+    b.strPrim("start")
+    b.strPrim("end")
+    b.intPrim("minutesDuration")
     b.optionalElement("slot", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("created", KotlinString.serializer().descriptor)
-    b.optionalElement("_created", ElementSerializer.descriptor)
-    b.optionalElement("comment", KotlinString.serializer().descriptor)
-    b.optionalElement("_comment", ElementSerializer.descriptor)
-    b.optionalElement("patientInstruction", KotlinString.serializer().descriptor)
-    b.optionalElement("_patientInstruction", ElementSerializer.descriptor)
+    b.strPrim("created")
+    b.strPrim("comment")
+    b.strPrim("patientInstruction")
     b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("participant", AppointmentParticipantSerializer.listSerializer.descriptor)
     b.optionalElement("requestedPeriod", PeriodSerializer.listSerializer.descriptor)
@@ -280,7 +261,7 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: AppointmentStatus? = null
     var _status: Element? = null
     var cancelationReason: CodeableConcept? = null
     var serviceCategory: List<CodeableConcept>? = null
@@ -294,14 +275,14 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
     var description: KotlinString? = null
     var _description: Element? = null
     var supportingInformation: List<Reference>? = null
-    var start: KotlinString? = null
+    var start: FhirDateTime? = null
     var _start: Element? = null
-    var end: KotlinString? = null
+    var end: FhirDateTime? = null
     var _end: Element? = null
     var minutesDuration: Int? = null
     var _minutesDuration: Element? = null
     var slot: List<Reference>? = null
-    var created: KotlinString? = null
+    var created: FhirDateTime? = null
     var _created: Element? = null
     var comment: KotlinString? = null
     var _comment: Element? = null
@@ -377,7 +358,8 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status = AppointmentStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -468,7 +450,7 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
               ReferenceSerializer.listSerializer,
               null,
             )
-        25 -> start = compositeDecoder.decodeStringElement(descriptor, i)
+        25 -> start = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         26 ->
           _start =
             compositeDecoder.decodeNullableSerializableElement(
@@ -477,7 +459,7 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
               ElementSerializer,
               null,
             )
-        27 -> end = compositeDecoder.decodeStringElement(descriptor, i)
+        27 -> end = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         28 ->
           _end =
             compositeDecoder.decodeNullableSerializableElement(
@@ -503,7 +485,7 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
               ReferenceSerializer.listSerializer,
               null,
             )
-        32 -> created = compositeDecoder.decodeStringElement(descriptor, i)
+        32 -> created = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         33 ->
           _created =
             compositeDecoder.decodeNullableSerializableElement(
@@ -554,7 +536,7 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
               PeriodSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Appointment: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Appointment(
@@ -563,34 +545,31 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) AppointmentStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Appointment"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "Appointment", "status"),
       cancelationReason = cancelationReason,
-      serviceCategory = serviceCategory ?: listOf(),
-      serviceType = serviceType ?: listOf(),
-      specialty = specialty ?: listOf(),
+      serviceCategory = listOrEmpty(serviceCategory),
+      serviceType = listOrEmpty(serviceType),
+      specialty = listOrEmpty(specialty),
       appointmentType = appointmentType,
-      reasonCode = reasonCode ?: listOf(),
-      reasonReference = reasonReference ?: listOf(),
+      reasonCode = listOrEmpty(reasonCode),
+      reasonReference = listOrEmpty(reasonReference),
       priority = UnsignedInt.of(priority, _priority),
       description = R4String.of(description, _description),
-      supportingInformation = supportingInformation ?: listOf(),
-      start = Instant.of(if (start != null) FhirDateTime.fromString(start) else null, _start),
-      end = Instant.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
+      supportingInformation = listOrEmpty(supportingInformation),
+      start = Instant.of(start, _start),
+      end = Instant.of(end, _end),
       minutesDuration = PositiveInt.of(minutesDuration, _minutesDuration),
-      slot = slot ?: listOf(),
-      created =
-        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created),
+      slot = listOrEmpty(slot),
+      created = DateTime.of(created, _created),
       comment = R4String.of(comment, _comment),
       patientInstruction = R4String.of(patientInstruction, _patientInstruction),
-      basedOn = basedOn ?: listOf(),
-      participant = participant ?: listOf(),
-      requestedPeriod = requestedPeriod ?: listOf(),
+      basedOn = listOrEmpty(basedOn),
+      participant = listOrEmpty(participant),
+      requestedPeriod = listOrEmpty(requestedPeriod),
     )
   }
 
@@ -621,34 +600,30 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -661,47 +636,42 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       CodeableConceptSerializer,
       value.cancelationReason,
     )
-    if (value.serviceCategory.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.serviceCategory,
-      )
-    if (value.serviceType.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.serviceType,
-      )
-    if (value.specialty.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.specialty,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.serviceCategory,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.serviceType,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.specialty,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
       CodeableConceptSerializer,
       value.appointmentType,
     )
-    if (value.reasonCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.reasonCode,
-      )
-    if (value.reasonReference.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.reasonReference,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.reasonCode,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.reasonReference,
+    )
     compositeEncoder.encodeIntIfNotNull(descriptor, 20 + descriptorOffset, value.priority?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 21 + descriptorOffset, value.priority)
     compositeEncoder.encodeStringIfNotNull(
@@ -710,13 +680,12 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 23 + descriptorOffset, value.description)
-    if (value.supportingInformation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.supportingInformation,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.supportingInformation,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       25 + descriptorOffset,
@@ -739,13 +708,12 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       30 + descriptorOffset,
       value.minutesDuration,
     )
-    if (value.slot.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.slot,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.slot,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       32 + descriptorOffset,
@@ -764,26 +732,23 @@ internal object AppointmentSerializer : FhirResourceSerializer<Appointment> {
       37 + descriptorOffset,
       value.patientInstruction,
     )
-    if (value.basedOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        38 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.basedOn,
-      )
-    if (value.participant.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        39 + descriptorOffset,
-        AppointmentParticipantSerializer.listSerializer,
-        value.participant,
-      )
-    if (value.requestedPeriod.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        PeriodSerializer.listSerializer,
-        value.requestedPeriod,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      38 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.basedOn,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      39 + descriptorOffset,
+      AppointmentParticipantSerializer.listSerializer,
+      value.participant,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      40 + descriptorOffset,
+      PeriodSerializer.listSerializer,
+      value.requestedPeriod,
+    )
   }
 }

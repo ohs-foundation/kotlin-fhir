@@ -53,41 +53,37 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object SubscriptionFilterBySerializer : KSerializer<Subscription.FilterBy> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("FilterBy") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("resourceType", KotlinString.serializer().descriptor)
-      optionalElement("_resourceType", ElementSerializer.descriptor)
-      optionalElement("filterParameter", KotlinString.serializer().descriptor)
-      optionalElement("_filterParameter", ElementSerializer.descriptor)
-      optionalElement("comparator", KotlinString.serializer().descriptor)
-      optionalElement("_comparator", ElementSerializer.descriptor)
-      optionalElement("modifier", KotlinString.serializer().descriptor)
-      optionalElement("_modifier", ElementSerializer.descriptor)
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-    }
+internal object SubscriptionFilterBySerializer : FhirSerializer<Subscription.FilterBy> {
+  override val descriptor: SerialDescriptor = buildDescriptor("FilterBy", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Subscription.FilterBy>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("resourceType")
+    b.strPrim("filterParameter")
+    b.strPrim("comparator")
+    b.strPrim("modifier")
+    b.strPrim("value")
+  }
+
   override fun deserialize(decoder: Decoder): Subscription.FilterBy {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -96,9 +92,9 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
     var _resourceType: Element? = null
     var filterParameter: KotlinString? = null
     var _filterParameter: Element? = null
-    var comparator: KotlinString? = null
+    var comparator: SearchComparator? = null
     var _comparator: Element? = null
-    var modifier: KotlinString? = null
+    var modifier: SearchModifierCode? = null
     var _modifier: Element? = null
     var `value`: KotlinString? = null
     var _value: Element? = null
@@ -139,7 +135,9 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
               ElementSerializer,
               null,
             )
-        7 -> comparator = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          comparator =
+            SearchComparator.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _comparator =
             compositeDecoder.decodeNullableSerializableElement(
@@ -148,7 +146,9 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
               ElementSerializer,
               null,
             )
-        9 -> modifier = compositeDecoder.decodeStringElement(descriptor, i)
+        9 ->
+          modifier =
+            SearchModifierCode.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         10 ->
           _modifier =
             compositeDecoder.decodeNullableSerializableElement(
@@ -167,55 +167,43 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding FilterBy: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Subscription.FilterBy(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       resourceType = Uri.of(resourceType, _resourceType),
       filterParameter =
-        R5String.of(filterParameter, _filterParameter)
-          ?: throw SerializationException(
-            "Missing required property 'filterParameter' on Subscription.FilterBy"
-          ),
-      comparator =
-        Enumeration.of(
-          if (comparator != null) SearchComparator.fromCode(comparator) else null,
-          _comparator,
+        required(
+          R5String.of(filterParameter, _filterParameter),
+          "Subscription.FilterBy",
+          "filterParameter",
         ),
-      modifier =
-        Enumeration.of(
-          if (modifier != null) SearchModifierCode.fromCode(modifier) else null,
-          _modifier,
-        ),
-      `value` =
-        R5String.of(`value`, _value)
-          ?: throw SerializationException(
-            "Missing required property 'value' on Subscription.FilterBy"
-          ),
+      comparator = Enumeration.of(comparator, _comparator),
+      modifier = Enumeration.of(modifier, _modifier),
+      `value` = required(R5String.of(`value`, _value), "Subscription.FilterBy", "value"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Subscription.FilterBy) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.resourceType?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.resourceType)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.filterParameter.value)
@@ -230,21 +218,22 @@ internal object SubscriptionFilterBySerializer : KSerializer<Subscription.Filter
   }
 }
 
-internal object SubscriptionParameterSerializer : KSerializer<Subscription.Parameter> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Parameter") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", ElementSerializer.descriptor)
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-    }
+internal object SubscriptionParameterSerializer : FhirSerializer<Subscription.Parameter> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Parameter", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Subscription.Parameter>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("value")
+  }
+
   override fun deserialize(decoder: Decoder): Subscription.Parameter {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -291,44 +280,35 @@ internal object SubscriptionParameterSerializer : KSerializer<Subscription.Param
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Parameter: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Subscription.Parameter(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      name =
-        R5String.of(name, _name)
-          ?: throw SerializationException(
-            "Missing required property 'name' on Subscription.Parameter"
-          ),
-      `value` =
-        R5String.of(`value`, _value)
-          ?: throw SerializationException(
-            "Missing required property 'value' on Subscription.Parameter"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      name = required(R5String.of(name, _name), "Subscription.Parameter", "name"),
+      `value` = required(R5String.of(`value`, _value), "Subscription.Parameter", "value"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Subscription.Parameter) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.name.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.name)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.`value`.value)
@@ -341,47 +321,34 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Subscription")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("topic", KotlinString.serializer().descriptor)
-    b.optionalElement("_topic", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("status")
+    b.strPrim("topic")
     b.optionalElement("contact", ContactPointSerializer.listSerializer.descriptor)
-    b.optionalElement("end", KotlinString.serializer().descriptor)
-    b.optionalElement("_end", ElementSerializer.descriptor)
+    b.strPrim("end")
     b.optionalElement("managingEntity", ReferenceSerializer.descriptor)
-    b.optionalElement("reason", KotlinString.serializer().descriptor)
-    b.optionalElement("_reason", ElementSerializer.descriptor)
+    b.strPrim("reason")
     b.optionalElement("filterBy", SubscriptionFilterBySerializer.listSerializer.descriptor)
     b.optionalElement("channelType", CodingSerializer.descriptor)
-    b.optionalElement("endpoint", KotlinString.serializer().descriptor)
-    b.optionalElement("_endpoint", ElementSerializer.descriptor)
+    b.strPrim("endpoint")
     b.optionalElement("parameter", SubscriptionParameterSerializer.listSerializer.descriptor)
-    b.optionalElement("heartbeatPeriod", Int.serializer().descriptor)
-    b.optionalElement("_heartbeatPeriod", ElementSerializer.descriptor)
-    b.optionalElement("timeout", Int.serializer().descriptor)
-    b.optionalElement("_timeout", ElementSerializer.descriptor)
-    b.optionalElement("contentType", KotlinString.serializer().descriptor)
-    b.optionalElement("_contentType", ElementSerializer.descriptor)
-    b.optionalElement("content", KotlinString.serializer().descriptor)
-    b.optionalElement("_content", ElementSerializer.descriptor)
-    b.optionalElement("maxCount", Int.serializer().descriptor)
-    b.optionalElement("_maxCount", ElementSerializer.descriptor)
+    b.intPrim("heartbeatPeriod")
+    b.intPrim("timeout")
+    b.strPrim("contentType")
+    b.strPrim("content")
+    b.intPrim("maxCount")
   }
 
   override fun deserializeInternal(
@@ -402,12 +369,12 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
     var identifier: List<Identifier>? = null
     var name: KotlinString? = null
     var _name: Element? = null
-    var status: KotlinString? = null
+    var status: SubscriptionStatusCodes? = null
     var _status: Element? = null
     var topic: KotlinString? = null
     var _topic: Element? = null
     var contact: List<ContactPoint>? = null
-    var end: KotlinString? = null
+    var end: FhirDateTime? = null
     var _end: Element? = null
     var managingEntity: Reference? = null
     var reason: KotlinString? = null
@@ -423,7 +390,7 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
     var _timeout: Element? = null
     var contentType: KotlinString? = null
     var _contentType: Element? = null
-    var content: KotlinString? = null
+    var content: SubscriptionPayloadContent? = null
     var _content: Element? = null
     var maxCount: Int? = null
     var _maxCount: Element? = null
@@ -503,7 +470,9 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
               ElementSerializer,
               null,
             )
-        13 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          status =
+            SubscriptionStatusCodes.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -529,7 +498,7 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
               ContactPointSerializer.listSerializer,
               null,
             )
-        18 -> end = compositeDecoder.decodeStringElement(descriptor, i)
+        18 -> end = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _end =
             compositeDecoder.decodeNullableSerializableElement(
@@ -615,7 +584,9 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
               ElementSerializer,
               null,
             )
-        34 -> content = compositeDecoder.decodeStringElement(descriptor, i)
+        34 ->
+          content =
+            SubscriptionPayloadContent.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         35 ->
           _content =
             compositeDecoder.decodeNullableSerializableElement(
@@ -633,7 +604,7 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
               ElementSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Subscription: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Subscription(
@@ -642,39 +613,25 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       name = R5String.of(name, _name),
-      status =
-        Enumeration.of(
-          if (status != null) SubscriptionStatusCodes.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on Subscription"),
-      topic =
-        Canonical.of(topic, _topic)
-          ?: throw SerializationException("Missing required property 'topic' on Subscription"),
-      contact = contact ?: listOf(),
-      end = Instant.of(if (end != null) FhirDateTime.fromString(end) else null, _end),
+      status = required(Enumeration.of(status, _status), "Subscription", "status"),
+      topic = required(Canonical.of(topic, _topic), "Subscription", "topic"),
+      contact = listOrEmpty(contact),
+      end = Instant.of(end, _end),
       managingEntity = managingEntity,
       reason = R5String.of(reason, _reason),
-      filterBy = filterBy ?: listOf(),
-      channelType =
-        channelType
-          ?: throw SerializationException(
-            "Missing required property 'channelType' on Subscription"
-          ),
+      filterBy = listOrEmpty(filterBy),
+      channelType = required(channelType, "Subscription", "channelType"),
       endpoint = Url.of(endpoint, _endpoint),
-      parameter = parameter ?: listOf(),
+      parameter = listOrEmpty(parameter),
       heartbeatPeriod = UnsignedInt.of(heartbeatPeriod, _heartbeatPeriod),
       timeout = UnsignedInt.of(timeout, _timeout),
       contentType = Code.of(contentType, _contentType),
-      content =
-        Enumeration.of(
-          if (content != null) SubscriptionPayloadContent.fromCode(content) else null,
-          _content,
-        ),
+      content = Enumeration.of(content, _content),
       maxCount = PositiveInt.of(maxCount, _maxCount),
     )
   }
@@ -706,34 +663,30 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 11 + descriptorOffset, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.name)
     compositeEncoder.encodeStringIfNotNull(
@@ -744,13 +697,12 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.status)
     compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.topic.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 16 + descriptorOffset, value.topic)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        ContactPointSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      17 + descriptorOffset,
+      ContactPointSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       18 + descriptorOffset,
@@ -765,13 +717,12 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 21 + descriptorOffset, value.reason?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 22 + descriptorOffset, value.reason)
-    if (value.filterBy.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        23 + descriptorOffset,
-        SubscriptionFilterBySerializer.listSerializer,
-        value.filterBy,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      23 + descriptorOffset,
+      SubscriptionFilterBySerializer.listSerializer,
+      value.filterBy,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       24 + descriptorOffset,
@@ -780,13 +731,12 @@ internal object SubscriptionSerializer : FhirResourceSerializer<Subscription> {
     )
     compositeEncoder.encodeStringIfNotNull(descriptor, 25 + descriptorOffset, value.endpoint?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.endpoint)
-    if (value.parameter.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        SubscriptionParameterSerializer.listSerializer,
-        value.parameter,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      SubscriptionParameterSerializer.listSerializer,
+      value.parameter,
+    )
     compositeEncoder.encodeIntIfNotNull(
       descriptor,
       28 + descriptorOffset,

@@ -54,8 +54,6 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -66,60 +64,40 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ActorDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("versionAlgorithmString", KotlinString.serializer().descriptor)
-    b.optionalElement("_versionAlgorithmString", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("versionAlgorithmString")
     b.optionalElement("versionAlgorithmCoding", CodingSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("purpose", KotlinString.serializer().descriptor)
-    b.optionalElement("_purpose", ElementSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("copyrightLabel", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyrightLabel", ElementSerializer.descriptor)
-    b.optionalElement("type", KotlinString.serializer().descriptor)
-    b.optionalElement("_type", ElementSerializer.descriptor)
-    b.optionalElement("documentation", KotlinString.serializer().descriptor)
-    b.optionalElement("_documentation", ElementSerializer.descriptor)
-    b.optionalElement("reference", stringNullableListSerializer.descriptor)
-    b.optionalElement("_reference", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("capabilities", KotlinString.serializer().descriptor)
-    b.optionalElement("_capabilities", ElementSerializer.descriptor)
-    b.optionalElement("derivedFrom", stringNullableListSerializer.descriptor)
-    b.optionalElement("_derivedFrom", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrim("purpose")
+    b.strPrim("copyright")
+    b.strPrim("copyrightLabel")
+    b.strPrim("type")
+    b.strPrim("documentation")
+    b.strPrimList("reference")
+    b.strPrim("capabilities")
+    b.strPrimList("derivedFrom")
   }
 
   override fun deserializeInternal(
@@ -149,11 +127,11 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
     var _name: Element? = null
     var title: KotlinString? = null
     var _title: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -168,7 +146,7 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
     var _copyright: Element? = null
     var copyrightLabel: KotlinString? = null
     var _copyrightLabel: Element? = null
-    var type: KotlinString? = null
+    var type: ExampleScenarioActorType? = null
     var _type: Element? = null
     var documentation: KotlinString? = null
     var _documentation: Element? = null
@@ -298,7 +276,8 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
               ElementSerializer,
               null,
             )
-        22 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        22 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         23 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -316,7 +295,7 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
               ElementSerializer,
               null,
             )
-        26 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        26 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         27 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -394,7 +373,9 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
               ElementSerializer,
               null,
             )
-        41 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        41 ->
+          type =
+            ExampleScenarioActorType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         42 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -453,20 +434,36 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
               ElementSerializer.nullableListSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding ActorDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val reference_ =
+      List(maxSize(reference, _reference)) { index ->
+        entryRequired(
+          Url.of(at(reference, index), at(_reference, index)),
+          "ActorDefinition",
+          "reference",
+        )
+      }
+    val derivedFrom_ =
+      List(maxSize(derivedFrom, _derivedFrom)) { index ->
+        entryRequired(
+          Canonical.of(at(derivedFrom, index), at(_derivedFrom, index)),
+          "ActorDefinition",
+          "derivedFrom",
+        )
+      }
     return ActorDefinition(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R5String.of(version, _version),
       versionAlgorithm =
         ActorDefinition.VersionAlgorithm.from(
@@ -475,38 +472,22 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
         ),
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on ActorDefinition"),
+      status = required(Enumeration.of(status, _status), "ActorDefinition", "status"),
       experimental = R5Boolean.of(experimental, _experimental),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R5String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
-      type =
-        Enumeration.of(if (type != null) ExampleScenarioActorType.fromCode(type) else null, _type)
-          ?: throw SerializationException("Missing required property 'type' on ActorDefinition"),
+      type = required(Enumeration.of(type, _type), "ActorDefinition", "type"),
       documentation = Markdown.of(documentation, _documentation),
-      reference =
-        (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { index ->
-          Url.of(reference?.getOrNull(index), _reference?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'reference' on ActorDefinition has neither a value nor an id/extension"
-            )
-        }),
+      reference = reference_,
       capabilities = Canonical.of(capabilities, _capabilities),
-      derivedFrom =
-        (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { index ->
-          Canonical.of(derivedFrom?.getOrNull(index), _derivedFrom?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'derivedFrom' on ActorDefinition has neither a value nor an id/extension"
-            )
-        }),
+      derivedFrom = derivedFrom_,
     )
   }
 
@@ -537,36 +518,32 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     when (val choice = value.versionAlgorithm) {
@@ -616,33 +593,30 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       31 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 32 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 35 + descriptorOffset, value.purpose?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 36 + descriptorOffset, value.purpose)
     compositeEncoder.encodeStringIfNotNull(
@@ -669,7 +643,7 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
       value.documentation?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 44 + descriptorOffset, value.documentation)
-    if (value.reference.isNotEmpty()) {
+    if (!value.reference.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         45 + descriptorOffset,
@@ -688,7 +662,7 @@ internal object ActorDefinitionSerializer : FhirResourceSerializer<ActorDefiniti
       value.capabilities?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 48 + descriptorOffset, value.capabilities)
-    if (value.derivedFrom.isNotEmpty()) {
+    if (!value.derivedFrom.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         49 + descriptorOffset,

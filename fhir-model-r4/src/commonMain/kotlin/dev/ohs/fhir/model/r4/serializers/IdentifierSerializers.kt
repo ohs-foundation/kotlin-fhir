@@ -36,44 +36,42 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object IdentifierSerializer : KSerializer<Identifier> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Identifier") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("type", lazyDescriptor { CodeableConceptSerializer.descriptor })
-      optionalElement("system", KotlinString.serializer().descriptor)
-      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
-      optionalElement("assigner", lazyDescriptor { ReferenceSerializer.descriptor })
-    }
+internal object IdentifierSerializer : FhirSerializer<Identifier> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Identifier", this)
 
-  internal val listSerializer: KSerializer<List<Identifier>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Identifier>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("use")
+    b.optionalElement("type", lazyDescriptor(LazyDescriptorId.CodeableConceptSerializer))
+    b.strPrim("system")
+    b.strPrim("value")
+    b.optionalElement("period", lazyDescriptor(LazyDescriptorId.PeriodSerializer))
+    b.optionalElement("assigner", lazyDescriptor(LazyDescriptorId.ReferenceSerializer))
+  }
 
   override fun deserialize(decoder: Decoder): Identifier {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var use: KotlinString? = null
+    var use: IdentifierUse? = null
     var _use: Element? = null
     var type: CodeableConcept? = null
     var system: KotlinString? = null
@@ -93,7 +91,7 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        2 -> use = IdentifierUse.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _use =
             compositeDecoder.decodeNullableSerializableElement(
@@ -145,14 +143,14 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Identifier: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Identifier(
       id = id,
-      extension = extension ?: listOf(),
-      use = Enumeration.of(if (use != null) IdentifierUse.fromCode(use) else null, _use),
+      extension = listOrEmpty(extension),
+      use = Enumeration.of(use, _use),
       type = type,
       system = Uri.of(system, _system),
       `value` = R4String.of(`value`, _value),
@@ -162,15 +160,15 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
   }
 
   override fun serialize(encoder: Encoder, `value`: Identifier) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.use?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.use)
     compositeEncoder.encodeSerializableIfNotNull(

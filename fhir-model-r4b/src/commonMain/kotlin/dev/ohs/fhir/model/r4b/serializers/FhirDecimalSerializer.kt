@@ -19,6 +19,7 @@ package dev.ohs.fhir.model.r4b.serializers
 import dev.ohs.fhir.model.r4b.FhirDecimal
 import kotlin.OptIn
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
@@ -39,6 +40,7 @@ internal object FhirDecimalSerializer : KSerializer<FhirDecimal> {
   override val descriptor: SerialDescriptor =
     PrimitiveSerialDescriptor("FhirDecimal", PrimitiveKind.STRING)
 
+  @JvmField
   internal val nullableListSerializer: KSerializer<List<FhirDecimal?>> =
     ListSerializer(this.nullable)
 

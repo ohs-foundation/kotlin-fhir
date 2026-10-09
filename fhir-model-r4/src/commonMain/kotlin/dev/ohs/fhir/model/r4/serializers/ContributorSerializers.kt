@@ -33,43 +33,42 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ContributorSerializer : KSerializer<Contributor> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Contributor") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("name", KotlinString.serializer().descriptor)
-      optionalElement("_name", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement(
-        "contact",
-        listSerialDescriptor(lazyDescriptor { ContactDetailSerializer.descriptor }),
-      )
-    }
+internal object ContributorSerializer : FhirSerializer<Contributor> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Contributor", this)
 
-  internal val listSerializer: KSerializer<List<Contributor>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Contributor>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("type")
+    b.strPrim("name")
+    b.optionalElement(
+      "contact",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ContactDetailSerializer)),
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Contributor {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var type: KotlinString? = null
+    var type: ContributorType? = null
     var _type: Element? = null
     var name: KotlinString? = null
     var _name: Element? = null
@@ -85,7 +84,7 @@ internal object ContributorSerializer : KSerializer<Contributor> {
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        2 -> type = ContributorType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -112,44 +111,39 @@ internal object ContributorSerializer : KSerializer<Contributor> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Contributor: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Contributor(
       id = id,
-      extension = extension ?: listOf(),
-      type =
-        Enumeration.of(if (type != null) ContributorType.fromCode(type) else null, _type)
-          ?: throw SerializationException("Missing required property 'type' on Contributor"),
-      name =
-        R4String.of(name, _name)
-          ?: throw SerializationException("Missing required property 'name' on Contributor"),
-      contact = contact ?: listOf(),
+      extension = listOrEmpty(extension),
+      type = required(Enumeration.of(type, _type), "Contributor", "type"),
+      name = required(R4String.of(name, _name), "Contributor", "name"),
+      contact = listOrEmpty(contact),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Contributor) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.type.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.type)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.name.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.name)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }

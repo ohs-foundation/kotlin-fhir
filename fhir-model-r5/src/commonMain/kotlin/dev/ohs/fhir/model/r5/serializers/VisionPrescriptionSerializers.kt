@@ -52,14 +52,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -67,51 +65,44 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object VisionPrescriptionLensSpecificationSerializer :
-  KSerializer<VisionPrescription.LensSpecification> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("LensSpecification") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("product", CodeableConceptSerializer.descriptor)
-      optionalElement("eye", KotlinString.serializer().descriptor)
-      optionalElement("_eye", ElementSerializer.descriptor)
-      optionalElement("sphere", FhirDecimalSerializer.descriptor)
-      optionalElement("_sphere", ElementSerializer.descriptor)
-      optionalElement("cylinder", FhirDecimalSerializer.descriptor)
-      optionalElement("_cylinder", ElementSerializer.descriptor)
-      optionalElement("axis", Int.serializer().descriptor)
-      optionalElement("_axis", ElementSerializer.descriptor)
-      optionalElement(
-        "prism",
-        VisionPrescriptionLensSpecificationPrismSerializer.listSerializer.descriptor,
-      )
-      optionalElement("add", FhirDecimalSerializer.descriptor)
-      optionalElement("_add", ElementSerializer.descriptor)
-      optionalElement("power", FhirDecimalSerializer.descriptor)
-      optionalElement("_power", ElementSerializer.descriptor)
-      optionalElement("backCurve", FhirDecimalSerializer.descriptor)
-      optionalElement("_backCurve", ElementSerializer.descriptor)
-      optionalElement("diameter", FhirDecimalSerializer.descriptor)
-      optionalElement("_diameter", ElementSerializer.descriptor)
-      optionalElement("duration", QuantitySerializer.descriptor)
-      optionalElement("color", KotlinString.serializer().descriptor)
-      optionalElement("_color", ElementSerializer.descriptor)
-      optionalElement("brand", KotlinString.serializer().descriptor)
-      optionalElement("_brand", ElementSerializer.descriptor)
-      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<VisionPrescription.LensSpecification> {
+  override val descriptor: SerialDescriptor = buildDescriptor("LensSpecification", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<VisionPrescription.LensSpecification>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("product", CodeableConceptSerializer.descriptor)
+    b.strPrim("eye")
+    b.prim("sphere", FhirDecimalSerializer.descriptor)
+    b.prim("cylinder", FhirDecimalSerializer.descriptor)
+    b.intPrim("axis")
+    b.optionalElement(
+      "prism",
+      VisionPrescriptionLensSpecificationPrismSerializer.listSerializer.descriptor,
+    )
+    b.prim("add", FhirDecimalSerializer.descriptor)
+    b.prim("power", FhirDecimalSerializer.descriptor)
+    b.prim("backCurve", FhirDecimalSerializer.descriptor)
+    b.prim("diameter", FhirDecimalSerializer.descriptor)
+    b.optionalElement("duration", QuantitySerializer.descriptor)
+    b.strPrim("color")
+    b.strPrim("brand")
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): VisionPrescription.LensSpecification {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var product: CodeableConcept? = null
-    var eye: KotlinString? = null
+    var eye: VisionEyes? = null
     var _eye: Element? = null
     var sphere: FhirDecimal? = null
     var _sphere: Element? = null
@@ -161,7 +152,7 @@ internal object VisionPrescriptionLensSpecificationSerializer :
               CodeableConceptSerializer,
               null,
             )
-        4 -> eye = compositeDecoder.decodeStringElement(descriptor, i)
+        4 -> eye = VisionEyes.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         5 ->
           _eye =
             compositeDecoder.decodeNullableSerializableElement(
@@ -318,28 +309,20 @@ internal object VisionPrescriptionLensSpecificationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding LensSpecification: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return VisionPrescription.LensSpecification(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      product =
-        product
-          ?: throw SerializationException(
-            "Missing required property 'product' on VisionPrescription.LensSpecification"
-          ),
-      eye =
-        Enumeration.of(if (eye != null) VisionEyes.fromCode(eye) else null, _eye)
-          ?: throw SerializationException(
-            "Missing required property 'eye' on VisionPrescription.LensSpecification"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      product = required(product, "VisionPrescription.LensSpecification", "product"),
+      eye = required(Enumeration.of(eye, _eye), "VisionPrescription.LensSpecification", "eye"),
       sphere = Decimal.of(sphere, _sphere),
       cylinder = Decimal.of(cylinder, _cylinder),
       axis = Integer.of(axis, _axis),
-      prism = prism ?: listOf(),
+      prism = listOrEmpty(prism),
       add = Decimal.of(add, _add),
       power = Decimal.of(power, _power),
       backCurve = Decimal.of(backCurve, _backCurve),
@@ -347,27 +330,26 @@ internal object VisionPrescriptionLensSpecificationSerializer :
       duration = duration,
       color = R5String.of(color, _color),
       brand = R5String.of(brand, _brand),
-      note = note ?: listOf(),
+      note = listOrEmpty(note),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: VisionPrescription.LensSpecification) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -392,13 +374,12 @@ internal object VisionPrescriptionLensSpecificationSerializer :
     compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.cylinder)
     compositeEncoder.encodeIntIfNotNull(descriptor, 10, value.axis?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11, value.axis)
-    if (value.prism.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        VisionPrescriptionLensSpecificationPrismSerializer.listSerializer,
-        value.prism,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      VisionPrescriptionLensSpecificationPrismSerializer.listSerializer,
+      value.prism,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       13,
@@ -432,41 +413,41 @@ internal object VisionPrescriptionLensSpecificationSerializer :
     compositeEncoder.encodeElementIfNotNull(descriptor, 23, value.color)
     compositeEncoder.encodeStringIfNotNull(descriptor, 24, value.brand?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 25, value.brand)
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object VisionPrescriptionLensSpecificationPrismSerializer :
-  KSerializer<VisionPrescription.LensSpecification.Prism> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Prism") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("amount", FhirDecimalSerializer.descriptor)
-      optionalElement("_amount", ElementSerializer.descriptor)
-      optionalElement("base", KotlinString.serializer().descriptor)
-      optionalElement("_base", ElementSerializer.descriptor)
-    }
+  FhirSerializer<VisionPrescription.LensSpecification.Prism> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Prism", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<VisionPrescription.LensSpecification.Prism>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.prim("amount", FhirDecimalSerializer.descriptor)
+    b.strPrim("base")
+  }
+
   override fun deserialize(decoder: Decoder): VisionPrescription.LensSpecification.Prism {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var amount: FhirDecimal? = null
     var _amount: Element? = null
-    var base: KotlinString? = null
+    var base: VisionBase? = null
     var _base: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -503,7 +484,7 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
               ElementSerializer,
               null,
             )
-        5 -> base = compositeDecoder.decodeStringElement(descriptor, i)
+        5 -> base = VisionBase.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _base =
             compositeDecoder.decodeNullableSerializableElement(
@@ -513,44 +494,41 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Prism: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return VisionPrescription.LensSpecification.Prism(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       amount =
-        Decimal.of(amount, _amount)
-          ?: throw SerializationException(
-            "Missing required property 'amount' on VisionPrescription.LensSpecification.Prism"
-          ),
+        required(
+          Decimal.of(amount, _amount),
+          "VisionPrescription.LensSpecification.Prism",
+          "amount",
+        ),
       base =
-        Enumeration.of(if (base != null) VisionBase.fromCode(base) else null, _base)
-          ?: throw SerializationException(
-            "Missing required property 'base' on VisionPrescription.LensSpecification.Prism"
-          ),
+        required(Enumeration.of(base, _base), "VisionPrescription.LensSpecification.Prism", "base"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: VisionPrescription.LensSpecification.Prism) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -568,28 +546,23 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
   override val descriptor: SerialDescriptor = buildResourceDescriptor("VisionPrescription")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("created", KotlinString.serializer().descriptor)
-    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("created")
     b.optionalElement("patient", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("dateWritten", KotlinString.serializer().descriptor)
-    b.optionalElement("_dateWritten", ElementSerializer.descriptor)
+    b.strPrim("dateWritten")
     b.optionalElement("prescriber", ReferenceSerializer.descriptor)
     b.optionalElement(
       "lensSpecification",
@@ -613,13 +586,13 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: FinancialResourceStatusCodes? = null
     var _status: Element? = null
-    var created: KotlinString? = null
+    var created: FhirDateTime? = null
     var _created: Element? = null
     var patient: Reference? = null
     var encounter: Reference? = null
-    var dateWritten: KotlinString? = null
+    var dateWritten: FhirDateTime? = null
     var _dateWritten: Element? = null
     var prescriber: Reference? = null
     var lensSpecification: List<VisionPrescription.LensSpecification>? = null
@@ -690,7 +663,11 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status =
+            FinancialResourceStatusCodes.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -699,7 +676,7 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
               ElementSerializer,
               null,
             )
-        13 -> created = compositeDecoder.decodeStringElement(descriptor, i)
+        13 -> created = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         14 ->
           _created =
             compositeDecoder.decodeNullableSerializableElement(
@@ -724,7 +701,8 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
               ReferenceSerializer,
               null,
             )
-        17 -> dateWritten = compositeDecoder.decodeStringElement(descriptor, i)
+        17 ->
+          dateWritten = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         18 ->
           _dateWritten =
             compositeDecoder.decodeNullableSerializableElement(
@@ -749,7 +727,7 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
               VisionPrescriptionLensSpecificationSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding VisionPrescription: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return VisionPrescription(
@@ -758,43 +736,18 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
-          _status,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'status' on VisionPrescription"
-          ),
-      created =
-        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created)
-          ?: throw SerializationException(
-            "Missing required property 'created' on VisionPrescription"
-          ),
-      patient =
-        patient
-          ?: throw SerializationException(
-            "Missing required property 'patient' on VisionPrescription"
-          ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "VisionPrescription", "status"),
+      created = required(DateTime.of(created, _created), "VisionPrescription", "created"),
+      patient = required(patient, "VisionPrescription", "patient"),
       encounter = encounter,
       dateWritten =
-        DateTime.of(
-          if (dateWritten != null) FhirDateTime.fromString(dateWritten) else null,
-          _dateWritten,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'dateWritten' on VisionPrescription"
-          ),
-      prescriber =
-        prescriber
-          ?: throw SerializationException(
-            "Missing required property 'prescriber' on VisionPrescription"
-          ),
-      lensSpecification = lensSpecification ?: listOf(),
+        required(DateTime.of(dateWritten, _dateWritten), "VisionPrescription", "dateWritten"),
+      prescriber = required(prescriber, "VisionPrescription", "prescriber"),
+      lensSpecification = listOrEmpty(lensSpecification),
     )
   }
 
@@ -825,34 +778,30 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -889,12 +838,11 @@ internal object VisionPrescriptionSerializer : FhirResourceSerializer<VisionPres
       ReferenceSerializer,
       value.prescriber,
     )
-    if (value.lensSpecification.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        VisionPrescriptionLensSpecificationSerializer.listSerializer,
-        value.lensSpecification,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      VisionPrescriptionLensSpecificationSerializer.listSerializer,
+      value.lensSpecification,
+    )
   }
 }

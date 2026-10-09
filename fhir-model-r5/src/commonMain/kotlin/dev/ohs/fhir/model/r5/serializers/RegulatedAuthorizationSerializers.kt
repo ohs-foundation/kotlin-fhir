@@ -45,41 +45,41 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuthorization.Case> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Case") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("status", CodeableConceptSerializer.descriptor)
-      optionalElement("datePeriod", PeriodSerializer.descriptor)
-      optionalElement("dateDateTime", String.serializer().descriptor)
-      optionalElement("_dateDateTime", ElementSerializer.descriptor)
-      optionalElement(
-        "application",
-        listSerialDescriptor(lazyDescriptor { RegulatedAuthorizationCaseSerializer.descriptor }),
-      )
-    }
+internal object RegulatedAuthorizationCaseSerializer : FhirSerializer<RegulatedAuthorization.Case> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Case", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<RegulatedAuthorization.Case>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("status", CodeableConceptSerializer.descriptor)
+    b.optionalElement("datePeriod", PeriodSerializer.descriptor)
+    b.strPrim("dateDateTime")
+    b.optionalElement(
+      "application",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.RegulatedAuthorizationCaseSerializer)),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): RegulatedAuthorization.Case {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -88,7 +88,7 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
     var type: CodeableConcept? = null
     var status: CodeableConcept? = null
     var datePeriod: Period? = null
-    var dateDateTime: String? = null
+    var dateDateTime: FhirDateTime? = null
     var _dateDateTime: Element? = null
     var application: List<RegulatedAuthorization.Case>? = null
     while (true) {
@@ -142,7 +142,9 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
               PeriodSerializer,
               null,
             )
-        7 -> dateDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          dateDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _dateDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -160,46 +162,39 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Case: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RegulatedAuthorization.Case(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       identifier = identifier,
       type = type,
       status = status,
       date =
-        RegulatedAuthorization.Case.Date.from(
-          datePeriod,
-          DateTime.of(
-            if (dateDateTime != null) FhirDateTime.fromString(dateDateTime) else null,
-            _dateDateTime,
-          ),
-        ),
-      application = application ?: listOf(),
+        RegulatedAuthorization.Case.Date.from(datePeriod, DateTime.of(dateDateTime, _dateDateTime)),
+      application = listOrEmpty(application),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: RegulatedAuthorization.Case) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -228,13 +223,12 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
         compositeEncoder.encodeElementIfNotNull(descriptor, 8, choice.value)
       }
     }
-    if (value.application.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        RegulatedAuthorizationCaseSerializer.listSerializer,
-        value.application,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      RegulatedAuthorizationCaseSerializer.listSerializer,
+      value.application,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -243,28 +237,24 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
   override val descriptor: SerialDescriptor = buildResourceDescriptor("RegulatedAuthorization")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("type", CodeableConceptSerializer.descriptor)
-    b.optionalElement("description", String.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("region", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("status", CodeableConceptSerializer.descriptor)
-    b.optionalElement("statusDate", String.serializer().descriptor)
-    b.optionalElement("_statusDate", ElementSerializer.descriptor)
+    b.strPrim("statusDate")
     b.optionalElement("validityPeriod", PeriodSerializer.descriptor)
     b.optionalElement("indication", CodeableReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("intendedUse", CodeableConceptSerializer.descriptor)
@@ -297,7 +287,7 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
     var _description: Element? = null
     var region: List<CodeableConcept>? = null
     var status: CodeableConcept? = null
-    var statusDate: String? = null
+    var statusDate: FhirDateTime? = null
     var _statusDate: Element? = null
     var validityPeriod: Period? = null
     var indication: List<CodeableReference>? = null
@@ -415,7 +405,8 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
               CodeableConceptSerializer,
               null,
             )
-        17 -> statusDate = compositeDecoder.decodeStringElement(descriptor, i)
+        17 ->
+          statusDate = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         18 ->
           _statusDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -488,8 +479,7 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
               RegulatedAuthorizationCaseSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding RegulatedAuthorization: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return RegulatedAuthorization(
@@ -498,27 +488,23 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      subject = subject ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      subject = listOrEmpty(subject),
       type = type,
       description = Markdown.of(description, _description),
-      region = region ?: listOf(),
+      region = listOrEmpty(region),
       status = status,
-      statusDate =
-        DateTime.of(
-          if (statusDate != null) FhirDateTime.fromString(statusDate) else null,
-          _statusDate,
-        ),
+      statusDate = DateTime.of(statusDate, _statusDate),
       validityPeriod = validityPeriod,
-      indication = indication ?: listOf(),
+      indication = listOrEmpty(indication),
       intendedUse = intendedUse,
-      basis = basis ?: listOf(),
+      basis = listOrEmpty(basis),
       holder = holder,
       regulator = regulator,
-      attachedDocument = attachedDocument ?: listOf(),
+      attachedDocument = listOrEmpty(attachedDocument),
       case = case,
     )
   }
@@ -550,41 +536,36 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.subject.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.subject,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.subject,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       12 + descriptorOffset,
@@ -597,13 +578,12 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.description)
-    if (value.region.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.region,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.region,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       16 + descriptorOffset,
@@ -622,26 +602,24 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
       PeriodSerializer,
       value.validityPeriod,
     )
-    if (value.indication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        CodeableReferenceSerializer.listSerializer,
-        value.indication,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      CodeableReferenceSerializer.listSerializer,
+      value.indication,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       21 + descriptorOffset,
       CodeableConceptSerializer,
       value.intendedUse,
     )
-    if (value.basis.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.basis,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      22 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.basis,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       23 + descriptorOffset,
@@ -654,13 +632,12 @@ internal object RegulatedAuthorizationSerializer : FhirResourceSerializer<Regula
       ReferenceSerializer,
       value.regulator,
     )
-    if (value.attachedDocument.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.attachedDocument,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.attachedDocument,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       26 + descriptorOffset,

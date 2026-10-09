@@ -64,72 +64,62 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Action") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("prefix", KotlinString.serializer().descriptor)
-      optionalElement("_prefix", ElementSerializer.descriptor)
-      optionalElement("title", KotlinString.serializer().descriptor)
-      optionalElement("_title", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("textEquivalent", KotlinString.serializer().descriptor)
-      optionalElement("_textEquivalent", ElementSerializer.descriptor)
-      optionalElement("priority", KotlinString.serializer().descriptor)
-      optionalElement("_priority", ElementSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("documentation", RelatedArtifactSerializer.listSerializer.descriptor)
-      optionalElement("condition", RequestGroupActionConditionSerializer.listSerializer.descriptor)
-      optionalElement(
-        "relatedAction",
-        RequestGroupActionRelatedActionSerializer.listSerializer.descriptor,
-      )
-      optionalElement("timingDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_timingDateTime", ElementSerializer.descriptor)
-      optionalElement("timingAge", AgeSerializer.descriptor)
-      optionalElement("timingPeriod", PeriodSerializer.descriptor)
-      optionalElement("timingDuration", DurationSerializer.descriptor)
-      optionalElement("timingRange", RangeSerializer.descriptor)
-      optionalElement("timingTiming", TimingSerializer.descriptor)
-      optionalElement("participant", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("groupingBehavior", KotlinString.serializer().descriptor)
-      optionalElement("_groupingBehavior", ElementSerializer.descriptor)
-      optionalElement("selectionBehavior", KotlinString.serializer().descriptor)
-      optionalElement("_selectionBehavior", ElementSerializer.descriptor)
-      optionalElement("requiredBehavior", KotlinString.serializer().descriptor)
-      optionalElement("_requiredBehavior", ElementSerializer.descriptor)
-      optionalElement("precheckBehavior", KotlinString.serializer().descriptor)
-      optionalElement("_precheckBehavior", ElementSerializer.descriptor)
-      optionalElement("cardinalityBehavior", KotlinString.serializer().descriptor)
-      optionalElement("_cardinalityBehavior", ElementSerializer.descriptor)
-      optionalElement("resource", ReferenceSerializer.descriptor)
-      optionalElement(
-        "action",
-        listSerialDescriptor(lazyDescriptor { RequestGroupActionSerializer.descriptor }),
-      )
-    }
+internal object RequestGroupActionSerializer : FhirSerializer<RequestGroup.Action> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Action", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<RequestGroup.Action>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("prefix")
+    b.strPrim("title")
+    b.strPrim("description")
+    b.strPrim("textEquivalent")
+    b.strPrim("priority")
+    b.optionalElement("code", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("documentation", RelatedArtifactSerializer.listSerializer.descriptor)
+    b.optionalElement("condition", RequestGroupActionConditionSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "relatedAction",
+      RequestGroupActionRelatedActionSerializer.listSerializer.descriptor,
+    )
+    b.strPrim("timingDateTime")
+    b.optionalElement("timingAge", AgeSerializer.descriptor)
+    b.optionalElement("timingPeriod", PeriodSerializer.descriptor)
+    b.optionalElement("timingDuration", DurationSerializer.descriptor)
+    b.optionalElement("timingRange", RangeSerializer.descriptor)
+    b.optionalElement("timingTiming", TimingSerializer.descriptor)
+    b.optionalElement("participant", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.strPrim("groupingBehavior")
+    b.strPrim("selectionBehavior")
+    b.strPrim("requiredBehavior")
+    b.strPrim("precheckBehavior")
+    b.strPrim("cardinalityBehavior")
+    b.optionalElement("resource", ReferenceSerializer.descriptor)
+    b.optionalElement(
+      "action",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.RequestGroupActionSerializer)),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): RequestGroup.Action {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -142,13 +132,13 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
     var _description: Element? = null
     var textEquivalent: KotlinString? = null
     var _textEquivalent: Element? = null
-    var priority: KotlinString? = null
+    var priority: RequestPriority? = null
     var _priority: Element? = null
     var code: List<CodeableConcept>? = null
     var documentation: List<RelatedArtifact>? = null
     var condition: List<RequestGroup.Action.Condition>? = null
     var relatedAction: List<RequestGroup.Action.RelatedAction>? = null
-    var timingDateTime: KotlinString? = null
+    var timingDateTime: FhirDateTime? = null
     var _timingDateTime: Element? = null
     var timingAge: Age? = null
     var timingPeriod: Period? = null
@@ -157,15 +147,15 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
     var timingTiming: Timing? = null
     var participant: List<Reference>? = null
     var type: CodeableConcept? = null
-    var groupingBehavior: KotlinString? = null
+    var groupingBehavior: ActionGroupingBehavior? = null
     var _groupingBehavior: Element? = null
-    var selectionBehavior: KotlinString? = null
+    var selectionBehavior: ActionSelectionBehavior? = null
     var _selectionBehavior: Element? = null
-    var requiredBehavior: KotlinString? = null
+    var requiredBehavior: ActionRequiredBehavior? = null
     var _requiredBehavior: Element? = null
-    var precheckBehavior: KotlinString? = null
+    var precheckBehavior: ActionPrecheckBehavior? = null
     var _precheckBehavior: Element? = null
-    var cardinalityBehavior: KotlinString? = null
+    var cardinalityBehavior: ActionCardinalityBehavior? = null
     var _cardinalityBehavior: Element? = null
     var resource: Reference? = null
     var action: List<RequestGroup.Action>? = null
@@ -224,7 +214,8 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
               ElementSerializer,
               null,
             )
-        11 -> priority = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          priority = RequestPriority.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _priority =
             compositeDecoder.decodeNullableSerializableElement(
@@ -265,7 +256,9 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
               RequestGroupActionRelatedActionSerializer.listSerializer,
               null,
             )
-        17 -> timingDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        17 ->
+          timingDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         18 ->
           _timingDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -320,7 +313,9 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
               CodeableConceptSerializer,
               null,
             )
-        26 -> groupingBehavior = compositeDecoder.decodeStringElement(descriptor, i)
+        26 ->
+          groupingBehavior =
+            ActionGroupingBehavior.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         27 ->
           _groupingBehavior =
             compositeDecoder.decodeNullableSerializableElement(
@@ -329,7 +324,9 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
               ElementSerializer,
               null,
             )
-        28 -> selectionBehavior = compositeDecoder.decodeStringElement(descriptor, i)
+        28 ->
+          selectionBehavior =
+            ActionSelectionBehavior.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         29 ->
           _selectionBehavior =
             compositeDecoder.decodeNullableSerializableElement(
@@ -338,7 +335,9 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
               ElementSerializer,
               null,
             )
-        30 -> requiredBehavior = compositeDecoder.decodeStringElement(descriptor, i)
+        30 ->
+          requiredBehavior =
+            ActionRequiredBehavior.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         31 ->
           _requiredBehavior =
             compositeDecoder.decodeNullableSerializableElement(
@@ -347,7 +346,9 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
               ElementSerializer,
               null,
             )
-        32 -> precheckBehavior = compositeDecoder.decodeStringElement(descriptor, i)
+        32 ->
+          precheckBehavior =
+            ActionPrecheckBehavior.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         33 ->
           _precheckBehavior =
             compositeDecoder.decodeNullableSerializableElement(
@@ -356,7 +357,9 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
               ElementSerializer,
               null,
             )
-        34 -> cardinalityBehavior = compositeDecoder.decodeStringElement(descriptor, i)
+        34 ->
+          cardinalityBehavior =
+            ActionCardinalityBehavior.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         35 ->
           _cardinalityBehavior =
             compositeDecoder.decodeNullableSerializableElement(
@@ -382,90 +385,60 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Action: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RequestGroup.Action(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       prefix = R4bString.of(prefix, _prefix),
       title = R4bString.of(title, _title),
       description = R4bString.of(description, _description),
       textEquivalent = R4bString.of(textEquivalent, _textEquivalent),
-      priority =
-        Enumeration.of(
-          if (priority != null) RequestPriority.fromCode(priority) else null,
-          _priority,
-        ),
-      code = code ?: listOf(),
-      documentation = documentation ?: listOf(),
-      condition = condition ?: listOf(),
-      relatedAction = relatedAction ?: listOf(),
+      priority = Enumeration.of(priority, _priority),
+      code = listOrEmpty(code),
+      documentation = listOrEmpty(documentation),
+      condition = listOrEmpty(condition),
+      relatedAction = listOrEmpty(relatedAction),
       timing =
         RequestGroup.Action.Timing.from(
-          DateTime.of(
-            if (timingDateTime != null) FhirDateTime.fromString(timingDateTime) else null,
-            _timingDateTime,
-          ),
+          DateTime.of(timingDateTime, _timingDateTime),
           timingAge,
           timingPeriod,
           timingDuration,
           timingRange,
           timingTiming,
         ),
-      participant = participant ?: listOf(),
+      participant = listOrEmpty(participant),
       type = type,
-      groupingBehavior =
-        Enumeration.of(
-          if (groupingBehavior != null) ActionGroupingBehavior.fromCode(groupingBehavior) else null,
-          _groupingBehavior,
-        ),
-      selectionBehavior =
-        Enumeration.of(
-          if (selectionBehavior != null) ActionSelectionBehavior.fromCode(selectionBehavior)
-          else null,
-          _selectionBehavior,
-        ),
-      requiredBehavior =
-        Enumeration.of(
-          if (requiredBehavior != null) ActionRequiredBehavior.fromCode(requiredBehavior) else null,
-          _requiredBehavior,
-        ),
-      precheckBehavior =
-        Enumeration.of(
-          if (precheckBehavior != null) ActionPrecheckBehavior.fromCode(precheckBehavior) else null,
-          _precheckBehavior,
-        ),
-      cardinalityBehavior =
-        Enumeration.of(
-          if (cardinalityBehavior != null) ActionCardinalityBehavior.fromCode(cardinalityBehavior)
-          else null,
-          _cardinalityBehavior,
-        ),
+      groupingBehavior = Enumeration.of(groupingBehavior, _groupingBehavior),
+      selectionBehavior = Enumeration.of(selectionBehavior, _selectionBehavior),
+      requiredBehavior = Enumeration.of(requiredBehavior, _requiredBehavior),
+      precheckBehavior = Enumeration.of(precheckBehavior, _precheckBehavior),
+      cardinalityBehavior = Enumeration.of(cardinalityBehavior, _cardinalityBehavior),
       resource = resource,
-      action = action ?: listOf(),
+      action = listOrEmpty(action),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: RequestGroup.Action) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.prefix?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.prefix)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.title?.value)
@@ -476,34 +449,30 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
     compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.textEquivalent)
     compositeEncoder.encodeStringIfNotNull(descriptor, 11, value.priority?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.priority)
-    if (value.code.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13,
-        CodeableConceptSerializer.listSerializer,
-        value.code,
-      )
-    if (value.documentation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14,
-        RelatedArtifactSerializer.listSerializer,
-        value.documentation,
-      )
-    if (value.condition.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15,
-        RequestGroupActionConditionSerializer.listSerializer,
-        value.condition,
-      )
-    if (value.relatedAction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16,
-        RequestGroupActionRelatedActionSerializer.listSerializer,
-        value.relatedAction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13,
+      CodeableConceptSerializer.listSerializer,
+      value.code,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14,
+      RelatedArtifactSerializer.listSerializer,
+      value.documentation,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15,
+      RequestGroupActionConditionSerializer.listSerializer,
+      value.condition,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16,
+      RequestGroupActionRelatedActionSerializer.listSerializer,
+      value.relatedAction,
+    )
     when (val choice = value.timing) {
       null -> {}
       is RequestGroup.Action.Timing.DateTime -> {
@@ -526,13 +495,12 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
         compositeEncoder.encodeSerializableElement(descriptor, 23, TimingSerializer, choice.value)
       }
     }
-    if (value.participant.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        24,
-        ReferenceSerializer.listSerializer,
-        value.participant,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      24,
+      ReferenceSerializer.listSerializer,
+      value.participant,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       25,
@@ -555,37 +523,39 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
       ReferenceSerializer,
       value.resource,
     )
-    if (value.action.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        37,
-        RequestGroupActionSerializer.listSerializer,
-        value.action,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      37,
+      RequestGroupActionSerializer.listSerializer,
+      value.action,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
-internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup.Action.Condition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Condition") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("kind", KotlinString.serializer().descriptor)
-      optionalElement("_kind", ElementSerializer.descriptor)
-      optionalElement("expression", ExpressionSerializer.descriptor)
-    }
+internal object RequestGroupActionConditionSerializer :
+  FhirSerializer<RequestGroup.Action.Condition> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Condition", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<RequestGroup.Action.Condition>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("kind")
+    b.optionalElement("expression", ExpressionSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): RequestGroup.Action.Condition {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
-    var kind: KotlinString? = null
+    var kind: ActionConditionKind? = null
     var _kind: Element? = null
     var expression: Expression? = null
     while (true) {
@@ -607,7 +577,8 @@ internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup
               ExtensionSerializer.listSerializer,
               null,
             )
-        3 -> kind = compositeDecoder.decodeStringElement(descriptor, i)
+        3 ->
+          kind = ActionConditionKind.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         4 ->
           _kind =
             compositeDecoder.decodeNullableSerializableElement(
@@ -625,40 +596,35 @@ internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Condition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RequestGroup.Action.Condition(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      kind =
-        Enumeration.of(if (kind != null) ActionConditionKind.fromCode(kind) else null, _kind)
-          ?: throw SerializationException(
-            "Missing required property 'kind' on RequestGroup.Action.Condition"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      kind = required(Enumeration.of(kind, _kind), "RequestGroup.Action.Condition", "kind"),
       expression = expression,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: RequestGroup.Action.Condition) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.kind.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.kind)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -672,31 +638,32 @@ internal object RequestGroupActionConditionSerializer : KSerializer<RequestGroup
 }
 
 internal object RequestGroupActionRelatedActionSerializer :
-  KSerializer<RequestGroup.Action.RelatedAction> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RelatedAction") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("actionId", KotlinString.serializer().descriptor)
-      optionalElement("_actionId", ElementSerializer.descriptor)
-      optionalElement("relationship", KotlinString.serializer().descriptor)
-      optionalElement("_relationship", ElementSerializer.descriptor)
-      optionalElement("offsetDuration", DurationSerializer.descriptor)
-      optionalElement("offsetRange", RangeSerializer.descriptor)
-    }
+  FhirSerializer<RequestGroup.Action.RelatedAction> {
+  override val descriptor: SerialDescriptor = buildDescriptor("RelatedAction", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<RequestGroup.Action.RelatedAction>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("actionId")
+    b.strPrim("relationship")
+    b.optionalElement("offsetDuration", DurationSerializer.descriptor)
+    b.optionalElement("offsetRange", RangeSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): RequestGroup.Action.RelatedAction {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var actionId: KotlinString? = null
     var _actionId: Element? = null
-    var relationship: KotlinString? = null
+    var relationship: ActionRelationshipType? = null
     var _relationship: Element? = null
     var offsetDuration: Duration? = null
     var offsetRange: Range? = null
@@ -728,7 +695,9 @@ internal object RequestGroupActionRelatedActionSerializer :
               ElementSerializer,
               null,
             )
-        5 -> relationship = compositeDecoder.decodeStringElement(descriptor, i)
+        5 ->
+          relationship =
+            ActionRelationshipType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         6 ->
           _relationship =
             compositeDecoder.decodeNullableSerializableElement(
@@ -749,48 +718,42 @@ internal object RequestGroupActionRelatedActionSerializer :
           offsetRange =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RelatedAction: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RequestGroup.Action.RelatedAction(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       actionId =
-        Id.of(actionId, _actionId)
-          ?: throw SerializationException(
-            "Missing required property 'actionId' on RequestGroup.Action.RelatedAction"
-          ),
+        required(Id.of(actionId, _actionId), "RequestGroup.Action.RelatedAction", "actionId"),
       relationship =
-        Enumeration.of(
-          if (relationship != null) ActionRelationshipType.fromCode(relationship) else null,
-          _relationship,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'relationship' on RequestGroup.Action.RelatedAction"
-          ),
+        required(
+          Enumeration.of(relationship, _relationship),
+          "RequestGroup.Action.RelatedAction",
+          "relationship",
+        ),
       offset = RequestGroup.Action.RelatedAction.Offset.from(offsetDuration, offsetRange),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: RequestGroup.Action.RelatedAction) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.actionId.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.actionId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.relationship.value?.code)
@@ -812,38 +775,30 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("RequestGroup")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("instantiatesCanonical", stringNullableListSerializer.descriptor)
-    b.optionalElement("_instantiatesCanonical", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("instantiatesUri", stringNullableListSerializer.descriptor)
-    b.optionalElement("_instantiatesUri", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrimList("instantiatesCanonical")
+    b.strPrimList("instantiatesUri")
     b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("replaces", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("groupIdentifier", IdentifierSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("intent", KotlinString.serializer().descriptor)
-    b.optionalElement("_intent", ElementSerializer.descriptor)
-    b.optionalElement("priority", KotlinString.serializer().descriptor)
-    b.optionalElement("_priority", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("intent")
+    b.strPrim("priority")
     b.optionalElement("code", CodeableConceptSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("authoredOn", KotlinString.serializer().descriptor)
-    b.optionalElement("_authoredOn", ElementSerializer.descriptor)
+    b.strPrim("authoredOn")
     b.optionalElement("author", ReferenceSerializer.descriptor)
     b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
@@ -874,16 +829,16 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
     var basedOn: List<Reference>? = null
     var replaces: List<Reference>? = null
     var groupIdentifier: Identifier? = null
-    var status: KotlinString? = null
+    var status: RequestStatus? = null
     var _status: Element? = null
-    var intent: KotlinString? = null
+    var intent: RequestIntent? = null
     var _intent: Element? = null
-    var priority: KotlinString? = null
+    var priority: RequestPriority? = null
     var _priority: Element? = null
     var code: CodeableConcept? = null
     var subject: Reference? = null
     var encounter: Reference? = null
-    var authoredOn: KotlinString? = null
+    var authoredOn: FhirDateTime? = null
     var _authoredOn: Element? = null
     var author: Reference? = null
     var reasonCode: List<CodeableConcept>? = null
@@ -1013,7 +968,7 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
               IdentifierSerializer,
               null,
             )
-        18 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        18 -> status = RequestStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1022,7 +977,7 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
               ElementSerializer,
               null,
             )
-        20 -> intent = compositeDecoder.decodeStringElement(descriptor, i)
+        20 -> intent = RequestIntent.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _intent =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1031,7 +986,8 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
               ElementSerializer,
               null,
             )
-        22 -> priority = compositeDecoder.decodeStringElement(descriptor, i)
+        22 ->
+          priority = RequestPriority.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         23 ->
           _priority =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1064,7 +1020,8 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
               ReferenceSerializer,
               null,
             )
-        27 -> authoredOn = compositeDecoder.decodeStringElement(descriptor, i)
+        27 ->
+          authoredOn = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         28 ->
           _authoredOn =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1113,66 +1070,52 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
               RequestGroupActionSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding RequestGroup: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val instantiatesCanonical_ =
+      List(maxSize(instantiatesCanonical, _instantiatesCanonical)) { index ->
+        entryRequired(
+          Canonical.of(at(instantiatesCanonical, index), at(_instantiatesCanonical, index)),
+          "RequestGroup",
+          "instantiatesCanonical",
+        )
+      }
+    val instantiatesUri_ =
+      List(maxSize(instantiatesUri, _instantiatesUri)) { index ->
+        entryRequired(
+          Uri.of(at(instantiatesUri, index), at(_instantiatesUri, index)),
+          "RequestGroup",
+          "instantiatesUri",
+        )
+      }
     return RequestGroup(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      instantiatesCanonical =
-        (kotlin.collections.List(
-          maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { index ->
-          Canonical.of(
-            instantiatesCanonical?.getOrNull(index),
-            _instantiatesCanonical?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'instantiatesCanonical' on RequestGroup has neither a value nor an id/extension"
-            )
-        }),
-      instantiatesUri =
-        (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          index ->
-          Uri.of(instantiatesUri?.getOrNull(index), _instantiatesUri?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'instantiatesUri' on RequestGroup has neither a value nor an id/extension"
-            )
-        }),
-      basedOn = basedOn ?: listOf(),
-      replaces = replaces ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      instantiatesCanonical = instantiatesCanonical_,
+      instantiatesUri = instantiatesUri_,
+      basedOn = listOrEmpty(basedOn),
+      replaces = listOrEmpty(replaces),
       groupIdentifier = groupIdentifier,
-      status =
-        Enumeration.of(if (status != null) RequestStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on RequestGroup"),
-      intent =
-        Enumeration.of(if (intent != null) RequestIntent.fromCode(intent) else null, _intent)
-          ?: throw SerializationException("Missing required property 'intent' on RequestGroup"),
-      priority =
-        Enumeration.of(
-          if (priority != null) RequestPriority.fromCode(priority) else null,
-          _priority,
-        ),
+      status = required(Enumeration.of(status, _status), "RequestGroup", "status"),
+      intent = required(Enumeration.of(intent, _intent), "RequestGroup", "intent"),
+      priority = Enumeration.of(priority, _priority),
       code = code,
       subject = subject,
       encounter = encounter,
-      authoredOn =
-        DateTime.of(
-          if (authoredOn != null) FhirDateTime.fromString(authoredOn) else null,
-          _authoredOn,
-        ),
+      authoredOn = DateTime.of(authoredOn, _authoredOn),
       author = author,
-      reasonCode = reasonCode ?: listOf(),
-      reasonReference = reasonReference ?: listOf(),
-      note = note ?: listOf(),
-      action = action ?: listOf(),
+      reasonCode = listOrEmpty(reasonCode),
+      reasonReference = listOrEmpty(reasonReference),
+      note = listOrEmpty(note),
+      action = listOrEmpty(action),
     )
   }
 
@@ -1203,35 +1146,31 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.instantiatesCanonical.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    if (!value.instantiatesCanonical.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
@@ -1244,7 +1183,7 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
         value.instantiatesCanonical,
       )
     }
-    if (value.instantiatesUri.isNotEmpty()) {
+    if (!value.instantiatesUri.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
@@ -1257,20 +1196,18 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
         value.instantiatesUri,
       )
     }
-    if (value.basedOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.basedOn,
-      )
-    if (value.replaces.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.replaces,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.basedOn,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.replaces,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
@@ -1325,33 +1262,29 @@ internal object RequestGroupSerializer : FhirResourceSerializer<RequestGroup> {
       ReferenceSerializer,
       value.author,
     )
-    if (value.reasonCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.reasonCode,
-      )
-    if (value.reasonReference.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.reasonReference,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.action.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        RequestGroupActionSerializer.listSerializer,
-        value.action,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.reasonCode,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.reasonReference,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      RequestGroupActionSerializer.listSerializer,
+      value.action,
+    )
   }
 }

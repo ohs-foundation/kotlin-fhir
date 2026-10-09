@@ -53,8 +53,12 @@ internal val listDescMemberName =
 internal fun lazyDescriptorMemberName(className: ClassName): MemberName =
   MemberName("${className.packageName}.serializers", "lazyDescriptor")
 
+/** Member of the generated `SerializerHelpers.kt` in [className]'s serializers package. */
+internal fun helperMemberName(className: ClassName, name: String): MemberName =
+  MemberName("${className.packageName}.serializers", name)
+
 internal fun optionalElementMemberName(className: ClassName): MemberName =
-  MemberName("${className.packageName}.serializers", "optionalElement")
+  helperMemberName(className, "optionalElement")
 
 /**
  * Builds `internal val listSerializer: KSerializer<List<T>> = ListSerializer(this)` (or
@@ -79,6 +83,8 @@ internal fun buildListSerializerProperty(
       KSerializer::class.asClassName().parameterizedBy(listType),
       KModifier.INTERNAL,
     )
+    // Direct static field access at the ~8.5k call sites instead of a getter call + checkcast.
+    .addAnnotation(ClassName("kotlin.jvm", "JvmField"))
     .initializer(initializer)
     .build()
 }
@@ -122,7 +128,7 @@ internal fun serializerForClassName(className: ClassName): CodeBlock =
  * serializer, `ResourcePolymorphicSerializer`, or `XSerializer`), or null for stdlib / external
  * types that do not have a generated serializer object in [parentClass]'s package.
  */
-private fun serializerObjectForClass(className: ClassName, parentClass: ClassName): ClassName? {
+internal fun serializerObjectForClass(className: ClassName, parentClass: ClassName): ClassName? {
   customSerializerFor(className, parentClass)?.let {
     return it
   }

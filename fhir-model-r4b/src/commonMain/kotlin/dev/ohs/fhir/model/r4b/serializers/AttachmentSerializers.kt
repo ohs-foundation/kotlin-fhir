@@ -39,47 +39,40 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object AttachmentSerializer : KSerializer<Attachment> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Attachment") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("contentType", KotlinString.serializer().descriptor)
-      optionalElement("_contentType", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("language", KotlinString.serializer().descriptor)
-      optionalElement("_language", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("data", KotlinString.serializer().descriptor)
-      optionalElement("_data", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("url", KotlinString.serializer().descriptor)
-      optionalElement("_url", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("size", Int.serializer().descriptor)
-      optionalElement("_size", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("hash", KotlinString.serializer().descriptor)
-      optionalElement("_hash", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("title", KotlinString.serializer().descriptor)
-      optionalElement("_title", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("creation", KotlinString.serializer().descriptor)
-      optionalElement("_creation", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object AttachmentSerializer : FhirSerializer<Attachment> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Attachment", this)
 
-  internal val listSerializer: KSerializer<List<Attachment>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Attachment>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("contentType")
+    b.strPrim("language")
+    b.strPrim("data")
+    b.strPrim("url")
+    b.intPrim("size")
+    b.strPrim("hash")
+    b.strPrim("title")
+    b.strPrim("creation")
+  }
 
   override fun deserialize(decoder: Decoder): Attachment {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -97,7 +90,7 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     var _hash: Element? = null
     var title: KotlinString? = null
     var _title: Element? = null
-    var creation: KotlinString? = null
+    var creation: FhirDateTime? = null
     var _creation: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -173,7 +166,8 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
               ElementSerializer,
               null,
             )
-        16 -> creation = compositeDecoder.decodeStringElement(descriptor, i)
+        16 ->
+          creation = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _creation =
             compositeDecoder.decodeNullableSerializableElement(
@@ -183,13 +177,13 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Attachment: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Attachment(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       contentType = Code.of(contentType, _contentType),
       language = ExtensibleEnumeration.of<CommonLanguages>(language, _language),
       `data` = Base64Binary.of(`data`, _data),
@@ -197,21 +191,20 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
       size = UnsignedInt.of(size, _size),
       hash = Base64Binary.of(hash, _hash),
       title = R4bString.of(title, _title),
-      creation =
-        DateTime.of(if (creation != null) FhirDateTime.fromString(creation) else null, _creation),
+      creation = DateTime.of(creation, _creation),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Attachment) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.contentType?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.contentType)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.language?.code)

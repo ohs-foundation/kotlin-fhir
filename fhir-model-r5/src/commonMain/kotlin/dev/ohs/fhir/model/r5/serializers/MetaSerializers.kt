@@ -35,53 +35,50 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object MetaSerializer : KSerializer<Meta> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Meta") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("versionId", String.serializer().descriptor)
-      optionalElement("_versionId", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("lastUpdated", String.serializer().descriptor)
-      optionalElement("_lastUpdated", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("source", String.serializer().descriptor)
-      optionalElement("_source", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("profile", stringNullableListSerializer.descriptor)
-      optionalElement(
-        "_profile",
-        listSerialDescriptor(lazyDescriptor { ElementSerializer.descriptor }),
-      )
-      optionalElement(
-        "security",
-        listSerialDescriptor(lazyDescriptor { CodingSerializer.descriptor }),
-      )
-      optionalElement("tag", listSerialDescriptor(lazyDescriptor { CodingSerializer.descriptor }))
-    }
+internal object MetaSerializer : FhirSerializer<Meta> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Meta", this)
 
-  internal val listSerializer: KSerializer<List<Meta>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Meta>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("versionId")
+    b.strPrim("lastUpdated")
+    b.strPrim("source")
+    b.strPrimList("profile")
+    b.optionalElement(
+      "security",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.CodingSerializer)),
+    )
+    b.optionalElement(
+      "tag",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.CodingSerializer)),
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Meta {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
     var versionId: String? = null
     var _versionId: Element? = null
-    var lastUpdated: String? = null
+    var lastUpdated: FhirDateTime? = null
     var _lastUpdated: Element? = null
     var source: String? = null
     var _source: Element? = null
@@ -109,7 +106,8 @@ internal object MetaSerializer : KSerializer<Meta> {
               ElementSerializer,
               null,
             )
-        4 -> lastUpdated = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          lastUpdated = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         5 ->
           _lastUpdated =
             compositeDecoder.decodeNullableSerializableElement(
@@ -160,49 +158,43 @@ internal object MetaSerializer : KSerializer<Meta> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Meta: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val profile_ =
+      List(maxSize(profile, _profile)) { index ->
+        entryRequired(Canonical.of(at(profile, index), at(_profile, index)), "Meta", "profile")
+      }
     return Meta(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       versionId = Id.of(versionId, _versionId),
-      lastUpdated =
-        Instant.of(
-          if (lastUpdated != null) FhirDateTime.fromString(lastUpdated) else null,
-          _lastUpdated,
-        ),
+      lastUpdated = Instant.of(lastUpdated, _lastUpdated),
       source = Uri.of(source, _source),
-      profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
-          Canonical.of(profile?.getOrNull(index), _profile?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'profile' on Meta has neither a value nor an id/extension"
-            )
-        }),
-      security = security ?: listOf(),
-      tag = tag ?: listOf(),
+      profile = profile_,
+      security = listOrEmpty(security),
+      tag = listOrEmpty(tag),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Meta) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.versionId?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.versionId)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.lastUpdated?.value?.toString())
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.lastUpdated)
     compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.source?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.source)
-    if (value.profile.isNotEmpty()) {
+    if (!value.profile.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         8,
@@ -211,20 +203,18 @@ internal object MetaSerializer : KSerializer<Meta> {
       )
       compositeEncoder.encodePrimitiveElementList(descriptor, 9, value.profile)
     }
-    if (value.security.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        CodingSerializer.listSerializer,
-        value.security,
-      )
-    if (value.tag.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11,
-        CodingSerializer.listSerializer,
-        value.tag,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      CodingSerializer.listSerializer,
+      value.security,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11,
+      CodingSerializer.listSerializer,
+      value.tag,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }

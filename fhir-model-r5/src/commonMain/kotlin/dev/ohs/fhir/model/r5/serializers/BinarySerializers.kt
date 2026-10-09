@@ -35,8 +35,6 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
@@ -46,17 +44,13 @@ internal object BinarySerializer : FhirResourceSerializer<Binary> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Binary")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
-    b.optionalElement("contentType", String.serializer().descriptor)
-    b.optionalElement("_contentType", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
+    b.strPrim("contentType")
     b.optionalElement("securityContext", ReferenceSerializer.descriptor)
-    b.optionalElement("data", String.serializer().descriptor)
-    b.optionalElement("_data", ElementSerializer.descriptor)
+    b.strPrim("data")
   }
 
   override fun deserializeInternal(
@@ -128,7 +122,7 @@ internal object BinarySerializer : FhirResourceSerializer<Binary> {
               ElementSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Binary: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Binary(
@@ -136,9 +130,7 @@ internal object BinarySerializer : FhirResourceSerializer<Binary> {
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
-      contentType =
-        Code.of(contentType, _contentType)
-          ?: throw SerializationException("Missing required property 'contentType' on Binary"),
+      contentType = required(Code.of(contentType, _contentType), "Binary", "contentType"),
       securityContext = securityContext,
       `data` = Base64Binary.of(`data`, _data),
     )

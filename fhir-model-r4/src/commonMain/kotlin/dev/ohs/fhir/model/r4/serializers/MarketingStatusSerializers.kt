@@ -33,34 +33,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MarketingStatus") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("country", CodeableConceptSerializer.descriptor)
-      optionalElement("jurisdiction", CodeableConceptSerializer.descriptor)
-      optionalElement("status", CodeableConceptSerializer.descriptor)
-      optionalElement("dateRange", PeriodSerializer.descriptor)
-      optionalElement("restoreDate", String.serializer().descriptor)
-      optionalElement("_restoreDate", ElementSerializer.descriptor)
-    }
+internal object MarketingStatusSerializer : FhirSerializer<MarketingStatus> {
+  override val descriptor: SerialDescriptor = buildDescriptor("MarketingStatus", this)
 
-  internal val listSerializer: KSerializer<List<MarketingStatus>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<MarketingStatus>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("country", CodeableConceptSerializer.descriptor)
+    b.optionalElement("jurisdiction", CodeableConceptSerializer.descriptor)
+    b.optionalElement("status", CodeableConceptSerializer.descriptor)
+    b.optionalElement("dateRange", PeriodSerializer.descriptor)
+    b.strPrim("restoreDate")
+  }
 
   override fun deserialize(decoder: Decoder): MarketingStatus {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -69,7 +69,7 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
     var jurisdiction: CodeableConcept? = null
     var status: CodeableConcept? = null
     var dateRange: Period? = null
-    var restoreDate: String? = null
+    var restoreDate: FhirDateTime? = null
     var _restoreDate: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -122,7 +122,8 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
               PeriodSerializer,
               null,
             )
-        7 -> restoreDate = compositeDecoder.decodeStringElement(descriptor, i)
+        7 ->
+          restoreDate = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         8 ->
           _restoreDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -132,51 +133,38 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MarketingStatus: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MarketingStatus(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      country =
-        country
-          ?: throw SerializationException("Missing required property 'country' on MarketingStatus"),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      country = required(country, "MarketingStatus", "country"),
       jurisdiction = jurisdiction,
-      status =
-        status
-          ?: throw SerializationException("Missing required property 'status' on MarketingStatus"),
-      dateRange =
-        dateRange
-          ?: throw SerializationException(
-            "Missing required property 'dateRange' on MarketingStatus"
-          ),
-      restoreDate =
-        DateTime.of(
-          if (restoreDate != null) FhirDateTime.fromString(restoreDate) else null,
-          _restoreDate,
-        ),
+      status = required(status, "MarketingStatus", "status"),
+      dateRange = required(dateRange, "MarketingStatus", "dateRange"),
+      restoreDate = DateTime.of(restoreDate, _restoreDate),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MarketingStatus) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,

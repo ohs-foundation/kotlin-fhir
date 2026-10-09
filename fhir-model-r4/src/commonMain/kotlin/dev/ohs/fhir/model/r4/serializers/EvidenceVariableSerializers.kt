@@ -63,14 +63,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -78,38 +76,36 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object EvidenceVariableCharacteristicSerializer :
-  KSerializer<EvidenceVariable.Characteristic> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Characteristic") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("definitionReference", ReferenceSerializer.descriptor)
-      optionalElement("definitionCanonical", KotlinString.serializer().descriptor)
-      optionalElement("_definitionCanonical", ElementSerializer.descriptor)
-      optionalElement("definitionCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("definitionExpression", ExpressionSerializer.descriptor)
-      optionalElement("definitionDataRequirement", DataRequirementSerializer.descriptor)
-      optionalElement("definitionTriggerDefinition", TriggerDefinitionSerializer.descriptor)
-      optionalElement("usageContext", UsageContextSerializer.listSerializer.descriptor)
-      optionalElement("exclude", KotlinBoolean.serializer().descriptor)
-      optionalElement("_exclude", ElementSerializer.descriptor)
-      optionalElement("participantEffectiveDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_participantEffectiveDateTime", ElementSerializer.descriptor)
-      optionalElement("participantEffectivePeriod", PeriodSerializer.descriptor)
-      optionalElement("participantEffectiveDuration", DurationSerializer.descriptor)
-      optionalElement("participantEffectiveTiming", TimingSerializer.descriptor)
-      optionalElement("timeFromStart", DurationSerializer.descriptor)
-      optionalElement("groupMeasure", KotlinString.serializer().descriptor)
-      optionalElement("_groupMeasure", ElementSerializer.descriptor)
-    }
+  FhirSerializer<EvidenceVariable.Characteristic> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Characteristic", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<EvidenceVariable.Characteristic>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("definitionReference", ReferenceSerializer.descriptor)
+    b.strPrim("definitionCanonical")
+    b.optionalElement("definitionCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("definitionExpression", ExpressionSerializer.descriptor)
+    b.optionalElement("definitionDataRequirement", DataRequirementSerializer.descriptor)
+    b.optionalElement("definitionTriggerDefinition", TriggerDefinitionSerializer.descriptor)
+    b.optionalElement("usageContext", UsageContextSerializer.listSerializer.descriptor)
+    b.boolPrim("exclude")
+    b.strPrim("participantEffectiveDateTime")
+    b.optionalElement("participantEffectivePeriod", PeriodSerializer.descriptor)
+    b.optionalElement("participantEffectiveDuration", DurationSerializer.descriptor)
+    b.optionalElement("participantEffectiveTiming", TimingSerializer.descriptor)
+    b.optionalElement("timeFromStart", DurationSerializer.descriptor)
+    b.strPrim("groupMeasure")
+  }
+
   override fun deserialize(decoder: Decoder): EvidenceVariable.Characteristic {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -126,13 +122,13 @@ internal object EvidenceVariableCharacteristicSerializer :
     var usageContext: List<UsageContext>? = null
     var exclude: KotlinBoolean? = null
     var _exclude: Element? = null
-    var participantEffectiveDateTime: KotlinString? = null
+    var participantEffectiveDateTime: FhirDateTime? = null
     var _participantEffectiveDateTime: Element? = null
     var participantEffectivePeriod: Period? = null
     var participantEffectiveDuration: Duration? = null
     var participantEffectiveTiming: Timing? = null
     var timeFromStart: Duration? = null
-    var groupMeasure: KotlinString? = null
+    var groupMeasure: GroupMeasure? = null
     var _groupMeasure: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -228,7 +224,9 @@ internal object EvidenceVariableCharacteristicSerializer :
               ElementSerializer,
               null,
             )
-        15 -> participantEffectiveDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        15 ->
+          participantEffectiveDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         16 ->
           _participantEffectiveDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -269,7 +267,8 @@ internal object EvidenceVariableCharacteristicSerializer :
               DurationSerializer,
               null,
             )
-        21 -> groupMeasure = compositeDecoder.decodeStringElement(descriptor, i)
+        21 ->
+          groupMeasure = GroupMeasure.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _groupMeasure =
             compositeDecoder.decodeNullableSerializableElement(
@@ -279,67 +278,58 @@ internal object EvidenceVariableCharacteristicSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Characteristic: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return EvidenceVariable.Characteristic(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       description = R4String.of(description, _description),
       definition =
-        EvidenceVariable.Characteristic.Definition.from(
-          definitionReference,
-          Canonical.of(definitionCanonical, _definitionCanonical),
-          definitionCodeableConcept,
-          definitionExpression,
-          definitionDataRequirement,
-          definitionTriggerDefinition,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'definition' on EvidenceVariable.Characteristic"
+        required(
+          EvidenceVariable.Characteristic.Definition.from(
+            definitionReference,
+            Canonical.of(definitionCanonical, _definitionCanonical),
+            definitionCodeableConcept,
+            definitionExpression,
+            definitionDataRequirement,
+            definitionTriggerDefinition,
           ),
-      usageContext = usageContext ?: listOf(),
+          "EvidenceVariable.Characteristic",
+          "definition",
+        ),
+      usageContext = listOrEmpty(usageContext),
       exclude = R4Boolean.of(exclude, _exclude),
       participantEffective =
         EvidenceVariable.Characteristic.ParticipantEffective.from(
-          DateTime.of(
-            if (participantEffectiveDateTime != null)
-              FhirDateTime.fromString(participantEffectiveDateTime)
-            else null,
-            _participantEffectiveDateTime,
-          ),
+          DateTime.of(participantEffectiveDateTime, _participantEffectiveDateTime),
           participantEffectivePeriod,
           participantEffectiveDuration,
           participantEffectiveTiming,
         ),
       timeFromStart = timeFromStart,
-      groupMeasure =
-        Enumeration.of(
-          if (groupMeasure != null) GroupMeasure.fromCode(groupMeasure) else null,
-          _groupMeasure,
-        ),
+      groupMeasure = Enumeration.of(groupMeasure, _groupMeasure),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: EvidenceVariable.Characteristic) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.description)
     when (val choice = value.definition) {
@@ -383,13 +373,12 @@ internal object EvidenceVariableCharacteristicSerializer :
         )
       }
     }
-    if (value.usageContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        UsageContextSerializer.listSerializer,
-        value.usageContext,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      UsageContextSerializer.listSerializer,
+      value.usageContext,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 13, value.exclude?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14, value.exclude)
     when (val choice = value.participantEffective) {
@@ -424,50 +413,35 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
   override val descriptor: SerialDescriptor = buildResourceDescriptor("EvidenceVariable")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("shortTitle", KotlinString.serializer().descriptor)
-    b.optionalElement("_shortTitle", ElementSerializer.descriptor)
-    b.optionalElement("subtitle", KotlinString.serializer().descriptor)
-    b.optionalElement("_subtitle", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrim("shortTitle")
+    b.strPrim("subtitle")
+    b.strPrim("status")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("approvalDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_approvalDate", ElementSerializer.descriptor)
-    b.optionalElement("lastReviewDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_lastReviewDate", ElementSerializer.descriptor)
+    b.strPrim("copyright")
+    b.strPrim("approvalDate")
+    b.strPrim("lastReviewDate")
     b.optionalElement("effectivePeriod", PeriodSerializer.descriptor)
     b.optionalElement("topic", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("author", ContactDetailSerializer.listSerializer.descriptor)
@@ -475,8 +449,7 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
     b.optionalElement("reviewer", ContactDetailSerializer.listSerializer.descriptor)
     b.optionalElement("endorser", ContactDetailSerializer.listSerializer.descriptor)
     b.optionalElement("relatedArtifact", RelatedArtifactSerializer.listSerializer.descriptor)
-    b.optionalElement("type", KotlinString.serializer().descriptor)
-    b.optionalElement("_type", ElementSerializer.descriptor)
+    b.strPrim("type")
     b.optionalElement(
       "characteristic",
       EvidenceVariableCharacteristicSerializer.listSerializer.descriptor,
@@ -511,9 +484,9 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
     var _shortTitle: Element? = null
     var subtitle: KotlinString? = null
     var _subtitle: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -525,9 +498,9 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
     var jurisdiction: List<CodeableConcept>? = null
     var copyright: KotlinString? = null
     var _copyright: Element? = null
-    var approvalDate: KotlinString? = null
+    var approvalDate: FhirDate? = null
     var _approvalDate: Element? = null
-    var lastReviewDate: KotlinString? = null
+    var lastReviewDate: FhirDate? = null
     var _lastReviewDate: Element? = null
     var effectivePeriod: Period? = null
     var topic: List<CodeableConcept>? = null
@@ -536,7 +509,7 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
     var reviewer: List<ContactDetail>? = null
     var endorser: List<ContactDetail>? = null
     var relatedArtifact: List<RelatedArtifact>? = null
-    var type: KotlinString? = null
+    var type: EvidenceVariableType? = null
     var _type: Element? = null
     var characteristic: List<EvidenceVariable.Characteristic>? = null
     while (true) {
@@ -660,7 +633,8 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
               ElementSerializer,
               null,
             )
-        23 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        23 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -669,7 +643,7 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
               ElementSerializer,
               null,
             )
-        25 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        25 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         26 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -737,7 +711,8 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
               ElementSerializer,
               null,
             )
-        37 -> approvalDate = compositeDecoder.decodeStringElement(descriptor, i)
+        37 ->
+          approvalDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         38 ->
           _approvalDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -746,7 +721,8 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
               ElementSerializer,
               null,
             )
-        39 -> lastReviewDate = compositeDecoder.decodeStringElement(descriptor, i)
+        39 ->
+          lastReviewDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         40 ->
           _lastReviewDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -811,7 +787,8 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
               RelatedArtifactSerializer.listSerializer,
               null,
             )
-        48 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        48 ->
+          type = EvidenceVariableType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         49 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -828,7 +805,7 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
               EvidenceVariableCharacteristicSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding EvidenceVariable: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return EvidenceVariable(
@@ -837,46 +814,36 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R4String.of(version, _version),
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       shortTitle = R4String.of(shortTitle, _shortTitle),
       subtitle = R4String.of(subtitle, _subtitle),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on EvidenceVariable"),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      status = required(Enumeration.of(status, _status), "EvidenceVariable", "status"),
+      date = DateTime.of(date, _date),
       publisher = R4String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      note = note ?: listOf(),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      note = listOrEmpty(note),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate =
-        Date.of(
-          if (approvalDate != null) FhirDate.fromString(approvalDate) else null,
-          _approvalDate,
-        ),
-      lastReviewDate =
-        Date.of(
-          if (lastReviewDate != null) FhirDate.fromString(lastReviewDate) else null,
-          _lastReviewDate,
-        ),
+      approvalDate = Date.of(approvalDate, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate, _lastReviewDate),
       effectivePeriod = effectivePeriod,
-      topic = topic ?: listOf(),
-      author = author ?: listOf(),
-      editor = editor ?: listOf(),
-      reviewer = reviewer ?: listOf(),
-      endorser = endorser ?: listOf(),
-      relatedArtifact = relatedArtifact ?: listOf(),
-      type = Enumeration.of(if (type != null) EvidenceVariableType.fromCode(type) else null, _type),
-      characteristic = characteristic ?: listOf(),
+      topic = listOrEmpty(topic),
+      author = listOrEmpty(author),
+      editor = listOrEmpty(editor),
+      reviewer = listOrEmpty(reviewer),
+      endorser = listOrEmpty(endorser),
+      relatedArtifact = listOrEmpty(relatedArtifact),
+      type = Enumeration.of(type, _type),
+      characteristic = listOrEmpty(characteristic),
     )
   }
 
@@ -907,36 +874,32 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
@@ -969,40 +932,36 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 28 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       30 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 31 + descriptorOffset, value.description)
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        34 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      34 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       35 + descriptorOffset,
@@ -1027,60 +986,53 @@ internal object EvidenceVariableSerializer : FhirResourceSerializer<EvidenceVari
       PeriodSerializer,
       value.effectivePeriod,
     )
-    if (value.topic.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        42 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.topic,
-      )
-    if (value.author.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        43 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.author,
-      )
-    if (value.editor.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        44 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.editor,
-      )
-    if (value.reviewer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        45 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.reviewer,
-      )
-    if (value.endorser.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        46 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.endorser,
-      )
-    if (value.relatedArtifact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        47 + descriptorOffset,
-        RelatedArtifactSerializer.listSerializer,
-        value.relatedArtifact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      42 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.topic,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      43 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.author,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      44 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.editor,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      45 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.reviewer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      46 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.endorser,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      47 + descriptorOffset,
+      RelatedArtifactSerializer.listSerializer,
+      value.relatedArtifact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       48 + descriptorOffset,
       value.type?.value?.code,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 49 + descriptorOffset, value.type)
-    if (value.characteristic.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        50 + descriptorOffset,
-        EvidenceVariableCharacteristicSerializer.listSerializer,
-        value.characteristic,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      50 + descriptorOffset,
+      EvidenceVariableCharacteristicSerializer.listSerializer,
+      value.characteristic,
+    )
   }
 }

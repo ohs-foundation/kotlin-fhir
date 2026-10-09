@@ -36,48 +36,45 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ContactPointSerializer : KSerializer<ContactPoint> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ContactPoint") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("system", KotlinString.serializer().descriptor)
-      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("use", KotlinString.serializer().descriptor)
-      optionalElement("_use", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("rank", Int.serializer().descriptor)
-      optionalElement("_rank", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("period", lazyDescriptor { PeriodSerializer.descriptor })
-    }
+internal object ContactPointSerializer : FhirSerializer<ContactPoint> {
+  override val descriptor: SerialDescriptor = buildDescriptor("ContactPoint", this)
 
-  internal val listSerializer: KSerializer<List<ContactPoint>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<ContactPoint>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("system")
+    b.strPrim("value")
+    b.strPrim("use")
+    b.intPrim("rank")
+    b.optionalElement("period", lazyDescriptor(LazyDescriptorId.PeriodSerializer))
+  }
 
   override fun deserialize(decoder: Decoder): ContactPoint {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
-    var system: KotlinString? = null
+    var system: ContactPointSystem? = null
     var _system: Element? = null
     var `value`: KotlinString? = null
     var _value: Element? = null
-    var use: KotlinString? = null
+    var use: ContactPointUse? = null
     var _use: Element? = null
     var rank: Int? = null
     var _rank: Element? = null
@@ -93,7 +90,8 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
               ExtensionSerializer.listSerializer,
               null,
             )
-        2 -> system = compositeDecoder.decodeStringElement(descriptor, i)
+        2 ->
+          system = ContactPointSystem.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         3 ->
           _system =
             compositeDecoder.decodeNullableSerializableElement(
@@ -111,7 +109,7 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
               ElementSerializer,
               null,
             )
-        6 -> use = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> use = ContactPointUse.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _use =
             compositeDecoder.decodeNullableSerializableElement(
@@ -138,32 +136,31 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ContactPoint: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ContactPoint(
       id = id,
-      extension = extension ?: listOf(),
-      system =
-        Enumeration.of(if (system != null) ContactPointSystem.fromCode(system) else null, _system),
+      extension = listOrEmpty(extension),
+      system = Enumeration.of(system, _system),
       `value` = R4String.of(`value`, _value),
-      use = Enumeration.of(if (use != null) ContactPointUse.fromCode(use) else null, _use),
+      use = Enumeration.of(use, _use),
       rank = PositiveInt.of(rank, _rank),
       period = period,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ContactPoint) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.system?.value?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.system)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.`value`?.value)

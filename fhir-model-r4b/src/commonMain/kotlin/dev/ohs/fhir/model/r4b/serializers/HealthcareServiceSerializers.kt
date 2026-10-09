@@ -50,15 +50,13 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -66,21 +64,23 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object HealthcareServiceEligibilitySerializer :
-  KSerializer<HealthcareService.Eligibility> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Eligibility") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("comment", KotlinString.serializer().descriptor)
-      optionalElement("_comment", ElementSerializer.descriptor)
-    }
+  FhirSerializer<HealthcareService.Eligibility> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Eligibility", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<HealthcareService.Eligibility>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.strPrim("comment")
+  }
+
   override fun deserialize(decoder: Decoder): HealthcareService.Eligibility {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -125,36 +125,35 @@ internal object HealthcareServiceEligibilitySerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Eligibility: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return HealthcareService.Eligibility(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       code = code,
       comment = Markdown.of(comment, _comment),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: HealthcareService.Eligibility) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -168,26 +167,25 @@ internal object HealthcareServiceEligibilitySerializer :
 }
 
 internal object HealthcareServiceAvailableTimeSerializer :
-  KSerializer<HealthcareService.AvailableTime> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("AvailableTime") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("daysOfWeek", stringNullableListSerializer.descriptor)
-      optionalElement("_daysOfWeek", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("allDay", KotlinBoolean.serializer().descriptor)
-      optionalElement("_allDay", ElementSerializer.descriptor)
-      optionalElement("availableStartTime", LocalTimeSerializer.descriptor)
-      optionalElement("_availableStartTime", ElementSerializer.descriptor)
-      optionalElement("availableEndTime", LocalTimeSerializer.descriptor)
-      optionalElement("_availableEndTime", ElementSerializer.descriptor)
-    }
+  FhirSerializer<HealthcareService.AvailableTime> {
+  override val descriptor: SerialDescriptor = buildDescriptor("AvailableTime", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<HealthcareService.AvailableTime>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrimList("daysOfWeek")
+    b.boolPrim("allDay")
+    b.prim("availableStartTime", LocalTimeSerializer.descriptor)
+    b.prim("availableEndTime", LocalTimeSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): HealthcareService.AvailableTime {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -277,24 +275,26 @@ internal object HealthcareServiceAvailableTimeSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding AvailableTime: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val daysOfWeek_ =
+      List(maxSize(daysOfWeek, _daysOfWeek)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(daysOfWeek, index)?.let { DaysOfWeek.fromCode(it) },
+            at(_daysOfWeek, index),
+          ),
+          "HealthcareService.AvailableTime",
+          "daysOfWeek",
+        )
+      }
     return HealthcareService.AvailableTime(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      daysOfWeek =
-        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
-          Enumeration.of(
-            daysOfWeek?.getOrNull(index)?.let { DaysOfWeek.fromCode(it) },
-            _daysOfWeek?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'daysOfWeek' on HealthcareService.AvailableTime has neither a value nor an id/extension"
-            )
-        }),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      daysOfWeek = daysOfWeek_,
       allDay = R4bBoolean.of(allDay, _allDay),
       availableStartTime = Time.of(availableStartTime, _availableStartTime),
       availableEndTime = Time.of(availableEndTime, _availableEndTime),
@@ -302,23 +302,22 @@ internal object HealthcareServiceAvailableTimeSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: HealthcareService.AvailableTime) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.daysOfWeek.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    if (!value.daysOfWeek.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         3,
@@ -348,21 +347,23 @@ internal object HealthcareServiceAvailableTimeSerializer :
 }
 
 internal object HealthcareServiceNotAvailableSerializer :
-  KSerializer<HealthcareService.NotAvailable> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("NotAvailable") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("during", PeriodSerializer.descriptor)
-    }
+  FhirSerializer<HealthcareService.NotAvailable> {
+  override val descriptor: SerialDescriptor = buildDescriptor("NotAvailable", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<HealthcareService.NotAvailable>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("during", PeriodSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): HealthcareService.NotAvailable {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -407,40 +408,40 @@ internal object HealthcareServiceNotAvailableSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding NotAvailable: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return HealthcareService.NotAvailable(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       description =
-        R4bString.of(description, _description)
-          ?: throw SerializationException(
-            "Missing required property 'description' on HealthcareService.NotAvailable"
-          ),
+        required(
+          R4bString.of(description, _description),
+          "HealthcareService.NotAvailable",
+          "description",
+        ),
       during = during,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: HealthcareService.NotAvailable) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.description.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.description)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, PeriodSerializer, value.during)
@@ -452,33 +453,27 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
   override val descriptor: SerialDescriptor = buildResourceDescriptor("HealthcareService")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("active", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_active", ElementSerializer.descriptor)
+    b.boolPrim("active")
     b.optionalElement("providedBy", ReferenceSerializer.descriptor)
     b.optionalElement("category", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("specialty", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("location", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("comment", KotlinString.serializer().descriptor)
-    b.optionalElement("_comment", ElementSerializer.descriptor)
-    b.optionalElement("extraDetails", KotlinString.serializer().descriptor)
-    b.optionalElement("_extraDetails", ElementSerializer.descriptor)
+    b.strPrim("name")
+    b.strPrim("comment")
+    b.strPrim("extraDetails")
     b.optionalElement("photo", AttachmentSerializer.descriptor)
     b.optionalElement("telecom", ContactPointSerializer.listSerializer.descriptor)
     b.optionalElement("coverageArea", ReferenceSerializer.listSerializer.descriptor)
@@ -491,8 +486,7 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
     b.optionalElement("characteristic", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("communication", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("referralMethod", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("appointmentRequired", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_appointmentRequired", ElementSerializer.descriptor)
+    b.boolPrim("appointmentRequired")
     b.optionalElement(
       "availableTime",
       HealthcareServiceAvailableTimeSerializer.listSerializer.descriptor,
@@ -501,8 +495,7 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
       "notAvailable",
       HealthcareServiceNotAvailableSerializer.listSerializer.descriptor,
     )
-    b.optionalElement("availabilityExceptions", KotlinString.serializer().descriptor)
-    b.optionalElement("_availabilityExceptions", ElementSerializer.descriptor)
+    b.strPrim("availabilityExceptions")
     b.optionalElement("endpoint", ReferenceSerializer.listSerializer.descriptor)
   }
 
@@ -808,7 +801,7 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
               ReferenceSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding HealthcareService: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return HealthcareService(
@@ -817,33 +810,33 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       active = R4bBoolean.of(active, _active),
       providedBy = providedBy,
-      category = category ?: listOf(),
-      type = type ?: listOf(),
-      specialty = specialty ?: listOf(),
-      location = location ?: listOf(),
+      category = listOrEmpty(category),
+      type = listOrEmpty(type),
+      specialty = listOrEmpty(specialty),
+      location = listOrEmpty(location),
       name = R4bString.of(name, _name),
       comment = R4bString.of(comment, _comment),
       extraDetails = Markdown.of(extraDetails, _extraDetails),
       photo = photo,
-      telecom = telecom ?: listOf(),
-      coverageArea = coverageArea ?: listOf(),
-      serviceProvisionCode = serviceProvisionCode ?: listOf(),
-      eligibility = eligibility ?: listOf(),
-      program = program ?: listOf(),
-      characteristic = characteristic ?: listOf(),
-      communication = communication ?: listOf(),
-      referralMethod = referralMethod ?: listOf(),
+      telecom = listOrEmpty(telecom),
+      coverageArea = listOrEmpty(coverageArea),
+      serviceProvisionCode = listOrEmpty(serviceProvisionCode),
+      eligibility = listOrEmpty(eligibility),
+      program = listOrEmpty(program),
+      characteristic = listOrEmpty(characteristic),
+      communication = listOrEmpty(communication),
+      referralMethod = listOrEmpty(referralMethod),
       appointmentRequired = R4bBoolean.of(appointmentRequired, _appointmentRequired),
-      availableTime = availableTime ?: listOf(),
-      notAvailable = notAvailable ?: listOf(),
+      availableTime = listOrEmpty(availableTime),
+      notAvailable = listOrEmpty(notAvailable),
       availabilityExceptions = R4bString.of(availabilityExceptions, _availabilityExceptions),
-      endpoint = endpoint ?: listOf(),
+      endpoint = listOrEmpty(endpoint),
     )
   }
 
@@ -874,34 +867,30 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.active?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.active)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -910,34 +899,30 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
       ReferenceSerializer,
       value.providedBy,
     )
-    if (value.category.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.category,
-      )
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
-    if (value.specialty.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.specialty,
-      )
-    if (value.location.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.location,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.category,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.specialty,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      17 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.location,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 18 + descriptorOffset, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 19 + descriptorOffset, value.name)
     compositeEncoder.encodeStringIfNotNull(descriptor, 20 + descriptorOffset, value.comment?.value)
@@ -954,62 +939,54 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
       AttachmentSerializer,
       value.photo,
     )
-    if (value.telecom.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        ContactPointSerializer.listSerializer,
-        value.telecom,
-      )
-    if (value.coverageArea.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.coverageArea,
-      )
-    if (value.serviceProvisionCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.serviceProvisionCode,
-      )
-    if (value.eligibility.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        HealthcareServiceEligibilitySerializer.listSerializer,
-        value.eligibility,
-      )
-    if (value.program.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.program,
-      )
-    if (value.characteristic.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.characteristic,
-      )
-    if (value.communication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.communication,
-      )
-    if (value.referralMethod.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        32 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.referralMethod,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      ContactPointSerializer.listSerializer,
+      value.telecom,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      26 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.coverageArea,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.serviceProvisionCode,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28 + descriptorOffset,
+      HealthcareServiceEligibilitySerializer.listSerializer,
+      value.eligibility,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.program,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.characteristic,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.communication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      32 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.referralMethod,
+    )
     compositeEncoder.encodeBooleanIfNotNull(
       descriptor,
       33 + descriptorOffset,
@@ -1020,20 +997,18 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
       34 + descriptorOffset,
       value.appointmentRequired,
     )
-    if (value.availableTime.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        HealthcareServiceAvailableTimeSerializer.listSerializer,
-        value.availableTime,
-      )
-    if (value.notAvailable.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        36 + descriptorOffset,
-        HealthcareServiceNotAvailableSerializer.listSerializer,
-        value.notAvailable,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      HealthcareServiceAvailableTimeSerializer.listSerializer,
+      value.availableTime,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      36 + descriptorOffset,
+      HealthcareServiceNotAvailableSerializer.listSerializer,
+      value.notAvailable,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       37 + descriptorOffset,
@@ -1044,12 +1019,11 @@ internal object HealthcareServiceSerializer : FhirResourceSerializer<HealthcareS
       38 + descriptorOffset,
       value.availabilityExceptions,
     )
-    if (value.endpoint.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        39 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.endpoint,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      39 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.endpoint,
+    )
   }
 }

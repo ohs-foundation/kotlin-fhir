@@ -50,34 +50,35 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ProcedurePerformerSerializer : KSerializer<Procedure.Performer> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Performer") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("function", CodeableConceptSerializer.descriptor)
-      optionalElement("actor", ReferenceSerializer.descriptor)
-      optionalElement("onBehalfOf", ReferenceSerializer.descriptor)
-    }
+internal object ProcedurePerformerSerializer : FhirSerializer<Procedure.Performer> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Performer", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Procedure.Performer>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("function", CodeableConceptSerializer.descriptor)
+    b.optionalElement("actor", ReferenceSerializer.descriptor)
+    b.optionalElement("onBehalfOf", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Procedure.Performer {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -129,41 +130,36 @@ internal object ProcedurePerformerSerializer : KSerializer<Procedure.Performer> 
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Performer: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Procedure.Performer(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       function = function,
-      actor =
-        actor
-          ?: throw SerializationException(
-            "Missing required property 'actor' on Procedure.Performer"
-          ),
+      actor = required(actor, "Procedure.Performer", "actor"),
       onBehalfOf = onBehalfOf,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Procedure.Performer) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -181,19 +177,22 @@ internal object ProcedurePerformerSerializer : KSerializer<Procedure.Performer> 
   }
 }
 
-internal object ProcedureFocalDeviceSerializer : KSerializer<Procedure.FocalDevice> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("FocalDevice") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("action", CodeableConceptSerializer.descriptor)
-      optionalElement("manipulated", ReferenceSerializer.descriptor)
-    }
+internal object ProcedureFocalDeviceSerializer : FhirSerializer<Procedure.FocalDevice> {
+  override val descriptor: SerialDescriptor = buildDescriptor("FocalDevice", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<Procedure.FocalDevice>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("action", CodeableConceptSerializer.descriptor)
+    b.optionalElement("manipulated", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): Procedure.FocalDevice {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -236,40 +235,35 @@ internal object ProcedureFocalDeviceSerializer : KSerializer<Procedure.FocalDevi
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding FocalDevice: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Procedure.FocalDevice(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       action = action,
-      manipulated =
-        manipulated
-          ?: throw SerializationException(
-            "Missing required property 'manipulated' on Procedure.FocalDevice"
-          ),
+      manipulated = required(manipulated, "Procedure.FocalDevice", "manipulated"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: Procedure.FocalDevice) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -290,38 +284,31 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Procedure")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("instantiatesCanonical", stringNullableListSerializer.descriptor)
-    b.optionalElement("_instantiatesCanonical", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("instantiatesUri", stringNullableListSerializer.descriptor)
-    b.optionalElement("_instantiatesUri", ElementSerializer.nullableListSerializer.descriptor)
+    b.strPrimList("instantiatesCanonical")
+    b.strPrimList("instantiatesUri")
     b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("partOf", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("statusReason", CodeableConceptSerializer.descriptor)
     b.optionalElement("category", CodeableConceptSerializer.descriptor)
     b.optionalElement("code", CodeableConceptSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
-    b.optionalElement("performedDateTime", KotlinString.serializer().descriptor)
-    b.optionalElement("_performedDateTime", ElementSerializer.descriptor)
+    b.strPrim("performedDateTime")
     b.optionalElement("performedPeriod", PeriodSerializer.descriptor)
-    b.optionalElement("performedString", KotlinString.serializer().descriptor)
-    b.optionalElement("_performedString", ElementSerializer.descriptor)
+    b.strPrim("performedString")
     b.optionalElement("performedAge", AgeSerializer.descriptor)
     b.optionalElement("performedRange", RangeSerializer.descriptor)
     b.optionalElement("recorder", ReferenceSerializer.descriptor)
@@ -364,14 +351,14 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
     var _instantiatesUri: List<Element?>? = null
     var basedOn: List<Reference>? = null
     var partOf: List<Reference>? = null
-    var status: KotlinString? = null
+    var status: EventStatus? = null
     var _status: Element? = null
     var statusReason: CodeableConcept? = null
     var category: CodeableConcept? = null
     var code: CodeableConcept? = null
     var subject: Reference? = null
     var encounter: Reference? = null
-    var performedDateTime: KotlinString? = null
+    var performedDateTime: FhirDateTime? = null
     var _performedDateTime: Element? = null
     var performedPeriod: Period? = null
     var performedString: KotlinString? = null
@@ -509,7 +496,7 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
               ReferenceSerializer.listSerializer,
               null,
             )
-        17 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        17 -> status = EventStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         18 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -558,7 +545,9 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
               ReferenceSerializer,
               null,
             )
-        24 -> performedDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        24 ->
+          performedDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         25 ->
           _performedDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -718,56 +707,48 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
               CodeableConceptSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Procedure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val instantiatesCanonical_ =
+      List(maxSize(instantiatesCanonical, _instantiatesCanonical)) { index ->
+        entryRequired(
+          Canonical.of(at(instantiatesCanonical, index), at(_instantiatesCanonical, index)),
+          "Procedure",
+          "instantiatesCanonical",
+        )
+      }
+    val instantiatesUri_ =
+      List(maxSize(instantiatesUri, _instantiatesUri)) { index ->
+        entryRequired(
+          Uri.of(at(instantiatesUri, index), at(_instantiatesUri, index)),
+          "Procedure",
+          "instantiatesUri",
+        )
+      }
     return Procedure(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      instantiatesCanonical =
-        (kotlin.collections.List(
-          maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { index ->
-          Canonical.of(
-            instantiatesCanonical?.getOrNull(index),
-            _instantiatesCanonical?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'instantiatesCanonical' on Procedure has neither a value nor an id/extension"
-            )
-        }),
-      instantiatesUri =
-        (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          index ->
-          Uri.of(instantiatesUri?.getOrNull(index), _instantiatesUri?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'instantiatesUri' on Procedure has neither a value nor an id/extension"
-            )
-        }),
-      basedOn = basedOn ?: listOf(),
-      partOf = partOf ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) EventStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Procedure"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      instantiatesCanonical = instantiatesCanonical_,
+      instantiatesUri = instantiatesUri_,
+      basedOn = listOrEmpty(basedOn),
+      partOf = listOrEmpty(partOf),
+      status = required(Enumeration.of(status, _status), "Procedure", "status"),
       statusReason = statusReason,
       category = category,
       code = code,
-      subject =
-        subject ?: throw SerializationException("Missing required property 'subject' on Procedure"),
+      subject = required(subject, "Procedure", "subject"),
       encounter = encounter,
       performed =
         Procedure.Performed.from(
-          DateTime.of(
-            if (performedDateTime != null) FhirDateTime.fromString(performedDateTime) else null,
-            _performedDateTime,
-          ),
+          DateTime.of(performedDateTime, _performedDateTime),
           performedPeriod,
           R4bString.of(performedString, _performedString),
           performedAge,
@@ -775,20 +756,20 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
         ),
       recorder = recorder,
       asserter = asserter,
-      performer = performer ?: listOf(),
+      performer = listOrEmpty(performer),
       location = location,
-      reasonCode = reasonCode ?: listOf(),
-      reasonReference = reasonReference ?: listOf(),
-      bodySite = bodySite ?: listOf(),
+      reasonCode = listOrEmpty(reasonCode),
+      reasonReference = listOrEmpty(reasonReference),
+      bodySite = listOrEmpty(bodySite),
       outcome = outcome,
-      report = report ?: listOf(),
-      complication = complication ?: listOf(),
-      complicationDetail = complicationDetail ?: listOf(),
-      followUp = followUp ?: listOf(),
-      note = note ?: listOf(),
-      focalDevice = focalDevice ?: listOf(),
-      usedReference = usedReference ?: listOf(),
-      usedCode = usedCode ?: listOf(),
+      report = listOrEmpty(report),
+      complication = listOrEmpty(complication),
+      complicationDetail = listOrEmpty(complicationDetail),
+      followUp = listOrEmpty(followUp),
+      note = listOrEmpty(note),
+      focalDevice = listOrEmpty(focalDevice),
+      usedReference = listOrEmpty(usedReference),
+      usedCode = listOrEmpty(usedCode),
     )
   }
 
@@ -819,35 +800,31 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.instantiatesCanonical.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    if (!value.instantiatesCanonical.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
@@ -860,7 +837,7 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
         value.instantiatesCanonical,
       )
     }
-    if (value.instantiatesUri.isNotEmpty()) {
+    if (!value.instantiatesUri.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
@@ -873,20 +850,18 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
         value.instantiatesUri,
       )
     }
-    if (value.basedOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.basedOn,
-      )
-    if (value.partOf.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.partOf,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.basedOn,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.partOf,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       17 + descriptorOffset,
@@ -978,101 +953,89 @@ internal object ProcedureSerializer : FhirResourceSerializer<Procedure> {
       ReferenceSerializer,
       value.asserter,
     )
-    if (value.performer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        33 + descriptorOffset,
-        ProcedurePerformerSerializer.listSerializer,
-        value.performer,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      33 + descriptorOffset,
+      ProcedurePerformerSerializer.listSerializer,
+      value.performer,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       34 + descriptorOffset,
       ReferenceSerializer,
       value.location,
     )
-    if (value.reasonCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        35 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.reasonCode,
-      )
-    if (value.reasonReference.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        36 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.reasonReference,
-      )
-    if (value.bodySite.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        37 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.bodySite,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      35 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.reasonCode,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      36 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.reasonReference,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      37 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.bodySite,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       38 + descriptorOffset,
       CodeableConceptSerializer,
       value.outcome,
     )
-    if (value.report.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        39 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.report,
-      )
-    if (value.complication.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.complication,
-      )
-    if (value.complicationDetail.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        41 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.complicationDetail,
-      )
-    if (value.followUp.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        42 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.followUp,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        43 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.focalDevice.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        44 + descriptorOffset,
-        ProcedureFocalDeviceSerializer.listSerializer,
-        value.focalDevice,
-      )
-    if (value.usedReference.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        45 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.usedReference,
-      )
-    if (value.usedCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        46 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.usedCode,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      39 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.report,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      40 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.complication,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      41 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.complicationDetail,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      42 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.followUp,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      43 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      44 + descriptorOffset,
+      ProcedureFocalDeviceSerializer.listSerializer,
+      value.focalDevice,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      45 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.usedReference,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      46 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.usedCode,
+    )
   }
 }

@@ -56,14 +56,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -71,24 +69,24 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object RiskEvidenceSynthesisSampleSizeSerializer :
-  KSerializer<RiskEvidenceSynthesis.SampleSize> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("SampleSize") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("numberOfStudies", Int.serializer().descriptor)
-      optionalElement("_numberOfStudies", ElementSerializer.descriptor)
-      optionalElement("numberOfParticipants", Int.serializer().descriptor)
-      optionalElement("_numberOfParticipants", ElementSerializer.descriptor)
-    }
+  FhirSerializer<RiskEvidenceSynthesis.SampleSize> {
+  override val descriptor: SerialDescriptor = buildDescriptor("SampleSize", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<RiskEvidenceSynthesis.SampleSize>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.intPrim("numberOfStudies")
+    b.intPrim("numberOfParticipants")
+  }
+
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis.SampleSize {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -146,14 +144,14 @@ internal object RiskEvidenceSynthesisSampleSizeSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SampleSize: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RiskEvidenceSynthesis.SampleSize(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       description = R4String.of(description, _description),
       numberOfStudies = Integer.of(numberOfStudies, _numberOfStudies),
       numberOfParticipants = Integer.of(numberOfParticipants, _numberOfParticipants),
@@ -161,22 +159,21 @@ internal object RiskEvidenceSynthesisSampleSizeSerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: RiskEvidenceSynthesis.SampleSize) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.description)
     compositeEncoder.encodeIntIfNotNull(descriptor, 5, value.numberOfStudies?.value)
@@ -188,32 +185,31 @@ internal object RiskEvidenceSynthesisSampleSizeSerializer :
 }
 
 internal object RiskEvidenceSynthesisRiskEstimateSerializer :
-  KSerializer<RiskEvidenceSynthesis.RiskEstimate> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RiskEstimate") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("value", FhirDecimalSerializer.descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-      optionalElement("unitOfMeasure", CodeableConceptSerializer.descriptor)
-      optionalElement("denominatorCount", Int.serializer().descriptor)
-      optionalElement("_denominatorCount", ElementSerializer.descriptor)
-      optionalElement("numeratorCount", Int.serializer().descriptor)
-      optionalElement("_numeratorCount", ElementSerializer.descriptor)
-      optionalElement(
-        "precisionEstimate",
-        RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<RiskEvidenceSynthesis.RiskEstimate> {
+  override val descriptor: SerialDescriptor = buildDescriptor("RiskEstimate", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<RiskEvidenceSynthesis.RiskEstimate>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("description")
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.prim("value", FhirDecimalSerializer.descriptor)
+    b.optionalElement("unitOfMeasure", CodeableConceptSerializer.descriptor)
+    b.intPrim("denominatorCount")
+    b.intPrim("numeratorCount")
+    b.optionalElement(
+      "precisionEstimate",
+      RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis.RiskEstimate {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -316,41 +312,40 @@ internal object RiskEvidenceSynthesisRiskEstimateSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RiskEstimate: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RiskEvidenceSynthesis.RiskEstimate(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       description = R4String.of(description, _description),
       type = type,
       `value` = Decimal.of(`value`, _value),
       unitOfMeasure = unitOfMeasure,
       denominatorCount = Integer.of(denominatorCount, _denominatorCount),
       numeratorCount = Integer.of(numeratorCount, _numeratorCount),
-      precisionEstimate = precisionEstimate ?: listOf(),
+      precisionEstimate = listOrEmpty(precisionEstimate),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: RiskEvidenceSynthesis.RiskEstimate) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.description)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -376,38 +371,37 @@ internal object RiskEvidenceSynthesisRiskEstimateSerializer :
     compositeEncoder.encodeElementIfNotNull(descriptor, 10, value.denominatorCount)
     compositeEncoder.encodeIntIfNotNull(descriptor, 11, value.numeratorCount?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12, value.numeratorCount)
-    if (value.precisionEstimate.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13,
-        RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer.listSerializer,
-        value.precisionEstimate,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13,
+      RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer.listSerializer,
+      value.precisionEstimate,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer :
-  KSerializer<RiskEvidenceSynthesis.RiskEstimate.PrecisionEstimate> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PrecisionEstimate") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("level", FhirDecimalSerializer.descriptor)
-      optionalElement("_level", ElementSerializer.descriptor)
-      optionalElement("from", FhirDecimalSerializer.descriptor)
-      optionalElement("_from", ElementSerializer.descriptor)
-      optionalElement("to", FhirDecimalSerializer.descriptor)
-      optionalElement("_to", ElementSerializer.descriptor)
-    }
+  FhirSerializer<RiskEvidenceSynthesis.RiskEstimate.PrecisionEstimate> {
+  override val descriptor: SerialDescriptor = buildDescriptor("PrecisionEstimate", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<RiskEvidenceSynthesis.RiskEstimate.PrecisionEstimate>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.prim("level", FhirDecimalSerializer.descriptor)
+    b.prim("from", FhirDecimalSerializer.descriptor)
+    b.prim("to", FhirDecimalSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis.RiskEstimate.PrecisionEstimate {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -495,14 +489,14 @@ internal object RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PrecisionEstimate: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RiskEvidenceSynthesis.RiskEstimate.PrecisionEstimate(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
       level = Decimal.of(level, _level),
       from = Decimal.of(from, _from),
@@ -514,22 +508,21 @@ internal object RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer :
     encoder: Encoder,
     `value`: RiskEvidenceSynthesis.RiskEstimate.PrecisionEstimate,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -562,24 +555,27 @@ internal object RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSerializer :
 }
 
 internal object RiskEvidenceSynthesisCertaintySerializer :
-  KSerializer<RiskEvidenceSynthesis.Certainty> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Certainty") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("rating", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
-      optionalElement(
-        "certaintySubcomponent",
-        RiskEvidenceSynthesisCertaintyCertaintySubcomponentSerializer.listSerializer.descriptor,
-      )
-    }
+  FhirSerializer<RiskEvidenceSynthesis.Certainty> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Certainty", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<RiskEvidenceSynthesis.Certainty>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("rating", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "certaintySubcomponent",
+      RiskEvidenceSynthesisCertaintyCertaintySubcomponentSerializer.listSerializer.descriptor,
+    )
+  }
+
   override fun deserialize(decoder: Decoder): RiskEvidenceSynthesis.Certainty {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -631,81 +627,80 @@ internal object RiskEvidenceSynthesisCertaintySerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Certainty: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RiskEvidenceSynthesis.Certainty(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      rating = rating ?: listOf(),
-      note = note ?: listOf(),
-      certaintySubcomponent = certaintySubcomponent ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      rating = listOrEmpty(rating),
+      note = listOrEmpty(note),
+      certaintySubcomponent = listOrEmpty(certaintySubcomponent),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: RiskEvidenceSynthesis.Certainty) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.rating.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableConceptSerializer.listSerializer,
-        value.rating,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.certaintySubcomponent.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        RiskEvidenceSynthesisCertaintyCertaintySubcomponentSerializer.listSerializer,
-        value.certaintySubcomponent,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      CodeableConceptSerializer.listSerializer,
+      value.rating,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      RiskEvidenceSynthesisCertaintyCertaintySubcomponentSerializer.listSerializer,
+      value.certaintySubcomponent,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object RiskEvidenceSynthesisCertaintyCertaintySubcomponentSerializer :
-  KSerializer<RiskEvidenceSynthesis.Certainty.CertaintySubcomponent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CertaintySubcomponent") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("rating", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<RiskEvidenceSynthesis.Certainty.CertaintySubcomponent> {
+  override val descriptor: SerialDescriptor = buildDescriptor("CertaintySubcomponent", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<RiskEvidenceSynthesis.Certainty.CertaintySubcomponent>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("rating", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(
     decoder: Decoder
   ): RiskEvidenceSynthesis.Certainty.CertaintySubcomponent {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -757,18 +752,17 @@ internal object RiskEvidenceSynthesisCertaintyCertaintySubcomponentSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding CertaintySubcomponent: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return RiskEvidenceSynthesis.Certainty.CertaintySubcomponent(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       type = type,
-      rating = rating ?: listOf(),
-      note = note ?: listOf(),
+      rating = listOrEmpty(rating),
+      note = listOrEmpty(note),
     )
   }
 
@@ -776,42 +770,39 @@ internal object RiskEvidenceSynthesisCertaintyCertaintySubcomponentSerializer :
     encoder: Encoder,
     `value`: RiskEvidenceSynthesis.Certainty.CertaintySubcomponent,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
       CodeableConceptSerializer,
       value.type,
     )
-    if (value.rating.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.rating,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.rating,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -820,46 +811,33 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
   override val descriptor: SerialDescriptor = buildResourceDescriptor("RiskEvidenceSynthesis")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrim("status")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("approvalDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_approvalDate", ElementSerializer.descriptor)
-    b.optionalElement("lastReviewDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_lastReviewDate", ElementSerializer.descriptor)
+    b.strPrim("copyright")
+    b.strPrim("approvalDate")
+    b.strPrim("lastReviewDate")
     b.optionalElement("effectivePeriod", PeriodSerializer.descriptor)
     b.optionalElement("topic", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("author", ContactDetailSerializer.listSerializer.descriptor)
@@ -904,9 +882,9 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
     var _name: Element? = null
     var title: KotlinString? = null
     var _title: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -918,9 +896,9 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
     var jurisdiction: List<CodeableConcept>? = null
     var copyright: KotlinString? = null
     var _copyright: Element? = null
-    var approvalDate: KotlinString? = null
+    var approvalDate: FhirDate? = null
     var _approvalDate: Element? = null
-    var lastReviewDate: KotlinString? = null
+    var lastReviewDate: FhirDate? = null
     var _lastReviewDate: Element? = null
     var effectivePeriod: Period? = null
     var topic: List<CodeableConcept>? = null
@@ -1040,7 +1018,8 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
               ElementSerializer,
               null,
             )
-        19 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        19 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1049,7 +1028,7 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
               ElementSerializer,
               null,
             )
-        21 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        21 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         22 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1117,7 +1096,8 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
               ElementSerializer,
               null,
             )
-        33 -> approvalDate = compositeDecoder.decodeStringElement(descriptor, i)
+        33 ->
+          approvalDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         34 ->
           _approvalDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1126,7 +1106,8 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
               ElementSerializer,
               null,
             )
-        35 -> lastReviewDate = compositeDecoder.decodeStringElement(descriptor, i)
+        35 ->
+          lastReviewDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         36 ->
           _lastReviewDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1255,8 +1236,7 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
               RiskEvidenceSynthesisCertaintySerializer.listSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding RiskEvidenceSynthesis: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return RiskEvidenceSynthesis(
@@ -1265,60 +1245,40 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R4String.of(version, _version),
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on RiskEvidenceSynthesis"
-          ),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      status = required(Enumeration.of(status, _status), "RiskEvidenceSynthesis", "status"),
+      date = DateTime.of(date, _date),
       publisher = R4String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      note = note ?: listOf(),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      note = listOrEmpty(note),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       copyright = Markdown.of(copyright, _copyright),
-      approvalDate =
-        Date.of(
-          if (approvalDate != null) FhirDate.fromString(approvalDate) else null,
-          _approvalDate,
-        ),
-      lastReviewDate =
-        Date.of(
-          if (lastReviewDate != null) FhirDate.fromString(lastReviewDate) else null,
-          _lastReviewDate,
-        ),
+      approvalDate = Date.of(approvalDate, _approvalDate),
+      lastReviewDate = Date.of(lastReviewDate, _lastReviewDate),
       effectivePeriod = effectivePeriod,
-      topic = topic ?: listOf(),
-      author = author ?: listOf(),
-      editor = editor ?: listOf(),
-      reviewer = reviewer ?: listOf(),
-      endorser = endorser ?: listOf(),
-      relatedArtifact = relatedArtifact ?: listOf(),
+      topic = listOrEmpty(topic),
+      author = listOrEmpty(author),
+      editor = listOrEmpty(editor),
+      reviewer = listOrEmpty(reviewer),
+      endorser = listOrEmpty(endorser),
+      relatedArtifact = listOrEmpty(relatedArtifact),
       synthesisType = synthesisType,
       studyType = studyType,
-      population =
-        population
-          ?: throw SerializationException(
-            "Missing required property 'population' on RiskEvidenceSynthesis"
-          ),
+      population = required(population, "RiskEvidenceSynthesis", "population"),
       exposure = exposure,
-      outcome =
-        outcome
-          ?: throw SerializationException(
-            "Missing required property 'outcome' on RiskEvidenceSynthesis"
-          ),
+      outcome = required(outcome, "RiskEvidenceSynthesis", "outcome"),
       sampleSize = sampleSize,
       riskEstimate = riskEstimate,
-      certainty = certainty ?: listOf(),
+      certainty = listOrEmpty(certainty),
     )
   }
 
@@ -1349,36 +1309,32 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
@@ -1403,40 +1359,36 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 24 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       26 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 27 + descriptorOffset, value.description)
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        28 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        29 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      28 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      29 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       31 + descriptorOffset,
@@ -1461,48 +1413,42 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
       PeriodSerializer,
       value.effectivePeriod,
     )
-    if (value.topic.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        38 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.topic,
-      )
-    if (value.author.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        39 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.author,
-      )
-    if (value.editor.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        40 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.editor,
-      )
-    if (value.reviewer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        41 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.reviewer,
-      )
-    if (value.endorser.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        42 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.endorser,
-      )
-    if (value.relatedArtifact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        43 + descriptorOffset,
-        RelatedArtifactSerializer.listSerializer,
-        value.relatedArtifact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      38 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.topic,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      39 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.author,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      40 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.editor,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      41 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.reviewer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      42 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.endorser,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      43 + descriptorOffset,
+      RelatedArtifactSerializer.listSerializer,
+      value.relatedArtifact,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       44 + descriptorOffset,
@@ -1545,12 +1491,11 @@ internal object RiskEvidenceSynthesisSerializer : FhirResourceSerializer<RiskEvi
       RiskEvidenceSynthesisRiskEstimateSerializer,
       value.riskEstimate,
     )
-    if (value.certainty.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        51 + descriptorOffset,
-        RiskEvidenceSynthesisCertaintySerializer.listSerializer,
-        value.certainty,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      51 + descriptorOffset,
+      RiskEvidenceSynthesisCertaintySerializer.listSerializer,
+      value.certainty,
+    )
   }
 }

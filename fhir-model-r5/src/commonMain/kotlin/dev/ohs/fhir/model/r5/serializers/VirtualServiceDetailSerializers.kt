@@ -36,40 +36,37 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetail> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("VirtualServiceDetail") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("channelType", CodingSerializer.descriptor)
-      optionalElement("addressUrl", KotlinString.serializer().descriptor)
-      optionalElement("_addressUrl", ElementSerializer.descriptor)
-      optionalElement("addressString", KotlinString.serializer().descriptor)
-      optionalElement("_addressString", ElementSerializer.descriptor)
-      optionalElement("addressContactPoint", ContactPointSerializer.descriptor)
-      optionalElement("addressExtendedContactDetail", ExtendedContactDetailSerializer.descriptor)
-      optionalElement("additionalInfo", stringNullableListSerializer.descriptor)
-      optionalElement("_additionalInfo", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("maxParticipants", Int.serializer().descriptor)
-      optionalElement("_maxParticipants", ElementSerializer.descriptor)
-      optionalElement("sessionKey", KotlinString.serializer().descriptor)
-      optionalElement("_sessionKey", ElementSerializer.descriptor)
-    }
+internal object VirtualServiceDetailSerializer : FhirSerializer<VirtualServiceDetail> {
+  override val descriptor: SerialDescriptor = buildDescriptor("VirtualServiceDetail", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<VirtualServiceDetail>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("channelType", CodingSerializer.descriptor)
+    b.strPrim("addressUrl")
+    b.strPrim("addressString")
+    b.optionalElement("addressContactPoint", ContactPointSerializer.descriptor)
+    b.optionalElement("addressExtendedContactDetail", ExtendedContactDetailSerializer.descriptor)
+    b.strPrimList("additionalInfo")
+    b.intPrim("maxParticipants")
+    b.strPrim("sessionKey")
+  }
+
   override fun deserialize(decoder: Decoder): VirtualServiceDetail {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -174,13 +171,21 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding VirtualServiceDetail: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val additionalInfo_ =
+      List(maxSize(additionalInfo, _additionalInfo)) { index ->
+        entryRequired(
+          Url.of(at(additionalInfo, index), at(_additionalInfo, index)),
+          "VirtualServiceDetail",
+          "additionalInfo",
+        )
+      }
     return VirtualServiceDetail(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       channelType = channelType,
       address =
         VirtualServiceDetail.Address.from(
@@ -189,29 +194,22 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
           addressContactPoint,
           addressExtendedContactDetail,
         ),
-      additionalInfo =
-        (kotlin.collections.List(maxOf(additionalInfo?.size ?: 0, _additionalInfo?.size ?: 0)) {
-          index ->
-          Url.of(additionalInfo?.getOrNull(index), _additionalInfo?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'additionalInfo' on VirtualServiceDetail has neither a value nor an id/extension"
-            )
-        }),
+      additionalInfo = additionalInfo_,
       maxParticipants = PositiveInt.of(maxParticipants, _maxParticipants),
       sessionKey = R5String.of(sessionKey, _sessionKey),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: VirtualServiceDetail) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 2, CodingSerializer, value.channelType)
     when (val choice = value.address) {
       null -> {}
@@ -240,7 +238,7 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
         )
       }
     }
-    if (value.additionalInfo.isNotEmpty()) {
+    if (!value.additionalInfo.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         9,

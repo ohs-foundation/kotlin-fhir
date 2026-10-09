@@ -61,39 +61,35 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Filter") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("operator", stringNullableListSerializer.descriptor)
-      optionalElement("_operator", ElementSerializer.nullableListSerializer.descriptor)
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-    }
+internal object CodeSystemFilterSerializer : FhirSerializer<CodeSystem.Filter> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Filter", this)
 
-  internal val listSerializer: KSerializer<List<CodeSystem.Filter>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<CodeSystem.Filter>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrim("description")
+    b.strPrimList("operator")
+    b.strPrim("value")
+  }
 
   override fun deserialize(decoder: Decoder): CodeSystem.Filter {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -169,56 +165,53 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Filter: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
+    val operator_ =
+      List(maxSize(`operator`, _operator)) { index ->
+        entryRequired(
+          Enumeration.of(
+            at(`operator`, index)?.let { FilterOperator.fromCode(it) },
+            at(_operator, index),
+          ),
+          "CodeSystem.Filter",
+          "operator",
+        )
+      }
     return CodeSystem.Filter(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        Code.of(code, _code)
-          ?: throw SerializationException("Missing required property 'code' on CodeSystem.Filter"),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(Code.of(code, _code), "CodeSystem.Filter", "code"),
       description = R4String.of(description, _description),
-      `operator` =
-        (kotlin.collections.List(maxOf(`operator`?.size ?: 0, _operator?.size ?: 0)) { index ->
-          Enumeration.of(
-            `operator`?.getOrNull(index)?.let { FilterOperator.fromCode(it) },
-            _operator?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'operator' on CodeSystem.Filter has neither a value nor an id/extension"
-            )
-        }),
-      `value` =
-        R4String.of(`value`, _value)
-          ?: throw SerializationException("Missing required property 'value' on CodeSystem.Filter"),
+      `operator` = operator_,
+      `value` = required(R4String.of(`value`, _value), "CodeSystem.Filter", "value"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Filter) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.description?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.description)
-    if (value.`operator`.isNotEmpty()) {
+    if (!value.`operator`.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         7,
@@ -233,25 +226,24 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
   }
 }
 
-internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Property") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("uri", KotlinString.serializer().descriptor)
-      optionalElement("_uri", ElementSerializer.descriptor)
-      optionalElement("description", KotlinString.serializer().descriptor)
-      optionalElement("_description", ElementSerializer.descriptor)
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", ElementSerializer.descriptor)
-    }
+internal object CodeSystemPropertySerializer : FhirSerializer<CodeSystem.Property> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Property", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<CodeSystem.Property>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrim("uri")
+    b.strPrim("description")
+    b.strPrim("type")
+  }
+
   override fun deserialize(decoder: Decoder): CodeSystem.Property {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -262,7 +254,7 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
     var _uri: Element? = null
     var description: KotlinString? = null
     var _description: Element? = null
-    var type: KotlinString? = null
+    var type: PropertyType? = null
     var _type: Element? = null
     while (true) {
       when (val i = compositeDecoder.decodeElementIndex(descriptor)) {
@@ -310,7 +302,7 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
               ElementSerializer,
               null,
             )
-        9 -> type = compositeDecoder.decodeStringElement(descriptor, i)
+        9 -> type = PropertyType.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         10 ->
           _type =
             compositeDecoder.decodeNullableSerializableElement(
@@ -320,46 +312,37 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Property: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return CodeSystem.Property(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        Code.of(code, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on CodeSystem.Property"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(Code.of(code, _code), "CodeSystem.Property", "code"),
       uri = Uri.of(uri, _uri),
       description = R4String.of(description, _description),
-      type =
-        Enumeration.of(if (type != null) PropertyType.fromCode(type) else null, _type)
-          ?: throw SerializationException(
-            "Missing required property 'type' on CodeSystem.Property"
-          ),
+      type = required(Enumeration.of(type, _type), "CodeSystem.Property", "type"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Property) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.uri?.value)
@@ -372,32 +355,32 @@ internal object CodeSystemPropertySerializer : KSerializer<CodeSystem.Property> 
   }
 }
 
-internal object CodeSystemConceptSerializer : KSerializer<CodeSystem.Concept> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Concept") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("display", KotlinString.serializer().descriptor)
-      optionalElement("_display", ElementSerializer.descriptor)
-      optionalElement("definition", KotlinString.serializer().descriptor)
-      optionalElement("_definition", ElementSerializer.descriptor)
-      optionalElement(
-        "designation",
-        CodeSystemConceptDesignationSerializer.listSerializer.descriptor,
-      )
-      optionalElement("property", CodeSystemConceptPropertySerializer.listSerializer.descriptor)
-      optionalElement(
-        "concept",
-        listSerialDescriptor(lazyDescriptor { CodeSystemConceptSerializer.descriptor }),
-      )
-    }
+internal object CodeSystemConceptSerializer : FhirSerializer<CodeSystem.Concept> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Concept", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<CodeSystem.Concept>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrim("display")
+    b.strPrim("definition")
+    b.optionalElement(
+      "designation",
+      CodeSystemConceptDesignationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("property", CodeSystemConceptPropertySerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "concept",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.CodeSystemConceptSerializer)),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): CodeSystem.Concept {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -482,91 +465,86 @@ internal object CodeSystemConceptSerializer : KSerializer<CodeSystem.Concept> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Concept: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return CodeSystem.Concept(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        Code.of(code, _code)
-          ?: throw SerializationException("Missing required property 'code' on CodeSystem.Concept"),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(Code.of(code, _code), "CodeSystem.Concept", "code"),
       display = R4String.of(display, _display),
       definition = R4String.of(definition, _definition),
-      designation = designation ?: listOf(),
-      `property` = `property` ?: listOf(),
-      concept = concept ?: listOf(),
+      designation = listOrEmpty(designation),
+      `property` = listOrEmpty(`property`),
+      concept = listOrEmpty(concept),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Concept) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
     compositeEncoder.encodeStringIfNotNull(descriptor, 5, value.display?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 6, value.display)
     compositeEncoder.encodeStringIfNotNull(descriptor, 7, value.definition?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 8, value.definition)
-    if (value.designation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        CodeSystemConceptDesignationSerializer.listSerializer,
-        value.designation,
-      )
-    if (value.`property`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        CodeSystemConceptPropertySerializer.listSerializer,
-        value.`property`,
-      )
-    if (value.concept.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11,
-        CodeSystemConceptSerializer.listSerializer,
-        value.concept,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      CodeSystemConceptDesignationSerializer.listSerializer,
+      value.designation,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      CodeSystemConceptPropertySerializer.listSerializer,
+      value.`property`,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11,
+      CodeSystemConceptSerializer.listSerializer,
+      value.concept,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object CodeSystemConceptDesignationSerializer :
-  KSerializer<CodeSystem.Concept.Designation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Designation") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("language", KotlinString.serializer().descriptor)
-      optionalElement("_language", ElementSerializer.descriptor)
-      optionalElement("use", CodingSerializer.descriptor)
-      optionalElement("value", KotlinString.serializer().descriptor)
-      optionalElement("_value", ElementSerializer.descriptor)
-    }
+  FhirSerializer<CodeSystem.Concept.Designation> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Designation", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<CodeSystem.Concept.Designation>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("language")
+    b.optionalElement("use", CodingSerializer.descriptor)
+    b.strPrim("value")
+  }
+
   override fun deserialize(decoder: Decoder): CodeSystem.Concept.Designation {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -622,41 +600,36 @@ internal object CodeSystemConceptDesignationSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Designation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return CodeSystem.Concept.Designation(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       language = ExtensibleEnumeration.of<CommonLanguages>(language, _language),
       use = use,
-      `value` =
-        R4String.of(`value`, _value)
-          ?: throw SerializationException(
-            "Missing required property 'value' on CodeSystem.Concept.Designation"
-          ),
+      `value` = required(R4String.of(`value`, _value), "CodeSystem.Concept.Designation", "value"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Concept.Designation) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.language?.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.language)
     compositeEncoder.encodeSerializableIfNotNull(descriptor, 5, CodingSerializer, value.use)
@@ -666,32 +639,28 @@ internal object CodeSystemConceptDesignationSerializer :
   }
 }
 
-internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Concept.Property> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Property") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", ElementSerializer.descriptor)
-      optionalElement("valueCode", KotlinString.serializer().descriptor)
-      optionalElement("_valueCode", ElementSerializer.descriptor)
-      optionalElement("valueCoding", CodingSerializer.descriptor)
-      optionalElement("valueString", KotlinString.serializer().descriptor)
-      optionalElement("_valueString", ElementSerializer.descriptor)
-      optionalElement("valueInteger", Int.serializer().descriptor)
-      optionalElement("_valueInteger", ElementSerializer.descriptor)
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", ElementSerializer.descriptor)
-      optionalElement("valueDateTime", KotlinString.serializer().descriptor)
-      optionalElement("_valueDateTime", ElementSerializer.descriptor)
-      optionalElement("valueDecimal", FhirDecimalSerializer.descriptor)
-      optionalElement("_valueDecimal", ElementSerializer.descriptor)
-    }
+internal object CodeSystemConceptPropertySerializer : FhirSerializer<CodeSystem.Concept.Property> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Property", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<CodeSystem.Concept.Property>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.strPrim("code")
+    b.strPrim("valueCode")
+    b.optionalElement("valueCoding", CodingSerializer.descriptor)
+    b.strPrim("valueString")
+    b.intPrim("valueInteger")
+    b.boolPrim("valueBoolean")
+    b.strPrim("valueDateTime")
+    b.prim("valueDecimal", FhirDecimalSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): CodeSystem.Concept.Property {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -707,7 +676,7 @@ internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Con
     var _valueInteger: Element? = null
     var valueBoolean: KotlinBoolean? = null
     var _valueBoolean: Element? = null
-    var valueDateTime: KotlinString? = null
+    var valueDateTime: FhirDateTime? = null
     var _valueDateTime: Element? = null
     var valueDecimal: FhirDecimal? = null
     var _valueDecimal: Element? = null
@@ -783,7 +752,9 @@ internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Con
               ElementSerializer,
               null,
             )
-        14 -> valueDateTime = compositeDecoder.decodeStringElement(descriptor, i)
+        14 ->
+          valueDateTime =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         15 ->
           _valueDateTime =
             compositeDecoder.decodeNullableSerializableElement(
@@ -809,55 +780,48 @@ internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Con
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Property: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return CodeSystem.Concept.Property(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        Code.of(code, _code)
-          ?: throw SerializationException(
-            "Missing required property 'code' on CodeSystem.Concept.Property"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(Code.of(code, _code), "CodeSystem.Concept.Property", "code"),
       `value` =
-        CodeSystem.Concept.Property.Value.from(
-          Code.of(valueCode, _valueCode),
-          valueCoding,
-          R4String.of(valueString, _valueString),
-          Integer.of(valueInteger, _valueInteger),
-          R4Boolean.of(valueBoolean, _valueBoolean),
-          DateTime.of(
-            if (valueDateTime != null) FhirDateTime.fromString(valueDateTime) else null,
-            _valueDateTime,
+        required(
+          CodeSystem.Concept.Property.Value.from(
+            Code.of(valueCode, _valueCode),
+            valueCoding,
+            R4String.of(valueString, _valueString),
+            Integer.of(valueInteger, _valueInteger),
+            R4Boolean.of(valueBoolean, _valueBoolean),
+            DateTime.of(valueDateTime, _valueDateTime),
+            Decimal.of(valueDecimal, _valueDecimal),
           ),
-          Decimal.of(valueDecimal, _valueDecimal),
-        )
-          ?: throw SerializationException(
-            "Missing required property 'value' on CodeSystem.Concept.Property"
-          ),
+          "CodeSystem.Concept.Property",
+          "value",
+        ),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: CodeSystem.Concept.Property) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 3, value.code.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 4, value.code)
     when (val choice = value.`value`) {
@@ -902,61 +866,40 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("CodeSystem")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-    b.optionalElement("url", KotlinString.serializer().descriptor)
-    b.optionalElement("_url", ElementSerializer.descriptor)
+    b.strPrim("url")
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("version", KotlinString.serializer().descriptor)
-    b.optionalElement("_version", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
-    b.optionalElement("title", KotlinString.serializer().descriptor)
-    b.optionalElement("_title", ElementSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("experimental", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_experimental", ElementSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("publisher", KotlinString.serializer().descriptor)
-    b.optionalElement("_publisher", ElementSerializer.descriptor)
+    b.strPrim("version")
+    b.strPrim("name")
+    b.strPrim("title")
+    b.strPrim("status")
+    b.boolPrim("experimental")
+    b.strPrim("date")
+    b.strPrim("publisher")
     b.optionalElement("contact", ContactDetailSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("useContext", UsageContextSerializer.listSerializer.descriptor)
     b.optionalElement("jurisdiction", CodeableConceptSerializer.listSerializer.descriptor)
-    b.optionalElement("purpose", KotlinString.serializer().descriptor)
-    b.optionalElement("_purpose", ElementSerializer.descriptor)
-    b.optionalElement("copyright", KotlinString.serializer().descriptor)
-    b.optionalElement("_copyright", ElementSerializer.descriptor)
-    b.optionalElement("caseSensitive", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_caseSensitive", ElementSerializer.descriptor)
-    b.optionalElement("valueSet", KotlinString.serializer().descriptor)
-    b.optionalElement("_valueSet", ElementSerializer.descriptor)
-    b.optionalElement("hierarchyMeaning", KotlinString.serializer().descriptor)
-    b.optionalElement("_hierarchyMeaning", ElementSerializer.descriptor)
-    b.optionalElement("compositional", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_compositional", ElementSerializer.descriptor)
-    b.optionalElement("versionNeeded", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_versionNeeded", ElementSerializer.descriptor)
-    b.optionalElement("content", KotlinString.serializer().descriptor)
-    b.optionalElement("_content", ElementSerializer.descriptor)
-    b.optionalElement("supplements", KotlinString.serializer().descriptor)
-    b.optionalElement("_supplements", ElementSerializer.descriptor)
-    b.optionalElement("count", Int.serializer().descriptor)
-    b.optionalElement("_count", ElementSerializer.descriptor)
+    b.strPrim("purpose")
+    b.strPrim("copyright")
+    b.boolPrim("caseSensitive")
+    b.strPrim("valueSet")
+    b.strPrim("hierarchyMeaning")
+    b.boolPrim("compositional")
+    b.boolPrim("versionNeeded")
+    b.strPrim("content")
+    b.strPrim("supplements")
+    b.intPrim("count")
     b.optionalElement("filter", CodeSystemFilterSerializer.listSerializer.descriptor)
     b.optionalElement("property", CodeSystemPropertySerializer.listSerializer.descriptor)
     b.optionalElement("concept", CodeSystemConceptSerializer.listSerializer.descriptor)
@@ -986,11 +929,11 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
     var _name: Element? = null
     var title: KotlinString? = null
     var _title: Element? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var experimental: KotlinBoolean? = null
     var _experimental: Element? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var publisher: KotlinString? = null
     var _publisher: Element? = null
@@ -1007,13 +950,13 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
     var _caseSensitive: Element? = null
     var valueSet: KotlinString? = null
     var _valueSet: Element? = null
-    var hierarchyMeaning: KotlinString? = null
+    var hierarchyMeaning: CodeSystemHierarchyMeaning? = null
     var _hierarchyMeaning: Element? = null
     var compositional: KotlinBoolean? = null
     var _compositional: Element? = null
     var versionNeeded: KotlinBoolean? = null
     var _versionNeeded: Element? = null
-    var content: KotlinString? = null
+    var content: CodeSystemContentMode? = null
     var _content: Element? = null
     var supplements: KotlinString? = null
     var _supplements: Element? = null
@@ -1125,7 +1068,8 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
               ElementSerializer,
               null,
             )
-        19 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        19 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1143,7 +1087,7 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
               ElementSerializer,
               null,
             )
-        23 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        23 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         24 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1230,7 +1174,9 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
               ElementSerializer,
               null,
             )
-        40 -> hierarchyMeaning = compositeDecoder.decodeStringElement(descriptor, i)
+        40 ->
+          hierarchyMeaning =
+            CodeSystemHierarchyMeaning.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         41 ->
           _hierarchyMeaning =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1257,7 +1203,9 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
               ElementSerializer,
               null,
             )
-        46 -> content = compositeDecoder.decodeStringElement(descriptor, i)
+        46 ->
+          content =
+            CodeSystemContentMode.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         47 ->
           _content =
             compositeDecoder.decodeNullableSerializableElement(
@@ -1308,7 +1256,7 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
               CodeSystemConceptSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding CodeSystem: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return CodeSystem(
@@ -1317,46 +1265,35 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       url = Uri.of(url, _url),
-      identifier = identifier ?: listOf(),
+      identifier = listOrEmpty(identifier),
       version = R4String.of(version, _version),
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on CodeSystem"),
+      status = required(Enumeration.of(status, _status), "CodeSystem", "status"),
       experimental = R4Boolean.of(experimental, _experimental),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      date = DateTime.of(date, _date),
       publisher = R4String.of(publisher, _publisher),
-      contact = contact ?: listOf(),
+      contact = listOrEmpty(contact),
       description = Markdown.of(description, _description),
-      useContext = useContext ?: listOf(),
-      jurisdiction = jurisdiction ?: listOf(),
+      useContext = listOrEmpty(useContext),
+      jurisdiction = listOrEmpty(jurisdiction),
       purpose = Markdown.of(purpose, _purpose),
       copyright = Markdown.of(copyright, _copyright),
       caseSensitive = R4Boolean.of(caseSensitive, _caseSensitive),
       valueSet = Canonical.of(valueSet, _valueSet),
-      hierarchyMeaning =
-        Enumeration.of(
-          if (hierarchyMeaning != null) CodeSystemHierarchyMeaning.fromCode(hierarchyMeaning)
-          else null,
-          _hierarchyMeaning,
-        ),
+      hierarchyMeaning = Enumeration.of(hierarchyMeaning, _hierarchyMeaning),
       compositional = R4Boolean.of(compositional, _compositional),
       versionNeeded = R4Boolean.of(versionNeeded, _versionNeeded),
-      content =
-        Enumeration.of(
-          if (content != null) CodeSystemContentMode.fromCode(content) else null,
-          _content,
-        ) ?: throw SerializationException("Missing required property 'content' on CodeSystem"),
+      content = required(Enumeration.of(content, _content), "CodeSystem", "content"),
       supplements = Canonical.of(supplements, _supplements),
       count = UnsignedInt.of(count, _count),
-      filter = filter ?: listOf(),
-      `property` = `property` ?: listOf(),
-      concept = concept ?: listOf(),
+      filter = listOrEmpty(filter),
+      `property` = listOrEmpty(`property`),
+      concept = listOrEmpty(concept),
     )
   }
 
@@ -1387,36 +1324,32 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 10 + descriptorOffset, value.url?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 11 + descriptorOffset, value.url)
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 13 + descriptorOffset, value.version?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 14 + descriptorOffset, value.version)
     compositeEncoder.encodeStringIfNotNull(descriptor, 15 + descriptorOffset, value.name?.value)
@@ -1447,33 +1380,30 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
       value.publisher?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 26 + descriptorOffset, value.publisher)
-    if (value.contact.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        ContactDetailSerializer.listSerializer,
-        value.contact,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      ContactDetailSerializer.listSerializer,
+      value.contact,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       28 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 29 + descriptorOffset, value.description)
-    if (value.useContext.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        30 + descriptorOffset,
-        UsageContextSerializer.listSerializer,
-        value.useContext,
-      )
-    if (value.jurisdiction.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        31 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.jurisdiction,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      30 + descriptorOffset,
+      UsageContextSerializer.listSerializer,
+      value.useContext,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      31 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.jurisdiction,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 32 + descriptorOffset, value.purpose?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 33 + descriptorOffset, value.purpose)
     compositeEncoder.encodeStringIfNotNull(
@@ -1526,26 +1456,23 @@ internal object CodeSystemSerializer : FhirResourceSerializer<CodeSystem> {
     compositeEncoder.encodeElementIfNotNull(descriptor, 49 + descriptorOffset, value.supplements)
     compositeEncoder.encodeIntIfNotNull(descriptor, 50 + descriptorOffset, value.count?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 51 + descriptorOffset, value.count)
-    if (value.filter.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        52 + descriptorOffset,
-        CodeSystemFilterSerializer.listSerializer,
-        value.filter,
-      )
-    if (value.`property`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        53 + descriptorOffset,
-        CodeSystemPropertySerializer.listSerializer,
-        value.`property`,
-      )
-    if (value.concept.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        54 + descriptorOffset,
-        CodeSystemConceptSerializer.listSerializer,
-        value.concept,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      52 + descriptorOffset,
+      CodeSystemFilterSerializer.listSerializer,
+      value.filter,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      53 + descriptorOffset,
+      CodeSystemPropertySerializer.listSerializer,
+      value.`property`,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      54 + descriptorOffset,
+      CodeSystemConceptSerializer.listSerializer,
+      value.concept,
+    )
   }
 }

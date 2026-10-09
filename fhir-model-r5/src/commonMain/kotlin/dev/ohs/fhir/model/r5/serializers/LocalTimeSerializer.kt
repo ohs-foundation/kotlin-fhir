@@ -17,6 +17,7 @@
 package dev.ohs.fhir.model.r5.serializers
 
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.datetime.LocalTime
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
@@ -35,6 +36,7 @@ internal object LocalTimeSerializer : KSerializer<LocalTime> {
   override val descriptor: SerialDescriptor =
     PrimitiveSerialDescriptor("FormattedLocalTime", PrimitiveKind.STRING)
 
+  @JvmField
   internal val nullableListSerializer: KSerializer<List<LocalTime?>> = ListSerializer(this.nullable)
 
   override fun serialize(encoder: Encoder, `value`: LocalTime) {

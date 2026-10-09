@@ -45,14 +45,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -60,20 +58,23 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object MedicinalProductPackagedBatchIdentifierSerializer :
-  KSerializer<MedicinalProductPackaged.BatchIdentifier> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("BatchIdentifier") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("outerPackaging", IdentifierSerializer.descriptor)
-      optionalElement("immediatePackaging", IdentifierSerializer.descriptor)
-    }
+  FhirSerializer<MedicinalProductPackaged.BatchIdentifier> {
+  override val descriptor: SerialDescriptor = buildDescriptor("BatchIdentifier", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MedicinalProductPackaged.BatchIdentifier>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("outerPackaging", IdentifierSerializer.descriptor)
+    b.optionalElement("immediatePackaging", IdentifierSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MedicinalProductPackaged.BatchIdentifier {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -116,40 +117,36 @@ internal object MedicinalProductPackagedBatchIdentifierSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding BatchIdentifier: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MedicinalProductPackaged.BatchIdentifier(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       outerPackaging =
-        outerPackaging
-          ?: throw SerializationException(
-            "Missing required property 'outerPackaging' on MedicinalProductPackaged.BatchIdentifier"
-          ),
+        required(outerPackaging, "MedicinalProductPackaged.BatchIdentifier", "outerPackaging"),
       immediatePackaging = immediatePackaging,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPackaged.BatchIdentifier) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -167,35 +164,38 @@ internal object MedicinalProductPackagedBatchIdentifierSerializer :
 }
 
 internal object MedicinalProductPackagedPackageItemSerializer :
-  KSerializer<MedicinalProductPackaged.PackageItem> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("PackageItem") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("quantity", QuantitySerializer.descriptor)
-      optionalElement("material", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("alternateMaterial", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("device", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("manufacturedItem", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement(
-        "packageItem",
-        listSerialDescriptor(
-          lazyDescriptor { MedicinalProductPackagedPackageItemSerializer.descriptor }
-        ),
-      )
-      optionalElement("physicalCharacteristics", ProdCharacteristicSerializer.descriptor)
-      optionalElement("otherCharacteristics", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("shelfLifeStorage", ProductShelfLifeSerializer.listSerializer.descriptor)
-      optionalElement("manufacturer", ReferenceSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<MedicinalProductPackaged.PackageItem> {
+  override val descriptor: SerialDescriptor = buildDescriptor("PackageItem", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<MedicinalProductPackaged.PackageItem>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("quantity", QuantitySerializer.descriptor)
+    b.optionalElement("material", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("alternateMaterial", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("device", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("manufacturedItem", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "packageItem",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.MedicinalProductPackagedPackageItemSerializer)
+      ),
+    )
+    b.optionalElement("physicalCharacteristics", ProdCharacteristicSerializer.descriptor)
+    b.optionalElement("otherCharacteristics", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("shelfLifeStorage", ProductShelfLifeSerializer.listSerializer.descriptor)
+    b.optionalElement("manufacturer", ReferenceSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): MedicinalProductPackaged.PackageItem {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -328,125 +328,107 @@ internal object MedicinalProductPackagedPackageItemSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PackageItem: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return MedicinalProductPackaged.PackageItem(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on MedicinalProductPackaged.PackageItem"
-          ),
-      quantity =
-        quantity
-          ?: throw SerializationException(
-            "Missing required property 'quantity' on MedicinalProductPackaged.PackageItem"
-          ),
-      material = material ?: listOf(),
-      alternateMaterial = alternateMaterial ?: listOf(),
-      device = device ?: listOf(),
-      manufacturedItem = manufacturedItem ?: listOf(),
-      packageItem = packageItem ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      type = required(type, "MedicinalProductPackaged.PackageItem", "type"),
+      quantity = required(quantity, "MedicinalProductPackaged.PackageItem", "quantity"),
+      material = listOrEmpty(material),
+      alternateMaterial = listOrEmpty(alternateMaterial),
+      device = listOrEmpty(device),
+      manufacturedItem = listOrEmpty(manufacturedItem),
+      packageItem = listOrEmpty(packageItem),
       physicalCharacteristics = physicalCharacteristics,
-      otherCharacteristics = otherCharacteristics ?: listOf(),
-      shelfLifeStorage = shelfLifeStorage ?: listOf(),
-      manufacturer = manufacturer ?: listOf(),
+      otherCharacteristics = listOrEmpty(otherCharacteristics),
+      shelfLifeStorage = listOrEmpty(shelfLifeStorage),
+      manufacturer = listOrEmpty(manufacturer),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPackaged.PackageItem) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 4, CodeableConceptSerializer, value.type)
     compositeEncoder.encodeSerializableElement(descriptor, 5, QuantitySerializer, value.quantity)
-    if (value.material.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        CodeableConceptSerializer.listSerializer,
-        value.material,
-      )
-    if (value.alternateMaterial.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        CodeableConceptSerializer.listSerializer,
-        value.alternateMaterial,
-      )
-    if (value.device.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        ReferenceSerializer.listSerializer,
-        value.device,
-      )
-    if (value.manufacturedItem.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9,
-        ReferenceSerializer.listSerializer,
-        value.manufacturedItem,
-      )
-    if (value.packageItem.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10,
-        MedicinalProductPackagedPackageItemSerializer.listSerializer,
-        value.packageItem,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      CodeableConceptSerializer.listSerializer,
+      value.material,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      CodeableConceptSerializer.listSerializer,
+      value.alternateMaterial,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      ReferenceSerializer.listSerializer,
+      value.device,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9,
+      ReferenceSerializer.listSerializer,
+      value.manufacturedItem,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10,
+      MedicinalProductPackagedPackageItemSerializer.listSerializer,
+      value.packageItem,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       11,
       ProdCharacteristicSerializer,
       value.physicalCharacteristics,
     )
-    if (value.otherCharacteristics.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        CodeableConceptSerializer.listSerializer,
-        value.otherCharacteristics,
-      )
-    if (value.shelfLifeStorage.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13,
-        ProductShelfLifeSerializer.listSerializer,
-        value.shelfLifeStorage,
-      )
-    if (value.manufacturer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14,
-        ReferenceSerializer.listSerializer,
-        value.manufacturer,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      CodeableConceptSerializer.listSerializer,
+      value.otherCharacteristics,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13,
+      ProductShelfLifeSerializer.listSerializer,
+      value.shelfLifeStorage,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14,
+      ReferenceSerializer.listSerializer,
+      value.manufacturer,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -456,23 +438,20 @@ internal object MedicinalProductPackagedSerializer :
   override val descriptor: SerialDescriptor = buildResourceDescriptor("MedicinalProductPackaged")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("description", KotlinString.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("legalStatusOfSupply", CodeableConceptSerializer.descriptor)
     b.optionalElement("marketingStatus", MarketingStatusSerializer.listSerializer.descriptor)
     b.optionalElement("marketingAuthorization", ReferenceSerializer.descriptor)
@@ -644,8 +623,7 @@ internal object MedicinalProductPackagedSerializer :
               MedicinalProductPackagedPackageItemSerializer.listSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding MedicinalProductPackaged: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return MedicinalProductPackaged(
@@ -654,18 +632,18 @@ internal object MedicinalProductPackagedSerializer :
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      subject = subject ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      subject = listOrEmpty(subject),
       description = R4String.of(description, _description),
       legalStatusOfSupply = legalStatusOfSupply,
-      marketingStatus = marketingStatus ?: listOf(),
+      marketingStatus = listOrEmpty(marketingStatus),
       marketingAuthorization = marketingAuthorization,
-      manufacturer = manufacturer ?: listOf(),
-      batchIdentifier = batchIdentifier ?: listOf(),
-      packageItem = packageItem ?: listOf(),
+      manufacturer = listOrEmpty(manufacturer),
+      batchIdentifier = listOrEmpty(batchIdentifier),
+      packageItem = listOrEmpty(packageItem),
     )
   }
 
@@ -696,41 +674,36 @@ internal object MedicinalProductPackagedSerializer :
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.subject.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.subject,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.subject,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       12 + descriptorOffset,
@@ -743,39 +716,35 @@ internal object MedicinalProductPackagedSerializer :
       CodeableConceptSerializer,
       value.legalStatusOfSupply,
     )
-    if (value.marketingStatus.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        MarketingStatusSerializer.listSerializer,
-        value.marketingStatus,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      MarketingStatusSerializer.listSerializer,
+      value.marketingStatus,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       16 + descriptorOffset,
       ReferenceSerializer,
       value.marketingAuthorization,
     )
-    if (value.manufacturer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.manufacturer,
-      )
-    if (value.batchIdentifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        MedicinalProductPackagedBatchIdentifierSerializer.listSerializer,
-        value.batchIdentifier,
-      )
-    if (value.packageItem.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        MedicinalProductPackagedPackageItemSerializer.listSerializer,
-        value.packageItem,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      17 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.manufacturer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      MedicinalProductPackagedBatchIdentifierSerializer.listSerializer,
+      value.batchIdentifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19 + descriptorOffset,
+      MedicinalProductPackagedPackageItemSerializer.listSerializer,
+      value.packageItem,
+    )
   }
 }

@@ -47,33 +47,34 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object EncounterHistoryLocationSerializer : KSerializer<EncounterHistory.Location> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Location") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("location", ReferenceSerializer.descriptor)
-      optionalElement("form", CodeableConceptSerializer.descriptor)
-    }
+internal object EncounterHistoryLocationSerializer : FhirSerializer<EncounterHistory.Location> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Location", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<EncounterHistory.Location>> = ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("location", ReferenceSerializer.descriptor)
+    b.optionalElement("form", CodeableConceptSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): EncounterHistory.Location {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -116,40 +117,35 @@ internal object EncounterHistoryLocationSerializer : KSerializer<EncounterHistor
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Location: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return EncounterHistory.Location(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      location =
-        location
-          ?: throw SerializationException(
-            "Missing required property 'location' on EncounterHistory.Location"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      location = required(location, "EncounterHistory.Location", "location"),
       form = form,
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: EncounterHistory.Location) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, ReferenceSerializer, value.location)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
@@ -165,33 +161,28 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
   override val descriptor: SerialDescriptor = buildResourceDescriptor("EncounterHistory")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("encounter", ReferenceSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", String.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("class", CodeableConceptSerializer.descriptor)
     b.optionalElement("type", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("serviceType", CodeableReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("subject", ReferenceSerializer.descriptor)
     b.optionalElement("subjectStatus", CodeableConceptSerializer.descriptor)
     b.optionalElement("actualPeriod", PeriodSerializer.descriptor)
-    b.optionalElement("plannedStartDate", String.serializer().descriptor)
-    b.optionalElement("_plannedStartDate", ElementSerializer.descriptor)
-    b.optionalElement("plannedEndDate", String.serializer().descriptor)
-    b.optionalElement("_plannedEndDate", ElementSerializer.descriptor)
+    b.strPrim("plannedStartDate")
+    b.strPrim("plannedEndDate")
     b.optionalElement("length", DurationSerializer.descriptor)
     b.optionalElement("location", EncounterHistoryLocationSerializer.listSerializer.descriptor)
   }
@@ -213,7 +204,7 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
     var modifierExtension: List<Extension>? = null
     var encounter: Reference? = null
     var identifier: List<Identifier>? = null
-    var status: String? = null
+    var status: EncounterStatus? = null
     var _status: Element? = null
     var `class`: CodeableConcept? = null
     var type: List<CodeableConcept>? = null
@@ -221,9 +212,9 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
     var subject: Reference? = null
     var subjectStatus: CodeableConcept? = null
     var actualPeriod: Period? = null
-    var plannedStartDate: String? = null
+    var plannedStartDate: FhirDateTime? = null
     var _plannedStartDate: Element? = null
-    var plannedEndDate: String? = null
+    var plannedEndDate: FhirDateTime? = null
     var _plannedEndDate: Element? = null
     var length: Duration? = null
     var location: List<EncounterHistory.Location>? = null
@@ -302,7 +293,7 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
               IdentifierSerializer.listSerializer,
               null,
             )
-        12 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        12 -> status = EncounterStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         13 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -359,7 +350,9 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
               PeriodSerializer,
               null,
             )
-        20 -> plannedStartDate = compositeDecoder.decodeStringElement(descriptor, i)
+        20 ->
+          plannedStartDate =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _plannedStartDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -368,7 +361,9 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
               ElementSerializer,
               null,
             )
-        22 -> plannedEndDate = compositeDecoder.decodeStringElement(descriptor, i)
+        22 ->
+          plannedEndDate =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         23 ->
           _plannedEndDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -393,7 +388,7 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
               EncounterHistoryLocationSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding EncounterHistory: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return EncounterHistory(
@@ -402,34 +397,22 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       encounter = encounter,
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) EncounterStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on EncounterHistory"),
-      `class` =
-        `class`
-          ?: throw SerializationException("Missing required property 'class' on EncounterHistory"),
-      type = type ?: listOf(),
-      serviceType = serviceType ?: listOf(),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "EncounterHistory", "status"),
+      `class` = required(`class`, "EncounterHistory", "class"),
+      type = listOrEmpty(type),
+      serviceType = listOrEmpty(serviceType),
       subject = subject,
       subjectStatus = subjectStatus,
       actualPeriod = actualPeriod,
-      plannedStartDate =
-        DateTime.of(
-          if (plannedStartDate != null) FhirDateTime.fromString(plannedStartDate) else null,
-          _plannedStartDate,
-        ),
-      plannedEndDate =
-        DateTime.of(
-          if (plannedEndDate != null) FhirDateTime.fromString(plannedEndDate) else null,
-          _plannedEndDate,
-        ),
+      plannedStartDate = DateTime.of(plannedStartDate, _plannedStartDate),
+      plannedEndDate = DateTime.of(plannedEndDate, _plannedEndDate),
       length = length,
-      location = location ?: listOf(),
+      location = listOrEmpty(location),
     )
   }
 
@@ -460,40 +443,36 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       10 + descriptorOffset,
       ReferenceSerializer,
       value.encounter,
     )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       12 + descriptorOffset,
@@ -506,20 +485,18 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
       CodeableConceptSerializer,
       value.`class`,
     )
-    if (value.type.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.type,
-      )
-    if (value.serviceType.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        16 + descriptorOffset,
-        CodeableReferenceSerializer.listSerializer,
-        value.serviceType,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.type,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      16 + descriptorOffset,
+      CodeableReferenceSerializer.listSerializer,
+      value.serviceType,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       17 + descriptorOffset,
@@ -560,12 +537,11 @@ internal object EncounterHistorySerializer : FhirResourceSerializer<EncounterHis
       DurationSerializer,
       value.length,
     )
-    if (value.location.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        EncounterHistoryLocationSerializer.listSerializer,
-        value.location,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      25 + descriptorOffset,
+      EncounterHistoryLocationSerializer.listSerializer,
+      value.location,
+    )
   }
 }

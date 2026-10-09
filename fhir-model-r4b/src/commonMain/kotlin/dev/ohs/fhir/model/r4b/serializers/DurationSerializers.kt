@@ -36,47 +36,43 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object DurationSerializer : KSerializer<Duration> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Duration") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("value", FhirDecimalSerializer.descriptor)
-      optionalElement("_value", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("comparator", KotlinString.serializer().descriptor)
-      optionalElement("_comparator", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("unit", KotlinString.serializer().descriptor)
-      optionalElement("_unit", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("system", KotlinString.serializer().descriptor)
-      optionalElement("_system", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("code", KotlinString.serializer().descriptor)
-      optionalElement("_code", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object DurationSerializer : FhirSerializer<Duration> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Duration", this)
 
-  internal val listSerializer: KSerializer<List<Duration>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Duration>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.prim("value", FhirDecimalSerializer.descriptor)
+    b.strPrim("comparator")
+    b.strPrim("unit")
+    b.strPrim("system")
+    b.strPrim("code")
+  }
 
   override fun deserialize(decoder: Decoder): Duration {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var `value`: FhirDecimal? = null
     var _value: Element? = null
-    var comparator: KotlinString? = null
+    var comparator: QuantityComparator? = null
     var _comparator: Element? = null
     var unit: KotlinString? = null
     var _unit: Element? = null
@@ -111,7 +107,9 @@ internal object DurationSerializer : KSerializer<Duration> {
               ElementSerializer,
               null,
             )
-        4 -> comparator = compositeDecoder.decodeStringElement(descriptor, i)
+        4 ->
+          comparator =
+            QuantityComparator.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         5 ->
           _comparator =
             compositeDecoder.decodeNullableSerializableElement(
@@ -148,19 +146,15 @@ internal object DurationSerializer : KSerializer<Duration> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Duration: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Duration(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       `value` = Decimal.of(`value`, _value),
-      comparator =
-        Enumeration.of(
-          if (comparator != null) QuantityComparator.fromCode(comparator) else null,
-          _comparator,
-        ),
+      comparator = Enumeration.of(comparator, _comparator),
       unit = R4bString.of(unit, _unit),
       system = Uri.of(system, _system),
       code = Code.of(code, _code),
@@ -168,15 +162,15 @@ internal object DurationSerializer : KSerializer<Duration> {
   }
 
   override fun serialize(encoder: Encoder, `value`: Duration) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       2,

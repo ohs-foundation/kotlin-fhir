@@ -31,6 +31,28 @@ data class CodegenContext(
   val typeGraph: TypeGraphAnalyzer,
   val primitiveValueIsNonNull: Map<String, Boolean>,
 ) {
+  /**
+   * Serializer objects whose descriptors are referenced through `lazyDescriptor(id)` to break
+   * cross-type descriptor cycles. Populated while emitting serializers; written out afterwards as
+   * the `LazyDescriptorId` constants + `resolveLazyDescriptor` dispatch so that no generated
+   * serializer needs a lambda (and thus an `invokedynamic` site) to defer the reference.
+   * `ElementSerializer` is always present because `_field` companion slots resolve through it.
+   */
+  val lazyDescriptorTargets: MutableSet<ClassName> =
+    linkedSetOf(ClassName("$packageName.serializers", "ElementSerializer"))
+
+  /**
+   * Returns the `LazyDescriptorId.<target>` constant reference for [target], registering it in
+   * [lazyDescriptorTargets] on first use. The numeric value is assigned later by
+   * `LazySerialDescriptorFileSpecGenerator` (sorted by canonical name, so it is deterministic),
+   * which means every serializer must be emitted *before* that generator runs; a reference
+   * registered afterwards would not compile in the generated code.
+   */
+  fun lazyDescriptorId(target: ClassName): ClassName {
+    lazyDescriptorTargets += target
+    return ClassName("$packageName.serializers", "LazyDescriptorId").nestedClass(target.simpleName)
+  }
+
   fun getModelClassName(structureDefinition: StructureDefinition) =
     ClassName(packageName, structureDefinition.name.capitalized())
 

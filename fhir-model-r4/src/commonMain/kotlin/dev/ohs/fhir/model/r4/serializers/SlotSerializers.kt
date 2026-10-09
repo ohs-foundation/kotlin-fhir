@@ -48,8 +48,6 @@ import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -60,16 +58,14 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
   override val descriptor: SerialDescriptor = buildResourceDescriptor("Slot")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
@@ -79,16 +75,11 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
     b.optionalElement("specialty", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("appointmentType", CodeableConceptSerializer.descriptor)
     b.optionalElement("schedule", ReferenceSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("start", KotlinString.serializer().descriptor)
-    b.optionalElement("_start", ElementSerializer.descriptor)
-    b.optionalElement("end", KotlinString.serializer().descriptor)
-    b.optionalElement("_end", ElementSerializer.descriptor)
-    b.optionalElement("overbooked", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_overbooked", ElementSerializer.descriptor)
-    b.optionalElement("comment", KotlinString.serializer().descriptor)
-    b.optionalElement("_comment", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("start")
+    b.strPrim("end")
+    b.boolPrim("overbooked")
+    b.strPrim("comment")
   }
 
   override fun deserializeInternal(
@@ -112,11 +103,11 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
     var specialty: List<CodeableConcept>? = null
     var appointmentType: CodeableConcept? = null
     var schedule: Reference? = null
-    var status: KotlinString? = null
+    var status: SlotStatus? = null
     var _status: Element? = null
-    var start: KotlinString? = null
+    var start: FhirDateTime? = null
     var _start: Element? = null
-    var end: KotlinString? = null
+    var end: FhirDateTime? = null
     var _end: Element? = null
     var overbooked: KotlinBoolean? = null
     var _overbooked: Element? = null
@@ -229,7 +220,7 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
               ReferenceSerializer,
               null,
             )
-        16 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        16 -> status = SlotStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         17 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -238,7 +229,7 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
               ElementSerializer,
               null,
             )
-        18 -> start = compositeDecoder.decodeStringElement(descriptor, i)
+        18 -> start = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         19 ->
           _start =
             compositeDecoder.decodeNullableSerializableElement(
@@ -247,7 +238,7 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
               ElementSerializer,
               null,
             )
-        20 -> end = compositeDecoder.decodeStringElement(descriptor, i)
+        20 -> end = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         21 ->
           _end =
             compositeDecoder.decodeNullableSerializableElement(
@@ -274,7 +265,7 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
               ElementSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Slot: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return Slot(
@@ -283,25 +274,18 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      serviceCategory = serviceCategory ?: listOf(),
-      serviceType = serviceType ?: listOf(),
-      specialty = specialty ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      serviceCategory = listOrEmpty(serviceCategory),
+      serviceType = listOrEmpty(serviceType),
+      specialty = listOrEmpty(specialty),
       appointmentType = appointmentType,
-      schedule =
-        schedule ?: throw SerializationException("Missing required property 'schedule' on Slot"),
-      status =
-        Enumeration.of(if (status != null) SlotStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException("Missing required property 'status' on Slot"),
-      start =
-        Instant.of(if (start != null) FhirDateTime.fromString(start) else null, _start)
-          ?: throw SerializationException("Missing required property 'start' on Slot"),
-      end =
-        Instant.of(if (end != null) FhirDateTime.fromString(end) else null, _end)
-          ?: throw SerializationException("Missing required property 'end' on Slot"),
+      schedule = required(schedule, "Slot", "schedule"),
+      status = required(Enumeration.of(status, _status), "Slot", "status"),
+      start = required(Instant.of(start, _start), "Slot", "start"),
+      end = required(Instant.of(end, _end), "Slot", "end"),
       overbooked = R4Boolean.of(overbooked, _overbooked),
       comment = R4String.of(comment, _comment),
     )
@@ -334,55 +318,48 @@ internal object SlotSerializer : FhirResourceSerializer<Slot> {
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.serviceCategory.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.serviceCategory,
-      )
-    if (value.serviceType.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.serviceType,
-      )
-    if (value.specialty.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.specialty,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.serviceCategory,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.serviceType,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      13 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.specialty,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       14 + descriptorOffset,

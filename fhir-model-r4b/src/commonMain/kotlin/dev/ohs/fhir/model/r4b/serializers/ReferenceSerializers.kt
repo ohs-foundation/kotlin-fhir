@@ -32,38 +32,36 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal object ReferenceSerializer : KSerializer<Reference> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Reference") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement(
-        "extension",
-        listSerialDescriptor(lazyDescriptor { ExtensionSerializer.descriptor }),
-      )
-      optionalElement("reference", KotlinString.serializer().descriptor)
-      optionalElement("_reference", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("type", KotlinString.serializer().descriptor)
-      optionalElement("_type", lazyDescriptor { ElementSerializer.descriptor })
-      optionalElement("identifier", lazyDescriptor { IdentifierSerializer.descriptor })
-      optionalElement("display", KotlinString.serializer().descriptor)
-      optionalElement("_display", lazyDescriptor { ElementSerializer.descriptor })
-    }
+internal object ReferenceSerializer : FhirSerializer<Reference> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Reference", this)
 
-  internal val listSerializer: KSerializer<List<Reference>> = ListSerializer(this)
+  @JvmField internal val listSerializer: KSerializer<List<Reference>> = ListSerializer(this)
+
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement(
+      "extension",
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ExtensionSerializer)),
+    )
+    b.strPrim("reference")
+    b.strPrim("type")
+    b.optionalElement("identifier", lazyDescriptor(LazyDescriptorId.IdentifierSerializer))
+    b.strPrim("display")
+  }
 
   override fun deserialize(decoder: Decoder): Reference {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -121,13 +119,13 @@ internal object ReferenceSerializer : KSerializer<Reference> {
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Reference: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return Reference(
       id = id,
-      extension = extension ?: listOf(),
+      extension = listOrEmpty(extension),
       reference = R4bString.of(reference, _reference),
       type = Uri.of(type, _type),
       identifier = identifier,
@@ -136,15 +134,15 @@ internal object ReferenceSerializer : KSerializer<Reference> {
   }
 
   override fun serialize(encoder: Encoder, `value`: Reference) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
     compositeEncoder.encodeStringIfNotNull(descriptor, 2, value.reference?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.reference)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.type?.value)

@@ -54,14 +54,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -69,28 +67,29 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object FamilyMemberHistoryConditionSerializer :
-  KSerializer<FamilyMemberHistory.Condition> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Condition") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("code", CodeableConceptSerializer.descriptor)
-      optionalElement("outcome", CodeableConceptSerializer.descriptor)
-      optionalElement("contributedToDeath", KotlinBoolean.serializer().descriptor)
-      optionalElement("_contributedToDeath", ElementSerializer.descriptor)
-      optionalElement("onsetAge", AgeSerializer.descriptor)
-      optionalElement("onsetRange", RangeSerializer.descriptor)
-      optionalElement("onsetPeriod", PeriodSerializer.descriptor)
-      optionalElement("onsetString", KotlinString.serializer().descriptor)
-      optionalElement("_onsetString", ElementSerializer.descriptor)
-      optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<FamilyMemberHistory.Condition> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Condition", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<FamilyMemberHistory.Condition>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("code", CodeableConceptSerializer.descriptor)
+    b.optionalElement("outcome", CodeableConceptSerializer.descriptor)
+    b.boolPrim("contributedToDeath")
+    b.optionalElement("onsetAge", AgeSerializer.descriptor)
+    b.optionalElement("onsetRange", RangeSerializer.descriptor)
+    b.optionalElement("onsetPeriod", PeriodSerializer.descriptor)
+    b.strPrim("onsetString")
+    b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): FamilyMemberHistory.Condition {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -181,19 +180,15 @@ internal object FamilyMemberHistoryConditionSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Condition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return FamilyMemberHistory.Condition(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      code =
-        code
-          ?: throw SerializationException(
-            "Missing required property 'code' on FamilyMemberHistory.Condition"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      code = required(code, "FamilyMemberHistory.Condition", "code"),
       outcome = outcome,
       contributedToDeath = R4Boolean.of(contributedToDeath, _contributedToDeath),
       onset =
@@ -203,27 +198,26 @@ internal object FamilyMemberHistoryConditionSerializer :
           onsetPeriod,
           R4String.of(onsetString, _onsetString),
         ),
-      note = note ?: listOf(),
+      note = listOrEmpty(note),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: FamilyMemberHistory.Condition) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.code)
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
@@ -249,13 +243,12 @@ internal object FamilyMemberHistoryConditionSerializer :
         compositeEncoder.encodeElementIfNotNull(descriptor, 11, choice.value)
       }
     }
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -264,53 +257,39 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
   override val descriptor: SerialDescriptor = buildResourceDescriptor("FamilyMemberHistory")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("instantiatesCanonical", stringNullableListSerializer.descriptor)
-    b.optionalElement("_instantiatesCanonical", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("instantiatesUri", stringNullableListSerializer.descriptor)
-    b.optionalElement("_instantiatesUri", ElementSerializer.nullableListSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrimList("instantiatesCanonical")
+    b.strPrimList("instantiatesUri")
+    b.strPrim("status")
     b.optionalElement("dataAbsentReason", CodeableConceptSerializer.descriptor)
     b.optionalElement("patient", ReferenceSerializer.descriptor)
-    b.optionalElement("date", KotlinString.serializer().descriptor)
-    b.optionalElement("_date", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
+    b.strPrim("date")
+    b.strPrim("name")
     b.optionalElement("relationship", CodeableConceptSerializer.descriptor)
     b.optionalElement("sex", CodeableConceptSerializer.descriptor)
     b.optionalElement("bornPeriod", PeriodSerializer.descriptor)
-    b.optionalElement("bornDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_bornDate", ElementSerializer.descriptor)
-    b.optionalElement("bornString", KotlinString.serializer().descriptor)
-    b.optionalElement("_bornString", ElementSerializer.descriptor)
+    b.strPrim("bornDate")
+    b.strPrim("bornString")
     b.optionalElement("ageAge", AgeSerializer.descriptor)
     b.optionalElement("ageRange", RangeSerializer.descriptor)
-    b.optionalElement("ageString", KotlinString.serializer().descriptor)
-    b.optionalElement("_ageString", ElementSerializer.descriptor)
-    b.optionalElement("estimatedAge", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_estimatedAge", ElementSerializer.descriptor)
-    b.optionalElement("deceasedBoolean", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_deceasedBoolean", ElementSerializer.descriptor)
+    b.strPrim("ageString")
+    b.boolPrim("estimatedAge")
+    b.boolPrim("deceasedBoolean")
     b.optionalElement("deceasedAge", AgeSerializer.descriptor)
     b.optionalElement("deceasedRange", RangeSerializer.descriptor)
-    b.optionalElement("deceasedDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_deceasedDate", ElementSerializer.descriptor)
-    b.optionalElement("deceasedString", KotlinString.serializer().descriptor)
-    b.optionalElement("_deceasedString", ElementSerializer.descriptor)
+    b.strPrim("deceasedDate")
+    b.strPrim("deceasedString")
     b.optionalElement("reasonCode", CodeableConceptSerializer.listSerializer.descriptor)
     b.optionalElement("reasonReference", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
@@ -337,18 +316,18 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
     var _instantiatesCanonical: List<Element?>? = null
     var instantiatesUri: List<KotlinString?>? = null
     var _instantiatesUri: List<Element?>? = null
-    var status: KotlinString? = null
+    var status: FamilyHistoryStatus? = null
     var _status: Element? = null
     var dataAbsentReason: CodeableConcept? = null
     var patient: Reference? = null
-    var date: KotlinString? = null
+    var date: FhirDateTime? = null
     var _date: Element? = null
     var name: KotlinString? = null
     var _name: Element? = null
     var relationship: CodeableConcept? = null
     var sex: CodeableConcept? = null
     var bornPeriod: Period? = null
-    var bornDate: KotlinString? = null
+    var bornDate: FhirDate? = null
     var _bornDate: Element? = null
     var bornString: KotlinString? = null
     var _bornString: Element? = null
@@ -362,7 +341,7 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
     var _deceasedBoolean: Element? = null
     var deceasedAge: Age? = null
     var deceasedRange: Range? = null
-    var deceasedDate: KotlinString? = null
+    var deceasedDate: FhirDate? = null
     var _deceasedDate: Element? = null
     var deceasedString: KotlinString? = null
     var _deceasedString: Element? = null
@@ -469,7 +448,8 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
               ElementSerializer.nullableListSerializer,
               null,
             )
-        15 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        15 ->
+          status = FamilyHistoryStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         16 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -494,7 +474,7 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
               ReferenceSerializer,
               null,
             )
-        19 -> date = compositeDecoder.decodeStringElement(descriptor, i)
+        19 -> date = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _date =
             compositeDecoder.decodeNullableSerializableElement(
@@ -536,7 +516,7 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
               PeriodSerializer,
               null,
             )
-        26 -> bornDate = compositeDecoder.decodeStringElement(descriptor, i)
+        26 -> bornDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         27 ->
           _bornDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -593,7 +573,8 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
         39 ->
           deceasedRange =
             compositeDecoder.decodeNullableSerializableElement(descriptor, i, RangeSerializer, null)
-        40 -> deceasedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        40 ->
+          deceasedDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         41 ->
           _deceasedDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -643,62 +624,48 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
               FamilyMemberHistoryConditionSerializer.listSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding FamilyMemberHistory: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
+    val instantiatesCanonical_ =
+      List(maxSize(instantiatesCanonical, _instantiatesCanonical)) { index ->
+        entryRequired(
+          Canonical.of(at(instantiatesCanonical, index), at(_instantiatesCanonical, index)),
+          "FamilyMemberHistory",
+          "instantiatesCanonical",
+        )
+      }
+    val instantiatesUri_ =
+      List(maxSize(instantiatesUri, _instantiatesUri)) { index ->
+        entryRequired(
+          Uri.of(at(instantiatesUri, index), at(_instantiatesUri, index)),
+          "FamilyMemberHistory",
+          "instantiatesUri",
+        )
+      }
     return FamilyMemberHistory(
       id = id,
       meta = meta,
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      instantiatesCanonical =
-        (kotlin.collections.List(
-          maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { index ->
-          Canonical.of(
-            instantiatesCanonical?.getOrNull(index),
-            _instantiatesCanonical?.getOrNull(index),
-          )
-            ?: throw SerializationException(
-              "An entry of 'instantiatesCanonical' on FamilyMemberHistory has neither a value nor an id/extension"
-            )
-        }),
-      instantiatesUri =
-        (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          index ->
-          Uri.of(instantiatesUri?.getOrNull(index), _instantiatesUri?.getOrNull(index))
-            ?: throw SerializationException(
-              "An entry of 'instantiatesUri' on FamilyMemberHistory has neither a value nor an id/extension"
-            )
-        }),
-      status =
-        Enumeration.of(if (status != null) FamilyHistoryStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on FamilyMemberHistory"
-          ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      instantiatesCanonical = instantiatesCanonical_,
+      instantiatesUri = instantiatesUri_,
+      status = required(Enumeration.of(status, _status), "FamilyMemberHistory", "status"),
       dataAbsentReason = dataAbsentReason,
-      patient =
-        patient
-          ?: throw SerializationException(
-            "Missing required property 'patient' on FamilyMemberHistory"
-          ),
-      date = DateTime.of(if (date != null) FhirDateTime.fromString(date) else null, _date),
+      patient = required(patient, "FamilyMemberHistory", "patient"),
+      date = DateTime.of(date, _date),
       name = R4String.of(name, _name),
-      relationship =
-        relationship
-          ?: throw SerializationException(
-            "Missing required property 'relationship' on FamilyMemberHistory"
-          ),
+      relationship = required(relationship, "FamilyMemberHistory", "relationship"),
       sex = sex,
       born =
         FamilyMemberHistory.Born.from(
           bornPeriod,
-          Date.of(if (bornDate != null) FhirDate.fromString(bornDate) else null, _bornDate),
+          Date.of(bornDate, _bornDate),
           R4String.of(bornString, _bornString),
         ),
       age = FamilyMemberHistory.Age.from(ageAge, ageRange, R4String.of(ageString, _ageString)),
@@ -708,16 +675,13 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
           R4Boolean.of(deceasedBoolean, _deceasedBoolean),
           deceasedAge,
           deceasedRange,
-          Date.of(
-            if (deceasedDate != null) FhirDate.fromString(deceasedDate) else null,
-            _deceasedDate,
-          ),
+          Date.of(deceasedDate, _deceasedDate),
           R4String.of(deceasedString, _deceasedString),
         ),
-      reasonCode = reasonCode ?: listOf(),
-      reasonReference = reasonReference ?: listOf(),
-      note = note ?: listOf(),
-      condition = condition ?: listOf(),
+      reasonCode = listOrEmpty(reasonCode),
+      reasonReference = listOrEmpty(reasonReference),
+      note = listOrEmpty(note),
+      condition = listOrEmpty(condition),
     )
   }
 
@@ -748,35 +712,31 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.instantiatesCanonical.isNotEmpty()) {
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    if (!value.instantiatesCanonical.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         11 + descriptorOffset,
@@ -789,7 +749,7 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
         value.instantiatesCanonical,
       )
     }
-    if (value.instantiatesUri.isNotEmpty()) {
+    if (!value.instantiatesUri.isEmpty()) {
       compositeEncoder.encodeNullableListIfNotNull(
         descriptor,
         13 + descriptorOffset,
@@ -943,33 +903,29 @@ internal object FamilyMemberHistorySerializer : FhirResourceSerializer<FamilyMem
         compositeEncoder.encodeElementIfNotNull(descriptor, 43 + descriptorOffset, choice.value)
       }
     }
-    if (value.reasonCode.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        44 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.reasonCode,
-      )
-    if (value.reasonReference.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        45 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.reasonReference,
-      )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        46 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
-    if (value.condition.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        47 + descriptorOffset,
-        FamilyMemberHistoryConditionSerializer.listSerializer,
-        value.condition,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      44 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.reasonCode,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      45 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.reasonReference,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      46 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      47 + descriptorOffset,
+      FamilyMemberHistoryConditionSerializer.listSerializer,
+      value.condition,
+    )
   }
 }

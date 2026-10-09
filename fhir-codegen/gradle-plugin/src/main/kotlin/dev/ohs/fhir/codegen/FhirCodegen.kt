@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.codegen
 
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import dev.ohs.fhir.codegen.primitives.PrimitiveClassSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.schema.StructureDefinition
@@ -48,6 +49,13 @@ class FhirCodegen(
       typeGraph = typeGraph,
       primitiveValueIsNonNull = primitiveValueIsNonNull,
     )
+
+  /**
+   * Serializer objects referenced through `lazyDescriptor(id)`; complete only after every
+   * serializer has been generated, see [CodegenContext.lazyDescriptorId].
+   */
+  val lazyDescriptorTargets: Set<ClassName>
+    get() = codegenContext.lazyDescriptorTargets
 
   private val modelFileSpecGenerator = ModelFileSpecGenerator(codegenContext)
   private val serializerFileSpecGenerator = SerializerFileSpecGenerator(codegenContext)

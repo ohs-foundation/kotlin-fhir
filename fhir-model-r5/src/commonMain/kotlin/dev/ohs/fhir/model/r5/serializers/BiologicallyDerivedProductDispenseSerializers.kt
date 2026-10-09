@@ -47,14 +47,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -62,20 +60,23 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object BiologicallyDerivedProductDispensePerformerSerializer :
-  KSerializer<BiologicallyDerivedProductDispense.Performer> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Performer") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("function", CodeableConceptSerializer.descriptor)
-      optionalElement("actor", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<BiologicallyDerivedProductDispense.Performer> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Performer", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<BiologicallyDerivedProductDispense.Performer>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("function", CodeableConceptSerializer.descriptor)
+    b.optionalElement("actor", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProductDispense.Performer {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -118,40 +119,35 @@ internal object BiologicallyDerivedProductDispensePerformerSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Performer: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return BiologicallyDerivedProductDispense.Performer(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
       function = function,
-      actor =
-        actor
-          ?: throw SerializationException(
-            "Missing required property 'actor' on BiologicallyDerivedProductDispense.Performer"
-          ),
+      actor = required(actor, "BiologicallyDerivedProductDispense.Performer", "actor"),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProductDispense.Performer) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       3,
@@ -169,24 +165,21 @@ internal object BiologicallyDerivedProductDispenseSerializer :
     buildResourceDescriptor("BiologicallyDerivedProductDispense")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
     b.optionalElement("basedOn", ReferenceSerializer.listSerializer.descriptor)
     b.optionalElement("partOf", ReferenceSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("originRelationshipType", CodeableConceptSerializer.descriptor)
     b.optionalElement("product", ReferenceSerializer.descriptor)
     b.optionalElement("patient", ReferenceSerializer.descriptor)
@@ -197,14 +190,11 @@ internal object BiologicallyDerivedProductDispenseSerializer :
     )
     b.optionalElement("location", ReferenceSerializer.descriptor)
     b.optionalElement("quantity", QuantitySerializer.descriptor)
-    b.optionalElement("preparedDate", KotlinString.serializer().descriptor)
-    b.optionalElement("_preparedDate", ElementSerializer.descriptor)
-    b.optionalElement("whenHandedOver", KotlinString.serializer().descriptor)
-    b.optionalElement("_whenHandedOver", ElementSerializer.descriptor)
+    b.strPrim("preparedDate")
+    b.strPrim("whenHandedOver")
     b.optionalElement("destination", ReferenceSerializer.descriptor)
     b.optionalElement("note", AnnotationSerializer.listSerializer.descriptor)
-    b.optionalElement("usageInstruction", KotlinString.serializer().descriptor)
-    b.optionalElement("_usageInstruction", ElementSerializer.descriptor)
+    b.strPrim("usageInstruction")
   }
 
   override fun deserializeInternal(
@@ -225,7 +215,7 @@ internal object BiologicallyDerivedProductDispenseSerializer :
     var identifier: List<Identifier>? = null
     var basedOn: List<Reference>? = null
     var partOf: List<Reference>? = null
-    var status: KotlinString? = null
+    var status: BiologicallyDerivedProductDispenseCodes? = null
     var _status: Element? = null
     var originRelationshipType: CodeableConcept? = null
     var product: Reference? = null
@@ -234,9 +224,9 @@ internal object BiologicallyDerivedProductDispenseSerializer :
     var performer: List<BiologicallyDerivedProductDispense.Performer>? = null
     var location: Reference? = null
     var quantity: Quantity? = null
-    var preparedDate: KotlinString? = null
+    var preparedDate: FhirDateTime? = null
     var _preparedDate: Element? = null
-    var whenHandedOver: KotlinString? = null
+    var whenHandedOver: FhirDateTime? = null
     var _whenHandedOver: Element? = null
     var destination: Reference? = null
     var note: List<Annotation>? = null
@@ -325,7 +315,11 @@ internal object BiologicallyDerivedProductDispenseSerializer :
               ReferenceSerializer.listSerializer,
               null,
             )
-        13 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        13 ->
+          status =
+            BiologicallyDerivedProductDispenseCodes.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         14 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -390,7 +384,9 @@ internal object BiologicallyDerivedProductDispenseSerializer :
               QuantitySerializer,
               null,
             )
-        22 -> preparedDate = compositeDecoder.decodeStringElement(descriptor, i)
+        22 ->
+          preparedDate =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         23 ->
           _preparedDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -399,7 +395,9 @@ internal object BiologicallyDerivedProductDispenseSerializer :
               ElementSerializer,
               null,
             )
-        24 -> whenHandedOver = compositeDecoder.decodeStringElement(descriptor, i)
+        24 ->
+          whenHandedOver =
+            FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         25 ->
           _whenHandedOver =
             compositeDecoder.decodeNullableSerializableElement(
@@ -433,10 +431,7 @@ internal object BiologicallyDerivedProductDispenseSerializer :
               ElementSerializer,
               null,
             )
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding BiologicallyDerivedProductDispense: " + i
-          )
+        else -> unknownIndex(descriptor, i)
       }
     }
     return BiologicallyDerivedProductDispense(
@@ -445,47 +440,25 @@ internal object BiologicallyDerivedProductDispenseSerializer :
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      basedOn = basedOn ?: listOf(),
-      partOf = partOf ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      basedOn = listOrEmpty(basedOn),
+      partOf = listOrEmpty(partOf),
       status =
-        Enumeration.of(
-          if (status != null) BiologicallyDerivedProductDispenseCodes.fromCode(status) else null,
-          _status,
-        )
-          ?: throw SerializationException(
-            "Missing required property 'status' on BiologicallyDerivedProductDispense"
-          ),
+        required(Enumeration.of(status, _status), "BiologicallyDerivedProductDispense", "status"),
       originRelationshipType = originRelationshipType,
-      product =
-        product
-          ?: throw SerializationException(
-            "Missing required property 'product' on BiologicallyDerivedProductDispense"
-          ),
-      patient =
-        patient
-          ?: throw SerializationException(
-            "Missing required property 'patient' on BiologicallyDerivedProductDispense"
-          ),
+      product = required(product, "BiologicallyDerivedProductDispense", "product"),
+      patient = required(patient, "BiologicallyDerivedProductDispense", "patient"),
       matchStatus = matchStatus,
-      performer = performer ?: listOf(),
+      performer = listOrEmpty(performer),
       location = location,
       quantity = quantity,
-      preparedDate =
-        DateTime.of(
-          if (preparedDate != null) FhirDateTime.fromString(preparedDate) else null,
-          _preparedDate,
-        ),
-      whenHandedOver =
-        DateTime.of(
-          if (whenHandedOver != null) FhirDateTime.fromString(whenHandedOver) else null,
-          _whenHandedOver,
-        ),
+      preparedDate = DateTime.of(preparedDate, _preparedDate),
+      whenHandedOver = DateTime.of(whenHandedOver, _whenHandedOver),
       destination = destination,
-      note = note ?: listOf(),
+      note = listOrEmpty(note),
       usageInstruction = R5String.of(usageInstruction, _usageInstruction),
     )
   }
@@ -517,48 +490,42 @@ internal object BiologicallyDerivedProductDispenseSerializer :
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
-    if (value.basedOn.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.basedOn,
-      )
-    if (value.partOf.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        12 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.partOf,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      11 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.basedOn,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      12 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.partOf,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       13 + descriptorOffset,
@@ -589,13 +556,12 @@ internal object BiologicallyDerivedProductDispenseSerializer :
       CodeableConceptSerializer,
       value.matchStatus,
     )
-    if (value.performer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        BiologicallyDerivedProductDispensePerformerSerializer.listSerializer,
-        value.performer,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19 + descriptorOffset,
+      BiologicallyDerivedProductDispensePerformerSerializer.listSerializer,
+      value.performer,
+    )
     compositeEncoder.encodeSerializableIfNotNull(
       descriptor,
       20 + descriptorOffset,
@@ -626,13 +592,12 @@ internal object BiologicallyDerivedProductDispenseSerializer :
       ReferenceSerializer,
       value.destination,
     )
-    if (value.note.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        AnnotationSerializer.listSerializer,
-        value.note,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      27 + descriptorOffset,
+      AnnotationSerializer.listSerializer,
+      value.note,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       28 + descriptorOffset,

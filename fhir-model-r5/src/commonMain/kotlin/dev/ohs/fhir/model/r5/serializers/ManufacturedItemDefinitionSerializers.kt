@@ -52,14 +52,12 @@ import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -67,29 +65,29 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object ManufacturedItemDefinitionPropertySerializer :
-  KSerializer<ManufacturedItemDefinition.Property> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Property") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
-      optionalElement("valueQuantity", QuantitySerializer.descriptor)
-      optionalElement("valueDate", KotlinString.serializer().descriptor)
-      optionalElement("_valueDate", ElementSerializer.descriptor)
-      optionalElement("valueBoolean", KotlinBoolean.serializer().descriptor)
-      optionalElement("_valueBoolean", ElementSerializer.descriptor)
-      optionalElement("valueMarkdown", KotlinString.serializer().descriptor)
-      optionalElement("_valueMarkdown", ElementSerializer.descriptor)
-      optionalElement("valueAttachment", AttachmentSerializer.descriptor)
-      optionalElement("valueReference", ReferenceSerializer.descriptor)
-    }
+  FhirSerializer<ManufacturedItemDefinition.Property> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Property", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ManufacturedItemDefinition.Property>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("valueCodeableConcept", CodeableConceptSerializer.descriptor)
+    b.optionalElement("valueQuantity", QuantitySerializer.descriptor)
+    b.strPrim("valueDate")
+    b.boolPrim("valueBoolean")
+    b.strPrim("valueMarkdown")
+    b.optionalElement("valueAttachment", AttachmentSerializer.descriptor)
+    b.optionalElement("valueReference", ReferenceSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ManufacturedItemDefinition.Property {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -97,7 +95,7 @@ internal object ManufacturedItemDefinitionPropertySerializer :
     var type: CodeableConcept? = null
     var valueCodeableConcept: CodeableConcept? = null
     var valueQuantity: Quantity? = null
-    var valueDate: KotlinString? = null
+    var valueDate: FhirDate? = null
     var _valueDate: Element? = null
     var valueBoolean: KotlinBoolean? = null
     var _valueBoolean: Element? = null
@@ -148,7 +146,7 @@ internal object ManufacturedItemDefinitionPropertySerializer :
               QuantitySerializer,
               null,
             )
-        6 -> valueDate = compositeDecoder.decodeStringElement(descriptor, i)
+        6 -> valueDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         7 ->
           _valueDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -192,24 +190,20 @@ internal object ManufacturedItemDefinitionPropertySerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Property: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ManufacturedItemDefinition.Property(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on ManufacturedItemDefinition.Property"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "ManufacturedItemDefinition.Property", "type"),
       `value` =
         ManufacturedItemDefinition.Property.Value.from(
           valueCodeableConcept,
           valueQuantity,
-          Date.of(if (valueDate != null) FhirDate.fromString(valueDate) else null, _valueDate),
+          Date.of(valueDate, _valueDate),
           R5Boolean.of(valueBoolean, _valueBoolean),
           Markdown.of(valueMarkdown, _valueMarkdown),
           valueAttachment,
@@ -219,22 +213,21 @@ internal object ManufacturedItemDefinitionPropertySerializer :
   }
 
   override fun serialize(encoder: Encoder, `value`: ManufacturedItemDefinition.Property) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
     when (val choice = value.`value`) {
       null -> {}
@@ -283,37 +276,40 @@ internal object ManufacturedItemDefinitionPropertySerializer :
 }
 
 internal object ManufacturedItemDefinitionComponentSerializer :
-  KSerializer<ManufacturedItemDefinition.Component> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Component") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("type", CodeableConceptSerializer.descriptor)
-      optionalElement("function", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("amount", QuantitySerializer.listSerializer.descriptor)
-      optionalElement(
-        "constituent",
-        ManufacturedItemDefinitionComponentConstituentSerializer.listSerializer.descriptor,
-      )
-      optionalElement(
-        "property",
-        listSerialDescriptor(
-          lazyDescriptor { ManufacturedItemDefinitionPropertySerializer.descriptor }
-        ),
-      )
-      optionalElement(
-        "component",
-        listSerialDescriptor(
-          lazyDescriptor { ManufacturedItemDefinitionComponentSerializer.descriptor }
-        ),
-      )
-    }
+  FhirSerializer<ManufacturedItemDefinition.Component> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Component", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ManufacturedItemDefinition.Component>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("type", CodeableConceptSerializer.descriptor)
+    b.optionalElement("function", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("amount", QuantitySerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "constituent",
+      ManufacturedItemDefinitionComponentConstituentSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement(
+      "property",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ManufacturedItemDefinitionPropertySerializer)
+      ),
+    )
+    b.optionalElement(
+      "component",
+      listSerialDescriptor(
+        lazyDescriptor(LazyDescriptorId.ManufacturedItemDefinitionComponentSerializer)
+      ),
+    )
+  }
+
   override fun deserialize(decoder: Decoder): ManufacturedItemDefinition.Component {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -392,101 +388,94 @@ internal object ManufacturedItemDefinitionComponentSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Component: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ManufacturedItemDefinition.Component(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      type =
-        type
-          ?: throw SerializationException(
-            "Missing required property 'type' on ManufacturedItemDefinition.Component"
-          ),
-      function = function ?: listOf(),
-      amount = amount ?: listOf(),
-      constituent = constituent ?: listOf(),
-      `property` = `property` ?: listOf(),
-      component = component ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      type = required(type, "ManufacturedItemDefinition.Component", "type"),
+      function = listOrEmpty(function),
+      amount = listOrEmpty(amount),
+      constituent = listOrEmpty(constituent),
+      `property` = listOrEmpty(`property`),
+      component = listOrEmpty(component),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: ManufacturedItemDefinition.Component) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(descriptor, 3, CodeableConceptSerializer, value.type)
-    if (value.function.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.function,
-      )
-    if (value.amount.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        QuantitySerializer.listSerializer,
-        value.amount,
-      )
-    if (value.constituent.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ManufacturedItemDefinitionComponentConstituentSerializer.listSerializer,
-        value.constituent,
-      )
-    if (value.`property`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        ManufacturedItemDefinitionPropertySerializer.listSerializer,
-        value.`property`,
-      )
-    if (value.component.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8,
-        ManufacturedItemDefinitionComponentSerializer.listSerializer,
-        value.component,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.function,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      QuantitySerializer.listSerializer,
+      value.amount,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      ManufacturedItemDefinitionComponentConstituentSerializer.listSerializer,
+      value.constituent,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      ManufacturedItemDefinitionPropertySerializer.listSerializer,
+      value.`property`,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8,
+      ManufacturedItemDefinitionComponentSerializer.listSerializer,
+      value.component,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object ManufacturedItemDefinitionComponentConstituentSerializer :
-  KSerializer<ManufacturedItemDefinition.Component.Constituent> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Constituent") {
-      optionalElement("id", KotlinString.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("amount", QuantitySerializer.listSerializer.descriptor)
-      optionalElement("location", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("function", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("hasIngredient", CodeableReferenceSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<ManufacturedItemDefinition.Component.Constituent> {
+  override val descriptor: SerialDescriptor = buildDescriptor("Constituent", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<ManufacturedItemDefinition.Component.Constituent>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("amount", QuantitySerializer.listSerializer.descriptor)
+    b.optionalElement("location", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("function", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("hasIngredient", CodeableReferenceSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): ManufacturedItemDefinition.Component.Constituent {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: KotlinString? = null
     var extension: List<Extension>? = null
@@ -547,18 +536,18 @@ internal object ManufacturedItemDefinitionComponentConstituentSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Constituent: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return ManufacturedItemDefinition.Component.Constituent(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      amount = amount ?: listOf(),
-      location = location ?: listOf(),
-      function = function ?: listOf(),
-      hasIngredient = hasIngredient ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      amount = listOrEmpty(amount),
+      location = listOrEmpty(location),
+      function = listOrEmpty(function),
+      hasIngredient = listOrEmpty(hasIngredient),
     )
   }
 
@@ -566,50 +555,45 @@ internal object ManufacturedItemDefinitionComponentConstituentSerializer :
     encoder: Encoder,
     `value`: ManufacturedItemDefinition.Component.Constituent,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.amount.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        QuantitySerializer.listSerializer,
-        value.amount,
-      )
-    if (value.location.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.location,
-      )
-    if (value.function.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        CodeableConceptSerializer.listSerializer,
-        value.function,
-      )
-    if (value.hasIngredient.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        CodeableReferenceSerializer.listSerializer,
-        value.hasIngredient,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      QuantitySerializer.listSerializer,
+      value.amount,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.location,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      CodeableConceptSerializer.listSerializer,
+      value.function,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      CodeableReferenceSerializer.listSerializer,
+      value.hasIngredient,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -619,24 +603,20 @@ internal object ManufacturedItemDefinitionSerializer :
   override val descriptor: SerialDescriptor = buildResourceDescriptor("ManufacturedItemDefinition")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", KotlinString.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", KotlinString.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", KotlinString.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", KotlinString.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
-    b.optionalElement("name", KotlinString.serializer().descriptor)
-    b.optionalElement("_name", ElementSerializer.descriptor)
+    b.strPrim("status")
+    b.strPrim("name")
     b.optionalElement("manufacturedDoseForm", CodeableConceptSerializer.descriptor)
     b.optionalElement("unitOfPresentation", CodeableConceptSerializer.descriptor)
     b.optionalElement("manufacturer", ReferenceSerializer.listSerializer.descriptor)
@@ -668,7 +648,7 @@ internal object ManufacturedItemDefinitionSerializer :
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: KotlinString? = null
+    var status: PublicationStatus? = null
     var _status: Element? = null
     var name: KotlinString? = null
     var _name: Element? = null
@@ -746,7 +726,8 @@ internal object ManufacturedItemDefinitionSerializer :
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status = PublicationStatus.fromCode(compositeDecoder.decodeStringElement(descriptor, i))
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -820,8 +801,7 @@ internal object ManufacturedItemDefinitionSerializer :
               ManufacturedItemDefinitionComponentSerializer.listSerializer,
               null,
             )
-        else ->
-          throw SerializationException("Unexpected index decoding ManufacturedItemDefinition: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return ManufacturedItemDefinition(
@@ -830,27 +810,20 @@ internal object ManufacturedItemDefinitionSerializer :
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(if (status != null) PublicationStatus.fromCode(status) else null, _status)
-          ?: throw SerializationException(
-            "Missing required property 'status' on ManufacturedItemDefinition"
-          ),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "ManufacturedItemDefinition", "status"),
       name = R5String.of(name, _name),
       manufacturedDoseForm =
-        manufacturedDoseForm
-          ?: throw SerializationException(
-            "Missing required property 'manufacturedDoseForm' on ManufacturedItemDefinition"
-          ),
+        required(manufacturedDoseForm, "ManufacturedItemDefinition", "manufacturedDoseForm"),
       unitOfPresentation = unitOfPresentation,
-      manufacturer = manufacturer ?: listOf(),
-      marketingStatus = marketingStatus ?: listOf(),
-      ingredient = ingredient ?: listOf(),
-      `property` = `property` ?: listOf(),
-      component = component ?: listOf(),
+      manufacturer = listOrEmpty(manufacturer),
+      marketingStatus = listOrEmpty(marketingStatus),
+      ingredient = listOrEmpty(ingredient),
+      `property` = listOrEmpty(`property`),
+      component = listOrEmpty(component),
     )
   }
 
@@ -881,34 +854,30 @@ internal object ManufacturedItemDefinitionSerializer :
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,
@@ -929,40 +898,35 @@ internal object ManufacturedItemDefinitionSerializer :
       CodeableConceptSerializer,
       value.unitOfPresentation,
     )
-    if (value.manufacturer.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        ReferenceSerializer.listSerializer,
-        value.manufacturer,
-      )
-    if (value.marketingStatus.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        MarketingStatusSerializer.listSerializer,
-        value.marketingStatus,
-      )
-    if (value.ingredient.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        CodeableConceptSerializer.listSerializer,
-        value.ingredient,
-      )
-    if (value.`property`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        ManufacturedItemDefinitionPropertySerializer.listSerializer,
-        value.`property`,
-      )
-    if (value.component.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        ManufacturedItemDefinitionComponentSerializer.listSerializer,
-        value.component,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      17 + descriptorOffset,
+      ReferenceSerializer.listSerializer,
+      value.manufacturer,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      MarketingStatusSerializer.listSerializer,
+      value.marketingStatus,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      19 + descriptorOffset,
+      CodeableConceptSerializer.listSerializer,
+      value.ingredient,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      20 + descriptorOffset,
+      ManufacturedItemDefinitionPropertySerializer.listSerializer,
+      value.`property`,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      21 + descriptorOffset,
+      ManufacturedItemDefinitionComponentSerializer.listSerializer,
+      value.component,
+    )
   }
 }

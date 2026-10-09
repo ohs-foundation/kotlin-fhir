@@ -46,14 +46,12 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.jvm.JvmField
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -61,26 +59,29 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 internal object BodyStructureIncludedStructureSerializer :
-  KSerializer<BodyStructure.IncludedStructure> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("IncludedStructure") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("structure", CodeableConceptSerializer.descriptor)
-      optionalElement("laterality", CodeableConceptSerializer.descriptor)
-      optionalElement(
-        "bodyLandmarkOrientation",
-        BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer.descriptor,
-      )
-      optionalElement("spatialReference", ReferenceSerializer.listSerializer.descriptor)
-      optionalElement("qualifier", CodeableConceptSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<BodyStructure.IncludedStructure> {
+  override val descriptor: SerialDescriptor = buildDescriptor("IncludedStructure", this)
 
+  @JvmField
   internal val listSerializer: KSerializer<List<BodyStructure.IncludedStructure>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("structure", CodeableConceptSerializer.descriptor)
+    b.optionalElement("laterality", CodeableConceptSerializer.descriptor)
+    b.optionalElement(
+      "bodyLandmarkOrientation",
+      BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer.descriptor,
+    )
+    b.optionalElement("spatialReference", ReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("qualifier", CodeableConceptSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(decoder: Decoder): BodyStructure.IncludedStructure {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -151,43 +152,38 @@ internal object BodyStructureIncludedStructureSerializer :
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding IncludedStructure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return BodyStructure.IncludedStructure(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      structure =
-        structure
-          ?: throw SerializationException(
-            "Missing required property 'structure' on BodyStructure.IncludedStructure"
-          ),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      structure = required(structure, "BodyStructure.IncludedStructure", "structure"),
       laterality = laterality,
-      bodyLandmarkOrientation = bodyLandmarkOrientation ?: listOf(),
-      spatialReference = spatialReference ?: listOf(),
-      qualifier = qualifier ?: listOf(),
+      bodyLandmarkOrientation = listOrEmpty(bodyLandmarkOrientation),
+      spatialReference = listOrEmpty(spatialReference),
+      qualifier = listOrEmpty(qualifier),
     )
   }
 
   override fun serialize(encoder: Encoder, `value`: BodyStructure.IncludedStructure) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       3,
@@ -200,56 +196,56 @@ internal object BodyStructureIncludedStructureSerializer :
       CodeableConceptSerializer,
       value.laterality,
     )
-    if (value.bodyLandmarkOrientation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer,
-        value.bodyLandmarkOrientation,
-      )
-    if (value.spatialReference.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        ReferenceSerializer.listSerializer,
-        value.spatialReference,
-      )
-    if (value.qualifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7,
-        CodeableConceptSerializer.listSerializer,
-        value.qualifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      BodyStructureIncludedStructureBodyLandmarkOrientationSerializer.listSerializer,
+      value.bodyLandmarkOrientation,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      ReferenceSerializer.listSerializer,
+      value.spatialReference,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7,
+      CodeableConceptSerializer.listSerializer,
+      value.qualifier,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer :
-  KSerializer<BodyStructure.IncludedStructure.BodyLandmarkOrientation> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("BodyLandmarkOrientation") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("landmarkDescription", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement("clockFacePosition", CodeableConceptSerializer.listSerializer.descriptor)
-      optionalElement(
-        "distanceFromLandmark",
-        BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
-          .listSerializer
-          .descriptor,
-      )
-      optionalElement("surfaceOrientation", CodeableConceptSerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<BodyStructure.IncludedStructure.BodyLandmarkOrientation> {
+  override val descriptor: SerialDescriptor = buildDescriptor("BodyLandmarkOrientation", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<List<BodyStructure.IncludedStructure.BodyLandmarkOrientation>> =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("landmarkDescription", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement("clockFacePosition", CodeableConceptSerializer.listSerializer.descriptor)
+    b.optionalElement(
+      "distanceFromLandmark",
+      BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
+        .listSerializer
+        .descriptor,
+    )
+    b.optionalElement("surfaceOrientation", CodeableConceptSerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(
     decoder: Decoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -313,19 +309,18 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding BodyLandmarkOrientation: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return BodyStructure.IncludedStructure.BodyLandmarkOrientation(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      landmarkDescription = landmarkDescription ?: listOf(),
-      clockFacePosition = clockFacePosition ?: listOf(),
-      distanceFromLandmark = distanceFromLandmark ?: listOf(),
-      surfaceOrientation = surfaceOrientation ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      landmarkDescription = listOrEmpty(landmarkDescription),
+      clockFacePosition = listOrEmpty(clockFacePosition),
+      distanceFromLandmark = listOrEmpty(distanceFromLandmark),
+      surfaceOrientation = listOrEmpty(surfaceOrientation),
     )
   }
 
@@ -333,75 +328,73 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
     encoder: Encoder,
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.landmarkDescription.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableConceptSerializer.listSerializer,
-        value.landmarkDescription,
-      )
-    if (value.clockFacePosition.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        CodeableConceptSerializer.listSerializer,
-        value.clockFacePosition,
-      )
-    if (value.distanceFromLandmark.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        5,
-        BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
-          .listSerializer,
-        value.distanceFromLandmark,
-      )
-    if (value.surfaceOrientation.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        6,
-        CodeableConceptSerializer.listSerializer,
-        value.surfaceOrientation,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      CodeableConceptSerializer.listSerializer,
+      value.landmarkDescription,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      CodeableConceptSerializer.listSerializer,
+      value.clockFacePosition,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      5,
+      BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer
+        .listSerializer,
+      value.distanceFromLandmark,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      6,
+      CodeableConceptSerializer.listSerializer,
+      value.surfaceOrientation,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
 
 internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkSerializer :
-  KSerializer<BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DistanceFromLandmark") {
-      optionalElement("id", String.serializer().descriptor)
-      optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
-      optionalElement("device", CodeableReferenceSerializer.listSerializer.descriptor)
-      optionalElement("value", QuantitySerializer.listSerializer.descriptor)
-    }
+  FhirSerializer<BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark> {
+  override val descriptor: SerialDescriptor = buildDescriptor("DistanceFromLandmark", this)
 
+  @JvmField
   internal val listSerializer:
     KSerializer<
       List<BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark>
     > =
     ListSerializer(this)
 
+  override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.str("id")
+    b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
+    b.optionalElement("device", CodeableReferenceSerializer.listSerializer.descriptor)
+    b.optionalElement("value", QuantitySerializer.listSerializer.descriptor)
+  }
+
   override fun deserialize(
     decoder: Decoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark {
+    val descriptor = this.descriptor
     val compositeDecoder = decoder.beginStructure(descriptor)
     var id: String? = null
     var extension: List<Extension>? = null
@@ -444,16 +437,16 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DistanceFromLandmark: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     compositeDecoder.endStructure(descriptor)
     return BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark(
       id = id,
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      device = device ?: listOf(),
-      `value` = `value` ?: listOf(),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      device = listOrEmpty(device),
+      `value` = listOrEmpty(`value`),
     )
   }
 
@@ -461,36 +454,33 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
     encoder: Encoder,
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark,
   ) {
+    val descriptor = this.descriptor
     val compositeEncoder = encoder.beginStructure(descriptor)
     compositeEncoder.encodeStringIfNotNull(descriptor, 0, value.id)
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        1,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        2,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.device.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        3,
-        CodeableReferenceSerializer.listSerializer,
-        value.device,
-      )
-    if (value.`value`.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        4,
-        QuantitySerializer.listSerializer,
-        value.`value`,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      1,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      2,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      3,
+      CodeableReferenceSerializer.listSerializer,
+      value.device,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      4,
+      QuantitySerializer.listSerializer,
+      value.`value`,
+    )
     compositeEncoder.endStructure(descriptor)
   }
 }
@@ -499,22 +489,19 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
   override val descriptor: SerialDescriptor = buildResourceDescriptor("BodyStructure")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("active", KotlinBoolean.serializer().descriptor)
-    b.optionalElement("_active", ElementSerializer.descriptor)
+    b.boolPrim("active")
     b.optionalElement("morphology", CodeableConceptSerializer.descriptor)
     b.optionalElement(
       "includedStructure",
@@ -524,8 +511,7 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
       "excludedStructure",
       BodyStructureIncludedStructureSerializer.listSerializer.descriptor,
     )
-    b.optionalElement("description", String.serializer().descriptor)
-    b.optionalElement("_description", ElementSerializer.descriptor)
+    b.strPrim("description")
     b.optionalElement("image", AttachmentSerializer.listSerializer.descriptor)
     b.optionalElement("patient", ReferenceSerializer.descriptor)
   }
@@ -680,7 +666,7 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
               ReferenceSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding BodyStructure: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return BodyStructure(
@@ -689,19 +675,17 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
       active = R5Boolean.of(active, _active),
       morphology = morphology,
-      includedStructure = includedStructure ?: listOf(),
-      excludedStructure = excludedStructure ?: listOf(),
+      includedStructure = listOrEmpty(includedStructure),
+      excludedStructure = listOrEmpty(excludedStructure),
       description = Markdown.of(description, _description),
-      image = image ?: listOf(),
-      patient =
-        patient
-          ?: throw SerializationException("Missing required property 'patient' on BodyStructure"),
+      image = listOrEmpty(image),
+      patient = required(patient, "BodyStructure", "patient"),
     )
   }
 
@@ -732,34 +716,30 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeBooleanIfNotNull(descriptor, 11 + descriptorOffset, value.active?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 12 + descriptorOffset, value.active)
     compositeEncoder.encodeSerializableIfNotNull(
@@ -768,33 +748,30 @@ internal object BodyStructureSerializer : FhirResourceSerializer<BodyStructure> 
       CodeableConceptSerializer,
       value.morphology,
     )
-    if (value.includedStructure.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        BodyStructureIncludedStructureSerializer.listSerializer,
-        value.includedStructure,
-      )
-    if (value.excludedStructure.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        BodyStructureIncludedStructureSerializer.listSerializer,
-        value.excludedStructure,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      14 + descriptorOffset,
+      BodyStructureIncludedStructureSerializer.listSerializer,
+      value.includedStructure,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      15 + descriptorOffset,
+      BodyStructureIncludedStructureSerializer.listSerializer,
+      value.excludedStructure,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       16 + descriptorOffset,
       value.description?.value,
     )
     compositeEncoder.encodeElementIfNotNull(descriptor, 17 + descriptorOffset, value.description)
-    if (value.image.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        AttachmentSerializer.listSerializer,
-        value.image,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      18 + descriptorOffset,
+      AttachmentSerializer.listSerializer,
+      value.image,
+    )
     compositeEncoder.encodeSerializableElement(
       descriptor,
       19 + descriptorOffset,

@@ -48,8 +48,6 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -60,30 +58,25 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
   override val descriptor: SerialDescriptor = buildResourceDescriptor("PaymentNotice")
 
   override fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
-    b.optionalElement("id", String.serializer().descriptor)
+    b.str("id")
     b.optionalElement("meta", MetaSerializer.descriptor)
-    b.optionalElement("implicitRules", String.serializer().descriptor)
-    b.optionalElement("_implicitRules", ElementSerializer.descriptor)
-    b.optionalElement("language", String.serializer().descriptor)
-    b.optionalElement("_language", ElementSerializer.descriptor)
+    b.strPrim("implicitRules")
+    b.strPrim("language")
     b.optionalElement("text", NarrativeSerializer.descriptor)
     b.optionalElement(
       "contained",
-      listSerialDescriptor(lazyDescriptor { ResourcePolymorphicSerializer.descriptor }),
+      listSerialDescriptor(lazyDescriptor(LazyDescriptorId.ResourcePolymorphicSerializer)),
     )
     b.optionalElement("extension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("modifierExtension", ExtensionSerializer.listSerializer.descriptor)
     b.optionalElement("identifier", IdentifierSerializer.listSerializer.descriptor)
-    b.optionalElement("status", String.serializer().descriptor)
-    b.optionalElement("_status", ElementSerializer.descriptor)
+    b.strPrim("status")
     b.optionalElement("request", ReferenceSerializer.descriptor)
     b.optionalElement("response", ReferenceSerializer.descriptor)
-    b.optionalElement("created", String.serializer().descriptor)
-    b.optionalElement("_created", ElementSerializer.descriptor)
+    b.strPrim("created")
     b.optionalElement("provider", ReferenceSerializer.descriptor)
     b.optionalElement("payment", ReferenceSerializer.descriptor)
-    b.optionalElement("paymentDate", String.serializer().descriptor)
-    b.optionalElement("_paymentDate", ElementSerializer.descriptor)
+    b.strPrim("paymentDate")
     b.optionalElement("payee", ReferenceSerializer.descriptor)
     b.optionalElement("recipient", ReferenceSerializer.descriptor)
     b.optionalElement("amount", MoneySerializer.descriptor)
@@ -106,15 +99,15 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var identifier: List<Identifier>? = null
-    var status: String? = null
+    var status: FinancialResourceStatusCodes? = null
     var _status: Element? = null
     var request: Reference? = null
     var response: Reference? = null
-    var created: String? = null
+    var created: FhirDateTime? = null
     var _created: Element? = null
     var provider: Reference? = null
     var payment: Reference? = null
-    var paymentDate: String? = null
+    var paymentDate: FhirDate? = null
     var _paymentDate: Element? = null
     var payee: Reference? = null
     var recipient: Reference? = null
@@ -187,7 +180,11 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
               IdentifierSerializer.listSerializer,
               null,
             )
-        11 -> status = compositeDecoder.decodeStringElement(descriptor, i)
+        11 ->
+          status =
+            FinancialResourceStatusCodes.fromCode(
+              compositeDecoder.decodeStringElement(descriptor, i)
+            )
         12 ->
           _status =
             compositeDecoder.decodeNullableSerializableElement(
@@ -212,7 +209,7 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
               ReferenceSerializer,
               null,
             )
-        15 -> created = compositeDecoder.decodeStringElement(descriptor, i)
+        15 -> created = FhirDateTime.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         16 ->
           _created =
             compositeDecoder.decodeNullableSerializableElement(
@@ -237,7 +234,7 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
               ReferenceSerializer,
               null,
             )
-        19 -> paymentDate = compositeDecoder.decodeStringElement(descriptor, i)
+        19 -> paymentDate = FhirDate.fromString(compositeDecoder.decodeStringElement(descriptor, i))
         20 ->
           _paymentDate =
             compositeDecoder.decodeNullableSerializableElement(
@@ -273,7 +270,7 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
               CodeableConceptSerializer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding PaymentNotice: " + i)
+        else -> unknownIndex(descriptor, i)
       }
     }
     return PaymentNotice(
@@ -282,33 +279,20 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
       implicitRules = Uri.of(implicitRules, _implicitRules),
       language = Code.of(language, _language),
       text = text,
-      contained = contained ?: listOf(),
-      extension = extension ?: listOf(),
-      modifierExtension = modifierExtension ?: listOf(),
-      identifier = identifier ?: listOf(),
-      status =
-        Enumeration.of(
-          if (status != null) FinancialResourceStatusCodes.fromCode(status) else null,
-          _status,
-        ) ?: throw SerializationException("Missing required property 'status' on PaymentNotice"),
+      contained = listOrEmpty(contained),
+      extension = listOrEmpty(extension),
+      modifierExtension = listOrEmpty(modifierExtension),
+      identifier = listOrEmpty(identifier),
+      status = required(Enumeration.of(status, _status), "PaymentNotice", "status"),
       request = request,
       response = response,
-      created =
-        DateTime.of(if (created != null) FhirDateTime.fromString(created) else null, _created)
-          ?: throw SerializationException("Missing required property 'created' on PaymentNotice"),
+      created = required(DateTime.of(created, _created), "PaymentNotice", "created"),
       provider = provider,
-      payment =
-        payment
-          ?: throw SerializationException("Missing required property 'payment' on PaymentNotice"),
-      paymentDate =
-        Date.of(if (paymentDate != null) FhirDate.fromString(paymentDate) else null, _paymentDate),
+      payment = required(payment, "PaymentNotice", "payment"),
+      paymentDate = Date.of(paymentDate, _paymentDate),
       payee = payee,
-      recipient =
-        recipient
-          ?: throw SerializationException("Missing required property 'recipient' on PaymentNotice"),
-      amount =
-        amount
-          ?: throw SerializationException("Missing required property 'amount' on PaymentNotice"),
+      recipient = required(recipient, "PaymentNotice", "recipient"),
+      amount = required(amount, "PaymentNotice", "amount"),
       paymentStatus = paymentStatus,
     )
   }
@@ -340,34 +324,30 @@ internal object PaymentNoticeSerializer : FhirResourceSerializer<PaymentNotice> 
       NarrativeSerializer,
       value.text,
     )
-    if (value.contained.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        7 + descriptorOffset,
-        ResourcePolymorphicSerializer.listSerializer,
-        value.contained,
-      )
-    if (value.extension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        8 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.extension,
-      )
-    if (value.modifierExtension.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        9 + descriptorOffset,
-        ExtensionSerializer.listSerializer,
-        value.modifierExtension,
-      )
-    if (value.identifier.isNotEmpty())
-      compositeEncoder.encodeSerializableElement(
-        descriptor,
-        10 + descriptorOffset,
-        IdentifierSerializer.listSerializer,
-        value.identifier,
-      )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      7 + descriptorOffset,
+      ResourcePolymorphicSerializer.listSerializer,
+      value.contained,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      8 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.extension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      9 + descriptorOffset,
+      ExtensionSerializer.listSerializer,
+      value.modifierExtension,
+    )
+    compositeEncoder.encodeListIfNotEmpty(
+      descriptor,
+      10 + descriptorOffset,
+      IdentifierSerializer.listSerializer,
+      value.identifier,
+    )
     compositeEncoder.encodeStringIfNotNull(
       descriptor,
       11 + descriptorOffset,

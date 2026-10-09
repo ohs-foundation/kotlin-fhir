@@ -19,12 +19,15 @@ package dev.ohs.fhir.model.test
 import dev.ohs.fhir.model.r4.ExtensibleEnumeration as R4ExtensibleEnumeration
 import dev.ohs.fhir.model.r4.ImplementationGuide as R4ImplementationGuide
 import dev.ohs.fhir.model.r4.Resource as R4Resource
+import dev.ohs.fhir.model.r4.terminologies.SPDXLicense as R4SPDXLicense
 import dev.ohs.fhir.model.r4b.ExtensibleEnumeration as R4bExtensibleEnumeration
 import dev.ohs.fhir.model.r4b.ImplementationGuide as R4bImplementationGuide
 import dev.ohs.fhir.model.r4b.Resource as R4bResource
+import dev.ohs.fhir.model.r4b.terminologies.SPDXLicense as R4bSPDXLicense
 import dev.ohs.fhir.model.r5.ExtensibleEnumeration as R5ExtensibleEnumeration
 import dev.ohs.fhir.model.r5.ImplementationGuide as R5ImplementationGuide
 import dev.ohs.fhir.model.r5.Resource as R5Resource
+import dev.ohs.fhir.model.r5.terminologies.SPDXLicense as R5SPDXLicense
 import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -59,8 +62,8 @@ class SpdxLicenseBindingTest :
         val resource =
           testJson.decodeFromString(serializer, implementationGuideJson("4.0.1", "CC0-1.0"))
         val license = assertIs<R4ImplementationGuide>(resource).license
-        assertIs<R4ExtensibleEnumeration.Predefined<R4ImplementationGuide.SPDXLicense>>(license)
-        assertEquals(R4ImplementationGuide.SPDXLicense.CC0_1_0, license.value)
+        assertIs<R4ExtensibleEnumeration.Predefined<R4SPDXLicense>>(license)
+        assertEquals(R4SPDXLicense.CC0_1_0, license.value)
       }
 
       test("SPDX license outside the value set is decoded as Custom and encoded unchanged") {
@@ -83,8 +86,8 @@ class SpdxLicenseBindingTest :
         val resource =
           testJson.decodeFromString(serializer, implementationGuideJson("4.3.0", "CC0-1.0"))
         val license = assertIs<R4bImplementationGuide>(resource).license
-        assertIs<R4bExtensibleEnumeration.Predefined<R4bImplementationGuide.SPDXLicense>>(license)
-        assertEquals(R4bImplementationGuide.SPDXLicense.CC0_1_0, license.value)
+        assertIs<R4bExtensibleEnumeration.Predefined<R4bSPDXLicense>>(license)
+        assertEquals(R4bSPDXLicense.CC0_1_0, license.value)
       }
 
       test("SPDX license outside the value set is decoded as Custom and encoded unchanged") {
@@ -107,8 +110,8 @@ class SpdxLicenseBindingTest :
         val resource =
           testJson.decodeFromString(serializer, implementationGuideJson("5.0.0", "CC0-1.0"))
         val license = assertIs<R5ImplementationGuide>(resource).license
-        assertIs<R5ExtensibleEnumeration.Predefined<R5ImplementationGuide.SPDXLicense>>(license)
-        assertEquals(R5ImplementationGuide.SPDXLicense.CC0_1_0, license.value)
+        assertIs<R5ExtensibleEnumeration.Predefined<R5SPDXLicense>>(license)
+        assertEquals(R5SPDXLicense.CC0_1_0, license.value)
       }
 
       test("SPDX license outside the value set is decoded as Custom and encoded unchanged") {

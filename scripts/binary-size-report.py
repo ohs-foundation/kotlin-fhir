@@ -1,28 +1,39 @@
 #!/usr/bin/env python3
-"""Analyze fhir-model JVM JAR binary sizes and produce a JSON report.
+"""Analyze fhir-model multiplatform binary sizes and produce a JSON/Markdown report.
 
 Usage:
     python3 scripts/binary-size-report.py [--output binary-size.json] [--commit-sha SHA]
 
-Scans fhir-model-r4, fhir-model-r4b, fhir-model-r5 JVM JARs and emits a JSON
-file with build/toolchain metadata plus total and per-category .class file
-counts and sizes (uncompressed and compressed). The optional --compare flag
-takes a baseline JSON and prints a markdown diff table to stdout.
+Scans fhir-model-r4, fhir-model-r4b, fhir-model-r5 artifacts and emits a JSON
+file with build/toolchain metadata plus:
+  - JVM JAR (.class) counts and sizes (per-category and totals)
+  - Android D8 (debug) and R8 (shrunk release) DEX counts and sizes (when Android SDK is present)
+  - Web Kotlin/JS (.js) and Kotlin/Wasm (.wasm) sizes (when built, e.g. on R4)
+The optional --compare flag takes a baseline JSON and prints a lenient markdown diff table.
 """
 
 from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import glob
+import gzip
 import json
 import os
 import re
+import struct
 import subprocess
 import sys
+import tempfile
 import zipfile
 from pathlib import Path
 
 METADATA_KEY = "metadata"
+MODULE_PACKAGES = {
+    "fhir-model-r4": "dev.ohs.fhir.model.r4",
+    "fhir-model-r4b": "dev.ohs.fhir.model.r4b",
+    "fhir-model-r5": "dev.ohs.fhir.model.r5",
+}
 
 
 # ---------------------------------------------------------------------------
@@ -67,6 +78,174 @@ def classify(filename: str) -> str:
 
     # Top-level or single-nested classes (models, backbones, enums, etc.)
     return "Models & Other"
+
+
+# ---------------------------------------------------------------------------
+# Android (D8 / R8) & Web (JS / Wasm) toolchain helpers
+# ---------------------------------------------------------------------------
+
+def _find_android_tools() -> tuple[str | None, str | None]:
+    """Locate d8.jar (contains both D8 and R8) and android.jar from installed SDK."""
+    sdk_candidates = [
+        os.environ.get("ANDROID_HOME"),
+        os.environ.get("ANDROID_SDK_ROOT"),
+        os.path.expanduser("~/Library/Android/sdk"),
+        "/usr/local/lib/android/sdk",
+        os.path.expanduser("~/Android/Sdk"),
+    ]
+    for sdk in sdk_candidates:
+        if not sdk or not os.path.isdir(sdk):
+            continue
+        d8_jars = sorted(glob.glob(os.path.join(sdk, "build-tools", "*", "lib", "d8.jar")))
+        android_jars = sorted(glob.glob(os.path.join(sdk, "platforms", "android-*", "android.jar")))
+        if d8_jars and android_jars:
+            return d8_jars[-1], android_jars[-1]
+    return None, None
+
+
+def _find_gradle_classpath_jars() -> list[str]:
+    """Resolve runtime dependency JARs from Gradle cache for R8 whole-program analysis."""
+    gradle_home = os.environ.get("GRADLE_USER_HOME") or os.path.expanduser("~/.gradle")
+    cache_dir = os.path.join(gradle_home, "caches", "modules-2", "files-2.1")
+    if not os.path.isdir(cache_dir):
+        return []
+
+    patterns = [
+        "org.jetbrains.kotlin/kotlin-stdlib/**/kotlin-stdlib-*.jar",
+        "org.jetbrains.kotlinx/kotlinx-serialization-core-jvm/**/kotlinx-serialization-core-jvm-*.jar",
+        "org.jetbrains.kotlinx/kotlinx-serialization-json-jvm/**/kotlinx-serialization-json-jvm-*.jar",
+        "org.jetbrains.kotlinx/kotlinx-datetime-jvm/**/kotlinx-datetime-jvm-*.jar",
+        "com.ionspin.kotlin/bignum-jvm/**/bignum-jvm-*.jar",
+    ]
+    jars: list[str] = []
+    for pattern in patterns:
+        matches = [
+            m
+            for m in glob.glob(os.path.join(cache_dir, pattern), recursive=True)
+            if not m.endswith("-sources.jar") and not m.endswith("-javadoc.jar")
+        ]
+        if matches:
+            jars.append(sorted(matches)[-1])
+    return jars
+
+
+def _parse_dex_zip(zip_path: str) -> dict:
+    """Extract total compressed/uncompressed bytes and DEX header counts from a DEX zip."""
+    classes = methods = fields = compressed = uncompressed = 0
+    with zipfile.ZipFile(zip_path, "r") as zf:
+        for info in zf.infolist():
+            if not info.filename.endswith(".dex"):
+                continue
+            compressed += info.compress_size
+            uncompressed += info.file_size
+            data = zf.read(info.filename)
+            fields += struct.unpack_from("<I", data, 0x50)[0]
+            methods += struct.unpack_from("<I", data, 0x58)[0]
+            classes += struct.unpack_from("<I", data, 0x60)[0]
+    return {
+        "total_classes": classes,
+        "total_methods": methods,
+        "total_fields": fields,
+        "total_compressed_bytes": compressed,
+        "total_uncompressed_bytes": uncompressed,
+    }
+
+
+def analyze_android_dex(
+    jar_path: str,
+    module_pkg: str,
+    d8_jar: str,
+    android_jar: str,
+    cp_jars: list[str],
+) -> dict:
+    """Run D8 (debug DEX) and R8 (shrunk release DEX) against a built JVM JAR."""
+    result: dict = {}
+    with tempfile.TemporaryDirectory() as tmpdir:
+        d8_zip = os.path.join(tmpdir, "d8.zip")
+        subprocess.run(
+            [
+                "java",
+                "-Xmx3g",
+                "-cp",
+                d8_jar,
+                "com.android.tools.r8.D8",
+                "--release",
+                "--min-api",
+                "26",
+                "--output",
+                d8_zip,
+                jar_path,
+            ],
+            check=True,
+            capture_output=True,
+        )
+        result["d8"] = _parse_dex_zip(d8_zip)
+
+        rules_path = os.path.join(tmpdir, "r8.pro")
+        Path(rules_path).write_text(
+            f"-dontwarn **\n"
+            f"-keep class {module_pkg}.Bundle {{ public *; }}\n"
+            f"-keep class {module_pkg}.serializers.BundleSerializer {{ *; }}\n",
+            encoding="utf-8",
+        )
+        r8_zip = os.path.join(tmpdir, "r8.zip")
+        r8_cmd = [
+            "java",
+            "-Xmx3g",
+            "-cp",
+            d8_jar,
+            "com.android.tools.r8.R8",
+            "--release",
+            "--min-api",
+            "26",
+            "--output",
+            r8_zip,
+            "--pg-conf",
+            rules_path,
+            "--lib",
+            android_jar,
+        ]
+        for cp_jar in cp_jars:
+            r8_cmd.extend(["--classpath", cp_jar])
+        r8_cmd.append(jar_path)
+        subprocess.run(r8_cmd, check=True, capture_output=True)
+        result["r8"] = _parse_dex_zip(r8_zip)
+    return result
+
+
+def analyze_web_artifacts(mod_dir: str, mod_name: str) -> dict:
+    """Measure compiled Kotlin/JS (.js) and Kotlin/Wasm (.wasm) artifacts when present."""
+    web: dict = {}
+    candidates = {
+        "js": os.path.join(
+            mod_dir,
+            "build",
+            "compileSync",
+            "js",
+            "main",
+            "developmentLibrary",
+            "kotlin",
+            f"kotlin-fhir-{mod_name}.js",
+        ),
+        "wasm": os.path.join(
+            mod_dir,
+            "build",
+            "compileSync",
+            "wasmWasi",
+            "main",
+            "developmentLibrary",
+            "kotlin",
+            f"kotlin-fhir-{mod_name}.wasm",
+        ),
+    }
+    for key, artifact_path in candidates.items():
+        if os.path.isfile(artifact_path):
+            raw_bytes = Path(artifact_path).read_bytes()
+            web[key] = {
+                "total_compressed_bytes": len(gzip.compress(raw_bytes, compresslevel=6)),
+                "total_uncompressed_bytes": len(raw_bytes),
+            }
+    return web
 
 
 # ---------------------------------------------------------------------------
@@ -175,18 +354,47 @@ def analyze_jar(jar_path: str) -> dict:
     }
 
 
-def build_report(root: str, commit_sha: str | None = None) -> dict:
-    """Build a full report for all fhir-model modules."""
+def build_report(
+    root: str,
+    commit_sha: str | None = None,
+    skip_android: bool = False,
+) -> dict:
+    """Build a full multiplatform size report across all fhir-model modules."""
     modules = ["fhir-model-r4", "fhir-model-r4b", "fhir-model-r5"]
     report: dict = {
         METADATA_KEY: collect_metadata(root, commit_sha=commit_sha),
     }
+
+    d8_jar, android_jar = (None, None) if skip_android else _find_android_tools()
+    cp_jars = _find_gradle_classpath_jars() if d8_jar else []
+    if not skip_android and not d8_jar:
+        print("ℹ️  Android SDK build-tools not found; skipping D8/R8 DEX metrics.", file=sys.stderr)
+
     for mod in modules:
-        jar = os.path.join(root, mod, "build", "libs", f"{mod}-jvm.jar")
-        if os.path.isfile(jar):
-            report[mod] = analyze_jar(jar)
-        else:
+        mod_dir = os.path.join(root, mod)
+        jar = os.path.join(mod_dir, "build", "libs", f"{mod}-jvm.jar")
+        if not os.path.isfile(jar):
             print(f"⚠️  JAR not found, skipping: {jar}", file=sys.stderr)
+            continue
+
+        entry = analyze_jar(jar)
+        if d8_jar and android_jar:
+            try:
+                entry["android"] = analyze_android_dex(
+                    jar_path=jar,
+                    module_pkg=MODULE_PACKAGES[mod],
+                    d8_jar=d8_jar,
+                    android_jar=android_jar,
+                    cp_jars=cp_jars,
+                )
+            except Exception as exc:
+                print(f"⚠️  Android D8/R8 analysis failed for {mod}: {exc}", file=sys.stderr)
+
+        web = analyze_web_artifacts(mod_dir, mod)
+        if web:
+            entry["web"] = web
+
+        report[mod] = entry
     return report
 
 
@@ -257,10 +465,140 @@ def _fmt_bytes_cell(cur_bytes: int, base_bytes: int) -> str:
     return f"{fmt_bytes(base_bytes)} → {fmt_bytes(cur_bytes)} ({fmt_delta(cur_bytes, base_bytes)})"
 
 
+def _render_android_section(
+    current: dict,
+    baseline: dict | None,
+    all_mods: list[str],
+) -> list[str]:
+    """Render Android D8 (debug) and R8 (release) DEX size tables leniently."""
+    mods_with_android = [m for m in all_mods if "android" in (current.get(m) or {})]
+    if not mods_with_android:
+        return []
+
+    has_baseline_android = baseline is not None and any(
+        "android" in (baseline.get(m) or {}) for m in mods_with_android
+    )
+
+    lines: list[str] = ["### 🤖 Android (`classes.dex`)\n"]
+    if baseline is not None and not has_baseline_android:
+        lines.append("*No Android baseline in `main` yet — showing current sizes.*\n")
+
+    lines.append("| Module | Variant | Methods | Compressed | Uncompressed |")
+    lines.append("| :--- | :--- | ---: | ---: | ---: |")
+
+    for mod in mods_with_android:
+        name = _short_name(mod)
+        cur_and = (current.get(mod) or {}).get("android") or {}
+        base_and = ((baseline or {}).get(mod) or {}).get("android") or {}
+
+        for variant_key, variant_label in [
+            ("d8", "Debug (`D8`)"),
+            ("r8", "Release (`R8`)"),
+        ]:
+            cur_v = cur_and.get(variant_key)
+            if not cur_v:
+                continue
+            base_v = base_and.get(variant_key) if has_baseline_android else None
+
+            if base_v is None:
+                m_cell = (
+                    f"{cur_v['total_methods']:,} *(new)*"
+                    if has_baseline_android
+                    else f"{cur_v['total_methods']:,}"
+                )
+                c_cell = (
+                    f"{fmt_bytes(cur_v['total_compressed_bytes'])} *(new)*"
+                    if has_baseline_android
+                    else fmt_bytes(cur_v["total_compressed_bytes"])
+                )
+                u_cell = (
+                    f"{fmt_bytes(cur_v['total_uncompressed_bytes'])} *(new)*"
+                    if has_baseline_android
+                    else fmt_bytes(cur_v["total_uncompressed_bytes"])
+                )
+            else:
+                m_cell = _fmt_classes_cell(cur_v["total_methods"], base_v["total_methods"])
+                c_cell = _fmt_bytes_cell(
+                    cur_v["total_compressed_bytes"],
+                    base_v["total_compressed_bytes"],
+                )
+                u_cell = _fmt_bytes_cell(
+                    cur_v["total_uncompressed_bytes"],
+                    base_v["total_uncompressed_bytes"],
+                )
+
+            lines.append(f"| {name} | {variant_label} | {m_cell} | {c_cell} | {u_cell} |")
+
+    lines.append("")
+    return lines
+
+
+def _render_web_section(
+    current: dict,
+    baseline: dict | None,
+    all_mods: list[str],
+) -> list[str]:
+    """Render Web (Kotlin/JS and Kotlin/Wasm) artifact size table leniently."""
+    mods_with_web = [m for m in all_mods if "web" in (current.get(m) or {})]
+    if not mods_with_web:
+        return []
+
+    has_baseline_web = baseline is not None and any(
+        "web" in (baseline.get(m) or {}) for m in mods_with_web
+    )
+
+    lines: list[str] = ["### 🌐 Web (`R4` canary)\n"]
+    if baseline is not None and not has_baseline_web:
+        lines.append("*No Web baseline in `main` yet — showing current sizes.*\n")
+
+    lines.append("| Module | Target | Gzipped | Uncompressed |")
+    lines.append("| :--- | :--- | ---: | ---: |")
+
+    for mod in mods_with_web:
+        name = _short_name(mod)
+        cur_web = (current.get(mod) or {}).get("web") or {}
+        base_web = ((baseline or {}).get(mod) or {}).get("web") or {}
+
+        for target_key, target_label in [
+            ("js", "Kotlin/JS (`.js`)"),
+            ("wasm", "Kotlin/Wasm (`.wasm`)"),
+        ]:
+            cur_t = cur_web.get(target_key)
+            if not cur_t:
+                continue
+            base_t = base_web.get(target_key) if has_baseline_web else None
+
+            if base_t is None:
+                c_cell = (
+                    f"{fmt_bytes(cur_t['total_compressed_bytes'])} *(new)*"
+                    if has_baseline_web
+                    else fmt_bytes(cur_t["total_compressed_bytes"])
+                )
+                u_cell = (
+                    f"{fmt_bytes(cur_t['total_uncompressed_bytes'])} *(new)*"
+                    if has_baseline_web
+                    else fmt_bytes(cur_t["total_uncompressed_bytes"])
+                )
+            else:
+                c_cell = _fmt_bytes_cell(
+                    cur_t["total_compressed_bytes"],
+                    base_t["total_compressed_bytes"],
+                )
+                u_cell = _fmt_bytes_cell(
+                    cur_t["total_uncompressed_bytes"],
+                    base_t["total_uncompressed_bytes"],
+                )
+
+            lines.append(f"| {name} | {target_label} | {c_cell} | {u_cell} |")
+
+    lines.append("")
+    return lines
+
+
 def compare_markdown(current: dict, baseline: dict) -> str:
-    """Generate a concise markdown comparison across all modules."""
+    """Generate a concise markdown comparison across all modules and platforms."""
     lines: list[str] = []
-    lines.append("## 📦 JVM Binary Size Report\n")
+    lines.append("## 📦 Binary Size Report\n")
 
     cur_link = _fmt_commit_link(current.get(METADATA_KEY))
     base_link = _fmt_commit_link(baseline.get(METADATA_KEY))
@@ -268,6 +606,8 @@ def compare_markdown(current: dict, baseline: dict) -> str:
         lines.append(f"Comparing {cur_link} against baseline {base_link} (`main`)\n")
     elif cur_link:
         lines.append(f"Comparing {cur_link} against cached `main` baseline\n")
+
+    lines.append("### ☕ JVM (`-jvm.jar`)\n")
 
     all_mods = _module_keys(current, baseline)
 
@@ -386,18 +726,23 @@ def compare_markdown(current: dict, baseline: dict) -> str:
 
         lines.append("</details>\n")
 
+    lines.extend(_render_android_section(current, baseline, all_mods))
+    lines.extend(_render_web_section(current, baseline, all_mods))
+
     return "\n".join(lines)
 
 
 def standalone_markdown(current: dict) -> str:
     """Generate a standalone markdown report (no baseline comparison)."""
     lines: list[str] = []
-    lines.append("## 📦 JVM Binary Size Report\n")
+    lines.append("## 📦 Binary Size Report\n")
     cur_link = _fmt_commit_link(current.get(METADATA_KEY))
     if cur_link:
         lines.append(f"Commit: {cur_link} (*no baseline from `main` yet — showing absolute sizes*)\n")
     else:
         lines.append("*No baseline from `main` yet — showing absolute sizes.*\n")
+
+    lines.append("### ☕ JVM (`-jvm.jar`)\n")
 
     all_mods = _module_keys(current)
 
@@ -454,6 +799,9 @@ def standalone_markdown(current: dict) -> str:
 
     lines.append("</details>\n")
 
+    lines.extend(_render_android_section(current, None, all_mods))
+    lines.extend(_render_web_section(current, None, all_mods))
+
     return "\n".join(lines)
 
 
@@ -488,9 +836,18 @@ def main():
         default=None,
         help="Commit SHA being analyzed (default: COMMIT_SHA, GITHUB_SHA, or git rev-parse HEAD)",
     )
+    parser.add_argument(
+        "--skip-android",
+        action="store_true",
+        help="Skip Android D8/R8 DEX size analysis",
+    )
     args = parser.parse_args()
 
-    report = build_report(args.root, commit_sha=args.commit_sha)
+    report = build_report(
+        args.root,
+        commit_sha=args.commit_sha,
+        skip_android=args.skip_android,
+    )
 
     # Write JSON
     output_path = Path(args.output)

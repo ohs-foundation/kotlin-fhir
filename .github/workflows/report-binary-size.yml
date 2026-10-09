@@ -48,7 +48,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build JVM JARs
+      - name: Build JVM JARs and R4 Web artifacts
         env:
           GRADLE_OPTS: -Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
         run: >-
@@ -56,6 +56,8 @@ jobs:
           :fhir-model-r4:jvmJar
           :fhir-model-r4b:jvmJar
           :fhir-model-r5:jvmJar
+          :fhir-model-r4:compileDevelopmentLibraryKotlinJs
+          :fhir-model-r4:compileDevelopmentLibraryKotlinWasmWasi
           --stacktrace
           --no-daemon
           --no-parallel

@@ -18,6 +18,8 @@ jobs:
     name: Report
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      GRADLE_JVM_ARGS: -Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
 
     steps:
       - name: Check out code
@@ -50,36 +52,35 @@ jobs:
 
       - name: Build artifacts
         env:
-          GRADLE_OPTS: -Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8
+          GRADLE_OPTS: ${{ env.GRADLE_JVM_ARGS }}
         run: >-
           ./gradlew
           :fhir-model-r4:jvmJar
           :fhir-model-r4b:jvmJar
           :fhir-model-r5:jvmJar
           :fhir-model-r4:compileDevelopmentLibraryKotlinJs
+          :fhir-model-r4b:compileDevelopmentLibraryKotlinJs
+          :fhir-model-r5:compileDevelopmentLibraryKotlinJs
           :fhir-model-r4:compileDevelopmentLibraryKotlinWasmWasi
+          :fhir-model-r4b:compileDevelopmentLibraryKotlinWasmWasi
+          :fhir-model-r5:compileDevelopmentLibraryKotlinWasmWasi
           --stacktrace
           --no-daemon
           --no-parallel
           --no-configuration-cache
           --build-cache
-          -Dorg.gradle.jvmargs="-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
+          -Dorg.gradle.jvmargs="${{ env.GRADLE_JVM_ARGS }}"
           -Dorg.gradle.workers.max=1
           -Dkotlin.daemon.enabled=false
 
-      # --- Restore baseline from main (if available) ---
-
       - name: Restore baseline from main
         if: github.event_name == 'pull_request'
-        id: restore-baseline
         uses: actions/cache/restore@v4
         with:
           path: baseline-binary-size.json
           key: binary-size-main-will-not-match
           restore-keys: |
             binary-size-main-
-
-      # --- Generate current report ---
 
       - name: Generate binary size report
         env:
@@ -91,8 +92,6 @@ jobs:
             --output binary-size.json \
             --compare baseline-binary-size.json \
             --markdown-output binary-size-report.md
-
-      # --- Upload raw JSON and append link to markdown report ---
 
       - name: Upload raw JSON artifact
         id: upload-json
@@ -107,12 +106,8 @@ jobs:
           echo "" >> binary-size-report.md
           echo "[📥 Download raw JSON report](${{ steps.upload-json.outputs.artifact-url }})" >> binary-size-report.md
 
-      # --- Post to Job Summary ---
-
       - name: Post to Job Summary
         run: cat binary-size-report.md >> "$GITHUB_STEP_SUMMARY"
-
-      # --- Upload report as artifact for the comment workflow ---
 
       - name: Upload report artifact
         if: github.event_name == 'pull_request'
@@ -120,8 +115,6 @@ jobs:
         with:
           name: binary-size-report
           path: binary-size-report.md
-
-      # --- Save baseline on main push ---
 
       - name: Save baseline for main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

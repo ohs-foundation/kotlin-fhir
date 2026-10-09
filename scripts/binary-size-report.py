@@ -8,7 +8,7 @@ Scans fhir-model-r4, fhir-model-r4b, fhir-model-r5 artifacts and emits a JSON
 file with build/toolchain metadata plus:
   - JVM JAR (.class) counts and sizes (per-category and totals)
   - Android D8 (debug) and R8 (shrunk release) DEX counts and sizes (when Android SDK is present)
-  - Web Kotlin/JS (.js) and Kotlin/Wasm (.wasm) sizes (when built, e.g. on R4)
+  - Kotlin/JS (.js) and Kotlin/Wasm (.wasm) sizes (when built)
 The optional --compare flag takes a baseline JSON and prints a lenient markdown diff table.
 """
 
@@ -29,22 +29,25 @@ import zipfile
 from pathlib import Path
 
 METADATA_KEY = "metadata"
+MODULES = ("fhir-model-r4", "fhir-model-r4b", "fhir-model-r5")
 MODULE_PACKAGES = {
-    "fhir-model-r4": "dev.ohs.fhir.model.r4",
-    "fhir-model-r4b": "dev.ohs.fhir.model.r4b",
-    "fhir-model-r5": "dev.ohs.fhir.model.r5",
+    mod: f"dev.ohs.fhir.model.{mod.removeprefix('fhir-model-')}" for mod in MODULES
 }
 
+ANDROID_MIN_API = "26"
+DEX_FIELD_IDS_OFFSET = 0x50
+DEX_METHOD_IDS_OFFSET = 0x58
+DEX_CLASS_DEFS_OFFSET = 0x60
+
 
 # ---------------------------------------------------------------------------
-# Category classifier
+# JVM .class classification & JAR analysis
 # ---------------------------------------------------------------------------
 
-def classify(filename: str) -> str:
-    """Classify a .class file into a human-readable category."""
+def classify_class_entry(filename: str) -> str:
+    """Classify a .class file path inside a JAR into a human-readable category."""
     base = filename.rsplit("/", 1)[-1] if "/" in filename else filename
 
-    # Serializer-related
     if "Serializer" in base:
         if "PolymorphicSerializer" in base:
             return "Serializers (Polymorphic)"
@@ -52,40 +55,62 @@ def classify(filename: str) -> str:
             return "Serializers (Companion)"
         return "Serializers"
 
-    # Search params
     if "SearchParams" in base or "/search/" in filename:
         return "SearchParams"
 
-    # Builder
     if "$Builder" in base:
         return "Builders"
 
-    # DefaultImpls (usually choice type interface bridges)
     if "$DefaultImpls" in base:
         return "Choice Types ($DefaultImpls)"
 
-    # Companion on non-serializer classes
     if "$Companion" in base:
         return "Companions"
 
-    # Remaining nested classes — heuristic for choice type subclasses
-    # Choice type subclasses are nested inside a sealed interface that is
-    # itself nested inside a model class, e.g. Patient$Deceased$Boolean.class
-    # We detect them by depth of $ nesting >= 2 and not matching other cats.
-    dollar_depth = base.count("$")
-    if dollar_depth >= 2:
+    # Choice type subclasses are nested inside a sealed interface inside a model
+    # class (e.g. Patient$Deceased$Boolean.class), giving $ depth >= 2.
+    if base.count("$") >= 2:
         return "Choice Type Subclasses"
 
-    # Top-level or single-nested classes (models, backbones, enums, etc.)
     return "Models & Other"
 
 
+def analyze_jar(jar_path: str) -> dict:
+    """Return per-category and total size metrics for a single JVM JAR."""
+    categories: dict[str, dict] = {}
+    total_classes = total_uncompressed = total_compressed = 0
+
+    with zipfile.ZipFile(jar_path, "r") as zf:
+        for info in zf.infolist():
+            if not info.filename.endswith(".class"):
+                continue
+            cat = classify_class_entry(info.filename)
+            bucket = categories.setdefault(
+                cat,
+                {"class_count": 0, "uncompressed_bytes": 0, "compressed_bytes": 0},
+            )
+            bucket["class_count"] += 1
+            bucket["uncompressed_bytes"] += info.file_size
+            bucket["compressed_bytes"] += info.compress_size
+            total_classes += 1
+            total_uncompressed += info.file_size
+            total_compressed += info.compress_size
+
+    return {
+        "jar_compressed_bytes": os.path.getsize(jar_path),
+        "total_classes": total_classes,
+        "total_uncompressed_bytes": total_uncompressed,
+        "total_compressed_bytes": total_compressed,
+        "categories": dict(sorted(categories.items())),
+    }
+
+
 # ---------------------------------------------------------------------------
-# Android (D8 / R8) & Web (JS / Wasm) toolchain helpers
+# Android (D8 / R8) & JS / Wasm analyzers
 # ---------------------------------------------------------------------------
 
-def _find_android_tools() -> tuple[str | None, str | None]:
-    """Locate d8.jar (contains both D8 and R8) and android.jar from installed SDK."""
+def _find_android_sdk_jars() -> tuple[str | None, str | None]:
+    """Locate d8.jar (contains D8 and R8) and android.jar from the Android SDK."""
     sdk_candidates = [
         os.environ.get("ANDROID_HOME"),
         os.environ.get("ANDROID_SDK_ROOT"),
@@ -103,8 +128,8 @@ def _find_android_tools() -> tuple[str | None, str | None]:
     return None, None
 
 
-def _find_gradle_classpath_jars() -> list[str]:
-    """Resolve runtime dependency JARs from Gradle cache for R8 whole-program analysis."""
+def _find_r8_classpath_jars() -> list[str]:
+    """Resolve runtime dependency JARs from Gradle cache for R8 class-hierarchy analysis."""
     gradle_home = os.environ.get("GRADLE_USER_HOME") or os.path.expanduser("~/.gradle")
     cache_dir = os.path.join(gradle_home, "caches", "modules-2", "files-2.1")
     if not os.path.isdir(cache_dir):
@@ -120,9 +145,9 @@ def _find_gradle_classpath_jars() -> list[str]:
     jars: list[str] = []
     for pattern in patterns:
         matches = [
-            m
-            for m in glob.glob(os.path.join(cache_dir, pattern), recursive=True)
-            if not m.endswith("-sources.jar") and not m.endswith("-javadoc.jar")
+            path
+            for path in glob.glob(os.path.join(cache_dir, pattern), recursive=True)
+            if not path.endswith(("-sources.jar", "-javadoc.jar"))
         ]
         if matches:
             jars.append(sorted(matches)[-1])
@@ -130,7 +155,7 @@ def _find_gradle_classpath_jars() -> list[str]:
 
 
 def _parse_dex_zip(zip_path: str) -> dict:
-    """Extract total compressed/uncompressed bytes and DEX header counts from a DEX zip."""
+    """Sum compressed/uncompressed bytes and DEX header counts across all .dex entries."""
     classes = methods = fields = compressed = uncompressed = 0
     with zipfile.ZipFile(zip_path, "r") as zf:
         for info in zf.infolist():
@@ -139,9 +164,9 @@ def _parse_dex_zip(zip_path: str) -> dict:
             compressed += info.compress_size
             uncompressed += info.file_size
             data = zf.read(info.filename)
-            fields += struct.unpack_from("<I", data, 0x50)[0]
-            methods += struct.unpack_from("<I", data, 0x58)[0]
-            classes += struct.unpack_from("<I", data, 0x60)[0]
+            fields += struct.unpack_from("<I", data, DEX_FIELD_IDS_OFFSET)[0]
+            methods += struct.unpack_from("<I", data, DEX_METHOD_IDS_OFFSET)[0]
+            classes += struct.unpack_from("<I", data, DEX_CLASS_DEFS_OFFSET)[0]
     return {
         "total_classes": classes,
         "total_methods": methods,
@@ -151,6 +176,68 @@ def _parse_dex_zip(zip_path: str) -> dict:
     }
 
 
+def _run_d8(jar_path: str, d8_jar: str, out_zip: str) -> dict:
+    """Compile a JVM JAR to unshrunk release DEX via D8 and return parsed metrics."""
+    subprocess.run(
+        [
+            "java",
+            "-Xmx3g",
+            "-cp",
+            d8_jar,
+            "com.android.tools.r8.D8",
+            "--release",
+            "--min-api",
+            ANDROID_MIN_API,
+            "--output",
+            out_zip,
+            jar_path,
+        ],
+        check=True,
+        capture_output=True,
+    )
+    return _parse_dex_zip(out_zip)
+
+
+def _run_r8(
+    jar_path: str,
+    module_pkg: str,
+    d8_jar: str,
+    android_jar: str,
+    cp_jars: list[str],
+    tmpdir: str,
+) -> dict:
+    """Shrink and optimize a JVM JAR to release DEX via R8 and return parsed metrics."""
+    rules_path = os.path.join(tmpdir, "r8.pro")
+    Path(rules_path).write_text(
+        f"-dontwarn **\n"
+        f"-keep class {module_pkg}.Bundle {{ public *; }}\n"
+        f"-keep class {module_pkg}.serializers.BundleSerializer {{ *; }}\n",
+        encoding="utf-8",
+    )
+    out_zip = os.path.join(tmpdir, "r8.zip")
+    cmd = [
+        "java",
+        "-Xmx3g",
+        "-cp",
+        d8_jar,
+        "com.android.tools.r8.R8",
+        "--release",
+        "--min-api",
+        ANDROID_MIN_API,
+        "--output",
+        out_zip,
+        "--pg-conf",
+        rules_path,
+        "--lib",
+        android_jar,
+    ]
+    for cp_jar in cp_jars:
+        cmd.extend(["--classpath", cp_jar])
+    cmd.append(jar_path)
+    subprocess.run(cmd, check=True, capture_output=True)
+    return _parse_dex_zip(out_zip)
+
+
 def analyze_android_dex(
     jar_path: str,
     module_pkg: str,
@@ -158,64 +245,16 @@ def analyze_android_dex(
     android_jar: str,
     cp_jars: list[str],
 ) -> dict:
-    """Run D8 (debug DEX) and R8 (shrunk release DEX) against a built JVM JAR."""
-    result: dict = {}
+    """Measure D8 (debug) and R8 (release) DEX metrics for a single module JAR."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        d8_zip = os.path.join(tmpdir, "d8.zip")
-        subprocess.run(
-            [
-                "java",
-                "-Xmx3g",
-                "-cp",
-                d8_jar,
-                "com.android.tools.r8.D8",
-                "--release",
-                "--min-api",
-                "26",
-                "--output",
-                d8_zip,
-                jar_path,
-            ],
-            check=True,
-            capture_output=True,
-        )
-        result["d8"] = _parse_dex_zip(d8_zip)
-
-        rules_path = os.path.join(tmpdir, "r8.pro")
-        Path(rules_path).write_text(
-            f"-dontwarn **\n"
-            f"-keep class {module_pkg}.Bundle {{ public *; }}\n"
-            f"-keep class {module_pkg}.serializers.BundleSerializer {{ *; }}\n",
-            encoding="utf-8",
-        )
-        r8_zip = os.path.join(tmpdir, "r8.zip")
-        r8_cmd = [
-            "java",
-            "-Xmx3g",
-            "-cp",
-            d8_jar,
-            "com.android.tools.r8.R8",
-            "--release",
-            "--min-api",
-            "26",
-            "--output",
-            r8_zip,
-            "--pg-conf",
-            rules_path,
-            "--lib",
-            android_jar,
-        ]
-        for cp_jar in cp_jars:
-            r8_cmd.extend(["--classpath", cp_jar])
-        r8_cmd.append(jar_path)
-        subprocess.run(r8_cmd, check=True, capture_output=True)
-        result["r8"] = _parse_dex_zip(r8_zip)
-    return result
+        return {
+            "d8": _run_d8(jar_path, d8_jar, os.path.join(tmpdir, "d8.zip")),
+            "r8": _run_r8(jar_path, module_pkg, d8_jar, android_jar, cp_jars, tmpdir),
+        }
 
 
 def analyze_web_artifacts(mod_dir: str, mod_name: str) -> dict:
     """Measure compiled Kotlin/JS (.js) and Kotlin/Wasm (.wasm) artifacts when present."""
-    web: dict = {}
     candidates = {
         "js": os.path.join(
             mod_dir,
@@ -238,10 +277,11 @@ def analyze_web_artifacts(mod_dir: str, mod_name: str) -> dict:
             f"kotlin-fhir-{mod_name}.wasm",
         ),
     }
-    for key, artifact_path in candidates.items():
+    web: dict = {}
+    for target, artifact_path in candidates.items():
         if os.path.isfile(artifact_path):
             raw_bytes = Path(artifact_path).read_bytes()
-            web[key] = {
+            web[target] = {
                 "total_compressed_bytes": len(gzip.compress(raw_bytes, compresslevel=6)),
                 "total_uncompressed_bytes": len(raw_bytes),
             }
@@ -249,21 +289,14 @@ def analyze_web_artifacts(mod_dir: str, mod_name: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Metadata & JAR analysis
+# Metadata & report builder
 # ---------------------------------------------------------------------------
 
 def _run_cmd(cmd: list[str], cwd: str) -> str | None:
     try:
-        res = subprocess.run(
-            cmd,
-            cwd=cwd,
-            capture_output=True,
-            text=True,
-            check=True,
-            timeout=5,
-        )
+        res = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, check=True, timeout=5)
         out = (res.stdout or res.stderr).strip()
-        return out if out else None
+        return out or None
     except Exception:
         return None
 
@@ -276,23 +309,18 @@ def collect_metadata(root: str, commit_sha: str | None = None) -> dict:
         or os.environ.get("GITHUB_SHA")
         or _run_cmd(["git", "rev-parse", "HEAD"], cwd=root)
     )
-    repo = os.environ.get("GITHUB_REPOSITORY", "ohs-foundation/kotlin-fhir")
-    server_url = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
-    run_id = os.environ.get("GITHUB_RUN_ID")
-
     meta: dict = {
         "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     if sha:
         meta["commit_sha"] = sha
-    if repo:
+    if repo := os.environ.get("GITHUB_REPOSITORY", "ohs-foundation/kotlin-fhir"):
         meta["repository"] = repo
-    if server_url:
+    if server_url := os.environ.get("GITHUB_SERVER_URL", "https://github.com"):
         meta["server_url"] = server_url
-    if run_id:
+    if run_id := os.environ.get("GITHUB_RUN_ID"):
         meta["workflow_run_id"] = run_id
 
-    # Parse Kotlin & kotlinx-serialization versions from gradle/libs.versions.toml
     toml_path = os.path.join(root, "gradle", "libs.versions.toml")
     if os.path.isfile(toml_path):
         toml_text = Path(toml_path).read_text(encoding="utf-8")
@@ -300,58 +328,19 @@ def collect_metadata(root: str, commit_sha: str | None = None) -> dict:
             ("kotlin", "kotlin_version"),
             ("kotlinx-serialization", "kotlinx_serialization_version"),
         ]:
-            m = re.search(rf'^{re.escape(key)}\s*=\s*"([^"]+)"', toml_text, re.M)
-            if m:
+            if m := re.search(rf'^{re.escape(key)}\s*=\s*"([^"]+)"', toml_text, re.M):
                 meta[field] = m.group(1)
 
-    # Parse Gradle version from gradle-wrapper.properties
     wrapper_path = os.path.join(root, "gradle", "wrapper", "gradle-wrapper.properties")
     if os.path.isfile(wrapper_path):
         wrapper_text = Path(wrapper_path).read_text(encoding="utf-8")
-        m = re.search(r"gradle-([0-9.]+)-bin\.zip", wrapper_text)
-        if m:
+        if m := re.search(r"gradle-([0-9.]+)-bin\.zip", wrapper_text):
             meta["gradle_version"] = m.group(1)
 
-    # Java version
-    java_ver = _run_cmd(["java", "-version"], cwd=root)
-    if java_ver:
+    if java_ver := _run_cmd(["java", "-version"], cwd=root):
         meta["java_version"] = java_ver.splitlines()[0]
 
     return meta
-
-
-def analyze_jar(jar_path: str) -> dict:
-    """Return per-category and total size info for a single JAR."""
-    categories: dict[str, dict] = {}
-    total_classes = 0
-    total_uncompressed = 0
-    total_compressed = 0
-
-    with zipfile.ZipFile(jar_path, "r") as zf:
-        for info in zf.infolist():
-            if not info.filename.endswith(".class"):
-                continue
-            cat = classify(info.filename)
-            if cat not in categories:
-                categories[cat] = {
-                    "class_count": 0,
-                    "uncompressed_bytes": 0,
-                    "compressed_bytes": 0,
-                }
-            categories[cat]["class_count"] += 1
-            categories[cat]["uncompressed_bytes"] += info.file_size
-            categories[cat]["compressed_bytes"] += info.compress_size
-            total_classes += 1
-            total_uncompressed += info.file_size
-            total_compressed += info.compress_size
-
-    return {
-        "jar_compressed_bytes": os.path.getsize(jar_path),
-        "total_classes": total_classes,
-        "total_uncompressed_bytes": total_uncompressed,
-        "total_compressed_bytes": total_compressed,
-        "categories": dict(sorted(categories.items())),
-    }
 
 
 def build_report(
@@ -359,18 +348,17 @@ def build_report(
     commit_sha: str | None = None,
     skip_android: bool = False,
 ) -> dict:
-    """Build a full multiplatform size report across all fhir-model modules."""
-    modules = ["fhir-model-r4", "fhir-model-r4b", "fhir-model-r5"]
+    """Build a multiplatform size report across all fhir-model modules."""
     report: dict = {
         METADATA_KEY: collect_metadata(root, commit_sha=commit_sha),
     }
 
-    d8_jar, android_jar = (None, None) if skip_android else _find_android_tools()
-    cp_jars = _find_gradle_classpath_jars() if d8_jar else []
+    d8_jar, android_jar = (None, None) if skip_android else _find_android_sdk_jars()
+    cp_jars = _find_r8_classpath_jars() if d8_jar else []
     if not skip_android and not d8_jar:
         print("ℹ️  Android SDK build-tools not found; skipping D8/R8 DEX metrics.", file=sys.stderr)
 
-    for mod in modules:
+    for mod in MODULES:
         mod_dir = os.path.join(root, mod)
         jar = os.path.join(mod_dir, "build", "libs", f"{mod}-jvm.jar")
         if not os.path.isfile(jar):
@@ -390,8 +378,7 @@ def build_report(
             except Exception as exc:
                 print(f"⚠️  Android D8/R8 analysis failed for {mod}: {exc}", file=sys.stderr)
 
-        web = analyze_web_artifacts(mod_dir, mod)
-        if web:
+        if web := analyze_web_artifacts(mod_dir, mod):
             entry["web"] = web
 
         report[mod] = entry
@@ -399,11 +386,11 @@ def build_report(
 
 
 # ---------------------------------------------------------------------------
-# Markdown comparison
+# Markdown formatting & unified table renderer
 # ---------------------------------------------------------------------------
 
 def fmt_bytes(b: int) -> str:
-    """Format bytes as human-readable string."""
+    """Format byte count as a human-readable string (MB / KB / B)."""
     if abs(b) >= 1_048_576:
         return f"{b / 1_048_576:.2f} MB"
     if abs(b) >= 1_024:
@@ -412,23 +399,18 @@ def fmt_bytes(b: int) -> str:
 
 
 def fmt_delta(current: int, baseline: int) -> str:
-    """Format a delta with sign and percentage, e.g. '-2.24 MB, -13.9%'."""
+    """Format a byte delta with sign and percentage, e.g. '-2.24 MB, -13.9%'."""
     delta = current - baseline
-    if baseline == 0:
-        pct = "new"
-    else:
-        pct = f"{delta / baseline * 100:+.1f}%"
+    pct = "new" if baseline == 0 else f"{delta / baseline * 100:+.1f}%"
     sign = "+" if delta > 0 else ""
     return f"{sign}{fmt_bytes(delta)}, {pct}"
 
 
 def _short_name(mod: str) -> str:
-    """Return a short display name for a module, e.g. 'R4'."""
-    return mod.replace("fhir-model-", "").upper()
+    return mod.removeprefix("fhir-model-").upper()
 
 
 def _module_keys(*reports: dict) -> list[str]:
-    """Return sorted module keys across one or more reports, excluding metadata."""
     keys: set[str] = set()
     for r in reports:
         keys.update(k for k in r.keys() if k != METADATA_KEY)
@@ -436,33 +418,328 @@ def _module_keys(*reports: dict) -> list[str]:
 
 
 def _fmt_commit_link(meta: dict | None) -> str | None:
-    """Format a commit SHA as a markdown link if available."""
-    if not isinstance(meta, dict):
+    if not isinstance(meta, dict) or not (sha := meta.get("commit_sha")):
         return None
-    sha = meta.get("commit_sha")
-    if not sha:
-        return None
-    short = sha[:7]
     server = meta.get("server_url", "https://github.com").rstrip("/")
     repo = meta.get("repository", "ohs-foundation/kotlin-fhir")
-    return f"[`{short}`]({server}/{repo}/commit/{sha})"
+    return f"[`{sha[:7]}`]({server}/{repo}/commit/{sha})"
 
 
-def _fmt_classes_cell(cur_cls: int, base_cls: int) -> str:
-    """Format a class count comparison cell as 'before -> after (delta, %)' when changed."""
-    if cur_cls == base_cls:
-        return f"{cur_cls:,}"
-    delta = cur_cls - base_cls
-    if base_cls != 0:
-        return f"{base_cls:,} → {cur_cls:,} ({delta:+,d}, {delta / base_cls * 100:+.1f}%)"
-    return f"{base_cls:,} → {cur_cls:,} ({delta:+,d})"
+def _fmt_count_cell(cur: int, base: int | None, is_new: bool = False) -> str:
+    if base is None:
+        return f"{cur:,} *(new)*" if is_new else f"{cur:,}"
+    if cur == base:
+        return f"{cur:,} (+0, 0.0%)"
+    delta = cur - base
+    if base != 0:
+        return f"{base:,} → {cur:,} ({delta:+,d}, {delta / base * 100:+.1f}%)"
+    return f"{base:,} → {cur:,} ({delta:+,d})"
 
 
-def _fmt_bytes_cell(cur_bytes: int, base_bytes: int) -> str:
-    """Format a byte size comparison cell as 'before -> after (delta, %)' when changed."""
-    if cur_bytes == base_bytes:
-        return fmt_bytes(cur_bytes)
-    return f"{fmt_bytes(base_bytes)} → {fmt_bytes(cur_bytes)} ({fmt_delta(cur_bytes, base_bytes)})"
+def _fmt_bytes_cell(cur: int, base: int | None, is_new: bool = False) -> str:
+    if base is None:
+        return f"{fmt_bytes(cur)} *(new)*" if is_new else fmt_bytes(cur)
+    if cur == base:
+        return f"{fmt_bytes(cur)} (+0 B, 0.0%)"
+    return f"{fmt_bytes(base)} → {fmt_bytes(cur)} ({fmt_delta(cur, base)})"
+
+
+def _status_indicator(cur_bytes: int, base_bytes: int) -> str:
+    delta = cur_bytes - base_bytes
+    if delta < 0:
+        return "🟢"
+    if delta == 0:
+        return "⚪"
+    return "🔴"
+
+
+def _render_size_table(
+    rows: list[tuple[str, dict | None, dict | None]],
+    first_col: str,
+    comp_col: tuple[str, str],
+    uncomp_col: tuple[str, str],
+    count_col: tuple[str, str] | None = None,
+    has_baseline: bool = False,
+    include_total: bool = True,
+) -> list[str]:
+    """Render a markdown metric table with optional count column and summary Total row."""
+    if not rows:
+        return []
+
+    comp_header, comp_key = comp_col
+    uncomp_header, uncomp_key = uncomp_col
+    count_header, count_key = count_col if count_col else ("", "")
+
+    headers = [first_col] + ([count_header] if count_col else []) + [comp_header, uncomp_header]
+    aligns = [":---"] + ["---:"] * (len(headers) - 1)
+    lines = [
+        f"| {' | '.join(headers)} |",
+        f"| {' | '.join(aligns)} |",
+    ]
+
+    sum_cur_cnt = sum_base_cnt = 0
+    sum_cur_comp = sum_base_comp = 0
+    sum_cur_unc = sum_base_unc = 0
+
+    for label, cur, base in rows:
+        if cur is None:
+            removed_cols = ["*removed*"] * (len(headers) - 1)
+            lines.append(f"| {label} | {' | '.join(removed_cols)} |")
+            if base is not None:
+                if count_col:
+                    sum_base_cnt += base[count_key]
+                sum_base_comp += base[comp_key]
+                sum_base_unc += base[uncomp_key]
+            continue
+
+        is_new = has_baseline and base is None
+        cur_comp = cur[comp_key]
+        cur_unc = cur[uncomp_key]
+        sum_cur_comp += cur_comp
+        sum_cur_unc += cur_unc
+
+        cells = [label]
+        if count_col:
+            cur_cnt = cur[count_key]
+            base_cnt = base[count_key] if base is not None else None
+            sum_cur_cnt += cur_cnt
+            if base_cnt is not None:
+                sum_base_cnt += base_cnt
+            cells.append(_fmt_count_cell(cur_cnt, base_cnt, is_new=is_new))
+
+        base_comp = base[comp_key] if base is not None else None
+        base_unc = base[uncomp_key] if base is not None else None
+        if base_comp is not None:
+            sum_base_comp += base_comp
+        if base_unc is not None:
+            sum_base_unc += base_unc
+
+        cells.append(_fmt_bytes_cell(cur_comp, base_comp, is_new=is_new))
+        cells.append(_fmt_bytes_cell(cur_unc, base_unc, is_new=is_new))
+        lines.append(f"| {' | '.join(cells)} |")
+
+    if include_total:
+        can_diff_total = has_baseline and all(
+            base is not None for _, cur, base in rows if cur is not None
+        )
+        total_label = (
+            f"**{_status_indicator(sum_cur_comp, sum_base_comp)} Total**"
+            if can_diff_total
+            else "**Total**"
+        )
+        total_cells = [total_label]
+        if count_col:
+            cnt_txt = _fmt_count_cell(sum_cur_cnt, sum_base_cnt if can_diff_total else None)
+            total_cells.append(f"**{cnt_txt}**")
+        comp_txt = _fmt_bytes_cell(sum_cur_comp, sum_base_comp if can_diff_total else None)
+        unc_txt = _fmt_bytes_cell(sum_cur_unc, sum_base_unc if can_diff_total else None)
+        total_cells.extend([f"**{comp_txt}**", f"**{unc_txt}**"])
+        lines.append(f"| {' | '.join(total_cells)} |")
+
+    lines.append("")
+    return lines
+
+
+def _extract_target_totals(
+    report: dict | None,
+    mods: list[str],
+    section_key: str | None,
+    sub_key: str | None,
+) -> tuple[int, int] | None:
+    """Sum compressed and uncompressed bytes for a platform across all modules, if present."""
+    if report is None:
+        return None
+    comp = uncomp = 0
+    found = 0
+    for mod in mods:
+        entry = report.get(mod) or {}
+        target = entry if section_key is None else (entry.get(section_key) or {}).get(sub_key)
+        if not target:
+            continue
+        comp += target["total_compressed_bytes"]
+        uncomp += target["total_uncompressed_bytes"]
+        found += 1
+    if found == 0 or found < len(mods):
+        return None
+    return comp, uncomp
+
+
+def _render_headline_table(
+    current: dict,
+    baseline: dict | None,
+    all_mods: list[str],
+) -> list[str]:
+    """Render a compact headline summary table across all measured platforms."""
+    targets = [
+        ("JVM (`-jvm.jar`)", None, None),
+        ("Android Debug (`D8`)", "android", "d8"),
+        ("Android Release (`R8`)", "android", "r8"),
+        ("Kotlin/JS (`.js`)", "web", "js"),
+        ("Kotlin/Wasm (`.wasm`)", "web", "wasm"),
+    ]
+    lines = [
+        "| Platform | Compressed | Uncompressed |",
+        "| :--- | ---: | ---: |",
+    ]
+    has_baseline = baseline is not None
+
+    for label, section_key, sub_key in targets:
+        present_mods = [
+            m
+            for m in all_mods
+            if (
+                (current.get(m) or {})
+                if section_key is None
+                else ((current.get(m) or {}).get(section_key) or {}).get(sub_key)
+            )
+        ]
+        if not present_mods:
+            continue
+
+        cur_totals = _extract_target_totals(current, present_mods, section_key, sub_key)
+        if cur_totals is None:
+            continue
+        cur_c, cur_u = cur_totals
+
+        base_totals = _extract_target_totals(baseline, present_mods, section_key, sub_key)
+        if base_totals is not None:
+            base_c, base_u = base_totals
+            ind = _status_indicator(cur_c, base_c)
+            p_cell = f"{ind} {label}"
+            c_cell = _fmt_bytes_cell(cur_c, base_c)
+            u_cell = _fmt_bytes_cell(cur_u, base_u)
+        else:
+            is_new = has_baseline
+            p_cell = label
+            c_cell = _fmt_bytes_cell(cur_c, None, is_new=is_new)
+            u_cell = _fmt_bytes_cell(cur_u, None, is_new=is_new)
+
+        lines.append(f"| {p_cell} | {c_cell} | {u_cell} |")
+
+    lines.append("")
+    return lines
+
+
+def _render_jvm_section(
+    current: dict,
+    baseline: dict | None,
+    all_mods: list[str],
+) -> list[str]:
+    """Render collapsible JVM module summary and per-category breakdown tables."""
+    has_baseline = baseline is not None
+    lines = ["<details><summary>☕ JVM (<code>-jvm.jar</code>)</summary>\n"]
+
+    mod_rows = [
+        (_short_name(mod), current.get(mod), (baseline or {}).get(mod))
+        for mod in all_mods
+    ]
+    lines.extend(
+        _render_size_table(
+            rows=mod_rows,
+            first_col="Module",
+            count_col=("Classes", "total_classes"),
+            comp_col=("Compressed", "total_compressed_bytes"),
+            uncomp_col=("Uncompressed", "total_uncompressed_bytes"),
+            has_baseline=has_baseline,
+        )
+    )
+
+    zero_cat = {"class_count": 0, "uncompressed_bytes": 0, "compressed_bytes": 0}
+    for mod in all_mods:
+        cur = current.get(mod)
+        base = (baseline or {}).get(mod)
+        if cur is None or (has_baseline and base is None):
+            continue
+
+        name = _short_name(mod)
+        if has_baseline and base is not None:
+            unchanged = all(
+                cur[k] == base[k]
+                for k in ("total_classes", "total_compressed_bytes", "total_uncompressed_bytes")
+            )
+            if unchanged:
+                continue
+
+        all_cats = sorted(
+            set(cur.get("categories", {}).keys())
+            | (set(base.get("categories", {}).keys()) if base else set())
+        )
+        if not all_cats:
+            continue
+
+        cat_rows = [
+            (
+                cat,
+                cur.get("categories", {}).get(cat, zero_cat),
+                base.get("categories", {}).get(cat, zero_cat) if base else None,
+            )
+            for cat in all_cats
+        ]
+        lines.append(f"**{name} by category**\n")
+        lines.extend(
+            _render_size_table(
+                rows=cat_rows,
+                first_col="Category",
+                count_col=("Classes", "class_count"),
+                comp_col=("Compressed", "compressed_bytes"),
+                uncomp_col=("Uncompressed", "uncompressed_bytes"),
+                has_baseline=has_baseline,
+                include_total=False,
+            )
+        )
+
+    lines.append("</details>\n")
+    return lines
+
+
+def _render_subtable_section(
+    current: dict,
+    baseline: dict | None,
+    all_mods: list[str],
+    section_key: str,
+    summary_label: str,
+    subtables: list[tuple[str, str, tuple[str, str] | None, str]],
+) -> list[str]:
+    """Render a collapsible multi-variant platform section (Android D8/R8 or JS/Wasm)."""
+    mods = [m for m in all_mods if section_key in (current.get(m) or {})]
+    if not mods:
+        return []
+
+    has_sec_baseline = baseline is not None and any(
+        section_key in (baseline.get(m) or {}) for m in mods
+    )
+
+    lines = [f"<details><summary>{summary_label}</summary>\n"]
+
+    for sub_key, heading, count_col, comp_label in subtables:
+        rows = [
+            (
+                _short_name(mod),
+                ((current.get(mod) or {}).get(section_key) or {}).get(sub_key),
+                (
+                    (((baseline or {}).get(mod) or {}).get(section_key) or {}).get(sub_key)
+                    if has_sec_baseline
+                    else None
+                ),
+            )
+            for mod in mods
+            if ((current.get(mod) or {}).get(section_key) or {}).get(sub_key)
+        ]
+        if rows:
+            lines.append(f"**{heading}**\n")
+            lines.extend(
+                _render_size_table(
+                    rows=rows,
+                    first_col="Module",
+                    count_col=count_col,
+                    comp_col=(comp_label, "total_compressed_bytes"),
+                    uncomp_col=("Uncompressed", "total_uncompressed_bytes"),
+                    has_baseline=has_sec_baseline,
+                )
+            )
+
+    lines.append("</details>\n")
+    return lines
 
 
 def _render_android_section(
@@ -470,67 +747,18 @@ def _render_android_section(
     baseline: dict | None,
     all_mods: list[str],
 ) -> list[str]:
-    """Render Android D8 (debug) and R8 (release) DEX size tables leniently."""
-    mods_with_android = [m for m in all_mods if "android" in (current.get(m) or {})]
-    if not mods_with_android:
-        return []
-
-    has_baseline_android = baseline is not None and any(
-        "android" in (baseline.get(m) or {}) for m in mods_with_android
+    """Render collapsible Android Debug (D8) and Release (R8) DEX tables."""
+    return _render_subtable_section(
+        current=current,
+        baseline=baseline,
+        all_mods=all_mods,
+        section_key="android",
+        summary_label="🤖 Android (<code>classes.dex</code>)",
+        subtables=[
+            ("d8", "Debug (`D8`)", ("Methods", "total_methods"), "Compressed"),
+            ("r8", "Release (`R8`)", ("Methods", "total_methods"), "Compressed"),
+        ],
     )
-
-    lines: list[str] = ["### 🤖 Android (`classes.dex`)\n"]
-    if baseline is not None and not has_baseline_android:
-        lines.append("*No Android baseline in `main` yet — showing current sizes.*\n")
-
-    lines.append("| Module | Variant | Methods | Compressed | Uncompressed |")
-    lines.append("| :--- | :--- | ---: | ---: | ---: |")
-
-    for mod in mods_with_android:
-        name = _short_name(mod)
-        cur_and = (current.get(mod) or {}).get("android") or {}
-        base_and = ((baseline or {}).get(mod) or {}).get("android") or {}
-
-        for variant_key, variant_label in [
-            ("d8", "Debug (`D8`)"),
-            ("r8", "Release (`R8`)"),
-        ]:
-            cur_v = cur_and.get(variant_key)
-            if not cur_v:
-                continue
-            base_v = base_and.get(variant_key) if has_baseline_android else None
-
-            if base_v is None:
-                m_cell = (
-                    f"{cur_v['total_methods']:,} *(new)*"
-                    if has_baseline_android
-                    else f"{cur_v['total_methods']:,}"
-                )
-                c_cell = (
-                    f"{fmt_bytes(cur_v['total_compressed_bytes'])} *(new)*"
-                    if has_baseline_android
-                    else fmt_bytes(cur_v["total_compressed_bytes"])
-                )
-                u_cell = (
-                    f"{fmt_bytes(cur_v['total_uncompressed_bytes'])} *(new)*"
-                    if has_baseline_android
-                    else fmt_bytes(cur_v["total_uncompressed_bytes"])
-                )
-            else:
-                m_cell = _fmt_classes_cell(cur_v["total_methods"], base_v["total_methods"])
-                c_cell = _fmt_bytes_cell(
-                    cur_v["total_compressed_bytes"],
-                    base_v["total_compressed_bytes"],
-                )
-                u_cell = _fmt_bytes_cell(
-                    cur_v["total_uncompressed_bytes"],
-                    base_v["total_uncompressed_bytes"],
-                )
-
-            lines.append(f"| {name} | {variant_label} | {m_cell} | {c_cell} | {u_cell} |")
-
-    lines.append("")
-    return lines
 
 
 def _render_web_section(
@@ -538,278 +766,63 @@ def _render_web_section(
     baseline: dict | None,
     all_mods: list[str],
 ) -> list[str]:
-    """Render Web (Kotlin/JS and Kotlin/Wasm) artifact size table leniently."""
-    mods_with_web = [m for m in all_mods if "web" in (current.get(m) or {})]
-    if not mods_with_web:
-        return []
-
-    has_baseline_web = baseline is not None and any(
-        "web" in (baseline.get(m) or {}) for m in mods_with_web
+    """Render collapsible Kotlin/JS and Kotlin/Wasm tables."""
+    return _render_subtable_section(
+        current=current,
+        baseline=baseline,
+        all_mods=all_mods,
+        section_key="web",
+        summary_label="🌐 JS / Wasm",
+        subtables=[
+            ("js", "Kotlin/JS (`.js`)", None, "Gzipped"),
+            ("wasm", "Kotlin/Wasm (`.wasm`)", None, "Gzipped"),
+        ],
     )
 
-    lines: list[str] = ["### 🌐 JS / Wasm (`R4`)\n"]
-    if baseline is not None and not has_baseline_web:
-        lines.append("*No JS/Wasm baseline in `main` yet — showing current sizes.*\n")
 
-    lines.append("| Module | Target | Gzipped | Uncompressed |")
-    lines.append("| :--- | :--- | ---: | ---: |")
+def render_markdown(current: dict, baseline: dict | None = None) -> str:
+    """Render the multiplatform Markdown binary size report with headline summary."""
+    lines = ["## 📦 Binary Size Report\n"]
+    cur_link = _fmt_commit_link(current.get(METADATA_KEY))
 
-    for mod in mods_with_web:
-        name = _short_name(mod)
-        cur_web = (current.get(mod) or {}).get("web") or {}
-        base_web = ((baseline or {}).get(mod) or {}).get("web") or {}
+    if baseline is not None:
+        base_link = _fmt_commit_link(baseline.get(METADATA_KEY))
+        if cur_link and base_link:
+            lines.append(f"Comparing {cur_link} against baseline {base_link} (`main`)\n")
+        elif cur_link:
+            lines.append(f"Comparing {cur_link} against cached `main` baseline\n")
+        all_mods = _module_keys(current, baseline)
+    else:
+        if cur_link:
+            lines.append(
+                f"Commit: {cur_link} (*no baseline from `main` yet — showing absolute sizes*)\n"
+            )
+        else:
+            lines.append("*No baseline from `main` yet — showing absolute sizes.*\n")
+        all_mods = _module_keys(current)
 
-        for target_key, target_label in [
-            ("js", "Kotlin/JS (`.js`)"),
-            ("wasm", "Kotlin/Wasm (`.wasm`)"),
-        ]:
-            cur_t = cur_web.get(target_key)
-            if not cur_t:
-                continue
-            base_t = base_web.get(target_key) if has_baseline_web else None
-
-            if base_t is None:
-                c_cell = (
-                    f"{fmt_bytes(cur_t['total_compressed_bytes'])} *(new)*"
-                    if has_baseline_web
-                    else fmt_bytes(cur_t["total_compressed_bytes"])
-                )
-                u_cell = (
-                    f"{fmt_bytes(cur_t['total_uncompressed_bytes'])} *(new)*"
-                    if has_baseline_web
-                    else fmt_bytes(cur_t["total_uncompressed_bytes"])
-                )
-            else:
-                c_cell = _fmt_bytes_cell(
-                    cur_t["total_compressed_bytes"],
-                    base_t["total_compressed_bytes"],
-                )
-                u_cell = _fmt_bytes_cell(
-                    cur_t["total_uncompressed_bytes"],
-                    base_t["total_uncompressed_bytes"],
-                )
-
-            lines.append(f"| {name} | {target_label} | {c_cell} | {u_cell} |")
-
-    lines.append("")
-    return lines
+    lines.extend(_render_headline_table(current, baseline, all_mods))
+    lines.extend(_render_jvm_section(current, baseline, all_mods))
+    lines.extend(_render_android_section(current, baseline, all_mods))
+    lines.extend(_render_web_section(current, baseline, all_mods))
+    return "\n".join(lines)
 
 
 def compare_markdown(current: dict, baseline: dict) -> str:
-    """Generate a concise markdown comparison across all modules and platforms."""
-    lines: list[str] = []
-    lines.append("## 📦 Binary Size Report\n")
-
-    cur_link = _fmt_commit_link(current.get(METADATA_KEY))
-    base_link = _fmt_commit_link(baseline.get(METADATA_KEY))
-    if cur_link and base_link:
-        lines.append(f"Comparing {cur_link} against baseline {base_link} (`main`)\n")
-    elif cur_link:
-        lines.append(f"Comparing {cur_link} against cached `main` baseline\n")
-
-    lines.append("### ☕ JVM (`-jvm.jar`)\n")
-
-    all_mods = _module_keys(current, baseline)
-
-    # --- First pass: compute totals ---
-    sum_cur_cls = sum_base_cls = 0
-    sum_cur_comp = sum_base_comp = 0
-    sum_cur_unc = sum_base_unc = 0
-    rows: list[tuple] = []  # (name, cur, base)
-
-    for mod in all_mods:
-        cur = current.get(mod)
-        base = baseline.get(mod)
-        name = _short_name(mod)
-        rows.append((name, cur, base))
-
-        if cur is not None:
-            sum_cur_cls += cur["total_classes"]
-            sum_cur_comp += cur["total_compressed_bytes"]
-            sum_cur_unc += cur["total_uncompressed_bytes"]
-        if base is not None:
-            sum_base_cls += base["total_classes"]
-            sum_base_comp += base["total_compressed_bytes"]
-            sum_base_unc += base["total_uncompressed_bytes"]
-
-    # --- Second pass: emit table ---
-    lines.append("| Module | Classes | Compressed | Uncompressed |")
-    lines.append("| :--- | ---: | ---: | ---: |")
-
-    for name, cur, base in rows:
-        if cur is None:
-            lines.append(f"| {name} | *removed* | *removed* | *removed* |")
-            continue
-        if base is None:
-            lines.append(
-                f"| {name} | {cur['total_classes']:,} *(new)* "
-                f"| {fmt_bytes(cur['total_compressed_bytes'])} *(new)* "
-                f"| {fmt_bytes(cur['total_uncompressed_bytes'])} *(new)* |"
-            )
-            continue
-
-        cc, bc = cur["total_classes"], base["total_classes"]
-        c_comp, b_comp = cur["total_compressed_bytes"], base["total_compressed_bytes"]
-        c_unc, b_unc = cur["total_uncompressed_bytes"], base["total_uncompressed_bytes"]
-
-        lines.append(
-            f"| {name} "
-            f"| {_fmt_classes_cell(cc, bc)} "
-            f"| {_fmt_bytes_cell(c_comp, b_comp)} "
-            f"| {_fmt_bytes_cell(c_unc, b_unc)} |"
-        )
-
-    # Combined total row
-    delta_comp = sum_cur_comp - sum_base_comp
-    if delta_comp < 0:
-        indicator = "🟢"
-    elif delta_comp == 0:
-        indicator = "⚪"
-    else:
-        indicator = "🔴"
-
-    lines.append(
-        f"| **{indicator} Total** "
-        f"| **{_fmt_classes_cell(sum_cur_cls, sum_base_cls)}** "
-        f"| **{_fmt_bytes_cell(sum_cur_comp, sum_base_comp)}** "
-        f"| **{_fmt_bytes_cell(sum_cur_unc, sum_base_unc)}** |"
-    )
-    lines.append("")
-
-    # --- Per-category breakdown (collapsed, only if anything changed) ---
-    any_change = (sum_cur_comp != sum_base_comp or sum_cur_unc != sum_base_unc
-                  or sum_cur_cls != sum_base_cls)
-    if any_change:
-        lines.append("<details><summary>Per-category breakdown</summary>\n")
-
-        for mod in all_mods:
-            cur = current.get(mod)
-            base = baseline.get(mod)
-            if cur is None or base is None:
-                continue
-
-            name = _short_name(mod)
-            c_comp = cur["total_compressed_bytes"]
-            b_comp = base["total_compressed_bytes"]
-            c_unc = cur["total_uncompressed_bytes"]
-            b_unc = base["total_uncompressed_bytes"]
-            mod_cls = cur["total_classes"]
-            if c_comp == b_comp and c_unc == b_unc and mod_cls == base["total_classes"]:
-                lines.append(f"**{name}**: no change\n")
-                continue
-
-            lines.append(f"**{name}**\n")
-            lines.append("| Category | Classes | Compressed | Uncompressed |")
-            lines.append("| :--- | ---: | ---: | ---: |")
-
-            all_cats = sorted(
-                set(
-                    list(cur.get("categories", {}).keys())
-                    + list(base.get("categories", {}).keys())
-                )
-            )
-            zero = {"class_count": 0, "uncompressed_bytes": 0, "compressed_bytes": 0}
-            for cat in all_cats:
-                cc = cur.get("categories", {}).get(cat, zero)
-                bc = base.get("categories", {}).get(cat, zero)
-                c_cls, b_cls = cc["class_count"], bc["class_count"]
-                c_cb, b_cb = cc["compressed_bytes"], bc["compressed_bytes"]
-                c_ub, b_ub = cc["uncompressed_bytes"], bc["uncompressed_bytes"]
-
-                lines.append(
-                    f"| {cat} "
-                    f"| {_fmt_classes_cell(c_cls, b_cls)} "
-                    f"| {_fmt_bytes_cell(c_cb, b_cb)} "
-                    f"| {_fmt_bytes_cell(c_ub, b_ub)} |"
-                )
-            lines.append("")
-
-        lines.append("</details>\n")
-
-    lines.extend(_render_android_section(current, baseline, all_mods))
-    lines.extend(_render_web_section(current, baseline, all_mods))
-
-    return "\n".join(lines)
+    """Generate a Markdown diff report comparing current against baseline."""
+    return render_markdown(current, baseline)
 
 
 def standalone_markdown(current: dict) -> str:
-    """Generate a standalone markdown report (no baseline comparison)."""
-    lines: list[str] = []
-    lines.append("## 📦 Binary Size Report\n")
-    cur_link = _fmt_commit_link(current.get(METADATA_KEY))
-    if cur_link:
-        lines.append(f"Commit: {cur_link} (*no baseline from `main` yet — showing absolute sizes*)\n")
-    else:
-        lines.append("*No baseline from `main` yet — showing absolute sizes.*\n")
-
-    lines.append("### ☕ JVM (`-jvm.jar`)\n")
-
-    all_mods = _module_keys(current)
-
-    # First pass: compute totals
-    sum_cls = sum_comp = sum_unc = 0
-    for mod in all_mods:
-        cur = current[mod]
-        sum_cls += cur["total_classes"]
-        sum_comp += cur["total_compressed_bytes"]
-        sum_unc += cur["total_uncompressed_bytes"]
-
-    # Summary table
-    lines.append("| Module | Classes | Compressed | Uncompressed |")
-    lines.append("| :--- | ---: | ---: | ---: |")
-
-    for mod in all_mods:
-        cur = current[mod]
-        name = _short_name(mod)
-        cls = cur["total_classes"]
-        comp = cur["total_compressed_bytes"]
-        unc = cur["total_uncompressed_bytes"]
-        lines.append(
-            f"| {name} "
-            f"| {cls} "
-            f"| {fmt_bytes(comp)} "
-            f"| {fmt_bytes(unc)} |"
-        )
-
-    lines.append(
-        f"| **Total** | **{sum_cls}** | **{fmt_bytes(sum_comp)}** | **{fmt_bytes(sum_unc)}** |"
-    )
-    lines.append("")
-
-    # Category breakdown (collapsed)
-    lines.append("<details><summary>Per-category breakdown</summary>\n")
-    for mod in all_mods:
-        cur = current[mod]
-        name = _short_name(mod)
-        cats = cur.get("categories", {})
-        if not cats:
-            continue
-        lines.append(f"**{name}**\n")
-        lines.append("| Category | Classes | Compressed | Uncompressed |")
-        lines.append("| :--- | ---: | ---: | ---: |")
-        for cat in sorted(cats.keys()):
-            cc = cats[cat]
-            lines.append(
-                f"| {cat} "
-                f"| {cc['class_count']} "
-                f"| {fmt_bytes(cc['compressed_bytes'])} "
-                f"| {fmt_bytes(cc['uncompressed_bytes'])} |"
-            )
-        lines.append("")
-
-    lines.append("</details>\n")
-
-    lines.extend(_render_android_section(current, None, all_mods))
-    lines.extend(_render_web_section(current, None, all_mods))
-
-    return "\n".join(lines)
+    """Generate a standalone Markdown report without baseline diffs."""
+    return render_markdown(current, None)
 
 
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--root",
@@ -849,32 +862,26 @@ def main():
         skip_android=args.skip_android,
     )
 
-    # Write JSON
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
-        json.dump(report, f, indent=2)
+    output_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(f"✅ JSON report written to {output_path}", file=sys.stderr)
 
-    # Generate markdown
     if args.compare and os.path.isfile(args.compare):
-        with open(args.compare) as f:
-            baseline = json.load(f)
-        md = compare_markdown(report, baseline)
+        baseline = json.loads(Path(args.compare).read_text(encoding="utf-8"))
+        md = render_markdown(report, baseline)
     else:
         if args.compare:
             print(
                 f"⚠️  Baseline not found at {args.compare}, generating standalone report",
                 file=sys.stderr,
             )
-        md = standalone_markdown(report)
+        md = render_markdown(report)
 
-    # Output markdown
     if args.markdown_output:
         md_path = Path(args.markdown_output)
         md_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(md_path, "w") as f:
-            f.write(md)
+        md_path.write_text(md, encoding="utf-8")
         print(f"✅ Markdown report written to {md_path}", file=sys.stderr)
     else:
         print(md)

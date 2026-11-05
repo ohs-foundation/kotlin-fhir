@@ -256,69 +256,78 @@ For a complete list of supported and unsupported FHIRPath patterns, see
 ## Serialization and deserialization
 
 The [Kotlin serialization](https://github.com/Kotlin/kotlinx.serialization) library is used for JSON
-serialization/deserialization. All generated FHIR resource classes are marked with annotation
-`@Serializable`.
+serialization and deserialization. All generated FHIR resource classes are marked with the
+`@Serializable` annotation.
 
 A particular challenge in the serialization/deserialization process is that FHIR primitive data
 types are represented by two JSON properties (e.g.
 in [R4](https://hl7.org/fhir/R4/json.html#primitive)). As a result, the Kotlin data class of any
 FHIR resource or element containing primitive data types cannot be directly mapped to JSON.
 
-To address this, the library generates a custom `KSerializer` per FHIR type (e.g.
+To address this, the library generates a custom `KSerializer` for each FHIR type (e.g.
 `PatientSerializer`). Each serializer defines a `SerialDescriptor` that maps both primitive values
-and companion extension properties (e.g. `gender` and `_gender`) to distinct descriptor elements
-in JSON.
+and their companion extension properties (e.g. `gender` and `_gender`) to separate properties in
+JSON, and combines them into a single property on the Kotlin data class during deserialization.
 
-Choice types (e.g. `Patient.multipleBirth`) are expanded into per-expansion keys on the same flat
-descriptor (`multipleBirthBoolean`, `_multipleBirthBoolean`, `multipleBirthInteger`,
-`_multipleBirthInteger`, …). On decode, each expansion key is read into a local and the sealed
-value is synthesized via the companion `from(…)` factory during model construction. This sidesteps
-the
+Choice types (e.g. `Patient.multipleBirth`) are handled in the same way. Because a choice element
+can appear in JSON under different type-specific property names (`multipleBirthBoolean`,
+`_multipleBirthBoolean`, `multipleBirthInteger`, `_multipleBirthInteger`, etc.), the serializer
+includes all possible variants in its descriptor and constructs the corresponding sealed interface
+instance (e.g. `Patient.MultipleBirth`) from whichever property is present in the JSON object.
+Handling choice types directly in the serializer also avoids hitting the
 [JVM constructor argument limit](https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-4.html#jvms-4.3.3)
-that would otherwise be hit on FHIR fields with many possible types (e.g.,
-[ElementDefinition.pattern](https://www.hl7.org/fhir/R4B/elementdefinition-definitions.html#ElementDefinition.pattern_x_))
-because each choice type expansion is an individual descriptor slot rather than a constructor
-parameter.
+caused by FHIR elements with many possible types (e.g.
+[ElementDefinition.pattern](https://www.hl7.org/fhir/R4B/elementdefinition-definitions.html#ElementDefinition.pattern_x_)).
 
-There are two ways to serialize a resource, and the caller picks which by the static type of the
-value handed to kotlinx. When the static type is the concrete class (i.e.
-`json.encodeToString(patient)`), kotlinx dispatches directly to `PatientSerializer`, whose
-descriptor includes `resourceType` at slot 0 and which writes it itself (calling
-`serializeInternal(this, descriptor, 1, value)`).
+Another challenge is supporting both static and dynamic (polymorphic) resource types. Callers may
+serialize or deserialize a resource using its concrete class when the type is known at compile time
+(e.g. `json.decodeFromString<Patient>(jsonString)`), or using the abstract `Resource` base class
+when the type is only known at runtime (e.g. `json.decodeFromString<Resource>(jsonString)` for an
+arbitrary server response or `Bundle` entry).
 
-When the static type is `Resource` (i.e. `json.encodeToString<Resource>(patient)`), kotlinx routes through
-`ResourcePolymorphicSerializer`, which looks up the concrete subclass and delegates to a
-`FhirResourcePolymorphicSerializer(PatientSerializer)` wrapper. On this path kotlinx-json itself
-injects `resourceType` as the class discriminator, so `FhirResourcePolymorphicSerializer` builds its
-descriptor via `PatientSerializer.buildDescriptor(...)` without `resourceType` and calls
-`serializeInternal(this, descriptor, 0, value)`.
+FHIR requires every resource JSON object to include a `"resourceType"` property. However,
+`kotlinx.serialization` only reads and writes `"resourceType"` automatically when serializing or
+deserializing through the abstract `Resource` base class, and omits it when working with a concrete
+class like `Patient` directly.
+
+To support both cases without duplicating serializer logic:
+
+- When serializing or deserializing a **concrete resource class** (e.g. `Patient`),
+  `PatientSerializer` includes `"resourceType"` in its descriptor and reads or writes both
+  `"resourceType"` and the resource's properties directly.
+- When serializing or deserializing the **abstract `Resource` class**,
+  `ResourcePolymorphicSerializer` handles `"resourceType"` to determine the concrete resource
+  subtype at runtime, and delegates the remaining properties to a
+  `FhirResourcePolymorphicSerializer` wrapper around `PatientSerializer`. This wrapper reuses
+  `PatientSerializer` to read and write all resource properties while omitting `"resourceType"` from
+  its descriptor so the property is not processed twice.
 
 ```mermaid
 graph TB
-    A["Patient instance"] -->|"json.encodeToString(patient)"| PS["PatientSerializer<br/>writes resourceType + fields (offset 1)"]
-    A -->|"json.encodeToString&ltResource&gt(patient)"| RPS["ResourcePolymorphicSerializer<br/>(AbstractPolymorphicSerializer)"]
-    RPS -->|"byClass[Patient::class]"| PPS["FhirResourcePolymorphicSerializer(PatientSerializer)<br/>writes fields only (offset 0)"]
-    RPS -.->|"kotlinx-json injects<br/>resourceType discriminator"| O
-    PS --> O["JSON output<br/>{ resourceType, ... }"]
+    A["Patient / JSON"] -->|"Static type (Patient)"| PS["PatientSerializer<br/>(handles resourceType + fields)"]
+    A -->|"Dynamic type (Resource)"| RPS["ResourcePolymorphicSerializer<br/>(handles resourceType)"]
+    RPS --> PPS["FhirResourcePolymorphicSerializer(PatientSerializer)<br/>(reuses PatientSerializer for fields, omits resourceType)"]
+    PS --> O["JSON / Patient"]
     PPS --> O
 ```
 
-*Figure 1: Polymorphic Serializer Routing*
+*Figure 1: Static and dynamic resource serialization*
 
-This parallel serialization approach is due to a mismatch in how Kotlinx serialization encodes class discriminators versus FHIR Standards.
-FHIR requires all `Resource` type classes to contain `resourceType`, but Kotlin only adds it when the underlying static inline Type is `Resource`.
+The following diagram illustrates the deserialization of a `Patient` JSON object into a `Patient`
+instance. The serialization process is the reverse.
 
 ```mermaid
 graph LR
     A["**Patient JSON**
     {
-    #nbsp;#nbsp;gender: ...
-    #nbsp;#nbsp;_gender: ...
-    #nbsp;#nbsp;deceasedBoolean: ...
-    #nbsp;#nbsp;deceasedDateTime: ...
-    #nbsp;#nbsp;multipleBirthBoolean: ...
-    #nbsp;#nbsp;_multipleBirthBoolean: ...
-    #nbsp;#nbsp;multipleBirthInteger: ...
+    #nbsp;#nbsp;resourceType: &quot;Patient&quot;,
+    #nbsp;#nbsp;gender: ...,
+    #nbsp;#nbsp;_gender: ...,
+    #nbsp;#nbsp;deceasedBoolean: ...,
+    #nbsp;#nbsp;deceasedDateTime: ...,
+    #nbsp;#nbsp;multipleBirthBoolean: ...,
+    #nbsp;#nbsp;_multipleBirthBoolean: ...,
+    #nbsp;#nbsp;multipleBirthInteger: ...,
     #nbsp;#nbsp;contact: [...]
     }
     "]
@@ -331,44 +340,34 @@ graph LR
     contact: List&lt;Patient.Contact&gt;
     "]
 
-    subgraph PS["PatientSerializer.deserializeInternal(decoder, descriptor, offset)"]
+    subgraph PS["PatientSerializer"]
       direction TB
-      Desc["**descriptor**
-      0 → resourceType (when offset = 1)
-      ...
-      gender / _gender
-      deceasedBoolean / _deceasedBoolean
-      deceasedDateTime / _deceasedDateTime
-      multipleBirthBoolean / _multipleBirthBoolean
-      multipleBirthInteger / _multipleBirthInteger
-      contact / communication / link"]
+      Desc["**SerialDescriptor**
+      resourceType
+      gender, _gender
+      deceasedBoolean, _deceasedBoolean
+      deceasedDateTime, _deceasedDateTime
+      multipleBirthBoolean, _multipleBirthBoolean
+      multipleBirthInteger, _multipleBirthInteger
+      contact"]
 
-      Loop["**while** (true) {
-      #nbsp;#nbsp;val i = decoder.decodeElementIndex(descriptor)
-      #nbsp;#nbsp;if (i == DECODE_DONE) break
-      #nbsp;#nbsp;**when** (i - descriptorOffset) {
-      #nbsp;#nbsp;#nbsp;#nbsp;-1 → resourceType discarded
-      #nbsp;#nbsp;#nbsp;#nbsp;0..N → per-key wire locals
-      #nbsp;#nbsp;}
-      }"]
+      Prim["Combine value and _extension<br/>(e.g. gender + _gender)"]
+      Choice["Construct sealed choice types<br/>(e.g. Deceased, MultipleBirth)"]
+      BB["Delegate backbone elements<br/>(e.g. PatientContactSerializer)"]
 
-      Loop -- "JSON key → i lookup" --> Desc
-      Desc -. "return i" .-> Loop
-      Loop -- "gender, deceased expansions, multipleBirth expansions, ..." --> Locals[per-key locals]
-      Locals -- "MultipleBirth.from(boolean, _boolean, integer, _integer)" --> Seal[sealed values synthesized]
-      Locals -- "Deceased.from(boolean, _boolean, dateTime, _dateTime)" --> Seal
-      Locals -- "PatientContact / Communication / LinkSerializer.deserialize" --> BB[backbone elements]
+      Desc --> Prim
+      Desc --> Choice
+      Desc --> BB
     end
 
-    A --> PS
-    Seal --> E
+    A --> Desc
+    Prim --> E
+    Choice --> E
     BB --> E
-    Locals --> E
 
     style A text-align:left
     style E text-align:left
     style Desc text-align:left
-    style Loop text-align:left
     style PS stroke-dasharray: 5 5
 ```
 
@@ -436,18 +435,14 @@ plugin (to deserialize FHIR spec JSON) and runtime dependencies (`bignum`, `kotl
 KotlinPoet) that `buildSrc` cannot cleanly support.
 
 - the model class (the primary class) in the root package e.g. `dev.ohs.fhir.model.r4`, and
-- a custom `KSerializer` per type (e.g. `PatientSerializer`, plus one per BackboneElement) in the
-  serializer package e.g. `dev.ohs.fhir.model.r4.serializers`. Resource serializers implement
-  `FhirResourceSerializer` so `ResourcePolymorphicSerializer` can delegate to a generic
-  `FhirResourcePolymorphicSerializer` wrapper without generating separate per-resource polymorphic
-  serializer classes.
+- the custom serializer classes (one per resource and complex type, plus one per
+  BackboneElement) in the `serializers` subpackage e.g. `dev.ohs.fhir.model.r4.serializers`,
 
 using
 [`ModelFileSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/ModelFileSpecGenerator.kt)
 and
 [`SerializerFileSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/SerializerFileSpecGenerator.kt),
-respectively. Each generated serializer encodes and decodes sequentially via kotlinx's
-`CompositeEncoder` / `CompositeDecoder` over the flat FHIR JSON wire shape.
+respectively.
 
 Additionally,
 the [`schema`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/schema) package in

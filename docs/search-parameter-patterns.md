@@ -59,7 +59,7 @@ The 84 search parameters with unsupported expressions across R4, R4B, and R5 fal
 following categories:
 
 - [Empty FHIRPath expression](#empty-fhirpath-expression) (28)
-- [`.extension('url')` access](#extension-url-access) (17)
+- [`.extension('url')` access](#extensionurl-access) (17)
 - [Composite search parameters with no component path](#composite-search-parameters-with-no-component-path) (13)
 - [Boolean logic](#boolean-logic) (5)
 - [Other `where(...)` conditions](#other-where-conditions) (3)

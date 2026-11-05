@@ -50,9 +50,12 @@ tasks.named("spotlessMarkdown") {
     dependsOn(":fhir-model-r4:codegen", ":fhir-model-r4b:codegen", ":fhir-model-r5:codegen")
 }
 
-// Run codegen unit tests when running `./gradlew check` locally
-tasks.named("check") {
+// Run codegen unit tests when running `./gradlew jvmTest` or `./gradlew check`
+val jvmTest by tasks.registering {
     dependsOn(gradle.includedBuild("fhir-codegen").task(":gradle-plugin:test"))
+}
+tasks.named("check") {
+    dependsOn(jvmTest)
 }
 
 // ---------------------------------------------------------------------------

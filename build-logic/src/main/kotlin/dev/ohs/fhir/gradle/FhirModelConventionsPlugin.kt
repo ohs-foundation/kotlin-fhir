@@ -81,11 +81,8 @@ class FhirModelConventionsPlugin : Plugin<Project> {
             commonWebpackConfig { config ->
               config.devServer =
                 (config.devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                  static =
-                    (static ?: mutableListOf()).apply {
-                      add(rootDirPath)
-                      add(projectDirPath)
-                    }
+                  static(rootDirPath)
+                  static(projectDirPath)
                 }
             }
           }
@@ -124,7 +121,7 @@ class FhirModelConventionsPlugin : Plugin<Project> {
         commonMain.dependencies {
           api(libs.findLibrary("bignum").get())
           api(libs.findLibrary("kotlinx-datetime").get())
-          implementation(libs.findLibrary("kotlinx-serialization-json").get())
+          api(libs.findLibrary("kotlinx-serialization-json").get())
         }
       }
 

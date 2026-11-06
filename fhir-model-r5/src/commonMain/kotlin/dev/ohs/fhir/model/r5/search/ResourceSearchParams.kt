@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
+import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -71,7 +72,7 @@ public object ResourceSearchParams {
       },
     )
 
-  public val _id: SearchParam<Resource, Any> =
+  public val _id: SearchParam<Resource, String> =
     SearchParam(
       name = "_id",
       type = SearchParamType.Token,
@@ -79,7 +80,7 @@ public object ResourceSearchParams {
       extractor = { resource -> listOfNotNull(resource.id) },
     )
 
-  public val _in: SearchParam<Resource, Any> =
+  public val _in: SearchParam<Resource, String> =
     SearchParam(
       name = "_in",
       type = SearchParamType.Reference,

@@ -19,6 +19,7 @@ package dev.ohs.fhir.codegen.searchparam
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
 import dev.ohs.fhir.codegen.ResolvedExpression
+import dev.ohs.fhir.codegen.primitives.FhirPathType
 import dev.ohs.fhir.codegen.schema.capitalized
 
 /**
@@ -63,8 +64,9 @@ internal object SearchParamTypeResolver {
   // -- private helpers --------------------------------------------------------------------------
 
   /**
-   * Type for a simple dotted path or a `where(resolve() is …)` (the filter is dropped). Falls back
-   * to `kotlin.Any` for `code`-typed leaves and for type codes containing `/` or `:`.
+   * Type for a simple dotted path or a `where(resolve() is …)` (the filter is dropped). Resolves
+   * FHIRPath system URIs via [FhirPathType], and falls back to `kotlin.Any` for `code`-typed leaves
+   * and other URL-shaped type codes.
    */
   private fun forResolvedPath(
     resolved: ResolvedExpression,
@@ -81,7 +83,11 @@ internal object SearchParamTypeResolver {
     // Elements of type "code" may be generated as Enumeration<X> depending on value set bindings
     if (typeCode == "code") return ClassName("kotlin", "Any")
 
-    // Type codes containing special characters (e.g., FHIRPath URIs) can't be used as class names
+    FhirPathType.getFromUri(typeCode)?.let {
+      return it.getDataModelType(packageName)
+    }
+
+    // Type codes containing special characters can't be used as class names
     if (typeCode.contains("/") || typeCode.contains(":")) return ClassName("kotlin", "Any")
 
     return ClassName(packageName, typeCode.capitalized())

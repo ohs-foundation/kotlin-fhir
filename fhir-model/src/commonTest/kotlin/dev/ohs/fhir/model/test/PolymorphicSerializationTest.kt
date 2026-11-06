@@ -53,7 +53,7 @@ private fun createPatientJsonWithoutResourceType(id: String) =
  * Additionally, it verifies that decoding invalid JSON (e.g. missing `resourceType`) fails as
  * expected.
  *
- * See https://github.com/google/kotlin-fhir/issues/66.
+ * See https://github.com/ohs-foundation/kotlin-fhir/issues/66.
  */
 class PolymorphicSerializationTest :
   FunSpec({

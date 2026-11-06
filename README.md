@@ -784,10 +784,6 @@ val json = Json {
 > `classDiscriminator` have no effect because field encoding and null handling are handled directly
 > by the generated serializers.
 
-> [!NOTE]
-> Kotlin-Fhir is fast and lightweight, but does not currently contain guards against recursion
-> or other forms of input hardening. Always assume inputs from servers or users are untrusted.
-
 #### Serialization
 
 To serialize a FHIR resource to a JSON string, use `encodeToString()`:
@@ -838,6 +834,19 @@ try {
     // Handle malformed JSON, invalid data, or unknown resource types
 }
 ```
+
+> [!NOTE]
+> The library does not enforce limits on JSON nesting depth or decimal precision during
+> deserialization:
+> - **Deeply nested JSON**: Nested FHIR elements (e.g. `Extension` or `Bundle`) are decoded
+>   recursively on the call stack and may cause a `StackOverflowError` if deeply nested.
+> - **Extreme decimal values**: Due to upstream limitations in
+>   [`kotlin-multiplatform-bignum`](https://github.com/ionspin/kotlin-multiplatform-bignum),
+>   parsing decimals with tens of thousands of digits or operating on extreme exponents (e.g.
+>   `1e1000000`) can cause high CPU usage or `OutOfMemoryError`.
+>
+> When accepting FHIR payloads from untrusted sources, enforce limits on payload size, JSON nesting
+> depth, and numeric string length before deserialization.
 
 #### Non-JSON Serializers
 

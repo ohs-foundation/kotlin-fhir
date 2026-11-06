@@ -835,6 +835,19 @@ try {
 }
 ```
 
+> [!NOTE]
+> The library does not enforce limits on JSON nesting depth or decimal precision during
+> deserialization:
+> - **Deeply nested JSON**: Nested FHIR elements (e.g. `Extension` or `Bundle`) are decoded
+>   recursively on the call stack and may cause a `StackOverflowError` if deeply nested.
+> - **Extreme decimal values**: Due to upstream limitations in
+>   [`kotlin-multiplatform-bignum`](https://github.com/ionspin/kotlin-multiplatform-bignum),
+>   parsing decimals with tens of thousands of digits or operating on extreme exponents (e.g.
+>   `1e1000000`) can cause high CPU usage or `OutOfMemoryError`.
+>
+> When accepting FHIR payloads from untrusted sources, enforce limits on payload size, JSON nesting
+> depth, and numeric string length before deserialization.
+
 #### Non-JSON Serializers
 
 The generated models can be serialized to and deserialized from any format [supported](https://github.com/Kotlin/kotlinx.serialization/blob/master/formats/README.md) by

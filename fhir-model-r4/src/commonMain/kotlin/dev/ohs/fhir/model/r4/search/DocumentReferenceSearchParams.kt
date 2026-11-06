@@ -42,6 +42,7 @@ import dev.ohs.fhir.model.r4.ChargeItemDefinition
 import dev.ohs.fhir.model.r4.Claim
 import dev.ohs.fhir.model.r4.ClaimResponse
 import dev.ohs.fhir.model.r4.ClinicalImpression
+import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeSystem
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
@@ -70,12 +71,14 @@ import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.EnrollmentRequest
 import dev.ohs.fhir.model.r4.EnrollmentResponse
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.EventDefinition
 import dev.ohs.fhir.model.r4.Evidence
 import dev.ohs.fhir.model.r4.EvidenceVariable
 import dev.ohs.fhir.model.r4.ExampleScenario
 import dev.ohs.fhir.model.r4.ExplanationOfBenefit
+import dev.ohs.fhir.model.r4.ExtensibleEnumeration
 import dev.ohs.fhir.model.r4.FamilyMemberHistory
 import dev.ohs.fhir.model.r4.Flag
 import dev.ohs.fhir.model.r4.Goal
@@ -174,8 +177,10 @@ import dev.ohs.fhir.model.r4.Url
 import dev.ohs.fhir.model.r4.ValueSet
 import dev.ohs.fhir.model.r4.VerificationResult
 import dev.ohs.fhir.model.r4.VisionPrescription
+import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
+import dev.ohs.fhir.model.r4.terminologies.DocumentReferenceStatus
+import dev.ohs.fhir.model.r4.terminologies.DocumentRelationshipType
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -215,7 +220,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val contenttype: SearchParam<DocumentReference, Any> =
+  public val contenttype: SearchParam<DocumentReference, Code> =
     SearchParam(
       name = "contenttype",
       type = SearchParamType.Token,
@@ -297,7 +302,7 @@ public object DocumentReferenceSearchParams {
       },
     )
 
-  public val language: SearchParam<DocumentReference, Any> =
+  public val language: SearchParam<DocumentReference, ExtensibleEnumeration<CommonLanguages>> =
     SearchParam(
       name = "language",
       type = SearchParamType.Token,
@@ -497,7 +502,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.relatesTo.map { it.target } },
     )
 
-  public val relation: SearchParam<DocumentReference, Any> =
+  public val relation: SearchParam<DocumentReference, Enumeration<DocumentRelationshipType>> =
     SearchParam(
       name = "relation",
       type = SearchParamType.Token,
@@ -529,7 +534,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.context?.practiceSetting) },
     )
 
-  public val status: SearchParam<DocumentReference, Any> =
+  public val status: SearchParam<DocumentReference, Enumeration<DocumentReferenceStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

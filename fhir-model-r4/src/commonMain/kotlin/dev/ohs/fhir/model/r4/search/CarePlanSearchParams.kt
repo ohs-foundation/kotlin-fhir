@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4.Condition
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.DeviceRequest
 import dev.ohs.fhir.model.r4.Encounter
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Goal
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.HealthcareService
@@ -54,8 +55,9 @@ import dev.ohs.fhir.model.r4.ServiceRequest
 import dev.ohs.fhir.model.r4.Task
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.VisionPrescription
+import dev.ohs.fhir.model.r4.terminologies.CarePlanIntent
+import dev.ohs.fhir.model.r4.terminologies.RequestStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -192,7 +194,7 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.instantiatesUri },
     )
 
-  public val intent: SearchParam<CarePlan, Any> =
+  public val intent: SearchParam<CarePlan, Enumeration<CarePlanIntent>> =
     SearchParam(
       name = "intent",
       type = SearchParamType.Token,
@@ -250,7 +252,7 @@ public object CarePlanSearchParams {
       extractor = { resource -> resource.replaces },
     )
 
-  public val status: SearchParam<CarePlan, Any> =
+  public val status: SearchParam<CarePlan, Enumeration<RequestStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

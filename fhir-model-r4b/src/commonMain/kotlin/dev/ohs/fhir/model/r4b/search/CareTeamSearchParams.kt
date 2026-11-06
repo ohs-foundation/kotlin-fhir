@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.CareTeam
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Encounter
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
@@ -33,8 +34,8 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.terminologies.CareTeamStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -101,7 +102,7 @@ public object CareTeamSearchParams {
       },
     )
 
-  public val status: SearchParam<CareTeam, Any> =
+  public val status: SearchParam<CareTeam, Enumeration<CareTeamStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

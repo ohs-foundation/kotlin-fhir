@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.MessageDefinition
@@ -33,6 +34,9 @@ import dev.ohs.fhir.model.r5.PlanDefinition
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.MessageSignificanceCategory
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -40,7 +44,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MessageDefinition] resource type. */
 public object MessageDefinitionSearchParams {
-  public val category: SearchParam<MessageDefinition, Any> =
+  public val category: SearchParam<MessageDefinition, Enumeration<MessageSignificanceCategory>> =
     SearchParam(
       name = "category",
       type = SearchParamType.Token,
@@ -129,7 +133,7 @@ public object MessageDefinitionSearchParams {
       },
     )
 
-  public val focus: SearchParam<MessageDefinition, Any> =
+  public val focus: SearchParam<MessageDefinition, Enumeration<ResourceType>> =
     SearchParam(
       name = "focus",
       type = SearchParamType.Token,
@@ -178,7 +182,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val status: SearchParam<MessageDefinition, Any> =
+  public val status: SearchParam<MessageDefinition, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -24,12 +24,14 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.TerminologyCapabilities
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -140,7 +142,7 @@ public object TerminologyCapabilitiesSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val status: SearchParam<TerminologyCapabilities, Any> =
+  public val status: SearchParam<TerminologyCapabilities, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

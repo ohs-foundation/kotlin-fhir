@@ -21,14 +21,15 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Period
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.ResearchStudy
 import dev.ohs.fhir.model.r4b.ResearchSubject
+import dev.ohs.fhir.model.r4b.terminologies.ResearchSubjectStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -68,7 +69,7 @@ public object ResearchSubjectSearchParams {
       extractor = { resource -> listOf(resource.individual) },
     )
 
-  public val status: SearchParam<ResearchSubject, Any> =
+  public val status: SearchParam<ResearchSubject, Enumeration<ResearchSubjectStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

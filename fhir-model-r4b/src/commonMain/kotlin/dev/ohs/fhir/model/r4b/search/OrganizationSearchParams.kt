@@ -25,12 +25,13 @@ import dev.ohs.fhir.model.r4b.Address
 import dev.ohs.fhir.model.r4b.Boolean
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Endpoint
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.String
+import dev.ohs.fhir.model.r4b.terminologies.AddressUse
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -84,7 +85,7 @@ public object OrganizationSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
 
-  public val addressUse: SearchParam<Organization, Any> =
+  public val addressUse: SearchParam<Organization, Enumeration<AddressUse>> =
     SearchParam(
       name = "address-use",
       type = SearchParamType.Token,

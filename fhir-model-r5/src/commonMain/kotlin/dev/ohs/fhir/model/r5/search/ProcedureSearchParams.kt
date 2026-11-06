@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
 import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
@@ -51,6 +52,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.EventStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -221,7 +223,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.report },
     )
 
-  public val status: SearchParam<Procedure, Any> =
+  public val status: SearchParam<Procedure, Enumeration<EventStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

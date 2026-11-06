@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Instant
@@ -29,7 +30,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.SlotStatus
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -101,7 +102,7 @@ public object SlotSearchParams {
       extractor = { resource -> listOf(resource.start) },
     )
 
-  public val status: SearchParam<Slot, Any> =
+  public val status: SearchParam<Slot, Enumeration<SlotStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

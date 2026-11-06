@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r5.CoverageEligibilityResponse
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Patient
@@ -31,8 +32,9 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
+import dev.ohs.fhir.model.r5.terminologies.EligibilityOutcome
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -71,7 +73,7 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOf(resource.insurer) },
     )
 
-  public val outcome: SearchParam<CoverageEligibilityResponse, Any> =
+  public val outcome: SearchParam<CoverageEligibilityResponse, Enumeration<EligibilityOutcome>> =
     SearchParam(
       name = "outcome",
       type = SearchParamType.Token,
@@ -106,7 +108,8 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestor) },
     )
 
-  public val status: SearchParam<CoverageEligibilityResponse, Any> =
+  public val status:
+    SearchParam<CoverageEligibilityResponse, Enumeration<FinancialResourceStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

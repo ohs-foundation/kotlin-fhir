@@ -23,9 +23,11 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.Canonical
+import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.OperationDefinition
@@ -33,6 +35,8 @@ import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.OperationKind
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -49,7 +53,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.base) },
     )
 
-  public val code: SearchParam<OperationDefinition, Any> =
+  public val code: SearchParam<OperationDefinition, Code> =
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
@@ -161,7 +165,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val kind: SearchParam<OperationDefinition, Any> =
+  public val kind: SearchParam<OperationDefinition, Enumeration<OperationKind>> =
     SearchParam(
       name = "kind",
       type = SearchParamType.Token,
@@ -194,7 +198,7 @@ public object OperationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val status: SearchParam<OperationDefinition, Any> =
+  public val status: SearchParam<OperationDefinition, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

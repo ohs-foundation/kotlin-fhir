@@ -23,15 +23,20 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.Canonical
 import dev.ohs.fhir.model.r4.CapabilityStatement
+import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.ImplementationGuide
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.StructureDefinition
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.ResourceType
+import dev.ohs.fhir.model.r4.terminologies.RestfulCapabilityMode
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -118,7 +123,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.version) },
     )
 
-  public val format: SearchParam<CapabilityStatement, Any> =
+  public val format: SearchParam<CapabilityStatement, Code> =
     SearchParam(
       name = "format",
       type = SearchParamType.Token,
@@ -143,7 +148,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val mode: SearchParam<CapabilityStatement, Any> =
+  public val mode: SearchParam<CapabilityStatement, Enumeration<RestfulCapabilityMode>> =
     SearchParam(
       name = "mode",
       type = SearchParamType.Token,
@@ -167,7 +172,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val resource: SearchParam<CapabilityStatement, Any> =
+  public val resource: SearchParam<CapabilityStatement, Enumeration<ResourceType>> =
     SearchParam(
       name = "resource",
       type = SearchParamType.Token,
@@ -200,7 +205,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.software?.name) },
     )
 
-  public val status: SearchParam<CapabilityStatement, Any> =
+  public val status: SearchParam<CapabilityStatement, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

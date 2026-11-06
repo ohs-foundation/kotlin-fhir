@@ -23,12 +23,13 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ObservationDefinition
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -74,7 +75,7 @@ public object ObservationDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.method) },
     )
 
-  public val status: SearchParam<ObservationDefinition, Any> =
+  public val status: SearchParam<ObservationDefinition, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

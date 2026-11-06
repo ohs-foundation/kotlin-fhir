@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4b.Claim
 import dev.ohs.fhir.model.r4b.ClaimResponse
 import dev.ohs.fhir.model.r4b.Date
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Patient
@@ -32,8 +33,10 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.String
+import dev.ohs.fhir.model.r4b.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.Use
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -72,7 +75,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOf(resource.insurer) },
     )
 
-  public val outcome: SearchParam<ClaimResponse, Any> =
+  public val outcome: SearchParam<ClaimResponse, Enumeration<RemittanceOutcome>> =
     SearchParam(
       name = "outcome",
       type = SearchParamType.Token,
@@ -115,7 +118,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestor) },
     )
 
-  public val status: SearchParam<ClaimResponse, Any> =
+  public val status: SearchParam<ClaimResponse, Enumeration<FinancialResourceStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,
@@ -123,7 +126,7 @@ public object ClaimResponseSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val use: SearchParam<ClaimResponse, Any> =
+  public val use: SearchParam<ClaimResponse, Enumeration<Use>> =
     SearchParam(
       name = "use",
       type = SearchParamType.Token,

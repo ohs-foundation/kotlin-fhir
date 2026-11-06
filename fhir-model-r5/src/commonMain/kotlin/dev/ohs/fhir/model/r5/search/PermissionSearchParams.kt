@@ -21,15 +21,16 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Permission
+import dev.ohs.fhir.model.r5.terminologies.PermissionStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Permission] resource type. */
 public object PermissionSearchParams {
-  public val status: SearchParam<Permission, Any> =
+  public val status: SearchParam<Permission, Enumeration<PermissionStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.Account
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Invoice
@@ -35,8 +36,8 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.terminologies.InvoiceStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -121,7 +122,7 @@ public object InvoiceSearchParams {
       extractor = { resource -> listOfNotNull(resource.recipient) },
     )
 
-  public val status: SearchParam<Invoice, Any> =
+  public val status: SearchParam<Invoice, Enumeration<InvoiceStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

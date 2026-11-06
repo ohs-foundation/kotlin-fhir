@@ -22,14 +22,18 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.Canonical
+import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.SearchParameter
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -37,7 +41,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [SearchParameter] resource type. */
 public object SearchParameterSearchParams {
-  public val base: SearchParam<SearchParameter, Any> =
+  public val base: SearchParam<SearchParameter, Enumeration<ResourceType>> =
     SearchParam(
       name = "base",
       type = SearchParamType.Token,
@@ -45,7 +49,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.base },
     )
 
-  public val code: SearchParam<SearchParameter, Any> =
+  public val code: SearchParam<SearchParameter, Code> =
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
@@ -166,7 +170,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val status: SearchParam<SearchParameter, Any> =
+  public val status: SearchParam<SearchParameter, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,
@@ -174,7 +178,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val target: SearchParam<SearchParameter, Any> =
+  public val target: SearchParam<SearchParameter, Enumeration<ResourceType>> =
     SearchParam(
       name = "target",
       type = SearchParamType.Token,
@@ -182,7 +186,7 @@ public object SearchParameterSearchParams {
       extractor = { resource -> resource.target },
     )
 
-  public val type: SearchParam<SearchParameter, Any> =
+  public val type: SearchParam<SearchParameter, Enumeration<SearchParamType>> =
     SearchParam(
       name = "type",
       type = SearchParamType.Token,

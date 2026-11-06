@@ -23,13 +23,14 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Immunization
 import dev.ohs.fhir.model.r5.ImmunizationEvaluation
 import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.terminologies.ImmunizationEvaluationStatusCodes
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -77,7 +78,8 @@ public object ImmunizationEvaluationSearchParams {
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val status: SearchParam<ImmunizationEvaluation, Any> =
+  public val status:
+    SearchParam<ImmunizationEvaluation, Enumeration<ImmunizationEvaluationStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -24,12 +24,13 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.Endpoint
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String
+import dev.ohs.fhir.model.r4.terminologies.EndpointStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -76,7 +77,7 @@ public object EndpointSearchParams {
       extractor = { resource -> resource.payloadType },
     )
 
-  public val status: SearchParam<Endpoint, Any> =
+  public val status: SearchParam<Endpoint, Enumeration<EndpointStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

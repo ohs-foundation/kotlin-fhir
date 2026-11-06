@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
@@ -37,6 +38,7 @@ import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SpecimenStatus
 import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
@@ -143,7 +145,7 @@ public object SpecimenSearchParams {
       extractor = { resource -> listOfNotNull(resource.collection?.procedure) },
     )
 
-  public val status: SearchParam<Specimen, Any> =
+  public val status: SearchParam<Specimen, Enumeration<SpecimenStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

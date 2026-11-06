@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.Account
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Patient
@@ -34,8 +35,9 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Task
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r5.terminologies.PaymentOutcome
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -83,7 +85,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val outcome: SearchParam<PaymentReconciliation, Any> =
+  public val outcome: SearchParam<PaymentReconciliation, Enumeration<PaymentOutcome>> =
     SearchParam(
       name = "outcome",
       type = SearchParamType.Token,
@@ -118,7 +120,7 @@ public object PaymentReconciliationSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestor) },
     )
 
-  public val status: SearchParam<PaymentReconciliation, Any> =
+  public val status: SearchParam<PaymentReconciliation, Enumeration<FinancialResourceStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

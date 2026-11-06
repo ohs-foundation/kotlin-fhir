@@ -77,6 +77,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.EnrollmentResponse
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.EventDefinition
 import dev.ohs.fhir.model.r5.Evidence
@@ -185,8 +186,8 @@ import dev.ohs.fhir.model.r5.Transport
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.ListStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -439,7 +440,7 @@ public object ListSearchParams {
       extractor = { resource -> listOfNotNull(resource.source) },
     )
 
-  public val status: SearchParam<R5List, Any> =
+  public val status: SearchParam<R5List, Enumeration<ListStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

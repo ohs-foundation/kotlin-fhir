@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.DocumentReference
 import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.GenomicStudy
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -48,6 +49,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.Substance
+import dev.ohs.fhir.model.r5.terminologies.DiagnosticReportStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -195,7 +197,7 @@ public object DiagnosticReportSearchParams {
       extractor = { resource -> resource.specimen },
     )
 
-  public val status: SearchParam<DiagnosticReport, Any> =
+  public val status: SearchParam<DiagnosticReport, Enumeration<DiagnosticReportStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

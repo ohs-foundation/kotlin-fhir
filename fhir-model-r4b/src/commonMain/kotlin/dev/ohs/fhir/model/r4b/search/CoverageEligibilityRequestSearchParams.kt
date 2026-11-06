@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Organization
@@ -30,8 +31,8 @@ import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -89,7 +90,8 @@ public object CoverageEligibilityRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.provider) },
     )
 
-  public val status: SearchParam<CoverageEligibilityRequest, Any> =
+  public val status:
+    SearchParam<CoverageEligibilityRequest, Enumeration<FinancialResourceStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

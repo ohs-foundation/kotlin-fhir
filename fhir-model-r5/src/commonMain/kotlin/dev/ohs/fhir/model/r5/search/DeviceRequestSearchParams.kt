@@ -78,6 +78,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.EnrollmentResponse
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.EventDefinition
 import dev.ohs.fhir.model.r5.Evidence
@@ -185,6 +186,8 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.RequestIntent
+import dev.ohs.fhir.model.r5.terminologies.RequestStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -454,7 +457,7 @@ public object DeviceRequestSearchParams {
       extractor = { resource -> resource.insurance },
     )
 
-  public val intent: SearchParam<DeviceRequest, Any> =
+  public val intent: SearchParam<DeviceRequest, Enumeration<RequestIntent>> =
     SearchParam(
       name = "intent",
       type = SearchParamType.Token,
@@ -519,7 +522,7 @@ public object DeviceRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.requester) },
     )
 
-  public val status: SearchParam<DeviceRequest, Any> =
+  public val status: SearchParam<DeviceRequest, Enumeration<RequestStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

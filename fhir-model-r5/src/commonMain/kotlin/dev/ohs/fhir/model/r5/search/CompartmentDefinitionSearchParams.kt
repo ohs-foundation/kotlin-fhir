@@ -25,10 +25,14 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.CompartmentDefinition
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.CompartmentType
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -36,7 +40,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [CompartmentDefinition] resource type. */
 public object CompartmentDefinitionSearchParams {
-  public val code: SearchParam<CompartmentDefinition, Any> =
+  public val code: SearchParam<CompartmentDefinition, Enumeration<CompartmentType>> =
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
@@ -131,7 +135,7 @@ public object CompartmentDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val resource: SearchParam<CompartmentDefinition, Any> =
+  public val resource: SearchParam<CompartmentDefinition, Enumeration<ResourceType>> =
     SearchParam(
       name = "resource",
       type = SearchParamType.Token,
@@ -139,7 +143,7 @@ public object CompartmentDefinitionSearchParams {
       extractor = { resource -> resource.resource.map { it.code } },
     )
 
-  public val status: SearchParam<CompartmentDefinition, Any> =
+  public val status: SearchParam<CompartmentDefinition, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

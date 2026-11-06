@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Location
 import dev.ohs.fhir.model.r4.Organization
@@ -30,6 +31,7 @@ import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.terminologies.FHIRDeviceStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -117,7 +119,7 @@ public object DeviceSearchParams {
       extractor = { resource -> listOfNotNull(resource.patient) },
     )
 
-  public val status: SearchParam<Device, Any> =
+  public val status: SearchParam<Device, Enumeration<FHIRDeviceStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

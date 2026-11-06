@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Flag
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -38,8 +39,8 @@ import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.terminologies.FlagStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -106,7 +107,7 @@ public object FlagSearchParams {
       },
     )
 
-  public val status: SearchParam<Flag, Any> =
+  public val status: SearchParam<Flag, Enumeration<FlagStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

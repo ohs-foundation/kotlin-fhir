@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String
@@ -29,7 +30,7 @@ import dev.ohs.fhir.model.r4.TestReport
 import dev.ohs.fhir.model.r4.TestScript
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4.terminologies.TestReportResult
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -59,7 +60,7 @@ public object TestReportSearchParams {
       extractor = { resource -> resource.participant.map { it.uri } },
     )
 
-  public val result: SearchParam<TestReport, Any> =
+  public val result: SearchParam<TestReport, Enumeration<TestReportResult>> =
     SearchParam(
       name = "result",
       type = SearchParamType.Token,

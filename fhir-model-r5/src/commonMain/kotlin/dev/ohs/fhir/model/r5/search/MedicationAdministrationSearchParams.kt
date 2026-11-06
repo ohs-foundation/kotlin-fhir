@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.Condition
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Medication
@@ -37,6 +38,7 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.terminologies.MedicationAdministrationStatusCodes
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -179,7 +181,8 @@ public object MedicationAdministrationSearchParams {
       extractor = { resource -> listOfNotNull(resource.request) },
     )
 
-  public val status: SearchParam<MedicationAdministration, Any> =
+  public val status:
+    SearchParam<MedicationAdministration, Enumeration<MedicationAdministrationStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

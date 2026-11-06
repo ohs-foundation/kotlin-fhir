@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.Decimal
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
@@ -50,6 +51,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.SupplyDelivery
+import dev.ohs.fhir.model.r5.terminologies.ChargeItemStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -233,7 +235,7 @@ public object ChargeItemSearchParams {
       extractor = { resource -> resource.service.mapNotNull { it.reference } },
     )
 
-  public val status: SearchParam<ChargeItem, Any> =
+  public val status: SearchParam<ChargeItem, Enumeration<ChargeItemStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

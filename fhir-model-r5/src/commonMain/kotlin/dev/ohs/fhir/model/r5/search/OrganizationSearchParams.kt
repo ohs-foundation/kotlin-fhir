@@ -25,12 +25,13 @@ import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Endpoint
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
+import dev.ohs.fhir.model.r5.terminologies.AddressUse
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -90,7 +91,7 @@ public object OrganizationSearchParams {
       },
     )
 
-  public val addressUse: SearchParam<Organization, Any> =
+  public val addressUse: SearchParam<Organization, Enumeration<AddressUse>> =
     SearchParam(
       name = "address-use",
       type = SearchParamType.Token,

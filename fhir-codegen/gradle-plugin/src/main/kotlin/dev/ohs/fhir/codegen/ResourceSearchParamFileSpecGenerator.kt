@@ -28,6 +28,7 @@ import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
 import dev.ohs.fhir.codegen.schema.capitalized
+import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 import dev.ohs.fhir.codegen.searchparam.SearchParamExtractFromFunctionBodyEmitter
 import dev.ohs.fhir.codegen.searchparam.SearchParamPattern
 import dev.ohs.fhir.codegen.searchparam.SearchParamTypeResolver
@@ -61,12 +62,15 @@ object ResourceSearchParamFileSpecGenerator {
    * @param searchParams The search parameter definitions for this resource.
    * @param elementsByType A map from StructureDefinition name to its snapshot elements, used to
    *   resolve FHIRPath expressions to Kotlin property access code.
+   * @param valueSetMap A map from ValueSet canonical URL to its [ValueSet] definition, used to
+   *   resolve `code`-typed elements to their bound enum types.
    */
   fun generate(
     packageName: String,
     resourceName: String,
     searchParams: List<SearchParameterDefinition>,
     elementsByType: Map<String, List<Element>>,
+    valueSetMap: Map<String, ValueSet> = emptyMap(),
   ): FileSpec {
     val searchPackageName = "$packageName.search"
     val searchParamClassName = ClassName(searchPackageName, "SearchParam")
@@ -102,6 +106,7 @@ object ResourceSearchParamFileSpecGenerator {
                 searchParamClassName,
                 searchParamTypeClassName,
                 resolver,
+                valueSetMap,
               )
             )
           }
@@ -175,12 +180,13 @@ object ResourceSearchParamFileSpecGenerator {
     searchParamClassName: ClassName,
     searchParamTypeClassName: ClassName,
     resolver: FhirPathExpressionResolver,
+    valueSetMap: Map<String, ValueSet>,
   ): PropertySpec {
     val propertyName = searchParam.code.toPropertyName()
 
     val resourceExpression = searchParam.extractExpressionForResource(resourceName)
     val pattern = parseSearchParamExpression(resourceExpression, resourceName, resolver)
-    val valueTypeName = SearchParamTypeResolver.resolve(pattern, packageName, resourceName)
+    val valueTypeName = SearchParamTypeResolver.resolve(pattern, packageName, valueSetMap)
     val extractionCode =
       SearchParamExtractFromFunctionBodyEmitter.emit(
         pattern,

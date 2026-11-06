@@ -23,12 +23,13 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceDispense
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.terminologies.DeviceDispenseStatusCodes
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -61,7 +62,7 @@ public object DeviceDispenseSearchParams {
       },
     )
 
-  public val status: SearchParam<DeviceDispense, Any> =
+  public val status: SearchParam<DeviceDispense, Enumeration<DeviceDispenseStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

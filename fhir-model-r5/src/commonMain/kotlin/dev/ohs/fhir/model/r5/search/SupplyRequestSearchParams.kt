@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
@@ -36,7 +37,7 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.SupplyRequest
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.SupplyRequestStatus
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -93,7 +94,7 @@ public object SupplyRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.requester) },
     )
 
-  public val status: SearchParam<SupplyRequest, Any> =
+  public val status: SearchParam<SupplyRequest, Enumeration<SupplyRequestStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

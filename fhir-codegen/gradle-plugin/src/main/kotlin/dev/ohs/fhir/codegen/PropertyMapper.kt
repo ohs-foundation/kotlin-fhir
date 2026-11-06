@@ -206,14 +206,21 @@ internal class PropertyMapper(
    * - **Cardinality:** The element's cardinality (e.g., 0..1, 1..*, 0..*) determines whether the
    *   Kotlin type is nullable (e.g., `String?`) or a collection type (e.g., `List<String>`).
    */
+  /**
+   * Determines the base (non-cardinalized, non-nullable) Kotlin [TypeName] for [element] in a model
+   * class.
+   */
+  internal fun mapToModelType(element: Element): TypeName {
+    return getContentReferenceType(element)
+      ?: getTypeOverride(element)
+      ?: getSealedInterfaceType(element)
+      ?: getBackboneElementType(element)
+      ?: getEnumType(element)
+      ?: mapTypeToClassName(element.type!!.single())
+  }
+
   private fun getTypeName(element: Element): TypeName {
-    return (getContentReferenceType(element)
-        ?: getTypeOverride(element)
-        ?: getSealedInterfaceType(element)
-        ?: getBackboneElementType(element)
-        ?: getEnumType(element)
-        ?: mapTypeToClassName(element.type!!.single()))
-      .applyCardinality(element)
+    return mapToModelType(element).applyCardinality(element)
   }
 
   /**
@@ -307,7 +314,7 @@ internal class PropertyMapper(
       // The only case where the choice type inherits from the base definition is the element
       // `MetadataResource.versionAlgorithm[x]`. In the case, for simplicity, the base type
       // `CanonicalResource.versionAlgorithm[x]` is used.
-      if (element.id != element.base!!.path) {
+      if (element.base != null && element.id != element.base.path) {
         return ClassName(
           modelClassName.packageName,
           element.base.path.removeSuffix("[x]").split('.').map { it.capitalized() },

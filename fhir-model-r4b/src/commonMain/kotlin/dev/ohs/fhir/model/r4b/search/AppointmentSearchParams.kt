@@ -71,6 +71,7 @@ import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.EpisodeOfCare
 import dev.ohs.fhir.model.r4b.EventDefinition
 import dev.ohs.fhir.model.r4b.Evidence
@@ -165,8 +166,9 @@ import dev.ohs.fhir.model.r4b.TestScript
 import dev.ohs.fhir.model.r4b.ValueSet
 import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
+import dev.ohs.fhir.model.r4b.terminologies.AppointmentStatus
+import dev.ohs.fhir.model.r4b.terminologies.ParticipationStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -236,7 +238,7 @@ public object AppointmentSearchParams {
       },
     )
 
-  public val partStatus: SearchParam<Appointment, Any> =
+  public val partStatus: SearchParam<Appointment, Enumeration<ParticipationStatus>> =
     SearchParam(
       name = "part-status",
       type = SearchParamType.Token,
@@ -326,7 +328,7 @@ public object AppointmentSearchParams {
       extractor = { resource -> resource.specialty },
     )
 
-  public val status: SearchParam<Appointment, Any> =
+  public val status: SearchParam<Appointment, Enumeration<AppointmentStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

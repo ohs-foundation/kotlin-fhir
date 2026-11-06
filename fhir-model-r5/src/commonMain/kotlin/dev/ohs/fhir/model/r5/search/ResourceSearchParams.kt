@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Canonical
+import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Resource
@@ -88,7 +89,7 @@ public object ResourceSearchParams {
       extractor = { resource -> listOfNotNull(resource.id) },
     )
 
-  public val _language: SearchParam<Resource, Any> =
+  public val _language: SearchParam<Resource, Code> =
     SearchParam(
       name = "_language",
       type = SearchParamType.Token,

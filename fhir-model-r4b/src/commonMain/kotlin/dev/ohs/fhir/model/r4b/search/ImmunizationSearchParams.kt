@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Condition
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.DiagnosticReport
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Immunization
 import dev.ohs.fhir.model.r4b.Location
@@ -35,8 +36,8 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.String
+import dev.ohs.fhir.model.r4b.terminologies.ImmunizationStatusCodes
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -146,7 +147,7 @@ public object ImmunizationSearchParams {
       extractor = { resource -> resource.protocolApplied.mapNotNull { it.series } },
     )
 
-  public val status: SearchParam<Immunization, Any> =
+  public val status: SearchParam<Immunization, Enumeration<ImmunizationStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

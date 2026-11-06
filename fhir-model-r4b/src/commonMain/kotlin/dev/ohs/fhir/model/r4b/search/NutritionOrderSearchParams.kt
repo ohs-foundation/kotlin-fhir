@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.Canonical
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Encounter
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.NutritionOrder
 import dev.ohs.fhir.model.r4b.Patient
@@ -34,8 +35,8 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.RequestStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -125,7 +126,7 @@ public object NutritionOrderSearchParams {
       extractor = { resource -> listOfNotNull(resource.orderer) },
     )
 
-  public val status: SearchParam<NutritionOrder, Any> =
+  public val status: SearchParam<NutritionOrder, Enumeration<RequestStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

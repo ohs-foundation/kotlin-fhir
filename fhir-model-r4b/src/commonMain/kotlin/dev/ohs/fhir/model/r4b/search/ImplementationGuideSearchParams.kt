@@ -75,6 +75,7 @@ import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.EpisodeOfCare
 import dev.ohs.fhir.model.r4b.EventDefinition
 import dev.ohs.fhir.model.r4b.Evidence
@@ -171,6 +172,7 @@ import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.ValueSet
 import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -452,7 +454,7 @@ public object ImplementationGuideSearchParams {
       },
     )
 
-  public val status: SearchParam<ImplementationGuide, Any> =
+  public val status: SearchParam<ImplementationGuide, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Medication
@@ -34,6 +35,7 @@ import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
 import dev.ohs.fhir.model.r4.Substance
+import dev.ohs.fhir.model.r4.terminologies.GroupType
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -122,7 +124,7 @@ public object GroupSearchParams {
       extractor = { resource -> resource.member.map { it.entity } },
     )
 
-  public val type: SearchParam<Group, Any> =
+  public val type: SearchParam<Group, Enumeration<GroupType>> =
     SearchParam(
       name = "type",
       type = SearchParamType.Token,

@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.DiagnosticReport
 import dev.ohs.fhir.model.r4b.DocumentReference
 import dev.ohs.fhir.model.r4b.Encounter
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
@@ -48,8 +49,8 @@ import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
 import dev.ohs.fhir.model.r4b.ServiceRequest
 import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.terminologies.EventStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -199,7 +200,7 @@ public object ProcedureSearchParams {
       extractor = { resource -> resource.reasonReference },
     )
 
-  public val status: SearchParam<Procedure, Any> =
+  public val status: SearchParam<Procedure, Enumeration<EventStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

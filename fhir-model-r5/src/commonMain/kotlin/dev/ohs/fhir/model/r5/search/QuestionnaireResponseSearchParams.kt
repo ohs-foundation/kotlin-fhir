@@ -77,6 +77,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.EnrollmentResponse
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.EventDefinition
 import dev.ohs.fhir.model.r5.Evidence
@@ -183,6 +184,7 @@ import dev.ohs.fhir.model.r5.Transport
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.QuestionnaireResponseStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -462,7 +464,7 @@ public object QuestionnaireResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.source) },
     )
 
-  public val status: SearchParam<QuestionnaireResponse, Any> =
+  public val status: SearchParam<QuestionnaireResponse, Enumeration<QuestionnaireResponseStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

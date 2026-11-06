@@ -23,13 +23,15 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.TestReport
 import dev.ohs.fhir.model.r5.TestScript
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.TestReportResult
+import dev.ohs.fhir.model.r5.terminologies.TestReportStatus
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -59,7 +61,7 @@ public object TestReportSearchParams {
       extractor = { resource -> resource.participant.map { it.uri } },
     )
 
-  public val result: SearchParam<TestReport, Any> =
+  public val result: SearchParam<TestReport, Enumeration<TestReportResult>> =
     SearchParam(
       name = "result",
       type = SearchParamType.Token,
@@ -67,7 +69,7 @@ public object TestReportSearchParams {
       extractor = { resource -> listOf(resource.result) },
     )
 
-  public val status: SearchParam<TestReport, Any> =
+  public val status: SearchParam<TestReport, Enumeration<TestReportStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

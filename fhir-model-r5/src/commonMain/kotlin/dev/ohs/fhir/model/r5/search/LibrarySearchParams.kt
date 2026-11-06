@@ -48,6 +48,7 @@ import dev.ohs.fhir.model.r5.Claim
 import dev.ohs.fhir.model.r5.ClaimResponse
 import dev.ohs.fhir.model.r5.ClinicalImpression
 import dev.ohs.fhir.model.r5.ClinicalUseDefinition
+import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.CodeSystem
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
@@ -79,6 +80,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.EnrollmentResponse
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.EventDefinition
 import dev.ohs.fhir.model.r5.Evidence
@@ -189,6 +191,7 @@ import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -369,7 +372,7 @@ public object LibrarySearchParams {
       },
     )
 
-  public val contentType: SearchParam<Library, Any> =
+  public val contentType: SearchParam<Library, Code> =
     SearchParam(
       name = "content-type",
       type = SearchParamType.Token,
@@ -1007,7 +1010,7 @@ public object LibrarySearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val status: SearchParam<Library, Any> =
+  public val status: SearchParam<Library, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

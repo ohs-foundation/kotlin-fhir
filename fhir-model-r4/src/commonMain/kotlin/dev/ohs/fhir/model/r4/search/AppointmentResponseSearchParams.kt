@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.Appointment
 import dev.ohs.fhir.model.r4.AppointmentResponse
 import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.HealthcareService
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Location
@@ -32,8 +33,8 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.terminologies.ParticipationStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -85,7 +86,7 @@ public object AppointmentResponseSearchParams {
       },
     )
 
-  public val partStatus: SearchParam<AppointmentResponse, Any> =
+  public val partStatus: SearchParam<AppointmentResponse, Enumeration<ParticipationStatus>> =
     SearchParam(
       name = "part-status",
       type = SearchParamType.Token,

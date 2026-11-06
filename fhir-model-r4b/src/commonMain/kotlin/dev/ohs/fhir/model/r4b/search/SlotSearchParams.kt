@@ -22,13 +22,14 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Instant
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Schedule
 import dev.ohs.fhir.model.r4b.Slot
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SlotStatus
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -91,7 +92,7 @@ public object SlotSearchParams {
       extractor = { resource -> listOf(resource.start) },
     )
 
-  public val status: SearchParam<Slot, Any> =
+  public val status: SearchParam<Slot, Enumeration<SlotStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

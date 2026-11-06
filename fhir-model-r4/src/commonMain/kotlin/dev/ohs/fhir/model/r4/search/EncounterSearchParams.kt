@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.Condition
 import dev.ohs.fhir.model.r4.Duration
 import dev.ohs.fhir.model.r4.Encounter
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
@@ -43,8 +44,8 @@ import dev.ohs.fhir.model.r4.Procedure
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
 import dev.ohs.fhir.model.r4.ServiceRequest
+import dev.ohs.fhir.model.r4.terminologies.EncounterStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -234,7 +235,7 @@ public object EncounterSearchParams {
       extractor = { resource -> resource.hospitalization?.specialArrangement ?: emptyList() },
     )
 
-  public val status: SearchParam<Encounter, Any> =
+  public val status: SearchParam<Encounter, Enumeration<EncounterStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

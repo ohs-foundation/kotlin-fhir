@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.CarePlan
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DocumentReference
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Id
 import dev.ohs.fhir.model.r5.Identifier
@@ -45,8 +46,8 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.Task
+import dev.ohs.fhir.model.r5.terminologies.ImagingSelectionStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -85,7 +86,7 @@ public object ImagingSelectionSearchParams {
       extractor = { resource -> listOfNotNull(resource.bodySite?.reference) },
     )
 
-  public val code: SearchParam<ImagingSelection, Any> =
+  public val code: SearchParam<ImagingSelection, Enumeration<ImagingSelectionStatus>> =
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
@@ -129,7 +130,7 @@ public object ImagingSelectionSearchParams {
       },
     )
 
-  public val status: SearchParam<ImagingSelection, Any> =
+  public val status: SearchParam<ImagingSelection, Enumeration<ImagingSelectionStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

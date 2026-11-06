@@ -24,16 +24,17 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.DeviceMetric
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.terminologies.DeviceMetricCategory
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DeviceMetric] resource type. */
 public object DeviceMetricSearchParams {
-  public val category: SearchParam<DeviceMetric, Any> =
+  public val category: SearchParam<DeviceMetric, Enumeration<DeviceMetricCategory>> =
     SearchParam(
       name = "category",
       type = SearchParamType.Token,

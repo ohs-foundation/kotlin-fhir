@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Condition
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Immunization
 import dev.ohs.fhir.model.r4.Location
@@ -40,14 +41,14 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
 import dev.ohs.fhir.model.r4.ResearchStudy
 import dev.ohs.fhir.model.r4.Substance
+import dev.ohs.fhir.model.r4.terminologies.AdverseEventActuality
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [AdverseEvent] resource type. */
 public object AdverseEventSearchParams {
-  public val actuality: SearchParam<AdverseEvent, Any> =
+  public val actuality: SearchParam<AdverseEvent, Enumeration<AdverseEventActuality>> =
     SearchParam(
       name = "actuality",
       type = SearchParamType.Token,

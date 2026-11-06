@@ -21,6 +21,7 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Patient
@@ -29,7 +30,7 @@ import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.SupplyDelivery
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SupplyDeliveryStatus
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -61,7 +62,7 @@ public object SupplyDeliverySearchParams {
       extractor = { resource -> resource.`receiver` },
     )
 
-  public val status: SearchParam<SupplyDelivery, Any> =
+  public val status: SearchParam<SupplyDelivery, Enumeration<SupplyDeliveryStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4.Coverage
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.Encounter
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.ExplanationOfBenefit
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Location
@@ -36,8 +37,8 @@ import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
 import dev.ohs.fhir.model.r4.String
+import dev.ohs.fhir.model.r4.terminologies.ExplanationOfBenefitStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -182,7 +183,7 @@ public object ExplanationOfBenefitSearchParams {
       extractor = { resource -> listOf(resource.provider) },
     )
 
-  public val status: SearchParam<ExplanationOfBenefit, Any> =
+  public val status: SearchParam<ExplanationOfBenefit, Enumeration<ExplanationOfBenefitStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

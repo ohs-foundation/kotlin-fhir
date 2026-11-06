@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.Encounter
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Medication
@@ -36,8 +37,10 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.terminologies.MedicationRequestIntent
+import dev.ohs.fhir.model.r4.terminologies.MedicationrequestStatus
+import dev.ohs.fhir.model.r4.terminologies.RequestPriority
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -131,7 +134,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.performerType) },
     )
 
-  public val intent: SearchParam<MedicationRequest, Any> =
+  public val intent: SearchParam<MedicationRequest, Enumeration<MedicationRequestIntent>> =
     SearchParam(
       name = "intent",
       type = SearchParamType.Token,
@@ -161,7 +164,7 @@ public object MedicationRequestSearchParams {
       },
     )
 
-  public val priority: SearchParam<MedicationRequest, Any> =
+  public val priority: SearchParam<MedicationRequest, Enumeration<RequestPriority>> =
     SearchParam(
       name = "priority",
       type = SearchParamType.Token,
@@ -186,7 +189,7 @@ public object MedicationRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.requester) },
     )
 
-  public val status: SearchParam<MedicationRequest, Any> =
+  public val status: SearchParam<MedicationRequest, Enumeration<MedicationrequestStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

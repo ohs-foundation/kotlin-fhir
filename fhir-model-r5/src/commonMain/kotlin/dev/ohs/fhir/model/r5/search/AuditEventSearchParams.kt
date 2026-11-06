@@ -77,6 +77,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.EnrollmentResponse
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.EventDefinition
 import dev.ohs.fhir.model.r5.Evidence
@@ -184,14 +185,14 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.AuditEventAction
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [AuditEvent] resource type. */
 public object AuditEventSearchParams {
-  public val action: SearchParam<AuditEvent, Any> =
+  public val action: SearchParam<AuditEvent, Enumeration<AuditEventAction>> =
     SearchParam(
       name = "action",
       type = SearchParamType.Token,

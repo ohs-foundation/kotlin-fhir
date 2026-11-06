@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.Canonical
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.MessageDefinition
@@ -33,6 +34,9 @@ import dev.ohs.fhir.model.r4b.PlanDefinition
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.terminologies.MessageSignificanceCategory
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -40,7 +44,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [MessageDefinition] resource type. */
 public object MessageDefinitionSearchParams {
-  public val category: SearchParam<MessageDefinition, Any> =
+  public val category: SearchParam<MessageDefinition, Enumeration<MessageSignificanceCategory>> =
     SearchParam(
       name = "category",
       type = SearchParamType.Token,
@@ -127,7 +131,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOf(resource.event) },
     )
 
-  public val focus: SearchParam<MessageDefinition, Any> =
+  public val focus: SearchParam<MessageDefinition, Enumeration<ResourceType>> =
     SearchParam(
       name = "focus",
       type = SearchParamType.Token,
@@ -176,7 +180,7 @@ public object MessageDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val status: SearchParam<MessageDefinition, Any> =
+  public val status: SearchParam<MessageDefinition, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

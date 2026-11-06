@@ -22,15 +22,21 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.Canonical
+import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeSystem
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.ExtensibleEnumeration
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.CodeSystemContentMode
+import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -38,7 +44,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [CodeSystem] resource type. */
 public object CodeSystemSearchParams {
-  public val code: SearchParam<CodeSystem, Any> =
+  public val code: SearchParam<CodeSystem, Code> =
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
@@ -46,7 +52,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> resource.concept.map { it.code } },
     )
 
-  public val contentMode: SearchParam<CodeSystem, Any> =
+  public val contentMode: SearchParam<CodeSystem, Enumeration<CodeSystemContentMode>> =
     SearchParam(
       name = "content-mode",
       type = SearchParamType.Token,
@@ -141,7 +147,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val language: SearchParam<CodeSystem, Any> =
+  public val language: SearchParam<CodeSystem, ExtensibleEnumeration<CommonLanguages>> =
     SearchParam(
       name = "language",
       type = SearchParamType.Token,
@@ -167,7 +173,7 @@ public object CodeSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val status: SearchParam<CodeSystem, Any> =
+  public val status: SearchParam<CodeSystem, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

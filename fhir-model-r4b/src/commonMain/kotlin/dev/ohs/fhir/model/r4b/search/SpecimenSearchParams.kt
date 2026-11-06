@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Device
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
@@ -33,7 +34,7 @@ import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Specimen
 import dev.ohs.fhir.model.r4b.Substance
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SpecimenStatus
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -116,7 +117,7 @@ public object SpecimenSearchParams {
       },
     )
 
-  public val status: SearchParam<Specimen, Any> =
+  public val status: SearchParam<Specimen, Enumeration<SpecimenStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

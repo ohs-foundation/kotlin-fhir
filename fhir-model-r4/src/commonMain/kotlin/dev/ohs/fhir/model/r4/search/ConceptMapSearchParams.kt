@@ -22,16 +22,19 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.Canonical
+import dev.ohs.fhir.model.r4.Code
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.ConceptMap
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.ValueSet
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -189,7 +192,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val sourceCode: SearchParam<ConceptMap, Any> =
+  public val sourceCode: SearchParam<ConceptMap, Code> =
     SearchParam(
       name = "source-code",
       type = SearchParamType.Token,
@@ -214,7 +217,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull((resource.source as? ConceptMap.Source.Uri)?.value) },
     )
 
-  public val status: SearchParam<ConceptMap, Any> =
+  public val status: SearchParam<ConceptMap, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,
@@ -233,7 +236,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val targetCode: SearchParam<ConceptMap, Any> =
+  public val targetCode: SearchParam<ConceptMap, Code> =
     SearchParam(
       name = "target-code",
       type = SearchParamType.Token,

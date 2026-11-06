@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.Account
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
@@ -35,8 +36,8 @@ import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.String
+import dev.ohs.fhir.model.r5.terminologies.AccountStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -104,7 +105,7 @@ public object AccountSearchParams {
       extractor = { resource -> resource.relatedAccount.map { it.account } },
     )
 
-  public val status: SearchParam<Account, Any> =
+  public val status: SearchParam<Account, Enumeration<AccountStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

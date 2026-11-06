@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.ContactPoint
 import dev.ohs.fhir.model.r5.Date
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
@@ -34,6 +35,8 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.String
+import dev.ohs.fhir.model.r5.terminologies.AddressUse
+import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -82,7 +85,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
 
-  public val addressUse: SearchParam<Person, Any> =
+  public val addressUse: SearchParam<Person, Enumeration<AddressUse>> =
     SearchParam(
       name = "address-use",
       type = SearchParamType.Token,
@@ -138,7 +141,7 @@ public object PersonSearchParams {
       extractor = { resource -> resource.name.mapNotNull { it.family } },
     )
 
-  public val gender: SearchParam<Person, Any> =
+  public val gender: SearchParam<Person, Enumeration<AdministrativeGender>> =
     SearchParam(
       name = "gender",
       type = SearchParamType.Token,

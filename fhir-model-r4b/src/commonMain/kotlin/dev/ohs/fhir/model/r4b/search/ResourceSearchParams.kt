@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
+import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -70,7 +71,7 @@ public object ResourceSearchParams {
       },
     )
 
-  public val _id: SearchParam<Resource, Any> =
+  public val _id: SearchParam<Resource, String> =
     SearchParam(
       name = "_id",
       type = SearchParamType.Token,

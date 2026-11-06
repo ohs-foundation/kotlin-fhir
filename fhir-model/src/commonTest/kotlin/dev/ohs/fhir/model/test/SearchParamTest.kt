@@ -314,7 +314,7 @@ class SearchParamTest :
       extractDeathDate = { R5PatientSearchParams.deathDate.extractFrom(it) },
     )
 
-    context("R5 Search Parameters") {
+    context("R5 Partially Extracted Union Search Parameters") {
       // serial-number is `Device.serialNumber | Device.identifier.where(type='SNO')`. The second
       // branch is not supported and is skipped, so only the serialNumber value is extracted. See
       // "Partially extracted unions" in docs/search-parameter-patterns.md.

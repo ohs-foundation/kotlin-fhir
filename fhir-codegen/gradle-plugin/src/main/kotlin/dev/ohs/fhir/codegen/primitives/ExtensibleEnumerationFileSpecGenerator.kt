@@ -62,7 +62,7 @@ object ExtensibleEnumerationFileSpecGenerator {
         .addTypeVariable(typeVariableCovariant)
         .addProperty(PropertySpec.builder("id", STRING.copy(nullable = true)).build())
         .addProperty(PropertySpec.builder("extension", listExtensionType).build())
-        .addProperty(PropertySpec.builder("code", STRING).build())
+        .addProperty(PropertySpec.builder("code", STRING.copy(nullable = true)).build())
         .addFunction(
           FunSpec.builder("toElement")
             .returns(elementClassName.copy(nullable = true))
@@ -128,7 +128,11 @@ object ExtensibleEnumerationFileSpecGenerator {
             )
             .primaryConstructor(
               FunSpec.constructorBuilder()
-                .addParameter("code", String::class)
+                .addParameter(
+                  ParameterSpec.builder("code", STRING.copy(nullable = true))
+                    .defaultValue("null")
+                    .build()
+                )
                 .addParameter(
                   ParameterSpec.builder("id", STRING.copy(nullable = true))
                     .defaultValue("null")
@@ -142,7 +146,7 @@ object ExtensibleEnumerationFileSpecGenerator {
                 .build()
             )
             .addProperty(
-              PropertySpec.builder("code", String::class)
+              PropertySpec.builder("code", STRING.copy(nullable = true))
                 .initializer("code")
                 .addModifiers(KModifier.OVERRIDE)
                 .build()
@@ -163,7 +167,7 @@ object ExtensibleEnumerationFileSpecGenerator {
               FunSpec.builder("toString")
                 .addModifiers(KModifier.OVERRIDE)
                 .returns(String::class)
-                .addStatement("return code")
+                .addStatement("return code.orEmpty()")
                 .build()
             )
             .build()
@@ -216,7 +220,7 @@ object ExtensibleEnumerationFileSpecGenerator {
                     parsed != null -> Predefined(parsed, element?.id, element?.extension ?: listOf())
                     code != null -> Custom(code, element?.id, element?.extension ?: listOf())
                     element?.id != null || element?.extension?.isNotEmpty() == true ->
-                      Custom("", element.id, element.extension)
+                      Custom(null, element.id, element.extension)
                     else -> null
                   }
                   """

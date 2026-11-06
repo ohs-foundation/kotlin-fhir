@@ -51,7 +51,8 @@ class ExtensibleEnumerationTest :
         val enumeration =
           R4ExtensibleEnumeration.of<R4ExpressionLanguage>(null, R4Element(id = "ext-id"))
         assertIs<R4ExtensibleEnumeration.Custom>(enumeration)
-        assertEquals("", enumeration.code)
+        assertNull(enumeration.code)
+        assertEquals("", enumeration.toString())
         assertEquals("ext-id", enumeration.id)
       }
 
@@ -79,7 +80,8 @@ class ExtensibleEnumerationTest :
         val enumeration =
           R4bExtensibleEnumeration.of<R4bExpressionLanguage>(null, R4bElement(id = "ext-id"))
         assertIs<R4bExtensibleEnumeration.Custom>(enumeration)
-        assertEquals("", enumeration.code)
+        assertNull(enumeration.code)
+        assertEquals("", enumeration.toString())
         assertEquals("ext-id", enumeration.id)
       }
 
@@ -107,7 +109,8 @@ class ExtensibleEnumerationTest :
         val enumeration =
           R5ExtensibleEnumeration.of<R5ExpressionLanguage>(null, R5Element(id = "ext-id"))
         assertIs<R5ExtensibleEnumeration.Custom>(enumeration)
-        assertEquals("", enumeration.code)
+        assertNull(enumeration.code)
+        assertEquals("", enumeration.toString())
         assertEquals("ext-id", enumeration.id)
       }
 

@@ -101,7 +101,7 @@ tasks.register("verifyCodegen") {
                     appendLine("Changed files:")
                     appendLine(diffOutput)
                     appendLine()
-                    appendLine("Run `./gradlew :fhir-model-r4:codegen :fhir-model-r4b:codegen :fhir-model-r5:codegen` locally and commit the result.")
+                    appendLine("Run `./gradlew codegen` locally and commit the result.")
                 }
             )
         }
@@ -122,7 +122,7 @@ tasks.register("verifyCodegen") {
                     appendLine("Untracked files:")
                     appendLine(untrackedFiles)
                     appendLine()
-                    appendLine("Run `./gradlew :fhir-model-r4:codegen :fhir-model-r4b:codegen :fhir-model-r5:codegen` locally and commit the result.")
+                    appendLine("Run `./gradlew codegen` locally and commit the result.")
                 }
             )
         }

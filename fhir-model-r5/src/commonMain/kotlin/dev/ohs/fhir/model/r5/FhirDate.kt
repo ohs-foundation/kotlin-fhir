@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r5
 import kotlin.Int
 import kotlin.String
 import kotlin.Suppress
+import kotlin.text.Regex
 import kotlinx.datetime.LocalDate
 
 public sealed interface FhirDate {
@@ -42,17 +43,23 @@ public sealed interface FhirDate {
   }
 
   public companion object {
+    private val YEAR_REGEX: Regex = Regex("\\d{4}")
+
+    private val YEAR_MONTH_REGEX: Regex = Regex("\\d{4}-\\d{2}")
+
+    private val DATE_REGEX: Regex = Regex("\\d{4}-\\d{2}-\\d{2}")
+
     /**
      * Parses a FHIR date string (`YYYY`, `YYYY-MM`, or `YYYY-MM-DD`).
      *
      * @throws IllegalStateException if [string] is not a valid FHIR date.
      */
     public fun fromString(string: String): FhirDate {
-      if (string.matches(Regex("\\d{4}"))) {
+      if (string.matches(YEAR_REGEX)) {
         return Year(string.toInt())
-      } else if (string.matches(Regex("\\d{4}-\\d{2}"))) {
+      } else if (string.matches(YEAR_MONTH_REGEX)) {
         return YearMonth(kotlinx.datetime.YearMonth.parse(string))
-      } else if (string.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+      } else if (string.matches(DATE_REGEX)) {
         return Date(LocalDate.parse(string))
       }
       error("Invalid string value: $string")

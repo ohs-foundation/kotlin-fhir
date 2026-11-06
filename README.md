@@ -41,12 +41,12 @@ The library supports the following
 [target platforms](https://kotlinlang.org/docs/multiplatform-dsl-reference.html#targets):
 
 | Target platform                    | Gradle target | Artifact suffix | Support |
-|:-----------------------------------|:--------------|:----------------|:--------|
-| Kotlin/JVM                         | `jvm`         | `-jvm`          | ✅       |
-| Kotlin/Wasm (JS)                   | `wasmJs`      | `-wasm-js`      | ✅       |
-| Kotlin/Wasm (WASI)                 | `wasmWasi`    | `-wasm-wasi`    | ✅       |
-| Kotlin/JS                          | `js`          | `-js`           | ✅       |
-| Android applications and libraries | `android`     | `-android`      | ✅       |
+|:-----------------------------------|:--------------|:----------------|:-------:|
+| Kotlin/JVM                         | `jvm`         | `-jvm`          |   ✅    |
+| Kotlin/Wasm (JS)                   | `wasmJs`      | `-wasm-js`      |   ✅    |
+| Kotlin/Wasm (WASI)                 | `wasmWasi`    | `-wasm-wasi`    |   ✅    |
+| Kotlin/JS                          | `js`          | `-js`           |   ✅    |
+| Android applications and libraries | `android`     | `-android`      |   ✅    |
 
 The library also supports the following
 [Kotlin/Native targets](https://kotlinlang.org/docs/native-target-support.html):
@@ -156,7 +156,7 @@ How an element is typed depends on its
   enforces that the code belongs to the bound value set. (See [exceptions](docs/enum-generation.md#required-bindings-generated-as-extensible).)
 - **`extensible` and `preferred` bindings**: instances may carry codes outside the value set, so
   the element is typed as `ExtensibleEnumeration<T>` (e.g. `Expression.language`), a sealed interface
-  representing either a `Predefined(value: T)` enum constant or a `Custom(code: String)` outside the
+  representing either a `Predefined(value: T)` enum constant or a `Custom(code: String?)` outside the
   value set.
 - **`example` bindings** (and bindings without expansions): instances are free to use any code, so
   the element is typed as the open `Code` primitive.
@@ -178,14 +178,14 @@ the library maps each StructureDefinition JSON file to a dedicated Kotlin `.kt` 
 containing a Kotlin data class representing the StructureDefinition. BackboneElements in FHIR are
 represented as nested data classes since they are never reused outside the StructureDefinition. For
 each occurrence of a choice type (e.g. in [R4](https://hl7.org/fhir/R4/formats.html#choice)), a
-single sealed interface is generated with a subclass for each type.
+single sealed interface implementing `FhirChoice` is generated with a subclass for each type.
 
-| FHIR concept <img src="images/fhir.png" alt="fhir" style="height: 1em"/> |                  Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/>                   |
-|--------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| StructureDefinition JSON file (e.g. `StructureDefinition-Patient.json`)  | Kotlin .kt file (e.g. `Patient.kt`)                                                                               |
-| StructureDefinition (e.g. `Patient`)                                     | Kotlin data class (e.g. `data class Patient`)                                                                     |
-| BackboneElement (e.g. `Patient.contact`)                                 | Nested Kotlin data class (e.g. `data class Contact` nested under `Patient`)                                       |
-| Choice of data types (e.g. `Patient.deceased[x]`)                        | Sealed interface (e.g. `sealed interface Deceased` nested under `Patient` with subtypes `Boolean` and `DateTime`) |
+| FHIR concept <img src="images/fhir.png" alt="fhir" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/>                                                                           |
+|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| StructureDefinition JSON file (e.g. `StructureDefinition-Patient.json`)  | Kotlin .kt file (e.g. `Patient.kt`)                                                                                                                      |
+| StructureDefinition (e.g. `Patient`)                                     | Kotlin data class (e.g. `data class Patient`)                                                                                                            |
+| BackboneElement (e.g. `Patient.contact`)                                 | Nested Kotlin data class (e.g. `data class Contact` nested under `Patient`)                                                                              |
+| Choice of data types (e.g. `Patient.deceased[x]`)                        | Sealed interface implementing `FhirChoice` (e.g. `sealed interface Deceased : FhirChoice` nested under `Patient` with subtypes `Boolean` and `DateTime`) |
 
 The generated FHIR resource classes are Kotlin
 [data classes](https://kotlinlang.org/docs/data-classes.html). They are compact and readable, with
@@ -214,6 +214,10 @@ when (val multipleBirth = patient.multipleBirth) {
     }
 }
 ```
+
+Each choice sealed interface also provides `as<Type>()` convenience methods (e.g.
+`patient.multipleBirth?.asInteger()?.value`) when only a specific choice variant is needed, as well
+as `value: Any` via `FhirChoice` for uniform access to the unwrapped value.
 
 The generated classes reflect the inheritance hierarchy defined by FHIR. For example, `Patient`
 inherits from `DomainResource`, which inherits from `Resource`.
@@ -582,7 +586,8 @@ fun main() {
 > Import the FHIR `String` type with an alias (e.g.
 > `import dev.ohs.fhir.model.r4.String as FhirString`) to avoid clashing with `kotlin.String`.
 
-Alternatively, you can use the nested `Builder` classes to create resources:
+Alternatively, all generated models and backbone elements implement `FhirBuildable` and provide a
+nested `Builder` class (implementing `FhirBuilder`):
 
 ```kotlin
 import dev.ohs.fhir.model.r4.Date
@@ -962,12 +967,12 @@ Android since they require loading HL7 example packages from the local filesyste
 
 | Platform              | Gradle task             | CI runner       | Example-based tests | Unit tests |
 |:----------------------|:------------------------|:----------------|:-------------------:|:----------:|
-| **JVM**               | `jvmTest`               | `ubuntu-latest` |          ✅          |     ✅      |
-| **Android**           | `testAndroidHostTest`   | `ubuntu-latest` |          ✅          |     ✅      |
-| **Wasm JS (Browser)** | `wasmJsBrowserTest`     | `ubuntu-latest` |          —          |     ✅      |
-| **Wasm WASI (Node)**  | `wasmWasiNodeTest`      | `ubuntu-latest` |          —          |     ✅      |
-| **JS (Browser)**      | `jsBrowserTest`         | `ubuntu-latest` |          —          |     ✅      |
-| **iOS (Simulator)**   | `iosSimulatorArm64Test` | `macos-latest`  |          —          |     ✅      |
+| **JVM**               | `jvmTest`               | `ubuntu-latest` |         ✅          |     ✅     |
+| **Android**           | `testAndroidHostTest`   | `ubuntu-latest` |         ✅          |     ✅     |
+| **Wasm JS (Browser)** | `wasmJsBrowserTest`     | `ubuntu-latest` |          —          |     ✅     |
+| **Wasm WASI (Node)**  | `wasmWasiNodeTest`      | `ubuntu-latest` |          —          |     ✅     |
+| **JS (Browser)**      | `jsBrowserTest`         | `ubuntu-latest` |          —          |     ✅     |
+| **iOS (Simulator)**   | `iosSimulatorArm64Test` | `macos-latest`  |          —          |     ✅     |
 
 > [!NOTE]
 > Android tests run as host (JVM) unit tests via the Android Kotlin Multiplatform library plugin's

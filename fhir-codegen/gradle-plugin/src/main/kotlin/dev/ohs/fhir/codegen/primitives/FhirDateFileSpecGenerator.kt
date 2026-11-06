@@ -109,6 +109,21 @@ object FhirDateFileSpecGenerator {
             )
             addType(
               TypeSpec.companionObjectBuilder()
+                .addProperty(
+                  PropertySpec.builder("YEAR_REGEX", Regex::class, KModifier.PRIVATE)
+                    .initializer("Regex(%S)", "\\d{4}")
+                    .build()
+                )
+                .addProperty(
+                  PropertySpec.builder("YEAR_MONTH_REGEX", Regex::class, KModifier.PRIVATE)
+                    .initializer("Regex(%S)", "\\d{4}-\\d{2}")
+                    .build()
+                )
+                .addProperty(
+                  PropertySpec.builder("DATE_REGEX", Regex::class, KModifier.PRIVATE)
+                    .initializer("Regex(%S)", "\\d{4}-\\d{2}-\\d{2}")
+                    .build()
+                )
                 .addFunction(
                   FunSpec.builder("fromString")
                     .addKdoc(
@@ -119,11 +134,11 @@ object FhirDateFileSpecGenerator {
                     .returns(sealedInterfaceClassName)
                     .addCode(
                       """
-                      if (string.matches(Regex("\\d{4}"))) {
+                      if (string.matches(YEAR_REGEX)) {
                           return Year(string.toInt())
-                      } else if (string.matches(Regex("\\d{4}-\\d{2}"))) {
+                      } else if (string.matches(YEAR_MONTH_REGEX)) {
                           return YearMonth(kotlinx.datetime.YearMonth.parse(string))
-                      } else if (string.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+                      } else if (string.matches(DATE_REGEX)) {
                           return Date(LocalDate.parse(string))
                       }
                       error("Invalid string value: ${'$'}string")

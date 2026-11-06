@@ -34,7 +34,7 @@ public sealed interface ExtensibleEnumeration<out T : FhirEnum> {
 
   public val extension: List<Extension>
 
-  public val code: String
+  public val code: String?
 
   public fun toElement(): Element? {
     if (id != null || extension.isNotEmpty()) {
@@ -55,11 +55,11 @@ public sealed interface ExtensibleEnumeration<out T : FhirEnum> {
   }
 
   public data class Custom(
-    override val code: String,
+    override val code: String? = null,
     override val id: String? = null,
     override val extension: List<Extension> = listOf(),
   ) : ExtensibleEnumeration<Nothing> {
-    override fun toString(): String = code
+    override fun toString(): String = code.orEmpty()
   }
 
   public companion object {
@@ -76,7 +76,7 @@ public sealed interface ExtensibleEnumeration<out T : FhirEnum> {
         parsed != null -> Predefined(parsed, element?.id, element?.extension ?: listOf())
         code != null -> Custom(code, element?.id, element?.extension ?: listOf())
         element?.id != null || element?.extension?.isNotEmpty() == true ->
-          Custom("", element.id, element.extension)
+          Custom(null, element.id, element.extension)
         else -> null
       }
     }

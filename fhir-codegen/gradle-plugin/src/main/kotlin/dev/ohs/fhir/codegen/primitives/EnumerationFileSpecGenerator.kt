@@ -124,7 +124,6 @@ object EnumerationFileSpecGenerator {
               .addStatement("return null")
               .build()
           )
-          val codeClassName = ClassName(packageName, "Code")
           addType(
             TypeSpec.companionObjectBuilder()
               .addFunction(

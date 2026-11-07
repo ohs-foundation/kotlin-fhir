@@ -62,7 +62,7 @@ object ExtensibleEnumerationFileSpecGenerator {
         .addTypeVariable(typeVariableCovariant)
         .addProperty(PropertySpec.builder("id", STRING.copy(nullable = true)).build())
         .addProperty(PropertySpec.builder("extension", listExtensionType).build())
-        .addProperty(PropertySpec.builder("code", STRING.copy(nullable = true)).build())
+        .addProperty(PropertySpec.builder("code", STRING).build())
         .addFunction(
           FunSpec.builder("toElement")
             .returns(elementClassName.copy(nullable = true))
@@ -128,11 +128,7 @@ object ExtensibleEnumerationFileSpecGenerator {
             )
             .primaryConstructor(
               FunSpec.constructorBuilder()
-                .addParameter(
-                  ParameterSpec.builder("code", STRING.copy(nullable = true))
-                    .defaultValue("null")
-                    .build()
-                )
+                .addParameter("code", String::class)
                 .addParameter(
                   ParameterSpec.builder("id", STRING.copy(nullable = true))
                     .defaultValue("null")
@@ -146,7 +142,7 @@ object ExtensibleEnumerationFileSpecGenerator {
                 .build()
             )
             .addProperty(
-              PropertySpec.builder("code", STRING.copy(nullable = true))
+              PropertySpec.builder("code", String::class)
                 .initializer("code")
                 .addModifiers(KModifier.OVERRIDE)
                 .build()
@@ -167,7 +163,7 @@ object ExtensibleEnumerationFileSpecGenerator {
               FunSpec.builder("toString")
                 .addModifiers(KModifier.OVERRIDE)
                 .returns(String::class)
-                .addStatement("return code.orEmpty()")
+                .addStatement("return code")
                 .build()
             )
             .build()
@@ -215,13 +211,12 @@ object ExtensibleEnumerationFileSpecGenerator {
                 )
                 .addCode(
                   """
-                  val parsed = if (code != null) entries.firstOrNull·{ it.code == code } else null
-                  return when {
-                    parsed != null -> Predefined(parsed, element?.id, element?.extension ?: listOf())
-                    code != null -> Custom(code, element?.id, element?.extension ?: listOf())
-                    element?.id != null || element?.extension?.isNotEmpty() == true ->
-                      Custom(null, element.id, element.extension)
-                    else -> null
+                  if (code == null) return null
+                  val parsed = entries.firstOrNull·{ it.code == code }
+                  return if (parsed != null) {
+                    Predefined(parsed, element?.id, element?.extension ?: listOf())
+                  } else {
+                    Custom(code, element?.id, element?.extension ?: listOf())
                   }
                   """
                     .trimIndent() + "\n"

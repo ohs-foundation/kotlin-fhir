@@ -169,7 +169,7 @@ internal object ExpressionSerializer : FhirSerializer<Expression> {
     compositeEncoder.encodeElementIfNotNull(descriptor, 3, value.description)
     compositeEncoder.encodeStringIfNotNull(descriptor, 4, value.name?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 5, value.name)
-    compositeEncoder.encodeStringIfNotNull(descriptor, 6, value.language.code)
+    compositeEncoder.encodeStringElement(descriptor, 6, value.language.code)
     compositeEncoder.encodeElementIfNotNull(descriptor, 7, value.language)
     compositeEncoder.encodeStringIfNotNull(descriptor, 8, value.expression?.value)
     compositeEncoder.encodeElementIfNotNull(descriptor, 9, value.expression)

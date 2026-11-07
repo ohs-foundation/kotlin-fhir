@@ -156,7 +156,7 @@ How an element is typed depends on its
   enforces that the code belongs to the bound value set. (See [exceptions](docs/enum-generation.md#required-bindings-generated-as-extensible).)
 - **`extensible` and `preferred` bindings**: instances may carry codes outside the value set, so
   the element is typed as `ExtensibleEnumeration<T>` (e.g. `Expression.language`), a sealed interface
-  representing either a `Predefined(value: T)` enum constant or a `Custom(code: String?)` outside the
+  representing either a `Predefined(value: T)` enum constant or a `Custom(code: String)` outside the
   value set.
 - **`example` bindings** (and bindings without expansions): instances are free to use any code, so
   the element is typed as the open `Code` primitive.

@@ -17,13 +17,10 @@
 package dev.ohs.fhir.model.test
 
 import dev.ohs.fhir.model.r4.AllergyIntolerance as R4AllergyIntolerance
-import dev.ohs.fhir.model.r4.Expression as R4Expression
 import dev.ohs.fhir.model.r4.Patient as R4Patient
 import dev.ohs.fhir.model.r4b.AllergyIntolerance as R4bAllergyIntolerance
-import dev.ohs.fhir.model.r4b.Expression as R4bExpression
 import dev.ohs.fhir.model.r4b.Patient as R4bPatient
 import dev.ohs.fhir.model.r5.AllergyIntolerance as R5AllergyIntolerance
-import dev.ohs.fhir.model.r5.Expression as R5Expression
 import dev.ohs.fhir.model.r5.Patient as R5Patient
 import io.kotest.core.spec.style.FunSpec
 import kotlin.test.assertEquals
@@ -34,8 +31,8 @@ import kotlinx.serialization.serializer
 /**
  * FHIR primitives may appear on the wire as a `_field` element only (e.g. a
  * [data-absent-reason](https://hl7.org/fhir/extension-data-absent-reason.html) extension with no
- * value). These tests cover enum-bound (`Enumeration` and `ExtensibleEnumeration`) primitives, both
- * scalar and repeated, which previously dropped the extension (scalar) or crashed (repeated).
+ * value). These tests cover enum-bound (`Enumeration`) primitives, both scalar and repeated, which
+ * previously dropped the extension (scalar) or crashed (repeated).
  */
 class EnumerationSerializationTest :
   FunSpec({
@@ -85,21 +82,6 @@ class EnumerationSerializationTest :
       """
         .trimIndent()
 
-    val expressionWithExtensionOnlyLanguageJson =
-      """
-      {
-        "_language": {
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            }
-          ]
-        }
-      }
-      """
-        .trimIndent()
-
     fun <T : Any> assertRoundTrip(serializer: KSerializer<T>, jsonString: String) =
       assertEquals(
         json.parseToJsonElement(jsonString),
@@ -108,15 +90,10 @@ class EnumerationSerializationTest :
         ),
       )
 
-    fun <
-      TPatient : Any,
-      TAllergyIntolerance : Any,
-      TExpression : Any,
-    > enumerationSerializationTestSuite(
+    fun <TPatient : Any, TAllergyIntolerance : Any> enumerationSerializationTestSuite(
       fhirVersion: String,
       patientSerializer: KSerializer<TPatient>,
       allergySerializer: KSerializer<TAllergyIntolerance>,
-      expressionSerializer: KSerializer<TExpression>,
     ) {
       context("$fhirVersion Enumeration Serialization") {
         test("extension-only enum primitive survives a decode/encode round trip") {
@@ -126,10 +103,6 @@ class EnumerationSerializationTest :
         test("enum list with an extension-only entry survives a decode/encode round trip") {
           assertRoundTrip(allergySerializer, allergyIntoleranceWithExtensionOnlyCategoryJson)
         }
-
-        test("extension-only extensible enum primitive survives a decode/encode round trip") {
-          assertRoundTrip(expressionSerializer, expressionWithExtensionOnlyLanguageJson)
-        }
       }
     }
 
@@ -137,18 +110,15 @@ class EnumerationSerializationTest :
       "R4",
       serializer<R4Patient>(),
       serializer<R4AllergyIntolerance>(),
-      serializer<R4Expression>(),
     )
     enumerationSerializationTestSuite(
       "R4B",
       serializer<R4bPatient>(),
       serializer<R4bAllergyIntolerance>(),
-      serializer<R4bExpression>(),
     )
     enumerationSerializationTestSuite(
       "R5",
       serializer<R5Patient>(),
       serializer<R5AllergyIntolerance>(),
-      serializer<R5Expression>(),
     )
   })

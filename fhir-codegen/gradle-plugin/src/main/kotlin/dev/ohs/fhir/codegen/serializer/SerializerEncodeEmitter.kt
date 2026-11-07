@@ -354,10 +354,13 @@ internal class SerializerEncodeEmitter(private val codegenContext: CodegenContex
           }
         }
         .build()
-    // The wire-encoded value is non-null only when the wrapper itself is required AND its
+    // The wire-encoded value is non-null only when the wrapper itself is required AND either its
     // `.value` field is non-null on the model side (true for primitives whose StructureDefinition
-    // has `<Type>.value` with `min > 0`, atm only `xhtml`).
-    val wireIsNonNull = codegenContext.primitiveValueIsNonNull[typeCode] == true && !isEnum
+    // has `<Type>.value` with `min > 0`, atm only `xhtml`) or it is an `ExtensibleEnumeration`
+    // (whose `.code` property is non-null).
+    val wireIsNonNull =
+      (codegenContext.primitiveValueIsNonNull[typeCode] == true && !isEnum) ||
+        (isEnum && element.isExtensibleBinding)
     emitPrimitiveOrSerializableEncode(
       codeBlock,
       valueIdx,

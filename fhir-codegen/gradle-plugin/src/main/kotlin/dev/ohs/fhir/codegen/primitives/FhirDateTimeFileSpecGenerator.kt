@@ -150,6 +150,29 @@ object FhirDateTimeFileSpecGenerator {
             )
             addType(
               TypeSpec.companionObjectBuilder()
+                .addProperty(
+                  PropertySpec.builder("YEAR_REGEX", Regex::class, KModifier.PRIVATE)
+                    .initializer("Regex(%S)", "\\d{4}")
+                    .build()
+                )
+                .addProperty(
+                  PropertySpec.builder("YEAR_MONTH_REGEX", Regex::class, KModifier.PRIVATE)
+                    .initializer("Regex(%S)", "\\d{4}-\\d{2}")
+                    .build()
+                )
+                .addProperty(
+                  PropertySpec.builder("DATE_REGEX", Regex::class, KModifier.PRIVATE)
+                    .initializer("Regex(%S)", "\\d{4}-\\d{2}-\\d{2}")
+                    .build()
+                )
+                .addProperty(
+                  PropertySpec.builder("DATE_TIME_REGEX", Regex::class, KModifier.PRIVATE)
+                    .initializer(
+                      "Regex(%S)",
+                      "(?<datetime>\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)(?<utcoffset>Z|([+\\-])\\d{2}:\\d{2})",
+                    )
+                    .build()
+                )
                 .addFunction(
                   FunSpec.builder("fromString")
                     .addKdoc(
@@ -161,14 +184,15 @@ object FhirDateTimeFileSpecGenerator {
                     .returns(sealedInterfaceClassName)
                     .addCode(
                       """
-                      if (string.matches(Regex("\\d{4}"))) {
+                      if (string.matches(YEAR_REGEX)) {
                           return Year(string.toInt())
-                      } else if (string.matches(Regex("\\d{4}-\\d{2}"))) {
+                      } else if (string.matches(YEAR_MONTH_REGEX)) {
                           return YearMonth(kotlinx.datetime.YearMonth.parse(string))
-                      } else if (string.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+                      } else if (string.matches(DATE_REGEX)) {
                           return Date(LocalDate.parse(string))
-                      } else if (string.matches(Regex("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?(Z|([+\\-])\\d{2}:\\d{2})"))) {
-                          val groups = Regex("(?<datetime>\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)(?<utcoffset>Z|([+\\-])\\d{2}:\\d{2})").find(string)!!.groups
+                      }
+                      DATE_TIME_REGEX.matchEntire(string)?.let { match ->
+                          val groups = match.groups
                           return DateTime(LocalDateTime.parse(groups["datetime"]!!.value), UtcOffset.parse(groups["utcoffset"]!!.value))
                       }
                       error("Invalid string value: ${'$'}string")

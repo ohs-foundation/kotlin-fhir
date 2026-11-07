@@ -71,13 +71,12 @@ public sealed interface ExtensibleEnumeration<out T : FhirEnum> {
       element: Element?,
       entries: Iterable<T>,
     ): ExtensibleEnumeration<T>? where T : Enum<T>, T : FhirEnum {
-      val parsed = if (code != null) entries.firstOrNull { it.code == code } else null
-      return when {
-        parsed != null -> Predefined(parsed, element?.id, element?.extension ?: listOf())
-        code != null -> Custom(code, element?.id, element?.extension ?: listOf())
-        element?.id != null || element?.extension?.isNotEmpty() == true ->
-          Custom("", element.id, element.extension)
-        else -> null
+      if (code == null) return null
+      val parsed = entries.firstOrNull { it.code == code }
+      return if (parsed != null) {
+        Predefined(parsed, element?.id, element?.extension ?: listOf())
+      } else {
+        Custom(code, element?.id, element?.extension ?: listOf())
       }
     }
 

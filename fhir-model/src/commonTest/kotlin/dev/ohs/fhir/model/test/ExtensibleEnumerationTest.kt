@@ -47,15 +47,8 @@ class ExtensibleEnumerationTest :
         assertEquals("application/x-custom-syntax", enumeration.code)
       }
 
-      test("of(code, element) with extension-only element creates Custom") {
-        val enumeration =
-          R4ExtensibleEnumeration.of<R4ExpressionLanguage>(null, R4Element(id = "ext-id"))
-        assertIs<R4ExtensibleEnumeration.Custom>(enumeration)
-        assertEquals("", enumeration.code)
-        assertEquals("ext-id", enumeration.id)
-      }
-
-      test("of(code, element) with null code and null element returns null") {
+      test("of(code, element) with null code returns null") {
+        assertNull(R4ExtensibleEnumeration.of<R4ExpressionLanguage>(null, R4Element(id = "ext-id")))
         assertNull(R4ExtensibleEnumeration.of<R4ExpressionLanguage>(null, null))
       }
     }
@@ -75,15 +68,10 @@ class ExtensibleEnumerationTest :
         assertEquals("application/x-custom-syntax", enumeration.code)
       }
 
-      test("of(code, element) with extension-only element creates Custom") {
-        val enumeration =
+      test("of(code, element) with null code returns null") {
+        assertNull(
           R4bExtensibleEnumeration.of<R4bExpressionLanguage>(null, R4bElement(id = "ext-id"))
-        assertIs<R4bExtensibleEnumeration.Custom>(enumeration)
-        assertEquals("", enumeration.code)
-        assertEquals("ext-id", enumeration.id)
-      }
-
-      test("of(code, element) with null code and null element returns null") {
+        )
         assertNull(R4bExtensibleEnumeration.of<R4bExpressionLanguage>(null, null))
       }
     }
@@ -103,15 +91,8 @@ class ExtensibleEnumerationTest :
         assertEquals("application/x-custom-syntax", enumeration.code)
       }
 
-      test("of(code, element) with extension-only element creates Custom") {
-        val enumeration =
-          R5ExtensibleEnumeration.of<R5ExpressionLanguage>(null, R5Element(id = "ext-id"))
-        assertIs<R5ExtensibleEnumeration.Custom>(enumeration)
-        assertEquals("", enumeration.code)
-        assertEquals("ext-id", enumeration.id)
-      }
-
-      test("of(code, element) with null code and null element returns null") {
+      test("of(code, element) with null code returns null") {
+        assertNull(R5ExtensibleEnumeration.of<R5ExpressionLanguage>(null, R5Element(id = "ext-id")))
         assertNull(R5ExtensibleEnumeration.of<R5ExpressionLanguage>(null, null))
       }
     }

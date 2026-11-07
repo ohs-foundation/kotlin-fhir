@@ -492,10 +492,10 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Use only the FHIR version(s) you need:
-            implementation("dev.ohs.fhir:fhir-model-r4:1.0.0-rc04")
+            implementation("dev.ohs.fhir:fhir-model-r4:1.0.0")
 
             // Or include all versions at once:
-            // implementation("dev.ohs.fhir:fhir-model:1.0.0-rc04")
+            // implementation("dev.ohs.fhir:fhir-model:1.0.0")
         }
     }
 }
@@ -509,7 +509,7 @@ For Android projects, add the dependency to the `dependency` block in the Androi
 ```kotlin
 // e.g., app/build.gradle.kts
 dependencies {
-    implementation("dev.ohs.fhir:fhir-model-r4:1.0.0-rc04")
+    implementation("dev.ohs.fhir:fhir-model-r4:1.0.0")
 }
 ```
 
@@ -524,7 +524,7 @@ the build system you use:
 // e.g., build.gradle.kts
 dependencies {
     // Gradle's variant-aware resolution automatically fetches the JVM target variant
-    implementation("dev.ohs.fhir:fhir-model-r4:1.0.0-rc04")
+    implementation("dev.ohs.fhir:fhir-model-r4:1.0.0")
 }
 ```
 
@@ -535,7 +535,7 @@ dependencies {
 <dependency>
     <groupId>dev.ohs.fhir</groupId>
     <artifactId>fhir-model-r4-jvm</artifactId>
-    <version>1.0.0-rc04</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 

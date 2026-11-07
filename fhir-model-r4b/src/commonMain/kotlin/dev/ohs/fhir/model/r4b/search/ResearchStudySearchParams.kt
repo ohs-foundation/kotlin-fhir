@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Organization
@@ -32,8 +33,8 @@ import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.ResearchStudy
 import dev.ohs.fhir.model.r4b.String
+import dev.ohs.fhir.model.r4b.terminologies.ResearchStudyStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -132,7 +133,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> listOfNotNull(resource.sponsor) },
     )
 
-  public val status: SearchParam<ResearchStudy, Any> =
+  public val status: SearchParam<ResearchStudy, Enumeration<ResearchStudyStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

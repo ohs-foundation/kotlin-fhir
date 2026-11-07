@@ -31,6 +31,7 @@ import dev.ohs.fhir.codegen.schema.isBackboneElement
  * @property isBackboneElement True if the element is a BackboneElement.
  * @property choiceTypeCodes For a choice-type leaf, the type codes of each expansion; null
  *   otherwise.
+ * @property element The underlying [Element] definition from the StructureDefinition snapshot.
  */
 internal data class ResolvedSegment(
   val propertyName: String,
@@ -40,6 +41,7 @@ internal data class ResolvedSegment(
   val isChoiceType: Boolean,
   val isBackboneElement: Boolean,
   val choiceTypeCodes: List<String>? = null,
+  val element: Element? = null,
 )
 
 /**
@@ -114,6 +116,7 @@ internal class FhirPathExpressionResolver(private val elementsByType: Map<String
             isChoiceType = true,
             isBackboneElement = false,
             choiceTypeCodes = element.type?.map { it.code },
+            element = element,
           )
         )
         return ResolvedExpression(segments, resourceName)
@@ -127,6 +130,7 @@ internal class FhirPathExpressionResolver(private val elementsByType: Map<String
           leafTypeCode = typeCode,
           isChoiceType = false,
           isBackboneElement = isBackbone,
+          element = element,
         )
       )
 

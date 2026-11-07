@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.Account
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.HealthcareService
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Location
@@ -34,8 +35,8 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.String
+import dev.ohs.fhir.model.r4.terminologies.AccountStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -85,7 +86,7 @@ public object AccountSearchParams {
       extractor = { resource -> listOfNotNull(resource.servicePeriod) },
     )
 
-  public val status: SearchParam<Account, Any> =
+  public val status: SearchParam<Account, Enumeration<AccountStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

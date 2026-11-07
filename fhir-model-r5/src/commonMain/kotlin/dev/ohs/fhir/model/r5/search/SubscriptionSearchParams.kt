@@ -23,8 +23,10 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CareTeam
+import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.ContactPoint
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
@@ -37,7 +39,8 @@ import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Subscription
 import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.SubscriptionPayloadContent
+import dev.ohs.fhir.model.r5.terminologies.SubscriptionStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -51,7 +54,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> resource.contact },
     )
 
-  public val contentLevel: SearchParam<Subscription, Any> =
+  public val contentLevel: SearchParam<Subscription, Enumeration<SubscriptionPayloadContent>> =
     SearchParam(
       name = "content-level",
       type = SearchParamType.Token,
@@ -101,7 +104,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOfNotNull(resource.managingEntity) },
     )
 
-  public val payload: SearchParam<Subscription, Any> =
+  public val payload: SearchParam<Subscription, Code> =
     SearchParam(
       name = "payload",
       type = SearchParamType.Token,
@@ -109,7 +112,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOfNotNull(resource.contentType) },
     )
 
-  public val status: SearchParam<Subscription, Any> =
+  public val status: SearchParam<Subscription, Enumeration<SubscriptionStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

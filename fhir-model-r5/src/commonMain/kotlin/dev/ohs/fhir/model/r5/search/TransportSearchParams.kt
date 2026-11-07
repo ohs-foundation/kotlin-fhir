@@ -21,10 +21,11 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Transport
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.TransportStatus
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -38,7 +39,7 @@ public object TransportSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val status: SearchParam<Transport, Any> =
+  public val status: SearchParam<Transport, Enumeration<TransportStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

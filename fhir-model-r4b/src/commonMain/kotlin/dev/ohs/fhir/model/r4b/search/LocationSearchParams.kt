@@ -25,13 +25,15 @@ import dev.ohs.fhir.model.r4b.Address
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.Endpoint
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.String
+import dev.ohs.fhir.model.r4b.terminologies.AddressUse
+import dev.ohs.fhir.model.r4b.terminologies.LocationStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -77,7 +79,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.address?.state) },
     )
 
-  public val addressUse: SearchParam<Location, Any> =
+  public val addressUse: SearchParam<Location, Enumeration<AddressUse>> =
     SearchParam(
       name = "address-use",
       type = SearchParamType.Token,
@@ -150,7 +152,7 @@ public object LocationSearchParams {
       extractor = { resource -> listOfNotNull(resource.partOf) },
     )
 
-  public val status: SearchParam<Location, Any> =
+  public val status: SearchParam<Location, Enumeration<LocationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

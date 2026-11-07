@@ -24,14 +24,18 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.AllergyIntolerance
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceCategory
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceCriticality
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceSeverity
+import dev.ohs.fhir.model.r4b.terminologies.AllergyIntoleranceType
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -47,7 +51,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> listOfNotNull(resource.asserter) },
     )
 
-  public val category: SearchParam<AllergyIntolerance, Any> =
+  public val category: SearchParam<AllergyIntolerance, Enumeration<AllergyIntoleranceCategory>> =
     SearchParam(
       name = "category",
       type = SearchParamType.Token,
@@ -77,7 +81,8 @@ public object AllergyIntoleranceSearchParams {
       },
     )
 
-  public val criticality: SearchParam<AllergyIntolerance, Any> =
+  public val criticality:
+    SearchParam<AllergyIntolerance, Enumeration<AllergyIntoleranceCriticality>> =
     SearchParam(
       name = "criticality",
       type = SearchParamType.Token,
@@ -152,7 +157,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.reaction.mapNotNull { it.exposureRoute } },
     )
 
-  public val severity: SearchParam<AllergyIntolerance, Any> =
+  public val severity: SearchParam<AllergyIntolerance, Enumeration<AllergyIntoleranceSeverity>> =
     SearchParam(
       name = "severity",
       type = SearchParamType.Token,
@@ -160,7 +165,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.reaction.mapNotNull { it.severity } },
     )
 
-  public val type: SearchParam<AllergyIntolerance, Any> =
+  public val type: SearchParam<AllergyIntolerance, Enumeration<AllergyIntoleranceType>> =
     SearchParam(
       name = "type",
       type = SearchParamType.Token,

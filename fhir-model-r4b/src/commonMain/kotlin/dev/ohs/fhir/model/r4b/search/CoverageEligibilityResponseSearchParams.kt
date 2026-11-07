@@ -24,6 +24,7 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r4b.CoverageEligibilityResponse
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Patient
@@ -31,8 +32,9 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.String
+import dev.ohs.fhir.model.r4b.terminologies.FinancialResourceStatusCodes
+import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -71,7 +73,7 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOf(resource.insurer) },
     )
 
-  public val outcome: SearchParam<CoverageEligibilityResponse, Any> =
+  public val outcome: SearchParam<CoverageEligibilityResponse, Enumeration<RemittanceOutcome>> =
     SearchParam(
       name = "outcome",
       type = SearchParamType.Token,
@@ -106,7 +108,8 @@ public object CoverageEligibilityResponseSearchParams {
       extractor = { resource -> listOfNotNull(resource.requestor) },
     )
 
-  public val status: SearchParam<CoverageEligibilityResponse, Any> =
+  public val status:
+    SearchParam<CoverageEligibilityResponse, Enumeration<FinancialResourceStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

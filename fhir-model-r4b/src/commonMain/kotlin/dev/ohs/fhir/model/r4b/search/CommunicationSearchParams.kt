@@ -73,6 +73,7 @@ import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.EpisodeOfCare
 import dev.ohs.fhir.model.r4b.EventDefinition
 import dev.ohs.fhir.model.r4b.Evidence
@@ -167,8 +168,8 @@ import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.ValueSet
 import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
+import dev.ohs.fhir.model.r4b.terminologies.EventStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -598,7 +599,7 @@ public object CommunicationSearchParams {
       extractor = { resource -> listOfNotNull(resource.sent) },
     )
 
-  public val status: SearchParam<Communication, Any> =
+  public val status: SearchParam<Communication, Enumeration<EventStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

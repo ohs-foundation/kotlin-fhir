@@ -72,6 +72,7 @@ import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.EpisodeOfCare
 import dev.ohs.fhir.model.r4b.EventDefinition
 import dev.ohs.fhir.model.r4b.Evidence
@@ -167,14 +168,15 @@ import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.ValueSet
 import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
+import dev.ohs.fhir.model.r4b.terminologies.AuditEventAction
+import dev.ohs.fhir.model.r4b.terminologies.AuditEventOutcome
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [AuditEvent] resource type. */
 public object AuditEventSearchParams {
-  public val action: SearchParam<AuditEvent, Any> =
+  public val action: SearchParam<AuditEvent, Enumeration<AuditEventAction>> =
     SearchParam(
       name = "action",
       type = SearchParamType.Token,
@@ -416,7 +418,7 @@ public object AuditEventSearchParams {
       extractor = { resource -> resource.entity.mapNotNull { it.type } },
     )
 
-  public val outcome: SearchParam<AuditEvent, Any> =
+  public val outcome: SearchParam<AuditEvent, Enumeration<AuditEventOutcome>> =
     SearchParam(
       name = "outcome",
       type = SearchParamType.Token,

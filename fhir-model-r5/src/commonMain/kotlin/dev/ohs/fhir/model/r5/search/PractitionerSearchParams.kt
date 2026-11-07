@@ -26,11 +26,14 @@ import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.ContactPoint
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.String
+import dev.ohs.fhir.model.r5.terminologies.AddressUse
+import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -87,7 +90,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.address.mapNotNull { it.state } },
     )
 
-  public val addressUse: SearchParam<Practitioner, Any> =
+  public val addressUse: SearchParam<Practitioner, Enumeration<AddressUse>> =
     SearchParam(
       name = "address-use",
       type = SearchParamType.Token,
@@ -143,7 +146,7 @@ public object PractitionerSearchParams {
       extractor = { resource -> resource.name.mapNotNull { it.family } },
     )
 
-  public val gender: SearchParam<Practitioner, Any> =
+  public val gender: SearchParam<Practitioner, Enumeration<AdministrativeGender>> =
     SearchParam(
       name = "gender",
       type = SearchParamType.Token,

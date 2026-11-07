@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Condition
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.EpisodeOfCare
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
@@ -31,8 +32,8 @@ import dev.ohs.fhir.model.r4b.Period
 import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.ServiceRequest
+import dev.ohs.fhir.model.r4b.terminologies.EpisodeOfCareStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -103,7 +104,7 @@ public object EpisodeOfCareSearchParams {
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val status: SearchParam<EpisodeOfCare, Any> =
+  public val status: SearchParam<EpisodeOfCare, Enumeration<EpisodeOfCareStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

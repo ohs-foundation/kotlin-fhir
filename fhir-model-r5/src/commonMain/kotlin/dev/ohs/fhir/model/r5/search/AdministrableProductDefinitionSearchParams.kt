@@ -24,12 +24,13 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.AdministrableProductDefinition
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r5.MedicinalProductDefinition
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -94,7 +95,7 @@ public object AdministrableProductDefinitionSearchParams {
       extractor = { resource -> resource.routeOfAdministration.map { it.code } },
     )
 
-  public val status: SearchParam<AdministrableProductDefinition, Any> =
+  public val status: SearchParam<AdministrableProductDefinition, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -48,6 +48,7 @@ import dev.ohs.fhir.model.r5.Claim
 import dev.ohs.fhir.model.r5.ClaimResponse
 import dev.ohs.fhir.model.r5.ClinicalImpression
 import dev.ohs.fhir.model.r5.ClinicalUseDefinition
+import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.CodeSystem
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
@@ -79,6 +80,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.EnrollmentResponse
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.EventDefinition
 import dev.ohs.fhir.model.r5.Evidence
@@ -189,6 +191,7 @@ import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -672,7 +675,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val sourceCode: SearchParam<ConceptMap, Any> =
+  public val sourceCode: SearchParam<ConceptMap, Code> =
     SearchParam(
       name = "source-code",
       type = SearchParamType.Token,
@@ -710,7 +713,7 @@ public object ConceptMapSearchParams {
       },
     )
 
-  public val status: SearchParam<ConceptMap, Any> =
+  public val status: SearchParam<ConceptMap, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,
@@ -718,7 +721,7 @@ public object ConceptMapSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val targetCode: SearchParam<ConceptMap, Any> =
+  public val targetCode: SearchParam<ConceptMap, Code> =
     SearchParam(
       name = "target-code",
       type = SearchParamType.Token,

@@ -22,6 +22,7 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EvidenceVariable
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
@@ -37,8 +38,8 @@ import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.UnsignedInt
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -232,7 +233,7 @@ public object ResearchStudySearchParams {
       extractor = { resource -> resource.site },
     )
 
-  public val status: SearchParam<ResearchStudy, Any> =
+  public val status: SearchParam<ResearchStudy, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

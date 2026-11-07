@@ -31,6 +31,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.Endpoint
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Id
 import dev.ohs.fhir.model.r4.Identifier
@@ -43,8 +44,8 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
 import dev.ohs.fhir.model.r4.ServiceRequest
 import dev.ohs.fhir.model.r4.Task
+import dev.ohs.fhir.model.r4.terminologies.ImagingStudyStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -201,7 +202,7 @@ public object ImagingStudySearchParams {
       extractor = { resource -> listOfNotNull(resource.started) },
     )
 
-  public val status: SearchParam<ImagingStudy, Any> =
+  public val status: SearchParam<ImagingStudy, Enumeration<ImagingStudyStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

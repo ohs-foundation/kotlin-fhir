@@ -24,14 +24,15 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.InventoryItem
 import dev.ohs.fhir.model.r5.InventoryReport
 import dev.ohs.fhir.model.r5.Medication
 import dev.ohs.fhir.model.r5.NutritionProduct
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.terminologies.InventoryReportStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -73,7 +74,7 @@ public object InventoryReportSearchParams {
       },
     )
 
-  public val status: SearchParam<InventoryReport, Any> =
+  public val status: SearchParam<InventoryReport, Enumeration<InventoryReportStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

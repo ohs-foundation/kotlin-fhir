@@ -22,13 +22,14 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Integer
 import dev.ohs.fhir.model.r4b.MolecularSequence
 import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SequenceType
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -103,7 +104,7 @@ public object MolecularSequenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.referenceSeq) },
     )
 
-  public val type: SearchParam<MolecularSequence, Any> =
+  public val type: SearchParam<MolecularSequence, Enumeration<SequenceType>> =
     SearchParam(
       name = "type",
       type = SearchParamType.Token,

@@ -48,6 +48,7 @@ import dev.ohs.fhir.model.r5.Claim
 import dev.ohs.fhir.model.r5.ClaimResponse
 import dev.ohs.fhir.model.r5.ClinicalImpression
 import dev.ohs.fhir.model.r5.ClinicalUseDefinition
+import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.CodeSystem
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
@@ -79,6 +80,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.EnrollmentResponse
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.EventDefinition
 import dev.ohs.fhir.model.r5.Evidence
@@ -191,8 +193,9 @@ import dev.ohs.fhir.model.r5.Url
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.CompositionStatus
+import dev.ohs.fhir.model.r5.terminologies.DocumentReferenceStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -284,7 +287,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val contenttype: SearchParam<DocumentReference, Any> =
+  public val contenttype: SearchParam<DocumentReference, Code> =
     SearchParam(
       name = "contenttype",
       type = SearchParamType.Token,
@@ -336,7 +339,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val docStatus: SearchParam<DocumentReference, Any> =
+  public val docStatus: SearchParam<DocumentReference, Enumeration<CompositionStatus>> =
     SearchParam(
       name = "doc-status",
       type = SearchParamType.Token,
@@ -614,7 +617,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val language: SearchParam<DocumentReference, Any> =
+  public val language: SearchParam<DocumentReference, Code> =
     SearchParam(
       name = "language",
       type = SearchParamType.Token,
@@ -698,7 +701,7 @@ public object DocumentReferenceSearchParams {
       extractor = { resource -> listOfNotNull(resource.practiceSetting) },
     )
 
-  public val status: SearchParam<DocumentReference, Any> =
+  public val status: SearchParam<DocumentReference, Enumeration<DocumentReferenceStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

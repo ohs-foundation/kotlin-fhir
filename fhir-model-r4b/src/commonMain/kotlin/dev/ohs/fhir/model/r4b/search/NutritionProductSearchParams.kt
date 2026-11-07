@@ -21,10 +21,11 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.NutritionProduct
+import dev.ohs.fhir.model.r4b.terminologies.NutritionProductStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -38,7 +39,7 @@ public object NutritionProductSearchParams {
       extractor = { resource -> resource.instance?.identifier ?: emptyList() },
     )
 
-  public val status: SearchParam<NutritionProduct, Any> =
+  public val status: SearchParam<NutritionProduct, Enumeration<NutritionProductStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

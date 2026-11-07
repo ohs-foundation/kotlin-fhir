@@ -70,6 +70,7 @@ import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.EnrollmentRequest
 import dev.ohs.fhir.model.r4.EnrollmentResponse
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.EventDefinition
 import dev.ohs.fhir.model.r4.Evidence
@@ -172,8 +173,9 @@ import dev.ohs.fhir.model.r4.TestScript
 import dev.ohs.fhir.model.r4.ValueSet
 import dev.ohs.fhir.model.r4.VerificationResult
 import dev.ohs.fhir.model.r4.VisionPrescription
+import dev.ohs.fhir.model.r4.terminologies.CompositionStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4.terminologies.V3ConfidentialityClassification
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -220,7 +222,8 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.category },
     )
 
-  public val confidentiality: SearchParam<Composition, Any> =
+  public val confidentiality:
+    SearchParam<Composition, Enumeration<V3ConfidentialityClassification>> =
     SearchParam(
       name = "confidentiality",
       type = SearchParamType.Token,
@@ -469,7 +472,7 @@ public object CompositionSearchParams {
       extractor = { resource -> resource.section.mapNotNull { it.code } },
     )
 
-  public val status: SearchParam<Composition, Any> =
+  public val status: SearchParam<Composition, Enumeration<CompositionStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

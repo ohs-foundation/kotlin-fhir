@@ -233,6 +233,7 @@ abstract class FhirCodegenTask : DefaultTask() {
           resourceName,
           params,
           elementsByType,
+          valueSetMap,
         )
         .writeTo(outputDir)
     }

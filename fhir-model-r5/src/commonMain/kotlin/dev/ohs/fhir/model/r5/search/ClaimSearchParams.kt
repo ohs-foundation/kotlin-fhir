@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.Organization
@@ -34,8 +35,9 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.Use
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -172,7 +174,7 @@ public object ClaimSearchParams {
       extractor = { resource -> listOfNotNull(resource.provider) },
     )
 
-  public val status: SearchParam<Claim, Any> =
+  public val status: SearchParam<Claim, Enumeration<FinancialResourceStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,
@@ -191,7 +193,7 @@ public object ClaimSearchParams {
       },
     )
 
-  public val use: SearchParam<Claim, Any> =
+  public val use: SearchParam<Claim, Enumeration<Use>> =
     SearchParam(
       name = "use",
       type = SearchParamType.Token,

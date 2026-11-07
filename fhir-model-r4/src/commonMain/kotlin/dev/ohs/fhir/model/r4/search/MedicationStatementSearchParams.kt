@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Encounter
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
@@ -38,8 +39,8 @@ import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Procedure
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.terminologies.MedicationStatementStatusCodes
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -144,7 +145,7 @@ public object MedicationStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.informationSource) },
     )
 
-  public val status: SearchParam<MedicationStatement, Any> =
+  public val status: SearchParam<MedicationStatement, Enumeration<MedicationStatementStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

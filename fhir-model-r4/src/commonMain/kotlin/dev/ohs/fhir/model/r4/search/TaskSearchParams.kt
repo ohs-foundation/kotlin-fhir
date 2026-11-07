@@ -70,6 +70,7 @@ import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.EnrollmentRequest
 import dev.ohs.fhir.model.r4.EnrollmentResponse
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.EventDefinition
 import dev.ohs.fhir.model.r4.Evidence
@@ -171,8 +172,10 @@ import dev.ohs.fhir.model.r4.TestScript
 import dev.ohs.fhir.model.r4.ValueSet
 import dev.ohs.fhir.model.r4.VerificationResult
 import dev.ohs.fhir.model.r4.VisionPrescription
+import dev.ohs.fhir.model.r4.terminologies.RequestPriority
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4.terminologies.TaskIntent
+import dev.ohs.fhir.model.r4.terminologies.TaskStatus
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -539,7 +542,7 @@ public object TaskSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val intent: SearchParam<Task, Any> =
+  public val intent: SearchParam<Task, Enumeration<TaskIntent>> =
     SearchParam(
       name = "intent",
       type = SearchParamType.Token,
@@ -610,7 +613,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.executionPeriod) },
     )
 
-  public val priority: SearchParam<Task, Any> =
+  public val priority: SearchParam<Task, Enumeration<RequestPriority>> =
     SearchParam(
       name = "priority",
       type = SearchParamType.Token,
@@ -635,7 +638,7 @@ public object TaskSearchParams {
       extractor = { resource -> listOfNotNull(resource.requester) },
     )
 
-  public val status: SearchParam<Task, Any> =
+  public val status: SearchParam<Task, Enumeration<TaskStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

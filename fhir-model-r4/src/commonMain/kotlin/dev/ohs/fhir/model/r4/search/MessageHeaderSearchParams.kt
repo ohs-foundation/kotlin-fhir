@@ -68,6 +68,7 @@ import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.EnrollmentRequest
 import dev.ohs.fhir.model.r4.EnrollmentResponse
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.EventDefinition
 import dev.ohs.fhir.model.r4.Evidence
@@ -170,8 +171,8 @@ import dev.ohs.fhir.model.r4.Url
 import dev.ohs.fhir.model.r4.ValueSet
 import dev.ohs.fhir.model.r4.VerificationResult
 import dev.ohs.fhir.model.r4.VisionPrescription
+import dev.ohs.fhir.model.r4.terminologies.ResponseType
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -186,7 +187,7 @@ public object MessageHeaderSearchParams {
       extractor = { resource -> listOfNotNull(resource.author) },
     )
 
-  public val code: SearchParam<MessageHeader, Any> =
+  public val code: SearchParam<MessageHeader, Enumeration<ResponseType>> =
     SearchParam(
       name = "code",
       type = SearchParamType.Token,

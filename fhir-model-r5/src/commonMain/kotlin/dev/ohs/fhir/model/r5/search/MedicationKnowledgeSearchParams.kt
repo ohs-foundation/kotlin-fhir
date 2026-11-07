@@ -23,11 +23,13 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DocumentReference
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.MedicationKnowledge
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Substance
+import dev.ohs.fhir.model.r5.terminologies.MedicationKnowledgeStatusCodes
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -172,7 +174,7 @@ public object MedicationKnowledgeSearchParams {
       extractor = { resource -> resource.cost.mapNotNull { it.source } },
     )
 
-  public val status: SearchParam<MedicationKnowledge, Any> =
+  public val status: SearchParam<MedicationKnowledge, Enumeration<MedicationKnowledgeStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

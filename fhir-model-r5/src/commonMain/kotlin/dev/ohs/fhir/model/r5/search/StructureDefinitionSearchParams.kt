@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.String
@@ -33,7 +34,11 @@ import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.ValueSet
+import dev.ohs.fhir.model.r5.terminologies.ExtensionContextType
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.StructureDefinitionKind
+import dev.ohs.fhir.model.r5.terminologies.TypeDerivationRule
 import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
@@ -139,7 +144,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.date) },
     )
 
-  public val derivation: SearchParam<StructureDefinition, Any> =
+  public val derivation: SearchParam<StructureDefinition, Enumeration<TypeDerivationRule>> =
     SearchParam(
       name = "derivation",
       type = SearchParamType.Token,
@@ -179,7 +184,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.context.map { it.expression } },
     )
 
-  public val extContextType: SearchParam<StructureDefinition, Any> =
+  public val extContextType: SearchParam<StructureDefinition, Enumeration<ExtensionContextType>> =
     SearchParam(
       name = "ext-context-type",
       type = SearchParamType.Token,
@@ -211,7 +216,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> resource.keyword },
     )
 
-  public val kind: SearchParam<StructureDefinition, Any> =
+  public val kind: SearchParam<StructureDefinition, Enumeration<StructureDefinitionKind>> =
     SearchParam(
       name = "kind",
       type = SearchParamType.Token,
@@ -250,7 +255,7 @@ public object StructureDefinitionSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val status: SearchParam<StructureDefinition, Any> =
+  public val status: SearchParam<StructureDefinition, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

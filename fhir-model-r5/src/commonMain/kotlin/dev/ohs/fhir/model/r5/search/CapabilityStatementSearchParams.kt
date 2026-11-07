@@ -23,9 +23,11 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CapabilityStatement
+import dev.ohs.fhir.model.r5.Code
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImplementationGuide
 import dev.ohs.fhir.model.r5.Markdown
@@ -33,6 +35,10 @@ import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.FHIRVersion
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.ResourceType
+import dev.ohs.fhir.model.r5.terminologies.RestfulCapabilityMode
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -111,7 +117,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val fhirversion: SearchParam<CapabilityStatement, Any> =
+  public val fhirversion: SearchParam<CapabilityStatement, Enumeration<FHIRVersion>> =
     SearchParam(
       name = "fhirversion",
       type = SearchParamType.Token,
@@ -119,7 +125,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOf(resource.fhirVersion) },
     )
 
-  public val format: SearchParam<CapabilityStatement, Any> =
+  public val format: SearchParam<CapabilityStatement, Code> =
     SearchParam(
       name = "format",
       type = SearchParamType.Token,
@@ -152,7 +158,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val mode: SearchParam<CapabilityStatement, Any> =
+  public val mode: SearchParam<CapabilityStatement, Enumeration<RestfulCapabilityMode>> =
     SearchParam(
       name = "mode",
       type = SearchParamType.Token,
@@ -176,7 +182,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.publisher) },
     )
 
-  public val resource: SearchParam<CapabilityStatement, Any> =
+  public val resource: SearchParam<CapabilityStatement, Enumeration<ResourceType>> =
     SearchParam(
       name = "resource",
       type = SearchParamType.Token,
@@ -209,7 +215,7 @@ public object CapabilityStatementSearchParams {
       extractor = { resource -> listOfNotNull(resource.software?.name) },
     )
 
-  public val status: SearchParam<CapabilityStatement, Any> =
+  public val status: SearchParam<CapabilityStatement, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

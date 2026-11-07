@@ -23,14 +23,15 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Medication
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Substance
+import dev.ohs.fhir.model.r4b.terminologies.MedicationStatusCodes
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -108,7 +109,7 @@ public object MedicationSearchParams {
       extractor = { resource -> listOfNotNull(resource.manufacturer) },
     )
 
-  public val status: SearchParam<Medication, Any> =
+  public val status: SearchParam<Medication, Enumeration<MedicationStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

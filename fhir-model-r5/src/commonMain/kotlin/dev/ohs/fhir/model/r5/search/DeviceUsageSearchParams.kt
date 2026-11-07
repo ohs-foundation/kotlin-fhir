@@ -23,11 +23,12 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceUsage
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.terminologies.DeviceUsageStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -58,7 +59,7 @@ public object DeviceUsageSearchParams {
       extractor = { resource -> listOf(resource.patient) },
     )
 
-  public val status: SearchParam<DeviceUsage, Any> =
+  public val status: SearchParam<DeviceUsage, Enumeration<DeviceUsageStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

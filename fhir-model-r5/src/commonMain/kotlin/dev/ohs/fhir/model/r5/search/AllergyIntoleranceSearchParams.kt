@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Observation
 import dev.ohs.fhir.model.r5.Organization
@@ -34,14 +35,16 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.terminologies.AllergyIntoleranceCategory
+import dev.ohs.fhir.model.r5.terminologies.AllergyIntoleranceCriticality
+import dev.ohs.fhir.model.r5.terminologies.AllergyIntoleranceSeverity
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [AllergyIntolerance] resource type. */
 public object AllergyIntoleranceSearchParams {
-  public val category: SearchParam<AllergyIntolerance, Any> =
+  public val category: SearchParam<AllergyIntolerance, Enumeration<AllergyIntoleranceCategory>> =
     SearchParam(
       name = "category",
       type = SearchParamType.Token,
@@ -71,7 +74,8 @@ public object AllergyIntoleranceSearchParams {
       },
     )
 
-  public val criticality: SearchParam<AllergyIntolerance, Any> =
+  public val criticality:
+    SearchParam<AllergyIntolerance, Enumeration<AllergyIntoleranceCriticality>> =
     SearchParam(
       name = "criticality",
       type = SearchParamType.Token,
@@ -159,7 +163,7 @@ public object AllergyIntoleranceSearchParams {
       extractor = { resource -> resource.reaction.mapNotNull { it.exposureRoute } },
     )
 
-  public val severity: SearchParam<AllergyIntolerance, Any> =
+  public val severity: SearchParam<AllergyIntolerance, Enumeration<AllergyIntoleranceSeverity>> =
     SearchParam(
       name = "severity",
       type = SearchParamType.Token,

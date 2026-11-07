@@ -18,37 +18,43 @@ package dev.ohs.fhir.codegen.searchparam
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
+import dev.ohs.fhir.codegen.PropertyMapper
 import dev.ohs.fhir.codegen.ResolvedExpression
-import dev.ohs.fhir.codegen.primitives.FhirPathType
+import dev.ohs.fhir.codegen.choiceTypeExpansionName
 import dev.ohs.fhir.codegen.schema.capitalized
+import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
 /**
  * Resolves the KotlinPoet [TypeName] used as the type parameter `T` of `SearchParam<R, T>` for a
  * given [SearchParamPattern], plus the sealed-element subclass referenced by an element-cast
  * extraction.
  *
- * Owns the rules for mapping a resolved FHIRPath leaf to a model class — handling backbone
- * elements, the special `code` enum case, URL-shaped type codes, and choice-type sealed interfaces.
+ * Delegates element and choice-expansion type mapping to [PropertyMapper] so search parameters
+ * always resolve to the same Kotlin types as the generated model properties.
  */
 internal object SearchParamTypeResolver {
 
   /** Resolves the [TypeName] used as `T` of `SearchParam<R, T>` for [pattern]. */
-  fun resolve(pattern: SearchParamPattern, packageName: String, resourceName: String): TypeName =
+  fun resolve(
+    pattern: SearchParamPattern,
+    packageName: String,
+    valueSetMap: Map<String, ValueSet> = emptyMap(),
+  ): TypeName =
     when (pattern) {
       is SearchParamPattern.SimplePath ->
-        forResolvedPath(pattern.resolved, packageName, resourceName)
+        forResolvedPath(pattern.resolved, packageName, valueSetMap)
       is SearchParamPattern.WhereResolve ->
-        forResolvedPath(pattern.resolved, packageName, resourceName)
+        forResolvedPath(pattern.resolved, packageName, valueSetMap)
       is SearchParamPattern.ElementNoCast ->
-        buildSealedInterfaceClassName(pattern.resolved, packageName)
-      is SearchParamPattern.ElementCast -> forElementCastTarget(pattern.targetType, packageName)
+        forResolvedPath(pattern.resolved, packageName, valueSetMap)
+      is SearchParamPattern.ElementCast ->
+        forElementCastTarget(pattern.resolved, pattern.targetType, packageName, valueSetMap)
       is SearchParamPattern.WhereFilter ->
-        if (pattern.postPath != null) forResolvedPath(pattern.postPath, packageName, resourceName)
-        else ClassName(packageName, pattern.resolved.segments.last().leafTypeCode!!.capitalized())
+        forResolvedPath(pattern.postPath ?: pattern.resolved, packageName, valueSetMap)
       // If all branches produce the same value type, use it. Otherwise fall back to Any: e.g.
       // `ofType(dateTime) | ofType(Period)` produces two different types.
       is SearchParamPattern.Union ->
-        pattern.branches.map { resolve(it, packageName, resourceName) }.distinct().singleOrNull()
+        pattern.branches.map { resolve(it, packageName, valueSetMap) }.distinct().singleOrNull()
           ?: ClassName("kotlin", "Any")
       SearchParamPattern.Unsupported -> ClassName("kotlin", "Any")
     }
@@ -58,82 +64,57 @@ internal object SearchParamTypeResolver {
     resolved: ResolvedExpression,
     targetType: String,
     packageName: String,
-  ): ClassName =
-    buildSealedInterfaceClassName(resolved, packageName).nestedClass(targetType.capitalized())
+  ): ClassName {
+    val sealedInterface = forResolvedPath(resolved, packageName, emptyMap()) as ClassName
+    val leafElement = resolved.segments.lastOrNull()?.element
+    val matchedType =
+      leafElement?.type?.firstOrNull { it.code.equals(targetType, ignoreCase = true) }
+    val expansionName =
+      if (matchedType != null) choiceTypeExpansionName(matchedType) else targetType.capitalized()
+    return sealedInterface.nestedClass(expansionName)
+  }
 
   // -- private helpers --------------------------------------------------------------------------
 
-  /**
-   * Type for a simple dotted path or a `where(resolve() is …)` (the filter is dropped). Resolves
-   * FHIRPath system URIs via [FhirPathType], and falls back to `kotlin.Any` for `code`-typed leaves
-   * and other URL-shaped type codes.
-   */
   private fun forResolvedPath(
     resolved: ResolvedExpression,
     packageName: String,
-    resourceName: String,
+    valueSetMap: Map<String, ValueSet>,
   ): TypeName {
-    val lastSegment = resolved.segments.lastOrNull() ?: return ClassName("kotlin", "Any")
-    val typeCode = lastSegment.leafTypeCode ?: return ClassName("kotlin", "Any")
-
-    if (lastSegment.isBackboneElement) {
-      return buildBackboneClassName(resolved, packageName, resourceName)
-    }
-
-    // Elements of type "code" may be generated as Enumeration<X> depending on value set bindings
-    if (typeCode == "code") return ClassName("kotlin", "Any")
-
-    FhirPathType.getFromUri(typeCode)?.let {
-      return it.getDataModelType(packageName)
-    }
-
-    // Type codes containing special characters can't be used as class names
-    if (typeCode.contains("/") || typeCode.contains(":")) return ClassName("kotlin", "Any")
-
-    return ClassName(packageName, typeCode.capitalized())
+    val leafElement = resolved.segments.lastOrNull()?.element ?: return ClassName("kotlin", "Any")
+    val enclosingClass = enclosingModelClassName(resolved, packageName)
+    return PropertyMapper(PropertyMapper.MappingContext.MODEL, enclosingClass, valueSetMap)
+      .mapToModelType(leafElement)
   }
 
-  /** Type for the target of an element cast. Falls back to `kotlin.Any` for URL-shaped types. */
-  private fun forElementCastTarget(targetType: String, packageName: String): TypeName {
-    if (targetType.contains("/") || targetType.contains(":")) {
-      return ClassName("kotlin", "Any")
-    }
-    return ClassName(packageName, targetType.capitalized())
+  private fun forElementCastTarget(
+    resolved: ResolvedExpression,
+    targetType: String,
+    packageName: String,
+    valueSetMap: Map<String, ValueSet>,
+  ): TypeName {
+    val leafElement = resolved.segments.lastOrNull()?.element ?: return ClassName("kotlin", "Any")
+    val matchedType =
+      leafElement.type?.firstOrNull { it.code.equals(targetType, ignoreCase = true) }
+        ?: return ClassName("kotlin", "Any")
+    val enclosingClass = enclosingModelClassName(resolved, packageName)
+    return PropertyMapper(PropertyMapper.MappingContext.MODEL, enclosingClass, valueSetMap)
+      .mapTypeToClassName(matchedType)
   }
 }
 
 /**
- * Builds the [ClassName] for a backbone element type by tracing the path through the resolved
- * segments.
+ * Builds the [ClassName] of the model class that immediately encloses the leaf segment of
+ * [resolved].
  *
- * For example, for `Patient.contact.relationship` (leaf is `relationship`, a `CodeableConcept`),
- * this produces `ClassName(packageName, "Patient", "Contact")` — the nearest enclosing backbone.
+ * For example:
+ * - `Patient.gender` -> `ClassName(packageName, "Patient")`
+ * - `Patient.contact.relationship` -> `ClassName(packageName, "Patient", "Contact")`
+ * - `Patient.address.use` -> `ClassName(packageName, "Address")`
  */
-private fun buildBackboneClassName(
-  resolved: ResolvedExpression,
-  packageName: String,
-  resourceName: String,
-): ClassName {
-  val names = mutableListOf(resourceName)
-  for (segment in resolved.segments) {
-    if (segment.isBackboneElement) {
-      names.add(segment.propertyName.capitalized())
-    }
-  }
-  return ClassName(packageName, names)
-}
-
-private fun buildSealedInterfaceClassName(
-  resolved: ResolvedExpression,
-  packageName: String,
-): ClassName {
-  val names = mutableListOf(resolved.resourceName)
-
-  for (segment in resolved.segments) {
-    if (segment.isChoiceType) {
-      names.add(segment.propertyName.capitalized())
-      break
-    }
+private fun enclosingModelClassName(resolved: ResolvedExpression, packageName: String): ClassName {
+  val names = mutableListOf(resolved.resourceName.capitalized())
+  for (segment in resolved.segments.dropLast(1)) {
     if (segment.isBackboneElement) {
       names.add(segment.propertyName.capitalized())
     } else {

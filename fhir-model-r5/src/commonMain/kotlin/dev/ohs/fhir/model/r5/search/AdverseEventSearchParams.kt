@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Condition
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Immunization
@@ -43,6 +44,8 @@ import dev.ohs.fhir.model.r5.RelatedPerson
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
 import dev.ohs.fhir.model.r5.Substance
+import dev.ohs.fhir.model.r5.terminologies.AdverseEventActuality
+import dev.ohs.fhir.model.r5.terminologies.AdverseEventStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -50,7 +53,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [AdverseEvent] resource type. */
 public object AdverseEventSearchParams {
-  public val actuality: SearchParam<AdverseEvent, Any> =
+  public val actuality: SearchParam<AdverseEvent, Enumeration<AdverseEventActuality>> =
     SearchParam(
       name = "actuality",
       type = SearchParamType.Token,
@@ -151,7 +154,7 @@ public object AdverseEventSearchParams {
       extractor = { resource -> listOfNotNull(resource.seriousness) },
     )
 
-  public val status: SearchParam<AdverseEvent, Any> =
+  public val status: SearchParam<AdverseEvent, Enumeration<AdverseEventStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -21,12 +21,15 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Code
 import dev.ohs.fhir.model.r4b.ContactPoint
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Subscription
 import dev.ohs.fhir.model.r4b.Url
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SubscriptionChannelType
+import dev.ohs.fhir.model.r4b.terminologies.SubscriptionStatusCodes
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -48,7 +51,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOf(resource.criteria) },
     )
 
-  public val payload: SearchParam<Subscription, Any> =
+  public val payload: SearchParam<Subscription, Code> =
     SearchParam(
       name = "payload",
       type = SearchParamType.Token,
@@ -56,7 +59,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOfNotNull(resource.channel.payload) },
     )
 
-  public val status: SearchParam<Subscription, Any> =
+  public val status: SearchParam<Subscription, Enumeration<SubscriptionStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,
@@ -64,7 +67,7 @@ public object SubscriptionSearchParams {
       extractor = { resource -> listOf(resource.status) },
     )
 
-  public val type: SearchParam<Subscription, Any> =
+  public val type: SearchParam<Subscription, Enumeration<SubscriptionChannelType>> =
     SearchParam(
       name = "type",
       type = SearchParamType.Token,

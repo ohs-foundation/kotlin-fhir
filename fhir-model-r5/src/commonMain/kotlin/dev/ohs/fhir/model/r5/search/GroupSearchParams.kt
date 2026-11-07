@@ -77,6 +77,7 @@ import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Endpoint
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.EnrollmentResponse
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.EpisodeOfCare
 import dev.ohs.fhir.model.r5.EventDefinition
 import dev.ohs.fhir.model.r5.Evidence
@@ -184,6 +185,8 @@ import dev.ohs.fhir.model.r5.Transport
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
+import dev.ohs.fhir.model.r5.terminologies.GroupMembershipBasis
+import dev.ohs.fhir.model.r5.terminologies.GroupType
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -441,7 +444,7 @@ public object GroupSearchParams {
       extractor = { resource -> resource.member.map { it.entity } },
     )
 
-  public val membership: SearchParam<Group, Any> =
+  public val membership: SearchParam<Group, Enumeration<GroupMembershipBasis>> =
     SearchParam(
       name = "membership",
       type = SearchParamType.Token,
@@ -457,7 +460,7 @@ public object GroupSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val type: SearchParam<Group, Any> =
+  public val type: SearchParam<Group, Enumeration<GroupType>> =
     SearchParam(
       name = "type",
       type = SearchParamType.Token,

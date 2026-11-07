@@ -23,12 +23,13 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProductDispense
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.terminologies.BiologicallyDerivedProductDispenseCodes
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -69,7 +70,11 @@ public object BiologicallyDerivedProductDispenseSearchParams {
       extractor = { resource -> listOf(resource.product) },
     )
 
-  public val status: SearchParam<BiologicallyDerivedProductDispense, Any> =
+  public val status:
+    SearchParam<
+      BiologicallyDerivedProductDispense,
+      Enumeration<BiologicallyDerivedProductDispenseCodes>,
+    > =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

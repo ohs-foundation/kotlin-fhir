@@ -72,6 +72,7 @@ import dev.ohs.fhir.model.r4b.Encounter
 import dev.ohs.fhir.model.r4b.Endpoint
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.EpisodeOfCare
 import dev.ohs.fhir.model.r4b.EventDefinition
 import dev.ohs.fhir.model.r4b.Evidence
@@ -166,8 +167,8 @@ import dev.ohs.fhir.model.r4b.TestScript
 import dev.ohs.fhir.model.r4b.ValueSet
 import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
+import dev.ohs.fhir.model.r4b.terminologies.MeasureReportStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
@@ -378,7 +379,7 @@ public object MeasureReportSearchParams {
       extractor = { resource -> listOfNotNull(resource.reporter) },
     )
 
-  public val status: SearchParam<MeasureReport, Any> =
+  public val status: SearchParam<MeasureReport, Enumeration<MeasureReportStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

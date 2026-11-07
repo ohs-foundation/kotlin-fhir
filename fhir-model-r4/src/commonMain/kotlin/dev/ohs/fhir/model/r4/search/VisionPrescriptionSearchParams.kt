@@ -23,6 +23,7 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Encounter
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Identifier
@@ -31,8 +32,8 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.VisionPrescription
+import dev.ohs.fhir.model.r4.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -81,7 +82,7 @@ public object VisionPrescriptionSearchParams {
       extractor = { resource -> listOf(resource.prescriber) },
     )
 
-  public val status: SearchParam<VisionPrescription, Any> =
+  public val status: SearchParam<VisionPrescription, Enumeration<FinancialResourceStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -22,8 +22,10 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.Bundle
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Instant
+import dev.ohs.fhir.model.r4b.terminologies.BundleType
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -72,7 +74,7 @@ public object BundleSearchParams {
       extractor = { resource -> listOfNotNull(resource.timestamp) },
     )
 
-  public val type: SearchParam<Bundle, Any> =
+  public val type: SearchParam<Bundle, Enumeration<BundleType>> =
     SearchParam(
       name = "type",
       type = SearchParamType.Token,

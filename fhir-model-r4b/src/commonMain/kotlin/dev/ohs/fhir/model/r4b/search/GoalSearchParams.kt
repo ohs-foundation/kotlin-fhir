@@ -23,14 +23,15 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Date
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Goal
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.terminologies.GoalLifecycleStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -60,7 +61,7 @@ public object GoalSearchParams {
       extractor = { resource -> resource.identifier },
     )
 
-  public val lifecycleStatus: SearchParam<Goal, Any> =
+  public val lifecycleStatus: SearchParam<Goal, Enumeration<GoalLifecycleStatus>> =
     SearchParam(
       name = "lifecycle-status",
       type = SearchParamType.Token,

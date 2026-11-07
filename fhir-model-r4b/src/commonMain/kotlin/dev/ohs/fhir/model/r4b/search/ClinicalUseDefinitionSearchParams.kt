@@ -27,14 +27,15 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.CodeableReference
 import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.DeviceDefinition
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Medication
 import dev.ohs.fhir.model.r4b.MedicinalProductDefinition
 import dev.ohs.fhir.model.r4b.PlanDefinition
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Substance
+import dev.ohs.fhir.model.r4b.terminologies.ClinicalUseDefinitionType
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -135,7 +136,7 @@ public object ClinicalUseDefinitionSearchParams {
       extractor = { resource -> resource.subject },
     )
 
-  public val type: SearchParam<ClinicalUseDefinition, Any> =
+  public val type: SearchParam<ClinicalUseDefinition, Enumeration<ClinicalUseDefinitionType>> =
     SearchParam(
       name = "type",
       type = SearchParamType.Token,

@@ -24,11 +24,14 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.Address
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Endpoint
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.InsurancePlan
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.String
+import dev.ohs.fhir.model.r4b.terminologies.AddressUse
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -83,7 +86,7 @@ public object InsurancePlanSearchParams {
       },
     )
 
-  public val addressUse: SearchParam<InsurancePlan, Any> =
+  public val addressUse: SearchParam<InsurancePlan, Enumeration<AddressUse>> =
     SearchParam(
       name = "address-use",
       type = SearchParamType.Token,
@@ -146,7 +149,7 @@ public object InsurancePlanSearchParams {
       extractor = { resource -> listOfNotNull(resource.name) },
     )
 
-  public val status: SearchParam<InsurancePlan, Any> =
+  public val status: SearchParam<InsurancePlan, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

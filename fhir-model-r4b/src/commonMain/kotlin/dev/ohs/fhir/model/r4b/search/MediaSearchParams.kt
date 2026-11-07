@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.DeviceMetric
 import dev.ohs.fhir.model.r4b.Encounter
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
@@ -39,8 +40,8 @@ import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
 import dev.ohs.fhir.model.r4b.ServiceRequest
 import dev.ohs.fhir.model.r4b.Specimen
+import dev.ohs.fhir.model.r4b.terminologies.EventStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -134,7 +135,7 @@ public object MediaSearchParams {
       extractor = { resource -> listOfNotNull(resource.bodySite) },
     )
 
-  public val status: SearchParam<Media, Any> =
+  public val status: SearchParam<Media, Enumeration<EventStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

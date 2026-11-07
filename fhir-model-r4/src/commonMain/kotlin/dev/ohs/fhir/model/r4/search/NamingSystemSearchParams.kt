@@ -25,11 +25,15 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.ContactPoint
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.NamingSystem
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.UsageContext
+import dev.ohs.fhir.model.r4.terminologies.NamingSystemIdentifierType
+import dev.ohs.fhir.model.r4.terminologies.NamingSystemType
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -116,7 +120,7 @@ public object NamingSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.description) },
     )
 
-  public val idType: SearchParam<NamingSystem, Any> =
+  public val idType: SearchParam<NamingSystem, Enumeration<NamingSystemIdentifierType>> =
     SearchParam(
       name = "id-type",
       type = SearchParamType.Token,
@@ -132,7 +136,7 @@ public object NamingSystemSearchParams {
       extractor = { resource -> resource.jurisdiction },
     )
 
-  public val kind: SearchParam<NamingSystem, Any> =
+  public val kind: SearchParam<NamingSystem, Enumeration<NamingSystemType>> =
     SearchParam(
       name = "kind",
       type = SearchParamType.Token,
@@ -172,7 +176,7 @@ public object NamingSystemSearchParams {
       extractor = { resource -> listOfNotNull(resource.responsible) },
     )
 
-  public val status: SearchParam<NamingSystem, Any> =
+  public val status: SearchParam<NamingSystem, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

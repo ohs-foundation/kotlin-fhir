@@ -22,11 +22,12 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.EnrollmentRequest
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.terminologies.FinancialResourceStatusCodes
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -49,7 +50,7 @@ public object EnrollmentRequestSearchParams {
       extractor = { resource -> listOfNotNull(resource.candidate) },
     )
 
-  public val status: SearchParam<EnrollmentRequest, Any> =
+  public val status: SearchParam<EnrollmentRequest, Enumeration<FinancialResourceStatusCodes>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

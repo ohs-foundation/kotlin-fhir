@@ -23,12 +23,13 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Substance
+import dev.ohs.fhir.model.r4.terminologies.FHIRSubstanceStatus
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -92,7 +93,7 @@ public object SubstanceSearchParams {
       extractor = { resource -> resource.instance.mapNotNull { it.quantity } },
     )
 
-  public val status: SearchParam<Substance, Any> =
+  public val status: SearchParam<Substance, Enumeration<FHIRSubstanceStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

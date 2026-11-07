@@ -324,7 +324,7 @@ instance. The serialization process is the reverse.
 graph LR
     A["**Patient JSON**
     {
-    #nbsp;#nbsp;resourceType: &quot;Patient&quot;,
+    #nbsp;#nbsp;resourceType: #quot;Patient#quot;,
     #nbsp;#nbsp;gender: ...,
     #nbsp;#nbsp;_gender: ...,
     #nbsp;#nbsp;deceasedBoolean: ...,
@@ -336,12 +336,12 @@ graph LR
     }
     "]
     E["**Patient object**
-    gender: Enumeration&lt;AdministrativeGender&gt;?
+    gender: Enumeration#lt;AdministrativeGender#gt;?
     deceased: Patient.Deceased?
     #nbsp;#nbsp;↳ .Boolean | .DateTime
     multipleBirth: Patient.MultipleBirth?
     #nbsp;#nbsp;↳ .Boolean | .Integer
-    contact: List&lt;Patient.Contact&gt;
+    contact: List#lt;Patient.Contact#gt;
     "]
 
     subgraph PS["PatientSerializer"]

@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.ActivityDefinition
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.FamilyMemberHistory
 import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Measure
@@ -34,8 +35,8 @@ import dev.ohs.fhir.model.r5.PlanDefinition
 import dev.ohs.fhir.model.r5.Questionnaire
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.terminologies.FamilyHistoryStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -114,7 +115,7 @@ public object FamilyMemberHistorySearchParams {
       extractor = { resource -> listOfNotNull(resource.sex) },
     )
 
-  public val status: SearchParam<FamilyMemberHistory, Any> =
+  public val status: SearchParam<FamilyMemberHistory, Enumeration<FamilyHistoryStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

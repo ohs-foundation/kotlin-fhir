@@ -21,15 +21,18 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Code
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.ValueSet
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.Suppress
@@ -37,7 +40,7 @@ import kotlin.collections.List
 
 /** Search parameters for the [ValueSet] resource type. */
 public object ValueSetSearchParams {
-  public val code: SearchParam<ValueSet, Any> =
+  public val code: SearchParam<ValueSet, Code> =
     SearchParam(
       name = "code",
       type = SearchParamType.Token,
@@ -173,7 +176,7 @@ public object ValueSetSearchParams {
       },
     )
 
-  public val status: SearchParam<ValueSet, Any> =
+  public val status: SearchParam<ValueSet, Enumeration<PublicationStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,

@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.DiagnosticReport
 import dev.ohs.fhir.model.r4b.Encounter
+import dev.ohs.fhir.model.r4b.Enumeration
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.ImmunizationRecommendation
@@ -46,6 +47,7 @@ import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.ServiceRequest
 import dev.ohs.fhir.model.r4b.Specimen
 import dev.ohs.fhir.model.r4b.Substance
+import dev.ohs.fhir.model.r4b.terminologies.DiagnosticReportStatus
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.NotImplementedError
@@ -198,7 +200,7 @@ public object DiagnosticReportSearchParams {
       extractor = { resource -> resource.specimen },
     )
 
-  public val status: SearchParam<DiagnosticReport, Any> =
+  public val status: SearchParam<DiagnosticReport, Enumeration<DiagnosticReportStatus>> =
     SearchParam(
       name = "status",
       type = SearchParamType.Token,
